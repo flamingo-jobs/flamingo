@@ -5,7 +5,7 @@ const router = express.Router();
 
 // create users
 
-router.post('/user/create', (req,res) => {
+router.post('/users/create', (req,res) => {
     let newUser = new Users(req.body);
 
     newUser.save((err) => {
