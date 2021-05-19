@@ -1,13 +1,16 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cors = require('cors');
+
 const app = express();
 
 //import routes
-const userRoutes = require('./routes/user');
+const userRoutes = require('./routes/users');
 
 // app middleware
 app.use(bodyParser.json());
+app.use(cors());
 
 // route middleware
 app.use(userRoutes);
