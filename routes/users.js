@@ -38,6 +38,22 @@ router.get('/users', (req,res) => {
     });
 });
 
+// get specific
+
+router.get('/users/:id', (req,res) => {
+    Users.findById(req.params.id).exec((err,user) => {
+        if(err){
+            return res.status(400).json({
+                error: err
+            })
+        }
+        return res.status(200).json({
+            success: true,
+            user: user
+        });
+    });
+});
+
 // update user
 
 router.put('/users/update/:id', (req,res) => {
