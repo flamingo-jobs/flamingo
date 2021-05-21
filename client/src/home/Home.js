@@ -13,18 +13,32 @@ import FeaturedOrganizations from './components/FeaturedOrganizations'
 import FeaturedJobs from './components/FeaturedJobs'
 import PostJobSection from './components/PostJobSection'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
     root: {
         background: `url(${backgroundImage}) no-repeat`,
         backgroundSize: 'cover',
         minHeight: '100vh'
     },
     container: {
-        paddingTop: 20
+        paddingTop: 20,
+        [theme.breakpoints.down('xs')]: {
+            paddingTop: 0,
+        },
     },
     FeaturedOrganizations: {
         paddingTop: 25
     },
+    topBarGrid: {
+        [theme.breakpoints.down('xs')]: {
+            display: 'block',
+            maxWidth: 'unset'
+        },
+    },
+    sideDrawerGrid: {
+        [theme.breakpoints.down('xs')]: {
+            display: 'none'
+        },
+    }
 }));
 
 function Home() {
@@ -37,27 +51,25 @@ function Home() {
                     <React.Fragment>
                         <CssBaseline />
                         <Container maxWidth="false" className={classes.container}>
-                            <Grid container direction="row" spacing={3}>
-                                <Grid item sm={2} style={{position: 'fixed'}}>
-                                    <FloatCard >
-                                        <SideDrawer />
-                                    </FloatCard>
+                            <Grid container direction="row" spacing={3} className={classes.topBarGrid}>
+                                <Grid item xs={0} sm={4} md={3} lg={2} style={{ position: 'fixed' }} className={classes.sideDrawerGrid}>
+                                    <SideDrawer />
                                 </Grid>
-                                <Grid item sm={2}></Grid>
-                                <Grid item container xs={10} spacing={3}>
+                                <Grid item xs={0} sm={4} md={3} lg={2} className={classes.sideDrawerGrid}></Grid>
+                                <Grid item container xs={12} sm={8} md={9} lg={10} spacing={3} className={classes.topBarGrid}>
                                     <Grid item sm={12}>
                                         <Topbar />
                                     </Grid>
-                                
+
                                     <Grid item sm={12}>
                                         <FloatCard>
                                             <HeroSection />
                                         </FloatCard>
                                     </Grid>
-                                    <Grid item sm={6}>
+                                    <Grid item xs={12} md={6}>
                                         <FeaturedJobs />
                                     </Grid>
-                                    <Grid item container sm={6}>
+                                    <Grid item container xs={12} md={6}>
                                         <Grid item sm={12}>
                                             <PostJobSection />
                                         </Grid>
@@ -65,7 +77,7 @@ function Home() {
                                             <FeaturedOrganizations />
                                         </Grid>
                                     </Grid>
-                                    
+
                                 </Grid>
                             </Grid>
                         </Container>

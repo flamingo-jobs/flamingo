@@ -44,22 +44,22 @@ function FeaturedOrganizations() {
                     </FloatCard>
                 </Grid>
                 <Grid item container direction="row" spacing={2}>
-                    <Grid item sm={6}>
+                    <Grid item xs={12} lg={6}>
                         <Organization logo={ifs} name="IFS R&D" openings={8} />
                     </Grid>
-                    <Grid item sm={6}>
+                    <Grid item xs={12} lg={6}>
                         <Organization logo={wso2} name="WSO2" openings={8} />
                     </Grid>
-                    <Grid item sm={6}>
+                    <Grid item xs={12} lg={6}>
                         <Organization logo={ninix} name="99X" openings={8} />
                     </Grid>
-                    <Grid item sm={6}>
+                    <Grid item xs={12} lg={6}>
                         <Organization logo={virtusa} name="Virtusa" openings={8} />
                     </Grid>
-                    <Grid item sm={6}>
+                    <Grid item xs={12} lg={6}>
                         <Organization logo={mas} name="MAS Holdings" openings={8} />
                     </Grid>
-                    <Grid item sm={6}>
+                    <Grid item xs={12} lg={6}>
                         <Organization logo={zone} name="Zone 24x7" openings={8} />
                     </Grid>
                 </Grid>

@@ -15,18 +15,33 @@ import PhoneRoundedIcon from '@material-ui/icons/PhoneRounded';
 import ThumbsUpDownRoundedIcon from '@material-ui/icons/ThumbsUpDownRounded';
 import Lottie from 'react-lottie';
 import Flamingo from '../lotties/flamingo.json';
+import FloatCard from './FloatCard';
 
 const useStyles = makeStyles((theme) => ({
-    root: {
+    root: {        
+        [theme.breakpoints.down('xs')]: {
+            display: 'none',
+            Overflow: 'hidden'
+          },
+    },
+    card: {
         display: 'flex',
-        height: '92vh'
+        height: '92vh',
     },
     linkIcon: {
         color: theme.palette.stateBlue,
         paddingLeft: theme.spacing(2),
+        [theme.breakpoints.down('sm')]: {
+            paddingLeft: 0,
+            minWidth: 'unset',
+          },
     },
     linkText: {
         color: theme.palette.black,
+        [theme.breakpoints.down('sm')]: {
+            paddingLeft: 10,
+            
+          },
     },
     listItem: {
         marginBottom: theme.spacing(2),
@@ -35,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
             borderRadius: 12,
             color: theme.palette.white + '!important',
             backgroundColor: theme.palette.greenyLightSky + '!important',
-        }
+        },
     },
     active: {
         backgroundColor: theme.palette.lightSkyBlue + '!important',
@@ -68,6 +83,8 @@ export default function MiniDrawer() {
 
     return (
         <div className={classes.root}>
+            <FloatCard>
+        <div className={classes.card}>
             <CssBaseline />
             <Grid container direction="row" spacing={3}>
                 <Grid item xs={12}>
@@ -108,7 +125,8 @@ export default function MiniDrawer() {
                     />
                 </Grid>
             </Grid>
-
+            </div>
+            </FloatCard>
 
         </div>
     );

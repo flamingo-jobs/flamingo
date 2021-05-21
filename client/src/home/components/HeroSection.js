@@ -27,6 +27,11 @@ const useStyles = makeStyles((theme) => ({
             color: 'white',
         }
     },
+    lottie: {
+        [theme.breakpoints.down('xs')]: {
+            width: 300
+        },
+    }
 }))
 
 function HeroSection() {
@@ -51,10 +56,10 @@ function HeroSection() {
                     <Button className={classes.button}>GET HIRED</Button>
                 </Grid>
                 <Grid item xs={12} md={6}>
-                    <Lottie
+                    <Lottie className={classes.lottie}
                         options={defaultOptions}
-                        height={400}
-                        width={400}
+                        height={'inherit'}
+                        width={'inherit'}
                     />
                 </Grid>
             </Grid>

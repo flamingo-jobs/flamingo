@@ -78,10 +78,10 @@ function FeaturedJobs() {
                 <Grid item sm={12}>
                     <FloatCard backColor={theme.palette.tuftsBlue}>
                         <Grid item container direction="row" sm={12} className={classes.allJobs}>
-                            <Grid item sm={6}>
+                            <Grid item xs={12} md={6}>
                                 <Typography variant="h6" className={classes.text}>Want to dive into?</Typography>
                             </Grid>
-                            <Grid item sm={6}>
+                            <Grid item xs={12} md={6}>
                                 <Button className={classes.button} endIcon={<ArrowForwardRoundedIcon />}> Browse All Public Jobs </Button>
                             </Grid>
                         </Grid>
