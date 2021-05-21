@@ -8,6 +8,7 @@ import ifs from '../images/ifs.png'
 import ninix from '../images/ninix.png'
 import zone from '../images/zone.png'
 import mas from '../images/mas.png'
+import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -16,7 +17,19 @@ const useStyles = makeStyles((theme) => ({
     },
     container: {
         maxWidth: 'unset'
-    }
+    },
+    link: {
+        backgroundColor: theme.palette.white,
+        color: theme.palette.tuftsBlue,
+        fontWeight: 800,
+        borderRadius: 25,
+        paddingLeft: 20,
+        paddingRight: 20,
+        "&:hover": {
+            backgroundColor: theme.palette.white,
+            color: theme.palette.pinkyRed,
+        }
+    },
 }))
 
 function FeaturedOrganizations() {
@@ -49,6 +62,16 @@ function FeaturedOrganizations() {
                     <Grid item sm={6}>
                         <Organization logo={zone} name="Zone 24x7" openings={8} />
                     </Grid>
+                </Grid>
+                <Grid item sm={12}>
+                    <FloatCard>
+                        <Button
+                            className={classes.link}
+                            endIcon={<ArrowForwardRoundedIcon />}
+                        >
+                            See All
+      </Button>
+                    </FloatCard>
                 </Grid>
             </Grid>
         </div>

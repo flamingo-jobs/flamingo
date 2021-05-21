@@ -2,7 +2,8 @@ import { Grid, makeStyles, Typography, Button } from '@material-ui/core';
 import React from 'react'
 import FloatCard from './FloatCard';
 import Job from './Job';
-
+import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
+import theme from '../styles/Theme';
 const useStyles = makeStyles((theme) => ({
     title: {
         fontWeight: 600,
@@ -10,7 +11,38 @@ const useStyles = makeStyles((theme) => ({
     },
     container: {
         maxWidth: 'unset'
-    }
+    },
+    allJobs: {
+        paddingTop: 20,
+        paddingBottom: 20
+    },
+    text: {
+        color: theme.palette.white
+    },
+    button: {
+        backgroundColor: theme.palette.white,
+        color: theme.palette.tuftsBlue,
+        fontWeight: 800,
+        borderRadius: 25,
+        paddingLeft: 20,
+        paddingRight: 20,
+        "&:hover": {
+            backgroundColor: theme.palette.blueJeans,
+            color: 'white',
+        }
+    },
+    link: {
+        backgroundColor: theme.palette.white,
+        color: theme.palette.tuftsBlue,
+        fontWeight: 800,
+        borderRadius: 25,
+        paddingLeft: 20,
+        paddingRight: 20,
+        "&:hover": {
+            backgroundColor: theme.palette.white,
+            color: theme.palette.pinkyRed,
+        }
+    },
 }))
 function FeaturedJobs() {
     const classes = useStyles();
@@ -31,6 +63,29 @@ function FeaturedJobs() {
                 </Grid>
                 <Grid item sm={12}>
                     <Job />
+                </Grid>
+
+                <Grid item sm={12}>
+                    <FloatCard>
+                        <Button
+                            className={classes.link}
+                            endIcon={<ArrowForwardRoundedIcon />}
+                        >
+                            See All Featured Jobs
+      </Button>
+                    </FloatCard>
+                </Grid>
+                <Grid item sm={12}>
+                    <FloatCard backColor={theme.palette.tuftsBlue}>
+                        <Grid item container direction="row" sm={12} className={classes.allJobs}>
+                            <Grid item sm={6}>
+                                <Typography variant="h6" className={classes.text}>Want to dive into?</Typography>
+                            </Grid>
+                            <Grid item sm={6}>
+                                <Button className={classes.button} endIcon={<ArrowForwardRoundedIcon />}> Browse All Public Jobs </Button>
+                            </Grid>
+                        </Grid>
+                    </FloatCard>
                 </Grid>
             </Grid>
         </div>

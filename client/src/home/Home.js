@@ -65,6 +65,7 @@ function Home() {
                                             <FeaturedOrganizations />
                                         </Grid>
                                     </Grid>
+                                    
                                 </Grid>
                             </Grid>
                         </Container>

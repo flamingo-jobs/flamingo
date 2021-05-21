@@ -59,8 +59,8 @@ function PostJobSection() {
                 <Typography variant="p" className={classes.description}>We are an end-to-end recruitment platform that helps businesses like yourself, find the right candidates as smoothly as possible.</Typography>
                 <Lottie
                         options={defaultOptions}
-                        height={200}
-                        width={200}
+                        height={250}
+                        width={250}
                     />
                 <Typography variant="h6" className={classes.heading}>Want to find the best candidate?</Typography>
                 <Button className={classes.btn}>Start Hiring</Button>
