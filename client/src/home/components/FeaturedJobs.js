@@ -29,7 +29,10 @@ const useStyles = makeStyles((theme) => ({
         "&:hover": {
             backgroundColor: theme.palette.blueJeans,
             color: 'white',
-        }
+        },
+        [theme.breakpoints.down('md')]: {
+            marginTop: 20
+        },
     },
     link: {
         backgroundColor: theme.palette.white,
@@ -78,10 +81,10 @@ function FeaturedJobs() {
                 <Grid item sm={12}>
                     <FloatCard backColor={theme.palette.tuftsBlue}>
                         <Grid item container direction="row" sm={12} className={classes.allJobs}>
-                            <Grid item xs={12} md={6}>
+                            <Grid item xs={12} lg={6}>
                                 <Typography variant="h6" className={classes.text}>Want to dive into?</Typography>
                             </Grid>
-                            <Grid item xs={12} md={6}>
+                            <Grid item xs={12} lg={6}>
                                 <Button className={classes.button} endIcon={<ArrowForwardRoundedIcon />}> Browse All Public Jobs </Button>
                             </Grid>
                         </Grid>

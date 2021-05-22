@@ -10,10 +10,13 @@ const useStyles = makeStyles((theme) => ({
     },
     h2: {
         fontWeight: 'bolder',
-        color: theme.palette.stateBlue
+        color: theme.palette.stateBlue,
+        marginBottom: 20
     },
     h4: {
-        color: theme.palette.black
+        color: theme.palette.black,
+        marginBottom: 20
+
     },
     button: {
         backgroundColor: theme.palette.blueJeans,

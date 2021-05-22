@@ -12,6 +12,7 @@ import HeroSection from './components/HeroSection'
 import FeaturedOrganizations from './components/FeaturedOrganizations'
 import FeaturedJobs from './components/FeaturedJobs'
 import PostJobSection from './components/PostJobSection'
+import Footer from './components/Footer'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -77,7 +78,9 @@ function Home() {
                                             <FeaturedOrganizations />
                                         </Grid>
                                     </Grid>
-
+                                    <Grid item xs={12}>
+                                        <Footer />
+                                    </Grid>
                                 </Grid>
                             </Grid>
                         </Container>
