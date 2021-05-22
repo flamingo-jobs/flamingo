@@ -4,7 +4,7 @@ import './styles/Home.css'
 import FloatCard from './components/FloatCard'
 import SideDrawer from './components/SideDrawer'
 import Grid from '@material-ui/core/Grid';
-import theme from './styles/Theme';
+import theme from '../Theme';
 import Topbar from './components/Topbar';
 import Favorites from './components/Favorites';
 import backgroundImage from './images/background-image.jpg';

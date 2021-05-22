@@ -1,7 +1,7 @@
 import { Button, makeStyles, Typography } from '@material-ui/core'
 import React from 'react'
 import Lottie from 'react-lottie';
-import theme from '../styles/Theme';
+import theme from '../../Theme';
 import FloatCard from './FloatCard';
 import Hiring from '../lotties/hiring.json';
 

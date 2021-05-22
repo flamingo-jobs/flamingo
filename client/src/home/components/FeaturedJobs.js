@@ -3,7 +3,7 @@ import React from 'react'
 import FloatCard from './FloatCard';
 import Job from './Job';
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
-import theme from '../styles/Theme';
+import theme from '../../Theme';
 const useStyles = makeStyles((theme) => ({
     title: {
         fontWeight: 600,
