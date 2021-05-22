@@ -11,13 +11,18 @@ import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import MoreIcon from '@material-ui/icons/MoreVert';
+import MenuRoundedIcon from '@material-ui/icons/MenuRounded';
 import '../styles/Home.css'
 import logo from '../images/logo.jpg'
 import { Button, Link } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-
+import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
+import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
+import BusinessRoundedIcon from '@material-ui/icons/BusinessRounded';
+import PeopleAltRoundedIcon from '@material-ui/icons/PeopleAltRounded';
+import PhoneRoundedIcon from '@material-ui/icons/PhoneRounded';
+import ThumbsUpDownRoundedIcon from '@material-ui/icons/ThumbsUpDownRounded';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -92,6 +97,12 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
+  mobileSideMenuItems: {
+    display: 'block',
+    [theme.breakpoints.up('sm')]: {
+      display: 'none',
+    },
+  },
   logo: {
     height: 40,
     marginRight: 40
@@ -107,8 +118,22 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: theme.palette.mediumTurquoise,
       color: 'white',
-  }
-},
+    }
+  },
+  signInMobile: {
+    backgroundColor: theme.palette.white,
+    color: theme.palette.tuftsBlue,
+    marginLeft: 20,
+    marginRight: 20,
+    border: '2px solid' + theme.palette.tuftsBlue,
+    borderRadius: 25,
+    paddingLeft: 20,
+    paddingRight: 20,
+    "&:hover": {
+      backgroundColor: theme.palette.mediumTurquoise,
+      color: 'white',
+    }
+  },
   getHired: {
     backgroundColor: theme.palette.pinkyRed,
     color: theme.palette.white,
@@ -119,9 +144,9 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: theme.palette.mediumTurquoise,
       color: 'white',
-  }
-},
-startHiring: {
+    }
+  },
+  startHiring: {
     backgroundColor: theme.palette.tuftsBlue,
     color: theme.palette.white,
     marginLeft: 20,
@@ -131,7 +156,7 @@ startHiring: {
     "&:hover": {
       backgroundColor: theme.palette.mediumTurquoise,
       color: 'white',
-  }
+    }
   }
 }));
 
@@ -187,7 +212,10 @@ export default function Topbar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+
+      <Button className={classes.startHiring}>Start Hiring</Button>
+      <Button className={classes.signInMobile}>Sign In</Button>
+      {/* <MenuItem>
         <IconButton aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={4} color="secondary">
             <MailIcon />
@@ -213,34 +241,72 @@ export default function Topbar() {
           <AccountCircle />
         </IconButton>
         <p>Profile</p>
-      </MenuItem>
+      </MenuItem> */}
+      <div className={classes.mobileSideMenuItems}>
+        <MenuItem>
+          <IconButton color="inherit">
+            <HomeRoundedIcon />
+          </IconButton>
+          <p>Home</p>
+        </MenuItem>
+        <MenuItem>
+          <IconButton color="inherit">
+            <WorkRoundedIcon />
+          </IconButton>
+          <p>Jobs</p>
+        </MenuItem>
+        <MenuItem>
+          <IconButton color="inherit">
+            <BusinessRoundedIcon />
+          </IconButton>
+          <p>Ogranizations</p>
+        </MenuItem>
+        <MenuItem>
+          <IconButton color="inherit">
+            <PeopleAltRoundedIcon />
+          </IconButton>
+          <p>People</p>
+        </MenuItem>
+        <MenuItem>
+          <IconButton color="inherit">
+            <ThumbsUpDownRoundedIcon />
+          </IconButton>
+          <p>Services</p>
+        </MenuItem>
+        <MenuItem>
+          <IconButton color="inherit">
+            <PhoneRoundedIcon />
+          </IconButton>
+          <p>Contact Us</p>
+        </MenuItem>
+      </div>
     </Menu>
   );
   const preventDefault = (event) => event.preventDefault();
   return (
     <Card className={classes.root}>
-    <CardContent className={classes.content}>
-    <div className={classes.grow}>
-      <AppBar position="sticky" >
-        <Toolbar>
-          <img src={logo} className={classes.logo} />
+      <CardContent className={classes.content}>
+        <div className={classes.grow}>
+          <AppBar position="sticky" >
+            <Toolbar>
+              <img src={logo} className={classes.logo} />
 
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </div>
-          <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
-            {/* <IconButton aria-label="show 4 new mails" color="primary">
+              <div className={classes.search}>
+                <div className={classes.searchIcon}>
+                  <SearchIcon />
+                </div>
+                <InputBase
+                  placeholder="Search…"
+                  classes={{
+                    root: classes.inputRoot,
+                    input: classes.inputInput,
+                  }}
+                  inputProps={{ 'aria-label': 'search' }}
+                />
+              </div>
+              <div className={classes.grow} />
+              <div className={classes.sectionDesktop}>
+                {/* <IconButton aria-label="show 4 new mails" color="primary">
               <Badge badgeContent={4} color="secondary">
                 <MailIcon />
               </Badge>
@@ -261,26 +327,26 @@ export default function Topbar() {
               <AccountCircle />
             </IconButton> */}
 
-            <Button className={classes.startHiring}>Start Hiring</Button>
-            <Button className={classes.signIn}>Sign In</Button>
-          </div>
-          <div className={classes.sectionMobile}>
-            <IconButton
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </div>
-        </Toolbar>
-      </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
-    </div>
-    </CardContent>
+                <Button className={classes.startHiring}>Start Hiring</Button>
+                <Button className={classes.signIn}>Sign In</Button>
+              </div>
+              <div className={classes.sectionMobile}>
+                <IconButton
+                  aria-label="show more"
+                  aria-controls={mobileMenuId}
+                  aria-haspopup="true"
+                  onClick={handleMobileMenuOpen}
+                  color="inherit"
+                >
+                  <MenuRoundedIcon />
+                </IconButton>
+              </div>
+            </Toolbar>
+          </AppBar>
+          {renderMobileMenu}
+          {renderMenu}
+        </div>
+      </CardContent>
     </Card>
   );
 }

@@ -26,7 +26,8 @@ const theme = createMuiTheme({
     tagIcon: '#969478',
     pinkyRed: '#ff6ecc',
     white: '#fff',
-    black: '#424547'
+    black: '#424547',
+    ashBlue: '#54788a'
   }
 });
 
