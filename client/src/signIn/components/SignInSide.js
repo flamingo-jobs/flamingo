@@ -17,6 +17,9 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
 import cardImage from '../../signIn/images/flamingo.gif';
 import theme from '../../Theme';
+import FloatCard from '../../home/components/FloatCard';
+import { Container } from '@material-ui/core';
+import backgroundImage from '../images/background.jfif';
 
 function Copyright() {
   return (
@@ -32,40 +35,51 @@ function Copyright() {
 }
 
 const CssTextField = withStyles({
-    root: {
-      '& label.Mui-focused': {
-        color: 'theme.palette.mediumTurquoise',
+  root: {
+    '& label.Mui-focused': {
+      color: 'theme.palette.mediumTurquoise',
+    },
+    '& .MuiInput-underline:after': {
+      borderBottomColor: 'theme.palette.mediumTurquoise',
+    },
+    '& .MuiOutlinedInput-root': {
+
+      '& fieldset': {
+        borderColor: 'black',
       },
-      '& .MuiInput-underline:after': {
-        borderBottomColor: 'theme.palette.mediumTurquoise',
+      '&:hover fieldset': {
+        borderColor: 'theme.palette.mediumTurquoise',
       },
-      '& .MuiOutlinedInput-root': {
-          
-        '& fieldset': {
-          borderColor: 'black',
-        },
-        '&:hover fieldset': {
-          borderColor: 'theme.palette.mediumTurquoise',
-        },
-        '&.Mui-focused fieldset': {
-          borderColor: 'theme.palette.mediumTurquoise',
-        },
+      '&.Mui-focused fieldset': {
+        borderColor: 'theme.palette.mediumTurquoise',
       },
     },
-  })(TextField);
+  },
+})(TextField);
 
 const useStyles = makeStyles(() => ({
   root: {
-    height: '100vh',
+
+  },
+  container: {
+    paddingTop: 50,
+    paddingBottom: 50,
+    minHeight: '100vh'
+  },
+  overlay: {
+    backgroundColor: 'rgba(213, 239, 247, 0.605)',
+    minHeight: '100vh',
+},
+  background: {
+    background: `url(${backgroundImage}) no-repeat`,
+    backgroundSize: 'cover',
   },
   paper: {
-    margin: theme.spacing(25, 4),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    paddingLeft: theme.spacing(20),
-    paddingRight: theme.spacing(20),
-    
+    padding: 20,
+
   },
   avatar: {
     margin: theme.spacing(1),
@@ -73,7 +87,8 @@ const useStyles = makeStyles(() => ({
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1), 
+    marginTop: 20,
+    display: 'contents'
   },
   submit: {
     width: '30%',
@@ -84,92 +99,106 @@ const useStyles = makeStyles(() => ({
     "&:hover": {
       backgroundColor: theme.palette.tuftsBlue,
       color: 'white',
-  }
+    }
   },
   media: {
-    height: '100vh',
+    height: '80vh',
   },
+  textField: {
+    margin: 10,
+    width: 300
+  },
+  title: {
+    marginBottom: 34
+  }
 }));
 
 export default function SignInSide() {
   const classes = useStyles();
 
   return (
-    <Grid container component="main" className={classes.root}>
-      <CssBaseline />
-      <Grid item xs={false} sm={3} md={6} >
-      <Card boxShadow={3}>
-      <CardActionArea>
-        <CardMedia
-          className={classes.media}
-          image={cardImage}
-          title="Contemplative Reptile"
-          alt="image"
-        />
-        </CardActionArea>
-        </Card>
-      </Grid>
-      <Grid item xs={12} sm={9} md={6} component={Paper} elevation={6} square>
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign In
+    <div className={classes.background} >
+      <div className={classes.overlay} >
+    <Container className={classes.container}>
+      <FloatCard backColor={theme.palette.flamingo}>
+        <Grid container direction="row" className={classes.root}>
+          <CssBaseline />
+
+          <Grid item xs={12} sm={3} md={7} >
+
+            <CardMedia
+              className={classes.media}
+              image={cardImage}
+              title="Contemplative Reptile"
+              alt="image"
+            />
+
+          </Grid>
+          <Grid item xs={12} sm={9} md={5}>
+            <FloatCard >
+              <div className={classes.paper}>
+                <Avatar className={classes.avatar}>
+                  <LockOutlinedIcon />
+                </Avatar>
+                <Typography component="h1" variant="h5" className={classes.title}>
+                  Sign In
           </Typography>
-          <form className={classes.form} noValidate >
-          <CssTextField      
-            margin="normal"
-            required
-            fullWidth
-            name="username"
-            label="Username"
-            type="text"
-            id="username"
-            autoComplete="current-username"
-            />
-            <CssTextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-              style={{ marginTop: "5%" }}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Sign In
+                <form className={classes.form} noValidate >
+                  <TextField
+                    required
+                    id="outlined-required"
+                    label="Username"
+                    variant="outlined"
+                    fullWidth
+                    className={classes.textField}
+                  />
+                  <TextField
+                    required
+                    id="outlined-password-input"
+                    label="Password"
+                    type="password"
+                    autoComplete="current-password"
+                    variant="outlined"
+                    fullWidth
+                    className={classes.textField}
+                  />
+                  <FormControlLabel
+                    control={<Checkbox value="remember" color="primary" />}
+                    label="Remember me"
+                    style={{ marginTop: "5%" }}
+                  />
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                  >
+                    Sign In
             </Button>
-            <Grid container>
-              <Grid item xs style={{ textAlign: 'left' }}>
-                <Link href="#" variant="body2">
-                  Forgot password?
+                  <Grid container>
+                    <Grid item xs style={{ textAlign: 'left' }}>
+                      <Link href="#" variant="body2">
+                        Forgot password?
                 </Link>
-              </Grid>
-              <Grid item style={{ textAlign: 'right' }}>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
-            <Box mt={5}>
-              <Copyright />
-            </Box>
-          </form>
-        </div>
-      </Grid>
-    </Grid>
+                    </Grid>
+                    <Grid item style={{ textAlign: 'right' }}>
+                      <Link href="#" variant="body2">
+                        {"Don't have an account? Sign Up"}
+                      </Link>
+                    </Grid>
+                  </Grid>
+                  <Box mt={5}>
+                    <Copyright />
+                  </Box>
+                </form>
+              </div>
+            </FloatCard>
+          </Grid>
+        </Grid>
+      </FloatCard>
+    </Container>
+    </div>
+    </div>
   );
 }
