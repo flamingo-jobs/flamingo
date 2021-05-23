@@ -17,12 +17,13 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
 import cardImage from '../../signIn/images/flamingo.gif';
 import FloatCard from '../../home/components/FloatCard';
-import { Container, IconButton } from '@material-ui/core';
+import { Chip, Container, IconButton } from '@material-ui/core';
 import backgroundImage from '../images/background.jfif';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import theme from '../../Theme';
+import ArrowBackRoundedIcon from '@material-ui/icons/ArrowBackRounded';
 
 function Copyright() {
   return (
@@ -107,6 +108,9 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('xs')]: {
       display: 'none'
     },
+  },
+  return: {
+    alignSelf: 'self-start'
   }
 }));
 
@@ -126,7 +130,6 @@ export default function SignInSide() {
                 <CardMedia
                   className={classes.media}
                   image={cardImage}
-                  title="Contemplative Reptile"
                   alt="image"
                 />
 
@@ -134,7 +137,9 @@ export default function SignInSide() {
               <Grid item xs={12} sm={7} md={5}>
                 <FloatCard >
                   <div className={classes.paper}>
-
+                    <Link to="/">
+                      <Chip className={classes.return} clickable icon={<ArrowBackRoundedIcon />} label="Return" />
+                    </Link>
                     <Typography component="h1" variant="h5" className={classes.title}>
                       Sign In
           </Typography>

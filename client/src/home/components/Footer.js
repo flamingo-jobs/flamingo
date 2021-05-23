@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.white,
     },
     listItem: {
-        marginBottom: theme.spacing(2),
+        marginBottom: theme.spacing(1),
         borderRadius: 12,
         maxWidth: 250,
         "&:hover": {
