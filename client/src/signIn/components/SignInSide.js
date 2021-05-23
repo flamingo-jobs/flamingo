@@ -16,10 +16,13 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
 import cardImage from '../../signIn/images/flamingo.gif';
-import theme from '../../Theme';
 import FloatCard from '../../home/components/FloatCard';
-import { Container } from '@material-ui/core';
+import { Container, IconButton } from '@material-ui/core';
 import backgroundImage from '../images/background.jfif';
+import FacebookIcon from '@material-ui/icons/Facebook';
+import LinkedInIcon from '@material-ui/icons/LinkedIn';
+import GitHubIcon from '@material-ui/icons/GitHub';
+import theme from '../../Theme';
 
 function Copyright() {
   return (
@@ -34,30 +37,7 @@ function Copyright() {
   );
 }
 
-const CssTextField = withStyles({
-  root: {
-    '& label.Mui-focused': {
-      color: 'theme.palette.mediumTurquoise',
-    },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: 'theme.palette.mediumTurquoise',
-    },
-    '& .MuiOutlinedInput-root': {
-
-      '& fieldset': {
-        borderColor: 'black',
-      },
-      '&:hover fieldset': {
-        borderColor: 'theme.palette.mediumTurquoise',
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: 'theme.palette.mediumTurquoise',
-      },
-    },
-  },
-})(TextField);
-
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {
 
   },
@@ -69,7 +49,7 @@ const useStyles = makeStyles(() => ({
   overlay: {
     backgroundColor: 'rgba(213, 239, 247, 0.605)',
     minHeight: '100vh',
-},
+  },
   background: {
     background: `url(${backgroundImage}) no-repeat`,
     backgroundSize: 'cover',
@@ -82,8 +62,8 @@ const useStyles = makeStyles(() => ({
 
   },
   avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.tuftsBlue,
+    backgroundColor: theme.palette.lightSkyBlue,
+    color: theme.palette.stateBlue,
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -92,13 +72,16 @@ const useStyles = makeStyles(() => ({
   },
   submit: {
     width: '30%',
-    color: 'white',
+    boxShadow: 'none',
+    color: theme.palette.white,
+    backgroundColor: theme.palette.skyBlueCrayola,
     margin: ' 5% 35% 10% 35%',
     borderRadius: 25,
     padding: "10px 5px 10px 5px",
     "&:hover": {
       backgroundColor: theme.palette.tuftsBlue,
       color: 'white',
+      boxShadow: 'none'
     }
   },
   media: {
@@ -106,10 +89,24 @@ const useStyles = makeStyles(() => ({
   },
   textField: {
     margin: 10,
-    width: 300
+    width: 300,
+    [theme.breakpoints.down('xs')]: {
+      width: 250,
+    },
+    "& fieldset": {
+      borderColor: theme.palette.tuftsBlue,
+    },
+    "&:hover fieldset": {
+      borderColor: theme.palette.pinkyRed + ' !important',
+    },
   },
   title: {
-    marginBottom: 34
+    marginBottom: 20
+  },
+  animation: {
+    [theme.breakpoints.down('xs')]: {
+      display: 'none'
+    },
   }
 }));
 
@@ -119,86 +116,110 @@ export default function SignInSide() {
   return (
     <div className={classes.background} >
       <div className={classes.overlay} >
-    <Container className={classes.container}>
-      <FloatCard backColor={theme.palette.flamingo}>
-        <Grid container direction="row" className={classes.root}>
-          <CssBaseline />
+        <Container className={classes.container}>
+          <FloatCard backColor={theme.palette.flamingo}>
+            <Grid container direction="row" className={classes.root}>
+              <CssBaseline />
 
-          <Grid item xs={12} sm={3} md={7} >
+              <Grid item sm={5} md={7} className={classes.animation}>
 
-            <CardMedia
-              className={classes.media}
-              image={cardImage}
-              title="Contemplative Reptile"
-              alt="image"
-            />
+                <CardMedia
+                  className={classes.media}
+                  image={cardImage}
+                  title="Contemplative Reptile"
+                  alt="image"
+                />
 
-          </Grid>
-          <Grid item xs={12} sm={9} md={5}>
-            <FloatCard >
-              <div className={classes.paper}>
-                <Avatar className={classes.avatar}>
-                  <LockOutlinedIcon />
-                </Avatar>
-                <Typography component="h1" variant="h5" className={classes.title}>
-                  Sign In
+              </Grid>
+              <Grid item xs={12} sm={7} md={5}>
+                <FloatCard >
+                  <div className={classes.paper}>
+
+                    <Typography component="h1" variant="h5" className={classes.title}>
+                      Sign In
           </Typography>
-                <form className={classes.form} noValidate >
-                  <TextField
-                    required
-                    id="outlined-required"
-                    label="Username"
-                    variant="outlined"
-                    fullWidth
-                    className={classes.textField}
-                  />
-                  <TextField
-                    required
-                    id="outlined-password-input"
-                    label="Password"
-                    type="password"
-                    autoComplete="current-password"
-                    variant="outlined"
-                    fullWidth
-                    className={classes.textField}
-                  />
-                  <FormControlLabel
-                    control={<Checkbox value="remember" color="primary" />}
-                    label="Remember me"
-                    style={{ marginTop: "5%" }}
-                  />
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    className={classes.submit}
-                  >
-                    Sign In
+                    <div className={classes.socialSection}>
+                      <Typography className={classes.text}>
+                        Use
+            </Typography>
+                      <div className={classes.icons}>
+                        <IconButton >
+                          <Avatar className={classes.avatar}>
+                            <FacebookIcon />
+                          </Avatar>
+                        </IconButton>
+                        <IconButton >
+                          <Avatar className={classes.avatar}>
+                            <LinkedInIcon />
+                          </Avatar>
+                        </IconButton>
+                        <IconButton >
+                          <Avatar className={classes.avatar}>
+                            <GitHubIcon />
+                          </Avatar>
+                        </IconButton>
+
+
+                      </div>
+                      <Typography className={classes.text}>
+                        Or
+            </Typography>
+                    </div>
+                    <form className={classes.form} noValidate >
+                      <TextField
+                        required
+                        id="outlined-required"
+                        label="Username"
+                        variant="outlined"
+                        fullWidth
+                        className={classes.textField}
+                      />
+                      <TextField
+                        required
+                        id="outlined-password-input"
+                        label="Password"
+                        type="password"
+                        autoComplete="current-password"
+                        variant="outlined"
+                        fullWidth
+                        className={classes.textField}
+                      />
+                      <FormControlLabel
+                        control={<Checkbox value="remember" color="primary" />}
+                        label="Remember me"
+                        style={{ marginTop: "5%" }}
+                      />
+                      <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        className={classes.submit}
+                      >
+                        Sign In
             </Button>
-                  <Grid container>
-                    <Grid item xs style={{ textAlign: 'left' }}>
-                      <Link href="#" variant="body2">
-                        Forgot password?
+                      <Grid container>
+                        <Grid item xs style={{ textAlign: 'left' }}>
+                          <Link href="#" variant="body2">
+                            Forgot password?
                 </Link>
-                    </Grid>
-                    <Grid item style={{ textAlign: 'right' }}>
-                      <Link href="#" variant="body2">
-                        {"Don't have an account? Sign Up"}
-                      </Link>
-                    </Grid>
-                  </Grid>
-                  <Box mt={5}>
-                    <Copyright />
-                  </Box>
-                </form>
-              </div>
-            </FloatCard>
-          </Grid>
-        </Grid>
-      </FloatCard>
-    </Container>
-    </div>
+                        </Grid>
+                        <Grid item style={{ textAlign: 'right' }}>
+                          <Link href="#" variant="body2">
+                            {"Don't have an account? Sign Up"}
+                          </Link>
+                        </Grid>
+                      </Grid>
+                      <Box mt={5}>
+                        <Copyright />
+                      </Box>
+                    </form>
+                  </div>
+                </FloatCard>
+              </Grid>
+            </Grid>
+          </FloatCard>
+        </Container>
+      </div>
     </div>
   );
 }

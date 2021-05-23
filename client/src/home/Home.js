@@ -47,7 +47,6 @@ function Home() {
 
     return (
         <div className={classes.root}>
-            <ThemeProvider theme={theme}>
                 <div className="overlay">
                     <React.Fragment>
                         <CssBaseline />
@@ -86,7 +85,6 @@ function Home() {
                         </Container>
                     </React.Fragment>
                 </div>
-            </ThemeProvider>
         </div>
     )
 }
