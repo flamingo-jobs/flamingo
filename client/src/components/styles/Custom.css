@@ -1,0 +1,23 @@
+
+.overlay {
+    background-color: rgba(213, 239, 247, 0.705);
+    min-height: 100vh;
+}
+
+.MuiCardContent-root:last-child {
+    padding-bottom: 10px !important;
+}
+
+.app-bar {
+    background-color: transparent;
+}
+
+.MuiAppBar-colorPrimary {
+    color: purple !important;
+    background-color: white !important;
+    box-shadow: none !important;
+}
+
+.MuiDrawer-paper {
+    position: relative !important;
+}

@@ -1,7 +1,7 @@
 import { Grid, makeStyles, Typography, Button } from '@material-ui/core';
 import React from 'react'
-import FloatCard from './FloatCard';
-import Job from './Job';
+import FloatCard from '../../components/FloatCard';
+import JobCard from '../../jobs/components/JobCard';
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
 import theme from '../../Theme';
 const useStyles = makeStyles((theme) => ({
@@ -59,13 +59,13 @@ function FeaturedJobs() {
                     </FloatCard>
                 </Grid>
                 <Grid item sm={12}>
-                    <Job />
+                    <JobCard />
                 </Grid>
                 <Grid item sm={12}>
-                    <Job />
+                    <JobCard />
                 </Grid>
                 <Grid item sm={12}>
-                    <Job />
+                    <JobCard />
                 </Grid>
 
                 <Grid item sm={12}>

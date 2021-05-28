@@ -1,6 +1,6 @@
 import { Grid, makeStyles, Typography } from '@material-ui/core'
 import React from 'react'
-import theme from '../../Theme'
+import theme from '../Theme'
 import FloatCard from './FloatCard'
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';

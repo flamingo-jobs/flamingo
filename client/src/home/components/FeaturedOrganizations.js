@@ -1,6 +1,6 @@
 import { Grid, makeStyles, Typography, Button } from '@material-ui/core';
 import React from 'react'
-import FloatCard from './FloatCard';
+import FloatCard from '../../components/FloatCard';
 import Organization from './Organization';
 import wso2 from '../images/wso2.png'
 import virtusa from '../images/virtusa.png'

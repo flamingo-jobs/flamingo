@@ -5,7 +5,7 @@ import { FavoriteRounded } from '@material-ui/icons';
 import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 import ifs from '../images/ifs.png';
-import FloatCard from './FloatCard';
+import FloatCard from '../../components/FloatCard';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -75,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
         }
     },
 }))
-function Job() {
+function JobCard() {
 
     const classes = useStyles();
 
@@ -114,4 +114,4 @@ function Job() {
     )
 }
 
-export default Job
+export default JobCard

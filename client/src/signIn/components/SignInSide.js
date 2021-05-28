@@ -16,7 +16,7 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
 import cardImage from '../../signIn/images/flamingo.gif';
-import FloatCard from '../../home/components/FloatCard';
+import FloatCard from '../../components/FloatCard';
 import { Chip, Container, IconButton } from '@material-ui/core';
 import backgroundImage from '../images/background.jfif';
 import FacebookIcon from '@material-ui/icons/Facebook';

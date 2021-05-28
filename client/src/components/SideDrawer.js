@@ -14,7 +14,7 @@ import PeopleAltRoundedIcon from '@material-ui/icons/PeopleAltRounded';
 import PhoneRoundedIcon from '@material-ui/icons/PhoneRounded';
 import ThumbsUpDownRoundedIcon from '@material-ui/icons/ThumbsUpDownRounded';
 import Lottie from 'react-lottie';
-import Flamingo from '../lotties/flamingo.json';
+import Flamingo from './lotties/flamingo.json';
 import FloatCard from './FloatCard';
 
 const useStyles = makeStyles((theme) => ({

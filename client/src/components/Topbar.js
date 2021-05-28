@@ -12,8 +12,8 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MenuRoundedIcon from '@material-ui/icons/MenuRounded';
-import '../styles/Home.css'
-import logo from '../images/logo.jpg'
+import './styles/Custom.css'
+import logo from './images/logo.jpg'
 import { Button, Link } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';

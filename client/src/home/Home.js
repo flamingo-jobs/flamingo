@@ -1,18 +1,17 @@
 import React from 'react'
 import { CssBaseline, Container, ThemeProvider, makeStyles } from '@material-ui/core'
 import './styles/Home.css'
-import FloatCard from './components/FloatCard'
-import SideDrawer from './components/SideDrawer'
+import FloatCard from '../components/FloatCard'
+import SideDrawer from '../components/SideDrawer'
 import Grid from '@material-ui/core/Grid';
 import theme from '../Theme';
-import Topbar from './components/Topbar';
-import Favorites from './components/Favorites';
+import Topbar from '../components/Topbar';
 import backgroundImage from './images/background-image.jpg';
 import HeroSection from './components/HeroSection'
 import FeaturedOrganizations from './components/FeaturedOrganizations'
 import FeaturedJobs from './components/FeaturedJobs'
 import PostJobSection from './components/PostJobSection'
-import Footer from './components/Footer'
+import Footer from '../components/Footer'
 
 const useStyles = makeStyles((theme) => ({
     root: {
