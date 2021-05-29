@@ -1,5 +1,6 @@
 import Home from './home/Home';
 import SignInSide from './signIn/components/SignInSide.js';
+import Profile from './employee/components/Profile';
 import './App.css';
 import { ThemeProvider } from '@material-ui/styles';
 import theme from './Theme';
@@ -20,6 +21,9 @@ function App() {
             </Route>
             <Route path="/jobs" exact>
             <Jobs />
+            </Route>
+            <Route path="/employee" exact>
+              <Profile />
             </Route>
         </ThemeProvider>
         </BrowserRouter>
