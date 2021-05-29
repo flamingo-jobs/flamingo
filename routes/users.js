@@ -1,95 +1,25 @@
 const express = require('express');
-const Users = require('../models/users');
-
 const router = express.Router();
+const usersController = require('../controllers/usersController');
 
 // create users
 
-router.post('/users/create', (req,res) => {
-    let newUser = new Users(req.body);
-
-    newUser.save((err) => {
-        if(err){
-            return res.status(400).json({
-                error: err
-            });
-        }
-        return res.status(200).json({
-            success: "User saved successfully"
-        });
-
-    });
-
-});
+router.post('/users/create', usersController.create);
 
 // get users
 
-router.get('/users', (req,res) => {
-    Users.find().exec((err,users) => {
-        if(err){
-            return res.status(400).json({
-                error: err
-            })
-        }
-        return res.status(200).json({
-            success: true,
-            existingUsers: users
-        });
-    });
-});
+router.get('/users', usersController.getAll);
 
 // get specific
 
-router.get('/users/:id', (req,res) => {
-    Users.findById(req.params.id).exec((err,user) => {
-        if(err){
-            return res.status(400).json({
-                error: err
-            })
-        }
-        return res.status(200).json({
-            success: true,
-            user: user
-        });
-    });
-});
+router.get('/users/:id', usersController.getById);
 
 // update user
 
-router.put('/users/update/:id', (req,res) => {
-
-    Users.findByIdAndUpdate(
-        req.params.id,
-        {
-            $set:req.body
-        },
-        (err,user) =>{
-            if(err){
-                return res.status(400).json({
-                    error:err
-                })
-            }
-            return res.status(200).json({
-                sucess: "Updated successfully"
-            });
-        }
-    );
-});
+router.put('/users/update/:id', usersController.update);
 
 // delete user
 
-router.delete('/users/delete/:id', (req, res) => {
-    Users.findByIdAndDelete(req.params.id).exec((err,deletedUser) => {
-        if(err){
-            return res.status(400).json({
-                error: err
-            });
-        }
-        return res.status(200).json({
-            success: "User deleted successfully",
-            deletedUser
-        });
-    });
-});
+router.delete('/users/delete/:id', usersController.remove);
 
 module.exports = router;
