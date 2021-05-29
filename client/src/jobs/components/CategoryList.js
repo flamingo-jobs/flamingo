@@ -45,18 +45,16 @@ export default function NestedList() {
     const [openTitles, setOpenTitles] = React.useState(true);
     const [openOrganizations, setOpenOrganizations] = React.useState(true);
 
-    const handleClick = (section) => {
-        // if(section === 'category'){
-        //     setOpenCategories(!openCategories);
-        // }
+    const handleCategoryClick = () => {
+        setOpenCategories(!openCategories);
 
-        // if(section === 'title'){
-        //     setOpenTitles(!openTitles);
-        // }
+    };
+    const handleTitleClick = () => {
+        setOpenTitles(!openTitles);
 
-        // if(section === 'organization'){
-        //     setOpenOrganizations(!openOrganizations);
-        // }
+    };
+    const handleOrgClick = () => {
+        setOpenOrganizations(!openOrganizations);
 
     };
 
@@ -81,30 +79,30 @@ export default function NestedList() {
                 component="nav"
                 className={classes.root}
             >
-                <ListItem button onClick={handleClick('category')}>
+                <ListItem button onClick={handleCategoryClick}>
                     <ListItemText primary={<Typography className={classes.listTitle} >Category</Typography>}></ListItemText>
                     {openCategories ? <ExpandLess className={classes.listDown} /> : <ExpandMore className={classes.listDown} />}
                 </ListItem>
                 <Collapse in={openCategories} timeout="auto" unmountOnExit>
                     <List className={classes.root}>
-                        {[0, 1, 2, 3].map((value) => {
-                            const labelId = `checkbox-list-label-${value}`;
-
+                        {[{ id: 1, name: "Design", count: 25 }, { id: 2, name: "Development", count: 145 }, { id: 3, name: "QA", count: 15 }, { id: 4, name: "DevOps", count: 34 }].map((value) => {
+                            const labelId = `category-list-${value.id}`;
+                            const itemId = value.id + 1000;
                             return (
-                                <ListItem key={value} role={undefined} dense button onClick={handleToggle(value)}>
+                                <ListItem key={itemId} role={undefined} dense button onClick={handleToggle(itemId)}>
                                     <ListItemIcon>
                                         <Checkbox
                                             edge="start"
-                                            checked={checked.indexOf(value) !== -1}
+                                            checked={checked.indexOf(itemId) !== -1}
                                             tabIndex={-1}
                                             disableRipple
                                             inputProps={{ 'aria-labelledby': labelId }}
                                         />
                                     </ListItemIcon>
-                                    <ListItemText id={labelId} primary={`Line item ${value + 1}`} />
+                                    <ListItemText id={labelId} primary={value.name} />
                                     <ListItemSecondaryAction>
                                         <Avatar className={classes.count} variant="square" >
-                                            <Typography className={classes.countText}>53</Typography>
+                                            <Typography className={classes.countText}>{value.count}</Typography>
                                         </Avatar>
                                     </ListItemSecondaryAction>
                                 </ListItem>
@@ -117,7 +115,7 @@ export default function NestedList() {
                 component="nav"
                 className={classes.root}
             >
-                <ListItem button onClick={handleClick('title')}>
+                <ListItem button onClick={handleTitleClick}>
                     <ListItemText primary={<Typography className={classes.listTitle} >Category</Typography>}></ListItemText>
                     {openTitles ? <ExpandLess className={classes.listDown} /> : <ExpandMore className={classes.listDown} />}
                 </ListItem>
