@@ -46,17 +46,17 @@ export default function NestedList() {
     const [openOrganizations, setOpenOrganizations] = React.useState(true);
 
     const handleClick = (section) => {
-        if(section === 'category'){
-            setOpenCategories(!openCategories);
-        }
+        // if(section === 'category'){
+        //     setOpenCategories(!openCategories);
+        // }
 
-        if(section === 'title'){
-            setOpenTitles(!openTitles);
-        }
+        // if(section === 'title'){
+        //     setOpenTitles(!openTitles);
+        // }
 
-        if(section === 'organization'){
-            setOpenOrganizations(!openOrganizations);
-        }
+        // if(section === 'organization'){
+        //     setOpenOrganizations(!openOrganizations);
+        // }
 
     };
 
