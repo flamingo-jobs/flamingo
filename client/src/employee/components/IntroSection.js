@@ -11,7 +11,9 @@ import FloatCard from '../../components/FloatCard';
 import cardImage from '../images/profilePic.jpg';
 import theme from '../../Theme';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
+import EditIcon from '@material-ui/icons/Edit';
 import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles({
   root: {
@@ -35,6 +37,9 @@ const useStyles = makeStyles({
       backgroundColor: theme.palette.mediumTurquoise,
       color: 'white',
     }
+  },
+  changePicture: {
+      width: '0px',
   }
 });
 
@@ -44,11 +49,27 @@ function IntroSection() {
   return (
     <FloatCard>
       <CardActionArea>
+          <Typography component="div">
       <CardMedia
             className={classes.media}
             image={cardImage}
             alt="profile image"
+            zIndex="modal"
         />
+        <Box
+        bgcolor="#F0F8FF"
+        color="white"
+        position="fixed"
+        top="19%"
+        left="13%"
+        zIndex="tooltip"
+        className={classes.changePicture}
+      >
+          <Button variant="outlined" color="primary" className={classes.defaultButton} style={{backgroundColor:'#F0F8FF'}} >
+            <EditIcon style={{color: theme.palette.tuftsBlue,}} />
+          </Button>
+      </Box>
+      </Typography>
         <CardContent>
           <Typography gutterBottom variant="h5" style={{color: theme.palette.stateBlue,}}>
             Anne
