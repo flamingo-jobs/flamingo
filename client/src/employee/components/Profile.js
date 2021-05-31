@@ -3,11 +3,15 @@ import { CssBaseline, Container, ThemeProvider, makeStyles } from '@material-ui/
 import '../styles/Profile.css'
 import FloatCard from '../../components/FloatCard'
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 import theme from '../../Theme';
 import Footer from '../../components/Footer';
 import IntroSection from './IntroSection'
 import EducationSection from './EducationSection';
-
+import ProjectsSection from './ProjectsSection';
+import Achievements from './Achievements';
+import { Component } from 'react';
+import Space from './Space';
 const useStyles = makeStyles((theme) => ({
     root: {
         backgroundSize: 'cover',
@@ -18,9 +22,6 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.down('xs')]: {
             paddingTop: 0,
         },
-    },
-    FeaturedOrganizations: {
-        paddingTop: 25
     },
 }));
 
@@ -33,20 +34,25 @@ function Profile() {
                     <React.Fragment>
                         <CssBaseline />
                         <Container maxWidth="false" className={classes.container}>
-                            <Grid container direction="row" spacing={3}>
+                            <Grid container direction="row" spacing={3} alignItems="stretch">
+                                    
                                 <Grid item container xs={12} sm={4} md={3} lg={3} spacing={3}>
                                     <Grid item xs={12}>
-                                        <IntroSection />
-                                    </Grid>
-                                    <Grid item xs={12}>
+                                        <IntroSection/>
+                                        <Space />
                                         <EducationSection />
                                     </Grid>
-                                    
+                                                                   
                                 </Grid>
-                                <Grid item xs={12} sm={8} md={9} lg={9}>
-                                    <FloatCard />
+                                <Grid item container direction="row" xs={12} sm={5} md={6} lg={6} spacing={3}>
+                                    <Grid item xs={12}>
+                                        <Achievements />
+                                        <Space />
+                                        <ProjectsSection />
+                                    </Grid>
                                 </Grid>
-                                <Grid item container xs={12} sm={8} md={9} lg={10} spacing={3}>
+                                <Grid item xs={12} sm={3} md={3} lg={3} spacing={3}>
+                                <FloatCard />
 
                                 </Grid>
                             </Grid>
