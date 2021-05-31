@@ -12,7 +12,6 @@ import ProjectsSection from './ProjectsSection';
 import Achievements from './Achievements';
 import { Component } from 'react';
 import Space from './Space';
-
 const useStyles = makeStyles((theme) => ({
     root: {
         backgroundSize: 'cover',
@@ -54,6 +53,7 @@ function Profile() {
                                 </Grid>
                                 <Grid item xs={12} sm={3} md={3} lg={3} spacing={3}>
                                 <FloatCard />
+
                                 </Grid>
                             </Grid>
                         </Container>
