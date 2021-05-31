@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import theme from '../../Theme';
+import StarIcon from '@material-ui/icons/Star';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -16,19 +17,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function EduItem(props) {
+function AchievementItem(props) {
   const classes = useStyles();
 
   return (
       <Paper elevation={0} className={classes.paper}>
        <Grid container spacing={3}>
-        <Grid item xs={3}>
-            <Typography variant="body2" color="textSecondary" component="p">
-                {props.startYear} - {props.endYear}
-            </Typography>
+        <Grid item xs={1}>
+        <StarIcon style={{color: theme.palette.stateBlue,}} />
         </Grid>
-        <Grid item xs={9} spacing={2}>
-            <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'14px',fontWeight:'bold',}}>
+        <Grid item xs={11}>
+            <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'14px',fontWeight:'bold',paddingTop:'5px'}}>
                 {props.name}
             </Typography>
         </Grid>
@@ -38,4 +37,4 @@ function EduItem(props) {
   );
 }
 
-export default EduItem
+export default AchievementItem

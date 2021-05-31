@@ -11,18 +11,11 @@ import FloatCard from '../../components/FloatCard';
 import cardImage from '../images/profilePic.jpg';
 import theme from '../../Theme';
 import EditIcon from '@material-ui/icons/Edit';
-import SchoolIcon from '@material-ui/icons/School';
+import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
 import Grid from '@material-ui/core/Grid';
-import EduItem from './EduItem';
+import AchievementItem from './AchievementItem';
 
 const useStyles = makeStyles({
-  media: {
-    height: '150px',
-    width: '150px',
-    margin: 'auto',
-    borderRadius: 30,
-    marginTop: 15,
-  },
   defaultButton: {
     backgroundColor: theme.palette.tuftsBlue,
     color: theme.palette.white,
@@ -37,7 +30,7 @@ const useStyles = makeStyles({
   },
 });
 
-function EducationSection() {
+function Achievements() {
   const classes = useStyles();
 
   return (
@@ -45,8 +38,8 @@ function EducationSection() {
       <Grid container spacing={3}>
         <Grid item xs style={{ textAlign: 'left',}}>
             <Typography gutterBottom variant="h5" style={{color: theme.palette.tuftsBlue,padding:'10px',fontWeight:'bold'}}>
-                <SchoolIcon style={{color: theme.palette.turfsBlue,marginRight: '10px',marginBottom:'-5px',fontSize:'27'}}/>
-                Education
+                <EmojiEventsIcon style={{color: theme.palette.turfsBlue,marginRight: '10px',marginBottom:'-5px',fontSize:'27'}}/>
+                Achievements
             </Typography>
         </Grid>
         <Grid item style={{ textAlign: 'right' }}>
@@ -57,13 +50,13 @@ function EducationSection() {
         
       </Grid>
       <Grid container spacing={3}>
-            <Grid item xs={12}>
-                <EduItem startYear="2019" endYear="2022" name="University of Colombo School of Computing" />
-                <EduItem startYear="2008" endYear="2017" name="Taxila Central College" />
+      <Grid item xs={12}>
+                <AchievementItem name="1st place competition abcd" />
+                <AchievementItem name="1st place competition abcd" />
             </Grid>
         </Grid>
     </FloatCard>
   );
 }
 
-export default EducationSection
+export default Achievements
