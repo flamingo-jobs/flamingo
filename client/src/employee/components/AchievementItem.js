@@ -24,7 +24,7 @@ function AchievementItem(props) {
       <Paper elevation={0} className={classes.paper}>
        <Grid container spacing={3}>
         <Grid item xs={1}>
-        <StarIcon style={{color: theme.palette.stateBlue,}} />
+        <StarIcon style={{color: theme.palette.pinkyRed,}} />
         </Grid>
         <Grid item xs={11}>
             <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'14px',fontWeight:'bold',paddingTop:'5px'}}>
