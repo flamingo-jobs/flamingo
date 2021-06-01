@@ -74,7 +74,7 @@ function IntroSection() {
           <Typography gutterBottom variant="h5" style={{color: theme.palette.stateBlue,}}>
             Anne
           </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
+          <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',}}>
             Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
             across all continents except Antarctica
           </Typography>

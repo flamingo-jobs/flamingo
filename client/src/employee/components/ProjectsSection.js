@@ -16,9 +16,9 @@ import Grid from '@material-ui/core/Grid';
 import EduItem from './EduItem';
 import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
-import SchoolIcon from '@material-ui/icons/School';
+import GitHubIcon from '@material-ui/icons/GitHub';
 import WorkIcon from '@material-ui/icons/Work';
-import StarIcon from '@material-ui/icons/Star';
+import CodeIcon from '@material-ui/icons/Code';
 
 const useStyles = makeStyles({
   defaultButton: {
@@ -49,6 +49,7 @@ function ProjectsSection() {
         </Grid>
         <Grid item style={{ textAlign: 'right' }}>
             <Button className={classes.defaultButton} style={{ float: 'right',marginRight: '0px',backgroundColor:'white'}}>
+                <GitHubIcon style={{color: theme.palette.tuftsBlue,marginRight:'15px'}} />
                 <EditIcon style={{color: theme.palette.tuftsBlue,}} />
             </Button>
         </Grid>
@@ -63,7 +64,7 @@ function ProjectsSection() {
                   contentArrowStyle={{ borderRight: '7px solid  #fff' }}
                   date="2021 - Present"
                   iconStyle={{ background: theme.palette.stateBlue, color: '#fff' }}
-                  icon={<WorkIcon />}
+                  icon={<CodeIcon />}
                   style={{marginTop:'-20px'}}
                 >
                   <h3 className="vertical-timeline-element-title" style={{color:'#666'}}>Employeement Recommendation Portal</h3>
@@ -79,7 +80,7 @@ function ProjectsSection() {
                   contentArrowStyle={{ borderRight: '7px solid  #fff' }}
                   date="2021 - Present"
                   iconStyle={{ background: theme.palette.stateBlue, color: '#fff' }}
-                  icon={<WorkIcon />}
+                  icon={<CodeIcon />}
                   style={{marginTop:'-20px'}}
                 >
                   <h3 className="vertical-timeline-element-title" style={{color:'#666'}}>Employeement Recommendation Portal</h3>
@@ -94,7 +95,7 @@ function ProjectsSection() {
                   contentArrowStyle={{ borderRight: '7px solid  #fff' }}
                   date="2021 - Present"
                   iconStyle={{ background: theme.palette.stateBlue, color: '#fff' }}
-                  icon={<WorkIcon />}
+                  icon={<CodeIcon />}
                   style={{marginTop:'-20px'}}
                 >
                   <h3 className="vertical-timeline-element-title" style={{color:'#666'}}>Employeement Recommendation Portal</h3>
@@ -109,7 +110,7 @@ function ProjectsSection() {
                   contentArrowStyle={{ borderRight: '7px solid  #fff' }}
                   date="2021 - Present"
                   iconStyle={{ background: theme.palette.stateBlue, color: '#fff', }}
-                  icon={<WorkIcon />}
+                  icon={<CodeIcon />}
                   style={{marginTop:'-20px'}}
                 >
                   <h3 className="vertical-timeline-element-title" style={{color:'#666'}}>Employeement Recommendation Portal</h3>

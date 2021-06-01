@@ -12,6 +12,10 @@ import ProjectsSection from './ProjectsSection';
 import Achievements from './Achievements';
 import { Component } from 'react';
 import Space from './Space';
+import EmployeeTopbar from './EmployeeTopbar';
+import WorkExperience from './WorkExperience';
+import KnowledgeSection from './KnowledgeSection';
+
 const useStyles = makeStyles((theme) => ({
     root: {
         backgroundSize: 'cover',
@@ -41,19 +45,25 @@ function Profile() {
                                         <IntroSection/>
                                         <Space />
                                         <EducationSection />
+                                        <Space />
+                                        <WorkExperience />
                                     </Grid>
                                                                    
                                 </Grid>
-                                <Grid item container direction="row" xs={12} sm={5} md={6} lg={6} spacing={3}>
+                                <Grid item container direction="row" xs={12} sm={8} md={9} lg={9} spacing={3}>
                                     <Grid item xs={12}>
+                                        <EmployeeTopbar />
+                                    </Grid>
+                                    <Grid item xs={12} sm={8} spacing={3}>
                                         <Achievements />
                                         <Space />
                                         <ProjectsSection />
                                     </Grid>
-                                </Grid>
-                                <Grid item xs={12} sm={3} md={3} lg={3} spacing={3}>
-                                <FloatCard />
-
+                                    <Grid item xs={12} sm={4} spacing={3}>
+                                        <KnowledgeSection />
+                                        <Space />
+                                        <FloatCard />
+                                    </Grid>
                                 </Grid>
                             </Grid>
                         </Container>
