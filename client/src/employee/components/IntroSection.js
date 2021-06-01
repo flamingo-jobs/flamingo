@@ -12,6 +12,7 @@ import cardImage from '../images/profilePic.jpg';
 import theme from '../../Theme';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import ImageSearchIcon from '@material-ui/icons/ImageSearch';
+import EditIcon from '@material-ui/icons/Edit';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 
@@ -53,6 +54,7 @@ function IntroSection() {
             alt="profile image"
             zIndex="modal"
         />
+
         {/* <Box
         bgcolor="#F0F8FF"
         color="white"
@@ -66,6 +68,7 @@ function IntroSection() {
             <ImageSearchIcon style={{color: theme.palette.tuftsBlue,}} />
           </Button>
       </Box> */}
+
       </Typography>
         <CardContent>
           <Typography gutterBottom variant="h5" style={{color: theme.palette.stateBlue,}}>
