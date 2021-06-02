@@ -3,19 +3,21 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Grid from '@material-ui/core/Grid';
-import DashboardRoundedIcon from '@material-ui/icons/DashboardRounded';
-import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
-import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
-import BusinessRoundedIcon from '@material-ui/icons/BusinessRounded';
-import PeopleAltRoundedIcon from '@material-ui/icons/PeopleAltRounded';
-import PhoneRoundedIcon from '@material-ui/icons/PhoneRounded';
-import ThumbsUpDownRoundedIcon from '@material-ui/icons/ThumbsUpDownRounded';
 import Lottie from 'react-lottie';
-import Flamingo from './lotties/flamingo.json';
+import WorkImage from '../lotties/work.json';
 import FloatCard from './FloatCard';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import WorkIcon from '@material-ui/icons/Work';
+import AssessmentIcon from '@material-ui/icons/Assessment';
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import EmailIcon from '@material-ui/icons/Email';
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+
+
 
 const useStyles = makeStyles((theme) => ({
     root: {        
@@ -44,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
           },
     },
     listItem: {
-        marginBottom: theme.spacing(2),
+        marginBottom: theme.spacing(1),
         borderRadius: 12,
         "&:hover": {
             borderRadius: 12,
@@ -59,6 +61,9 @@ const useStyles = makeStyles((theme) => ({
             color: theme.palette.frenchViolet,
             fontWeight: "bold"
         }
+    },
+    animation: {
+        // paddingTop: 2,
     }
 
 }));
@@ -75,7 +80,7 @@ export default function MiniDrawer() {
     const defaultOptions = {
         loop: true,
         autoplay: true,
-        animationData: Flamingo,
+        animationData: WorkImage,
         rendererSettings: {
             preserveAspectRatio: "xMidYMid slice"
         }
@@ -90,39 +95,43 @@ export default function MiniDrawer() {
                 <Grid item xs={12}>
 
                     <List>
-                        <ListItem button key="Home" selected={selectedIndex === 1} onClick={(event) => handleListItemClick(event, 1)} classes={{ selected: classes.active }} className={classes.listItem}>
-                            <ListItemIcon className={classes.linkIcon}><HomeRoundedIcon /></ListItemIcon>
-                            <ListItemText className={classes.linkText} primary="Home" />
+                        <ListItem button key="Profile" selected={selectedIndex === 1} onClick={(event) => handleListItemClick(event, 1)} classes={{ selected: classes.active }} className={classes.listItem}>
+                            <ListItemIcon className={classes.linkIcon}><AccountCircleIcon /></ListItemIcon>
+                            <ListItemText className={classes.linkText} primary="Profile" />
                         </ListItem>
                         <ListItem button key="Jobs" selected={selectedIndex === 2} onClick={(event) => handleListItemClick(event, 2)} classes={{ selected: classes.active }} className={classes.listItem}>
-                            <ListItemIcon className={classes.linkIcon}><WorkRoundedIcon /></ListItemIcon>
+                            <ListItemIcon className={classes.linkIcon}><WorkIcon /></ListItemIcon>
                             <ListItemText className={classes.linkText} primary="Jobs" />
                         </ListItem>
-                        <ListItem button key="Ogranizations" selected={selectedIndex === 3} onClick={(event) => handleListItemClick(event, 3)} classes={{ selected: classes.active }} className={classes.listItem}>
-                            <ListItemIcon className={classes.linkIcon}><BusinessRoundedIcon /></ListItemIcon>
-                            <ListItemText className={classes.linkText} primary="Ogranizations" />
+                        <ListItem button key="Analytics" selected={selectedIndex === 3} onClick={(event) => handleListItemClick(event, 3)} classes={{ selected: classes.active }} className={classes.listItem}>
+                            <ListItemIcon className={classes.linkIcon}><AssessmentIcon /></ListItemIcon>
+                            <ListItemText className={classes.linkText} primary="Analytics" />
                         </ListItem>
-                        <ListItem button key="People" selected={selectedIndex === 4} onClick={(event) => handleListItemClick(event, 4)} classes={{ selected: classes.active }} className={classes.listItem}>
-                            <ListItemIcon className={classes.linkIcon}><PeopleAltRoundedIcon /></ListItemIcon>
-                            <ListItemText className={classes.linkText} primary="People" />
+                        <ListItem button key="Inbox" selected={selectedIndex === 4} onClick={(event) => handleListItemClick(event, 4)} classes={{ selected: classes.active }} className={classes.listItem}>
+                            <ListItemIcon className={classes.linkIcon}><EmailIcon /></ListItemIcon>
+                            <ListItemText className={classes.linkText} primary="Inbox" />
                         </ListItem>
-                        <ListItem button key="Services" selected={selectedIndex === 5} onClick={(event) => handleListItemClick(event, 5)} classes={{ selected: classes.active }} className={classes.listItem}>
-                            <ListItemIcon className={classes.linkIcon}><ThumbsUpDownRoundedIcon /></ListItemIcon>
-                            <ListItemText className={classes.linkText} primary="Services" />
+                        <ListItem button key="Resumes" selected={selectedIndex === 5} onClick={(event) => handleListItemClick(event, 4)} classes={{ selected: classes.active }} className={classes.listItem}>
+                            <ListItemIcon className={classes.linkIcon}><InsertDriveFileIcon /></ListItemIcon>
+                            <ListItemText className={classes.linkText} primary="Resumes" />
                         </ListItem>
-                        <ListItem button key="Contact Us" selected={selectedIndex === 6} onClick={(event) => handleListItemClick(event, 6)} classes={{ selected: classes.active }} className={classes.listItem}>
-                            <ListItemIcon className={classes.linkIcon}><PhoneRoundedIcon /></ListItemIcon>
-                            <ListItemText className={classes.linkText} primary="Contact Us" />
+                        <ListItem button key="Billing" selected={selectedIndex === 6} onClick={(event) => handleListItemClick(event, 4)} classes={{ selected: classes.active }} className={classes.listItem}>
+                            <ListItemIcon className={classes.linkIcon}><MonetizationOnIcon /></ListItemIcon>
+                            <ListItemText className={classes.linkText} primary="Billing" />
                         </ListItem>
+                        <ListItem button key="Help" selected={selectedIndex === 7} onClick={(event) => handleListItemClick(event, 4)} classes={{ selected: classes.active }} className={classes.listItem}>
+                            <ListItemIcon className={classes.linkIcon}><HelpOutlineIcon /></ListItemIcon>
+                            <ListItemText className={classes.linkText} primary="Help" />
+                        </ListItem>
+                       
                     </List>
                 </Grid>
-                <Grid item xs={12}>
-                    <Lottie
+                {/* <Grid item xs={12}> */}
+                    <Lottie className={classes.animation}
                         options={defaultOptions}
-                        height={200}
-                        width={200}
+                        style = {{ width : 200, height : 300, marginLeft : 6 , marginTop: -80}}
                     />
-                </Grid>
+                {/* </Grid> */}
             </Grid>
             </div>
             </FloatCard>
