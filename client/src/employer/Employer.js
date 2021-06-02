@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import backgroundImage from './images/background-image.jpg';
 import Topbar from './components/Topbar'
 import CompanyInfo from './components/CompanyInfo'
+import ProfileStatCard from './components/ProfileStatCard'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -59,7 +60,7 @@ const Employer = () => {
                                             <CompanyInfo></CompanyInfo>
                                     </Grid>
                                     <Grid item xs={12} md={6}>
-                                        {/* <FeaturedJobs /> */}
+                                        {/* <ProfileStatCard></ProfileStatCard> */}
                                     </Grid>
                                     <Grid item container xs={12} md={6}>
                                         <Grid item sm={12}>

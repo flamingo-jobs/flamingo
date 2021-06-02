@@ -5,7 +5,8 @@ import { FavoriteRounded } from '@material-ui/icons';
 import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 import ifs from '../images/ifs.png';
-import FloatCard from '../../components/FloatCard';
+import FloatCard from './FloatCard';
+import EditIcon from '@material-ui/icons/Edit';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -87,6 +88,12 @@ const useStyles = makeStyles((theme) => ({
     backcolor: {
         backgroundColor: theme.palette.mediumTurquoise,
     },
+    button: {
+        marginTop:-50,
+        color:theme.palette.white,
+        backgroundColor:theme.palette.frenchViolet,
+        margin: theme.spacing(1),
+      },
 }))
 
 function CompanyInfo() {
@@ -104,6 +111,15 @@ function CompanyInfo() {
             <div className={classes.header} >
                 <div className={classes.headerLeft}>
                     <Avatar className={classes.logo} src={ifs} variant="square" />
+                </div>
+                <div>
+                    <Button
+                        variant="contained"
+                        className={classes.button}
+                        startIcon={<EditIcon />}
+                    >
+                        Edit
+                    </Button>
                 </div>
             </div>
 
