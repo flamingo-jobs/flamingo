@@ -16,6 +16,7 @@ import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import EmailIcon from '@material-ui/icons/Email';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+import BusinessIcon from '@material-ui/icons/Business';
 
 
 
@@ -95,9 +96,9 @@ export default function MiniDrawer() {
                 <Grid item xs={12}>
 
                     <List>
-                        <ListItem button key="Profile" selected={selectedIndex === 1} onClick={(event) => handleListItemClick(event, 1)} classes={{ selected: classes.active }} className={classes.listItem}>
-                            <ListItemIcon className={classes.linkIcon}><AccountCircleIcon /></ListItemIcon>
-                            <ListItemText className={classes.linkText} primary="Profile" />
+                        <ListItem button key="Company" selected={selectedIndex === 1} onClick={(event) => handleListItemClick(event, 1)} classes={{ selected: classes.active }} className={classes.listItem}>
+                            <ListItemIcon className={classes.linkIcon}><BusinessIcon /></ListItemIcon>
+                            <ListItemText className={classes.linkText} primary="Company" />
                         </ListItem>
                         <ListItem button key="Jobs" selected={selectedIndex === 2} onClick={(event) => handleListItemClick(event, 2)} classes={{ selected: classes.active }} className={classes.listItem}>
                             <ListItemIcon className={classes.linkIcon}><WorkIcon /></ListItemIcon>
