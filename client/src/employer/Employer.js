@@ -1,6 +1,6 @@
 import React from 'react';
 // import { makeStyles, useTheme } from '@material-ui/core/styles';
-import MiniDrawer from "../components/SideDrawer"
+import MiniDrawer from "./components/SideDrawer"
 import { CssBaseline, Container, ThemeProvider, makeStyles,useTheme } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid';
 import backgroundImage from './images/background-image.jpg';
@@ -47,6 +47,7 @@ const Employer = () => {
                                 <Grid item xs={0} sm={4} md={3} lg={2} style={{ position: 'fixed' }} className={classes.sideDrawerGrid}>
                                     <MiniDrawer />
                                 </Grid>
+                                
                                 <Grid item xs={0} sm={4} md={3} lg={2} className={classes.sideDrawerGrid}></Grid>
                                 <Grid item container xs={12} sm={8} md={9} lg={10} spacing={3} className={classes.topBarGrid}>
                                     <Grid item sm={12}>
