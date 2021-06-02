@@ -4,6 +4,7 @@ import MiniDrawer from "./components/SideDrawer"
 import { CssBaseline, Container, ThemeProvider, makeStyles,useTheme } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid';
 import backgroundImage from './images/background-image.jpg';
+import Topbar from './components/Topbar'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -11,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
         background: `url(${backgroundImage}) no-repeat`,
         backgroundSize: 'cover',
         minHeight: '100vh'
+        
     },
     container: {
         paddingTop: 20,
@@ -47,11 +49,10 @@ const Employer = () => {
                                 <Grid item xs={0} sm={4} md={3} lg={2} style={{ position: 'fixed' }} className={classes.sideDrawerGrid}>
                                     <MiniDrawer />
                                 </Grid>
-                                
                                 <Grid item xs={0} sm={4} md={3} lg={2} className={classes.sideDrawerGrid}></Grid>
                                 <Grid item container xs={12} sm={8} md={9} lg={10} spacing={3} className={classes.topBarGrid}>
                                     <Grid item sm={12}>
-                                        {/* <Topbar /> */}
+                                        <Topbar />
                                     </Grid>
 
                                     <Grid item sm={12}>
