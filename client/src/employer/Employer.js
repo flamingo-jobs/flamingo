@@ -5,6 +5,7 @@ import { CssBaseline, Container, ThemeProvider, makeStyles,useTheme } from '@mat
 import Grid from '@material-ui/core/Grid';
 import backgroundImage from './images/background-image.jpg';
 import Topbar from './components/Topbar'
+import CompanyInfo from './components/CompanyInfo'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -54,11 +55,8 @@ const Employer = () => {
                                     <Grid item sm={12}>
                                         <Topbar />
                                     </Grid>
-
                                     <Grid item sm={12}>
-                                        {/* <FloatCard>
-                                            <HeroSection />
-                                        </FloatCard> */}
+                                            <CompanyInfo></CompanyInfo>
                                     </Grid>
                                     <Grid item xs={12} md={6}>
                                         {/* <FeaturedJobs /> */}
