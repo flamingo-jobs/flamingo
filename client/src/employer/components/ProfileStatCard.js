@@ -11,11 +11,14 @@ import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
 import TimelineConnector from '@material-ui/lab/TimelineConnector';
 import TimelineContent from '@material-ui/lab/TimelineContent';
 import TimelineDot from '@material-ui/lab/TimelineDot';
+import HelpIcon from '@material-ui/icons/Help';
 
-import FastfoodIcon from '@material-ui/icons/Fastfood';
-import LaptopMacIcon from '@material-ui/icons/LaptopMac';
-import HotelIcon from '@material-ui/icons/Hotel';
-import RepeatIcon from '@material-ui/icons/Repeat';
+
+
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import CachedIcon from '@material-ui/icons/Cached';
+import DescriptionIcon from '@material-ui/icons/Description';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -30,20 +33,32 @@ const useStyles = makeStyles((theme) => ({
         '& > * + *': {
           marginTop: theme.spacing(1),
         },
+        marginLeft: 20,
     },
     ratingText: {
         color: theme.palette.white,
         marginTop:5,
+        marginLeft:5,
 
     },
-    // statChart:{
-
-    // },
+    timeline:{
+        marginLeft:-300,
+    },
     paper: {
         padding: '6px 16px',
     },
     secondaryTail: {
         backgroundColor: theme.palette.secondary.main,
+    },
+    timelineIcons:{
+        color: theme.palette.white,
+    },
+    button: {
+        marginTop:-0.5,
+        color:theme.palette.white,
+        backgroundColor:theme.palette.frenchViolet,
+        margin: theme.spacing(1),
+    
     },
 }))
 
@@ -79,82 +94,155 @@ function ProfileStatCard() {
 
                 <div>
 
-                    <Timeline>
+                    <Grid item container spacing={1}>
 
-                        <TimelineItem>
-                            
-                            <TimelineSeparator>
-                            <TimelineDot>
-                                <FastfoodIcon />
-                            </TimelineDot>
-                            <TimelineConnector />
-                            </TimelineSeparator>
-                            <TimelineContent>
-                            <Paper elevation={3} className={classes.paper}>
-                                <Typography variant="body2" component="h1">
-                                Eat
-                                </Typography>
-                                <Typography>Because you need strength</Typography>
-                            </Paper>
-                            </TimelineContent>
-                        </TimelineItem>
+                        <Grid item xs={12}>
 
+                            <Timeline className={classes.timeline}>
 
-                        <TimelineItem>
-                            
-                            <TimelineSeparator>
-                            <TimelineDot color="primary">
-                                <LaptopMacIcon />
-                            </TimelineDot>
-                            <TimelineConnector />
-                            </TimelineSeparator>
-                            <TimelineContent>
-                            <Paper elevation={3} className={classes.paper}>
-                                <Typography variant="body2" component="h1">
-                                Code
-                                </Typography>
-                                <Typography>Because it&apos;s awesome!</Typography>
-                            </Paper>
-                            </TimelineContent>
-                        </TimelineItem>
+                                <TimelineItem>
+                                    
+                                    <TimelineSeparator>
+                                        <TimelineDot >
+                                            <AccountCircleIcon className={classes.timelineIcons}/>
+                                        </TimelineDot>
+                                        <TimelineConnector />
+                                    </TimelineSeparator>
 
+                                    <TimelineContent>
+                                        <Grid item container spacing={1}>
+                                            <Grid item xs={8}>
+                                                <Paper elevation={3} className={classes.paper}>
+                                                <Typography variant="body2" component="h1">
+                                                24 profile views this month</Typography>
+                                                </Paper>
 
-                        <TimelineItem>
-                            <TimelineSeparator>
-                            <TimelineDot color="primary" variant="outlined">
-                                <HotelIcon />
-                            </TimelineDot>
-                            <TimelineConnector className={classes.secondaryTail} />
-                            </TimelineSeparator>
-                            <TimelineContent>
-                            <Paper elevation={3} className={classes.paper}>
-                                <Typography variant="body2" component="h1">
-                                Sleep
-                                </Typography>
-                                <Typography>Because you need rest</Typography>
-                            </Paper>
-                            </TimelineContent>
-                        </TimelineItem>
+                                            </Grid>
+                                            <Grid item xs={4}>
+                                                <Button
+                                                variant="contained" size="small"
+                                                className={classes.button}
+                                                startIcon={<HelpIcon />}
+                                                >
+                                                    
+                                                </Button>
+                                            </Grid>
 
+                                        </Grid>
+                                        
+                                       
+                                    </TimelineContent>
+                                </TimelineItem>
 
-                        <TimelineItem>
-                            <TimelineSeparator>
-                            <TimelineDot color="secondary">
-                                <RepeatIcon />
-                            </TimelineDot>
-                            </TimelineSeparator>
-                            <TimelineContent>
-                            <Paper elevation={3} className={classes.paper}>
-                                <Typography variant="body2" component="h1">
-                                Repeat
-                                </Typography>
-                                <Typography>Because this is the life you love!</Typography>
-                            </Paper>
-                            </TimelineContent>
-                        </TimelineItem>
+                                <TimelineItem>
+                                    
+                                    <TimelineSeparator>
+                                        <TimelineDot >
+                                            <CheckCircleIcon className={classes.timelineIcons}/>
+                                        </TimelineDot>
+                                        <TimelineConnector />
+                                    </TimelineSeparator>
 
-                        
-                    </Timeline>
+                                    <TimelineContent>
+                                        <Grid item container spacing={1}>
+                                            <Grid item xs={8}>
+                                                <Paper elevation={3} className={classes.paper}>
+                                                <Typography variant="body2" component="h1">
+                                                10 completed jobs </Typography>
+                                                </Paper>
+
+                                            </Grid>
+                                            <Grid item xs={4}>
+                                                <Button
+                                                variant="contained" size="small"
+                                                className={classes.button}
+                                                startIcon={<HelpIcon />}
+                                                >
+                                                    
+                                                </Button>
+                                            </Grid>
+
+                                        </Grid>
+                                        
+                                       
+                                    </TimelineContent>
+                                </TimelineItem>
+
+                                <TimelineItem>
+                                    
+                                    <TimelineSeparator>
+                                        <TimelineDot >
+                                            <CachedIcon className={classes.timelineIcons}/>
+                                        </TimelineDot>
+                                        <TimelineConnector />
+                                    </TimelineSeparator>
+
+                                    <TimelineContent>
+                                        <Grid item container spacing={1}>
+                                            <Grid item xs={8}>
+                                                <Paper elevation={3} className={classes.paper}>
+                                                <Typography variant="body2" component="h1">
+                                                15 jobs in progress</Typography>
+                                                </Paper>
+
+                                            </Grid>
+                                            <Grid item xs={4}>
+                                                <Button
+                                                variant="contained" size="small"
+                                                className={classes.button}
+                                                startIcon={<HelpIcon />}
+                                                >
+                                                    
+                                                </Button>
+                                            </Grid>
+
+                                        </Grid>
+                                        
+                                       
+                                    </TimelineContent>
+                                </TimelineItem>
+
+                                <TimelineItem>
+                                    
+                                    <TimelineSeparator>
+                                        <TimelineDot >
+                                            <DescriptionIcon className={classes.timelineIcons}/>
+                                        </TimelineDot>
+                                        {/* <TimelineConnector /> */}
+                                    </TimelineSeparator>
+
+                                    <TimelineContent>
+                                        <Grid item container spacing={1}>
+                                            <Grid item xs={8}>
+                                                <Paper elevation={3} className={classes.paper}>
+                                                <Typography variant="body2" component="h1">
+                                                Total of 25 Resumes received so far</Typography>
+                                                </Paper>
+
+                                            </Grid>
+                                            <Grid item xs={4}>
+                                                <Button
+                                                variant="contained" size="small"
+                                                className={classes.button}
+                                                startIcon={<HelpIcon />}
+                                                >
+                                                    
+                                                </Button>
+                                            </Grid>
+
+                                        </Grid>
+                                        
+                                       
+                                    </TimelineContent>
+                                </TimelineItem>
+
+                                
+                                
+                            </Timeline>
+
+                        </Grid>
+
+                    </Grid>
 
                 </div>
 
