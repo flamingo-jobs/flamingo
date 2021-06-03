@@ -7,6 +7,13 @@ import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 import ifs from '../images/ifs.png';
 import FloatCard from './FloatCard';
 import EditIcon from '@material-ui/icons/Edit';
+import LoyaltyIcon from '@material-ui/icons/Loyalty';
+import ListItemText from '@material-ui/core/ListItemText';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import TurnedInNotTwoToneIcon from '@material-ui/icons/TurnedInNotTwoTone';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -93,7 +100,17 @@ const useStyles = makeStyles((theme) => ({
         color:theme.palette.white,
         backgroundColor:theme.palette.frenchViolet,
         margin: theme.spacing(1),
-      },
+    },
+    billingPlan:{
+        marginTop:-55,
+        backgroundColor:theme.palette.gold,
+    },
+    listItem:{
+        paddingTop:0,
+        paddingBottom:0,
+    },
+
+
 }))
 
 function CompanyInfo() {
@@ -113,6 +130,9 @@ function CompanyInfo() {
                     <Avatar className={classes.logo} src={ifs} variant="square" />
                 </div>
                 <div>
+                    
+                    <Chip icon={<LoyaltyIcon />} label="Premium"  className={classes.billingPlan}/>
+
                     <Button
                         variant="contained"
                         className={classes.button}
@@ -120,6 +140,7 @@ function CompanyInfo() {
                     >
                         Edit
                     </Button>
+
                 </div>
             </div>
 
@@ -144,24 +165,45 @@ function CompanyInfo() {
                 </div>
             </div>
             <div>
-                <Typography variant="body2">
-                Industrial and Financial Systems, commonly referred to as IFS, is a multinational company that develops and delivers 
-                enterprise software to customers who manufacture and distribute goods, maintain assets and manage service-focused operations. 
-                Founded in 1983, it is headquartered in Linköping, Sweden, and has local offices worldwide in over 16 countries including Sri Lanka, 
-                Sweden, UK, USA. As per the status quo of the company, IFS has over 4000 employees that serve over 10000 customers worldwide via 
-                their local offices and partner companies. The industry expertise achieved by IFS through years of experience in the industry, 
-                the expertise of its people, and their growing ecosystem of clientele have made IFS a recognized leader in the industry. 
+                <Typography variant="body2" align="justify" style={{padding:20,paddingTop:10}}>
+                IFS develops and delivers enterprise software for companies around the world who manufacture and distribute goods, 
+                build and maintain assets, and manage service-focused operations. Within our single platform, our industry specific 
+                products are innately connected to a single data model and use embedded digital innovation so that our customers can 
+                be their best when it really matters to their customers – at the Moment of Service. The industry expertise of our people 
+                and of our growing ecosystem, together with a commitment to deliver value at every single step, has made IFS a recognized 
+                leader and the most recommended supplier in our sector. Our team of 4,000 employees every day live our values of agility, 
+                trustworthiness and collaboration in how we support our 10,000+ customers.
 
-                IFS operates in the Enterprise Resource Planning, Enterprise Asset Management, and Field Service Management genres and has
-                acquired over $826 million in revenue in the year 2020. The ERP solution provided by IFS is often acclaimed as one of the 
-                top five ERP solutions in the world. They operate with the primary goals of being agile, collaborative, and trustworthy 
-                and has achieved some prestigious clientele over the years of operation. IFS provides solutions for clients in many sectors, 
-                including Aerospace and Defense, Food and Beverages, Energy and Utilities, Engineering and Construction, Manufacturing, Oil and Gas, 
-                Telecommunications, Service Industries. 
-
-    
+                <br/><br/>
+                We provide solutions in:
 
                 </Typography>
+
+                <List component="nav" aria-label="main mailbox folders" >
+
+                    <ListItem className={classes.listItem}>
+                        <ListItemIcon>
+                            <FiberManualRecordIcon />
+                        </ListItemIcon>
+                    <ListItemText primary="Enterprise Asset Management" />
+                    </ListItem>
+
+                    <ListItem  className={classes.listItem}>
+                        <ListItemIcon>
+                            <FiberManualRecordIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Field Service Management" />
+                    </ListItem>
+
+                    <ListItem className={classes.listItem}>
+                        <ListItemIcon>
+                            <FiberManualRecordIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Enterprise Resource Planning" />
+                    </ListItem>
+
+                </List>
+   
             </div>
             </FloatCard>
         </div>
