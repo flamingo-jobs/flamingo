@@ -11,7 +11,7 @@ import EditIcon from '@material-ui/icons/Edit';
 const useStyles = makeStyles((theme) => ({
     root: {
         textAlign: 'left',
-        width:650,
+        // width:auto,
     },
     bottom: {
         display: 'flex',

@@ -47,32 +47,36 @@ const Employer = () => {
                     <React.Fragment>
                         <CssBaseline />
                         <Container maxWidth="false" className={classes.container}>
-                            <Grid container direction="row" spacing={3} className={classes.topBarGrid}>
+                            <Grid container direction="row" spacing={2} className={classes.topBarGrid}>
+
                                 <Grid item xs={0} sm={4} md={3} lg={2} style={{ position: 'fixed' }} className={classes.sideDrawerGrid}>
                                     <MiniDrawer />
                                 </Grid>
+
                                 <Grid item xs={0} sm={4} md={3} lg={2} className={classes.sideDrawerGrid}></Grid>
+
                                 <Grid item container xs={12} sm={8} md={9} lg={10} spacing={3} className={classes.topBarGrid}>
+                                    
                                     <Grid item sm={12}>
                                         <Topbar />
                                     </Grid>
-                                    <Grid item sm={12}>
+                                    <Grid item sm={6} md={7}>
                                             <CompanyInfo></CompanyInfo>
                                     </Grid>
-                                    <Grid item xs={12} md={6}>
-                                        {/* <ProfileStatCard></ProfileStatCard> */}
+                                    <Grid item sm={6} md={5} >
+                                        <ProfileStatCard></ProfileStatCard>
                                     </Grid>
-                                    <Grid item container xs={12} md={6}>
+                                    {/* <Grid item container xs={12} md={6}>
                                         <Grid item sm={12}>
-                                            {/* <PostJobSection /> */}
+                                            <PostJobSection />
                                         </Grid>
                                         <Grid item sm={12} className={classes.FeaturedOrganizations}>
-                                            {/* <FeaturedOrganizations /> */}
+                                            <FeaturedOrganizations />
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        {/* <Footer /> */}
-                                    </Grid>
+                                        <Footer />
+                                    </Grid> */}
                                 </Grid>
                             </Grid>
                         </Container>
