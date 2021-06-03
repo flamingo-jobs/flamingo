@@ -16,6 +16,7 @@ const useStyles = makeStyles({
 });
 
 export default function FloatCard(props) {
+  
   const classes = useStyles();
 
   return (
