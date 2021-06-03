@@ -28,7 +28,8 @@ const theme = createMuiTheme({
     white: '#fff',
     black: '#424547',
     ashBlue: '#54788a',
-    flamingo: '#e7bab5'
+    flamingo: '#e7bab5',
+    gold: '#FFD700'
   }
 });
 
