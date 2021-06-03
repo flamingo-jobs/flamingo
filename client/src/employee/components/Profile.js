@@ -12,7 +12,8 @@ import ProjectsSection from './ProjectsSection';
 import Achievements from './Achievements';
 import { Component } from 'react';
 import Space from './Space';
-import EmployeeTopbar from './EmployeeTopbar';
+import EmployeeTopbar from '../../components/Topbar';
+import SideDrawer from '../../components/SideDrawer';
 import WorkExperience from './WorkExperience';
 import KnowledgeSection from './KnowledgeSection';
 
@@ -27,6 +28,11 @@ const useStyles = makeStyles((theme) => ({
             paddingTop: 0,
         },
     },
+    sideDrawerGrid: {
+        [theme.breakpoints.down('xs')]: {
+            display: 'none'
+        },
+    }
 }));
 
 function Profile() {
@@ -40,29 +46,35 @@ function Profile() {
                         <Container maxWidth="false" className={classes.container}>
                             <Grid container direction="row" spacing={3} alignItems="stretch">
                                     
-                                <Grid item container xs={12} sm={4} md={3} lg={3} spacing={3}>
-                                    <Grid item xs={12}>
+                                <Grid item xs={0} sm={4} md={3} lg={2} style={{ position: 'fixed' }} className={classes.sideDrawerGrid}>
+                                    {/* <Grid item xs={12}>
                                         <IntroSection/>
                                         <Space />
                                         <EducationSection />
                                         <Space />
                                         <WorkExperience />
-                                    </Grid>
-                                                                   
+                                    </Grid> */}
+                                    <Grid item xs={12}>
+                                        <SideDrawer />
+                                    </Grid>                                 
                                 </Grid>
-                                <Grid item container direction="row" xs={12} sm={8} md={9} lg={9} spacing={3}>
+                                <Grid item xs={0} sm={4} md={3} lg={2} className={classes.sideDrawerGrid}></Grid>
+
+                                <Grid item container direction="row" xs={12} sm={8} md={9} lg={10} spacing={3}>
                                     <Grid item xs={12}>
                                         <EmployeeTopbar />
                                     </Grid>
-                                    <Grid item xs={12} sm={8} spacing={3}>
+                                    <Grid item xs={12} sm={4} spacing={3}>
+                                        <IntroSection />
+                                        <Space />
+                                        <EducationSection />
+                                        <Space />
                                         <Achievements />
+                                    </Grid>
+                                    <Grid item xs={12} sm={8} spacing={3}>
+                                        <WorkExperience />
                                         <Space />
                                         <ProjectsSection />
-                                    </Grid>
-                                    <Grid item xs={12} sm={4} spacing={3}>
-                                        <KnowledgeSection />
-                                        <Space />
-                                        <FloatCard />
                                     </Grid>
                                 </Grid>
                             </Grid>

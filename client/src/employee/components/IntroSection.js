@@ -11,6 +11,9 @@ import FloatCard from '../../components/FloatCard';
 import cardImage from '../images/profilePic.jpg';
 import theme from '../../Theme';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
+import GitHubIcon from '@material-ui/icons/GitHub';
+import EmailIcon from '@material-ui/icons/Email';
+import FacebookIcon from '@material-ui/icons/Facebook';
 import ImageSearchIcon from '@material-ui/icons/ImageSearch';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -37,6 +40,11 @@ const useStyles = makeStyles({
   },
   changePicture: {
       width: '0px',
+  },
+  socialMediaButton: {
+    color: theme.palette.tuftsBlue,
+    width: '35px',
+    fontSize: '30px',
   }
 });
 
@@ -80,8 +88,10 @@ function IntroSection() {
       <CardActions>
       <Grid container>
         <Grid item xs style={{ textAlign: 'left' }}>
-        <Button size="small" color="primary">
-            <LinkedInIcon style={{color: theme.palette.turfsBlue,marginRight: '5px',}} />Add LinkedIn Account</Button>
+          <GitHubIcon className={classes.socialMediaButton} style={{fontSize:'27px',}} />
+          <LinkedInIcon className={classes.socialMediaButton} />
+          <EmailIcon className={classes.socialMediaButton} />
+          <FacebookIcon className={classes.socialMediaButton} />
         </Grid>
         <Grid item style={{ textAlign: 'right' }}>
             <Button className={classes.defaultButton} style={{ float: 'right',marginRight: '0px',}}>Upload CV</Button>
