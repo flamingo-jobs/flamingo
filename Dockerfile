@@ -12,6 +12,8 @@ RUN apt-get install -y npm
 
 RUN npm install -g concurrently
 
+RUN npm install
+
 ADD . /usr/apps/flamingo-docker/
 
 CMD ["npm", "run", "dev"]
