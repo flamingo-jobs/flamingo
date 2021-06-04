@@ -6,6 +6,7 @@ import { ThemeProvider } from '@material-ui/styles';
 import theme from './Theme';
 import { Route, BrowserRouter } from 'react-router-dom';
 import Jobs from './jobs/Jobs';
+import Employer from './employer/Employer';
 
 
 function App() {
@@ -24,6 +25,9 @@ function App() {
             </Route>
             <Route path="/employee" exact>
               <Profile />
+            </Route>
+            <Route path="/employer" exact>
+              <Employer />
             </Route>
         </ThemeProvider>
         </BrowserRouter>

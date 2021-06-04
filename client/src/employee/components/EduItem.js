@@ -22,6 +22,11 @@ function EduItem(props) {
   return (
       <Paper elevation={0} className={classes.paper}>
        <Grid container spacing={3}>
+       <Grid item xs={12} style={{paddingBottom:0}}>
+        <Typography gutterBottom style={{textAlign:'justify',fontSize:'16px',fontWeight:'bold',color:'#666'}}>
+              {props.level}
+          </Typography>
+        </Grid>
         <Grid item xs={3}>
             <Typography variant="body2" color="textSecondary" component="p">
                 {props.startYear} - {props.endYear}
@@ -29,7 +34,13 @@ function EduItem(props) {
         </Grid>
         <Grid item xs={9} spacing={2}>
             <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'14px',fontWeight:'bold',}}>
-                {props.name}
+                {props.institute}
+            </Typography>
+            <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'14px',}}>
+                {props.degree}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',}}>
+                {props.gpa}
             </Typography>
         </Grid>
         

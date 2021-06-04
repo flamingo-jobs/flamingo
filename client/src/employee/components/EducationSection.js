@@ -58,8 +58,8 @@ function EducationSection() {
       </Grid>
       <Grid container spacing={3}>
             <Grid item xs={12}>
-                <EduItem startYear="2019" endYear="2022" name="University of Colombo School of Computing" />
-                <EduItem startYear="2008" endYear="2017" name="Taxila Central College" />
+                <EduItem level="University" startYear="2019" endYear="2022" institute="University of Colombo School of Computing" degree="Information Systems(Undergraduate)" gpa="GPA - 3.9" />
+                <EduItem level="School" startYear="2008" endYear="2017" institute="Taxila Central College" />
             </Grid>
         </Grid>
     </FloatCard>
