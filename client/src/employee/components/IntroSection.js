@@ -15,8 +15,10 @@ import GitHubIcon from '@material-ui/icons/GitHub';
 import EmailIcon from '@material-ui/icons/Email';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import ImageSearchIcon from '@material-ui/icons/ImageSearch';
+import EditIcon from '@material-ui/icons/Edit';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
+
 
 const useStyles = makeStyles({
   media: {
