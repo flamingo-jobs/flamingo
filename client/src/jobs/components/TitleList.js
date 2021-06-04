@@ -51,12 +51,12 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function CategoryList() {
+export default function TitileList() {
     const classes = useStyles();
-    const [openCategories, setOpenCategories] = React.useState(true);
+    const [openTitles, setOpenTitles] = React.useState(true);
 
-    const handleCategoryClick = () => {
-        setOpenCategories(!openCategories);
+    const handleTitleClick = () => {
+        setOpenTitles(!openTitles);
 
     };
 
@@ -78,19 +78,20 @@ export default function CategoryList() {
 
     return (
         <>
+
             <List
                 component="nav"
                 className={classes.root}
             >
-                <ListItem button onClick={handleCategoryClick}>
-                    <ListItemText primary={<Typography className={classes.listTitle} >Category</Typography>}></ListItemText>
-                    {openCategories ? <ExpandLess className={classes.listDown} /> : <ExpandMore className={classes.listDown} />}
+                <ListItem button onClick={handleTitleClick}>
+                    <ListItemText primary={<Typography className={classes.listTitle} >Job Title</Typography>}></ListItemText>
+                    {openTitles ? <ExpandLess className={classes.listDown} /> : <ExpandMore className={classes.listDown} />}
                 </ListItem>
-                <Collapse in={openCategories} timeout="auto" unmountOnExit>
+                <Collapse in={openTitles} timeout="auto" unmountOnExit>
                     <List className={classes.root}>
-                        {[{ id: 1, name: "Design", count: 25 }, { id: 2, name: "Development", count: 145 }, { id: 3, name: "QA", count: 15 }, { id: 4, name: "DevOps", count: 34 }].map((value) => {
+                        {[{ id: 1, name: "Software Engineer", count: 25 }, { id: 2, name: "Business Analyst", count: 145 }, { id: 3, name: "DevOps Engineer", count: 15 }, { id: 4, name: "Network Engineer", count: 34 }].map((value) => {
                             const labelId = `category-list-${value.id}`;
-                            const itemId = value.id + 1000;
+                            const itemId = value.id + 2000;
                             return (
                                 <ListItem className={classes.listItem} key={itemId} role={undefined} dense button onClick={handleToggle(itemId)}>
                                     <ListItemIcon>
@@ -115,7 +116,6 @@ export default function CategoryList() {
                     </List>
                 </Collapse>
             </List>
-        
         </>
     );
 }
