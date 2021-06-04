@@ -3,6 +3,8 @@ import React from 'react'
 import FloatCard from '../../components/FloatCard'
 import theme from '../../Theme'
 import CategoryList from './CategoryList'
+import OrganizationList from './OrganizationList'
+import TitileList from './TitleList'
 
 const useStyles = makeStyles(() => ({
 
@@ -18,10 +20,10 @@ function JobFilters() {
 <CategoryList />
             </div>
             <div className={classes.titles}>
-
+<TitileList />
             </div>
             <div className={classes.organizations}>
-                
+   <OrganizationList />             
             </div>
         </FloatCard>
     )
