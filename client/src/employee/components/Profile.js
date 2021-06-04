@@ -76,6 +76,22 @@ function Profile() {
                                         <Space />
                                         <ProjectsSection />
                                     </Grid>
+                                                                   
+                                </Grid>
+                                <Grid item container direction="row" xs={12} sm={8} md={9} lg={9} spacing={3}>
+                                    <Grid item xs={12}>
+                                        <EmployeeTopbar />
+                                    </Grid>
+                                    <Grid item xs={12} sm={8} spacing={3}>
+                                        <Achievements />
+                                        <Space />
+                                        <ProjectsSection />
+                                    </Grid>
+                                    <Grid item xs={12} sm={4} spacing={3}>
+                                        <KnowledgeSection />
+                                        <Space />
+                                        <FloatCard />
+                                    </Grid>
                                 </Grid>
                             </Grid>
                         </Container>

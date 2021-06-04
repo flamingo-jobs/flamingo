@@ -19,6 +19,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 
+
 const useStyles = makeStyles({
   media: {
     height: '150px',
@@ -62,7 +63,6 @@ function IntroSection() {
             alt="profile image"
             zIndex="modal"
         />
-
         {/* <Box
         bgcolor="#F0F8FF"
         color="white"
@@ -76,7 +76,6 @@ function IntroSection() {
             <ImageSearchIcon style={{color: theme.palette.tuftsBlue,}} />
           </Button>
       </Box> */}
-
       </Typography>
         <CardContent>
           <Typography gutterBottom variant="h5" style={{color: theme.palette.stateBlue,}}>

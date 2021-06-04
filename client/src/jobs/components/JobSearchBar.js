@@ -6,11 +6,13 @@ import InputBase from '@material-ui/core/InputBase';
 import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 import theme from '../../Theme';
+import ListDownPopup from './ListDownPopup';
 
 const useStyles = makeStyles((theme) => ({
     root: {
     },
     search: {
+        display: 'flex',
         position: 'relative',
         borderRadius: theme.shape.borderRadius,
         backgroundColor: 'transparent',
@@ -73,6 +75,7 @@ function JobSearchBar() {
                                 }}
                                 inputProps={{ 'aria-label': 'search' }}
                             />
+                            
                         </div>
                     </Grid>
                     <Grid item sm={3}>
@@ -97,14 +100,8 @@ function JobSearchBar() {
                                 <WorkRoundedIcon />
 
                             </div>
-                            <InputBase
-                                placeholder=""
-                                classes={{
-                                    root: classes.inputRoot,
-                                    input: classes.inputInput,
-                                }}
-                                inputProps={{ 'aria-label': 'search' }}
-                            />
+                            <ListDownPopup />
+                            
                         </div>
                     </Grid>
                     <Grid item sm={3}>
