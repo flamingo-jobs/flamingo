@@ -25,10 +25,18 @@ const useStyles = makeStyles((theme) => ({
     count: {
         borderRadius: 5,
         width: 25,
-        height: 25
+        height: 25,
+        backgroundColor: theme.palette.lightSkyBlue
     },
     countText: {
-        fontSize: 12
+        fontSize: 11,
+        color: theme.palette.tuftsBlue,
+        fontWeight: 500
+    },
+    listItem: {
+        paddingTop: 0,
+        paddingBottom: 0,
+        borderRadius: 8
     },
     listTitle: {
         color: theme.palette.tuftsBlue,
@@ -36,6 +44,10 @@ const useStyles = makeStyles((theme) => ({
     },
     listDown: {
         color: theme.palette.tuftsBlue,
+    },
+    checkBox: {
+        color: theme.palette.pinkyRed,
+        fill: theme.palette.pinkyRed
     }
 }));
 
@@ -89,7 +101,7 @@ export default function NestedList() {
                             const labelId = `category-list-${value.id}`;
                             const itemId = value.id + 1000;
                             return (
-                                <ListItem key={itemId} role={undefined} dense button onClick={handleToggle(itemId)}>
+                                <ListItem className={classes.listItem} key={itemId} role={undefined} dense button onClick={handleToggle(itemId)}>
                                     <ListItemIcon>
                                         <Checkbox
                                             edge="start"
@@ -97,6 +109,7 @@ export default function NestedList() {
                                             tabIndex={-1}
                                             disableRipple
                                             inputProps={{ 'aria-labelledby': labelId }}
+                                            className={classes.checkBox}
                                         />
                                     </ListItemIcon>
                                     <ListItemText id={labelId} primary={value.name} />
@@ -116,29 +129,30 @@ export default function NestedList() {
                 className={classes.root}
             >
                 <ListItem button onClick={handleTitleClick}>
-                    <ListItemText primary={<Typography className={classes.listTitle} >Category</Typography>}></ListItemText>
+                    <ListItemText primary={<Typography className={classes.listTitle} >Job Title</Typography>}></ListItemText>
                     {openTitles ? <ExpandLess className={classes.listDown} /> : <ExpandMore className={classes.listDown} />}
                 </ListItem>
                 <Collapse in={openTitles} timeout="auto" unmountOnExit>
-                    <List className={classes.root}>
-                        {[0, 1, 2, 3].map((value) => {
-                            const labelId = `checkbox-list-label-${value}`;
-
+                <List className={classes.root}>
+                        {[{ id: 1, name: "Software Engineer", count: 25 }, { id: 2, name: "Business Analyst", count: 145 }, { id: 3, name: "DevOps Engineer", count: 15 }, { id: 4, name: "Network Engineer", count: 34 }].map((value) => {
+                            const labelId = `category-list-${value.id}`;
+                            const itemId = value.id + 2000;
                             return (
-                                <ListItem key={value} role={undefined} dense button onClick={handleToggle(value)}>
+                                <ListItem className={classes.listItem} key={itemId} role={undefined} dense button onClick={handleToggle(itemId)}>
                                     <ListItemIcon>
                                         <Checkbox
                                             edge="start"
-                                            checked={checked.indexOf(value) !== -1}
+                                            checked={checked.indexOf(itemId) !== -1}
                                             tabIndex={-1}
                                             disableRipple
                                             inputProps={{ 'aria-labelledby': labelId }}
+                                            className={classes.checkBox}
                                         />
                                     </ListItemIcon>
-                                    <ListItemText id={labelId} primary={`Line item ${value + 1}`} />
+                                    <ListItemText id={labelId} primary={value.name} />
                                     <ListItemSecondaryAction>
                                         <Avatar className={classes.count} variant="square" >
-                                            <Typography className={classes.countText}>53</Typography>
+                                            <Typography className={classes.countText}>{value.count}</Typography>
                                         </Avatar>
                                     </ListItemSecondaryAction>
                                 </ListItem>
