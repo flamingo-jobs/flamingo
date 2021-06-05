@@ -2,6 +2,7 @@ import React from 'react'
 import LocalOfferRoundedIcon from '@material-ui/icons/LocalOfferRounded';
 import { Avatar, Button, Chip, makeStyles, Typography } from '@material-ui/core';
 import { FavoriteRounded } from '@material-ui/icons';
+import Rating from '@material-ui/lab/Rating';
 import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 import ifs from '../images/ifs.png';
@@ -14,6 +15,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import TurnedInNotTwoToneIcon from '@material-ui/icons/TurnedInNotTwoTone';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -55,9 +58,9 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: 5
     },
     infoTags: {
-        marginTop: -10,
+        marginTop: -5,
         marginBottom: 10,
-        marginLeft:-9,
+        marginLeft:-14,
         marginRight: -20,
     },
     tag: {
@@ -109,6 +112,27 @@ const useStyles = makeStyles((theme) => ({
         paddingTop:0,
         paddingBottom:0,
     },
+    ratingPanel:{
+        marginLeft:117,
+        marginTop:-20,
+        marginBottom:10,
+    },
+    rating: {
+        display: 'flex',
+        flexDirection: 'column',
+        '& > * + *': {
+          marginTop: theme.spacing(1),
+        }, 
+    },
+    ratingText:{
+        marginTop:-4,
+        marginLeft:30,
+    },
+    companyDescription:{
+        paddingTop:-25,
+        paddingLeft:20,
+        paddingRight:20,
+    },
 
 
 }))
@@ -138,11 +162,12 @@ function CompanyInfo() {
                         className={classes.button}
                         startIcon={<EditIcon />}
                     >
-                        Edit
+                    Edit
                     </Button>
 
                 </div>
             </div>
+
 
             <div className={classes.body} >
 
@@ -156,6 +181,29 @@ function CompanyInfo() {
 
             </div>
 
+            
+            <Grid item container spacing={2} xs={12} className={classes.ratingPanel}>
+
+                <Grid item xs={2}>
+                    <div className={classes.rating}>
+                        <Rating name="half-rating-read" defaultValue={2.5} precision={0.5} readOnly />
+                    </div>                       
+                </Grid>
+
+                <Grid item xs={10} >
+                    <div className={classes.ratingText}>
+                        <Typography>
+                            <Box fontSize={14} fontWeight="fontWeightMedium" m={1}>
+                                3.5 stars based on 124 reviews
+                            </Box>
+                        </Typography>
+
+                    </div>                    
+                </Grid>
+
+            </Grid> 
+            
+
             <div className={classes.bottom} >
                 <div className={classes.bottomLeft} style={{ maxWidth: 10 }}>
                     <Chip icon={<LocalOfferRoundedIcon className={classes.tagIcon} />} label="Development" className={classes.label} />
@@ -164,8 +212,8 @@ function CompanyInfo() {
                     
                 </div>
             </div>
-            <div>
-                <Typography variant="body2" align="justify" style={{padding:20,paddingTop:10}}>
+            <div className={classes.companyDescription}>
+                <Typography variant="body2" align="justify">
                 IFS develops and delivers enterprise software for companies around the world who manufacture and distribute goods, 
                 build and maintain assets, and manage service-focused operations. Within our single platform, our industry specific 
                 products are innately connected to a single data model and use embedded digital innovation so that our customers can 
