@@ -106,7 +106,7 @@ function JobSearchBar() {
                     </Grid>
                     <Grid item sm={3}>
                         <Button variant="contained" color="default">
-                          Find Job
+                          Jenkins
                         </Button>
                     </Grid>
                 </Grid>
