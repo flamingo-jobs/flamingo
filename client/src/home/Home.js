@@ -50,7 +50,7 @@ function Home() {
                     <React.Fragment>
                         <CssBaseline />
                         <Container maxWidth="false" className={classes.container}>
-                            <Grid container direction="row" spacing={3} className={classes.topBarGrid}>
+                            <Grid container direction="row" spacing={3} style={{margin:'0px'}} className={classes.topBarGrid}>
                                 <Grid item xs={0} sm={4} md={3} lg={2} style={{ position: 'fixed' }} className={classes.sideDrawerGrid}>
                                     <SideDrawer />
                                 </Grid>

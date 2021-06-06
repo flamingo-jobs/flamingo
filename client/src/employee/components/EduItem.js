@@ -23,7 +23,7 @@ function EduItem(props) {
       <Paper elevation={0} className={classes.paper}>
        <Grid container spacing={3}>
        <Grid item xs={12} style={{paddingBottom:0}}>
-        <Typography gutterBottom style={{textAlign:'justify',fontSize:'16px',fontWeight:'bold',color:'#666'}}>
+          <Typography gutterBottom style={{textAlign:'justify',fontSize:'16px',fontWeight:'bold',color:'#666'}}>
               {props.level}
           </Typography>
         </Grid>
