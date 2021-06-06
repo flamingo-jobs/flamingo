@@ -8,7 +8,7 @@
     - name: Stop previous container
       docker_container:
         name: flamingo
-        image: "thatz98/flamingo:{{DOCKER_TAG-1}}"
+        image: "thatz98/flamingo:{{PREV_DOCKER_TAG}}"
         state: stopped
     - name: Start the container
       docker_container:
