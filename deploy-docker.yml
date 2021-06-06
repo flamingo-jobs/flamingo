@@ -5,15 +5,11 @@
     - name: Install Docker Module for Python
       pip:
         name: docker
-    - name: Get running containers
-      docker_host_info:
-        containers: yes
-      register: docker_info
-    - name: Stop running containers
+    - name: Stop previous container
       docker_container:
-        name: "{{ item }}"
+        name: flamingo
+        image: "thatz98/flamingo:{{DOCKER_TAG-1}}"
         state: stopped
-        loop: "{{ docker_info.containers | map(attribute='Id') | list }}"
     - name: Start the container
       docker_container:
         name: flamingo
