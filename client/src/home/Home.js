@@ -88,6 +88,8 @@ function Home() {
                                         <FeaturedOrganizations />
                                     </Grid>
                                 </Grid>
+                                <Space value={16} />
+
                                 <Grid item xs={12}>
                                     <Footer />
                                 </Grid>
