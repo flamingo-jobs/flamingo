@@ -16,5 +16,5 @@
         image: "thatz98/flamingo:{{DOCKER_TAG}}"
         state: started
         published_ports:
-          - 0.0.0.0:3000:8080
+          - 0.0.0.0:3000:3000
     
