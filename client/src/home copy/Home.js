@@ -22,8 +22,7 @@ const useStyles = makeStyles((theme) => ({
     },
     container: {
         width: '100%',
-        padding: 5,
-        paddingTop: 10,
+        padding: 20,
         [theme.breakpoints.down('md')]: {
             paddingTop: 10,
         },
@@ -53,16 +52,19 @@ function Home() {
                 <React.Fragment>
                     <CssBaseline />
                     <Container maxWidth="false" className={classes.container}>
-                        <Grid container direction="row" spacing={3} style={{ margin: '0px', width: '100%' }} className={classes.topBarGrid}>
+                        <Grid container direction="row" spacing={3} className={classes.topBarGrid} justify="space-between"
+                                    alignItems="flex-start">
                             <Grid item xs={0} sm={4} md={3} lg={2} style={{ position: 'fixed' }} className={classes.sideDrawerGrid}>
                                 <SideDrawer />
                             </Grid>
                             <Grid item xs={0} sm={4} md={3} lg={2} className={classes.sideDrawerGrid}></Grid>
-                            <Grid item container xs={12} sm={8} md={9} lg={10} spacing={0} className={classes.topBarGrid}>
+                            <Grid item container xs={12} sm={8} md={9} lg={10} spacing={3} className={classes.topBarGrid} direction="column"
+                                justify="flex-start"
+                               >
+
                                 <Grid item sm={12}>
                                     <Topbar />
                                 </Grid>
-                                <Space value={16} />
 
                                 <Grid item sm={12}>
                                     <FloatCard>
@@ -70,23 +72,28 @@ function Home() {
                                     </FloatCard>
                                 </Grid>
 
-                                <Space value={16} />
+                                <Grid item container xs={12} spacing={0} direction="row"
+                                    justify="space-between"
+                                    alignItems="flex-start">
+                                    <Grid item xs={12} md={6}>
+                                        <FeaturedJobs />
 
-                                <Grid item xs={12} md={6} style={{paddingRight: 8}}>
-                                    <FeaturedJobs />
-                                    
+                                    </Grid>
+
+                                    <Grid item container xs={12} md={6} spacing={3} direction="column"
+                                    justify="space-between"
+                                    alignItems="flex-start">
+                                        <Grid item sm={12}>
+                                            <PostJobSection />
+                                        </Grid>
+                                        <Grid item sm={12} className={classes.FeaturedOrganizations}>
+                                            <FeaturedOrganizations />
+                                        </Grid>
+                                    </Grid>
                                 </Grid>
 
-                                <Grid item container xs={12} md={6} spacing={0} style={{paddingLeft: 8}} justify="flex-start">
-                                    <Grid item sm={12}>
-                                        <PostJobSection />
-                                    </Grid>
-                                    <Space value={3} />
-                                    <Grid item sm={12} className={classes.FeaturedOrganizations}>
-                                        <FeaturedOrganizations />
-                                    </Grid>
-                                </Grid>
-                                <Space value={16} />
+
+
                                 <Grid item xs={12}>
                                     <Footer />
                                 </Grid>
