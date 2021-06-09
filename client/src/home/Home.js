@@ -17,29 +17,60 @@ import Space from '../components/Space'
 const useStyles = makeStyles((theme) => ({
     root: {
         background: `url(${backgroundImage}) no-repeat`,
+        minHeight: '100vh',
         backgroundSize: 'cover',
-        minHeight: '100vh'
     },
     container: {
         width: '100%',
-        padding: 5,
+        margin: '0 auto',
         paddingTop: 10,
-        [theme.breakpoints.down('md')]: {
-            paddingTop: 10,
-        },
-        [theme.breakpoints.down('xs')]: {
-            paddingTop: 0,
-        },
+        paddingBottom: 10,
+        minHeight: '100vh'
     },
-    topBarGrid: {
+    sideDrawer: {
+        position: 'fixed',
+        minWidth: '17.9%',
+        marginTop: 10,
         [theme.breakpoints.down('xs')]: {
-            display: 'block',
-            maxWidth: 'unset'
+            display: 'none'
+        },
+        [theme.breakpoints.up('xl')]: {
+            minWidth: '16.66667%',
         },
     },
     sideDrawerGrid: {
+        marginTop: 10,
         [theme.breakpoints.down('xs')]: {
             display: 'none'
+        },
+    },
+    mainGrid: {
+        [theme.breakpoints.down('xs')]: {
+            justifyContent: 'center',
+        },
+
+    },
+    topBarGrid: {
+        paddingTop: '22px !important',
+        marginBottom: 'auto',
+        [theme.breakpoints.down('xs')]: {
+            display: 'block',
+            maxWidth: 'unset',
+            paddingLeft: '0 !important',
+            paddingRight: '0 !important'
+        },
+    },
+    postJobSection: {
+        minWidth: '100%',
+        
+    },
+    featuredOrganizations: {
+        minWidth: '100%'
+    },
+    rightSubColumn: {
+        [theme.breakpoints.down('sm')]: {
+            minWidth: 'fit-content',
+            paddingTop: 24
         },
     }
 }));
@@ -50,50 +81,45 @@ function Home() {
     return (
         <div className={classes.root}>
             <div className="overlay">
-                <React.Fragment>
-                    <CssBaseline />
-                    <Container maxWidth="false" className={classes.container}>
-                        <Grid container direction="row" spacing={3} style={{ margin: '0px', width: '100%' }} className={classes.topBarGrid}>
-                            <Grid item xs={0} sm={4} md={3} lg={2} style={{ position: 'fixed' }} className={classes.sideDrawerGrid}>
-                                <SideDrawer />
+                <Container maxWidth="false" className={classes.container}>
+                    <Grid container direction="row" spacing={3} className={classes.mainGrid} justify="space-between"
+                        alignItems="flex-start">
+                        <Grid item xs={0} sm={4} md={3} lg={2} className={classes.sideDrawer}>
+                            <SideDrawer />
+                        </Grid>
+                        <Grid item xs={0} sm={4} md={3} lg={2} className={classes.sideDrawerGrid}></Grid>
+                        <Grid item container xs={12} sm={8} md={9} lg={10} spacing={3} className={classes.topBarGrid} direction="column"
+                            justify="space-between">
+                            <Grid item sm={12}>
+                                <Topbar />
                             </Grid>
-                            <Grid item xs={0} sm={4} md={3} lg={2} className={classes.sideDrawerGrid}></Grid>
-                            <Grid item container xs={12} sm={8} md={9} lg={10} spacing={0} className={classes.topBarGrid}>
-                                <Grid item sm={12}>
-                                    <Topbar />
-                                </Grid>
-                                <Space value={16} />
+                            <Grid item container sm={12}>
 
-                                <Grid item sm={12}>
-                                    <FloatCard>
-                                        <HeroSection />
-                                    </FloatCard>
-                                </Grid>
-
-                                <Space value={16} />
-
-                                <Grid item xs={12} md={6} style={{paddingRight: 8}}>
+                                <HeroSection />
+                            </Grid>
+                            <Grid item container xs={12} spacing={0} direction="row"
+                                justify="space-between"
+                                alignItems="flex-start">
+                                <Grid item xs={12} md={6}>
                                     <FeaturedJobs />
-                                    
                                 </Grid>
-
-                                <Grid item container xs={12} md={6} spacing={0} style={{paddingLeft: 8}} justify="flex-start">
-                                    <Grid item sm={12}>
+                                <Grid item container xs={12} md={6} spacing={3} direction="column"
+                                    justify="space-between"
+                                    alignItems="flex-start" className={classes.rightSubColumn}>
+                                    <Grid item sm={12} className={classes.postJobSection}>
                                         <PostJobSection />
                                     </Grid>
-                                    <Space value={3} />
-                                    <Grid item sm={12} className={classes.FeaturedOrganizations}>
+                                    <Grid item sm={12} className={classes.featuredOrganizations}>
                                         <FeaturedOrganizations />
                                     </Grid>
                                 </Grid>
-                                <Space value={16} />
-                                <Grid item xs={12}>
-                                    <Footer />
-                                </Grid>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Footer />
                             </Grid>
                         </Grid>
-                    </Container>
-                </React.Fragment>
+                    </Grid>
+                </Container>
             </div>
         </div>
     )

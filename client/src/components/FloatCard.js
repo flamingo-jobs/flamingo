@@ -5,7 +5,7 @@ import CardContent from '@material-ui/core/CardContent';
 
 const useStyles = makeStyles({
   root: {
-    minWidth: 100,
+    minWidth: '100%',
     borderRadius: 12,
     boxShadow: 'rgba(83, 144, 217, 0.1) 0px 4px 12px',
     overflow: 'unset'

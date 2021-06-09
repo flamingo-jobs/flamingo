@@ -13,8 +13,8 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: 'unset'
     },
     allJobs: {
-        paddingTop: 20,
-        paddingBottom: 20
+        paddingTop: 9,
+        paddingBottom: 9
     },
     text: {
         color: theme.palette.white

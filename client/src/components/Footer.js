@@ -70,7 +70,7 @@ function Footer() {
         <FloatCard backColor={theme.palette.ashBlue}>
             <div className={classes.root}>
                 <Grid container direction="row" spacing={3} justify="space-between">
-                    <Grid item xs={12} sm={6} md={4}>
+                    <Grid item sm={12} md={4}>
                         <Typography variant="h6" className={classes.title} >
                             Flamingo
                         </Typography>
@@ -97,7 +97,7 @@ function Footer() {
                             </ListItem>
                         </List>
                     </Grid>
-                    <Grid item xs={12} sm={6} md={4}>
+                    <Grid item sm={12} md={4}>
                         <Typography variant="h6" className={classes.title} >
                             Enterprice
                         </Typography>
@@ -128,7 +128,7 @@ function Footer() {
                             </ListItem>
                         </List>
                     </Grid>
-                    <Grid item xs={12} sm={6} md={4}>
+                    <Grid item sm={12} md={4}>
                         <Typography variant="h6" className={classes.title} >
                             Legal and Support
                         </Typography>
