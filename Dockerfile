@@ -14,15 +14,12 @@ RUN npm install -g concurrently
 
 ADD . /usr/apps/flamingo-docker/
 
-WORKDIR /usr/apps/flamingo-docker/
-
-RUN npm install
-
 WORKDIR /usr/apps/flamingo-docker/client
 
 RUN npm install
 
-WORKDIR /usr/apps/flamingo-docker/
+WORKDIR /usr/apps/flamingo-docker/server
 
+RUN npm install
 
 CMD ["npm", "run", "dev"]
