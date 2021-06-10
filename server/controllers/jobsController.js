@@ -1,17 +1,17 @@
-const Users = require('../models/users');
+const Jobs = require('../models/jobs');
 
 
 const create = (req,res) => {
-    let newUser = new Users(req.body);
+    let newJob = new Jobs(req.body);
 
-    newUser.save((err) => {
+    newJob.save((err) => {
         if(err){
             return res.status(400).json({
                 error: err
             });
         }
         return res.status(200).json({
-            success: "User saved successfully"
+            success: "Job saved successfully"
         });
 
     });
@@ -19,7 +19,7 @@ const create = (req,res) => {
 }
 
 const getAll = (req,res) => {
-    Users.find().exec((err,users) => {
+    Jobs.find().exec((err,jobs) => {
         if(err){
             return res.status(400).json({
                 error: err
@@ -27,13 +27,13 @@ const getAll = (req,res) => {
         }
         return res.status(200).json({
             success: true,
-            existingUsers: users
+            existingJobs: jobs
         });
     });
 }
 
 const getById = (req,res) => {
-    Users.findById(req.params.id).exec((err,user) => {
+    Jobs.findById(req.params.id).exec((err,job) => {
         if(err){
             return res.status(400).json({
                 error: err
@@ -41,19 +41,34 @@ const getById = (req,res) => {
         }
         return res.status(200).json({
             success: true,
-            user: user
+            job: job
         });
     });
 }
 
+const getFeaturedJobs = (req,res) => {
+    Jobs.geoSearch({ isFeatured : true }, (err,featuredJobs) => {
+        if(err){
+            return res.status(400).json({
+                error: err
+            })
+        }
+        return res.status(200).json({
+            success: true,
+            featuredJobs: featuredJobs
+        });
+    });
+}
+
+
 const update = (req,res) => {
 
-    Users.findByIdAndUpdate(
+    Jobs.findByIdAndUpdate(
         req.params.id,
         {
             $set:req.body
         },
-        (err,user) =>{
+        (err,job) =>{
             if(err){
                 return res.status(400).json({
                     error:err
@@ -67,7 +82,7 @@ const update = (req,res) => {
 }
 
 const remove = (req, res) => {
-    Users.findByIdAndDelete(req.params.id).exec((err,deletedUser) => {
+    Jobs.findByIdAndDelete(req.params.id).exec((err,deletedJob) => {
         if(err){
             return res.status(400).json({
                 error: err
@@ -75,7 +90,7 @@ const remove = (req, res) => {
         }
         return res.status(200).json({
             success: "User deleted successfully",
-            deletedUser
+            deletedJob
         });
     });
 }
@@ -85,6 +100,7 @@ module.exports = {
     getAll,
     getById,
     update,
-    remove
+    remove,
+    getFeaturedJobs
 
 }

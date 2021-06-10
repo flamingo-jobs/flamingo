@@ -9,79 +9,63 @@ const jobSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    type: {
+    category: {
         type: String,
         required: true
     },
-    title: {
+    organization: {
+        type: Object,
+        required: true
+    },
+    description : {
         type: String,
         required: true
     },
-    type: {
+    tasksAndResponsibilities: {
+        type: Array,
+        required: true
+    },
+    qualifications: {
+        type: Array,
+        required: true
+    },
+    technologyStack: {
+        type: Array,
+    },
+    salaryRange: {
+        min: {
+            type: Number,
+        },
+        max: {
+            type: Number
+        }
+        
+    },
+    location: {
         type: String,
         required: true
     },
-    title: {
+    keywords: {
+        type: Array,
+    },
+    postedDate: {
         type: String,
         required: true
     },
-    type: {
+    dueDate: {
         type: String,
         required: true
     },
-    title: {
-        type: String,
+    isPublished: {
+        type: Boolean,
         required: true
     },
-    type: {
-        type: String,
-        required: true
-    },
-    title: {
-        type: String,
-        required: true
-    },
-    type: {
-        type: String,
-        required: true
-    },
-    title: {
-        type: String,
-        required: true
-    },
-    type: {
-        type: String,
-        required: true
-    },
-    title: {
-        type: String,
-        required: true
-    },
-    type: {
-        type: String,
-        required: true
-    },
-    title: {
-        type: String,
-        required: true
-    },
-    type: {
-        type: String,
-        required: true
-    },
-    title: {
-        type: String,
-        required: true
-    },
-    type: {
-        type: String,
-        required: true
-    },
-    title: {
-        type: String,
+    isFeatured: {
+        type:Boolean,
         required: true
     }
+    
 });
 
 
-module.exports = mongoose.model('Users', userSchema);
+module.exports = mongoose.model('Jobs', jobSchema);
