@@ -94,7 +94,7 @@ function JobCard(props) {
             </div>
             <div className={classes.body} >
                 <Typography variant="h5" className={classes.title} >{props.info.title}</Typography>
-                <Typography variant="p" className={classes.description} >{props.info.description}</Typography>
+                <Typography className={classes.description} >{props.info.description}</Typography>
                 <div className={classes.infoTags}>
                     <Chip icon={<LocationOnRoundedIcon />} label={props.info.location} className={classes.tag} />
                     <Chip icon={<WorkRoundedIcon />} label={props.info.type} className={classes.tag} />

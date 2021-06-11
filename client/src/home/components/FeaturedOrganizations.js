@@ -1,7 +1,8 @@
 import { Grid, makeStyles, Typography, Button } from '@material-ui/core';
-import React from 'react'
+import React from 'react';
+import { useState, useEffect } from 'react';
 import FloatCard from '../../components/FloatCard';
-import Organization from './Organization';
+import Organization from '../../employer/components/Organization';
 import wso2 from '../images/wso2.png'
 import virtusa from '../images/virtusa.png'
 import ifs from '../images/ifs.png'
@@ -9,6 +10,7 @@ import ninix from '../images/ninix.png'
 import zone from '../images/zone.png'
 import mas from '../images/mas.png'
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -35,33 +37,48 @@ const useStyles = makeStyles((theme) => ({
 function FeaturedOrganizations() {
     const classes = useStyles();
 
+    const [featuredOrgs, setFeaturedOrgs] = useState([]);
+
+    useEffect(() => {
+        retrieveFeaturedOrgs()
+    })
+
+    const retrieveFeaturedOrgs = () => {
+        axios.get("http://localhost:8000/employers/featuredEmployers").then(res => {
+            if (res.data.success) {
+                setFeaturedOrgs(res.data.featuredEmployers)
+            } else {
+                setFeaturedOrgs(null)
+            }
+        })
+    }
+
+    const displayFeaturedOrgs = () => {
+        if (featuredOrgs) {
+            
+            return featuredOrgs.map(featuredOrg => (
+                <Grid item xs={12} lg={6} key={featuredOrg._id}>
+                        <Organization info={featuredOrg} />
+                    </Grid>
+            ))
+        } else {
+            return (
+                <Grid item sm={12}>
+                    <Typography>No featured Organizations</Typography>
+                </Grid>)
+        }
+    }
+
     return (
         <div>
-            <Grid container xs={12} direction="column" spacing={2} className={classes.container}>
+            <Grid container direction="column" spacing={2} className={classes.container}>
                 <Grid item sm={12} >
                     <FloatCard>
                         <Typography variant="h5" className={classes.title}>Featured Organizations</Typography>
                     </FloatCard>
                 </Grid>
                 <Grid item container direction="row" spacing={2}>
-                    <Grid item xs={12} lg={6}>
-                        <Organization logo={ifs} name="IFS R&D" openings={8} />
-                    </Grid>
-                    <Grid item xs={12} lg={6}>
-                        <Organization logo={wso2} name="WSO2" openings={8} />
-                    </Grid>
-                    <Grid item xs={12} lg={6}>
-                        <Organization logo={ninix} name="99X" openings={8} />
-                    </Grid>
-                    <Grid item xs={12} lg={6}>
-                        <Organization logo={virtusa} name="Virtusa" openings={8} />
-                    </Grid>
-                    <Grid item xs={12} lg={6}>
-                        <Organization logo={mas} name="MAS Holdings" openings={8} />
-                    </Grid>
-                    <Grid item xs={12} lg={6}>
-                        <Organization logo={zone} name="Zone 24x7" openings={8} />
-                    </Grid>
+                    {displayFeaturedOrgs()}
                 </Grid>
                 <Grid item sm={12}>
                     <FloatCard>

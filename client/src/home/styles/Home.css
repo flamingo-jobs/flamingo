@@ -1,8 +1,8 @@
 
-.overlay {
+/* .overlay {
     background-color: rgba(213, 239, 247, 0.705);
     min-height: 100vh;
-}
+} */
 
 .MuiCardContent-root:last-child {
     padding-bottom: 10px !important;

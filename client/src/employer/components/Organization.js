@@ -4,7 +4,6 @@ import { Avatar, Button, Chip, makeStyles, Typography } from '@material-ui/core'
 import { FavoriteRounded } from '@material-ui/icons';
 import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
-import ifs from '../images/ifs.png';
 import FloatCard from '../../components/FloatCard';
 
 const useStyles = makeStyles((theme) => ({
@@ -86,10 +85,10 @@ function Organization(props) {
             <div className={classes.root}>
                 <div className={classes.header}>
                     <div className={classes.headerLeft}>
-                        <Avatar className={classes.logo} src={props.logo} variant="square" />
+                        <Avatar className={classes.logo} src={require(`../images/${props.info.logo}`).default} variant="square" />
                         <div className={classes.info}>
-                            <Typography variant="h6" className={classes.company}>{props.name}</Typography>
-                            <Typography variant="h8">{props.openings} openings</Typography>
+                            <Typography variant="h6" className={classes.company}>{props.info.name}</Typography>
+                            <Typography>{props.info.openings} openings</Typography>
                         </div>
                     </div>
                     <div className={classes.headerRight} >

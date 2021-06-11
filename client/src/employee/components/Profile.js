@@ -43,10 +43,10 @@ function Profile() {
                 <div className="overlay">
                     <React.Fragment>
                         <CssBaseline />
-                        <Container maxWidth="false" className={classes.container}>
+                        <Container maxWidth={false} className={classes.container}>
                             <Grid container direction="row" spacing={3} style={{margin:'0px'}} alignItems="stretch">
                                     
-                                <Grid item xs={0} sm={4} md={3} lg={2} style={{ position: 'fixed' }} className={classes.sideDrawerGrid}>
+                                <Grid item xs={false} sm={4} md={3} lg={2} style={{ position: 'fixed' }} className={classes.sideDrawerGrid}>
                                     {/* <Grid item xs={12}>
                                         <IntroSection/>
                                         <Space />
@@ -58,7 +58,7 @@ function Profile() {
                                         <SideDrawer />
                                     </Grid>                                 
                                 </Grid>
-                                <Grid item xs={0} sm={4} md={3} lg={2} className={classes.sideDrawerGrid}></Grid>
+                                <Grid item xs={false} sm={4} md={3} lg={2} className={classes.sideDrawerGrid}></Grid>
 
                                 <Grid item container direction="row" xs={12} sm={8} md={9} lg={10} spacing={3}>
                                     <Grid item xs={12}>

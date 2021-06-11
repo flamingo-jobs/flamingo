@@ -1,17 +1,17 @@
-const Jobs = require('../models/jobs');
+const Employers = require('../models/employers');
 
 
 const create = (req,res) => {
-    let newJob = new Jobs(req.body);
+    let newEmployer = new Employers(req.body);
 
-    newJob.save((err) => {
+    newEmployer.save((err) => {
         if(err){
             return res.status(400).json({
                 error: err
             });
         }
         return res.status(200).json({
-            success: "Job saved successfully"
+            success: "Employer saved successfully"
         });
 
     });
@@ -19,7 +19,7 @@ const create = (req,res) => {
 }
 
 const getAll = (req,res) => {
-    Jobs.find().exec((err,jobs) => {
+    Employers.find().exec((err,employers) => {
         if(err){
             return res.status(400).json({
                 error: err
@@ -27,13 +27,13 @@ const getAll = (req,res) => {
         }
         return res.status(200).json({
             success: true,
-            existingJobs: jobs
+            existingEmployers: employers
         });
     });
 }
 
 const getById = (req,res) => {
-    Jobs.findById(req.params.id).exec((err,job) => {
+    Employers.findById(req.params.id).exec((err,employer) => {
         if(err){
             return res.status(400).json({
                 error: err
@@ -41,13 +41,13 @@ const getById = (req,res) => {
         }
         return res.status(200).json({
             success: true,
-            job: job
+            employer: employer
         });
     });
 }
 
-const getFeaturedJobs = (req,res) => {
-    Jobs.geoSearch({ isFeatured : true }, (err,featuredJobs) => {
+const getFeaturedEmployers = (req,res) => {
+    Employers.find({ isFeatured : true }, (err,featuredEmployers) => {
         if(err){
             return res.status(400).json({
                 error: err
@@ -55,7 +55,7 @@ const getFeaturedJobs = (req,res) => {
         }
         return res.status(200).json({
             success: true,
-            featuredJobs: featuredJobs
+            featuredEmployers: featuredEmployers
         });
     });
 }
@@ -63,12 +63,12 @@ const getFeaturedJobs = (req,res) => {
 
 const update = (req,res) => {
 
-    Jobs.findByIdAndUpdate(
+    Employers.findByIdAndUpdate(
         req.params.id,
         {
             $set:req.body
         },
-        (err,job) =>{
+        (err,employer) =>{
             if(err){
                 return res.status(400).json({
                     error:err
@@ -82,15 +82,15 @@ const update = (req,res) => {
 }
 
 const remove = (req, res) => {
-    Jobs.findByIdAndDelete(req.params.id).exec((err,deletedJob) => {
+    Employers.findByIdAndDelete(req.params.id).exec((err,deletedEmployer) => {
         if(err){
             return res.status(400).json({
                 error: err
             });
         }
         return res.status(200).json({
-            success: "Job deleted successfully",
-            deletedJob
+            success: "Employer deleted successfully",
+            deletedEmployer
         });
     });
 }
@@ -101,6 +101,6 @@ module.exports = {
     getById,
     update,
     remove,
-    getFeaturedJobs
+    getFeaturedEmployers
 
 }

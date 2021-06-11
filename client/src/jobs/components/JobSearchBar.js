@@ -61,14 +61,14 @@ function JobSearchBar() {
             <div className={classes.root}>
 
                 <Grid container spacing={3} direction="row">
-                    <Grid item sm={3}>
+                    <Grid item sm={5}>
                         <div className={classes.search}>
                             <div className={classes.searchIcon}>
                                 <SearchIcon />
 
                             </div>
                             <InputBase
-                                placeholder="Keyword…"
+                                placeholder="Keywords…"
                                 classes={{
                                     root: classes.inputRoot,
                                     input: classes.inputInput,
@@ -78,7 +78,7 @@ function JobSearchBar() {
                             
                         </div>
                     </Grid>
-                    <Grid item sm={3}>
+                    <Grid item sm={4}>
                         <div className={classes.search}>
                             <div className={classes.searchIcon}>
                                 <LocationOnRoundedIcon />
@@ -95,18 +95,8 @@ function JobSearchBar() {
                         </div>
                     </Grid>
                     <Grid item sm={3}>
-                        <div className={classes.search}>
-                            <div className={classes.searchIcon}>
-                                <WorkRoundedIcon />
-
-                            </div>
-                            <ListDownPopup />
-                            
-                        </div>
-                    </Grid>
-                    <Grid item sm={3}>
-                        <Button variant="contained" color="default">
-                          Jenkins
+                    <Button variant="contained" color="default">
+                        Search
                         </Button>
                     </Grid>
                 </Grid>
