@@ -1,25 +1,20 @@
 ---
-- hosts: dev
+- hosts: all
   become: True
   tasks:
     - name: Install Docker Module for Python
       pip:
         name: docker
-    - name: Get running containers
-      docker_host_info:
-        containers: yes
-      register: docker_info
-
-    - name: Stop running containers
+    - name: Stop previous container
       docker_container:
-        name: "{{ item }}"
+        name: flamingo
+        image: "thatz98/flamingo:{{PREV_DOCKER_TAG}}"
         state: stopped
-      loop: "{{ docker_info.containers | map(attribute='Id') | list }}"
     - name: Start the container
       docker_container:
         name: flamingo
         image: "thatz98/flamingo:{{DOCKER_TAG}}"
         state: started
         published_ports:
-          - 0.0.0.0:3000:8080
+          - 0.0.0.0:3000:3000
     

@@ -1,9 +1,12 @@
 import { Grid, makeStyles, Typography, Button } from '@material-ui/core';
-import React from 'react'
+import React from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import FloatCard from '../../components/FloatCard';
 import JobCard from '../../jobs/components/JobCard';
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
 import theme from '../../Theme';
+
 const useStyles = makeStyles((theme) => ({
     title: {
         fontWeight: 600,
@@ -13,8 +16,8 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: 'unset'
     },
     allJobs: {
-        paddingTop: 20,
-        paddingBottom: 20
+        paddingTop: 9,
+        paddingBottom: 9
     },
     text: {
         color: theme.palette.white
@@ -50,6 +53,39 @@ const useStyles = makeStyles((theme) => ({
 function FeaturedJobs() {
     const classes = useStyles();
 
+    const [featuredJobs, setFeaturedJobs] = useState([]);
+
+    useEffect(() => {
+        retrieveFeaturedJobs()
+    })
+
+    const retrieveFeaturedJobs = () => {
+        axios.get("http://localhost:8000/jobs/featuredJobs").then(res => {
+            if (res.data.success) {
+                setFeaturedJobs(res.data.existingJobs)
+            } else {
+                setFeaturedJobs(null)
+            }
+        })
+    }
+
+    const displayFeaturedJobs = () => {
+        if (featuredJobs) {
+            
+            return featuredJobs.map(featuredJob => (
+                <JobCard info={featuredJob} />
+            ))
+        } else {
+            console.log("executing")
+            return <Typography>No featured Jobs</Typography>
+        }
+    }
+
+    const isEmpty = (obj) => {
+        for (var i in obj) return false;
+        return true;
+    }
+
     return (
         <div>
             <Grid container xs={12} direction="column" spacing={2} className={classes.container}>
@@ -59,15 +95,8 @@ function FeaturedJobs() {
                     </FloatCard>
                 </Grid>
                 <Grid item sm={12}>
-                    <JobCard />
+                    {displayFeaturedJobs()}
                 </Grid>
-                <Grid item sm={12}>
-                    <JobCard />
-                </Grid>
-                <Grid item sm={12}>
-                    <JobCard />
-                </Grid>
-
                 <Grid item sm={12}>
                     <FloatCard>
                         <Button

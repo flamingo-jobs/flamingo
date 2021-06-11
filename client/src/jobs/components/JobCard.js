@@ -75,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
         }
     },
 }))
-function JobCard() {
+function JobCard(props) {
 
     const classes = useStyles();
 
@@ -93,17 +93,17 @@ function JobCard() {
 
             </div>
             <div className={classes.body} >
-                <Typography variant="h5" className={classes.title} >Software Engineer</Typography>
-                <Typography variant="p" className={classes.description} >We are looking for a software engineer to out rapid growing team.</Typography>
+                <Typography variant="h5" className={classes.title} >{props.info.title}</Typography>
+                <Typography variant="p" className={classes.description} >{props.info.description}</Typography>
                 <div className={classes.infoTags}>
-                    <Chip icon={<LocationOnRoundedIcon />} label="Colombo" className={classes.tag} />
-                    <Chip icon={<WorkRoundedIcon />} label="Full-time" className={classes.tag} />
+                    <Chip icon={<LocationOnRoundedIcon />} label={props.info.location} className={classes.tag} />
+                    <Chip icon={<WorkRoundedIcon />} label={props.info.type} className={classes.tag} />
                 </div>
             </div>
             <div className={classes.footer} >
                 <div className={classes.footerLeft}>
                     <Avatar className={classes.logo} src={ifs} variant="square" />
-                    <Typography className={classes.company}>IFS R & D</Typography>
+                    <Typography className={classes.company}>{props.info.organization.name}</Typography>
                 </div>
                 <div className={classes.footerRight} >
                     <Button className={classes.applyButton}>Apply Now</Button>
