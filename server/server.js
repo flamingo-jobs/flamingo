@@ -9,7 +9,7 @@ const app = express();
 const userRoutes = require('./routes/users');
 const jobRoutes = require('./routes/jobs');
 const employerRoutes = require('./routes/employers');
-
+const jobSeekerRoutes = require('./routes/jobseeker');
 
 // app middleware
 app.use(bodyParser.json());
@@ -19,6 +19,7 @@ app.use(cors());
 app.use(userRoutes);
 app.use(jobRoutes);
 app.use(employerRoutes);
+app.use(jobSeekerRoutes);
 
 const PORT = 8000;
 
