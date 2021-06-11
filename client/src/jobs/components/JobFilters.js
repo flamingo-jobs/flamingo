@@ -5,6 +5,7 @@ import theme from '../../Theme'
 import CategoryList from './CategoryList'
 import OrganizationList from './OrganizationList'
 import TitileList from './TitleList'
+import TypeList from './TypeList'
 
 const useStyles = makeStyles(() => ({
 
@@ -16,15 +17,19 @@ function JobFilters() {
 
     return (
         <FloatCard >
+            <div className={classes.types}>
+                <TypeList />
+            </div>
             <div className={classes.categories}>
-<CategoryList />
+                <CategoryList />
             </div>
             <div className={classes.titles}>
-<TitileList />
+                <TitileList />
             </div>
             <div className={classes.organizations}>
-   <OrganizationList />             
+                <OrganizationList />
             </div>
+            
         </FloatCard>
     )
 }

@@ -1,97 +1,65 @@
 import React from 'react'
-import { CssBaseline, Container, ThemeProvider, makeStyles } from '@material-ui/core'
-import FloatCard from '../components/FloatCard'
-import SideDrawer from '../components/SideDrawer'
+import { makeStyles, Typography } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid';
-import Topbar from '../components/Topbar';
-import backgroundImage from './images/background-image.jpg';
-import Footer from '../components/Footer'
 import JobSearchBar from './components/JobSearchBar';
 import JobCard from './components/JobCard';
 import JobFilters from './components/JobFilters';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        background: `url(${backgroundImage}) no-repeat`,
-        backgroundSize: 'cover',
-        minHeight: '100vh'
-    },
-    container: {
-        paddingTop: 20,
-        [theme.breakpoints.down('xs')]: {
-            paddingTop: 0,
-        },
-    },
-    FeaturedOrganizations: {
-        paddingTop: 25
-    },
-    topBarGrid: {
-        [theme.breakpoints.down('xs')]: {
-            display: 'block',
-            maxWidth: 'unset'
-        },
-    },
-    sideDrawerGrid: {
-        [theme.breakpoints.down('xs')]: {
-            display: 'none'
-        },
-    }
+
 }));
 
 function Jobs() {
     const classes = useStyles();
 
-    return (
-        <div className={classes.root}>
-            <div className="overlay">
-                <React.Fragment>
-                    <CssBaseline />
-                    <Container maxWidth={false} className={classes.container}>
-                        <Grid container direction="row" spacing={3} className={classes.topBarGrid} >
-                            <Grid item xs={false} sm={4} md={3} lg={2} style={{ position: 'fixed' }} className={classes.sideDrawerGrid}>
-                                <SideDrawer />
-                            </Grid>
-                            <Grid item xs={false} sm={4} md={3} lg={2} className={classes.sideDrawerGrid}></Grid>
-                            <Grid item container xs={12} sm={8} md={9} lg={10} spacing={3} className={classes.topBarGrid} >
-                                <Grid item sm={12}>
-                                    <Topbar />
-                                </Grid>
-                                <Grid item sm={12}>
-                                    <JobSearchBar />
-                                </Grid>
-                                <Grid item container sm={9} spacing={2} direction="row">
-                                    <Grid item sm={6}>
-                                      <JobCard />
-                                    </Grid>
-                                    <Grid item sm={6}>
-                                      <JobCard />
-                                    </Grid>
-                                    <Grid item sm={6}>
-                                      <JobCard />
-                                    </Grid>
-                                    <Grid item sm={6}>
-                                      <JobCard />
-                                    </Grid>
-                                    <Grid item sm={6}>
-                                      <JobCard />
-                                    </Grid>
-                                    <Grid item sm={6}>
-                                      <JobCard />
-                                    </Grid>
-                                    <Grid item sm={6}>
-                                      <JobCard />
-                                    </Grid>
-                                </Grid>
-                                <Grid item sm={3}>
-                                    <JobFilters />
-                                </Grid>
+    const [jobs, setJobs] = useState([]);
 
-                            </Grid>
-                        </Grid>
-                    </Container>
-                </React.Fragment>
-            </div>
-        </div>
+    useEffect(() => {
+        retrieveJobs()
+    })
+
+    const retrieveJobs = () => {
+        axios.get("http://localhost:8000/jobs").then(res => {
+            if (res.data.success) {
+                setJobs(res.data.existingJobs)
+            } else {
+                setJobs(null)
+            }
+        })
+    }
+
+    const displayJobs = () => {
+        if (jobs) {
+
+            return jobs.map(job => (
+                <Grid item sm={6}>
+                    <JobCard info={job} />
+                </Grid>
+            ))
+        } else {
+            return (
+                <Grid item sm={12}>
+                    <Typography>No featured Jobs</Typography>
+                </Grid>)
+        }
+    }
+
+    return (
+        <>
+            <Grid item container sm={12} spacing={3} direction="row" justify="space-between">
+                <Grid item sm={12}>
+                    <JobSearchBar />
+                </Grid>
+                <Grid item container sm={9} spacing={2} direction="row">
+                    {displayJobs()}
+                </Grid>
+                <Grid item sm={3}>
+                    <JobFilters />
+                </Grid>
+            </Grid>
+        </>
     )
 }
 
