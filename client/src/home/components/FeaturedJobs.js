@@ -62,7 +62,7 @@ function FeaturedJobs() {
     const retrieveFeaturedJobs = () => {
         axios.get("http://localhost:8000/jobs/featuredJobs").then(res => {
             if (res.data.success) {
-                setFeaturedJobs(res.data.existingJobs)
+                setFeaturedJobs(res.data.featuredJobs)
             } else {
                 setFeaturedJobs(null)
             }
@@ -71,13 +71,17 @@ function FeaturedJobs() {
 
     const displayFeaturedJobs = () => {
         if (featuredJobs) {
-            
+
             return featuredJobs.map(featuredJob => (
-                <JobCard info={featuredJob} />
+                <Grid item sm={12}>
+                    <JobCard info={featuredJob} />
+                </Grid>
             ))
         } else {
-            console.log("executing")
-            return <Typography>No featured Jobs</Typography>
+            return (
+                <Grid item sm={12}>
+                    <Typography>No featured Jobs</Typography>
+                </Grid>)
         }
     }
 
@@ -88,15 +92,13 @@ function FeaturedJobs() {
 
     return (
         <div>
-            <Grid container xs={12} direction="column" spacing={2} className={classes.container}>
+            <Grid container direction="column" spacing={2} className={classes.container}>
                 <Grid item sm={12} >
                     <FloatCard>
                         <Typography variant="h5" className={classes.title}>Featured Jobs</Typography>
                     </FloatCard>
                 </Grid>
-                <Grid item sm={12}>
-                    {displayFeaturedJobs()}
-                </Grid>
+                {displayFeaturedJobs()}
                 <Grid item sm={12}>
                     <FloatCard>
                         <Button

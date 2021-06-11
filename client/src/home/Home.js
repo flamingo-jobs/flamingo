@@ -81,13 +81,13 @@ function Home() {
     return (
         <div className={classes.root}>
             <div className="overlay">
-                <Container maxWidth="false" className={classes.container}>
+                <Container maxWidth={false} className={classes.container}>
                     <Grid container direction="row" spacing={3} className={classes.mainGrid} justify="space-between"
                         alignItems="flex-start">
-                        <Grid item xs={0} sm={4} md={3} lg={2} className={classes.sideDrawer}>
+                        <Grid item xs={false} sm={4} md={3} lg={2} className={classes.sideDrawer}>
                             <SideDrawer />
                         </Grid>
-                        <Grid item xs={0} sm={4} md={3} lg={2} className={classes.sideDrawerGrid}></Grid>
+                        <Grid item xs={false} sm={4} md={3} lg={2} className={classes.sideDrawerGrid}></Grid>
                         <Grid item container xs={12} sm={8} md={9} lg={10} spacing={3} className={classes.topBarGrid} direction="column"
                             justify="space-between">
                             <Grid item sm={12}>

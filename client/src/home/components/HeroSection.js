@@ -57,7 +57,7 @@ function HeroSection() {
                 alignItems="center">
                 <Grid item xs={12} md={6} className={classes.text}>
                     <Typography variant="h2" className={classes.h2}>Find the Career You Deserve !</Typography>
-                    <Typography varient="h4" className={classes.h4}>img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text Search for the keywords to learn more about each warning. To ignore, add // eslint-disable-next-line to the line before.</Typography>
+                    <Typography variant="h6" className={classes.h4}>img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text Search for the keywords to learn more about each warning. To ignore, add // eslint-disable-next-line to the line before.</Typography>
                     <Button className={classes.button}>GET HIRED</Button>
                 </Grid>
                 <Grid item xs={12} md={6}>

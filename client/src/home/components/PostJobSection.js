@@ -56,7 +56,7 @@ function PostJobSection() {
             <div className={classes.text}>
                 <Typography variant="h5" className={classes.heading}>Hiring will never be the same again.</Typography>
                 
-                <Typography variant="p" className={classes.description}>We are an end-to-end recruitment platform that helps businesses like yourself, find the right candidates as smoothly as possible.</Typography>
+                <Typography className={classes.description}>We are an end-to-end recruitment platform that helps businesses like yourself, find the right candidates as smoothly as possible.</Typography>
                 <Lottie
                         options={defaultOptions}
                         height={250}
