@@ -11,7 +11,7 @@ function App() {
     <div className="App">
       <BrowserRouter >
         <ThemeProvider theme={theme}>
-          <Route path="(/|/jobs|/employer)" exact>
+          <Route path="(/|/jobs|/employer|/employee)" exact>
             <Base />
           </Route>
           <Route path="/signIn" exact>
