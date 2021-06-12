@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
@@ -26,7 +26,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import InfoIcon from '@material-ui/icons/Info';
 
 
-const styles = theme => ({
+const useStyles = makeStyles((theme) => ({
   media: {
     height: '150px',
     width: '150px',
@@ -74,75 +74,65 @@ const styles = theme => ({
     margin: "20px",
     display: "flex",
     fontSize: "16px"
-  },
-});
-
-class IntroSection extends Component {
-
-  constructor(props){
-    super(props);
-    this.onChangeName = this.onChangeName.bind(this);
-    this.onChangeIntro = this.onChangeIntro.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-
-    this.state = {
-      open: false,
-
-      name: '',
-      intro: ''
-    }
   }
+}));
 
-  componentDidMount(){
+
+
+function IntroSection() {
+
+  const classes = useStyles();
+  const [open, setOpen] = useState(false);
+  const [state, setState] = useState({name:'bbb', intro:'ccc'});
+  const name = state.name;
+  const intro = state.intro;
+
+
+  useEffect(()=>{
     axios.get('http://localhost:8000/jobseeker/60c307a5e6fc9d330c02c2d2')
     .then(res => {
       if(res.data.success){
-        this.setState({
+        setState({
           name: res.data.jobseeker.name,
-          intro: res.data.jobseeker.intro,
+          intro: res.data.jobseeker.intro
         })
       }
     })
+  },[])
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  function onChangeName(e){
+    setState(prevState => {
+      return {...prevState, name: e.target.value}
+    })
   }
 
-  onChangeName(e){
-    this.setState({
-      name: e.target.value
-    });
+  function onChangeIntro(e){
+    setState(prevState => {
+      return {...prevState, intro: e.target.value}
+    })
   }
 
-  onChangeIntro(e){
-    this.setState({
-      intro: e.target.value
-    });
-  }
-
-  onSubmit(e){
+  function onSubmit(e){
     e.preventDefault();
     const jobseeker = {
-      name: this.state.name,
-      intro: this.state.intro
+      name: name,
+      intro: intro
     }
 
     axios.put('http://localhost:8000/jobseeker/update/60c307a5e6fc9d330c02c2d2',jobseeker)
     .then(res => console.log(jobseeker));
   }
 
-
-  render(){
-    const { classes } = this.props;
-
-    const handleOpen = () => {
-      this.setState({open: true});
-    };
-
-    const handleClose = () => {
-      this.setState({open: false});
-    };
     return (
       <FloatCard>
-  
-  
         <Button className={classes.defaultButton} style={{ float: 'right',marginRight: '0px',backgroundColor:'white'}} onClick={handleOpen}>
             <EditIcon style={{color: theme.palette.tuftsBlue,}} />
         </Button>
@@ -152,7 +142,7 @@ class IntroSection extends Component {
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
           className={classes.modal}
-          open={this.state.open}
+          open={open}
           onClose={handleClose}
           closeAfterTransition
           BackdropComponent={Backdrop}
@@ -160,17 +150,17 @@ class IntroSection extends Component {
             timeout: 500,
           }}
         >
-          <Fade in={this.state.open}>
+          <Fade in={open}>
             <div className={classes.paper}>
               {/* <h2 id="transition-modal-title">Transition modal</h2>
               <p id="transition-modal-description">react-transition-group animates me.</p> */}
-              <form className={classes.form} onSubmit={this.onSubmit}>
+              <form className={classes.form} onSubmit={onSubmit}>
                   <TextField
                     className={classes.field}
                     id="input-with-icon-textfield"
                     label="Name"
-                    value= {this.state.name}
-                    onChange= {this.onChangeName}
+                    value= {name}
+                    onChange= {onChangeName}
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
@@ -183,8 +173,8 @@ class IntroSection extends Component {
                     className={classes.field}
                     id="input-with-icon-textfield"
                     label="Description"
-                    value= {this.state.intro}
-                    onChange= {this.onChangeIntro}
+                    value= {intro}
+                    onChange= {onChangeIntro}
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
@@ -208,10 +198,10 @@ class IntroSection extends Component {
         </Typography>
           <CardContent>
             <Typography gutterBottom variant="h5" style={{color: theme.palette.stateBlue,}}>
-              {this.state.name}
+              {name}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',}}>
-              {this.state.intro}
+              {intro}
             </Typography>
           </CardContent>
   
@@ -233,7 +223,7 @@ class IntroSection extends Component {
       </FloatCard>
     );
   }
-}
+
   
 
-export default withStyles(styles)(IntroSection)
+export default IntroSection
