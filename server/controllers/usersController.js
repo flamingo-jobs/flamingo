@@ -19,17 +19,15 @@ const create = (req,res) => {
 }
 
 const getAll = (req,res) => {
-    Users.find().exec((err,users) => {
-        if(err){
-            return res.status(400).json({
-                error: err
-            })
-        }
+const users = [{
+    username: "thatz98",
+    password: "dsifhjoihjfoi"
+}]
         return res.status(200).json({
             success: true,
             existingUsers: users
         });
-    });
+
 }
 
 const getById = (req,res) => {
