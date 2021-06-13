@@ -6,6 +6,8 @@ import FloatCard from '../../components/FloatCard';
 import JobCard from '../../jobs/components/JobCard';
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
 import theme from '../../Theme';
+import BACKEND_URL from '../../Config';
+
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -60,7 +62,7 @@ function FeaturedJobs() {
     })
 
     const retrieveFeaturedJobs = () => {
-        axios.get("http://localhost:8000/jobs/featuredJobs").then(res => {
+        axios.get(`${BACKEND_URL}/jobs/featuredJobs`).then(res => {
             if (res.data.success) {
                 setFeaturedJobs(res.data.featuredJobs)
             } else {

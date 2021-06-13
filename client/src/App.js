@@ -4,18 +4,22 @@ import { ThemeProvider } from '@material-ui/styles';
 import theme from './Theme';
 import { Route, BrowserRouter } from 'react-router-dom';
 import Base from './Base';
-
+import Users from './Users';
+import BACKEND_URL from './Config.js';
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter >
         <ThemeProvider theme={theme}>
-          <Route path="(/|/jobs|/employer|/employee)" exact>
+          <Route path="(/|/jobs|/employer|/employee|/jobDescription)" exact>
             <Base />
           </Route>
           <Route path="/signIn" exact>
             <SignInSide />
+          </Route>
+          <Route path="/users" exact>
+            <Users />
           </Route>
         </ThemeProvider>
       </BrowserRouter>

@@ -11,6 +11,8 @@ import zone from '../images/zone.png'
 import mas from '../images/mas.png'
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
 import axios from 'axios';
+import BACKEND_URL from '../../Config';
+
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -44,7 +46,7 @@ function FeaturedOrganizations() {
     })
 
     const retrieveFeaturedOrgs = () => {
-        axios.get("http://localhost:8000/employers/featuredEmployers").then(res => {
+        axios.get(`${BACKEND_URL}/employers/featuredEmployers`).then(res => {
             if (res.data.success) {
                 setFeaturedOrgs(res.data.featuredEmployers)
             } else {

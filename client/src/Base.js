@@ -12,6 +12,7 @@ import './App.css';
 import { Route } from 'react-router-dom';
 import Jobs from './jobs/Jobs';
 import Employer from './employer/Employer';
+import JobDescription from "./jobDescription/jobDescription";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -99,6 +100,9 @@ function Base() {
                 </Route>
                 <Route path="/employer" exact>
                   <Employer />
+                </Route>
+                <Route path="/jobDescription" exact>
+                  <JobDescription />
                 </Route>
 
                 {/* ends your routes here */}
