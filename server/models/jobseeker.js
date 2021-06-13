@@ -8,6 +8,18 @@ const jobseekerSchema = new mongoose.Schema({
     intro: {
         type: String,
         required: true
+    },
+    education: {
+        type: Array,
+        required: true
+    },
+    workExperience: {
+        type: Array,
+        required: true
+    },
+    projects: {
+        type: Array,
+        required: true
     }
     
 });
