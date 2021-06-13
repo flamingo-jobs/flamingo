@@ -24,6 +24,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import InfoIcon from '@material-ui/icons/Info';
+import BACKEND_URL from '../../Config';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -89,7 +90,7 @@ function IntroSection() {
 
 
   useEffect(()=>{
-    axios.get('http://localhost:8000/jobseeker/60c307a5e6fc9d330c02c2d2')
+    axios.get(`${BACKEND_URL}/jobseeker/60c307a5e6fc9d330c02c2d2`)
     .then(res => {
       if(res.data.success){
         setState({
@@ -127,7 +128,7 @@ function IntroSection() {
       intro: intro
     }
 
-    axios.put('http://localhost:8000/jobseeker/update/60c307a5e6fc9d330c02c2d2',jobseeker)
+    axios.put(`${BACKEND_URL}/jobseeker/update/60c307a5e6fc9d330c02c2d2`,jobseeker)
     .then(res => console.log(jobseeker));
   }
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import BACKEND_URL from './Config';
 
 function Users() {
 
@@ -10,7 +11,7 @@ function Users() {
     })
 
     const retrieveUsers = () => {
-        axios.get("http://localhost:8000/users").then(res => {
+        axios.get(`${BACKEND_URL}/users`).then(res => {
             if (res.data.success) {
                 setUsers(res.data.existingUsers)
             }

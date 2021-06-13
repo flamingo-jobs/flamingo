@@ -6,6 +6,7 @@ import JobCard from './components/JobCard';
 import JobFilters from './components/JobFilters';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import BACKEND_URL from '../Config';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -21,7 +22,7 @@ function Jobs() {
     })
 
     const retrieveJobs = () => {
-        axios.get("http://localhost:8000/jobs").then(res => {
+        axios.get(`${BACKEND_URL}/jobs`).then(res => {
             if (res.data.success) {
                 setJobs(res.data.existingJobs)
             } else {

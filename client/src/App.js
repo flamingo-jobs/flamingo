@@ -5,6 +5,7 @@ import theme from './Theme';
 import { Route, BrowserRouter } from 'react-router-dom';
 import Base from './Base';
 import Users from './Users';
+import BACKEND_URL from './Config.js';
 
 function App() {
   return (
