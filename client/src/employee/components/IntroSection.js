@@ -23,7 +23,7 @@ import Fade from '@material-ui/core/Fade';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import InfoIcon from '@material-ui/icons/Info';
+import CloseIcon from '@material-ui/icons/Close';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -42,8 +42,19 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 20,
     paddingRight: 20,
     "&:hover": {
-      backgroundColor: theme.palette.mediumTurquoise,
+      backgroundColor: '#0088cc',
       color: 'white',
+    }
+  },
+  editIcon: {
+    "&:hover": {
+      fontSize: "30px",
+    }
+  },
+  closeIcon: {
+    "&:hover": {
+      fontSize: "25px",
+      color: "#b30000 !important"
     }
   },
   changePicture: {
@@ -73,7 +84,13 @@ const useStyles = makeStyles((theme) => ({
   field: {
     margin: "20px",
     display: "flex",
-    fontSize: "16px"
+    fontSize: "16px",
+    marginTop: "40px",
+    "& label": {
+      color: theme.palette.tuftsBlue,
+      fontSize: '20px',
+      fontWeight: 'bold',
+    }
   }
 }));
 
@@ -89,7 +106,7 @@ function IntroSection() {
 
 
   useEffect(()=>{
-    axios.get('http://localhost:8000/jobseeker/60c307a5e6fc9d330c02c2d2')
+    axios.get('http://localhost:8000/jobseeker/60c5f2e555244d11c8012480')
     .then(res => {
       if(res.data.success){
         setState({
@@ -100,13 +117,13 @@ function IntroSection() {
     })
   },[])
 
-  const handleOpen = () => {
+  function handleOpen(){
     setOpen(true);
-  };
+  }
 
-  const handleClose = () => {
+  function handleClose(){
     setOpen(false);
-  };
+  }
 
   function onChangeName(e){
     setState(prevState => {
@@ -127,14 +144,15 @@ function IntroSection() {
       intro: intro
     }
 
-    axios.put('http://localhost:8000/jobseeker/update/60c307a5e6fc9d330c02c2d2',jobseeker)
+    axios.put('http://localhost:8000/jobseeker/update/60c5f2e555244d11c8012480',jobseeker)
     .then(res => console.log(jobseeker));
+    handleClose();
   }
 
     return (
       <FloatCard>
         <Button className={classes.defaultButton} style={{ float: 'right',marginRight: '0px',backgroundColor:'white'}} onClick={handleOpen}>
-            <EditIcon style={{color: theme.palette.tuftsBlue,}} />
+            <EditIcon className={classes.editIcon} style={{color: theme.palette.tuftsBlue,}} />
         </Button>
   
         {/* edit popup content */}
@@ -152,8 +170,9 @@ function IntroSection() {
         >
           <Fade in={open}>
             <div className={classes.paper}>
-              {/* <h2 id="transition-modal-title">Transition modal</h2>
-              <p id="transition-modal-description">react-transition-group animates me.</p> */}
+            <Button className={classes.defaultButton} style={{ float: 'right',marginRight: '-30px',backgroundColor:'white'}} onClick={handleOpen}>
+                <CloseIcon className={classes.closeIcon} style={{color: '#666',}} />
+            </Button>
               <form className={classes.form} onSubmit={onSubmit}>
                   <TextField
                     className={classes.field}
@@ -171,17 +190,13 @@ function IntroSection() {
                   />
                   <TextField
                     className={classes.field}
-                    id="input-with-icon-textfield"
+                    id="outlined-multiline-static"
                     label="Description"
+                    multiline
+                    rows={5}
+                    variant="outlined"
                     value= {intro}
                     onChange= {onChangeIntro}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <InfoIcon color="action" />
-                        </InputAdornment>
-                      ),
-                    }}
                   />
                   <Button type="submit" className={classes.defaultButton} style={{ float: 'right',marginRight:'20px'}}>Apply Changes</Button>
               </form>
