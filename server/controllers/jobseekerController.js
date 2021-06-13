@@ -33,7 +33,7 @@ const getAll = (req,res) => {
 }
 
 const getById = (req,res) => {
-    Jobs.findById(req.params.id).exec((err,jobseeker) => {
+    Jobseeker.findById(req.params.id).exec((err,jobseeker) => {
         if(err){
             return res.status(400).json({
                 error: err
