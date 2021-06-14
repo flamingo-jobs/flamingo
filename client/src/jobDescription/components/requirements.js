@@ -36,18 +36,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Requirements = () => {
+const Requirements = (props) => {
   const classes = useStyles();
 
   const [readMore, setReadMore] = useState(false);
-  const [reqs, setReqs] = useState([
-    "Knowledge of Docker, AWS/GCP/Azure and Serverless technologies would be advantageous",
-    "Knowledge of Docker, AWS/GCP/Azure and Serverless technologies would be advantageous",
-    "Proficiency with React JS",
-    "Proficiency in node.js",
-    "Proficiency with NoSQL and MySQL",
-    "Good understanding on Restful web services and data formats such as JSON and XML",
-  ]);
+  const [reqs, setReqs] = useState(props.requirements);
 
   const firstHalf = reqs.slice(0, 5);
   const secondHalf = reqs.slice(5);

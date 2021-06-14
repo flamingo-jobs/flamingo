@@ -48,15 +48,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const JobSummary = ({
-  title,
-  organization,
-  location,
-  type,
-  postedDate,
-  dueDate,
-  description,
-}) => {
+function JobSummary(props){
   const classes = useStyles();
 
   return (
@@ -65,7 +57,7 @@ const JobSummary = ({
         <Grid container alignItems="center" spacing={2}>
           <Grid item xs={12} md={8}>
             <Typography variant="h5" className={classes.jobTitle}>
-              {title}
+              {props.job.title}
             </Typography>
             <Grid item container spacing={2} alignItems="center">
               <Grid item>
@@ -73,14 +65,13 @@ const JobSummary = ({
               </Grid>
               <Grid item>
                 <Typography variant="h6" className={classes.companyName}>
-                  {/* {organization.name} */}
-                  wwwwwwwwww
+                  {props.job.organization.name}
                 </Typography>
                 <Typography
                   variant="subtitle2"
                   className={classes.companyAddress}
                 >
-                  {location}
+                  {props.job.location}
                 </Typography>
               </Grid>
             </Grid>
@@ -96,18 +87,18 @@ const JobSummary = ({
                   <WorkOutlineIcon fontSize="small"></WorkOutlineIcon>
                 </Grid>
                 <Grid item>
-                  <Typography variant="subtitle2">{type}</Typography>
+                  <Typography variant="subtitle2">{props.job.type}</Typography>
                 </Grid>
               </Grid>
               <Grid item container className={classes.jobCategory} spacing={3}>
                 <Grid item>
                   <Typography variant="subtitle2">
-                    Posted Date: {postedDate}
+                    Posted Date: {props.job.postedDate}
                   </Typography>
                 </Grid>
                 <Grid item>
                   <Typography variant="subtitle2">
-                    Due Date: {dueDate}
+                    Due Date: {props.job.dueDate}
                   </Typography>
                 </Grid>
               </Grid>
@@ -125,7 +116,7 @@ const JobSummary = ({
         </Grid>
       </Container>
       <Container className={classes.jobDetailsContainer}>
-        <Typography>{description}</Typography>
+        <Typography>{props.job.description}</Typography>
       </Container>
     </Container>
   );
