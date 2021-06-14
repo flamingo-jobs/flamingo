@@ -6,7 +6,9 @@ import Grid from '@material-ui/core/Grid';
 import backgroundImage from './images/background-image.jpg';
 import Topbar from './components/Topbar'
 import CompanyInfo from './components/CompanyInfo'
-import ProfileStatCard from './components/ProfileStatCard'
+import TechStack from './components/TechStack'
+import FeaturedJobs from './components/FeaturedJobs'
+import Footer from '../components/Footer'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -64,19 +66,21 @@ const Employer = () => {
                                             <CompanyInfo></CompanyInfo>
                                     </Grid>
                                     <Grid item sm={6} md={5} >
-                                        <ProfileStatCard></ProfileStatCard>
+                                        <TechStack></TechStack>
                                     </Grid>
-                                    {/* <Grid item container xs={12} md={6}>
-                                        <Grid item sm={12}>
-                                            <PostJobSection />
+
+                                    <Grid item container xs={8}>
+                                        
+                                        <Grid item xs={8}>
+                                            <FeaturedJobs></FeaturedJobs>
                                         </Grid>
-                                        <Grid item sm={12} className={classes.FeaturedOrganizations}>
-                                            <FeaturedOrganizations />
+                                        <Grid item sm={8} className={classes.FeaturedOrganizations}>
+                                            {/* <FeaturedOrganizations /> */}
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={12}>
                                         <Footer />
-                                    </Grid> */}
+                                    </Grid>
                                 </Grid>
                             </Grid>
                         </Container>
