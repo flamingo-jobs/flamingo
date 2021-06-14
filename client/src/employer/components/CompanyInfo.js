@@ -250,7 +250,7 @@ function CompanyInfo() {
 
                             <div>
                                 
-                                <Chip icon={<LocalOfferRoundedIcon className={classes.tagIcon} />} label="ERP Condulting" className={classes.label} />
+                                <Chip icon={<LocalOfferRoundedIcon className={classes.tagIcon} />} label="ERP Consulting" className={classes.label} />
                                 <Chip icon={<LocalOfferRoundedIcon className={classes.tagIcon} />} label="R & D" className={classes.label} />
                                 <Chip icon={<LocalOfferRoundedIcon className={classes.tagIcon} />} label="Project Management" className={classes.label} />
                             </div>
