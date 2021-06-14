@@ -9,6 +9,34 @@ import axios from 'axios';
 import BACKEND_URL from '../Config';
 
 const useStyles = makeStyles((theme) => ({
+    jobsGrid: {
+        [theme.breakpoints.down('sm')]: {
+            maxWidth: 'unset',
+            flexDirection: 'column'
+        },
+        [theme.breakpoints.down('xs')]: {
+            order: 3
+        },
+    },
+    mainGrid: {
+        [theme.breakpoints.down('sm')]: {
+            flexDirection: 'column'
+        },
+        [theme.breakpoints.down('xs')]: {
+            paddingRight: 12,
+            paddingLeft: 12
+        },
+    },
+    filterGrid:{
+        [theme.breakpoints.down('xs')]: {
+            order: 2
+        },
+    },
+    searchGrid:{
+        [theme.breakpoints.down('xs')]: {
+            order: 1
+        },
+    }
 
 }));
 
@@ -35,7 +63,7 @@ function Jobs() {
         if (jobs) {
 
             return jobs.map(job => (
-                <Grid item sm={6}>
+                <Grid item xs={12} md={12} lg={6}>
                     <JobCard info={job} />
                 </Grid>
             ))
@@ -49,14 +77,14 @@ function Jobs() {
 
     return (
         <>
-            <Grid item container sm={12} spacing={3} direction="row" justify="space-between">
-                <Grid item sm={12}>
+            <Grid item container sm={12} spacing={3} direction="row" justify="space-between" className={classes.mainGrid} >
+                <Grid item sm={12} className={classes.searchGrid}>
                     <JobSearchBar />
                 </Grid>
-                <Grid item container sm={9} spacing={2} direction="row">
+                <Grid item container xs={12} sm={12} md={8} lg={9} spacing={2} direction="row" className={classes.jobsGrid} alignItems="stretch">
                     {displayJobs()}
                 </Grid>
-                <Grid item sm={3}>
+                <Grid item xs={12} sm={12} md={4} lg={3} className={classes.filterGrid}>
                     <JobFilters />
                 </Grid>
             </Grid>
