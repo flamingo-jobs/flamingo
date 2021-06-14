@@ -9,7 +9,7 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
 import StarBorderOutlinedIcon from "@material-ui/icons/StarBorderOutlined";
 
-const testStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme) => ({
   border: {
     border: "1px solid red",
   },
@@ -31,8 +31,8 @@ const testStyles = makeStyles((theme) => ({
   },
 }));
 
-const Responsibilities = () => {
-  const { border, res, resTitle, readMoreBtn } = testStyles();
+const Responsibilities = ({responsibilities}) => {
+  const classes = useStyles();
 
   const [readMore, setReadMore] = useState(false);
   const [duties, setDuties] = useState([
@@ -42,36 +42,36 @@ const Responsibilities = () => {
     "Manage the development environments and code branches.",
     "Manage the development environments and code branches.",
   ]);
-  const firstHalf = duties.slice(0, 5);
-  const secondHalf = duties.slice(5);
+  const firstHalf = duties;
+  console.log(firstHalf);
 
   const buttonName = readMore ? "Read Less << " : "Read More >> ";
 
   return (
-    <Container className={res}>
-      <Typography variant="h6" className={resTitle}>
+    <Container className={classes.res}>
+      <Typography variant="h6" className={classes.resTitle}>
         Duties and Responsibilities
       </Typography>
       <List dense={true}>
         {firstHalf.map((dutie) => (
-          <ListItem key={duties.indexOf(dutie)}>
+          <ListItem key={firstHalf.indexOf(dutie)}>
             <ListItemIcon>
               <StarBorderOutlinedIcon />
             </ListItemIcon>
             <ListItemText primary={dutie} />
           </ListItem>
         ))}
-        {readMore &&
+        {/* {readMore &&
           secondHalf.map((dutie) => (
-            <ListItem key={duties.indexOf(dutie)}>
+            <ListItem key={responsibilities.indexOf(dutie)}>
               <ListItemIcon>
                 <StarBorderOutlinedIcon />
               </ListItemIcon>
               <ListItemText primary={dutie} />
             </ListItem>
-          ))}
+          ))} */}
       </List>
-      {duties.length > 5 && (
+      {/* {responsibilities.length > 5 && (
         <a
           className={readMoreBtn}
           onClick={() => {
@@ -80,7 +80,7 @@ const Responsibilities = () => {
         >
           {buttonName}
         </a>
-      )}
+      )} */}
     </Container>
   );
 };
