@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 
 }))
 
-function ProfileStatCard() {
+function TechStack() {
 
     const classes = useStyles();
 
@@ -85,4 +85,4 @@ function ProfileStatCard() {
     )
 }
 
-export default ProfileStatCard
+export default TechStack
