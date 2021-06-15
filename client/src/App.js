@@ -1,4 +1,5 @@
 import SignInSide from './signIn/components/SignInSide.js';
+import SignUp from './signUp/SignUp.js'
 import './App.css';
 import { ThemeProvider } from '@material-ui/styles';
 import theme from './Theme';
@@ -17,6 +18,9 @@ function App() {
           </Route>
           <Route path="/signIn" exact>
             <SignInSide />
+          </Route>
+          <Route path="/signUp" exact>
+            <SignUp />
           </Route>
           <Route path="/users" exact>
             <Users />
