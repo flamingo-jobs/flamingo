@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
@@ -6,15 +6,11 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import DraftsIcon from '@material-ui/icons/Drafts';
-import SendIcon from '@material-ui/icons/Send';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import StarBorder from '@material-ui/icons/StarBorder';
-import { Avatar, Checkbox, IconButton, ListItemSecondaryAction, Typography } from '@material-ui/core';
-import CommentIcon from '@material-ui/icons/Comment';
-import theme from '../../Theme';
+import { Avatar, Checkbox, ListItemSecondaryAction, Typography } from '@material-ui/core';
+import BACKEND_URL from '../../Config';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -54,9 +50,10 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function CategoryList() {
+export default function CategoryList(props) {
     const classes = useStyles();
     const [openCategories, setOpenCategories] = React.useState(true);
+    const [categories, setCategories] = useState([]);
 
     const handleCategoryClick = () => {
         setOpenCategories(!openCategories);
@@ -64,20 +61,90 @@ export default function CategoryList() {
     };
 
 
-    const [checked, setChecked] = React.useState([0]);
+    const [checked, setChecked] = useState([]);
 
-    const handleToggle = (value) => () => {
-        const currentIndex = checked.indexOf(value);
+    useEffect(() => {
+        passFilters();
+    }, [checked])
+
+    useEffect(() => {
+        retrieveCategories();
+    }, [])
+
+    const handleToggle = (value, itemId) => () => {
+
         const newChecked = [...checked];
+        const itemObj = { index: itemId, name: value };
+        const currentIndex = checked.findIndex(x => x.index === itemId);
 
         if (currentIndex === -1) {
-            newChecked.push(value);
+            newChecked.push(itemObj);
         } else {
             newChecked.splice(currentIndex, 1);
         }
 
         setChecked(newChecked);
+
+
     };
+
+    const passFilters = () => {
+        let values = [];
+        if (checked.length == 0) {
+            props.onChange(0);
+        } else {
+            checked.map((value) => values.push(value.name));
+            props.onChange({ $in: values });
+        }
+
+
+    }
+
+
+    const retrieveCategories = () => {
+        // console.log(filters);
+        axios.get(`${BACKEND_URL}/categories`).then(res => {
+            if (res.data.success) {
+                setCategories(res.data.existingCategories)
+            } else {
+                setCategories(null)
+            }
+        })
+    }
+    
+    const displayCategories = () => {
+
+        if (categories) {
+            return categories.map(category => {
+                const labelId = `category-list-${category._id}`;
+                const itemId = category._id;
+                return (
+                    <ListItem className={classes.listItem} key={itemId} role={undefined} dense button onClick={handleToggle(category.name, itemId)}>
+                        <ListItemIcon className={classes.itemCheckBox}>
+                            <Checkbox
+                                edge="start"
+                                checked={checked.findIndex(x => x.index === itemId) !== -1}
+                                tabIndex={-1}
+                                disableRipple
+                                inputProps={{ 'aria-labelledby': labelId }}
+                                className={classes.checkBox}
+                            />
+                        </ListItemIcon>
+                        <ListItemText id={labelId} primary={category.name} />
+                        <ListItemSecondaryAction>
+                            <Avatar className={classes.count} variant="square" >
+                                <Typography className={classes.countText}>{category.count}</Typography>
+                            </Avatar>
+                        </ListItemSecondaryAction>
+                    </ListItem>
+                )
+            })
+        } else {
+            return (
+                <Typography>No category available</Typography>
+            )
+        }
+    }
 
     return (
         <>
@@ -91,34 +158,11 @@ export default function CategoryList() {
                 </ListItem>
                 <Collapse in={openCategories} timeout="auto" unmountOnExit>
                     <List className={classes.root}>
-                        {[{ id: 1, name: "Design", count: 25 }, { id: 2, name: "Development", count: 145 }, { id: 3, name: "QA", count: 15 }, { id: 4, name: "DevOps", count: 34 }].map((value) => {
-                            const labelId = `category-list-${value.id}`;
-                            const itemId = value.id + 1000;
-                            return (
-                                <ListItem className={classes.listItem} key={itemId} role={undefined} dense button onClick={handleToggle(itemId)}>
-                                    <ListItemIcon className={classes.itemCheckBox}>
-                                        <Checkbox
-                                            edge="start"
-                                            checked={checked.indexOf(itemId) !== -1}
-                                            tabIndex={-1}
-                                            disableRipple
-                                            inputProps={{ 'aria-labelledby': labelId }}
-                                            className={classes.checkBox}
-                                        />
-                                    </ListItemIcon>
-                                    <ListItemText id={labelId} primary={value.name} />
-                                    <ListItemSecondaryAction>
-                                        <Avatar className={classes.count} variant="square" >
-                                            <Typography className={classes.countText}>{value.count}</Typography>
-                                        </Avatar>
-                                    </ListItemSecondaryAction>
-                                </ListItem>
-                            );
-                        })}
+                        {displayCategories()}
                     </List>
                 </Collapse>
             </List>
-        
+
         </>
     );
 }

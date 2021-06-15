@@ -8,7 +8,7 @@ router.post('/jobs/create', jobsController.create);
 
 // get jobs
 
-router.get('/jobs', jobsController.getAll);
+router.post('/jobs', jobsController.getAll);
 
 // get specific
 

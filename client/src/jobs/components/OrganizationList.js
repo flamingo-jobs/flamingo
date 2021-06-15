@@ -1,20 +1,15 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import DraftsIcon from '@material-ui/icons/Drafts';
-import SendIcon from '@material-ui/icons/Send';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import StarBorder from '@material-ui/icons/StarBorder';
-import { Avatar, Checkbox, IconButton, ListItemSecondaryAction, Typography } from '@material-ui/core';
-import CommentIcon from '@material-ui/icons/Comment';
-import theme from '../../Theme';
+import { Avatar, Checkbox, ListItemSecondaryAction, Typography } from '@material-ui/core';
+import axios from 'axios';
+import BACKEND_URL from '../../Config';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -54,30 +49,99 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function OrganizationList() {
+export default function OrganizationList(props) {
     const classes = useStyles();
 
-    const [openOrganizations, setOpenOrganizations] = React.useState(true);
+    const [openOrganizations, setOpenOrganizations] = useState(true);
+    const [organizations, setOrganizations] = useState([]);
 
     const handleOrgClick = () => {
         setOpenOrganizations(!openOrganizations);
 
     };
 
-    const [checked, setChecked] = React.useState([0]);
+    const [checked, setChecked] = useState([]);
 
-    const handleToggle = (value) => () => {
-        const currentIndex = checked.indexOf(value);
+    useEffect(() => {
+        passFilters();
+    }, [checked])
+
+    useEffect(() => {
+        retrieveOrganizations();
+    }, [])
+
+    const handleToggle = (value, itemId) => () => {
+
         const newChecked = [...checked];
+        const itemObj = { index: itemId, name: value };
+        const currentIndex = checked.findIndex(x => x.index === itemId);
 
         if (currentIndex === -1) {
-            newChecked.push(value);
+            newChecked.push(itemObj);
         } else {
             newChecked.splice(currentIndex, 1);
         }
 
         setChecked(newChecked);
+
+
     };
+
+    const passFilters = () => {
+        let values = [];
+        if (checked.length == 0) {
+            props.onChange(0);
+        } else {
+            checked.map((value) => values.push(value.name));
+            props.onChange({ $in: values });
+        }
+
+
+    }
+
+    const retrieveOrganizations = () => {
+        axios.get(`${BACKEND_URL}/employers`).then(res => {
+            if (res.data.success) {
+                setOrganizations(res.data.existingEmployers)
+            } else {
+                setOrganizations(null)
+            }
+        })
+    }
+
+    const displayOrganizations = () => {
+
+        if (organizations) {
+            return organizations.map(org => {
+                const labelId = `category-list-${org._id}`;
+                const itemId = org._id;
+                return (
+                    <ListItem className={classes.listItem} key={itemId} role={undefined} dense button onClick={handleToggle(org.name, itemId)}>
+                        <ListItemIcon className={classes.itemCheckBox}>
+                            <Checkbox
+                                edge="start"
+                                checked={checked.findIndex(x => x.index === itemId) !== -1}
+                                tabIndex={-1}
+                                disableRipple
+                                inputProps={{ 'aria-labelledby': labelId }}
+                                className={classes.checkBox}
+                            />
+                        </ListItemIcon>
+                        <ListItemText id={labelId} primary={org.name} />
+                        <ListItemSecondaryAction>
+                            <Avatar className={classes.count} variant="square" >
+                                <Typography className={classes.countText}>{5}</Typography>
+                            </Avatar>
+                        </ListItemSecondaryAction>
+                    </ListItem>
+                )
+            })
+        } else {
+            return (
+                <Typography>No organization available</Typography>
+            )
+        }
+    }
 
     return (
         <>
@@ -91,30 +155,7 @@ export default function OrganizationList() {
                 </ListItem>
                 <Collapse in={openOrganizations} timeout="auto" unmountOnExit>
                     <List className={classes.root}>
-                        {[{ id: 1, name: "WSO2", count: 25 }, { id: 2, name: "IFS", count: 145 }, { id: 3, name: "Virtusa", count: 15 }, { id: 4, name: "99X", count: 34 }].map((value) => {
-                            const labelId = `category-list-${value.id}`;
-                            const itemId = value.id + 3000;
-                            return (
-                                <ListItem className={classes.listItem} key={itemId} role={undefined} dense button onClick={handleToggle(itemId)}>
-                                    <ListItemIcon className={classes.itemCheckBox}>
-                                        <Checkbox
-                                            edge="start"
-                                            checked={checked.indexOf(itemId) !== -1}
-                                            tabIndex={-1}
-                                            disableRipple
-                                            inputProps={{ 'aria-labelledby': labelId }}
-                                            className={classes.checkBox}
-                                        />
-                                    </ListItemIcon>
-                                    <ListItemText id={labelId} primary={value.name} />
-                                    <ListItemSecondaryAction>
-                                        <Avatar className={classes.count} variant="square" >
-                                            <Typography className={classes.countText}>{value.count}</Typography>
-                                        </Avatar>
-                                    </ListItemSecondaryAction>
-                                </ListItem>
-                            );
-                        })}
+                        {displayOrganizations()}
                     </List>
                 </Collapse>
             </List>

@@ -1,4 +1,4 @@
-import React from 'react';
+import {React, useEffect, useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
@@ -54,9 +54,9 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function TitileList() {
+export default function TitileList(props) {
     const classes = useStyles();
-    const [openTitles, setOpenTitles] = React.useState(true);
+    const [openTitles, setOpenTitles] = useState(true);
 
     const handleTitleClick = () => {
         setOpenTitles(!openTitles);
@@ -64,20 +64,40 @@ export default function TitileList() {
     };
 
 
-    const [checked, setChecked] = React.useState([0]);
+    const [checked, setChecked] = useState([]);
 
-    const handleToggle = (value) => () => {
-        const currentIndex = checked.indexOf(value);
+    useEffect(() => {
+        passFilters();
+    }, [checked])
+
+    const handleToggle = (value, itemId) => () => {
+
         const newChecked = [...checked];
+        const itemObj = { index: itemId, name: value };
+        const currentIndex = checked.findIndex(x => x.index === itemId);
 
         if (currentIndex === -1) {
-            newChecked.push(value);
+            newChecked.push(itemObj);
         } else {
             newChecked.splice(currentIndex, 1);
         }
 
         setChecked(newChecked);
+
+
     };
+
+    const passFilters = () => {
+        let values = [];
+        if (checked.length == 0) {
+            props.onChange(0);
+        } else {
+            checked.map((value) => values.push(value.name));
+            props.onChange({ $in: values });
+        }
+
+
+    }
 
     return (
         <>
@@ -96,11 +116,11 @@ export default function TitileList() {
                             const labelId = `category-list-${value.id}`;
                             const itemId = value.id + 2000;
                             return (
-                                <ListItem className={classes.listItem} key={itemId} role={undefined} dense button onClick={handleToggle(itemId)}>
+                                <ListItem className={classes.listItem} key={itemId} role={undefined} dense button onClick={handleToggle(value.name, itemId)}>
                                     <ListItemIcon className={classes.itemCheckBox}>
                                         <Checkbox
                                             edge="start"
-                                            checked={checked.indexOf(itemId) !== -1}
+                                            checked={checked.findIndex(x => x.index === itemId) !== -1}
                                             tabIndex={-1}
                                             disableRipple
                                             inputProps={{ 'aria-labelledby': labelId }}

@@ -12,28 +12,28 @@ const useStyles = makeStyles((theme) => ({
     jobsGrid: {
         [theme.breakpoints.down('sm')]: {
             maxWidth: 'unset',
-            flexDirection: 'column'
-        },
-        [theme.breakpoints.down('xs')]: {
+            flexDirection: 'column',
+            alignItems: "stretch",
             order: 3
         },
     },
     mainGrid: {
         [theme.breakpoints.down('sm')]: {
-            flexDirection: 'column'
+            flexDirection: 'column',
+            alignItems: "stretch"
         },
         [theme.breakpoints.down('xs')]: {
             paddingRight: 12,
             paddingLeft: 12
         },
     },
-    filterGrid:{
-        [theme.breakpoints.down('xs')]: {
+    filterGrid: {
+        [theme.breakpoints.down('sm')]: {
             order: 2
         },
     },
-    searchGrid:{
-        [theme.breakpoints.down('xs')]: {
+    searchGrid: {
+        [theme.breakpoints.down('sm')]: {
             order: 1
         },
     }
@@ -45,12 +45,19 @@ function Jobs() {
 
     const [jobs, setJobs] = useState([]);
 
+    const [filters, setFilters] = useState({});
+
     useEffect(() => {
-        retrieveJobs()
-    })
+        retrieveJobs();
+    }, [filters])
+
+    const updateFilters = (filterData) => {
+        setFilters(filterData);
+    }
 
     const retrieveJobs = () => {
-        axios.get(`${BACKEND_URL}/jobs`).then(res => {
+        // console.log(filters);
+        axios.post(`${BACKEND_URL}/jobs`, filters).then(res => {
             if (res.data.success) {
                 setJobs(res.data.existingJobs)
             } else {
@@ -61,7 +68,6 @@ function Jobs() {
 
     const displayJobs = () => {
         if (jobs) {
-
             return jobs.map(job => (
                 <Grid item xs={12} md={12} lg={6}>
                     <JobCard info={job} />
@@ -77,15 +83,15 @@ function Jobs() {
 
     return (
         <>
-            <Grid item container sm={12} spacing={3} direction="row" justify="space-between" className={classes.mainGrid} >
+            <Grid item container sm={12} spacing={3} direction="row"  justify="space-between" className={classes.mainGrid} alignItems="flex-start">
                 <Grid item sm={12} className={classes.searchGrid}>
                     <JobSearchBar />
                 </Grid>
-                <Grid item container xs={12} sm={12} md={8} lg={9} spacing={2} direction="row" className={classes.jobsGrid} alignItems="stretch">
+                <Grid item container xs={12} sm={12} md={8} lg={9} spacing={2} direction="row" className={classes.jobsGrid} justify="flex-start" alignItems="flex-start">
                     {displayJobs()}
                 </Grid>
                 <Grid item xs={12} sm={12} md={4} lg={3} className={classes.filterGrid}>
-                    <JobFilters />
+                    <JobFilters onChange={updateFilters} />
                 </Grid>
             </Grid>
         </>
