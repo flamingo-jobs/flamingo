@@ -1,10 +1,5 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import FloatCard from '../../components/FloatCard';
@@ -20,6 +15,19 @@ import GitHubIcon from '@material-ui/icons/GitHub';
 import WorkIcon from '@material-ui/icons/Work';
 import CodeIcon from '@material-ui/icons/Code';
 
+import Timeline from '@material-ui/lab/Timeline';
+import TimelineItem from '@material-ui/lab/TimelineItem';
+import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
+import TimelineConnector from '@material-ui/lab/TimelineConnector';
+import TimelineContent from '@material-ui/lab/TimelineContent';
+import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
+import TimelineDot from '@material-ui/lab/TimelineDot';
+import FastfoodIcon from '@material-ui/icons/Fastfood';
+import LaptopMacIcon from '@material-ui/icons/LaptopMac';
+import HotelIcon from '@material-ui/icons/Hotel';
+import RepeatIcon from '@material-ui/icons/Repeat';
+import Paper from '@material-ui/core/Paper';
+
 const useStyles = makeStyles({
   defaultButton: {
     backgroundColor: theme.palette.tuftsBlue,
@@ -32,6 +40,12 @@ const useStyles = makeStyles({
       backgroundColor: theme.palette.mediumTurquoise,
       color: 'white',
     }
+  },
+  paper: {
+    padding: '6px 16px',
+  },
+  secondaryTail: {
+    backgroundColor: theme.palette.secondary.main,
   },
 });
 
@@ -55,71 +69,83 @@ function ProjectsSection() {
         </Grid>
         
       </Grid>
-      <Grid container spacing={3} style={{backgroundColor:'#b3ccff'}}>
+      <Grid container spacing={3}>
             <Grid item xs={12}>
-              <VerticalTimeline layout='1-column-left'>
-                <VerticalTimelineElement
-                  className="vertical-timeline-element--work"
-                  contentStyle={{ background: 'white', color: theme.palette.stateBlue }}
-                  contentArrowStyle={{ borderRight: '7px solid  #fff' }}
-                  date="2021 - Present"
-                  iconStyle={{ background: theme.palette.stateBlue, color: '#fff' }}
-                  icon={<CodeIcon />}
-                  style={{marginTop:'-20px'}}
-                >
-                  <h3 className="vertical-timeline-element-title" style={{color:'#666'}}>Employeement Recommendation Portal</h3>
-                  <h4 className="vertical-timeline-element-subtitle" style={{color:'#666'}}>(MERN, Python)</h4>
-                  <p>
-                  Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-            across all continents except Antarctica
-                  </p>
-                </VerticalTimelineElement>
-                <VerticalTimelineElement
-                  className="vertical-timeline-element--work"
-                  contentStyle={{ background: 'white', color: theme.palette.stateBlue }}
-                  contentArrowStyle={{ borderRight: '7px solid  #fff' }}
-                  date="2021 - Present"
-                  iconStyle={{ background: theme.palette.stateBlue, color: '#fff' }}
-                  icon={<CodeIcon />}
-                  style={{marginTop:'-20px'}}
-                >
-                  <h3 className="vertical-timeline-element-title" style={{color:'#666'}}>Employeement Recommendation Portal</h3>
-                  <h4 className="vertical-timeline-element-subtitle" style={{color:'#666'}}>(MERN, Python)</h4>
-                  <p>
-                    Creative Direction, User Experience, Visual Design, Project Management, Team Leading
-                  </p>
-                </VerticalTimelineElement>
-                <VerticalTimelineElement
-                  className="vertical-timeline-element--work"
-                  contentStyle={{ background: 'white', color: theme.palette.stateBlue }}
-                  contentArrowStyle={{ borderRight: '7px solid  #fff' }}
-                  date="2021 - Present"
-                  iconStyle={{ background: theme.palette.stateBlue, color: '#fff' }}
-                  icon={<CodeIcon />}
-                  style={{marginTop:'-20px'}}
-                >
-                  <h3 className="vertical-timeline-element-title" style={{color:'#666'}}>Employeement Recommendation Portal</h3>
-                  <h4 className="vertical-timeline-element-subtitle" style={{color:'#666'}}>(MERN, Python)</h4>
-                  <p>
-                    Creative Direction, User Experience, Visual Design, Project Management, Team Leading
-                  </p>
-                </VerticalTimelineElement>
-                <VerticalTimelineElement
-                  className="vertical-timeline-element--work"
-                  contentStyle={{ background: 'white', color: theme.palette.stateBlue }}
-                  contentArrowStyle={{ borderRight: '7px solid  #fff' }}
-                  date="2021 - Present"
-                  iconStyle={{ background: theme.palette.stateBlue, color: '#fff', }}
-                  icon={<CodeIcon />}
-                  style={{marginTop:'-20px'}}
-                >
-                  <h3 className="vertical-timeline-element-title" style={{color:'#666'}}>Employeement Recommendation Portal</h3>
-                  <h4 className="vertical-timeline-element-subtitle" style={{color:'#666'}}>(MERN, Python)</h4>
-                  <p>
-                    Creative Direction, User Experience, Visual Design, Project Management, Team Leading
-                  </p>
-                </VerticalTimelineElement>
-              </VerticalTimeline>
+            <Timeline align="left">
+              <TimelineItem>
+                <TimelineOppositeContent>
+                  <Typography variant="body2" color="textSecondary">
+                    9:30 am
+                  </Typography>
+                </TimelineOppositeContent>
+                <TimelineSeparator>
+                  <TimelineDot>
+                    <FastfoodIcon />
+                  </TimelineDot>
+                  <TimelineConnector />
+                </TimelineSeparator>
+                <TimelineContent>
+                  <Paper elevation={3} className={classes.paper}>
+                    <Typography variant="h6" component="h1">
+                      Eat
+                    </Typography>
+                    <Typography>Because you need strength</Typography>
+                  </Paper>
+                </TimelineContent>
+              </TimelineItem>
+              <TimelineItem>
+                <TimelineOppositeContent>
+                  <Typography variant="body2" color="textSecondary">
+                    10:00 am
+                  </Typography>
+                </TimelineOppositeContent>
+                <TimelineSeparator>
+                  <TimelineDot color="primary">
+                    <LaptopMacIcon />
+                  </TimelineDot>
+                  <TimelineConnector />
+                </TimelineSeparator>
+                <TimelineContent>
+                  <Paper elevation={3} className={classes.paper}>
+                    <Typography variant="h6" component="h1">
+                      Code
+                    </Typography>
+                    <Typography>Because it&apos;s awesome!</Typography>
+                  </Paper>
+                </TimelineContent>
+              </TimelineItem>
+              <TimelineItem>
+                <TimelineSeparator>
+                  <TimelineDot color="primary" variant="outlined">
+                    <HotelIcon />
+                  </TimelineDot>
+                  <TimelineConnector className={classes.secondaryTail} />
+                </TimelineSeparator>
+                <TimelineContent>
+                  <Paper elevation={3} className={classes.paper}>
+                    <Typography variant="h6" component="h1">
+                      Sleep
+                    </Typography>
+                    <Typography>Because you need rest</Typography>
+                  </Paper>
+                </TimelineContent>
+              </TimelineItem>
+              <TimelineItem>
+                <TimelineSeparator>
+                  <TimelineDot color="secondary">
+                    <RepeatIcon />
+                  </TimelineDot>
+                </TimelineSeparator>
+                <TimelineContent>
+                  <Paper elevation={3} className={classes.paper}>
+                    <Typography variant="h6" component="h1">
+                      Repeat
+                    </Typography>
+                    <Typography>Because this is the life you love!</Typography>
+                  </Paper>
+                </TimelineContent>
+              </TimelineItem>
+            </Timeline>
             </Grid>
         </Grid>
     </FloatCard>
