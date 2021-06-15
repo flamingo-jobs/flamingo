@@ -48,6 +48,9 @@ const useStyles = makeStyles((theme) => ({
     checkBox: {
         color: theme.palette.pinkyRed,
         fill: theme.palette.pinkyRed
+    },
+    itemCheckBox: {
+        minWidth: 'auto'
     }
 }));
 
@@ -93,7 +96,7 @@ export default function OrganizationList() {
                             const itemId = value.id + 3000;
                             return (
                                 <ListItem className={classes.listItem} key={itemId} role={undefined} dense button onClick={handleToggle(itemId)}>
-                                    <ListItemIcon>
+                                    <ListItemIcon className={classes.itemCheckBox}>
                                         <Checkbox
                                             edge="start"
                                             checked={checked.indexOf(itemId) !== -1}

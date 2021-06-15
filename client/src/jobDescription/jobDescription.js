@@ -1,87 +1,127 @@
-import React, { Component } from "react";
-import {
-  Typography,
-  AppBar,
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  CssBaseline,
-  Grid,
-  Toolbar,
-  Container,
-  Button,
-} from "@material-ui/core";
+import React, { useState, useEffect } from "react";
+import { Grid, Container, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-
+import axios from "axios";
+import BACKEND_URL from "../Config";
 // Custom components
 import JobSummary from "./components/jobSummary";
 import Responsibilities from "./components/responsibilities";
 import Requirements from "./components/requirements";
 import ApplyForm from "./components/applyForm";
-// import backgroundImage from "./images/background.png";
-import SideDrawer from "../components/SideDrawer";
-import Topbar from "../components/Topbar";
+import Organization from "./../employer/components/Organization";
+import FloatCard from "../components/FloatCard";
+import JobCard from "../jobs/components/JobCard";
 
 const useStyles = makeStyles((theme) => ({
+  border: {
+    border: "1px solid red",
+  },
   root: {
-    // background: `url(${backgroundImage}) no-repeat`,
-    // backgroundSize: "cover",
+    marginLeft: "12px",
   },
   outterWrapper: {
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
-  },
-  topbar: {
-    marginBottom: theme.spacing(2),
+    // paddingLeft: theme.spacing(1.5),
+    // paddingRight: theme.spacing(1.5),
   },
   container: {
-    border: "1px solid #5390d91A",
-    borderRadius: 12,
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: "rgba(83, 144, 217, 0.1) 0px 4px 12px",
-    marginBottom: theme.spacing(2),
-  },
-  sideDrawerGrid: {
-    [theme.breakpoints.down("xs")]: {
-      display: "none",
-    },
-    padding: theme.spacing(2),
+    // marginBottom: theme.spacing(3),
   },
 }));
 
-const JobDescription = () => {
-  const { root, container,  outterWrapper, } = useStyles();
+function JobDescription() {
+  const classes = useStyles();
 
-  return (
-    <div className={root}>
-      {/* <Grid container> */}
-        <Grid item container className={outterWrapper} xs={12}>
-          <Grid item sm={12}>
-            <Container className={container}>
-              <JobSummary></JobSummary>
-            </Container>
-          </Grid>
-          <Grid item container sm={12} spacing={2}>
-            <Grid item sm={6}>
-              <Container className={container}>
-                <Responsibilities></Responsibilities>
-              </Container>
-            </Grid>
-            <Grid item sm={6}>
-              <Container className={container}>
-                <Requirements></Requirements>
-              </Container>
-            </Grid>
-          </Grid>
-          <Grid item sm={12}>
-            <Container className={container}>
-              <ApplyForm></ApplyForm>
-            </Container>
-          </Grid>
+  const [job, setJob] = useState("empty");
+
+  useEffect(() => {
+    retrieveJob();
+  });
+
+  const retrieveJob = () => {
+    axios.get(`${BACKEND_URL}/jobs/60c184a2c76c4d325461e7f0`).then(res => {
+      if (res.data.success) {
+        setJob(res.data.job)
+      } else {
+        setJob(null)
+      }
+    })
+  }
+
+  const displayJob = () => {
+    if (job == "empty") {
+      return (
+        <Grid item sm={12}>
+          <Typography>No infromation to display</Typography>
+        </Grid>)
+    } else {
+      return (
+        <Grid item sm={12} className={classes.container}>
+          <FloatCard>
+            <JobSummary
+              job={job}
+            ></JobSummary>
+          </FloatCard>
         </Grid>
-      {/* </Grid> */}
-    </div>
+      )
+
+    }
+  }
+
+    const displayResponsibilities = () => {
+    if (job == "empty") {
+      return (
+        <Grid item sm={12}>
+          <Typography>No infromation to display</Typography>
+        </Grid>)
+    } else {
+      return (
+        <Grid item xs={12} lg={6} className={classes.container}>
+          <FloatCard>
+            <Responsibilities
+              responsibilities={job.tasksAndResponsibilities}
+            ></Responsibilities>
+          </FloatCard>
+        </Grid>
+      )
+
+    }
+  }
+
+  const displayRequirements = () => {
+    if (job == "empty") {
+      return (
+        <Grid item sm={12}>
+          <Typography>No infromation to display</Typography>
+        </Grid>)
+    } else {
+      return (
+        <Grid item xs={12} lg={6} className={classes.container}>
+          <FloatCard>
+            <Requirements requirements={job.qualifications}></Requirements>
+          </FloatCard>
+        </Grid>
+      )
+
+    }
+  }
+  return (
+    <>
+      <Grid item container className={classes.outterWrapper} xs={12} spacing={3}>
+
+
+        {displayJob()}
+        
+        {displayResponsibilities()}
+
+        {displayRequirements()}
+
+        <Grid item sm={12}>
+          <FloatCard>
+            {/* <ApplyForm></ApplyForm> */}
+          </FloatCard>
+        </Grid>
+      </Grid>
+    </>
   );
 };
 

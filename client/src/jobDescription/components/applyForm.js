@@ -8,10 +8,10 @@ import {
   Button,
   TextField,
 } from "@material-ui/core";
-import PublishIcon from '@material-ui/icons/Publish';
+import PublishIcon from "@material-ui/icons/Publish";
 import { findByLabelText } from "@testing-library/dom";
 
-const testStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme) => ({
   border: {
     border: "1px solid red",
   },
@@ -21,7 +21,7 @@ const testStyles = makeStyles((theme) => ({
   },
   formTitle: {
     marginBottom: theme.spacing(3),
-    textAlign:"left"
+    textAlign: "left",
   },
   textField: {
     marginBottom: theme.spacing(3),
@@ -35,18 +35,17 @@ const testStyles = makeStyles((theme) => ({
   uploadBtnIcon: {
     marginRight: "5px",
   },
-  submitButton:{
+  submitButton: {
     width: "250px",
     marginTop: theme.spacing(3),
   },
 }));
 
 const ApplyForm = () => {
-  const { border, res, formTitle, textField, uploadButton, input, uploadBtnIcon, submitButton } =
-    testStyles();
+  const classes = useStyles();
   return (
-    <Container className={res}>
-      <Typography variant="h6" className={formTitle} id="applyForm">
+    <Container className={classes.res}>
+      <Typography variant="h6" className={classes.formTitle} id="applyForm">
         Apply for this job
       </Typography>
       <form>
@@ -56,7 +55,7 @@ const ApplyForm = () => {
           label="Name with initials"
           variant="outlined"
           fullWidth
-          className={textField}
+          className={classes.textField}
         />
         <TextField
           required
@@ -64,7 +63,7 @@ const ApplyForm = () => {
           label="Email"
           variant="outlined"
           fullWidth
-          className={textField}
+          className={classes.textField}
         />
         <TextField
           required
@@ -72,13 +71,13 @@ const ApplyForm = () => {
           label="Phone number"
           variant="outlined"
           fullWidth
-          className={textField}
+          className={classes.textField}
         />
 
         <div style={{ color: "#fff" }}>
           <input
             accept="image/*"
-            className={input}
+            className={classes.input}
             id="cv-file"
             multiple
             type="file"
@@ -89,17 +88,13 @@ const ApplyForm = () => {
               color="primary"
               component="span"
               startIcon={<PublishIcon />}
-              className={uploadButton}
+              className={classes.uploadButton}
             >
               Upload resume
             </Button>
           </label>
         </div>
-        <Button
-          variant="contained"
-          color="primary"
-          className={submitButton}
-        >
+        <Button variant="contained" color="primary" className={classes.submitButton}>
           Submit Application
         </Button>
       </form>
