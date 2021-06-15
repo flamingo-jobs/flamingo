@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import CompanyInfo from './components/CompanyInfo'
 import TechStack from './components/TechStack'
 import FeaturedJobs from './components/FeaturedJobs'
+import Reviews from './components/Reviews'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -39,16 +40,20 @@ const Employer = () => {
     const classes = useStyles();
 
     return (
-        <Grid item container xs={12} spacing={3} direction="row" justify="space-between" alignItems="flex-start">
-            <Grid item xs={12} sm={7} spacing={3}>
-               <CompanyInfo></CompanyInfo>
+
+        <Grid container xs={12} spacing={3} direction="row" justify="space-between" alignItems="flex-start">
+
+            <Grid  item containerxs={7} sm={7} spacing={3}>
+                <CompanyInfo></CompanyInfo>
+                <br></br>
+                <FeaturedJobs></FeaturedJobs> 
             </Grid>
-            <Grid item xs={12} sm={5} spacing={3}>
+
+            <Grid item xs={5} sm={5} spacing={3}>
                <TechStack></TechStack>
+               <br></br>
+               <Reviews></Reviews>  
             </Grid> 
-            <Grid item xs={12} sm={6} spacing={3}>
-                <FeaturedJobs></FeaturedJobs>  
-            </Grid>  
 
         </Grid>
     )

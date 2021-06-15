@@ -57,9 +57,7 @@ function FeaturedJobs() {
 
     const [featuredJobs, setFeaturedJobs] = useState([]);
 
-    useEffect(() => {
-        retrieveFeaturedJobs()
-    })
+        
 
     const retrieveFeaturedJobs = () => {
         axios.get(`${BACKEND_URL}/jobs/featuredJobs`).then(res => {
@@ -70,6 +68,11 @@ function FeaturedJobs() {
             }
         })
     }
+
+    useEffect(() => {
+        retrieveFeaturedJobs();
+
+    }, [])
 
     const displayFeaturedJobs = () => {
         if (featuredJobs) {
