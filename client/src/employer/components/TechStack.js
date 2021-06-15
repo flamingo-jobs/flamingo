@@ -48,6 +48,11 @@ const useStyles = makeStyles((theme) => ({
   topBar: {
     marginBottom: -30,
   },
+  title:{
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 }));
 
 const PurpleCheckbox = withStyles({
@@ -95,8 +100,8 @@ function TechStack() {
           {/* Floatcard for the top bar */}
 
           <FloatCard>
-            <Grid item container sm={12} direction="row" spacing={1}>
-              <Grid item sm={10}>
+            <Grid item container sm={12} direction="row" spacing={1} >
+              <Grid item sm={10} >
                 <Typography variant="h6" className={classes.title}>
                   Technology Stack
                 </Typography>

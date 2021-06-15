@@ -27,7 +27,7 @@ import Box from "@material-ui/core/Box";
 const useStyles = makeStyles((theme) => ({
   root: {
     // minWidth: 275,
-    backgroundColor: "#F7F7F7",
+    backgroundColor: "#EDEDE8",
   },
   title: {
     fontSize: 14,

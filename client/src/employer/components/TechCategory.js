@@ -46,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
   topBar: {
     marginBottom: -30,
   },
+  title:{
+    marginLeft: 5, 
+  },
 }));
 
 const PurpleCheckbox = withStyles({
@@ -88,7 +91,7 @@ function TechCategory() {
   return (
     <div className={classes.root}>
       <FloatCard>
-        <Grid item container sm={12} direction="row" spacing={1}>
+        <Grid item container sm={12} direction="row" spacing={1} >
           <Grid item sm={10}>
             <Typography variant="body1" className={classes.title}>
               Web Development
