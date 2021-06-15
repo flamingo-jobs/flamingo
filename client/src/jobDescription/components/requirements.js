@@ -10,7 +10,7 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
 import StarBorderOutlinedIcon from "@material-ui/icons/StarBorderOutlined";
 
-const testStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme) => ({
   border: {
     border: "1px solid red",
   },
@@ -36,18 +36,11 @@ const testStyles = makeStyles((theme) => ({
   },
 }));
 
-const Requirements = () => {
-  const { border, req, reqTitle, readMoreBtn } = testStyles();
+const Requirements = (props) => {
+  const classes = useStyles();
 
   const [readMore, setReadMore] = useState(false);
-  const [reqs, setReqs] = useState([
-    "Knowledge of Docker, AWS/GCP/Azure and Serverless technologies would be advantageous",
-    "Knowledge of Docker, AWS/GCP/Azure and Serverless technologies would be advantageous",
-    "Proficiency with React JS",
-    "Proficiency in node.js",
-    "Proficiency with NoSQL and MySQL",
-    "Good understanding on Restful web services and data formats such as JSON and XML",
-  ]);
+  const [reqs, setReqs] = useState(props.requirements);
 
   const firstHalf = reqs.slice(0, 5);
   const secondHalf = reqs.slice(5);
@@ -55,8 +48,8 @@ const Requirements = () => {
   const buttonName = readMore ? "Read Less << " : "Read More >> ";
 
   return (
-    <Container className={req}>
-      <Typography variant="h6" className={reqTitle}>
+    <Container className={classes.req}>
+      <Typography variant="h6" className={classes.reqTitle}>
         Skills and Requirements
       </Typography>
       <List dense={true}>
@@ -80,7 +73,7 @@ const Requirements = () => {
       </List>
       {reqs.length > 5 && (
         <a
-          className={readMoreBtn}
+          className={classes.readMoreBtn}
           onClick={() => {
             setReadMore(!readMore);
           }}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
@@ -9,7 +9,7 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
 import StarBorderOutlinedIcon from "@material-ui/icons/StarBorderOutlined";
 
-const testStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme) => ({
   border: {
     border: "1px solid red",
   },
@@ -31,29 +31,35 @@ const testStyles = makeStyles((theme) => ({
   },
 }));
 
-const Responsibilities = () => {
-  const { border, res, resTitle, readMoreBtn } = testStyles();
+const Responsibilities = ({ responsibilities }) => {
+  const classes = useStyles();
 
   const [readMore, setReadMore] = useState(false);
-  const [duties, setDuties] = useState([
-    "Follows the Pearson processes, agile practices and motivates his/her team members to do so.",
-    "Manage the development environments and code branches.",
-    "Manage the development environments and code branches.",
-    "Manage the development environments and code branches.",
-    "Manage the development environments and code branches.",
-  ]);
-  const firstHalf = duties.slice(0, 5);
-  const secondHalf = duties.slice(5);
+  const [duties, setDuties] = useState(responsibilities);
 
+  // const displayResponsibilities = () => {
+  //   if (jobs) {
+  //     return jobs.map(job => (
+  //       <Grid item xs={12} md={12} lg={6}>
+  //         <JobCard info={job} />
+  //       </Grid>
+  //     ))
+  //   } else {
+  //     return (
+  //       <Grid item sm={12}>
+  //         <Typography>No featured Jobs</Typography>
+  //       </Grid>)
+  //   }
+  // }
   const buttonName = readMore ? "Read Less << " : "Read More >> ";
 
   return (
-    <Container className={res}>
-      <Typography variant="h6" className={resTitle}>
+    <Container className={classes.res}>
+      <Typography variant="h6" className={classes.resTitle}>
         Duties and Responsibilities
       </Typography>
       <List dense={true}>
-        {firstHalf.map((dutie) => (
+        {duties.map((dutie) => (
           <ListItem key={duties.indexOf(dutie)}>
             <ListItemIcon>
               <StarBorderOutlinedIcon />
@@ -61,17 +67,17 @@ const Responsibilities = () => {
             <ListItemText primary={dutie} />
           </ListItem>
         ))}
-        {readMore &&
+        {/* {readMore &&
           secondHalf.map((dutie) => (
-            <ListItem key={duties.indexOf(dutie)}>
+            <ListItem key={responsibilities.indexOf(dutie)}>
               <ListItemIcon>
                 <StarBorderOutlinedIcon />
               </ListItemIcon>
               <ListItemText primary={dutie} />
             </ListItem>
-          ))}
+          ))} */}
       </List>
-      {duties.length > 5 && (
+      {/* {responsibilities.length > 5 && (
         <a
           className={readMoreBtn}
           onClick={() => {
@@ -80,7 +86,7 @@ const Responsibilities = () => {
         >
           {buttonName}
         </a>
-      )}
+      )} */}
     </Container>
   );
 };

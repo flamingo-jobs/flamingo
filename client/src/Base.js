@@ -6,7 +6,6 @@ import Topbar from './components/Topbar';
 import backgroundImage from './images/background-image.jpg';
 import Footer from './components/Footer'
 import Home from './home/Home';
-import SignInSide from './signIn/components/SignInSide.js';
 import Profile from './employee/components/Profile';
 import './App.css';
 import { Route } from 'react-router-dom';
@@ -17,6 +16,7 @@ import JobDescription from "./jobDescription/jobDescription";
 const useStyles = makeStyles((theme) => ({
   root: {
     background: `url(${backgroundImage}) no-repeat`,
+    backgroundAttachment: 'fixed',
     minHeight: '100vh',
     backgroundSize: 'cover',
   },

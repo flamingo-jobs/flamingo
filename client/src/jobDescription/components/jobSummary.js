@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import WorkOutlineIcon from "@material-ui/icons/WorkOutline";
 
@@ -13,62 +13,65 @@ import {
 } from "@material-ui/core";
 import ninix from "../images/99x.png";
 
-
-const testStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme) => ({
   border: {
     border: "1px solid red",
   },
   summaryContainer: {
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(3),
-    
   },
   jobTitle: {
     fontWeight: 600,
     textAlign: "left",
   },
-  companyName:{
+  companyName: {
     textAlign: "left",
   },
-  companyAddress:{
+  companyAddress: {
     textAlign: "left",
   },
   jobCategory: {
-    color: "#aaa",
+    color: theme.palette.tagIcon,
   },
   jobDetailsContainer: {
     textAlign: "left",
     marginBottom: theme.spacing(4),
   },
+  applyBtn: {
+    borderRadius: 12,
+    backgroundColor: theme.palette.tuftsBlue,
+    color: theme.palette.white,
+    "&:hover": {
+      backgroundColor: theme.palette.blueJeans,
+    },
+  },
 }));
 
-const JobSummary = () => {
-  const {
-    border,
-    summaryContainer,
-    jobTitle,
-    companyName,
-    companyAddress,
-    jobCategory,
-    jobDetailsContainer,
-  } = testStyles();
+function JobSummary(props){
+  const classes = useStyles();
 
   return (
     <Container>
-      <Container maxWidth="lg" className={summaryContainer}>
+      <Container maxWidth="lg" className={classes.summaryContainer}>
         <Grid container alignItems="center" spacing={2}>
-          <Grid item  xs={12} md={8} >
-            <Typography variant="h5" className={jobTitle}>
-              Software Engineer
+          <Grid item xs={12} md={8}>
+            <Typography variant="h5" className={classes.jobTitle}>
+              {props.job.title}
             </Typography>
             <Grid item container spacing={2} alignItems="center">
               <Grid item>
                 <Avatar alt="99x" src={ninix} variant="square"></Avatar>
               </Grid>
               <Grid item>
-                <Typography variant="h6" className={companyName}>99X Services Ltd.</Typography>
-                <Typography variant="subtitle2" className={companyAddress}>
-                  65, Walukarama Rd, Colombo 03
+                <Typography variant="h6" className={classes.companyName}>
+                  {props.job.organization.name}
+                </Typography>
+                <Typography
+                  variant="subtitle2"
+                  className={classes.companyAddress}
+                >
+                  {props.job.location}
                 </Typography>
               </Grid>
             </Grid>
@@ -78,44 +81,42 @@ const JobSummary = () => {
                 container
                 alignItems="center"
                 spacing={1}
-                className={jobCategory}
+                className={classes.jobCategory}
               >
                 <Grid item>
                   <WorkOutlineIcon fontSize="small"></WorkOutlineIcon>
                 </Grid>
                 <Grid item>
-                  <Typography variant="subtitle2">Full-Time</Typography>
+                  <Typography variant="subtitle2">{props.job.type}</Typography>
                 </Grid>
               </Grid>
-              <Grid item container className={jobCategory}>
+              <Grid item container className={classes.jobCategory} spacing={3}>
                 <Grid item>
                   <Typography variant="subtitle2">
-                    Posted: 7 days ago
+                    Posted Date: {props.job.postedDate}
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Typography variant="subtitle2">
+                    Due Date: {props.job.dueDate}
                   </Typography>
                 </Grid>
               </Grid>
             </Grid>
           </Grid>
           <Grid item xs={12} md={4} align="center">
-            <Button variant="contained" color="primary" href="#applyForm">
+            <Button
+            variant="contained"
+              href="#applyForm"
+              className={classes.applyBtn}
+            >
               Apply For This Job
             </Button>
           </Grid>
         </Grid>
       </Container>
-      <Container className={jobDetailsContainer}>
-        <Typography>
-          KAR Global is looking to expand our development team as we continue to
-          innovate within the used car industry. The candidate should have a
-          strong background in Java Web Service development and be comfortable
-          using the Spring Framework. As an engineer on the development team the
-          main responsibilities are design, implementation, and maintenance of
-          RESTful web services in both Composite service and Microservice forms.
-          ‪The candidate should have good communication skills and be able to
-          work closely with Product Owners to discuss feasibility of technical
-          considerations as well as provide accurate estimates for project
-          completion.
-        </Typography>
+      <Container className={classes.jobDetailsContainer}>
+        <Typography>{props.job.description}</Typography>
       </Container>
     </Container>
   );
