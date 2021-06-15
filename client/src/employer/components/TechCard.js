@@ -22,11 +22,12 @@ import Checkbox from '@material-ui/core/Checkbox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import { purple } from '@material-ui/core/colors';
+import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     // minWidth: 275,
-    backgroundColor: theme.palette.tagYellow,
+    backgroundColor: '#F7F7F7',
   },
   title: {
     fontSize: 14,
@@ -61,11 +62,14 @@ const PurpleCheckbox = withStyles({
     checked: {},
 })((props) => <Checkbox color="default" {...props} />);
 
-export default function SimpleCard() {
+
+export default function TechCard() {
 
   const classes = useStyles();
   const bull = <span className={classes.bullet}>•</span>;
   const [open, setOpen] = React.useState(false);
+
+  //Event handlers for add new technologies dialog box 
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -90,6 +94,8 @@ export default function SimpleCard() {
 
 
   return (
+    
+
     <Card className={classes.root}>
         <CardContent>
             <Grid container xs={12} direction="column" spacing={1}>
@@ -111,15 +117,15 @@ export default function SimpleCard() {
 
                         {/* PLUS BUTTON TO ADD NEW TECHNOLOGIES */}
 
-                        <IconButton variant="outlined" size="small" aria-label="add" className={classes.addButton} onClick={handleClickOpen}>
+                        <IconButton variant="outlined" size="small" aria-label="add-tech-form-title" className={classes.addButton} onClick={handleClickOpen}>
                             <AddIcon />
                         </IconButton>
                         
                         {/* DIALOG BOX TO ADD TECHNOLOGIES */}
 
-                        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                        <Dialog open={open} onClose={handleClose} aria-labelledby="add-tech-form-title">
 
-                            <DialogTitle id="form-dialog-title">Add New Technologies</DialogTitle>
+                            <DialogTitle id="add-tech-form-title">Add New Technologies</DialogTitle>
 
                             <DialogContent>
                                 <DialogContentText>
@@ -175,6 +181,54 @@ export default function SimpleCard() {
                         </IconButton>
 
                         {/* DIALOG BOX TO REMOVE EXISTING TECHNOLOGIES */}
+
+                        {/* <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+
+                            <DialogTitle id="form-dialog-title">Remove Existing Technologies</DialogTitle>
+
+                            <DialogContent>
+                                <DialogContentText>
+                                    <Typography> Software Development </Typography>
+                                </DialogContentText>
+
+                                <FormGroup row>
+
+                                    <FormControlLabel
+                                        control={<PurpleCheckbox checked={state.React} onChange={handleChange} name="React" className={classes.checkbox} />}
+                                        label="React"
+                                    />
+                                    <FormControlLabel
+                                        control={<PurpleCheckbox checked={state.jQuery} onChange={handleChange} name="jQuery" className={classes.checkbox} />}
+                                        label="jQuery"
+                                    />
+                                    <FormControlLabel
+                                        control={<PurpleCheckbox checked={state.Angular} onChange={handleChange} name="Angular" className={classes.checkbox} />}
+                                        label="Angular"
+                                    />
+                                    <FormControlLabel
+                                        control={<PurpleCheckbox checked={state.Springboot} onChange={handleChange} name="Springboot" className={classes.checkbox} />}
+                                        label="Springboot"
+                                    />
+
+                                    <FormControlLabel
+                                        control={<PurpleCheckbox checked={state.checkedA} onChange={handleChange} name="Express" className={classes.checkbox} />}
+                                        label="Express"
+                                    />
+                                </FormGroup>
+
+                            </DialogContent>
+
+                            <DialogActions>
+                                <Button onClick={handleClose} className={classes.dialogbuttons}>
+                                    Cancel
+                                </Button>
+                                <Button onClick={handleClose} className={classes.dialogbuttons}>
+                                    Remove
+                                </Button>
+                            </DialogActions>
+
+                        </Dialog> */}
+
                     </Grid>
 
                 </Grid>
@@ -197,5 +251,6 @@ export default function SimpleCard() {
             
         </CardContent>
     </Card>
+
   );
 }
