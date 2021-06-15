@@ -18,6 +18,8 @@ router.get('/jobseeker/:id', jobseekerController.getById);
 
 router.put('/jobseeker/update/:id', jobseekerController.update);
 
+router.put('/jobseeker/addEducation/:id', jobseekerController.addEducation);
+
 // delete job
 
 router.delete('/jobseeker/delete/:id', jobseekerController.remove);
