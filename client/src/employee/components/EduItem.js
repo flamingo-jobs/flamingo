@@ -55,7 +55,7 @@ function EduItem(props) {
                         {props.university}
                     </Typography>
                     <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'15px',}}>
-                        {props.degree}
+                        Degree : {props.degree}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',}}>
                         {props.gpa}
