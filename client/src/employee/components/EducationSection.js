@@ -199,14 +199,17 @@ function EducationSection() {
 
   const displayEduFields = () => {
     if (education) {
-    return education.map(edu => (
-          <EduItem level={edu.level} startYear={edu.startDate} endYear={edu.endDate} university={edu.university} degree={edu.degree} gpa={"GPA - "+edu.GPA} college={edu.college} highschool={edu.highschool} />
-          ))
-    }else{
-      return (<Typography>Education details not added.</Typography>)
-    }
-
-}
+      if (education.length > 0) {
+        return education.map(edu => (
+              <EduItem level={edu.level} startYear={edu.startDate} endYear={edu.endDate} university={edu.university} degree={edu.degree} gpa={"GPA - "+edu.GPA} college={edu.college} highschool={edu.highschool} />
+              ))
+        }else{
+          return (<Typography variant="body2" color="textSecondary" component="p">Education details not added.</Typography>)
+        }
+      }else{
+        return (<Typography variant="body2" color="textSecondary" component="p">Education details not added.</Typography>)
+      }
+  }
 
   useEffect(()=>{
     if (level == "University") {

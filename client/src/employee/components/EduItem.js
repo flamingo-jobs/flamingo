@@ -6,7 +6,6 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import EditIcon from '@material-ui/icons/Edit';
 import theme from '../../Theme';
-import Popup from './Popup';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -52,10 +51,10 @@ function EduItem(props) {
         return (
             <React.Fragment>
                 <Grid item xs={8} spacing={2} style={{marginTop:"-15px"}}>
-                    <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'14px',fontWeight:'bold',}}>
+                    <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'15px',fontWeight:'bold',}}>
                         {props.university}
                     </Typography>
-                    <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'14px',}}>
+                    <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'15px',}}>
                         {props.degree}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',}}>
@@ -68,7 +67,7 @@ function EduItem(props) {
         return (
             <React.Fragment>
                 <Grid item xs={8} spacing={2} style={{marginTop:"-15px",marginBottom:'-15px'}}>
-                    <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'14px',fontWeight:'bold',}}>
+                    <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'15px',fontWeight:'bold',}}>
                         {props.college}
                     </Typography>
                 </Grid>
@@ -78,7 +77,7 @@ function EduItem(props) {
         return (
             <React.Fragment>
                 <Grid item xs={8} spacing={2} style={{marginTop:"-15px",marginBottom:'-15px'}}>
-                    <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'14px',fontWeight:'bold',}}>
+                    <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'15px',fontWeight:'bold',}}>
                         {props.highschool}
                     </Typography>
                 </Grid>

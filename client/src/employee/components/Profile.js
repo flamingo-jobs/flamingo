@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import IntroSection from './IntroSection'
 import EducationSection from './EducationSection';
 import ProjectsSection from './ProjectsSection';
-import Achievements from './Achievements';
+import Achievements from './Awards';
 import Space from './Space';
 import WorkExperience from './WorkExperience';
 
