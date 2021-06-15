@@ -66,6 +66,60 @@ const update = (req,res) => {
     );
 }
 
+const addEducation = (req,res) => {
+
+    Jobseeker.findOneAndUpdate(
+        { _id: req.params.id }, 
+        { $push: { education: req.body  } },
+        (err,jobseeker) =>{
+            if(err){
+                return res.status(400).json({
+                    error:err
+                })
+            }
+            return res.status(200).json({
+                sucess: "Updated successfully"
+            });
+        }
+    );
+}
+
+const addAward = (req,res) => {
+
+    Jobseeker.findOneAndUpdate(
+        { _id: req.params.id }, 
+        { $push: { award: req.body  } },
+        (err,jobseeker) =>{
+            if(err){
+                return res.status(400).json({
+                    error:err
+                })
+            }
+            return res.status(200).json({
+                sucess: "Updated successfully"
+            });
+        }
+    );
+}
+
+const addVolunteering = (req,res) => {
+
+    Jobseeker.findOneAndUpdate(
+        { _id: req.params.id }, 
+        { $push: { volunteer: req.body  } },
+        (err,jobseeker) =>{
+            if(err){
+                return res.status(400).json({
+                    error:err
+                })
+            }
+            return res.status(200).json({
+                sucess: "Updated successfully"
+            });
+        }
+    );
+}
+
 const remove = (req, res) => {
     Jobseeker.findByIdAndDelete(req.params.id).exec((err,deletedJobseeker) => {
         if(err){
@@ -85,5 +139,8 @@ module.exports = {
     getAll,
     getById,
     update,
+    addEducation,
+    addAward,
+    addVolunteering,
     remove
 }

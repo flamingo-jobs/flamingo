@@ -20,7 +20,19 @@ const jobseekerSchema = new mongoose.Schema({
     projects: {
         type: Array,
         required: true
-    }
+    },
+    awards: {
+        type: Array,
+        required: true
+    },
+    award: {
+        type: Array,
+        required: true
+    },
+    volunteer: {
+        type: Array,
+        required: true
+    },
     
 });
 

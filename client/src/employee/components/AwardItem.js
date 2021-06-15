@@ -27,8 +27,17 @@ function AchievementItem(props) {
         <StarIcon style={{color: theme.palette.pinkyRed,}} />
         </Grid>
         <Grid item xs={11}>
-            <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'14px',fontWeight:'bold',paddingTop:'5px'}}>
-                {props.name}
+            <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'15px',fontWeight:'bold',paddingTop:'5px'}}>
+                {props.title}
+            </Typography>
+            <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'15px',}}>
+                {props.description}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',paddingTop:'5px'}}>
+                Issued by : {props.issuedBy}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',paddingTop:'5px'}}>
+                Issued date : {props.date}
             </Typography>
         </Grid>
         

@@ -1,8 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -24,8 +22,8 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import CloseIcon from '@material-ui/icons/Close';
-import InfoIcon from '@material-ui/icons/Info';
 import BACKEND_URL from '../../Config';
+import Divider from '@material-ui/core/Divider';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -53,12 +51,6 @@ const useStyles = makeStyles((theme) => ({
       fontSize: "30px",
     }
   },
-  closeIcon: {
-    "&:hover": {
-      fontSize: "25px",
-      color: "#b30000 !important"
-    }
-  },
   changePicture: {
       width: '0px',
   },
@@ -66,6 +58,12 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.tuftsBlue,
     width: '35px',
     fontSize: '30px',
+  },
+  closeIcon: {
+    "&:hover": {
+      fontSize: "25px",
+      color: "#b30000 !important"
+    }
   },
   modal: {
     display: 'flex',
@@ -75,23 +73,22 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-    width: '500px',
-    minHeight: '200px',
+    width: '600px',
+    borderRadius: 10,
+    paddingBottom: "30px"
   },
   form: {
     alignItems: 'center',
     justifyContent: 'center',
+    padding: '5% 15% 5% 15%'
   },
   field: {
-    margin: "20px",
+    margin: "20px 0px 20px 0px",
     display: "flex",
     fontSize: "16px",
-    marginTop: "40px",
     "& label": {
-      color: theme.palette.tuftsBlue,
-      fontSize: '20px',
-      fontWeight: 'bold',
+      color: "#777",
+      fontSize: '16px',
     }
   }
 }));
@@ -172,23 +169,30 @@ function IntroSection() {
         >
           <Fade in={open}>
             <div className={classes.paper}>
-            <Button className={classes.defaultButton} style={{ float: 'right',marginRight: '-30px',backgroundColor:'white'}} onClick={handleOpen}>
-                <CloseIcon className={classes.closeIcon} style={{color: '#666',}} />
-            </Button>
+            <div style={{paddingTop:'40px'}}>
+                <Grid container xs={12} direction="row">
+                  <Grid item xs={10}>
+                    <Typography gutterBottom variant="h5" style={{textAlign:'center',paddingLeft:'50px',color:theme.palette.stateBlue}}>
+                      Add Education
+                    </Typography>
+                    <Divider variant="middle" style={{marginLeft:'100px'}} />
+                  </Grid>
+                  <Grid item xs={2}>
+                    <Button className={classes.defaultButton} style={{ float: 'right',marginRight:'10px',marginTop:'-20px',backgroundColor:'white'}} onClick={handleClose}>
+                      <CloseIcon className={classes.closeIcon} style={{color: '#666',}} />
+                    </Button>
+                  </Grid>
+                </Grid>
+              </div>
               <form className={classes.form} onSubmit={onSubmit}>
                   <TextField
                     className={classes.field}
-                    id="input-with-icon-textfield"
+                    id="outlined-basic"
                     label="Name"
                     value= {name}
+                    variant="outlined"
+                    size="small"
                     onChange= {onChangeName}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <AccountCircle color="action" />
-                        </InputAdornment>
-                      ),
-                    }}
                   />
                   <TextField
                     className={classes.field}
@@ -200,7 +204,7 @@ function IntroSection() {
                     value= {intro}
                     onChange= {onChangeIntro}
                   />
-                  <Button type="submit" className={classes.defaultButton} style={{ float: 'right',marginRight:'20px'}}>Apply Changes</Button>
+                  <Button type="submit" style={{ width:'100%',marginTop:'5%',backgroundColor:theme.palette.stateBlue,color:'white'}}>Apply Changes</Button>
               </form>
             </div>
           </Fade>

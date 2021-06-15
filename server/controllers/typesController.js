@@ -1,17 +1,17 @@
-const Jobs = require('../models/jobs');
+const Types = require('../models/types');
 
 
 const create = (req,res) => {
-    let newJob = new Jobs(req.body);
+    let newType = new Types(req.body);
 
-    newJob.save((err) => {
+    newType.save((err) => {
         if(err){
             return res.status(400).json({
                 error: err
             });
         }
         return res.status(200).json({
-            success: "Job saved successfully"
+            success: "Type saved successfully"
         });
 
     });
@@ -19,7 +19,8 @@ const create = (req,res) => {
 }
 
 const getAll = (req,res) => {
-    Jobs.find(req.body).exec((err,jobs) => {
+    console.log("Types requesting");
+    Types.find().exec((err,types) => {
         if(err){
             return res.status(400).json({
                 error: err
@@ -27,13 +28,13 @@ const getAll = (req,res) => {
         }
         return res.status(200).json({
             success: true,
-            existingJobs: jobs
+            existingTypes: types
         });
     });
 }
 
 const getById = (req,res) => {
-    Jobs.findById(req.params.id).exec((err,job) => {
+    Types.findById(req.params.id).exec((err,type) => {
         if(err){
             return res.status(400).json({
                 error: err
@@ -41,13 +42,13 @@ const getById = (req,res) => {
         }
         return res.status(200).json({
             success: true,
-            job: job
+            type: type
         });
     });
 }
 
-const getFeaturedJobs = (req,res) => {
-    Jobs.geoSearch({ isFeatured : true }, (err,featuredJobs) => {
+const getFeaturedTypes = (req,res) => {
+    Types.find({ isFeatured : true }, (err,featuredTypes) => {
         if(err){
             return res.status(400).json({
                 error: err
@@ -55,7 +56,7 @@ const getFeaturedJobs = (req,res) => {
         }
         return res.status(200).json({
             success: true,
-            featuredJobs: featuredJobs
+            featuredTypes: featuredTypes
         });
     });
 }
@@ -63,12 +64,12 @@ const getFeaturedJobs = (req,res) => {
 
 const update = (req,res) => {
 
-    Jobs.findByIdAndUpdate(
+    Types.findByIdAndUpdate(
         req.params.id,
         {
             $set:req.body
         },
-        (err,job) =>{
+        (err,type) =>{
             if(err){
                 return res.status(400).json({
                     error:err
@@ -82,15 +83,15 @@ const update = (req,res) => {
 }
 
 const remove = (req, res) => {
-    Jobs.findByIdAndDelete(req.params.id).exec((err,deletedJob) => {
+    Types.findByIdAndDelete(req.params.id).exec((err,deletedType) => {
         if(err){
             return res.status(400).json({
                 error: err
             });
         }
         return res.status(200).json({
-            success: "Job deleted successfully",
-            deletedJob
+            success: "Type deleted successfully",
+            deletedType: deletedType,
         });
     });
 }
@@ -101,6 +102,6 @@ module.exports = {
     getById,
     update,
     remove,
-    getFeaturedJobs
+    getFeaturedTypes
 
 }

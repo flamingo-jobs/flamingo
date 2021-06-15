@@ -1,17 +1,17 @@
-const Jobs = require('../models/jobs');
+const Categories = require('../models/categories');
 
 
 const create = (req,res) => {
-    let newJob = new Jobs(req.body);
+    let newCategory = new Categories(req.body);
 
-    newJob.save((err) => {
+    newCategory.save((err) => {
         if(err){
             return res.status(400).json({
                 error: err
             });
         }
         return res.status(200).json({
-            success: "Job saved successfully"
+            success: "Category saved successfully"
         });
 
     });
@@ -19,7 +19,7 @@ const create = (req,res) => {
 }
 
 const getAll = (req,res) => {
-    Jobs.find(req.body).exec((err,jobs) => {
+    Categories.find().exec((err,categories) => {
         if(err){
             return res.status(400).json({
                 error: err
@@ -27,13 +27,13 @@ const getAll = (req,res) => {
         }
         return res.status(200).json({
             success: true,
-            existingJobs: jobs
+            existingCategories: categories
         });
     });
 }
 
 const getById = (req,res) => {
-    Jobs.findById(req.params.id).exec((err,job) => {
+    Categories.findById(req.params.id).exec((err,category) => {
         if(err){
             return res.status(400).json({
                 error: err
@@ -41,13 +41,13 @@ const getById = (req,res) => {
         }
         return res.status(200).json({
             success: true,
-            job: job
+            category: category
         });
     });
 }
 
-const getFeaturedJobs = (req,res) => {
-    Jobs.geoSearch({ isFeatured : true }, (err,featuredJobs) => {
+const getFeaturedCategories = (req,res) => {
+    Categories.find({ isFeatured : true }, (err,featuredCategories) => {
         if(err){
             return res.status(400).json({
                 error: err
@@ -55,7 +55,7 @@ const getFeaturedJobs = (req,res) => {
         }
         return res.status(200).json({
             success: true,
-            featuredJobs: featuredJobs
+            featuredCategories: featuredCategories
         });
     });
 }
@@ -63,12 +63,12 @@ const getFeaturedJobs = (req,res) => {
 
 const update = (req,res) => {
 
-    Jobs.findByIdAndUpdate(
+    Categories.findByIdAndUpdate(
         req.params.id,
         {
             $set:req.body
         },
-        (err,job) =>{
+        (err,category) =>{
             if(err){
                 return res.status(400).json({
                     error:err
@@ -82,15 +82,15 @@ const update = (req,res) => {
 }
 
 const remove = (req, res) => {
-    Jobs.findByIdAndDelete(req.params.id).exec((err,deletedJob) => {
+    Categories.findByIdAndDelete(req.params.id).exec((err,deletedCategory) => {
         if(err){
             return res.status(400).json({
                 error: err
             });
         }
         return res.status(200).json({
-            success: "Job deleted successfully",
-            deletedJob
+            success: "Category deleted successfully",
+            deletedCategory: deletedCategory,
         });
     });
 }
@@ -101,6 +101,6 @@ module.exports = {
     getById,
     update,
     remove,
-    getFeaturedJobs
+    getFeaturedCategories
 
 }

@@ -8,6 +8,8 @@ const app = express();
 //import routes
 const userRoutes = require('./routes/users');
 const jobRoutes = require('./routes/jobs');
+const categoryRoutes = require('./routes/categories');
+const typeRoutes = require('./routes/types');
 const employerRoutes = require('./routes/employers');
 const jobSeekerRoutes = require('./routes/jobseeker');
 
@@ -18,6 +20,8 @@ app.use(cors());
 // route middleware
 app.use(userRoutes);
 app.use(jobRoutes);
+app.use(categoryRoutes);
+app.use(typeRoutes);
 app.use(employerRoutes);
 app.use(jobSeekerRoutes);
 

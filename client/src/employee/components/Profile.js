@@ -1,21 +1,13 @@
 import React from 'react'
-import { CssBaseline, Container, ThemeProvider, makeStyles } from '@material-ui/core'
+import {  makeStyles } from '@material-ui/core'
 import '../styles/Profile.css'
-import FloatCard from '../../components/FloatCard'
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import theme from '../../Theme';
-import Footer from '../../components/Footer';
 import IntroSection from './IntroSection'
 import EducationSection from './EducationSection';
 import ProjectsSection from './ProjectsSection';
-import Achievements from './Achievements';
-import { Component } from 'react';
+import Achievements from './Awards';
 import Space from './Space';
-import EmployeeTopbar from '../../components/Topbar';
-import SideDrawer from '../../components/SideDrawer';
 import WorkExperience from './WorkExperience';
-import KnowledgeSection from './KnowledgeSection';
 
 const useStyles = makeStyles((theme) => ({
     root: {
