@@ -1,5 +1,17 @@
 import { React, useState } from "react";
 import { useForm, useStep } from "react-hooks-helper";
+import {
+  Button,
+  TextField,
+  Box,
+  Grid,
+  Typography,
+  Container,
+  IconButton,
+  Stepper,
+  Step,
+  StepLabel,
+} from "@material-ui/core";
 import { PersonalDetails } from "./components/PersonalDetails";
 import { Qualifications } from "./components/Qualifications";
 import { Preferences } from "./components/Preferences";
@@ -22,13 +34,13 @@ const defaultData = {
 
 const steps = [
   { id: "personal" },
-  { id: "qualifications" },
   { id: "preferences" },
+  { id: "qualifications" },
   { id: "review" },
   { id: "submit" },
 ];
 
-export default function SignUp() {
+export default function GetHired() {
   const [formData, setForm] = useForm(defaultData);
   const { step, navigation } = useStep({
     steps,
@@ -41,7 +53,7 @@ export default function SignUp() {
   };
 
   const [school, setSchool] = useState([
-    { school: "", schoolFrom: "", schoolTo: "" },
+    { school: "", degree: "", schoolFrom: "", schoolTo: "" },
   ]);
   const handleSchoolInputChange = (e, index) => {
     const { name, value } = e.target;

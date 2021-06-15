@@ -138,18 +138,29 @@ export const Qualifications = ({
                 {school.map((x, i) => {
                   return (
                     <Grid container alignItems="center" spacing={2}>
-                      <Grid item xs={12} md={6} align="center">
+                      <Grid item xs={12} md={4} align="center">
                         <TextField
                           className={classes.textField}
                           variant="outlined"
                           fullWidth
                           name="school"
-                          label="Enter School Name"
+                          label="University Name"
                           value={x.school}
                           onChange={(e) => handleSchoolInputChange(e, i)}
                         />
                       </Grid>
-                      <Grid item xs={12} md={2} align="center">
+                      <Grid item xs={12} md={4} align="center">
+                        <TextField
+                          className={classes.textField}
+                          variant="outlined"
+                          fullWidth
+                          name="degree"
+                          label="Degree"
+                          value={x.degree}
+                          onChange={(e) => handleSchoolInputChange(e, i)}
+                        />
+                      </Grid>
+                      <Grid item xs={12} md={1} align="center">
                         <TextField
                           className={classes.textField}
                           variant="outlined"
@@ -160,7 +171,7 @@ export const Qualifications = ({
                           onChange={(e) => handleSchoolInputChange(e, i)}
                         />
                       </Grid>
-                      <Grid item xs={12} md={2} align="center">
+                      <Grid item xs={12} md={1} align="center">
                         <TextField
                           className={classes.textField}
                           variant="outlined"
