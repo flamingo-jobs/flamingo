@@ -23,6 +23,9 @@ import LanguageIcon from '@material-ui/icons/Language';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
+import axios from 'axios';
+import BACKEND_URL from '../../Config';
+import { useState, useEffect } from 'react';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -117,12 +120,29 @@ const useStyles = makeStyles((theme) => ({
 
 }))
 
-
-
 function CompanyInfo() {
 
     const classes = useStyles();
+
     const [value, setValue] = React.useState(2);
+
+    const [employer, setCompanyDetails] = useState([]);
+
+    useEffect(() => {
+        getCompanyInfo()
+    })
+
+    const getCompanyInfo = () => {
+
+        axios.get(`${BACKEND_URL}/employers/`+ "60c246913542f942e4c84454").then(res => {
+            if (res.data.success) {
+                setCompanyDetails(res.data.employer)
+            } else {
+                setCompanyDetails(null)
+            }
+        })
+
+    }
 
     return (
         
@@ -150,7 +170,7 @@ function CompanyInfo() {
                             {/* PANEL 01 FOR COMPANY NAME, MEMBERSHIP TYPE AND EDIT BUTTON */}
 
                                 <Grid item xs={9}>
-                                    <Typography variant="h5" className={classes.companyName} >IFS R&D International</Typography>
+                                    <Typography variant="h5" className={classes.companyName} >{employer.name}</Typography>
 
                                     <div className={classes.headerRight}>
                                         <Chip icon={<LoyaltyIcon />} label="Premium"  className={classes.membershipType}/>
@@ -265,14 +285,7 @@ function CompanyInfo() {
             
                         <div className={classes.companyDescription}>
                             <Typography variant="body2" align="justify">
-                            IFS develops and delivers enterprise software for companies around the world who manufacture and distribute goods, 
-                            build and maintain assets, and manage service-focused operations. Within our single platform, our industry specific 
-                            products are innately connected to a single data model and use embedded digital innovation so that our customers can 
-                            be their best when it really matters to their customers – at the Moment of Service. The industry expertise of our people 
-                            and of our growing ecosystem, together with a commitment to deliver value at every single step, has made IFS a recognized 
-                            leader and the most recommended supplier in our sector. Our team of 4,000 employees every day live our values of agility, 
-                            trustworthiness and collaboration in how we support our 10,000+ customers.
-
+                            {employer.description}
                             <br/><br/>
                             We provide solutions in:
 
