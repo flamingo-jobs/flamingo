@@ -22,6 +22,8 @@ router.put('/jobseeker/update/:id', jobseekerController.update);
 router.put('/jobseeker/addEducation/:id', jobseekerController.addEducation);
 router.put('/jobseeker/addAward/:id', jobseekerController.addAward);
 router.put('/jobseeker/addVolunteering/:id', jobseekerController.addVolunteering);
+router.put('/jobseeker/addProject/:id', jobseekerController.addProject);
+router.put('/jobseeker/addWork/:id', jobseekerController.addWork);
 
 // delete job
 
