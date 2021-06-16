@@ -9,7 +9,7 @@ import StarIcon from '@material-ui/icons/Star';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    backgroundColor: '#F8F8F8',
+    backgroundColor: 'Snow',
     paddingLeft: 10,
     paddingRight: 10,
     marginBottom: 25,
