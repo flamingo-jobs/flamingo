@@ -3,12 +3,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import FloatCard from '../../components/FloatCard';
 import Organization from '../../employer/components/Organization';
-import wso2 from '../images/wso2.png'
-import virtusa from '../images/virtusa.png'
-import ifs from '../images/ifs.png'
-import ninix from '../images/ninix.png'
-import zone from '../images/zone.png'
-import mas from '../images/mas.png'
+
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
 import axios from 'axios';
 import BACKEND_URL from '../../Config';
@@ -43,7 +38,7 @@ function FeaturedOrganizations() {
 
     useEffect(() => {
         retrieveFeaturedOrgs()
-    })
+    }, [])
 
     const retrieveFeaturedOrgs = () => {
         axios.get(`${BACKEND_URL}/employers/featuredEmployers`).then(res => {

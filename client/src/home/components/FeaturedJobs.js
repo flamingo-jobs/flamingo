@@ -69,7 +69,10 @@ function FeaturedJobs() {
         })
     }
 
-    retrieveFeaturedJobs();
+    useEffect(() => {
+        retrieveFeaturedJobs();
+
+    }, [])
 
     const displayFeaturedJobs = () => {
         if (featuredJobs) {

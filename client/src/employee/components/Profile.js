@@ -8,6 +8,7 @@ import ProjectsSection from './ProjectsSection';
 import Achievements from './Awards';
 import Space from './Space';
 import WorkExperience from './WorkExperience';
+import Volunteer from './Volunteer';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -38,6 +39,8 @@ function Profile() {
                 <EducationSection />
                 <Space />
                 <Achievements />
+                <Space />
+                <Volunteer />
             </Grid>
             <Grid item xs={12} sm={8} spacing={3}>
                 <WorkExperience />

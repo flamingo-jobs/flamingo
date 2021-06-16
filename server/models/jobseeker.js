@@ -13,15 +13,11 @@ const jobseekerSchema = new mongoose.Schema({
         type: Array,
         required: true
     },
-    workExperience: {
+    work: {
         type: Array,
         required: true
     },
-    projects: {
-        type: Array,
-        required: true
-    },
-    awards: {
+    project: {
         type: Array,
         required: true
     },
