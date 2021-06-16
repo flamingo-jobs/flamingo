@@ -123,7 +123,7 @@ function JobSearchBar(props) {
         let filterObjects = {};
 
         if (keywords.length == 0) {
-            filterObjects = { ...filterObjects, $or: };
+            // filterObjects = { ...filterObjects, $or: };
         }
 
         // if (title != 0) {
