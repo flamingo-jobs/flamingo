@@ -5,20 +5,19 @@ import { FavoriteRounded } from '@material-ui/icons';
 import Rating from '@material-ui/lab/Rating';
 import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
-import ifs from '../images/ifs.png';
+import wso2 from '../images/wso2.png';
 import FloatCard from './FloatCard';
 import EditIcon from '@material-ui/icons/Edit';
 import LoyaltyIcon from '@material-ui/icons/Loyalty';
-import ListItemText from '@material-ui/core/ListItemText';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
-import TurnedInNotTwoToneIcon from '@material-ui/icons/TurnedInNotTwoTone';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
-
 import LanguageIcon from '@material-ui/icons/Language';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
@@ -26,6 +25,8 @@ import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import axios from 'axios';
 import BACKEND_URL from '../../Config';
 import { useState, useEffect } from 'react';
+import EditDetailsForm from './EditDetailsForm';
+import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -81,8 +82,6 @@ const useStyles = makeStyles((theme) => ({
     editButton:{
         marginTop:-90,
         marginLeft:110,
-        // color:theme.palette.white,
-        // backgroundColor:theme.palette.frenchViolet,
         margin: theme.spacing(1),
         padding:theme.spacing(1),
     },
@@ -115,6 +114,17 @@ const useStyles = makeStyles((theme) => ({
     smIcons:{
         marginLeft:-14,
         marginTop:-25,
+    },
+    dialogbuttons: {
+        color: theme.palette.purple,
+    },
+    dialogBox:{
+        minHeight: '100vh',
+        maxHeight: '100vh',
+    },
+    editPhoto:{
+        marginLeft: 50,
+        marginTop:-25,
     }
 
 
@@ -135,7 +145,9 @@ function CompanyInfo() {
     const getCompanyInfo = () => {
 
         axios.get(`${BACKEND_URL}/employers/`+ "60c246913542f942e4c84454").then(res => {
+
             if (res.data.success) {
+                console.log(res.data.employer)
                 setCompanyDetails(res.data.employer)
             } else {
                 setCompanyDetails(null)
@@ -144,8 +156,18 @@ function CompanyInfo() {
 
     }
 
+    //Event handlers for the edit detail dialog box 
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     return (
-        
 
         <div className={classes.root}>
 
@@ -160,7 +182,9 @@ function CompanyInfo() {
                             {/* LOGO */}
 
                             <Grid item xs={3} className={classes.logoItem}>
-                                <Avatar className={classes.logo} src={ifs} variant="square" />
+                                {/* <Avatar className={classes.logo} src={require(`../images/${employer.logo}`).default} variant="square" /> */}
+                                <Avatar className={classes.logo} src={wso2} variant="square" />
+                                
                             </Grid>
 
                             {/* OTHER INFO NEXT TO LOGO */}
@@ -173,11 +197,32 @@ function CompanyInfo() {
                                     <Typography variant="h5" className={classes.companyName} >{employer.name}</Typography>
 
                                     <div className={classes.headerRight}>
-                                        <Chip icon={<LoyaltyIcon />} label="Premium"  className={classes.membershipType}/>
+                                        <Chip icon={<LoyaltyIcon />} label={employer.subscription}  className={classes.membershipType}/>
 
-                                        <IconButton variant="outlined" aria-label="edit" className={classes.editButton}>
+                                        <IconButton variant="outlined" aria-label="edit" className={classes.editButton} onClick={handleClickOpen}>
                                             <EditIcon />
                                         </IconButton>
+
+                                        {/* Dialog box for the edit details */}
+
+                                        <Dialog open={open} onClose={handleClose} aria-labelledby="edit-details-form" fullWidth className={classes.dialogBox}>
+                                            <DialogTitle id="edit-details-form">Company Profile</DialogTitle>
+                                            <DialogContent>
+                                                <DialogContentText>
+                                                    *Required Fields
+                                                </DialogContentText>
+                                                <EditDetailsForm>
+                                                </EditDetailsForm>
+                                            </DialogContent>
+                                            <DialogActions>
+                                            <Button onClick={handleClose} color="primary" className={classes.dialogbuttons}>
+                                                Cancel
+                                            </Button>
+                                            <Button onClick={handleClose} color="primary"className={classes.dialogbuttons}>
+                                                Save
+                                            </Button>
+                                            </DialogActions>
+                                        </Dialog>
 
                                     </div>
  
@@ -188,8 +233,7 @@ function CompanyInfo() {
                                 <Grid item xs={9}>
 
                                     <div className={classes.locationTags}>
-                                        <Chip icon={<LocationOnRoundedIcon />} label="Colombo, Sri Lanka" className={classes.tag} />
-                                        <Chip icon={<WorkRoundedIcon />} label="Full-time" className={classes.tag} />
+                                        <Chip icon={<LocationOnRoundedIcon />} label="Colombo" className={classes.tag} />
                                     </div>
                                         
                                 </Grid>
@@ -218,23 +262,23 @@ function CompanyInfo() {
                                 <Grid container item xs={9} className={classes.smIcons}>
 
                                     <Grid item xs={1}>
-                                        <IconButton variant="outlined" aria-label="website">
+                                        <IconButton  variant="outlined" aria-label="website">
                                             <LanguageIcon />
                                         </IconButton>
                                     </Grid>
 
                                     <Grid item xs={1}>
-                                        <IconButton variant="outlined" aria-label="linkedin">
+                                        <IconButton  aria-label="linkedin">
                                             <LinkedInIcon />
                                         </IconButton>
                                     </Grid>
                                     <Grid item xs={1}>
-                                        <IconButton variant="outlined" aria-label="twitter">
+                                        <IconButton  aria-label="twitter">
                                             <TwitterIcon />
                                         </IconButton>
                                     </Grid>
                                     <Grid item xs={1}>
-                                        <IconButton variant="outlined" aria-label="edit">
+                                        <IconButton  aria-label="edit">
                                             <FacebookIcon />
                                         </IconButton>
                                     </Grid>       
@@ -244,6 +288,30 @@ function CompanyInfo() {
                                 
 
                         </Grid>
+
+                    {/* Edit Company Logo */}
+
+                    <Grid item container alignItems="center" direction="row" xs={12}>
+                        <Grid item sm={3} className={classes.editPhoto}>
+
+                                <input
+                                    accept="image/*"
+                                    style={{ display: 'none' }}
+                                    id="raised-button-file"
+                                    type="file"
+                                />
+
+                                <label htmlFor="raised-button-file">
+
+                                    <IconButton variant="outlined" component="span" aria-label="edit" className={classes.editPhotoButton}>
+                                        <PhotoCameraIcon />
+                                    </IconButton>
+                                    
+                                </label> 
+
+                        </Grid>
+
+                    </Grid>
 
 
 
@@ -286,36 +354,8 @@ function CompanyInfo() {
                         <div className={classes.companyDescription}>
                             <Typography variant="body2" align="justify">
                             {employer.description}
-                            <br/><br/>
-                            We provide solutions in:
-
                             </Typography>
 
-                            <List component="nav" aria-label="main mailbox folders" >
-
-                                <ListItem className={classes.listItem}>
-                                    <ListItemIcon>
-                                        <FiberManualRecordIcon />
-                                    </ListItemIcon>
-                                <ListItemText primary="Enterprise Asset Management" />
-                                </ListItem>
-
-                                <ListItem  className={classes.listItem}>
-                                    <ListItemIcon>
-                                        <FiberManualRecordIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary="Field Service Management" />
-                                </ListItem>
-
-                                <ListItem className={classes.listItem}>
-                                    <ListItemIcon>
-                                        <FiberManualRecordIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary="Enterprise Resource Planning" />
-                                </ListItem>
-
-                            </List>
-   
                         </div>
     
                     </Grid>

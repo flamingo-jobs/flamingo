@@ -19,6 +19,7 @@ const create = (req,res) => {
 }
 
 const getAll = (req,res) => {
+    console.log(req.body);
     Jobs.find(req.body).exec((err,jobs) => {
         if(err){
             return res.status(400).json({

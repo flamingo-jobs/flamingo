@@ -1,5 +1,5 @@
 import { Button, Grid, makeStyles, Typography, fade } from '@material-ui/core'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import FloatCard from '../../components/FloatCard'
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
@@ -89,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-function JobSearchBar() {
+function JobSearchBar(props) {
 
     const classes = useStyles();
 
@@ -103,6 +103,36 @@ function JobSearchBar() {
         { title: 'Pulp Fiction', year: 1994 },
 
     ];
+
+    const [keywords, setKeyword] = useState([]);
+    const [locations, setLocations] = useState([]);
+
+    const addKeywords = (keywords) => {
+        setKeyword(keywords);
+    }
+
+    const addLocations = (locations) => {
+        setLocations(locations);
+    }
+
+    useEffect(() => {
+        passFilters();
+        
+    }, [keywords, locations]);
+
+    const passFilters = () => {
+        let filterObjects = {};
+        if (keywords.length != 0) {
+            let regexExp = keywords.join('|');
+            filterObjects = { ...filterObjects, $or : [ {title: { $regex : regexExp, $options : "i"}}, {description: { $regex : regexExp, $options : "i"}}]};
+
+        }
+
+        if (locations.length != 0) {
+            filterObjects = { ...filterObjects, location : locations };
+        }
+        props.onChange(filterObjects);
+    }
 
     return (
         <FloatCard backColor={theme.palette.blueJeans}>
@@ -130,6 +160,7 @@ function JobSearchBar() {
                                 renderInput={(params) => (
                                     <TextField {...params} id="outlined-basic" variant="standard" placeholder="Keywords" classes={{ root: classes.keywordInput }} />
                                 )}
+                                onChange={(event, value) => addKeywords(value)}
                                 classes={{
                                     inputRoot: classes.inputRoot,
                                     input: classes.inputInput,
@@ -158,6 +189,7 @@ function JobSearchBar() {
                                 renderInput={(params) => (
                                     <TextField {...params} id="outlined-basic" variant="standard" placeholder="Location" classes={{ root: classes.keywordInput }} />
                                 )}
+                                onChange={(event, value) => addLocations(value)}
                                 classes={{
                                     inputRoot: classes.inputRoot,
                                     input: classes.inputInput,
