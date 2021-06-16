@@ -1,5 +1,5 @@
 import { Button, Grid, makeStyles, Typography, fade } from '@material-ui/core'
-import React from 'react'
+import React, { useState } from 'react'
 import FloatCard from '../../components/FloatCard'
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
@@ -89,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-function JobSearchBar() {
+function JobSearchBar(props) {
 
     const classes = useStyles();
 
@@ -103,6 +103,10 @@ function JobSearchBar() {
         { title: 'Pulp Fiction', year: 1994 },
 
     ];
+
+    const [keywords, setKeyword] = useState([]);
+
+
 
     return (
         <FloatCard backColor={theme.palette.blueJeans}>
@@ -158,6 +162,7 @@ function JobSearchBar() {
                                 renderInput={(params) => (
                                     <TextField {...params} id="outlined-basic" variant="standard" placeholder="Location" classes={{ root: classes.keywordInput }} />
                                 )}
+                                onChange={(event, value) => console.log(value)}
                                 classes={{
                                     inputRoot: classes.inputRoot,
                                     input: classes.inputInput,
