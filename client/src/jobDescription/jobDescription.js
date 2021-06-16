@@ -3,14 +3,14 @@ import { Grid, Container, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import BACKEND_URL from "../Config";
+
 // Custom components
 import JobSummary from "./components/jobSummary";
 import Responsibilities from "./components/responsibilities";
 import Requirements from "./components/requirements";
 import ApplyForm from "./components/applyForm";
-import Organization from "./../employer/components/Organization";
 import FloatCard from "../components/FloatCard";
-import JobCard from "../jobs/components/JobCard";
+import FeaturedJobs from "./components/featuredJobs";
 
 const useStyles = makeStyles((theme) => ({
   border: {
@@ -19,110 +19,189 @@ const useStyles = makeStyles((theme) => ({
   root: {
     marginLeft: "12px",
   },
+  title: {
+    fontWeight: 600,
+    color: theme.palette.black,
+  },
+  emptyContentText: {
+    color: theme.palette.black,
+  },
   outterWrapper: {
     // paddingLeft: theme.spacing(1.5),
     // paddingRight: theme.spacing(1.5),
   },
   container: {
-    // marginBottom: theme.spacing(3),
+    marginBottom: theme.spacing(3),
   },
 }));
+
+// style={{border: "1px solid red"}}
 
 function JobDescription() {
   const classes = useStyles();
 
   const [job, setJob] = useState("empty");
+  const [allJobs, setAllJobs] = useState("empty");
+
+  const isSignedIn = false;
+  const jobId = "60c60c2c22a5b249ec118d95";
 
   useEffect(() => {
     retrieveJob();
-  });
+    retrieveAllJobs();
+  }, []);
 
   const retrieveJob = () => {
-    axios.get(`${BACKEND_URL}/jobs/60c184a2c76c4d325461e7f0`).then(res => {
+    axios.get(`${BACKEND_URL}/jobs/${jobId}`).then((res) => {
       if (res.data.success) {
-        setJob(res.data.job)
+        setJob(res.data.job);
       } else {
-        setJob(null)
+        setJob(null);
       }
-    })
-  }
+    });
+  };
 
-  const displayJob = () => {
+  const retrieveAllJobs = () => {
+    axios.get(`${BACKEND_URL}/jobs`).then((res) => {
+      if (res.data.success) {
+        setAllJobs(res.data.existingJobs);
+      } else {
+        setAllJobs(null);
+      }
+    });
+  };
+
+  const displaySummary = () => {
     if (job == "empty") {
       return (
         <Grid item sm={12}>
           <Typography>No infromation to display</Typography>
-        </Grid>)
+        </Grid>
+      );
     } else {
       return (
         <Grid item sm={12} className={classes.container}>
           <FloatCard>
-            <JobSummary
-              job={job}
-            ></JobSummary>
+            <JobSummary job={job}></JobSummary>
           </FloatCard>
         </Grid>
-      )
-
+      );
     }
-  }
+  };
 
-    const displayResponsibilities = () => {
+
+  const displayResponsibilities = () => {
     if (job == "empty") {
       return (
         <Grid item sm={12}>
           <Typography>No infromation to display</Typography>
-        </Grid>)
+        </Grid>
+      );
     } else {
       return (
-        <Grid item xs={12} lg={6} className={classes.container}>
+        <Grid item xs={12} lg={12} className={classes.container}>
           <FloatCard>
             <Responsibilities
               responsibilities={job.tasksAndResponsibilities}
             ></Responsibilities>
           </FloatCard>
         </Grid>
-      )
-
+      );
     }
-  }
+  };
 
+  // **** add margin bottom to the last component when signed in ***
   const displayRequirements = () => {
     if (job == "empty") {
       return (
         <Grid item sm={12}>
           <Typography>No infromation to display</Typography>
-        </Grid>)
+        </Grid>
+      );
     } else {
       return (
-        <Grid item xs={12} lg={6} className={classes.container}>
+        <Grid
+          item
+          xs={12}
+          lg={12}
+          className={isSignedIn === false ? "" : classes.container}
+        >
           <FloatCard>
             <Requirements requirements={job.qualifications}></Requirements>
           </FloatCard>
         </Grid>
-      )
-
+      );
     }
-  }
-  return (
-    <>
-      <Grid item container className={classes.outterWrapper} xs={12} spacing={3}>
+  };
 
-
-        {displayJob()}
-        
-        {displayResponsibilities()}
-
-        {displayRequirements()}
-
+  const displayApplyForm = () => {
+    if (isSignedIn === true) {
+      return (
         <Grid item sm={12}>
           <FloatCard>
-            {/* <ApplyForm></ApplyForm> */}
+            <ApplyForm></ApplyForm>
           </FloatCard>
+        </Grid>
+      );
+    }
+  };
+
+  const displayFeaturedJobs = () => {
+    if (allJobs == "empty") {
+      return (
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <FloatCard>
+              <Typography variant="h6" className={classes.title}>
+                Featured Jobs
+              </Typography>
+            </FloatCard>
+          </Grid>
+          <Grid item xs={12}>
+            <FloatCard>
+              <Typography variant="body1" className={classes.emptyContentText}>
+                There are no featured Jobs
+              </Typography>
+            </FloatCard>
+          </Grid>
+        </Grid>
+      );
+    } else {
+      const featuredJobs = allJobs.filter((job) => (job.isFeatured === true && job._id !== jobId));
+      return <FeaturedJobs featuredJobs={featuredJobs}></FeaturedJobs>;
+    }
+  };
+
+  return (
+    <>
+      <Grid
+        item
+        container
+        className={classes.outterWrapper}
+        xs={12}
+        spacing={3}
+      >
+        <Grid item xs={12} lg={8} spacing={0}>
+          <Grid item container>
+            <Grid item xs={12}>
+              {displaySummary()}
+            </Grid>
+            <Grid item xs={12}>
+              {displayResponsibilities()}
+            </Grid>
+            <Grid item xs={12}>
+              {displayRequirements()}
+            </Grid>
+            {displayApplyForm()}
+          </Grid>
+        </Grid>
+
+        <Grid item md={12} lg={4}>
+          {displayFeaturedJobs()}
         </Grid>
       </Grid>
     </>
   );
-};
+}
 
 export default JobDescription;

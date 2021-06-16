@@ -24,12 +24,20 @@ const useStyles = makeStyles((theme) => ({
   jobTitle: {
     fontWeight: 600,
     textAlign: "left",
+    color: theme.palette.black,
+  },
+  companyIcon: {
+    borderRadius: "12px",
   },
   companyName: {
     textAlign: "left",
+    color: theme.palette.black,
+
   },
   companyAddress: {
     textAlign: "left",
+    color: theme.palette.black,
+
   },
   jobCategory: {
     color: theme.palette.tagIcon,
@@ -48,12 +56,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function JobSummary(props){
+function JobSummary(props) {
   const classes = useStyles();
 
   return (
     <Container>
-      <Container maxWidth="lg" className={classes.summaryContainer}>
+      <Container className={classes.summaryContainer}>
         <Grid container alignItems="center" spacing={2}>
           <Grid item xs={12} md={8}>
             <Typography variant="h5" className={classes.jobTitle}>
@@ -61,7 +69,12 @@ function JobSummary(props){
             </Typography>
             <Grid item container spacing={2} alignItems="center">
               <Grid item>
-                <Avatar alt="99x" src={ninix} variant="square"></Avatar>
+                <Avatar
+                  className={classes.companyIcon}
+                  alt="99x"
+                  src={ninix}
+                  variant="square"
+                ></Avatar>
               </Grid>
               <Grid item>
                 <Typography variant="h6" className={classes.companyName}>
@@ -106,7 +119,7 @@ function JobSummary(props){
           </Grid>
           <Grid item xs={12} md={4} align="center">
             <Button
-            variant="contained"
+              variant="contained"
               href="#applyForm"
               className={classes.applyBtn}
             >
@@ -120,6 +133,6 @@ function JobSummary(props){
       </Container>
     </Container>
   );
-};
+}
 
 export default JobSummary;
