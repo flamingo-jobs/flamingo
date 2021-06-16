@@ -95,6 +95,7 @@ function TechStack() {
 
   return (
     <div className={classes.root}>
+        
       <Grid container xs={12} direction="column" spacing={1}>
         <Grid item sm={12} className={classes.topBar}>
           {/* Floatcard for the top bar */}
