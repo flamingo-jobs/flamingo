@@ -92,7 +92,7 @@ const useStyles = makeStyles((theme) => ({
         marginRight: -20,
     },
     tag:{
-        marginRight: 10,
+        marginRight: -10,
         backgroundColor: 'white',
     },
     label: {
@@ -112,8 +112,8 @@ const useStyles = makeStyles((theme) => ({
         marginLeft:130,
     },
     smIcons:{
-        marginLeft:-14,
-        marginTop:-25,
+        marginLeft:-35,
+        marginTop:-40,
     },
     dialogbuttons: {
         color: theme.palette.purple,
@@ -124,7 +124,7 @@ const useStyles = makeStyles((theme) => ({
     },
     editPhoto:{
         marginLeft: 50,
-        marginTop:-25,
+        marginTop:-35,
     }
 
 
@@ -137,18 +137,26 @@ function CompanyInfo() {
     const [value, setValue] = React.useState(2);
 
     const [employer, setCompanyDetails] = useState([]);
+    const [technologyStack, setTechStack] = useState([]);
+    const [links, setLinks] = useState([]);
+    const [locations, setLocations] = useState([]);
 
     useEffect(() => {
         getCompanyInfo()
-    })
+        // console.log("abc")
+
+    },[])
 
     const getCompanyInfo = () => {
 
-        axios.get(`${BACKEND_URL}/employers/`+ "60c246913542f942e4c84454").then(res => {
+        axios.get(`${BACKEND_URL}/employers/`+ "60c246b73542f942e4c84455").then(res => {
 
             if (res.data.success) {
-                console.log(res.data.employer)
+                // console.log(res.data.employer.technologyStack)
                 setCompanyDetails(res.data.employer)
+                setTechStack(res.data.employer.technologyStack)
+                setLinks(res.data.employer.links)
+                setLocations(res.data.employer.locations)
             } else {
                 setCompanyDetails(null)
             }
@@ -233,8 +241,10 @@ function CompanyInfo() {
                                 <Grid item xs={9}>
 
                                     <div className={classes.locationTags}>
-                                        <Chip icon={<LocationOnRoundedIcon />} label="Colombo" className={classes.tag} />
-                                    </div>
+                                        {locations.map((item, i)=>(
+                                            <Chip icon={<LocationOnRoundedIcon />} label={item} className={classes.tag} />
+                                        ))}
+                                     </div>
                                         
                                 </Grid>
 
@@ -259,26 +269,26 @@ function CompanyInfo() {
 
                                 {/* PANEL 04 FOR SOCIAL MEDIA LINKS */}
 
-                                <Grid container item xs={9} className={classes.smIcons}>
+                                <Grid container item xs={9} className={classes.smIcons} spacing={5}>
 
                                     <Grid item xs={1}>
-                                        <IconButton  variant="outlined" aria-label="website">
+                                        <IconButton onClick={()=> window.open("https://"+ links.website)} variant="outlined" aria-label="website">
                                             <LanguageIcon />
                                         </IconButton>
                                     </Grid>
 
                                     <Grid item xs={1}>
-                                        <IconButton  aria-label="linkedin">
+                                        <IconButton onClick={()=> window.open("https://"+ links.linkedIn)} variant="outlined" aria-label="website">
                                             <LinkedInIcon />
                                         </IconButton>
                                     </Grid>
                                     <Grid item xs={1}>
-                                        <IconButton  aria-label="twitter">
+                                        <IconButton onClick={()=> window.open("https://"+ links.twitter)} variant="outlined" aria-label="website">
                                             <TwitterIcon />
                                         </IconButton>
                                     </Grid>
                                     <Grid item xs={1}>
-                                        <IconButton  aria-label="edit">
+                                        <IconButton onClick={()=> window.open("https://"+ links.facebook)} variant="outlined" aria-label="website">
                                             <FacebookIcon />
                                         </IconButton>
                                     </Grid>       
@@ -320,33 +330,18 @@ function CompanyInfo() {
                     <Grid item xs={12}>
 
 
-                        <div className={classes.infoTags}>
+                        {/* <div className={classes.infoTags}> */}
 
-                            <div>
-                                <Chip icon={<LocalOfferRoundedIcon className={classes.tagIcon} />} label="Full Stack Development" className={classes.label} />
-                                <Chip icon={<LocalOfferRoundedIcon className={classes.tagIcon} />} label="DevOps" className={classes.label} />
-                                <Chip icon={<LocalOfferRoundedIcon className={classes.tagIcon} />} label="Quality Assurance" className={classes.label} />
-                            </div>
+                        {console.log(technologyStack)}
 
-                            <div>
-                                <Chip icon={<LocalOfferRoundedIcon className={classes.tagIcon} />} label="Data Science" className={classes.label} />
-                                <Chip icon={<LocalOfferRoundedIcon className={classes.tagIcon} />} label="Software Engineering" className={classes.label} />
-                                <Chip icon={<LocalOfferRoundedIcon className={classes.tagIcon} />} label="Business Analysis" className={classes.label} />
-                                
+                        { 
+                            Object.keys(technologyStack).map((item, i) => (
+                           
+                                <Chip icon={<LocalOfferRoundedIcon className={classes.tagIcon} />} label={item} className={classes.label} />
 
-                            </div>
+                            ))
+                        }  
 
-                            <div>
-                                
-                                <Chip icon={<LocalOfferRoundedIcon className={classes.tagIcon} />} label="ERP Consulting" className={classes.label} />
-                                <Chip icon={<LocalOfferRoundedIcon className={classes.tagIcon} />} label="R & D" className={classes.label} />
-                                <Chip icon={<LocalOfferRoundedIcon className={classes.tagIcon} />} label="Project Management" className={classes.label} />
-                            </div>
-                            
-                            
-                            
-                    
-                        </div>
                     </Grid>
 
                     <Grid item xs={12} className={classes.body}>
