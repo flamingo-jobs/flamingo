@@ -43,7 +43,7 @@ const useStyles = makeStyles({
     backgroundColor: theme.palette.secondary.main,
   },
   paperCont: {
-    backgroundColor: '#F8F8F8',
+    backgroundColor: 'Snow',
     paddingLeft: 10,
     paddingRight: 10,
     marginBottom: 25,
@@ -98,7 +98,7 @@ function ProjectsSection() {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [project, setProject] = useState(null);
-  const [state, setState] = useState({name: null, link: null, description: null, from: null, to: null, usedTech: []});
+  const [state, setState] = useState({name: null, link: null, description: null, from: null, to: null, usedTech: null});
 
   useEffect(()=>{
     axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
@@ -165,7 +165,7 @@ function ProjectsSection() {
         usedTech: state.usedTech
     }
 
-    axios.put(`${BACKEND_URL}/jobseeker/addAward/60c5f2e555244d11c8012480`,newProject)
+    axios.put(`${BACKEND_URL}/jobseeker/addProject/60c5f2e555244d11c8012480`,newProject)
     .then(res => console.log(newProject));
     handleClose();
   }

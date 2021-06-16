@@ -30,7 +30,7 @@ const useStyles = makeStyles({
     }
   },
   paper: {
-    backgroundColor: '#F8F8F8',
+    backgroundColor: 'Snow',
     paddingLeft: 10,
     paddingRight: 10,
     marginBottom: 25,
@@ -38,7 +38,7 @@ const useStyles = makeStyles({
   },
 });
 
-function KnowledgeSection() {
+function TechnologySection() {
   const classes = useStyles();
 
   return (
@@ -47,7 +47,7 @@ function KnowledgeSection() {
         <Grid item xs style={{ textAlign: 'left',}}>
             <Typography gutterBottom variant="h5" style={{color: theme.palette.tuftsBlue,padding:'10px',fontWeight:'bold'}}>
                 <MenuBookIcon style={{color: theme.palette.turfsBlue,marginRight: '10px',marginBottom:'-5px',fontSize:'27'}}/>
-                Knowledge Area
+                Technology Stack
             </Typography>
         </Grid>
         <Grid item style={{ textAlign: 'right' }}>
@@ -59,7 +59,7 @@ function KnowledgeSection() {
       </Grid>
       <Grid container spacing={3}>
             <Grid item xs={12}>
-                <Paper elevation={0} className={classes.paper}>
+                {/* <Paper elevation={0} className={classes.paper}>
                     <Typography gutterBottom style={{textAlign:'justify',fontSize:'16px',fontWeight:'bold',color:'#666'}}>
                         Programming Languages
                     </Typography>
@@ -78,11 +78,11 @@ function KnowledgeSection() {
                     <Typography gutterBottom style={{textAlign:'justify',fontSize:'16px',fontWeight:'bold',color:'#666'}}>
                         Other
                     </Typography>
-                </Paper>
+                </Paper> */}
             </Grid>
         </Grid>
     </FloatCard>
   );
 }
 
-export default KnowledgeSection
+export default TechnologySection

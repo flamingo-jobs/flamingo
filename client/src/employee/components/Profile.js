@@ -9,6 +9,7 @@ import Achievements from './Awards';
 import Space from './Space';
 import WorkExperience from './WorkExperience';
 import Volunteer from './Volunteer';
+import TechnologySection from './TechnologySection';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -46,6 +47,8 @@ function Profile() {
                 <WorkExperience />
                 <Space />
                 <ProjectsSection />
+                <Space />
+                <TechnologySection />
             </Grid>                                            
         </Grid>
     )
