@@ -141,6 +141,7 @@ function CompanyInfo() {
     const [links, setLinks] = useState([]);
     const [locations, setLocations] = useState([]);
 
+
     useEffect(() => {
         getCompanyInfo()
         // console.log("abc")
@@ -149,7 +150,7 @@ function CompanyInfo() {
 
     const getCompanyInfo = () => {
 
-        axios.get(`${BACKEND_URL}/employers/`+ "60c246b73542f942e4c84455").then(res => {
+        axios.get(`${BACKEND_URL}/employers/`+ "60c246913542f942e4c84454").then(res => {
 
             if (res.data.success) {
                 // console.log(res.data.employer.technologyStack)
@@ -219,7 +220,7 @@ function CompanyInfo() {
                                                 <DialogContentText>
                                                     *Required Fields
                                                 </DialogContentText>
-                                                <EditDetailsForm>
+                                                <EditDetailsForm name={employer.name} description={employer.description} links={links} locations={locations}>
                                                 </EditDetailsForm>
                                             </DialogContent>
                                             <DialogActions>

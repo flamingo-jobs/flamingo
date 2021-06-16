@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const EditDetailsForm = () => {
+const EditDetailsForm = (props) => {
   const classes = useStyles();
 
   const [value, setValue] = React.useState(2);
@@ -51,21 +51,10 @@ const EditDetailsForm = () => {
   const [employer, setCompanyDetails] = useState([]);
 
   useEffect(() => {
-    getCompanyInfo();
+    // console.log(props.name)
   });
 
-  const getCompanyInfo = () => {
-    axios
-      .get(`${BACKEND_URL}/employers/` + "60c246913542f942e4c84454")
-      .then((res) => {
-        if (res.data.success) {
-          console.log(res.data.employer);
-          setCompanyDetails(res.data.employer);
-        } else {
-          setCompanyDetails(null);
-        }
-      });
-  };
+
 
   return (
     <div>
@@ -77,7 +66,7 @@ const EditDetailsForm = () => {
             id="name"
             label="Company Name"
             variant="outlined"
-            defaultValue={employer.name}
+            defaultValue={props.name}
             InputProps={{
                 classes: {
                   input: classes.textField,
@@ -94,7 +83,7 @@ const EditDetailsForm = () => {
             fullWidth
             options={locations}
             getOptionLabel={(option) => option.city}
-            defaultValue={[locations[5]]}
+            defaultValue={[locations[5],locations[1],locations[3]]}
             filterSelectedOptions
             renderInput={(params) => (
               <TextField
@@ -112,7 +101,7 @@ const EditDetailsForm = () => {
             multiline
             fullWidth
             id="description"
-            defaultValue={employer.description}
+            defaultValue={props.description}
             label="Description"
             rows={5}
             variant="outlined"
@@ -136,7 +125,7 @@ const EditDetailsForm = () => {
                   <LinkedInIcon />
                 </InputAdornment>
               }
-            //   defaultValue={employer.links.linkedIn}
+              defaultValue={props.links.linkedIn}
             InputProps={{
                 classes: {
                   input: classes.textField,
@@ -154,7 +143,7 @@ const EditDetailsForm = () => {
                   <LanguageIcon />
                 </InputAdornment>
               }
-            //   defaultValue={employer.links.website}
+              defaultValue={props.links.website}
             InputProps={{
                 classes: {
                   input: classes.textField,
@@ -177,7 +166,7 @@ const EditDetailsForm = () => {
                   <FacebookIcon />
                 </InputAdornment>
               }
-            //   defaultValue={employer.links.facebook}
+              defaultValue={props.links.facebook}
             InputProps={{
                 classes: {
                   input: classes.textField,
@@ -195,7 +184,7 @@ const EditDetailsForm = () => {
                   <TwitterIcon />
                 </InputAdornment>
               }
-            //   defaultValue={employer.links.twitter}
+              defaultValue={props.links.twitter}
             InputProps={{
                 classes: {
                   input: classes.textField,
@@ -219,7 +208,11 @@ const locations = [
   { city: "Delhi" },
   { city: "Bangalore" },
   { city: "Male" },
-  { city: "Dhaka" },
+  { city: "New York" },
+  { city: "Uppsala" },
+  { city: "Göteborg" },
+  { city: "Linköping" },
+
 ];
 
 export default EditDetailsForm;
