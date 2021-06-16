@@ -117,27 +117,20 @@ function JobSearchBar(props) {
 
     useEffect(() => {
         passFilters();
+        
     }, [keywords, locations]);
 
-    const combineFilters = () => {
+    const passFilters = () => {
         let filterObjects = {};
+        if (keywords.length != 0) {
+            let regexExp = keywords.join('|');
+            filterObjects = { ...filterObjects, $or : [ {title: { $regex : regexExp, $options : "i"}}, {description: { $regex : regexExp, $options : "i"}}]};
 
-        if (keywords.length == 0) {
-            // filterObjects = { ...filterObjects, $or: };
         }
 
-        // if (title != 0) {
-        //     filterObjects = { ...filterObjects, title };
-        // }
-
-        if (category != 0) {
-            filterObjects = { ...filterObjects, category };
+        if (locations.length != 0) {
+            filterObjects = { ...filterObjects, location : locations };
         }
-
-        if (organization != 0) {
-            filterObjects = { ...filterObjects, "organization.name": organization };
-        }
-
         props.onChange(filterObjects);
     }
 
@@ -167,7 +160,7 @@ function JobSearchBar(props) {
                                 renderInput={(params) => (
                                     <TextField {...params} id="outlined-basic" variant="standard" placeholder="Keywords" classes={{ root: classes.keywordInput }} />
                                 )}
-                                onChange={(event, value) => addLocations(value)}
+                                onChange={(event, value) => addKeywords(value)}
                                 classes={{
                                     inputRoot: classes.inputRoot,
                                     input: classes.inputInput,
@@ -196,7 +189,7 @@ function JobSearchBar(props) {
                                 renderInput={(params) => (
                                     <TextField {...params} id="outlined-basic" variant="standard" placeholder="Location" classes={{ root: classes.keywordInput }} />
                                 )}
-                                onChange={(event, value) => addKeywords(value)}
+                                onChange={(event, value) => addLocations(value)}
                                 classes={{
                                     inputRoot: classes.inputRoot,
                                     input: classes.inputInput,

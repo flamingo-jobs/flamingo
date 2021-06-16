@@ -1,5 +1,5 @@
 import React from 'react'
-import { makeStyles, Typography } from '@material-ui/core'
+import { colors, makeStyles, Typography } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid';
 import JobSearchBar from './components/JobSearchBar';
 import JobCard from './components/JobCard';
@@ -46,18 +46,43 @@ function Jobs() {
     const [jobs, setJobs] = useState([]);
 
     const [filters, setFilters] = useState({});
+    const [search, setSearch] = useState({});
+    const [queryParams, setQueryParams] = useState({});
 
     useEffect(() => {
         retrieveJobs();
-    }, [filters])
+    }, [queryParams])
+
+    useEffect(() => {
+        updateQuery();
+    }, [filters, search])
 
     const updateFilters = (filterData) => {
         setFilters(filterData);
     }
 
+    const updateSearch = (searchData) => {
+        
+        setSearch(searchData);
+    }
+
+    const updateQuery = () => {
+        
+        if (Object.keys(filters).length != 0 && Object.keys(search).length != 0) {
+            console.log("hello");
+            setQueryParams({ $and : [filters, search]});
+        } else if (Object.keys(filters).length == 0) {
+            setQueryParams(search);
+        } else if (Object.keys(search).length == 0) {
+            setQueryParams(filters);
+        } else{
+            setQueryParams({});
+        }
+    }
+
     const retrieveJobs = () => {
         // console.log(filters);
-        axios.post(`${BACKEND_URL}/jobs`, filters).then(res => {
+        axios.post(`${BACKEND_URL}/jobs`, queryParams).then(res => {
             if (res.data.success) {
                 setJobs(res.data.existingJobs)
             } else {
@@ -83,9 +108,9 @@ function Jobs() {
 
     return (
         <>
-            <Grid item container sm={12} spacing={3} direction="row"  justify="space-between" className={classes.mainGrid} alignItems="flex-start">
+            <Grid item container sm={12} spacing={3} direction="row" justify="space-between" className={classes.mainGrid} alignItems="flex-start">
                 <Grid item sm={12} className={classes.searchGrid}>
-                    <JobSearchBar onChnage={updateFilters} />
+                    <JobSearchBar onChange={updateSearch} />
                 </Grid>
                 <Grid item container xs={12} sm={12} md={8} lg={9} spacing={2} direction="row" className={classes.jobsGrid} justify="flex-start" alignItems="flex-start">
                     {displayJobs()}
