@@ -31,7 +31,6 @@ import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import axios from "axios";
 import BACKEND_URL from "../../Config";
 import { useState, useEffect } from "react";
-import EditDetailsForm from "./EditDetailsForm";
 import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import Input from "@material-ui/core/Input";
