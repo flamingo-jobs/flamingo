@@ -16,11 +16,11 @@ const useStyles = makeStyles((theme) => ({
   res: {
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(3),
-    minHeight: "300px",
   },
   resTitle: {
     textAlign: "left",
     paddingLeft: theme.spacing(2),
+    color: theme.palette.black,
   },
   readMoreBtn: {
     cursor: "pointer",
@@ -34,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
 const Responsibilities = ({ responsibilities }) => {
   const classes = useStyles();
 
-  const [readMore, setReadMore] = useState(false);
   const [duties, setDuties] = useState(responsibilities);
 
   // const displayResponsibilities = () => {
@@ -51,7 +50,6 @@ const Responsibilities = ({ responsibilities }) => {
   //       </Grid>)
   //   }
   // }
-  const buttonName = readMore ? "Read Less << " : "Read More >> ";
 
   return (
     <Container className={classes.res}>
@@ -67,26 +65,7 @@ const Responsibilities = ({ responsibilities }) => {
             <ListItemText primary={dutie} />
           </ListItem>
         ))}
-        {/* {readMore &&
-          secondHalf.map((dutie) => (
-            <ListItem key={responsibilities.indexOf(dutie)}>
-              <ListItemIcon>
-                <StarBorderOutlinedIcon />
-              </ListItemIcon>
-              <ListItemText primary={dutie} />
-            </ListItem>
-          ))} */}
       </List>
-      {/* {responsibilities.length > 5 && (
-        <a
-          className={readMoreBtn}
-          onClick={() => {
-            setReadMore(!readMore);
-          }}
-        >
-          {buttonName}
-        </a>
-      )} */}
     </Container>
   );
 };
