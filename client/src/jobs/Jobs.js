@@ -7,6 +7,10 @@ import JobFilters from './components/JobFilters';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import BACKEND_URL from '../Config';
+import { MemoryRouter, Route } from 'react-router';
+import { Link } from 'react-router-dom';
+import Pagination from '@material-ui/lab/Pagination';
+import PaginationItem from '@material-ui/lab/PaginationItem';
 
 const useStyles = makeStyles((theme) => ({
     jobsGrid: {
@@ -36,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.down('sm')]: {
             order: 1
         },
+    },
+    pagination: {
+        justifyContent: 'center',
     }
 
 }));
@@ -44,14 +51,20 @@ function Jobs() {
     const classes = useStyles();
 
     const [jobs, setJobs] = useState([]);
-
+    const [count, setCount] = useState(0);
     const [filters, setFilters] = useState({});
     const [search, setSearch] = useState({});
     const [queryParams, setQueryParams] = useState({});
 
+    const [page, setPage] = React.useState(1);
+
+    const changePage = (event, value) => {
+        setPage(value);
+    };
+
     useEffect(() => {
         retrieveJobs();
-    }, [queryParams])
+    }, [queryParams, page])
 
     useEffect(() => {
         updateQuery();
@@ -62,27 +75,34 @@ function Jobs() {
     }
 
     const updateSearch = (searchData) => {
-        
+
         setSearch(searchData);
     }
 
     const updateQuery = () => {
-        
+
         if (Object.keys(filters).length != 0 && Object.keys(search).length != 0) {
-            console.log("hello");
-            setQueryParams({ $and : [filters, search]});
+            setQueryParams({ $and: [filters, search] });
         } else if (Object.keys(filters).length == 0) {
             setQueryParams(search);
         } else if (Object.keys(search).length == 0) {
             setQueryParams(filters);
-        } else{
+        } else {
             setQueryParams({});
         }
     }
 
     const retrieveJobs = () => {
-        // console.log(filters);
-        axios.post(`${BACKEND_URL}/jobs`, queryParams).then(res => {
+        axios.post(`${BACKEND_URL}/jobs/getJobCount`, queryParams).then(res => {
+            if (res.data.success) {
+                setCount(res.data.jobCount)
+            } else {
+                setCount(0)
+            }
+        })
+
+        let start = (page - 1) * 10;
+        axios.post(`${BACKEND_URL}/jobs`, { queryParams: queryParams, options: { skip: start, limit: 10 } }).then(res => {
             if (res.data.success) {
                 setJobs(res.data.existingJobs)
             } else {
@@ -114,6 +134,9 @@ function Jobs() {
                 </Grid>
                 <Grid item container xs={12} sm={12} md={8} lg={9} spacing={2} direction="row" className={classes.jobsGrid} justify="flex-start" alignItems="flex-start">
                     {displayJobs()}
+                    <Grid item sm={12}>
+                        <Pagination count={Math.ceil(count / 10)} color="primary" page={page} onChange={changePage} classes={{ ul: classes.pagination}}/>
+                    </Grid>
                 </Grid>
                 <Grid item xs={12} sm={12} md={4} lg={3} className={classes.filterGrid}>
                     <JobFilters onChange={updateFilters} />
