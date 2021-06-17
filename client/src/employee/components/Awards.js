@@ -74,13 +74,13 @@ function Achievements() {
   const [state, setState] = useState({title: null, issuedBy: null, date: null, description: null});
 
   async function fetchData(){
-    axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
+    const temp = await axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
     .then(res => {
       if(res.data.success){
         setAward(res.data.jobseeker.award)
-        setFetchedData(res.data.jobseeker.award)
       }
     })
+    setFetchedData(temp)
   }
 
   useEffect(()=>{

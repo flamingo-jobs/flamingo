@@ -27,14 +27,14 @@ function WorkExpItem(props) {
         <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'14px',fontWeight:'bold',}}>
             {props.place}
         </Typography>
-        <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify'}}>
-            {props.description}
-        </Typography>
         <Typography variant="body2" component="p" style={{textAlign:'justify',color:theme.palette.stateBlue}}>
             {props.from} - {props.to}
         </Typography>
-        <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',paddingTop:'5px'}}>
-            Tasks & Responsibilities : {props.task}
+        <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',paddingTop:'10px'}}>
+            {props.description}
+        </Typography>
+        <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',paddingTop:'10px'}}>
+           <b> Tasks & Responsibilities : </b>{props.task}
         </Typography>
       </Paper>
   );
