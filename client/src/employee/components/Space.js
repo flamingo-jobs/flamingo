@@ -4,9 +4,8 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles({
   root: {
     minWidth: 100,
-    backgroundColor: 'rgba(213, 239, 247, 0.705)',
+    backgroundColor: 'rgba(213, 239, 247, 0)',
     height: '25px'
-
   },
 });
 

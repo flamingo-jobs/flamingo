@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useReducer} from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -96,17 +96,23 @@ const useStyles = makeStyles({
 
 function ProjectsSection() {
   const classes = useStyles();
+  const [fetchedData, setFetchedData] = useState('');
   const [open, setOpen] = useState(false);
   const [project, setProject] = useState(null);
   const [state, setState] = useState({name: null, link: null, description: null, from: null, to: null, usedTech: null});
 
-  useEffect(()=>{
+  async function fetchData(){
     axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
     .then(res => {
       if(res.data.success){
         setProject(res.data.jobseeker.project)
+        setFetchedData(res.data.jobseeker.project)
       }
     })
+  }
+
+  useEffect(()=>{
+    fetchData()
   },[])
 
   function handleOpen(){
@@ -168,6 +174,7 @@ function ProjectsSection() {
     axios.put(`${BACKEND_URL}/jobseeker/addProject/60c5f2e555244d11c8012480`,newProject)
     .then(res => console.log(newProject));
     handleClose();
+    fetchData();
   }
   
   const displayProjectFields = () => {

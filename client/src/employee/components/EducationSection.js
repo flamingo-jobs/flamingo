@@ -77,6 +77,7 @@ const useStyles = makeStyles({
 
 function EducationSection() {
   const classes = useStyles();
+  const [fetchedData, setFetchedData] = useState('');
   const [education, setEducation] = useState(null);
   const [state, setState] = useState({level: null, university: null, degree: null, GPA: null, startDate: null, endDate: null, college: null, highschool: null});
   const [open, setOpen] = useState(false);
@@ -155,6 +156,16 @@ function EducationSection() {
     })
   }
 
+  async function fetchData(){
+    axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
+    .then(res => {
+      if(res.data.success){
+        setEducation(res.data.jobseeker.education)
+        setFetchedData(res.data.jobseeker.education)
+      }
+    })
+  }
+
   function onSubmit(e){
     e.preventDefault();
     let edu;
@@ -186,15 +197,11 @@ function EducationSection() {
     axios.put(`${BACKEND_URL}/jobseeker/addEducation/60c5f2e555244d11c8012480`,edu)
     .then(res => console.log(edu));
     handleClose();
+    fetchData();
   }
 
   useEffect(()=>{
-    axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
-    .then(res => {
-      if(res.data.success){
-        setEducation(res.data.jobseeker.education)
-      }
-    })
+    fetchData()
   },[open])
 
   const displayEduFields = () => {
