@@ -20,7 +20,7 @@ const create = (req, res) => {
 
 const getAll = (req, res) => {
     console.log(req.body);
-    Jobs.find(req.body).exec((err, jobs) => {
+    Jobs.find(req.body.queryParams, null, req.body.options).exec((err, jobs) => {
         if (err) {
             return res.status(400).json({
                 error: err
@@ -47,18 +47,32 @@ const getById = (req, res) => {
     });
 }
 
+const getJobCount = (req, res) => {
+    Jobs.countDocuments(req.body).exec((err, jobCount) => {
+        if (err) {
+            return res.status(400).json({
+                error: err
+            })
+        }
+        return res.status(200).json({
+            success: true,
+            jobCount: jobCount
+        });
+    });
+}
+
 const getFeaturedJobs = (req, res) => {
     Jobs.find({ isFeatured: true }, null, { limit: 3 }, (err, featuredJobs) => {
-            if (err) {
-                return res.status(400).json({
-                    error: err
-                })
-            }
-            return res.status(200).json({
-                success: true,
-                featuredJobs: featuredJobs
-            });
+        if (err) {
+            return res.status(400).json({
+                error: err
+            })
+        }
+        return res.status(200).json({
+            success: true,
+            featuredJobs: featuredJobs
         });
+    });
 }
 
 
@@ -102,6 +116,7 @@ module.exports = {
     getById,
     update,
     remove,
-    getFeaturedJobs
+    getFeaturedJobs,
+    getJobCount
 
 }

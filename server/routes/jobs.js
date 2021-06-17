@@ -17,6 +17,10 @@ router.get('/jobs/featuredJobs', jobsController.getFeaturedJobs);
 
 // get specific
 
+router.post('/jobs/getJobCount', jobsController.getJobCount);
+
+// get specific
+
 router.get('/jobs/:id', jobsController.getById);
 
 
