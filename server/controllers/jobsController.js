@@ -1,11 +1,11 @@
 const Jobs = require('../models/jobs');
 
 
-const create = (req,res) => {
+const create = (req, res) => {
     let newJob = new Jobs(req.body);
 
     newJob.save((err) => {
-        if(err){
+        if (err) {
             return res.status(400).json({
                 error: err
             });
@@ -18,10 +18,10 @@ const create = (req,res) => {
 
 }
 
-const getAll = (req,res) => {
+const getAll = (req, res) => {
     console.log(req.body);
-    Jobs.find(req.body).exec((err,jobs) => {
-        if(err){
+    Jobs.find(req.body).exec((err, jobs) => {
+        if (err) {
             return res.status(400).json({
                 error: err
             })
@@ -33,9 +33,9 @@ const getAll = (req,res) => {
     });
 }
 
-const getById = (req,res) => {
-    Jobs.findById(req.params.id).exec((err,job) => {
-        if(err){
+const getById = (req, res) => {
+    Jobs.findById(req.params.id).exec((err, job) => {
+        if (err) {
             return res.status(400).json({
                 error: err
             })
@@ -47,32 +47,32 @@ const getById = (req,res) => {
     });
 }
 
-const getFeaturedJobs = (req,res) => {
-    Jobs.geoSearch({ isFeatured : true }, (err,featuredJobs) => {
-        if(err){
-            return res.status(400).json({
-                error: err
-            })
-        }
-        return res.status(200).json({
-            success: true,
-            featuredJobs: featuredJobs
+const getFeaturedJobs = (req, res) => {
+    Jobs.find({ isFeatured: true }, null, { limit: 3 }, (err, featuredJobs) => {
+            if (err) {
+                return res.status(400).json({
+                    error: err
+                })
+            }
+            return res.status(200).json({
+                success: true,
+                featuredJobs: featuredJobs
+            });
         });
-    });
 }
 
 
-const update = (req,res) => {
+const update = (req, res) => {
 
     Jobs.findByIdAndUpdate(
         req.params.id,
         {
-            $set:req.body
+            $set: req.body
         },
-        (err,job) =>{
-            if(err){
+        (err, job) => {
+            if (err) {
                 return res.status(400).json({
-                    error:err
+                    error: err
                 })
             }
             return res.status(200).json({
@@ -83,8 +83,8 @@ const update = (req,res) => {
 }
 
 const remove = (req, res) => {
-    Jobs.findByIdAndDelete(req.params.id).exec((err,deletedJob) => {
-        if(err){
+    Jobs.findByIdAndDelete(req.params.id).exec((err, deletedJob) => {
+        if (err) {
             return res.status(400).json({
                 error: err
             });
