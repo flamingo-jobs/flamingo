@@ -68,17 +68,23 @@ const useStyles = makeStyles({
 
 function Achievements() {
   const classes = useStyles();
+  const [fetchedData, setFetchedData] = useState('');
   const [open, setOpen] = useState(false);
   const [award, setAward] = useState(null);
   const [state, setState] = useState({title: null, issuedBy: null, date: null, description: null});
 
-  useEffect(()=>{
+  async function fetchData(){
     axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
     .then(res => {
       if(res.data.success){
         setAward(res.data.jobseeker.award)
+        setFetchedData(res.data.jobseeker.award)
       }
     })
+  }
+
+  useEffect(()=>{
+    fetchData()
   },[])
 
   function handleOpen(){
@@ -126,6 +132,7 @@ function Achievements() {
     axios.put(`${BACKEND_URL}/jobseeker/addAward/60c5f2e555244d11c8012480`,newAward)
     .then(res => console.log(newAward));
     handleClose();
+    fetchData();
   }
   
   const displayAwardFields = () => {
@@ -176,7 +183,7 @@ function Achievements() {
                 <Grid container xs={12} direction="row">
                   <Grid item xs={10}>
                     <Typography gutterBottom variant="h5" style={{textAlign:'center',paddingLeft:'50px',color:theme.palette.stateBlue}}>
-                      Add Education
+                      Add Award
                     </Typography>
                     <Divider variant="middle" style={{marginLeft:'100px'}} />
                   </Grid>

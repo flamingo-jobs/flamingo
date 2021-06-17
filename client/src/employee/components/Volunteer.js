@@ -69,17 +69,23 @@ const useStyles = makeStyles({
 
 function Volunteer() {
   const classes = useStyles();
+  const [fetchedData, setFetchedData] = useState('');
   const [open, setOpen] = useState(false);
   const [volunteer, setVolunteer] = useState(null);
   const [state, setState] = useState({title: null, organization: null, from: null, to: null, description: null});
 
-  useEffect(()=>{
+  function fetchData(){
     axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
     .then(res => {
       if(res.data.success){
         setVolunteer(res.data.jobseeker.volunteer)
+        setFetchedData(res.data.jobseeker.volunteer)
       }
     })
+  }
+
+  useEffect(()=>{
+    fetchData()
   },[])
 
   function handleOpen(){
@@ -134,6 +140,7 @@ function Volunteer() {
     axios.put(`${BACKEND_URL}/jobseeker/addVolunteering/60c5f2e555244d11c8012480`,newVolunteering)
     .then(res => console.log(newVolunteering));
     handleClose();
+    fetchData();
   }
   
   const displayVolunteeringFields = () => {
