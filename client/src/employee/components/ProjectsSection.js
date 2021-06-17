@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useReducer} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -102,13 +102,13 @@ function ProjectsSection() {
   const [state, setState] = useState({name: null, link: null, description: null, from: null, to: null, usedTech: null});
 
   async function fetchData(){
-    axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
+    const temp = await axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
     .then(res => {
       if(res.data.success){
         setProject(res.data.jobseeker.project)
-        setFetchedData(res.data.jobseeker.project)
       }
     })
+    setFetchedData(temp)
   }
 
   useEffect(()=>{

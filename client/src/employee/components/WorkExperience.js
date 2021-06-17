@@ -11,6 +11,12 @@ import AddIcon from '@material-ui/icons/Add';
 import Grid from '@material-ui/core/Grid';
 import WorkExpItem from './WorkExpItem';
 import BACKEND_URL from '../../Config';
+import Fade from '@material-ui/core/Fade';
+import Divider from '@material-ui/core/Divider';
+import CloseIcon from '@material-ui/icons/Close';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles({
   media: {
@@ -69,16 +75,86 @@ const useStyles = makeStyles({
 
 function WorkExperience() {
   const classes = useStyles();
+  const [fetchedData, setFetchedData] = useState('');
+  const [open, setOpen] = useState(false);
   const [work, setWork] = useState(null);
+  const [state, setState] = useState({place: null, description: null, position: null, from: null, to: null, taskAndResponsibility: null});
 
-  useEffect(()=>{
-    axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
+  async function fetchData(){
+    const temp = await axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
     .then(res => {
       if(res.data.success){
         setWork(res.data.jobseeker.work)
       }
     })
+    setFetchedData(temp)
+  }
+
+  useEffect(()=>{
+    fetchData()
   },[])
+
+  function handleOpen(){
+    setOpen(true);
+  }
+
+  function handleClose(){
+    setOpen(false);
+  }
+
+  //---------------------------- text field onChange events
+  function onChangePlace(e){
+    setState(prevState => {
+      return {...prevState, place: e.target.value}
+    })
+  }
+
+  function onChangeDescription(e){
+    setState(prevState => {
+      return {...prevState, description: e.target.value}
+    })
+  }
+
+  function onChangePosition(e){
+    setState(prevState => {
+      return {...prevState, position: e.target.value}
+    })
+  }
+
+  function onChangeFrom(e){
+    setState(prevState => {
+      return {...prevState, from: e.target.value}
+    })
+  }
+
+  function onChangeTo(e){
+    setState(prevState => {
+      return {...prevState, to: e.target.value}
+    })
+  }
+
+  function onChangeTask(e){
+    setState(prevState => {
+      return {...prevState, taskAndResponsibility: e.target.value}
+    })
+  }
+
+  function onSubmit(e){
+    e.preventDefault();
+    const newWork = {
+        place: state.place,
+        description: state.description,
+        position: state.position,
+        from: state.from,
+        to: state.to,
+        taskAndResponsibility: state.taskAndResponsibility,
+    }
+
+    axios.put(`${BACKEND_URL}/jobseeker/addWork/60c5f2e555244d11c8012480`,newWork)
+    .then(res => console.log(newWork));
+    handleClose();
+    fetchData();
+  }
 
   const displayWork = () => {
     if (work) {
@@ -104,10 +180,108 @@ function WorkExperience() {
             </Typography>
         </Grid>
         <Grid item style={{ textAlign: 'right' }}>
-        <Button className={classes.defaultButton} style={{ float: 'right',marginRight: '0px',backgroundColor:'white'}}>
-                <AddIcon style={{color: theme.palette.tuftsBlue,}} className={classes.editIcon} />
+            <Button className={classes.defaultButton} style={{ float: 'right',marginRight: '0px',backgroundColor:'white'}}>
+                <AddIcon style={{color: theme.palette.tuftsBlue,}} className={classes.editIcon} onClick={handleOpen} />
             </Button>
         </Grid>
+
+        {/*-------------- add new edu field popup content ------------------- */}
+        <Modal
+          aria-labelledby="transition-modal-title"
+          aria-describedby="transition-modal-description"
+          className={classes.modal}
+          open={open}
+          onClose={handleClose}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}
+        >
+          <Fade in={open}>
+            <div className={classes.paper}>
+              <div style={{paddingTop:'40px'}}>
+                <Grid container xs={12} direction="row">
+                  <Grid item xs={10}>
+                    <Typography gutterBottom variant="h5" style={{textAlign:'center',paddingLeft:'50px',color:theme.palette.stateBlue}}>
+                      Add Work Experience
+                    </Typography>
+                    <Divider variant="middle" style={{marginLeft:'100px'}} />
+                  </Grid>
+                  <Grid item xs={2}>
+                    <Button className={classes.defaultButton} style={{ float: 'right',marginRight:'10px',marginTop:'-20px',backgroundColor:'white'}} onClick={handleClose}>
+                      <CloseIcon className={classes.closeIcon} style={{color: '#666',}} />
+                    </Button>
+                  </Grid>
+                </Grid>
+              </div>
+              <form className={classes.form} onSubmit={onSubmit}>
+                <div>
+                <TextField
+                  className={classes.field}
+                    id="outlined-basic"
+                    label="Position"
+                    type="text"
+                    variant="outlined"
+                    size="small"
+                    onChange={onChangePosition}
+                  />
+                  <TextField
+                  className={classes.field}
+                    id="outlined-basic"
+                    label="Place"
+                    type="text"
+                    variant="outlined"
+                    size="small"
+                    onChange={onChangePlace}
+                  />
+                  <Grid container direction="row" style={{marginTop:'-18px'}}>
+                    <TextField
+                    className={classes.field}
+                    id="outlined-basic"
+                    label="From"
+                    type="number"
+                    variant="outlined"
+                    size="small"
+                    onChange={onChangeFrom}
+                    style={{width:'30%',marginRight:'10%'}}
+                    />
+                    <TextField
+                    className={classes.field}
+                    id="outlined-basic"
+                    label="To"
+                    type="number"
+                    variant="outlined"
+                    size="small"
+                    onChange={onChangeTo}
+                    style={{width:'30%'}}
+                    />
+                  </Grid>
+                  <TextField
+                    className={classes.field}
+                    id="outlined-multiline-static"
+                    label="Description"
+                    multiline
+                    rows={5}
+                    variant="outlined"
+                    onChange= {onChangeDescription}
+                  />
+                  <TextField
+                    className={classes.field}
+                    id="outlined-multiline-static"
+                    label="Tasks & Responsibilities"
+                    multiline
+                    rows={5}
+                    variant="outlined"
+                    onChange= {onChangeTask}
+                  />
+                  </div>
+                  <Button type="submit" className={classes.defaultButton} style={{ width:'100%',marginTop:'5%'}}>Apply Changes</Button>
+              </form>
+              
+            </div>
+          </Fade>
+        </Modal>
         
       </Grid>
       <Grid container spacing={3}>

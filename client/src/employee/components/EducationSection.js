@@ -157,13 +157,13 @@ function EducationSection() {
   }
 
   async function fetchData(){
-    axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
+    const temp = await axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
     .then(res => {
       if(res.data.success){
         setEducation(res.data.jobseeker.education)
-        setFetchedData(res.data.jobseeker.education)
       }
     })
+    setFetchedData(temp)
   }
 
   function onSubmit(e){
