@@ -125,7 +125,6 @@ function JobSearchBar(props) {
         if (keywords.length != 0) {
             let regexExp = keywords.join('|');
             filterObjects = { ...filterObjects, $or : [ {title: { $regex : regexExp, $options : "i"}}, {description: { $regex : regexExp, $options : "i"}}]};
-
         }
 
         if (locations.length != 0) {

@@ -10,13 +10,15 @@ router.post('/jobs/create', jobsController.create);
 
 router.post('/jobs', jobsController.getAll);
 
-// get specific
-
-router.get('/jobs/:id', jobsController.getById);
 
 // get specific
 
 router.get('/jobs/featuredJobs', jobsController.getFeaturedJobs);
+
+// get specific
+
+router.get('/jobs/:id', jobsController.getById);
+
 
 // update job
 

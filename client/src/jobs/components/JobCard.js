@@ -7,6 +7,8 @@ import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 import ifs from '../images/ifs.png';
 import FloatCard from '../../components/FloatCard';
 
+import ReactTimeAgo from 'react-time-ago'
+
 const useStyles = makeStyles((theme) => ({
     root: {
         textAlign: 'left'
@@ -68,10 +70,10 @@ const useStyles = makeStyles((theme) => ({
     },
     applyButton: {
         borderRadius: 12,
-        backgroundColor: theme.palette.mediumTurquoise,
+        backgroundColor: theme.palette.vividSkyBlue,
         color: theme.palette.white,
         "&:hover": {
-            backgroundColor: theme.palette.vividSkyBlue,
+            backgroundColor: theme.palette.mediumTurquoise,
         }
     },
 }))
@@ -84,8 +86,8 @@ function JobCard(props) {
         <div className={classes.root}>
             <div className={classes.header}>
                 <div className={classes.headerLeft}>
-                    <Chip icon={<LocalOfferRoundedIcon className={classes.tagIcon} />} label="Development" className={classes.label} />
-                    <Typography className={classes.time}>6 days ago</Typography>
+                    <Chip icon={<LocalOfferRoundedIcon className={classes.tagIcon} />} label={props.info.category} className={classes.label} />
+                    <Typography className={classes.time}><ReactTimeAgo date={props.info.postedDate} locale="en-US"/></Typography>
                 </div>
                 <div className={classes.headerRight}>
                     <FavoriteRounded className={classes.favorite} />
@@ -106,7 +108,7 @@ function JobCard(props) {
                     <Typography className={classes.company}>{props.info.organization.name}</Typography>
                 </div>
                 <div className={classes.footerRight} >
-                    <Button className={classes.applyButton}>Apply Now</Button>
+                    <Button className={classes.applyButton}>View Job</Button>
                 </div>
             </div>
         </div>
