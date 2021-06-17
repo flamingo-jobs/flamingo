@@ -22,16 +22,19 @@ function WorkExpItem(props) {
   return (
       <Paper elevation={0} className={classes.paper}>
         <Typography gutterBottom style={{textAlign:'justify',fontSize:'16px',fontWeight:'bold',color:'#666'}}>
-            {props.role}
+            {props.position}
         </Typography>
         <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'14px',fontWeight:'bold',}}>
-            {props.companyName}
+            {props.place}
         </Typography>
         <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify'}}>
             {props.description}
         </Typography>
         <Typography variant="body2" component="p" style={{textAlign:'justify',color:theme.palette.stateBlue}}>
-            {props.startYear} - {props.endYear}
+            {props.from} - {props.to}
+        </Typography>
+        <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',paddingTop:'5px'}}>
+            Tasks & Responsibilities : {props.task}
         </Typography>
       </Paper>
   );
