@@ -101,19 +101,19 @@ function ProjectsSection() {
   const [project, setProject] = useState(null);
   const [state, setState] = useState({name: null, link: null, description: null, from: null, to: null, usedTech: null});
 
-  async function fetchData(){
-    const temp = await axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
+  function fetchData(){
+    axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
     .then(res => {
       if(res.data.success){
         setProject(res.data.jobseeker.project)
       }
     })
-    setFetchedData(temp)
+    setFetchedData(0)
   }
 
   useEffect(()=>{
     fetchData()
-  },[])
+  },[fetchedData])
 
   function handleOpen(){
     setOpen(true);
@@ -173,8 +173,8 @@ function ProjectsSection() {
 
     axios.put(`${BACKEND_URL}/jobseeker/addProject/60c5f2e555244d11c8012480`,newProject)
     .then(res => console.log(newProject));
+    setFetchedData(1);
     handleClose();
-    fetchData();
   }
   
   const displayProjectFields = () => {
@@ -216,6 +216,7 @@ function ProjectsSection() {
           className={classes.modal}
           open={open}
           onClose={handleClose}
+          onChange={fetchData}
           closeAfterTransition
           BackdropComponent={Backdrop}
           BackdropProps={{
