@@ -73,19 +73,19 @@ function Achievements() {
   const [award, setAward] = useState(null);
   const [state, setState] = useState({title: null, issuedBy: null, date: null, description: null});
 
-  async function fetchData(){
-    const temp = await axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
+  function fetchData(){
+    axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
     .then(res => {
       if(res.data.success){
         setAward(res.data.jobseeker.award)
       }
     })
-    setFetchedData(temp)
+    setFetchedData(0)
   }
 
   useEffect(()=>{
     fetchData()
-  },[])
+  },[fetchedData])
 
   function handleOpen(){
     setOpen(true);
@@ -131,8 +131,8 @@ function Achievements() {
 
     axios.put(`${BACKEND_URL}/jobseeker/addAward/60c5f2e555244d11c8012480`,newAward)
     .then(res => console.log(newAward));
+    setFetchedData(1);
     handleClose();
-    fetchData();
   }
   
   const displayAwardFields = () => {

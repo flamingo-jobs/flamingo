@@ -156,14 +156,14 @@ function EducationSection() {
     })
   }
 
-  async function fetchData(){
-    const temp = await axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
+  function fetchData(){
+    axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
     .then(res => {
       if(res.data.success){
         setEducation(res.data.jobseeker.education)
       }
     })
-    setFetchedData(temp)
+    setFetchedData(0);
   }
 
   function onSubmit(e){
@@ -196,13 +196,14 @@ function EducationSection() {
 
     axios.put(`${BACKEND_URL}/jobseeker/addEducation/60c5f2e555244d11c8012480`,edu)
     .then(res => console.log(edu));
+    setFetchedData(1);
     handleClose();
-    fetchData();
   }
 
   useEffect(()=>{
+    console.log("blaa")
     fetchData()
-  },[open])
+  },[fetchedData])
 
   const displayEduFields = () => {
     if (education) {
