@@ -41,14 +41,14 @@ function JobDescription() {
   const classes = useStyles();
 
   const [job, setJob] = useState("empty");
-  const [allJobs, setAllJobs] = useState("empty");
+  const [featuredJobs, setFeaturedJobs] = useState(null);
 
   const isSignedIn = false;
   const jobId = "60c60c2c22a5b249ec118d95";
 
   useEffect(() => {
     retrieveJob();
-    retrieveAllJobs();
+    retrieveFeaturedJobs();
   }, []);
 
   const retrieveJob = () => {
@@ -61,12 +61,18 @@ function JobDescription() {
     });
   };
 
-  const retrieveAllJobs = () => {
-    axios.get(`${BACKEND_URL}/jobs`).then((res) => {
+  const retrieveFeaturedJobs = () => {
+    // try {
+    //   const response = await axios.get(`${BACKEND_URL}/jobs/featuredJobs`);
+    //   console.log("Response", response.data);
+    // } catch (error) {
+    //   console.error("Error", error);
+    // }
+    axios.get(`${BACKEND_URL}/jobs/featuredJobs`).then((res) => {
       if (res.data.success) {
-        setAllJobs(res.data.existingJobs);
+        setFeaturedJobs(res.data.featuredJobs);
       } else {
-        setAllJobs(null);
+        setFeaturedJobs(null);
       }
     });
   };
@@ -88,7 +94,6 @@ function JobDescription() {
       );
     }
   };
-
 
   const displayResponsibilities = () => {
     if (job == "empty") {
@@ -147,7 +152,7 @@ function JobDescription() {
   };
 
   const displayFeaturedJobs = () => {
-    if (allJobs == "empty") {
+    if (featuredJobs == null) {
       return (
         <Grid container spacing={2}>
           <Grid item xs={12}>
@@ -167,8 +172,11 @@ function JobDescription() {
         </Grid>
       );
     } else {
-      const featuredJobs = allJobs.filter((job) => (job.isFeatured === true && job._id !== jobId));
-      return <FeaturedJobs featuredJobs={featuredJobs}></FeaturedJobs>;
+      const filteredFeaturedJobs = featuredJobs.filter(
+        (job) => job._id !== jobId
+      );
+
+      return <FeaturedJobs featuredJobs={filteredFeaturedJobs}></FeaturedJobs>;
     }
   };
 
