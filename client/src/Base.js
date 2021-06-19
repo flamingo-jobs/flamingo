@@ -12,6 +12,7 @@ import { Route } from 'react-router-dom';
 import Jobs from './jobs/Jobs';
 import Employer from './employer/Employer';
 import JobDescription from "./jobDescription/jobDescription";
+import CreateJobForm from "./jobs/createJob/createJobForm";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -104,7 +105,9 @@ function Base() {
                 <Route path="/jobDescription" exact>
                   <JobDescription />
                 </Route>
-
+                <Route path="/createJob" exact>
+                  <CreateJobForm />
+                </Route>
                 {/* ends your routes here */}
 
               </Grid>
