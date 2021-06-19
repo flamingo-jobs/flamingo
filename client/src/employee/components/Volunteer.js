@@ -172,7 +172,7 @@ function Volunteer() {
             </Button>
         </Grid>
 
-        {/*-------------- add new edu field popup content ------------------- */}
+        {/*-------------- add new volunteer field popup content ------------------- */}
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
