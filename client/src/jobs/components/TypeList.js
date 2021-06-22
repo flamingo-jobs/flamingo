@@ -10,6 +10,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import { Avatar, Checkbox, ListItemSecondaryAction, Typography } from '@material-ui/core';
 import BACKEND_URL from '../../Config';
 import axios from 'axios';
+import theme from '../../Theme';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -39,10 +40,6 @@ const useStyles = makeStyles((theme) => ({
     },
     listDown: {
         color: theme.palette.tuftsBlue,
-    },
-    checkBox: {
-        color: theme.palette.pinkyRed,
-        fill: theme.palette.pinkyRed
     },
     itemCheckBox: {
         minWidth: 'auto'
@@ -126,6 +123,9 @@ export default function TypeList(props) {
                                 disableRipple
                                 inputProps={{ 'aria-labelledby': labelId }}
                                 className={classes.checkBox}
+                                style ={{
+                                    color: theme.palette.vividSkyBlue,
+                                  }}
                             />
                         </ListItemIcon>
                         <ListItemText id={labelId} primary={type.name} />

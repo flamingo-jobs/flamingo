@@ -10,6 +10,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import { Avatar, Checkbox, ListItemSecondaryAction, Typography } from '@material-ui/core';
 import axios from 'axios';
 import BACKEND_URL from '../../Config';
+import theme from '../../Theme';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -125,6 +126,9 @@ export default function OrganizationList(props) {
                                 disableRipple
                                 inputProps={{ 'aria-labelledby': labelId }}
                                 className={classes.checkBox}
+                                style ={{
+                                    color: theme.palette.vividSkyBlue,
+                                  }}
                             />
                         </ListItemIcon>
                         <ListItemText id={labelId} primary={org.name} />
