@@ -80,19 +80,19 @@ function WorkExperience() {
   const [work, setWork] = useState(null);
   const [state, setState] = useState({place: null, description: null, position: null, from: null, to: null, taskAndResponsibility: null});
 
-  async function fetchData(){
-    const temp = await axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
+  function fetchData(){
+    axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
     .then(res => {
       if(res.data.success){
         setWork(res.data.jobseeker.work)
       }
     })
-    setFetchedData(temp)
+    setFetchedData(0)
   }
 
   useEffect(()=>{
     fetchData()
-  },[])
+  },[fetchedData])
 
   function handleOpen(){
     setOpen(true);
@@ -152,8 +152,8 @@ function WorkExperience() {
 
     axios.put(`${BACKEND_URL}/jobseeker/addWork/60c5f2e555244d11c8012480`,newWork)
     .then(res => console.log(newWork));
+    setFetchedData(1);
     handleClose();
-    fetchData();
   }
 
   const displayWork = () => {

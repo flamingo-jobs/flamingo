@@ -74,19 +74,19 @@ function Volunteer() {
   const [volunteer, setVolunteer] = useState(null);
   const [state, setState] = useState({title: null, organization: null, from: null, to: null, description: null});
 
-  async function fetchData(){
-    const temp = await axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
+  function fetchData(){
+    axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
     .then(res => {
       if(res.data.success){
         setVolunteer(res.data.jobseeker.volunteer)
       }
     })
-    setFetchedData(temp)
+    setFetchedData(0)
   }
 
   useEffect(()=>{
     fetchData()
-  },[])
+  },[fetchedData])
 
   function handleOpen(){
     setOpen(true);
@@ -139,8 +139,8 @@ function Volunteer() {
 
     axios.put(`${BACKEND_URL}/jobseeker/addVolunteering/60c5f2e555244d11c8012480`,newVolunteering)
     .then(res => console.log(newVolunteering));
+    setFetchedData(1);
     handleClose();
-    fetchData();
   }
   
   const displayVolunteeringFields = () => {
