@@ -32,6 +32,21 @@ const getAll = (req,res) => {
     });
 }
 
+const getFiltered = (req, res) => {
+    console.log(req.body);
+    Employers.find(req.body.queryParams, null, req.body.options).exec((err, employers) => {
+        if (err) {
+            return res.status(400).json({
+                error: err
+            })
+        }
+        return res.status(200).json({
+            success: true,
+            existingEmployers: employers
+        });
+    });
+}
+
 const getById = (req,res) => {
     Employers.findById(req.params.id).exec((err,employer) => {
         if(err){
@@ -42,6 +57,20 @@ const getById = (req,res) => {
         return res.status(200).json({
             success: true,
             employer: employer
+        });
+    });
+}
+
+const getEmployerCount = (req, res) => {
+    Employers.countDocuments(req.body).exec((err, employerCount) => {
+        if (err) {
+            return res.status(400).json({
+                error: err
+            })
+        }
+        return res.status(200).json({
+            success: true,
+            employerCount: employerCount
         });
     });
 }
@@ -101,6 +130,8 @@ module.exports = {
     getById,
     update,
     remove,
-    getFeaturedEmployers
+    getFeaturedEmployers,
+    getEmployerCount,
+    getFiltered
 
 }

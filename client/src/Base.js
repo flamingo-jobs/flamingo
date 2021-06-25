@@ -14,6 +14,7 @@ import Employer from './employer/Employer';
 import JobDescription from "./jobDescription/jobDescription";
 import Categories from './admin/Categories';
 import CreateJobForm from "./jobs/createJob/createJobForm";
+import Organizations from './employer/Organizations';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -102,6 +103,9 @@ function Base() {
                 </Route>
                 <Route path="/employer" exact>
                   <Employer />
+                </Route>
+                <Route path="/organizations" exact>
+                  <Organizations />
                 </Route>
                 <Route path="/jobDescription" exact>
                   <JobDescription />

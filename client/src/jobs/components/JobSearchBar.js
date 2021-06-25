@@ -138,7 +138,7 @@ function JobSearchBar(props) {
             <div className={classes.root}>
 
                 <Grid container spacing={3} direction="row">
-                    <Grid item container xs={12} md={7} lg={6} spacing={1} direction="row" alignItems="center">
+                    <Grid item container xs={12} md={6} lg={6} spacing={1} direction="row" alignItems="center">
                         <Grid item sm={1}>
                             <div className={classes.searchIcon}>
                                 <SearchIcon /></div>
@@ -167,7 +167,7 @@ function JobSearchBar(props) {
                             />
                         </Grid>
                     </Grid>
-                    <Grid item container xs={12} md={5} lg={4} spacing={1} direction="row" alignItems="center">
+                    <Grid item container xs={12} md={6} lg={6} spacing={1} direction="row" alignItems="center">
                         <Grid item sm={1}>
                             <div className={classes.searchIcon}>
                                 <LocationOnRoundedIcon /></div>
@@ -196,11 +196,11 @@ function JobSearchBar(props) {
                             />
                         </Grid>
                     </Grid>
-                    <Grid item xs={12} lg={2}>
+                    {/* <Grid item xs={12} lg={2}>
                         <Button className={classes.btn}>
                             Search
                         </Button>
-                    </Grid>
+                    </Grid> */}
                 </Grid>
             </div>
         </FloatCard>

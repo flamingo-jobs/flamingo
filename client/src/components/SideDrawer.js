@@ -103,14 +103,18 @@ export default function MiniDrawer() {
                                         <ListItemText className={classes.linkText} primary="Jobs" />
                                     </ListItem>
                                 </Link>
+                                <Link to="/organizations">
                                 <ListItem button key="Ogranizations" selected={selectedIndex === 3} onClick={(event) => handleListItemClick(event, 3)} classes={{ selected: classes.active }} className={classes.listItem}>
                                     <ListItemIcon className={classes.linkIcon}><BusinessRoundedIcon /></ListItemIcon>
                                     <ListItemText className={classes.linkText} primary="Ogranizations" />
                                 </ListItem>
+                                </Link>
+                                <Link to="/people">
                                 <ListItem button key="People" selected={selectedIndex === 4} onClick={(event) => handleListItemClick(event, 4)} classes={{ selected: classes.active }} className={classes.listItem}>
                                     <ListItemIcon className={classes.linkIcon}><PeopleAltRoundedIcon /></ListItemIcon>
                                     <ListItemText className={classes.linkText} primary="People" />
                                 </ListItem>
+                                </Link>
                                 <ListItem button key="Services" selected={selectedIndex === 5} onClick={(event) => handleListItemClick(event, 5)} classes={{ selected: classes.active }} className={classes.listItem}>
                                     <ListItemIcon className={classes.linkIcon}><ThumbsUpDownRoundedIcon /></ListItemIcon>
                                     <ListItemText className={classes.linkText} primary="Services" />
