@@ -83,6 +83,7 @@ function VolunteerItem(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [styleEdit, setStyleEdit] = useState({display: 'none'});
+  const setFetch = props.handleFetch;
   const [state, setState] = useState({title: props.title, organization: props.organization, from: props.from, to: props.to, description: props.description});
 
   function handleOpen(){
@@ -122,6 +123,21 @@ function VolunteerItem(props) {
     setState(prevState => {
       return {...prevState, description: e.target.value}
     })
+  }
+
+  function onSubmit(e){
+    e.preventDefault();
+    const volunteer = {
+      title: state.title,
+      organization: state.organization,
+      from: state.from,
+      to: state.to,
+      description: state.description,
+    }
+
+    axios.put(`${BACKEND_URL}/jobseeker/updateVolunteer/60c5f2e555244d11c8012480`,{index:props.index,volunteer:volunteer})
+    .then(res => console.log(volunteer));
+    handleClose();
   }
 
   return (
@@ -183,7 +199,7 @@ function VolunteerItem(props) {
                   </Grid>
                 </Grid>
               </div>
-              <form className={classes.form}>
+              <form className={classes.form}  onSubmit={onSubmit,setFetch}>
                 <div>
                 <TextField
                   className={classes.field}

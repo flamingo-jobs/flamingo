@@ -18,12 +18,12 @@ const useStyles = makeStyles((theme) => ({
     },
     container: {
         paddingTop: 20,
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.down('sm')]: {
             paddingTop: 0,
         },
     },
     sideDrawerGrid: {
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.down('sm')]: {
             display: 'none'
         },
     }
@@ -33,8 +33,8 @@ function Profile() {
     const classes = useStyles();
 
     return (
-        <Grid item container xs={12} spacing={3} direction="row" justify="space-between" alignItems="flex-start">
-            <Grid item xs={12} sm={4} spacing={3}>
+        <Grid item container sm={12} spacing={3} direction="row" justify="space-between" alignItems="flex-start">
+            <Grid item md={12} lg={4} spacing={3}>
                 <IntroSection />
                 <Space />
                 <EducationSection />
@@ -43,7 +43,7 @@ function Profile() {
                 <Space />
                 <Volunteer />
             </Grid>
-            <Grid item xs={12} sm={8} spacing={3}>
+            <Grid item md={12} lg={8} spacing={3}>
                 <WorkExperience />
                 <Space />
                 <ProjectsSection />
