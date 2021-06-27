@@ -1,23 +1,29 @@
 import React from "react";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import {
   Grid,
-  TextField,
   MenuItem,
   Typography,
   Container,
 } from "@material-ui/core";
 import { StateBlueTextField } from "../styles/customTextField";
 import FloatCard from "../../../components/FloatCard";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
 
 const useStyles = makeStyles((theme) => ({
-  summaryContainer:{
+  summaryContainer: {
     padding: theme.spacing(3),
   },
   summaryTitle: {
     fontSize: "15px",
     textAlign: "left",
     marginBottom: theme.spacing(2),
+    color: theme.palette.stateBlue,
   },
   card: {
     marginBottom: theme.spacing(2),
@@ -26,7 +32,6 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(3),
   },
 }));
-
 
 const jobTypes = [
   {
@@ -48,14 +53,17 @@ const categories = [
     name: "Development",
   },
 ];
+const locations = ["Colombo, SL", "Rajagiruya", "Nugegoda"];
 
 const SummaryForm = ({
+  location,
   jobType,
   category,
   handleTitleChange,
   handleCategoryChange,
   handleJobTypeChange,
   handleDescriptionChange,
+  handleLocationChange,
   handleMinSalaryChange,
   handleMaxSalaryChange,
 }) => {
@@ -131,6 +139,46 @@ const SummaryForm = ({
             onChange={handleDescriptionChange}
           />
 
+          {/* Location & Due date */}
+          <Grid container spacing={1} className={classes.textField}>
+            <Grid item xs={6}>
+              <StateBlueTextField
+                id="location"
+                select
+                label="Location"
+                value={location}
+                onChange={handleLocationChange}
+                variant="outlined"
+                fullWidth
+              >
+                {locations.map((location) => (
+                  <MenuItem key={location} value={location}>
+                    {location}
+                  </MenuItem>
+                ))}
+              </StateBlueTextField>
+            </Grid>
+
+            {/* <Grid item xs={6}>
+              <Grid container className={classes.textField}>
+                <Grid item container xs={6} justify="flex-start">
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                      format="MM/dd/yyyy"
+                      id="dueDate"
+                      label="Due Date"
+                      // value={selectedDate}
+                      // onChange={handleDateChange}
+                      KeyboardButtonProps={{
+                        "aria-label": "change date",
+                      }}
+                    />
+                  </MuiPickersUtilsProvider>
+                </Grid>
+              </Grid>
+            </Grid> */}
+          </Grid>
+
           {/* Salary range */}
           <Grid container spacing={1} className={classes.textField}>
             <Grid item xs={6}>
@@ -154,24 +202,6 @@ const SummaryForm = ({
               ></StateBlueTextField>
             </Grid>
           </Grid>
-
-          {/* Due Date */}
-          {/* <Grid container className={classes.textField}>
-            <Grid item container xs={6} justify="flex-start">
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                  format="MM/dd/yyyy"
-                  id="dueDate"
-                  label="Due Date"
-                  // value={selectedDate}
-                  // onChange={handleDateChange}
-                  KeyboardButtonProps={{
-                    "aria-label": "change date",
-                  }}
-                />
-              </MuiPickersUtilsProvider>
-            </Grid>
-          </Grid> */}
         </Container>
       </FloatCard>
     </Grid>

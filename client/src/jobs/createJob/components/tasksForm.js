@@ -7,7 +7,6 @@ import {
   Container,
   Typography,
   IconButton,
-  TextField,
 } from "@material-ui/core";
 import FloatCard from "../../../components/FloatCard";
 import { StateBlueTextField } from "../styles/customTextField";
@@ -23,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "15px",
     textAlign: "left",
     marginBottom: theme.spacing(2),
+    color: theme.palette.stateBlue,
   },
   removeIcon: {
     color: theme.palette.stateBlue,
@@ -54,7 +54,7 @@ const TasksForm = ({
                     name="task"
                     label="Responsibility"
                     variant="outlined"
-                    value={field.task}
+                    value={field}
                     fullWidth
                     multiline
                     onChange={(event) => handleTaskChange(event, index)}
@@ -65,10 +65,15 @@ const TasksForm = ({
                     disabled={tasksFields.length === 1}
                     onClick={() => handleTaskRemove(index)}
                   >
-                    <RemoveIcon className={classes.removeIcon}/>
+                    <RemoveIcon
+                      className={classes.removeIcon}
+                      style={{
+                        color: tasksFields.length === 1 ? "#bbb" : null,
+                      }}
+                    />
                   </IconButton>
                   <IconButton onClick={handleTaskAdd}>
-                    <AddIcon className={classes.addIcon}/>
+                    <AddIcon className={classes.addIcon} />
                   </IconButton>
                 </Grid>
               </Grid>

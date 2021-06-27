@@ -7,7 +7,6 @@ import {
   Container,
   Typography,
   IconButton,
-  TextField,
 } from "@material-ui/core";
 import FloatCard from "../../../components/FloatCard";
 import { StateBlueTextField } from "../styles/customTextField";
@@ -23,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "15px",
     textAlign: "left",
     marginBottom: theme.spacing(2),
+    color: theme.palette.stateBlue,
   },
   removeIcon: {
     color: theme.palette.stateBlue,
@@ -55,7 +55,7 @@ const QualificationForm = ({
                     name="qualification"
                     label="Qualification"
                     variant="outlined"
-                    value={field.qualification}
+                    value={field}
                     fullWidth
                     multiline
                     onChange={(event) =>
@@ -68,10 +68,16 @@ const QualificationForm = ({
                     disabled={qualificationsFields.length === 1}
                     onClick={() => handleQualificationRemove(index)}
                   >
-                    <RemoveIcon className={classes.removeIcon} />
+                    <RemoveIcon
+                      className={classes.removeIcon}
+                      style={{
+                        color:
+                          qualificationsFields.length === 1 ? "#bbb" : null,
+                      }}
+                    />
                   </IconButton>
                   <IconButton onClick={handleQualificationAdd}>
-                    <AddIcon className={classes.addIcon}/>
+                    <AddIcon className={classes.addIcon} />
                   </IconButton>
                 </Grid>
               </Grid>

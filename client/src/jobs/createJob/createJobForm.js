@@ -1,13 +1,8 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { withStyles } from "@material-ui/core/styles";
-import { Grid, Typography, Checkbox } from "@material-ui/core";
+import { Grid, Typography, Checkbox, Button } from "@material-ui/core";
 import axios from "axios";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
 
 // Custom components
 import FloatCard from "../../components/FloatCard";
@@ -16,13 +11,17 @@ import TaskForm from "./components/tasksForm";
 import QualificationsForm from "./components/qualificationsForm";
 import Keywords from "./components/keywords";
 import TechStack from "./components/techStack";
+import BACKEND_URL from "../../Config";
+import FeedbackModal from "./components/feedbackModal";
+import checkAnimation from "./lotties/check.json";
+import ExclamationMarkAnimation from "./lotties/exclamation.json";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(1.5),
   },
   title: {
-    color: theme.palette.black,
+    color: theme.palette.stateBlue,
   },
   card: {
     marginBottom: theme.spacing(2),
@@ -76,26 +75,41 @@ const getCurrentDate = () => {
 const CreateJobForm = () => {
   const classes = useStyles();
 
+  // const [modalStyle] = React.useState(getModalStyle);
+  const [successOpen, setSuccessOpen] = useState(false);
+  const [unsuccessOpen, setUnsuccessOpen] = useState(false);
+
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("Development");
   const [jobType, setJobType] = useState("Full-time");
   const [description, setDescription] = useState("");
+  const [organization, setOrganization] = useState({
+    id: "12345",
+    name: "Virtusa",
+  });
+  const [location, setLocation] = useState("");
   const [currentDate, setCurrentDate] = useState(getCurrentDate());
+  const [dueDate, setDueDate] = useState("12/12/2012");
   const [minSalary, setMinSalary] = useState(0);
   const [maxSalary, setMaxSalary] = useState(0);
-  const [tasksFields, setTasksFields] = useState([{ task: "" }]);
-  const [qualificationsFields, setQualificationsFields] = useState([
-    { qualification: "" },
-  ]);
+  const [tasksFields, setTasksFields] = useState([""]);
+  const [qualificationsFields, setQualificationsFields] = useState([""]);
   const [techStackState, setTechStack] = useState([]);
   const [keywordsState, setKeywords] = useState([]);
+  const [isFeatured, setIsFeatured] = useState(false);
+  const [isPublished, setIsPublished] = useState(true);
 
-  // console.log("state", title, category, jobType, description, minSalary, minSalary, maxSalary)
-  // console.log("tasksFields", tasksFields)
-  // console.log("qualificationsFields", qualificationsFields)
-  // console.log("techStackState", techStackState)
-  // console.log("keywordsState", keywordsState)
+  // console.log("currentDate", currentDate)
 
+  // Modals
+  const handleSuccessClose = () => {
+    setSuccessOpen(false);
+  };
+  const handleUnsuccessClose = () => {
+    setUnsuccessOpen(false);
+  };
+
+  // Job basic details
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
   };
@@ -108,18 +122,21 @@ const CreateJobForm = () => {
   const handleDescriptionChange = (event) => {
     setDescription(event.target.value);
   };
+  const handleLocationChange = (event) => {
+    setLocation(event.target.value);
+  };
   const handleMinSalaryChange = (event) => {
-    setMinSalary(event.target.value);
+    setMinSalary(parseFloat(event.target.value, 10));
   };
   const handleMaxSalaryChange = (event) => {
-    setMaxSalary(event.target.value);
+    setMaxSalary(parseFloat(event.target.value, 10));
   };
 
   // ***** Tasks & Responsibilites *****
   const handleTaskChange = (event, index) => {
     const newTasksFields = tasksFields.map((taskField, i) => {
       if (index === i) {
-        taskField[event.target.name] = event.target.value;
+        taskField = event.target.value;
       }
       return taskField;
     });
@@ -137,7 +154,7 @@ const CreateJobForm = () => {
   };
 
   const handleTaskAdd = () => {
-    setTasksFields([...tasksFields, { task: "" }]);
+    setTasksFields([...tasksFields, [""]]);
   };
 
   // ***** Qualifications *****
@@ -145,7 +162,7 @@ const CreateJobForm = () => {
     const newQualificationsFields = qualificationsFields.map(
       (qualificationField, i) => {
         if (index === i) {
-          qualificationField[event.target.name] = event.target.value;
+          qualificationField = event.target.value;
         }
         return qualificationField;
       }
@@ -164,7 +181,7 @@ const CreateJobForm = () => {
   };
 
   const handleQualificationAdd = () => {
-    setQualificationsFields([...qualificationsFields, { qualification: "" }]);
+    setQualificationsFields([...qualificationsFields, [""]]);
   };
 
   // Technology Stack
@@ -177,8 +194,59 @@ const CreateJobForm = () => {
     setKeywords(values);
   };
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const newJob = {
+      title: title,
+      category: category,
+      type: jobType,
+      description: description,
+      organization: organization,
+      location: location,
+      postedDate: currentDate,
+      dueDate: dueDate,
+      salaryRange: {
+        min: minSalary,
+        max: maxSalary,
+      },
+      tasksAndResponsibilities: tasksFields,
+      qualifications: qualificationsFields,
+      technologyStack: techStackState,
+      keywords: keywordsState,
+      isPublished: isPublished,
+      isFeatured: isFeatured,
+    };
+    try {
+      const response = await axios.post(`${BACKEND_URL}/jobs/create`, newJob);
+      if (response.data.success === true) {
+        setSuccessOpen(true);
+      } else {
+        setUnsuccessOpen(true);
+      }
+    } catch (err) {
+      setUnsuccessOpen(true);
+      // console.log(err);
+    }
+  };
+
   return (
     <>
+      <FeedbackModal
+        open={successOpen}
+        handleClose={handleSuccessClose}
+        animation={checkAnimation}
+        loop={false}
+        msg={"Job Created, successfully !"}
+      ></FeedbackModal>
+
+      <FeedbackModal
+        open={unsuccessOpen}
+        handleClose={handleUnsuccessClose}
+        animation={ExclamationMarkAnimation}
+        loop={true}
+        msg={"Sorry. Something went wrong. Please try again later."}
+      ></FeedbackModal>
+
       <Grid container spacing={2} className={classes.root} justify="center">
         <Grid item xs={10}>
           <FloatCard>
@@ -189,16 +257,18 @@ const CreateJobForm = () => {
         </Grid>
 
         <Grid item xs={10}>
-          <form>
+          <form onSubmit={handleSubmit}>
             <Grid container xs={12}>
               {/* Job summary */}
               <SummaryForm
+                location={location}
                 jobType={jobType}
                 category={category}
                 handleTitleChange={handleTitleChange}
                 handleCategoryChange={handleCategoryChange}
                 handleJobTypeChange={handleJobTypeChange}
                 handleDescriptionChange={handleDescriptionChange}
+                handleLocationChange={handleLocationChange}
                 handleMinSalaryChange={handleMinSalaryChange}
                 handleMaxSalaryChange={handleMaxSalaryChange}
               ></SummaryForm>
