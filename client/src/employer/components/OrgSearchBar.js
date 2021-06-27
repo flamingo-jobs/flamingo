@@ -6,7 +6,6 @@ import InputBase from '@material-ui/core/InputBase';
 import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 import theme from '../../Theme';
-import ListDownPopup from './ListDownPopup';
 import Chip from '@material-ui/core/Chip';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
@@ -124,11 +123,12 @@ function JobSearchBar(props) {
         let filterObjects = {};
         if (keywords.length != 0) {
             let regexExp = keywords.join('|');
-            filterObjects = { ...filterObjects, $or : [ {title: { $regex : regexExp, $options : "i"}}, {description: { $regex : regexExp, $options : "i"}}]};
+            filterObjects = { ...filterObjects, $or : [ {name: { $regex : regexExp, $options : "i"}}, {description: { $regex : regexExp, $options : "i"}}]};
         }
 
         if (locations.length != 0) {
-            filterObjects = { ...filterObjects, location : locations };
+            let locationRegex = locations.join("|");
+            filterObjects = { ...filterObjects, locations : {$elemMatch: {$regex : locationRegex, $options : "i"}}};
         }
         props.onChange(filterObjects);
     }

@@ -24,7 +24,7 @@ const theme = createMuiTheme({
     greenyLightSky: '#e0faff',
     tagYellow: '#fcf9d7',
     tagIcon: '#969478',
-    pinkyRed: '#ff6ecc',
+    pinkyRed: '#E366B3',
     white: '#fff',
     black: '#424547',
     ashBlue: '#54788a',
