@@ -31,7 +31,8 @@ const DB_URL = 'mongodb+srv://flam_root:flamingoroot123@flamingocluster1.wlgjg.m
 
 mongoose.connect(DB_URL, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
 }).then(() => {
     console.log("DB connected");
 }).catch((err) => {

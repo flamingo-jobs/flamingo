@@ -11,7 +11,7 @@ import { MemoryRouter, Route } from 'react-router';
 import { Link } from 'react-router-dom';
 import Pagination from '@material-ui/lab/Pagination';
 import PaginationItem from '@material-ui/lab/PaginationItem';
-import JobSearchBar from '../jobs/components/JobSearchBar';
+import OrgSearchBar from './components/OrgSearchBar';
 
 const useStyles = makeStyles((theme) => ({
     organizationsGrid: {
@@ -132,7 +132,7 @@ function Organizations() {
         <>
             <Grid item container sm={12} spacing={3} direction="row" justify="space-between" className={classes.mainGrid} alignItems="flex-start">
                 <Grid item sm={12} className={classes.searchGrid}>
-                    <JobSearchBar onChange={updateSearch} />
+                    <OrgSearchBar onChange={updateSearch} />
                 </Grid>
                 <Grid item container xs={12} sm={12} md={8} lg={9} spacing={2} direction="row" className={classes.organizationsGrid} justify="flex-start" alignItems="flex-start">
                     {displayOrganizations()}

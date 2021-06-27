@@ -75,14 +75,15 @@ const update = (req,res) => {
                 })
             }
             return res.status(200).json({
-                sucess: "Updated successfully"
+                success: "Updated successfully"
             });
         }
     );
 }
 
 const remove = (req, res) => {
-    Categories.findByIdAndDelete(req.params.id).exec((err,deletedCategory) => {
+    console.log(req.body);
+    Categories.deleteMany(req.body).exec((err,deletedCategory) => {
         if(err){
             return res.status(400).json({
                 error: err
