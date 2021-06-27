@@ -96,6 +96,10 @@ function Volunteer() {
     setOpen(false);
   }
 
+  function handleFetch(){
+    setFetchedData(1);
+  }
+
   //---------------------------- text field onChange events
   function onChangeTitle(e){
     setState(prevState => {
@@ -144,10 +148,11 @@ function Volunteer() {
   }
   
   const displayVolunteeringFields = () => {
+    let i=0;
     if (volunteer) {
       if (volunteer.length > 0) {
       return volunteer.map(vol => (
-            <VolunteerItem title={vol.title} organization={vol.organization} from={vol.from} to={vol.to} description={vol.description} />
+            <VolunteerItem index={i++} title={vol.title} organization={vol.organization} from={vol.from} to={vol.to} description={vol.description} parentFunction={handleFetch} />
             ))
       }else{
         return (<Typography variant="body2" color="textSecondary" component="p">Volunteering details not added.</Typography>)
@@ -172,7 +177,7 @@ function Volunteer() {
             </Button>
         </Grid>
 
-        {/*-------------- add new edu field popup content ------------------- */}
+        {/*-------------- add new volunteer field popup content ------------------- */}
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"

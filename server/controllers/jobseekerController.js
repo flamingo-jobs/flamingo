@@ -66,6 +66,25 @@ const update = (req,res) => {
     );
 }
 
+const updateVolunteer = (req,res) => {
+    Jobseeker.updateOne(
+        { _id: req.params.id },
+        {
+            $set:{ [`volunteer.${req.body.index}`]: req.body.volunteer }
+        },
+        (err,jobseeker) =>{
+            if(err){
+                return res.status(400).json({
+                    error:err
+                })
+            }
+            return res.status(200).json({
+                sucess: "Updated successfully"
+            });
+        }
+    );
+}
+
 const addEducation = (req,res) => {
 
     Jobseeker.findOneAndUpdate(
@@ -180,5 +199,6 @@ module.exports = {
     addVolunteering,
     addProject,
     addWork,
+    updateVolunteer,
     remove
 }
