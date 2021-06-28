@@ -1,4 +1,4 @@
-import React from "react";
+import { React } from "react";
 import {
   Button,
   TextField,
@@ -91,7 +91,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   title: {
-    marginBottom: 10,
+    marginBottom: 5,
   },
   animation: {
     [theme.breakpoints.down("xs")]: {
@@ -144,12 +144,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const TechnologyStack = ({
-  tech,
-  handleTechInputChange,
-  handleTechAddClick,
-  handleTechRemoveClick,
+export const Education = ({
   navigation,
+  university,
+  handleSchoolInputChange,
+  handleSchoolAddClick,
+  handleSchoolRemoveClick,
+  college,
+  handleCollegeInputChange,
+  handleCollegeAddClick,
+  handleCollegeRemoveClick,
+  course,
+  handleCourseInputChange,
+  handleCourseAddClick,
+  handleCourseRemoveClick,
 }) => {
   const classes = useStyles();
 
@@ -198,31 +206,31 @@ export const TechnologyStack = ({
               <Container className={classes.container}>
                 <FloatCard>
                   <Container>
-                    {/* Technology Stack */}
+                    {/* Education Details */}
                     <Container
                       maxWidth="lg"
                       className={classes.jobDetailsContainer}
                     >
                       <Box mt={5} mb={5}>
                         <Typography component="h1" variant="h5">
-                          Technology Details
+                          Education Details
                         </Typography>
                       </Box>
                       <Typography className={classes.title}>
-                        <h4>Technology Stack</h4>
+                        <h4>Unversity Details</h4>
                       </Typography>
-                      {tech.map((x, i) => {
+                      {university.map((x, i) => {
                         return (
                           <Grid container alignItems="center" spacing={2}>
-                            <Grid item xs={12} md={7} align="center">
+                            <Grid item xs={12} md={3} align="center">
                               <TextField
                                 className={classes.textField}
                                 variant="outlined"
                                 fullWidth
-                                name="tech"
-                                label="Technology/ Programming Language"
-                                value={x.tech}
-                                onChange={(e) => handleTechInputChange(e, i)}
+                                name="degree"
+                                label="Degree"
+                                value={x.degree}
+                                onChange={(e) => handleSchoolInputChange(e, i)}
                               />
                             </Grid>
                             <Grid item xs={12} md={2} align="center">
@@ -230,36 +238,140 @@ export const TechnologyStack = ({
                                 className={classes.textField}
                                 variant="outlined"
                                 fullWidth
-                                name="techRate"
-                                label="Rate"
-                                type="number"
-                                InputProps={{
-                                  inputProps: { min: 0, max: 10 },
-                                }}
-                                value={x.techRate}
-                                onChange={(e) => handleTechInputChange(e, i)}
+                                name="gpa"
+                                label="GPA"
+                                value={x.gpa}
+                                onChange={(e) => handleSchoolInputChange(e, i)}
+                              />
+                            </Grid>
+                            <Grid item xs={12} md={3} align="center">
+                              <TextField
+                                className={classes.textField}
+                                variant="outlined"
+                                fullWidth
+                                name="university"
+                                label="University Name"
+                                value={x.university}
+                                onChange={(e) => handleSchoolInputChange(e, i)}
                               />
                             </Grid>
                             <Grid item xs={12} md={1} align="center">
-                              <Typography className={classes.title}>
-                                / 10
-                              </Typography>
+                              <TextField
+                                className={classes.textField}
+                                variant="outlined"
+                                fullWidth
+                                name="from"
+                                label="From"
+                                value={x.from}
+                                onChange={(e) => handleSchoolInputChange(e, i)}
+                              />
+                            </Grid>
+                            <Grid item xs={12} md={1} align="center">
+                              <TextField
+                                className={classes.textField}
+                                variant="outlined"
+                                fullWidth
+                                name="to"
+                                label="To"
+                                value={x.to}
+                                onChange={(e) => handleSchoolInputChange(e, i)}
+                              />
                             </Grid>
                             <Grid item xs={12} md={2} align="center">
-                              {tech.length !== 1 && (
+                              {university.length !== 1 && (
                                 <IconButton
-                                  onClick={() => handleTechRemoveClick(i)}
+                                  onClick={() => handleSchoolRemoveClick(i)}
                                   color="secondary"
-                                  aria-label="Add new technology/ programming language"
                                 >
                                   <RemoveCircleOutlineIcon />
                                 </IconButton>
                               )}
-                              {tech.length - 1 === i && (
+                              {university.length - 1 === i && (
                                 <IconButton
-                                  onClick={handleTechAddClick}
+                                  onClick={handleSchoolAddClick}
                                   color="primary"
-                                  aria-label="Remove technology/ programming language"
+                                >
+                                  <AddCircleOutlineIcon />
+                                </IconButton>
+                              )}
+                            </Grid>
+                          </Grid>
+                        );
+                      })}
+                      <Grid item xs={12} md={6} align="center"></Grid>
+                      <Grid item xs={12} md={6} align="center"></Grid>
+                    </Container>
+
+                    {/* Course Details */}
+                    <Container
+                      maxWidth="lg"
+                      className={classes.jobDetailsContainer}
+                    >
+                      <Typography className={classes.title}>
+                        <h4>Course Details</h4>
+                      </Typography>
+                      {course.map((x, i) => {
+                        return (
+                          <Grid container alignItems="center" spacing={2}>
+                            <Grid item xs={12} md={4} align="center">
+                              <TextField
+                                className={classes.textField}
+                                variant="outlined"
+                                fullWidth
+                                name="course"
+                                label="Course Name"
+                                value={x.course}
+                                onChange={(e) => handleCourseInputChange(e, i)}
+                              />
+                            </Grid>
+                            <Grid item xs={12} md={4} align="center">
+                              <TextField
+                                className={classes.textField}
+                                variant="outlined"
+                                fullWidth
+                                name="institute"
+                                label="Institute"
+                                value={x.institute}
+                                onChange={(e) => handleCourseInputChange(e, i)}
+                              />
+                            </Grid>
+                            <Grid item xs={12} md={1} align="center">
+                              <TextField
+                                className={classes.textField}
+                                variant="outlined"
+                                fullWidth
+                                name="from"
+                                label="From"
+                                value={x.from}
+                                onChange={(e) => handleCourseInputChange(e, i)}
+                              />
+                            </Grid>
+                            <Grid item xs={12} md={1} align="center">
+                              <TextField
+                                className={classes.textField}
+                                variant="outlined"
+                                fullWidth
+                                name="to"
+                                label="To"
+                                value={x.to}
+                                onChange={(e) => handleCourseInputChange(e, i)}
+                              />
+                            </Grid>
+                            <Grid item xs={12} md={2} align="center">
+                              {course.length !== 1 && (
+                                <IconButton
+                                  onClick={() => handleCourseRemoveClick(i)}
+                                  color="secondary"
+                                  aria-label="Add new Course"
+                                >
+                                  <RemoveCircleOutlineIcon />
+                                </IconButton>
+                              )}
+                              {course.length - 1 === i && (
+                                <IconButton
+                                  onClick={handleCourseAddClick}
+                                  color="primary"
+                                  aria-label="Remobe course"
                                 >
                                   <AddCircleOutlineIcon />
                                 </IconButton>
@@ -305,7 +417,7 @@ export const TechnologyStack = ({
                                   className={classes.next}
                                   onClick={() => navigation.next()}
                                 >
-                                  Finish
+                                  Next
                                 </Button>
                               </Grid>
                             </Grid>

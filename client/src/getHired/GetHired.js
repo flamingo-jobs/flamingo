@@ -1,11 +1,12 @@
 import { React, useState } from "react";
 import { useForm, useStep } from "react-hooks-helper";
+
 import { PersonalDetails } from "./components/PersonalDetails";
-import { Qualifications } from "./components/Qualifications";
-import { Preferences } from "./components/Preferences";
-import { Review } from "./components/Review";
+import { Experience } from "./components/Experience";
+import { Education } from "./components/Education";
 import { Volunteering } from "./components/Volunteering";
 import { TechnologyStack } from "./components/TechnologyStack";
+import { Review } from "./components/Review";
 
 const defaultData = {
   firstName: "",
@@ -24,8 +25,8 @@ const defaultData = {
 
 const steps = [
   { id: "personal" },
-  { id: "preferences" },
-  { id: "qualifications" },
+  { id: "experience" },
+  { id: "education" },
   { id: "volunteering" },
   { id: "technologystack" },
   { id: "review" },
@@ -45,7 +46,7 @@ export default function GetHired() {
   };
 
   const [university, setUniversity] = useState([
-    { university: "", degree: "", GPA:0, startDate: "", endDate: "" },
+    { university: "", degree: "", GPA: 0, startDate: "", endDate: "" },
   ]);
   const handleSchoolInputChange = (e, index) => {
     const { name, value } = e.target;
@@ -61,7 +62,7 @@ export default function GetHired() {
   const handleSchoolAddClick = () => {
     setUniversity([
       ...university,
-      { university: "", degree: "", GPA:0, startDate: "", endDate: "" },
+      { university: "", degree: "", GPA: 0, startDate: "", endDate: "" },
     ]);
   };
 
@@ -80,17 +81,12 @@ export default function GetHired() {
     setCollege(list);
   };
   const handleCollegeAddClick = () => {
-    setCollege([
-      ...college,
-      { college: "", startDate: "", endDate: "" },
-    ]);
+    setCollege([...college, { college: "", startDate: "", endDate: "" }]);
   };
 
-  const [course, setCourse] = useState(
-    [
-      { course: "", institute: "", from: "", to: "" },
-    ]
-  );
+  const [course, setCourse] = useState([
+    { course: "", institute: "", from: "", to: "" },
+  ]);
   const handleCourseInputChange = (e, index) => {
     const { name, value } = e.target;
     const list = [...course];
@@ -337,10 +333,10 @@ export default function GetHired() {
   switch (step.id) {
     case "personal":
       return <PersonalDetails {...props} />;
-    case "preferences":
-      return <Preferences {...props} />;
-    case "qualifications":
-      return <Qualifications {...props} />;
+    case "experience":
+      return <Experience {...props} />;
+    case "education":
+      return <Education {...props} />;
     case "review":
       return <Review {...props} />;
     case "volunteering":

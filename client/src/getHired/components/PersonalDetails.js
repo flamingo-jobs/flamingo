@@ -12,11 +12,8 @@ import { makeStyles, withStyles } from "@material-ui/core/styles";
 import FloatCard from "../../components/FloatCard";
 import theme from "../../Theme";
 import backgroundImage from "../images/background.jfif";
-import DateFnsUtils from "@date-io/date-fns";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
+//import DateFnsUtils from "@date-io/date-fns";
+//import { MuiPickersUtilsProvider, KeyboardDatePicker, } from "@material-ui/pickers";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -178,6 +175,7 @@ export const PersonalDetails = ({
                       )}
                     />
                   </Grid>
+                  {/* 
                   <Grid item xs={12} md={6} align="center">
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <Grid container>
@@ -197,6 +195,7 @@ export const PersonalDetails = ({
                       </Grid>
                     </MuiPickersUtilsProvider>
                   </Grid>
+                        */}
                 </Grid>
               </Container>
               <Container maxWidth="lg" className={classes.jobDetailsContainer}>

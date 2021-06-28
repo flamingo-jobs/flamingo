@@ -11,15 +11,10 @@ import {
 } from "@material-ui/core";
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
-import RemoveIcon from "@material-ui/icons/Remove";
-import AddIcon from "@material-ui/icons/Add";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import FloatCard from "../../components/FloatCard";
-import theme from "../../Theme";
 import backgroundImage from "../images/background.jfif";
 import SideDrawer from "../../components/SideDrawer";
-import Topbar from "../../components/Topbar";
-import Footer from "../../components/Footer";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
 const useStyles = makeStyles((theme) => ({
@@ -211,354 +206,343 @@ export const Volunteering = ({
               direction="column"
               justify="space-between"
             >
-              <Grid item sm={12}>
-                <Topbar />
-              </Grid>
-              <Grid
-                container
-                xs={12}
-                spacing={0}
-                direction="column"
-                alignItems="center"
-                className={classes.screen}
-              >
-                <Container className={classes.container}>
-                  <FloatCard>
-                    <Container>
-                      {/* Navigation Buttons */}
-                      <Container className={classes.jobDetailsContainer}>
-                        <Grid container alignItems="center" spacing={2}>
-                          <Grid
-                            container
-                            direction="row"
-                            alignItems="center"
-                            justify="flex-end"
-                          >
-                            <Grid item sm={6} md={6} align="center">
-                              <Grid
-                                container
-                                alignItems="center"
-                                justify="flex-end"
-                                spacing={2}
-                              >
-                                <Grid item align="center">
-                                  <Button
-                                    fullWidth
+              <Container className={classes.container}>
+                <FloatCard>
+                  <Container>
+                    {/* Volunteering Details */}
+                    <Container
+                      maxWidth="lg"
+                      className={classes.jobDetailsContainer}
+                    >
+                      <Box mt={5} mb={5}>
+                        <Typography component="h1" variant="h5">
+                          Volunteering and Achievement Details
+                        </Typography>
+                      </Box>
+                      <Typography className={classes.title}>
+                        <h4>Volunteering Details</h4>
+                      </Typography>
+                      {volunteer.map((x, i) => {
+                        return (
+                          <Grid container alignItems="center" spacing={2}>
+                            <Grid item xs={12} md={10} align="center">
+                              <Grid container alignItems="center" spacing={2}>
+                                <Grid item xs={12} md={4} align="center">
+                                  <TextField
+                                    className={classes.textField}
                                     variant="outlined"
-                                    className={classes.previous}
-                                    onClick={() => navigation.previous()}
-                                  >
-                                    Previous
-                                  </Button>
-                                </Grid>{" "}
-                                <Grid item align="center">
-                                  <Button
                                     fullWidth
-                                    variant="contained"
-                                    className={classes.next}
-                                    onClick={() => navigation.next()}
-                                  >
-                                    Next
-                                  </Button>
+                                    name="title"
+                                    label="Title"
+                                    value={x.title}
+                                    onChange={(e) =>
+                                      handleVolunteerInputChange(e, i)
+                                    }
+                                  />
                                 </Grid>
+                                <Grid item xs={12} md={4} align="center">
+                                  <TextField
+                                    className={classes.textField}
+                                    variant="outlined"
+                                    fullWidth
+                                    name="organization"
+                                    label="Description"
+                                    value={x.organization}
+                                    onChange={(e) =>
+                                      handleVolunteerInputChange(e, i)
+                                    }
+                                  />
+                                </Grid>
+                                <Grid item xs={12} md={2} align="center">
+                                  <TextField
+                                    className={classes.textField}
+                                    variant="outlined"
+                                    fullWidth
+                                    name="from"
+                                    label="From"
+                                    value={x.from}
+                                    onChange={(e) =>
+                                      handleVolunteerInputChange(e, i)
+                                    }
+                                  />
+                                </Grid>
+                                <Grid item xs={12} md={2} align="center">
+                                  <TextField
+                                    className={classes.textField}
+                                    variant="outlined"
+                                    fullWidth
+                                    name="to"
+                                    label="To"
+                                    value={x.to}
+                                    onChange={(e) =>
+                                      handleVolunteerInputChange(e, i)
+                                    }
+                                  />
+                                </Grid>
+                                <Grid item xs={12} md={12} align="center">
+                                  <TextField
+                                    className={classes.textField}
+                                    variant="outlined"
+                                    fullWidth
+                                    name="description"
+                                    label="Description"
+                                    value={x.description}
+                                    onChange={(e) =>
+                                      handleVolunteerInputChange(e, i)
+                                    }
+                                  />
+                                </Grid>
+                              </Grid>
+                            </Grid>
+                            <Grid item xs={12} md={2} align="center">
+                              {volunteer.length !== 1 && (
+                                <IconButton
+                                  onClick={() => handleVolunteerRemoveClick(i)}
+                                  color="secondary"
+                                  aria-label="Add new volunteering experience"
+                                >
+                                  <RemoveCircleOutlineIcon />
+                                </IconButton>
+                              )}
+                              {volunteer.length - 1 === i && (
+                                <IconButton
+                                  onClick={handleVolunteerAddClick}
+                                  color="primary"
+                                  aria-label="Remove volunteering experience"
+                                >
+                                  <AddCircleOutlineIcon />
+                                </IconButton>
+                              )}
+                            </Grid>
+                          </Grid>
+                        );
+                      })}
+                      <Grid item xs={12} md={6} align="center"></Grid>
+                      <Grid item xs={12} md={6} align="center"></Grid>
+                    </Container>
+
+                    {/* Award Details */}
+                    <Container
+                      maxWidth="lg"
+                      className={classes.jobDetailsContainer}
+                    >
+                      <Typography className={classes.title}>
+                        <h4>Award Details</h4>
+                      </Typography>
+                      {award.map((x, i) => {
+                        return (
+                          <Grid container alignItems="center" spacing={10}>
+                            <Grid item xs={12} md={10} align="center">
+                              <Grid container alignItems="center" spacing={2}>
+                                <Grid item xs={12} md={6} align="center">
+                                  <TextField
+                                    className={classes.textField}
+                                    variant="outlined"
+                                    fullWidth
+                                    name="title"
+                                    label="Award Title"
+                                    value={x.title}
+                                    onChange={(e) =>
+                                      handleAwardInputChange(e, i)
+                                    }
+                                  />
+                                </Grid>
+                                <Grid item xs={12} md={4} align="center">
+                                  <TextField
+                                    className={classes.textField}
+                                    variant="outlined"
+                                    fullWidth
+                                    name="issuedBy"
+                                    label="Issued By"
+                                    value={x.issuedBy}
+                                    onChange={(e) =>
+                                      handleAwardInputChange(e, i)
+                                    }
+                                  />
+                                </Grid>
+                                <Grid item xs={12} md={2} align="center">
+                                  <TextField
+                                    className={classes.textField}
+                                    variant="outlined"
+                                    fullWidth
+                                    name="date"
+                                    label="Date (mm/yyyy)"
+                                    value={x.date}
+                                    onChange={(e) =>
+                                      handleAwardInputChange(e, i)
+                                    }
+                                  />
+                                </Grid>
+                                <Grid item xs={12} md={12} align="center">
+                                  <TextField
+                                    className={classes.textField}
+                                    variant="outlined"
+                                    fullWidth
+                                    name="description"
+                                    label="Description"
+                                    value={x.description}
+                                    onChange={(e) =>
+                                      handleAwardInputChange(e, i)
+                                    }
+                                  />
+                                </Grid>
+                              </Grid>
+                            </Grid>
+                            <Grid item xs={12} md={2} align="center">
+                              {award.length !== 1 && (
+                                <IconButton
+                                  onClick={() => handleAwardRemoveClick(i)}
+                                  color="secondary"
+                                  aria-label="Add new award"
+                                >
+                                  <RemoveCircleOutlineIcon />
+                                </IconButton>
+                              )}
+                              {award.length - 1 === i && (
+                                <IconButton
+                                  onClick={handleAwardAddClick}
+                                  color="primary"
+                                  aria-label="Remove award"
+                                >
+                                  <AddCircleOutlineIcon />
+                                </IconButton>
+                              )}
+                            </Grid>
+                          </Grid>
+                        );
+                      })}
+                      <Grid item xs={12} md={6} align="center"></Grid>
+                      <Grid item xs={12} md={6} align="center"></Grid>
+                    </Container>
+
+                    {/* Achievement Details */}
+                    <Container
+                      maxWidth="lg"
+                      className={classes.jobDetailsContainer}
+                    >
+                      <Typography className={classes.title}>
+                        <h4>Achievement Details</h4>
+                      </Typography>
+                      {achievement.map((x, i) => {
+                        return (
+                          <Grid container alignItems="center" spacing={2}>
+                            <Grid item xs={12} md={4} align="center">
+                              <TextField
+                                className={classes.textField}
+                                variant="outlined"
+                                fullWidth
+                                name="title"
+                                label="Title"
+                                value={x.title}
+                                onChange={(e) =>
+                                  handleAchievementInputChange(e, i)
+                                }
+                              />
+                            </Grid>
+                            <Grid item xs={12} md={4} align="center">
+                              <Autocomplete
+                                options={university}
+                                getOptionLabel={(option) => option.university}
+                                renderInput={(params) => (
+                                  <TextField
+                                    {...params}
+                                    name="relatedTo"
+                                    label="Related To"
+                                    variant="outlined"
+                                    value={x.relatedTo}
+                                    onChange={(e) =>
+                                      handleAchievementInputChange(e, i)
+                                    }
+                                  />
+                                )}
+                              />
+                            </Grid>
+                            <Grid item xs={12} md={2} align="center">
+                              <TextField
+                                className={classes.textField}
+                                variant="outlined"
+                                fullWidth
+                                name="date"
+                                label="Date"
+                                value={x.date}
+                                onChange={(e) =>
+                                  handleAchievementInputChange(e, i)
+                                }
+                              />
+                            </Grid>
+                            <Grid item xs={12} md={2} align="center">
+                              {achievement.length !== 1 && (
+                                <IconButton
+                                  onClick={() =>
+                                    handleAchievementRemoveClick(i)
+                                  }
+                                  color="secondary"
+                                  aria-label="Add new achievement"
+                                >
+                                  <RemoveCircleOutlineIcon />
+                                </IconButton>
+                              )}
+                              {achievement.length - 1 === i && (
+                                <IconButton
+                                  onClick={handleAchievementAddClick}
+                                  color="primary"
+                                  aria-label="Remove achievement"
+                                >
+                                  <AddCircleOutlineIcon />
+                                </IconButton>
+                              )}
+                            </Grid>
+                          </Grid>
+                        );
+                      })}
+                      <Grid item xs={12} md={6} align="center"></Grid>
+                      <Grid item xs={12} md={6} align="center"></Grid>
+                    </Container>
+
+                    {/* Navigation Buttons */}
+                    <Container className={classes.jobDetailsContainer}>
+                      <Grid container alignItems="center" spacing={2}>
+                        <Grid
+                          container
+                          direction="row"
+                          alignItems="center"
+                          justify="flex-end"
+                        >
+                          <Grid item sm={6} md={6} align="center">
+                            <Grid
+                              container
+                              alignItems="center"
+                              justify="flex-end"
+                              spacing={2}
+                            >
+                              <Grid item align="center">
+                                <Button
+                                  fullWidth
+                                  variant="outlined"
+                                  className={classes.previous}
+                                  onClick={() => navigation.previous()}
+                                >
+                                  Previous
+                                </Button>
+                              </Grid>{" "}
+                              <Grid item align="center">
+                                <Button
+                                  fullWidth
+                                  variant="contained"
+                                  className={classes.next}
+                                  onClick={() => navigation.next()}
+                                >
+                                  Next
+                                </Button>
                               </Grid>
                             </Grid>
                           </Grid>
                         </Grid>
-                      </Container>
-                      {/* Volunteering Details */}
-                      <Container
-                        maxWidth="lg"
-                        className={classes.jobDetailsContainer}
-                      >
-                        <Typography className={classes.title}>
-                          <h4>Volunteering Details</h4>
-                        </Typography>
-                        {volunteer.map((x, i) => {
-                          return (
-                            <Grid container alignItems="center" spacing={2}>
-                              <Grid item xs={12} md={10} align="center">
-                                <Grid container alignItems="center" spacing={2}>
-                                  <Grid item xs={12} md={4} align="center">
-                                    <TextField
-                                      className={classes.textField}
-                                      variant="outlined"
-                                      fullWidth
-                                      name="title"
-                                      label="Title"
-                                      value={x.title}
-                                      onChange={(e) =>
-                                        handleVolunteerInputChange(e, i)
-                                      }
-                                    />
-                                  </Grid>
-                                  <Grid item xs={12} md={4} align="center">
-                                    <TextField
-                                      className={classes.textField}
-                                      variant="outlined"
-                                      fullWidth
-                                      name="organization"
-                                      label="Description"
-                                      value={x.organization}
-                                      onChange={(e) =>
-                                        handleVolunteerInputChange(e, i)
-                                      }
-                                    />
-                                  </Grid>
-                                  <Grid item xs={12} md={2} align="center">
-                                    <TextField
-                                      className={classes.textField}
-                                      variant="outlined"
-                                      fullWidth
-                                      name="from"
-                                      label="From"
-                                      value={x.from}
-                                      onChange={(e) =>
-                                        handleVolunteerInputChange(e, i)
-                                      }
-                                    />
-                                  </Grid>
-                                  <Grid item xs={12} md={2} align="center">
-                                    <TextField
-                                      className={classes.textField}
-                                      variant="outlined"
-                                      fullWidth
-                                      name="to"
-                                      label="To"
-                                      value={x.to}
-                                      onChange={(e) =>
-                                        handleVolunteerInputChange(e, i)
-                                      }
-                                    />
-                                  </Grid>
-                                  <Grid item xs={12} md={12} align="center">
-                                    <TextField
-                                      className={classes.textField}
-                                      variant="outlined"
-                                      fullWidth
-                                      name="description"
-                                      label="Description"
-                                      value={x.description}
-                                      onChange={(e) =>
-                                        handleVolunteerInputChange(e, i)
-                                      }
-                                    />
-                                  </Grid>
-                                </Grid>
-                              </Grid>
-                              <Grid item xs={12} md={2} align="center">
-                                {volunteer.length !== 1 && (
-                                  <IconButton
-                                    onClick={() =>
-                                      handleVolunteerRemoveClick(i)
-                                    }
-                                    color="secondary"
-                                    aria-label="Add new volunteering experience"
-                                  >
-                                    <RemoveCircleOutlineIcon />
-                                  </IconButton>
-                                )}
-                                {volunteer.length - 1 === i && (
-                                  <IconButton
-                                    onClick={handleVolunteerAddClick}
-                                    color="primary"
-                                    aria-label="Remove volunteering experience"
-                                  >
-                                    <AddCircleOutlineIcon />
-                                  </IconButton>
-                                )}
-                              </Grid>
-                            </Grid>
-                          );
-                        })}
-                        <Grid item xs={12} md={6} align="center"></Grid>
-                        <Grid item xs={12} md={6} align="center"></Grid>
-                      </Container>
-
-                      {/* Award Details */}
-                      <Container
-                        maxWidth="lg"
-                        className={classes.jobDetailsContainer}
-                      >
-                        <Typography className={classes.title}>
-                          <h4>Award Details</h4>
-                        </Typography>
-                        {award.map((x, i) => {
-                          return (
-                            <Grid container alignItems="center" spacing={10}>
-                              <Grid item xs={12} md={10} align="center">
-                                <Grid container alignItems="center" spacing={2}>
-                                  <Grid item xs={12} md={6} align="center">
-                                    <TextField
-                                      className={classes.textField}
-                                      variant="outlined"
-                                      fullWidth
-                                      name="title"
-                                      label="Award Title"
-                                      value={x.title}
-                                      onChange={(e) =>
-                                        handleAwardInputChange(e, i)
-                                      }
-                                    />
-                                  </Grid>
-                                  <Grid item xs={12} md={4} align="center">
-                                    <TextField
-                                      className={classes.textField}
-                                      variant="outlined"
-                                      fullWidth
-                                      name="issuedBy"
-                                      label="Issued By"
-                                      value={x.issuedBy}
-                                      onChange={(e) =>
-                                        handleAwardInputChange(e, i)
-                                      }
-                                    />
-                                  </Grid>
-                                  <Grid item xs={12} md={2} align="center">
-                                    <TextField
-                                      className={classes.textField}
-                                      variant="outlined"
-                                      fullWidth
-                                      name="date"
-                                      label="Date (mm/yyyy)"
-                                      value={x.date}
-                                      onChange={(e) =>
-                                        handleAwardInputChange(e, i)
-                                      }
-                                    />
-                                  </Grid>
-                                  <Grid item xs={12} md={12} align="center">
-                                    <TextField
-                                      className={classes.textField}
-                                      variant="outlined"
-                                      fullWidth
-                                      name="description"
-                                      label="Description"
-                                      value={x.description}
-                                      onChange={(e) =>
-                                        handleAwardInputChange(e, i)
-                                      }
-                                    />
-                                  </Grid>
-                                </Grid>
-                              </Grid>
-                              <Grid item xs={12} md={2} align="center">
-                                {award.length !== 1 && (
-                                  <IconButton
-                                    onClick={() => handleAwardRemoveClick(i)}
-                                    color="secondary"
-                                    aria-label="Add new award"
-                                  >
-                                    <RemoveCircleOutlineIcon />
-                                  </IconButton>
-                                )}
-                                {award.length - 1 === i && (
-                                  <IconButton
-                                    onClick={handleAwardAddClick}
-                                    color="primary"
-                                    aria-label="Remove award"
-                                  >
-                                    <AddCircleOutlineIcon />
-                                  </IconButton>
-                                )}
-                              </Grid>
-                            </Grid>
-                          );
-                        })}
-                        <Grid item xs={12} md={6} align="center"></Grid>
-                        <Grid item xs={12} md={6} align="center"></Grid>
-                      </Container>
-
-                      {/* Achievement Details */}
-                      <Container
-                        maxWidth="lg"
-                        className={classes.jobDetailsContainer}
-                      >
-                        <Typography className={classes.title}>
-                          <h4>Achievement Details</h4>
-                        </Typography>
-                        {achievement.map((x, i) => {
-                          return (
-                            <Grid container alignItems="center" spacing={2}>
-                              <Grid item xs={12} md={4} align="center">
-                                <TextField
-                                  className={classes.textField}
-                                  variant="outlined"
-                                  fullWidth
-                                  name="title"
-                                  label="Title"
-                                  value={x.title}
-                                  onChange={(e) =>
-                                    handleAchievementInputChange(e, i)
-                                  }
-                                />
-                              </Grid>
-                              <Grid item xs={12} md={4} align="center">
-                                <Autocomplete
-                                  options={university}
-                                  getOptionLabel={(option) => option.university}
-                                  renderInput={(params) => (
-                                    <TextField
-                                      {...params}
-                                      name="relatedTo"
-                                      label="Related To"
-                                      variant="outlined"
-                                      value={x.relatedTo}
-                                      onChange={(e) =>
-                                        handleAchievementInputChange(e, i)
-                                      }
-                                    />
-                                  )}
-                                />
-                              </Grid>
-                              <Grid item xs={12} md={2} align="center">
-                                <TextField
-                                  className={classes.textField}
-                                  variant="outlined"
-                                  fullWidth
-                                  name="date"
-                                  label="Date"
-                                  value={x.date}
-                                  onChange={(e) =>
-                                    handleAchievementInputChange(e, i)
-                                  }
-                                />
-                              </Grid>
-                              <Grid item xs={12} md={2} align="center">
-                                {achievement.length !== 1 && (
-                                  <IconButton
-                                    onClick={() =>
-                                      handleAchievementRemoveClick(i)
-                                    }
-                                    color="secondary"
-                                    aria-label="Add new achievement"
-                                  >
-                                    <RemoveCircleOutlineIcon />
-                                  </IconButton>
-                                )}
-                                {achievement.length - 1 === i && (
-                                  <IconButton
-                                    onClick={handleAchievementAddClick}
-                                    color="primary"
-                                    aria-label="Remove achievement"
-                                  >
-                                    <AddCircleOutlineIcon />
-                                  </IconButton>
-                                )}
-                              </Grid>
-                            </Grid>
-                          );
-                        })}
-                        <Grid item xs={12} md={6} align="center"></Grid>
-                        <Grid item xs={12} md={6} align="center"></Grid>
-                      </Container>
+                      </Grid>
                     </Container>
-                  </FloatCard>
-                </Container>
-              </Grid>
-              <Grid item xs={12}>
-                <Footer />
-              </Grid>
+                  </Container>
+                </FloatCard>
+              </Container>
             </Grid>
           </Grid>
         </Container>
