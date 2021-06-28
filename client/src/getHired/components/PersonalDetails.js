@@ -7,6 +7,7 @@ import {
   Typography,
   Container,
 } from "@material-ui/core";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import FloatCard from "../../components/FloatCard";
 import theme from "../../Theme";
@@ -18,10 +19,17 @@ import {
 } from "@material-ui/pickers";
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
+  root: {
+    background: `url(${backgroundImage}) no-repeat`,
+    backgroundAttachment: "fixed",
+    minHeight: "100vh",
+    backgroundSize: "cover",
+  },
   container: {
-    paddingTop: 50,
-    paddingBottom: 50,
+    width: "100%",
+    margin: "0 auto",
+    paddingTop: 10,
+    paddingBottom: 10,
     minHeight: "100vh",
   },
   overlay: {
@@ -102,6 +110,7 @@ export const PersonalDetails = ({
   const {
     firstName,
     lastName,
+    gender,
     description,
     street,
     city,
@@ -119,13 +128,16 @@ export const PersonalDetails = ({
         <Container className={classes.container}>
           <FloatCard>
             <Container>
+              {/* Personal Details */}
               <Container maxWidth="lg" className={classes.jobDetailsContainer}>
                 <Box mt={5} mb={5}>
                   <Typography component="h1" variant="h5">
                     Personal Details
                   </Typography>
                 </Box>
-                <Typography className={classes.title}>Your Name</Typography>
+                <Typography className={classes.title}>
+                  <h4>Basic Details</h4>
+                </Typography>
                 <Grid container alignItems="center" spacing={2}>
                   <Grid item xs={12} md={6} align="center">
                     <TextField
@@ -149,10 +161,48 @@ export const PersonalDetails = ({
                       fullWidth
                     />
                   </Grid>
+                  <Grid item xs={12} md={6} align="center">
+                    <Autocomplete
+                      id="combo-box-demo"
+                      options={[{ title: "Male" }, { title: "Female" }]}
+                      getOptionLabel={(option) => option.title}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          name="gender"
+                          label="Gender"
+                          variant="outlined"
+                          value={gender}
+                          onChange={setForm}
+                        />
+                      )}
+                    />
+                  </Grid>
+                  <Grid item xs={12} md={6} align="center">
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <Grid container>
+                        <KeyboardDatePicker
+                          margin="normal"
+                          id="date-picker-dialog"
+                          label="Birthday"
+                          name="birthday"
+                          format="MM/dd/yyyy"
+                          value={birthday}
+                          onChange={handleDateChange}
+                          KeyboardButtonProps={{
+                            "aria-label": "change date",
+                          }}
+                          className={classes.textField}
+                        />
+                      </Grid>
+                    </MuiPickersUtilsProvider>
+                  </Grid>
                 </Grid>
               </Container>
               <Container maxWidth="lg" className={classes.jobDetailsContainer}>
-                <Typography className={classes.title}>Description</Typography>
+                <Typography className={classes.title}>
+                  <h4>Description</h4>
+                </Typography>
                 <Grid container alignItems="center" spacing={2}>
                   <Grid item xs={12} md={12} align="center">
                     <TextField
@@ -167,8 +217,12 @@ export const PersonalDetails = ({
                   </Grid>
                 </Grid>
               </Container>
+
+              {/* Address */}
               <Container className={classes.jobDetailsContainer}>
-                <Typography className={classes.title}>Address</Typography>
+                <Typography className={classes.title}>
+                  <h4>Address</h4>
+                </Typography>
                 <Grid container alignItems="center" spacing={2}>
                   <Grid item xs={12} md={6} align="center">
                     <TextField
@@ -203,30 +257,13 @@ export const PersonalDetails = ({
                       fullWidth
                     />
                   </Grid>
-                  <Grid item xs={12} md={6} align="center">
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                      <Grid container>
-                        <KeyboardDatePicker
-                          margin="normal"
-                          id="date-picker-dialog"
-                          label="Birthday"
-                          name="birthday"
-                          format="MM/dd/yyyy"
-                          value={birthday}
-                          onChange={handleDateChange}
-                          KeyboardButtonProps={{
-                            "aria-label": "change date",
-                          }}
-                          className={classes.textField}
-                        />
-                      </Grid>
-                    </MuiPickersUtilsProvider>
-                  </Grid>
                 </Grid>
               </Container>
+
+              {/* Contact */}
               <Container maxWidth="lg" className={classes.jobDetailsContainer}>
                 <Typography className={classes.title}>
-                  Contact Details
+                  <h4>Contact Details</h4>
                 </Typography>
                 <Grid container alignItems="center" spacing={2}>
                   <Grid item xs={12} md={6} align="center">
@@ -253,9 +290,11 @@ export const PersonalDetails = ({
                   </Grid>
                 </Grid>
               </Container>
+
+              {/* Login Credentials */}
               <Container className={classes.jobDetailsContainer}>
                 <Typography className={classes.title}>
-                  Login Credentials
+                  <h4>Login Credentials</h4>
                 </Typography>
                 <Grid container alignItems="center" spacing={2}>
                   <Grid item xs={12} md={12} align="center">
@@ -301,7 +340,7 @@ export const PersonalDetails = ({
                         className={classes.submit}
                         onClick={() => navigation.next()}
                       >
-                        Next
+                        Signup
                       </Button>
                     </Grid>
                   </Grid>

@@ -196,12 +196,12 @@ export const RenderAccordion = ({ summary, details, go }) => (
       {summary}
     </AccordionSummary>
     <AccordionDetails>
-      <div>
+      <Container align="flex-start">
         {details.map((data, index) => {
           const objKey = Object.keys(data)[0];
           const objValue = data[Object.keys(data)[0]];
           return (
-            <ListItemText key={index}>{`${objKey}:${objValue}`}</ListItemText>
+            <ListItemText key={index}>{`${objKey} : ${objValue}`}</ListItemText>
           );
         })}
         <IconButton
@@ -211,7 +211,7 @@ export const RenderAccordion = ({ summary, details, go }) => (
         >
           <EditIcon />
         </IconButton>
-      </div>
+      </Container>
     </AccordionDetails>
   </Accordion>
 );

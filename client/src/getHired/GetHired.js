@@ -1,26 +1,16 @@
 import { React, useState } from "react";
 import { useForm, useStep } from "react-hooks-helper";
-import {
-  Button,
-  TextField,
-  Box,
-  Grid,
-  Typography,
-  Container,
-  IconButton,
-  Stepper,
-  Step,
-  StepLabel,
-} from "@material-ui/core";
 import { PersonalDetails } from "./components/PersonalDetails";
 import { Qualifications } from "./components/Qualifications";
 import { Preferences } from "./components/Preferences";
 import { Review } from "./components/Review";
-import { Submit } from "./components/Submit";
+import { Volunteering } from "./components/Volunteering";
+import { TechnologyStack } from "./components/TechnologyStack";
 
 const defaultData = {
   firstName: "",
   lastName: "",
+  gender: "",
   description: "",
   street: "",
   city: "",
@@ -36,6 +26,8 @@ const steps = [
   { id: "personal" },
   { id: "preferences" },
   { id: "qualifications" },
+  { id: "volunteering" },
+  { id: "technologystack" },
   { id: "review" },
   { id: "submit" },
 ];
@@ -52,25 +44,53 @@ export default function GetHired() {
     setBirthday(date);
   };
 
-  const [school, setSchool] = useState([
-    { school: "", degree: "", schoolFrom: "", schoolTo: "" },
+  const [university, setUniversity] = useState([
+    { university: "", degree: "", GPA:0, startDate: "", endDate: "" },
   ]);
   const handleSchoolInputChange = (e, index) => {
     const { name, value } = e.target;
-    const list = [...school];
+    const list = [...university];
     list[index][name] = value;
-    setSchool(list);
+    setUniversity(list);
   };
   const handleSchoolRemoveClick = (index) => {
-    const list = [...school];
+    const list = [...university];
     list.splice(index, 1);
-    setSchool(list);
+    setUniversity(list);
   };
   const handleSchoolAddClick = () => {
-    setSchool([...school, { school: "", year: "" }]);
+    setUniversity([
+      ...university,
+      { university: "", degree: "", GPA:0, startDate: "", endDate: "" },
+    ]);
   };
 
-  const [course, setCourse] = useState([{ course: "", institute: "" }]);
+  const [college, setCollege] = useState([
+    { college: "", startDate: "", endDate: "" },
+  ]);
+  const handleCollegeInputChange = (e, index) => {
+    const { name, value } = e.target;
+    const list = [...college];
+    list[index][name] = value;
+    setCollege(list);
+  };
+  const handleCollegeRemoveClick = (index) => {
+    const list = [...college];
+    list.splice(index, 1);
+    setCollege(list);
+  };
+  const handleCollegeAddClick = () => {
+    setCollege([
+      ...college,
+      { college: "", startDate: "", endDate: "" },
+    ]);
+  };
+
+  const [course, setCourse] = useState(
+    [
+      { course: "", institute: "", from: "", to: "" },
+    ]
+  );
   const handleCourseInputChange = (e, index) => {
     const { name, value } = e.target;
     const list = [...course];
@@ -83,10 +103,12 @@ export default function GetHired() {
     setCourse(list);
   };
   const handleCourseAddClick = () => {
-    setCourse([...course, { course: "", institute: "" }]);
+    setCourse([...course, { course: "", institute: "", from: "", to: "" }]);
   };
 
-  const [award, setAward] = useState([{ award: "", awardDescription: "" }]);
+  const [award, setAward] = useState([
+    { title: "", issuedBy: "", date: "", description: "" },
+  ]);
   const handleAwardInputChange = (e, index) => {
     const { name, value } = e.target;
     const list = [...award];
@@ -99,11 +121,14 @@ export default function GetHired() {
     setAward(list);
   };
   const handleAwardAddClick = () => {
-    setAward([...award, { award: "", awardDescription: "" }]);
+    setAward([
+      ...award,
+      { title: "", issuedBy: "", date: "", description: "" },
+    ]);
   };
 
   const [achievement, setAchievement] = useState([
-    { achievement: "", achievementDescription: "" },
+    { title: "", relatedTo: "", date: "" },
   ]);
   const handleAchievementInputChange = (e, index) => {
     const { name, value } = e.target;
@@ -117,14 +142,18 @@ export default function GetHired() {
     setAchievement(list);
   };
   const handleAchievementAddClick = () => {
-    setAchievement([
-      ...achievement,
-      { achievement: "", achievementDescription: "" },
-    ]);
+    setAchievement([...achievement, { title: "", relatedTo: "", date: "" }]);
   };
 
   const [work, setWork] = useState([
-    { work: "", workPosition: "", workFrom: "", workTo: "" },
+    {
+      place: "",
+      description: "",
+      position: "",
+      from: "",
+      to: "",
+      taskAndResponsibility: [{ taskName: "" }],
+    },
   ]);
   const handleWorkInputChange = (e, index) => {
     const { name, value } = e.target;
@@ -132,23 +161,61 @@ export default function GetHired() {
     list[index][name] = value;
     setWork(list);
   };
+  const handleTaskInputChange = (e, index, secondIndex) => {
+    const { name, value } = e.target;
+    const list = [...work];
+    list[index]["taskAndResponsibility"][secondIndex][name] = value;
+    setWork(list);
+  };
   const handleWorkRemoveClick = (index) => {
     const list = [...work];
     list.splice(index, 1);
     setWork(list);
   };
+  const handleTaskRemoveClick = (index, secondIndex) => {
+    const list = [...work];
+    list[index]["taskAndResponsibility"].splice(secondIndex, 1);
+    setWork(list);
+  };
   const handleWorkAddClick = () => {
     setWork([
       ...work,
-      { work: "", workPosition: "", workFrom: "", workTo: "" },
+      {
+        place: "",
+        description: "",
+        position: "",
+        from: "",
+        to: "",
+        taskAndResponsibility: [{ taskName: "" }],
+      },
     ]);
   };
+  const handleTaskAddClick = (index) => {
+    const list = [...work];
+    list[index]["taskAndResponsibility"].push({ taskName: "" });
+    setWork(list);
+  };
 
-  const [project, setProject] = useState([{ project: "", projectLink: "" }]);
+  const [project, setProject] = useState([
+    {
+      name: "",
+      link: "",
+      description: "",
+      from: "",
+      to: "",
+      usedTech: [{ category: "", language: "" }],
+    },
+  ]);
   const handleProjectInputChange = (e, index) => {
     const { name, value } = e.target;
     const list = [...project];
     list[index][name] = value;
+    setProject(list);
+  };
+  const handleProjectTechInputChange = (e, index, secondIndex) => {
+    const { name, value } = e.target;
+    const list = [...project];
+    list[index]["usedTech"][secondIndex][name] = value;
     setProject(list);
   };
   const handleProjectRemoveClick = (index) => {
@@ -156,12 +223,32 @@ export default function GetHired() {
     list.splice(index, 1);
     setProject(list);
   };
+  const handleProjectTechRemoveClick = (index, secondIndex) => {
+    const list = [...project];
+    list[index]["usedTech"].splice(secondIndex, 1);
+    setProject(list);
+  };
   const handleProjectAddClick = () => {
-    setProject([...project, { project: "", projectLink: "" }]);
+    setProject([
+      ...project,
+      {
+        name: "",
+        link: "",
+        description: "",
+        from: "",
+        to: "",
+        usedTech: [{ category: "", language: "" }],
+      },
+    ]);
+  };
+  const handleProjectTechAddClick = (index) => {
+    const list = [...project];
+    list[index]["usedTech"].push({ category: "", language: "" });
+    setProject(list);
   };
 
   const [volunteer, setVolunteer] = useState([
-    { volunteer: "", volunteerDescription: "" },
+    { title: "", organization: "", from: "", to: "", description: "" },
   ]);
   const handleVolunteerInputChange = (e, index) => {
     const { name, value } = e.target;
@@ -175,7 +262,10 @@ export default function GetHired() {
     setVolunteer(list);
   };
   const handleVolunteerAddClick = () => {
-    setVolunteer([...volunteer, { volunteer: "", volunteerDescription: "" }]);
+    setVolunteer([
+      ...volunteer,
+      { title: "", organization: "", from: "", to: "", description: "" },
+    ]);
   };
 
   const [tech, setTech] = useState([{ tech: "", techRate: 0 }]);
@@ -199,10 +289,14 @@ export default function GetHired() {
     setForm,
     birthday,
     handleDateChange,
-    school,
+    university,
     handleSchoolInputChange,
     handleSchoolAddClick,
     handleSchoolRemoveClick,
+    college,
+    handleCollegeInputChange,
+    handleCollegeAddClick,
+    handleCollegeRemoveClick,
     course,
     handleCourseInputChange,
     handleCourseAddClick,
@@ -217,12 +311,18 @@ export default function GetHired() {
     handleAchievementRemoveClick,
     work,
     handleWorkInputChange,
+    handleTaskInputChange,
     handleWorkAddClick,
+    handleTaskAddClick,
     handleWorkRemoveClick,
+    handleTaskRemoveClick,
     project,
     handleProjectInputChange,
     handleProjectAddClick,
     handleProjectRemoveClick,
+    handleProjectTechInputChange,
+    handleProjectTechAddClick,
+    handleProjectTechRemoveClick,
     volunteer,
     handleVolunteerInputChange,
     handleVolunteerAddClick,
@@ -237,14 +337,16 @@ export default function GetHired() {
   switch (step.id) {
     case "personal":
       return <PersonalDetails {...props} />;
-    case "qualifications":
-      return <Qualifications {...props} />;
     case "preferences":
       return <Preferences {...props} />;
+    case "qualifications":
+      return <Qualifications {...props} />;
     case "review":
       return <Review {...props} />;
-    case "submit":
-      return <Submit {...props} />;
+    case "volunteering":
+      return <Volunteering {...props} />;
+    case "technologystack":
+      return <TechnologyStack {...props} />;
     default:
       return (
         <div>
