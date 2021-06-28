@@ -8,7 +8,9 @@ router.post('/jobseeker/create', jobseekerController.create);
 
 // get jobseeker
 
-router.get('/jobseeker', jobseekerController.getAll);
+router.get('/jobseekers', jobseekerController.getAll);
+router.post('/jobseekers/filter', jobseekerController.getFiltered);
+router.post('/jobseekers/getJobseekerCount', jobseekerController.getCount);
 
 // get specific
 

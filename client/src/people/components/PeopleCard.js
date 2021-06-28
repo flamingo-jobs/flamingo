@@ -5,8 +5,7 @@ import { FavoriteRounded } from '@material-ui/icons';
 import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 import FloatCard from '../../components/FloatCard';
-import Rating from '@material-ui/lab/Rating';
-
+import SchoolRoundedIcon from '@material-ui/icons/SchoolRounded';
 const useStyles = makeStyles((theme) => ({
     root: {
         textAlign: 'left'
@@ -77,55 +76,54 @@ const useStyles = makeStyles((theme) => ({
     },
     headerInfo: {
         display: 'block'
+    },
+    tagline: {
+        marginLeft: 10,
+        marginRight: 10
     }
 }))
 
-function OrganizationCard(props) {
+function PeopleCard(props) {
 
     const classes = useStyles();
-
-    const getAvgRating = (arr=[]) => {
-        console.log(arr);
-        return arr.map(item => item.rating).reduce((a, x) => a + x, 0) / arr.length;
-    }
 
     return (
         <FloatCard >
             <div className={classes.root}>
                 <div className={classes.header}>
                     <div className={classes.headerLeft}>
-                        <Avatar className={classes.logo} src={require(`../images/${props.info.logo}`).default} variant="square" />
+                        <Avatar className={classes.logo} variant="square" />
                         <div className={classes.headerInfo}>
                             <Typography variant="h5" className={classes.title} >{props.info.name}</Typography>
-                            <Chip icon={<LocationOnRoundedIcon />} label={props.info.locations.join(', ')} className={classes.tag} />
+                            <Typography className={classes.tagline}>{props.info.tagline}</Typography>
                         </div>
                     </div>
                     <div className={classes.headerRight}>
-                        <FavoriteRounded className={classes.favorite} />
                     </div>
 
                 </div>
                 <div className={classes.body} >
 
-                    <Typography noWrap className={classes.description} >{props.info.description}</Typography>
+                    <Typography noWrap className={classes.description} >{props.info.intro}</Typography>
+                    <div className={classes.infoTags}>
+                        { props.info.education.length > 0 ? <Chip icon={<SchoolRoundedIcon />} label={props.info.education[0].university} className={classes.tag} /> : null}
+                        { props.info.work.length > 0 ? <Chip icon={<WorkRoundedIcon />} label={props.info.work[0].place} className={classes.tag} /> : null}
 
+                    </div>
+                </div>
 
-                </div>
-                <div className={classes.infoTags}>
-                    <Typography>5 openings</Typography>
-                </div>
                 <div className={classes.footer} >
 
                     <div className={classes.footerLeft}>
-                        <Rating name="read-only" value={getAvgRating(props.info.reviews)} readOnly />
+
                     </div>
                     <div className={classes.footerRight} >
-                        <Button className={classes.applyButton}>View Organization</Button>
+                        <Button className={classes.applyButton}>View Profile</Button>
                     </div>
                 </div>
             </div>
-        </FloatCard>
+        </FloatCard >
     )
 }
 
-export default OrganizationCard
+export default PeopleCard

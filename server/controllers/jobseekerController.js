@@ -32,6 +32,34 @@ const getAll = (req,res) => {
     });
 }
 
+const getFiltered = (req, res) => {
+    Jobseeker.find(req.body.queryParams, null, req.body.options).exec((err, jobSeekers) => {
+        if (err) {
+            return res.status(400).json({
+                error: err
+            })
+        }
+        return res.status(200).json({
+            success: true,
+            existingJobSeekers: jobSeekers
+        });
+    });
+}
+
+const getCount = (req, res) => {
+    Jobseeker.countDocuments(req.body).exec((err, jobseekerCount) => {
+        if (err) {
+            return res.status(400).json({
+                error: err
+            })
+        }
+        return res.status(200).json({
+            success: true,
+            jobseekerCount: jobseekerCount
+        });
+    });
+}
+
 const getById = (req,res) => {
     Jobseeker.findById(req.params.id).exec((err,jobseeker) => {
         if(err){
@@ -200,5 +228,7 @@ module.exports = {
     addProject,
     addWork,
     updateVolunteer,
-    remove
+    remove,
+    getFiltered,
+    getCount
 }
