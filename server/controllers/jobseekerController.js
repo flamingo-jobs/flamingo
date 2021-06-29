@@ -46,6 +46,7 @@ const getById = (req,res) => {
     });
 }
 
+// ------update ----------------------------------------
 const update = (req,res) => {
 
     Jobseeker.findByIdAndUpdate(
@@ -85,6 +86,63 @@ const updateVolunteer = (req,res) => {
     );
 }
 
+const updateAward = (req,res) => {
+    Jobseeker.updateOne(
+        { _id: req.params.id },
+        {
+            $set:{ [`award.${req.body.index}`]: req.body.award }
+        },
+        (err,jobseeker) =>{
+            if(err){
+                return res.status(400).json({
+                    error:err
+                })
+            }
+            return res.status(200).json({
+                sucess: "Updated successfully"
+            });
+        }
+    );
+}
+
+const updateWork = (req,res) => {
+    Jobseeker.updateOne(
+        { _id: req.params.id },
+        {
+            $set:{ [`work.${req.body.index}`]: req.body.work }
+        },
+        (err,jobseeker) =>{
+            if(err){
+                return res.status(400).json({
+                    error:err
+                })
+            }
+            return res.status(200).json({
+                sucess: "Updated successfully"
+            });
+        }
+    );
+}
+
+const updateProject = (req,res) => {
+    Jobseeker.updateOne(
+        { _id: req.params.id },
+        {
+            $set:{ [`project.${req.body.index}`]: req.body.project }
+        },
+        (err,jobseeker) =>{
+            if(err){
+                return res.status(400).json({
+                    error:err
+                })
+            }
+            return res.status(200).json({
+                sucess: "Updated successfully"
+            });
+        }
+    );
+}
+//--------------- add --------------------------------------------
 const addEducation = (req,res) => {
 
     Jobseeker.findOneAndUpdate(
@@ -200,5 +258,8 @@ module.exports = {
     addProject,
     addWork,
     updateVolunteer,
+    updateAward,
+    updateWork,
+    updateProject,
     remove
 }

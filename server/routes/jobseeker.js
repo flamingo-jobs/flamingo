@@ -18,6 +18,9 @@ router.get('/jobseeker/:id', jobseekerController.getById);
 
 router.put('/jobseeker/update/:id', jobseekerController.update);
 router.put('/jobseeker/updateVolunteer/:id', jobseekerController.updateVolunteer);
+router.put('/jobseeker/updateAward/:id', jobseekerController.updateAward);
+router.put('/jobseeker/updateWork/:id', jobseekerController.updateWork);
+router.put('/jobseeker/updateProject/:id', jobseekerController.updateProject);
 
 // add new fields
 router.put('/jobseeker/addEducation/:id', jobseekerController.addEducation);
