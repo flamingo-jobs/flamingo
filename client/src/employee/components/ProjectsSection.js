@@ -178,10 +178,11 @@ function ProjectsSection() {
   }
   
   const displayProjectFields = () => {
+    let i=0;
     if (project) {
       if (project.length > 0) {
       return project.map(pro => (
-            <ProjectItem name={pro.name} link={pro.link} description={pro.description} from={pro.from} to={pro.to} usedTech={pro.usedTech} />
+            <ProjectItem index={i++} name={pro.name} link={pro.link} description={pro.description} from={pro.from} to={pro.to} usedTech={pro.usedTech} />
             ))
       }else{
         return (<Typography variant="body2" color="textSecondary" component="p">Project details not added.</Typography>)
