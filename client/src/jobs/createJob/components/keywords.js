@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Grid,
   Container,
   Typography,
-  TextField,
   Button,
 } from "@material-ui/core";
 import Chip from "@material-ui/core/Chip";
@@ -23,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "15px",
     textAlign: "left",
     marginBottom: theme.spacing(2),
+    color: theme.palette.stateBlue,
   },
   keywordsContainer: {
     padding: theme.spacing(3),
@@ -78,6 +78,7 @@ const Keywords = ({ keywords, handleKeywordsChange }) => {
           <Grid container className={classes.buttonContainer}>
             <Grid item container xs={12} justify="flex-end">
               <Button
+                type="submit"
                 variant="contained"
                 color="primary"
                 className={classes.submitButton}

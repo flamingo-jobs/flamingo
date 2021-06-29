@@ -7,8 +7,6 @@ import axios from 'axios';
 import NoRowGridOverlay from './components/NoRowGridOverlay';
 import CustomLoadingOverlay from './components/CustomLoadingOverlay';
 import AddIcon from '@material-ui/icons/Add';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
 import RefreshRoundedIcon from '@material-ui/icons/RefreshRounded';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -17,6 +15,9 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
 import SaveRoundedIcon from '@material-ui/icons/SaveRounded';
+import SnackBarAlert from '../components/SnackBarAlert';
+import AddNewCatePopup from './components/AddNewCatePopup';
+
 const useStyles = makeStyles((theme) => ({
     table: {
         '& .MuiDataGrid-columnHeader:focus, .MuiDataGrid-cell:focus, .MuiDataGrid-columnHeader:focus-within, .MuiDataGrid-cell:focus-within': {
@@ -37,31 +38,46 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-function Alert(props) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
+
 
 function Categories() {
 
     const classes = useStyles();
+    
+    const [openAddNewPopup, setOpenAddNewPopup] = React.useState(false);
+
+    const [confirmCreate, setConfirmCreate] = React.useState(false);
+    const [createSuccess, setCreateSuccess] = React.useState(false);
+    const [createFailed, setCreateFailed] = React.useState(false);
+
+    const [confirmUpdate, setConfirmUpdate] = React.useState(false);
+    const [updateSuccess, setUpdateSuccess] = React.useState(false);
+    const [updateFailed, setUpdateFailed] = React.useState(false);
+    
+    const [confirmDelete, setConfirmDelete] = React.useState(false);
     const [deleteSuccess, setDeleteSuccess] = React.useState(false);
     const [deleteFailed, setDeleteFailed] = React.useState(false);
+    
     const [alertShow, setAlertShow] = React.useState(false);
+    const [alertData, setAlertData] = React.useState({severity: "", msg: ""});
+
     const [loading, setLoading] = React.useState(true);
     const [selectionModel, setSelectionModel] = React.useState([]);
+    
     const [pendingChanges, setPendingChanges] = React.useState(false);
-    const columns = [{ field: 'name', headerName: 'Category Name', flex: 1, editable: true }];
-
-    const [rows, setRows] = useState([]);
     const [editRowsModel, setEditRowsModel] = React.useState({});
     const [updatedRows, setUpdatedRows] = React.useState([]);
+    
+    
+
+    const [rows, setRows] = useState([]);
+    const columns = [{ field: 'name', headerName: 'Category Name', flex: 1, editable: true }];
 
     const handleEditRowModelChange = React.useCallback((id, field, props) => {
         setEditRowsModel(id);
     }, []);
 
     useEffect(() => {
-
         if (JSON.stringify(editRowsModel) != "{}") {
             let newRows = updatedRows;
             let i = updatedRows.findIndex(x => x.id == editRowsModel.id);
@@ -71,17 +87,11 @@ function Categories() {
                 newRows.push(editRowsModel);
             }
             setUpdatedRows(newRows);
-        } else if (updatedRows.length == 0 ){
+            setPendingChanges(true);
+        } else if (updatedRows.length == 0) {
             setUpdatedRows([]);
         }
-        showSaveChangesButton();
-        console.log(JSON.stringify(updatedRows));
     }, [editRowsModel])
-
-    const handleAlert = () => {
-        setAlertShow(true);
-
-    };
 
     const handleRefresh = () => {
         setLoading(true);
@@ -91,6 +101,7 @@ function Categories() {
 
     useEffect(() => {
         if (deleteSuccess == true) {
+            setAlertData({severity: "success", msg: "Item deleted successfully!"});
             handleAlert();
         }
         setLoading(true);
@@ -98,12 +109,54 @@ function Categories() {
         setDeleteSuccess(false);
     }, [deleteSuccess]);
 
+    useEffect(() => {
+        if (updateSuccess == true) {
+            setAlertData({severity: "success", msg: "Changes saved successfully!"});
+            handleAlert();
+        }
+        setLoading(true);
+        retrieveCategories();
+        setUpdateSuccess(false);
+    }, [updateSuccess]);
+
+    useEffect(() => {
+        if (createSuccess == true) {
+            setAlertData({severity: "success", msg: "Item added successfully!"});
+            handleAlert();
+        }
+        setLoading(true);
+        retrieveCategories();
+        setCreateSuccess(false);
+    }, [createSuccess]);
+
+    useEffect(() => {
+        if (createFailed == true) {
+            setAlertData({severity: "error", msg: "Failed to add item!"});
+            handleAlert();
+        }
+        setLoading(true);
+        retrieveCategories();
+        setCreateFailed(false);
+    }, [createFailed]);
+
+
+    useEffect(() => {
+        if (updateFailed == true) {
+            setAlertData({severity: "error", msg: "Failed to save changes!"});
+            handleAlert();
+        }
+        setUpdateFailed(false);
+    }, [updateFailed]);
 
     useEffect(() => {
         if (selectionModel.length > 0) {
             showDeleteButton();
         }
     }, [selectionModel]);
+
+    useEffect(() => {
+        showSaveChangesButton();
+    }, [pendingChanges]);
 
     const retrieveCategories = () => {
         axios.get(`${BACKEND_URL}/categories`).then(res => {
@@ -119,22 +172,24 @@ function Categories() {
         })
     }
 
+    // alert
+
+    const handleAlert = () => {
+        setAlertShow(true);
+    };
+
     const handleAlertClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
         }
-
         setAlertShow(false);
     };
 
-
-
-    const [confirmDelete, setConfirmDelete] = React.useState(false);
+    // deletion
 
     const handleClickOpen = () => {
         setConfirmDelete(true);
     };
-
 
     const handleClose = () => {
         setConfirmDelete(false);
@@ -166,8 +221,10 @@ function Categories() {
         }
     }
 
+    // updates
+
     const showSaveChangesButton = () => {
-        if (updatedRows.length > 0) {
+        if (pendingChanges) {
             return <Button className={classes.addBtn} onClick={saveChanges}>
                 <SaveRoundedIcon /> Save Changes
             </Button>
@@ -181,18 +238,39 @@ function Categories() {
             }
             axios.put(`${BACKEND_URL}/categories/update/${item.id}`, data).then(res => {
                 if (res.data.success) {
-                    console.log("updated");
-                    setDeleteSuccess(true);
+                    setUpdateSuccess(true);
                 } else {
-                    console.log(res.data);
-                    setDeleteFailed(true);
+                    setUpdateFailed(true);
                 }
             })
         })
-
+        setPendingChanges(false);
         setEditRowsModel({});
         setUpdatedRows([]);
+    }
 
+    const displayAlert = () => {
+        return <SnackBarAlert open={alertShow} onClose={handleAlertClose} severity={alertData.severity} msg={alertData.msg} />
+    }
+
+    const handleAddNewPopup = () => {
+        setOpenAddNewPopup(true);
+    }
+
+    const handleCreateError = () => {
+        setCreateFailed(true);
+    }
+
+    const handleCreateSuccess = () => {
+        setCreateSuccess(true);
+    }
+
+    const closeAddNewPopup = () => {
+        setOpenAddNewPopup(false);
+    }
+
+    const displayAddNewPopup = () => {
+        return <AddNewCatePopup open={openAddNewPopup} onClose={closeAddNewPopup} onSuccess={handleCreateSuccess} onError={handleCreateError}/>
     }
 
     return (
@@ -220,10 +298,12 @@ function Categories() {
                     </Button>
                 </DialogActions>
             </Dialog>
+
             <Grid item xs={12} style={{ minWidth: '100%' }}>
+                {displayAddNewPopup()}
                 <FloatCard >
                     <div style={{ height: 570, width: '100%', textAlign: 'left' }}>
-                        <Button className={classes.addBtn}>
+                        <Button className={classes.addBtn} onClick={handleAddNewPopup}>
                             <AddIcon /> Add New Category
                         </Button>
                         <Button className={classes.addBtn} onClick={handleRefresh}>
@@ -245,14 +325,7 @@ function Categories() {
                     </div>
                 </FloatCard>
             </Grid>
-            <Snackbar open={alertShow} autoHideDuration={6000} onClose={handleAlertClose} anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-            }}>
-                <Alert onClose={handleAlertClose} severity="success">
-                    Item deleted successfull!
-                </Alert>
-            </Snackbar>
+            {displayAlert()}
         </Grid >
     )
 }

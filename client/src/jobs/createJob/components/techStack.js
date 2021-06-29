@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { makeStyles, createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import React from "react";
+import {
+  makeStyles,
+} from "@material-ui/core/styles";
 import {
   Grid,
   Container,
   Typography,
-  TextField,
-  Button,
 } from "@material-ui/core";
 import Chip from "@material-ui/core/Chip";
 import Autocomplete from "@material-ui/lab/Autocomplete";
@@ -23,15 +23,16 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "15px",
     textAlign: "left",
     marginBottom: theme.spacing(2),
+    color: theme.palette.stateBlue,
   },
   techStackContainer: {
     padding: theme.spacing(3),
   },
-  chip:{
-      color: theme.palette.white,
-      background: theme.palette.stateBlue,
-      marginLeft: "2px",
-      marginRight: "2px",
+  chip: {
+    color: theme.palette.white,
+    background: theme.palette.stateBlue,
+    marginLeft: "2px",
+    marginRight: "2px",
   },
 }));
 
@@ -45,7 +46,7 @@ const TechStack = ({ techStack, handleTechStack }) => {
           <Typography className={classes.techStackTitle}>
             Technology Stack
           </Typography>
-          
+
           <Autocomplete
             multiple
             id="techStack"
@@ -63,7 +64,6 @@ const TechStack = ({ techStack, handleTechStack }) => {
                 />
               ))
             }
-
             renderInput={(params) => (
               <StateBlueTextField
                 {...params}

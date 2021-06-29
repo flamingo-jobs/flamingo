@@ -1,20 +1,14 @@
 const Jobs = require('../models/jobs');
 
 
-const create = (req, res) => {
-    let newJob = new Jobs(req.body);
-
-    newJob.save((err) => {
-        if (err) {
-            return res.status(400).json({
-                error: err
-            });
-        }
-        return res.status(200).json({
-            success: "Job saved successfully"
-        });
-
-    });
+const create = async (req, res) => {
+    const newJob = new Jobs(req.body);
+    try{
+        const savedPost = await newJob.save();
+        res.status(200).json({success: true});
+    }catch(err){
+        res.status(400).json({error: err});
+    }
 
 }
 

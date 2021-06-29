@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+require('dotenv').config();
 
 const app = express();
 
@@ -9,9 +10,11 @@ const app = express();
 const userRoutes = require('./routes/users');
 const jobRoutes = require('./routes/jobs');
 const categoryRoutes = require('./routes/categories');
+const technologyRoutes = require('./routes/technologies');
 const typeRoutes = require('./routes/types');
 const employerRoutes = require('./routes/employers');
 const jobSeekerRoutes = require('./routes/jobseeker');
+const authRoutes = require('./routes/auth');
 
 // app middleware
 app.use(bodyParser.json());
@@ -21,9 +24,11 @@ app.use(cors());
 app.use(userRoutes);
 app.use(jobRoutes);
 app.use(categoryRoutes);
+app.use(technologyRoutes);
 app.use(typeRoutes);
 app.use(employerRoutes);
 app.use(jobSeekerRoutes);
+app.use('/api', authRoutes);
 
 const PORT = 8000;
 
