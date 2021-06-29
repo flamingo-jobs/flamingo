@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, forwardRef } from "react";
 import { useForm } from "react-hooks-helper";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import cardImage from "../../signIn/images/flamingo.gif";
@@ -20,13 +20,24 @@ import {
   Typography,
   CardMedia,
   Snackbar,
+  Dialog,
+  List,
+  ListItem,
+  ListItemText,
+  Divider,
+  Slide,
 } from "@material-ui/core";
 import { Redirect } from "react-router-dom";
+
 import MuiAlert from "@material-ui/lab/Alert";
+import MuiDialogTitle from "@material-ui/core/DialogTitle";
+import MuiDialogContent from "@material-ui/core/DialogContent";
+import MuiDialogActions from "@material-ui/core/DialogActions";
 
 import FacebookIcon from "@material-ui/icons/Facebook";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import GitHubIcon from "@material-ui/icons/GitHub";
+import CloseIcon from "@material-ui/icons/Close";
 import ArrowBackRoundedIcon from "@material-ui/icons/ArrowBackRounded";
 
 import axios from "axios";
@@ -90,6 +101,12 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: "none",
     },
   },
+  closeButton: {
+    position: "absolute",
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
   media: {
     height: "80vh",
   },
@@ -111,6 +128,9 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     marginBottom: 20,
+  },
+  link: {
+    cursor: "pointer",
   },
   animation: {
     [theme.breakpoints.down("xs")]: {
@@ -177,6 +197,37 @@ export default function SignInSide() {
   function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
+
+  const [choice, setChoice] = useState(false);
+  const handleClickChoice = () => {
+    setChoice(true);
+  };
+  const handleCloseChoice = () => {
+    setChoice(false);
+  };
+  const Transition = forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+  });
+  const DialogTitle = withStyles(classes)((props) => {
+    const { children, classes, onClose, ...other } = props;
+    return (
+      <MuiDialogTitle disableTypography className={classes.root} {...other}>
+        <Typography variant="h6">{children}</Typography>
+      </MuiDialogTitle>
+    );
+  });
+  const DialogContent = withStyles((theme) => ({
+    root: {
+      padding: theme.spacing(2),
+    },
+  }))(MuiDialogContent);
+
+  const DialogActions = withStyles((theme) => ({
+    root: {
+      margin: 0,
+      padding: theme.spacing(1),
+    },
+  }))(MuiDialogActions);
 
   if (sessionStorage.getItem("userToken")) {
     return <Redirect to="/" />;
@@ -284,25 +335,22 @@ export default function SignInSide() {
                   >
                     Sign In
                   </Button>
-
-                  {/* Forgot Password or Register */}
-                  <Grid container>
-                    <Grid item xs style={{ textAlign: "left" }}>
-                      <Link href="#" variant="body2">
-                        Forgot password?
-                      </Link>
-                    </Grid>
-                    <Grid item style={{ textAlign: "right" }}>
-                      <Link href="#" variant="body2">
-                        {"Don't have an account? Sign Up"}
-                      </Link>
-                    </Grid>
-                  </Grid>
-
-                  <Box mt={5}>
-                    <Copyright />
-                  </Box>
                 </form>
+                {/* Forgot Password or Register */}
+                <Grid container>
+                  <Grid item xs style={{ textAlign: "left" }}>
+                    <Link className={classes.link}>Forgot password?</Link>
+                  </Grid>
+                  <Grid item style={{ textAlign: "right" }}>
+                    <Link className={classes.link} onClick={handleClickChoice}>
+                      Don't have an account? Sign Up
+                    </Link>
+                  </Grid>
+                </Grid>
+
+                <Box mt={5}>
+                  <Copyright />
+                </Box>
               </div>
             </FloatCard>
           </Grid>
@@ -312,6 +360,48 @@ export default function SignInSide() {
             Login Failed! Incorrect email address or password!
           </Alert>
         </Snackbar>
+        <Dialog
+          onClose={handleCloseChoice}
+          aria-labelledby="customized-dialog-title"
+          open={choice}
+        >
+          <DialogTitle id="customized-dialog-title" onClose={handleCloseChoice}>
+            Sign up as
+          </DialogTitle>
+          <DialogContent dividers>
+            <Grid container direction="row" className={classes.root}>
+              <Grid item xs={12} md={6}>
+                <ListItem
+                  button
+                  onClick={() => {
+                    window.location = "/getHired";
+                  }}
+                >
+                  <Box mt={5} mb={5} ml={10} mr={10}>
+                    <Typography>JobSeeker</Typography>
+                  </Box>
+                </ListItem>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <ListItem
+                  button
+                  onClick={() => {
+                    window.location = "/startHiring";
+                  }}
+                >
+                  <Box mt={5} mb={5} ml={10} mr={10}>
+                    <Typography>Employer</Typography>
+                  </Box>
+                </ListItem>
+              </Grid>
+            </Grid>
+          </DialogContent>
+          <DialogActions>
+            <Button autoFocus onClick={handleCloseChoice} color="primary">
+              Cancel
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Container>
     </div>
   );
