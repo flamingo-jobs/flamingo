@@ -17,6 +17,7 @@ import CreateJobForm from "./jobs/createJob/createJobForm";
 import Organizations from './employer/Organizations';
 import People from './people/People';
 import Technologies from './admin/Technologies';
+import { Switch } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -93,7 +94,6 @@ function Base() {
               <Grid container xs={12} spacing={0} direction="column" alignItems="center" className={classes.screen}>
 
                 {/* start your routes here */}
-
                 <Route path="/" exact>
                   <Home />
                 </Route>
@@ -112,15 +112,17 @@ function Base() {
                 <Route path="/people" exact>
                   <People />
                 </Route>
-                <Route path="/jobDescription" exact>
-                  <JobDescription />
-                </Route>
+                <Switch>
+                  <Route path="/jobDescription/:id">
+                    <JobDescription />
+                  </Route>
+                </Switch>
                 <Route path="/admin/categories" exact>
                   <Categories />
-                  </Route>
-                  <Route path="/admin/technologies" exact>
+                </Route>
+                <Route path="/admin/technologies" exact>
                   <Technologies />
-                  </Route>
+                </Route>
                 <Route path="/createJob" exact>
                   <CreateJobForm />
                 </Route>

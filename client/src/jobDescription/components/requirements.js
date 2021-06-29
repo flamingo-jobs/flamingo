@@ -8,7 +8,7 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
-import StarBorderOutlinedIcon from "@material-ui/icons/StarBorderOutlined";
+import FiberManualRecordRoundedIcon from '@material-ui/icons/FiberManualRecordRounded';
 
 const useStyles = makeStyles((theme) => ({
   border: {
@@ -23,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
 
   reqTitle: {
     textAlign: "left",
-    paddingLeft: theme.spacing(2),
     color: theme.palette.black,
 
   },
@@ -48,10 +47,10 @@ const Requirements = (props) => {
         Skills and Requirements
       </Typography>
       <List dense={true}>
-        {reqs.map((dutie) => (
-          <ListItem key={reqs.indexOf(dutie)}>
-            <ListItemIcon>
-              <StarBorderOutlinedIcon />
+        {reqs.map((dutie, index) => (
+          <ListItem key={index}>
+            <ListItemIcon style={{minWidth: 24}}>
+              <FiberManualRecordRoundedIcon fontSize="inherit" />
             </ListItemIcon>
             <ListItemText primary={dutie} />
           </ListItem>

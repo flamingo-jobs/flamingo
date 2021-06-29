@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.black
     },
     container: {
+        marginTop: 16,
         maxWidth: 'unset'
     },
     allJobs: {
@@ -52,35 +53,39 @@ const useStyles = makeStyles((theme) => ({
         }
     },
 }))
-function FeaturedJobs(props) {
+function MoreFromJobs(props) {
     const classes = useStyles();
 
-    const [featuredJobs, setFeaturedJobs] = useState([]);
+    const [moreFromJobs, setMoreFromJobs] = useState([]);
 
 
 
-    const retrieveFeaturedJobs = () => {
-        axios.get(`${BACKEND_URL}/jobs/featuredJobs`).then(res => {
+    const retrieveMoreFromJobs = () => {
+        axios.get(`${BACKEND_URL}/jobs/filterByOrganization/${props.job.organization.id}`).then(res => {
             if (res.data.success) {
-                if (props.skip) {
-                    setFeaturedJobs(res.data.featuredJobs.filter((job) => job._id !== props.skip));
+                if (props.job) {
+                    setMoreFromJobs(res.data.moreFromJobs.filter((job) => job._id !== props.job._id));
                 } else {
-                    setFeaturedJobs(res.data.featuredJobs);
+                    setMoreFromJobs(res.data.moreFromJobs);
                 }
             } else {
-                setFeaturedJobs(null)
+                setMoreFromJobs(null)
             }
         })
     }
 
     useEffect(() => {
-        retrieveFeaturedJobs();
-    }, [props.skip])
+        retrieveMoreFromJobs();
+    }, [props])
 
-    const displayFeaturedJobs = () => {
-        if (featuredJobs) {
+    useEffect(() => {
+        displayMoreFromJobs();
+    }, [moreFromJobs])
 
-            return featuredJobs.map(featuredJob => (
+    const displayMoreFromJobs = () => {
+        if (moreFromJobs) {
+
+            return moreFromJobs.map(featuredJob => (
                 <Grid item sm={12} key={featuredJob._id}>
                     <JobCard info={featuredJob} />
                 </Grid>
@@ -88,7 +93,7 @@ function FeaturedJobs(props) {
         } else {
             return (
                 <Grid item sm={12}>
-                    <Typography>No featured Jobs</Typography>
+                    <Typography>No more jobs from {props.job.organization.name}</Typography>
                 </Grid>)
         }
     }
@@ -103,30 +108,18 @@ function FeaturedJobs(props) {
             <Grid container direction="column" spacing={2} className={classes.container}>
                 <Grid item sm={12} >
                     <FloatCard>
-                        <Typography variant="h5" className={classes.title}>Featured Jobs</Typography>
+                        <Typography variant="h5" className={classes.title}>More from {props.job.organization.name}</Typography>
                     </FloatCard>
                 </Grid>
-                {displayFeaturedJobs()}
+                {displayMoreFromJobs()}
                 <Grid item sm={12}>
                     <FloatCard>
                         <Button
                             className={classes.link}
                             endIcon={<ArrowForwardRoundedIcon />}
                         >
-                            See All Featured Jobs
+                            See all jobs from {props.job.organization.name}
                         </Button>
-                    </FloatCard>
-                </Grid>
-                <Grid item sm={12}>
-                    <FloatCard backColor={theme.palette.tuftsBlue}>
-                        <Grid item container direction="row" sm={12} className={classes.allJobs}>
-                            <Grid item xs={12} lg={6}>
-                                <Typography variant="h6" className={classes.text}>Want to dive into?</Typography>
-                            </Grid>
-                            <Grid item xs={12} lg={6}>
-                                <Button className={classes.button} endIcon={<ArrowForwardRoundedIcon />}> Browse All Jobs </Button>
-                            </Grid>
-                        </Grid>
                     </FloatCard>
                 </Grid>
             </Grid>
@@ -134,4 +127,4 @@ function FeaturedJobs(props) {
     )
 }
 
-export default FeaturedJobs
+export default MoreFromJobs

@@ -3,14 +3,16 @@ import { Grid, Container, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import BACKEND_URL from "../Config";
-
+import { useParams } from "react-router";
 // Custom components
 import JobSummary from "./components/jobSummary";
 import Responsibilities from "./components/responsibilities";
 import Requirements from "./components/requirements";
 import ApplyForm from "./components/applyForm";
 import FloatCard from "../components/FloatCard";
-import FeaturedJobs from "./components/featuredJobs";
+import MoreFromJobs from "./components/MoreFromJobs";
+import RelatedJobs from "./components/RelatedJobs";
+import CompanySummary from "./components/companySummary";
 
 const useStyles = makeStyles((theme) => ({
   border: {
@@ -31,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     // paddingRight: theme.spacing(1.5),
   },
   container: {
-    marginBottom: theme.spacing(3),
+    marginBottom: theme.spacing(1),
   },
 }));
 
@@ -41,15 +43,22 @@ function JobDescription() {
   const classes = useStyles();
 
   const [job, setJob] = useState("empty");
-  const [featuredJobs, setFeaturedJobs] = useState(null);
-
+  const [moreFromJobs, setMoreFromJobs] = useState(null);
   const isSignedIn = false;
-  const jobId = "60c60c2c22a5b249ec118d95";
+
+  let { id } = useParams();
+
+  const [jobId, setJobId] = useState(id);
+
+  useEffect(() => {
+    setJobId(id);
+  }, [id]);
 
   useEffect(() => {
     retrieveJob();
-    retrieveFeaturedJobs();
-  }, []);
+    displayMoreFromJobs();
+    displayRelatedJobs();
+  }, [jobId]);
 
   const retrieveJob = () => {
     axios.get(`${BACKEND_URL}/jobs/${jobId}`).then((res) => {
@@ -57,22 +66,6 @@ function JobDescription() {
         setJob(res.data.job);
       } else {
         setJob(null);
-      }
-    });
-  };
-
-  const retrieveFeaturedJobs = () => {
-    // try {
-    //   const response = await axios.get(`${BACKEND_URL}/jobs/featuredJobs`);
-    //   console.log("Response", response.data);
-    // } catch (error) {
-    //   console.error("Error", error);
-    // }
-    axios.get(`${BACKEND_URL}/jobs/featuredJobs`).then((res) => {
-      if (res.data.success) {
-        setFeaturedJobs(res.data.featuredJobs);
-      } else {
-        setFeaturedJobs(null);
       }
     });
   };
@@ -87,9 +80,7 @@ function JobDescription() {
     } else {
       return (
         <Grid item sm={12} className={classes.container}>
-          <FloatCard>
-            <JobSummary job={job}></JobSummary>
-          </FloatCard>
+          <JobSummary job={job}></JobSummary>
         </Grid>
       );
     }
@@ -105,11 +96,9 @@ function JobDescription() {
     } else {
       return (
         <Grid item xs={12} lg={12} className={classes.container}>
-          <FloatCard>
-            <Responsibilities
-              responsibilities={job.tasksAndResponsibilities}
-            ></Responsibilities>
-          </FloatCard>
+          <Responsibilities
+            responsibilities={job.tasksAndResponsibilities}
+          ></Responsibilities>
         </Grid>
       );
     }
@@ -131,9 +120,7 @@ function JobDescription() {
           lg={12}
           className={isSignedIn === false ? "" : classes.container}
         >
-          <FloatCard>
-            <Requirements requirements={job.qualifications}></Requirements>
-          </FloatCard>
+          <Requirements requirements={job.qualifications}></Requirements>
         </Grid>
       );
     }
@@ -151,32 +138,21 @@ function JobDescription() {
     }
   };
 
-  const displayFeaturedJobs = () => {
-    if (featuredJobs == null) {
-      return (
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <FloatCard>
-              <Typography variant="h6" className={classes.title}>
-                Featured Jobs
-              </Typography>
-            </FloatCard>
-          </Grid>
-          <Grid item xs={12}>
-            <FloatCard>
-              <Typography variant="body1" className={classes.emptyContentText}>
-                There are no featured Jobs
-              </Typography>
-            </FloatCard>
-          </Grid>
-        </Grid>
-      );
-    } else {
-      const filteredFeaturedJobs = featuredJobs.filter(
-        (job) => job._id !== jobId
-      );
+  const displayCompanySummary = () => {
+    return (
+      <CompanySummary />
+    );
+  }
 
-      return <FeaturedJobs featuredJobs={filteredFeaturedJobs}></FeaturedJobs>;
+  const displayMoreFromJobs = () => {
+    if (job != "empty") {
+      return <MoreFromJobs job={job} />
+    }
+  };
+
+  const displayRelatedJobs = () => {
+    if (job != "empty") {
+      return <RelatedJobs job={job} />
     }
   };
 
@@ -189,23 +165,28 @@ function JobDescription() {
         xs={12}
         spacing={3}
       >
-        <Grid item xs={12} lg={8} spacing={0}>
-          <Grid item container>
-            <Grid item xs={12}>
-              {displaySummary()}
-            </Grid>
-            <Grid item xs={12}>
-              {displayResponsibilities()}
-            </Grid>
-            <Grid item xs={12}>
-              {displayRequirements()}
-            </Grid>
-            {displayApplyForm()}
+        <Grid item xs={12} lg={7} spacing={0}>
+          <Grid item container xs={12}>
+            <FloatCard>
+              <Grid item xs={12}>
+                {displaySummary()}
+              </Grid>
+              <Grid item xs={12}>
+                {displayResponsibilities()}
+              </Grid>
+              <Grid item xs={12}>
+                {displayRequirements()}
+              </Grid>
+            </FloatCard>
+          </Grid>
+          <Grid item xs={12}>
+          {displayRelatedJobs()}
           </Grid>
         </Grid>
 
-        <Grid item md={12} lg={4}>
-          {displayFeaturedJobs()}
+        <Grid item md={12} lg={5}>
+          {displayCompanySummary()}
+          {displayMoreFromJobs()}
         </Grid>
       </Grid>
     </>

@@ -8,25 +8,24 @@ import { Route, BrowserRouter } from "react-router-dom";
 import Base from "./Base";
 import Users from "./Users";
 import BACKEND_URL from "./Config.js";
-
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
         <ThemeProvider theme={theme}>
-          <Route path="(/|/jobs|/employer|/employee|/jobDescription|/createJob|/admin/categories|/organizations|/people|/admin/technologies)" exact>
+          <Route path="(/|/jobs|/employer|/employee|/jobDescription|/createJob|/admin|/organizations|/people)">
             <Base />
           </Route>
-          <Route path="/signIn" exact>
+          <Route path="/signIn">
             <SignInSide />
           </Route>
-          <Route path="/getHired" exact>
+          <Route path="/getHired">
             <GetHired />
           </Route>
-          <Route path="/startHiring" exact>
+          <Route path="/startHiring">
             <StartHiring />
           </Route>
-          <Route path="/users" exact>
+          <Route path="/users">
             <Users />
           </Route>
         </ThemeProvider>

@@ -25,12 +25,17 @@ const theme = createMuiTheme({
     tagYellow: '#fcf9d7',
     tagIcon: '#969478',
     pinkyRed: '#E366B3',
+    lightyPink: "#FFE9F7",
+    lightyPinkHover: "#FFD6EF",
     white: '#fff',
     black: '#424547',
     ashBlue: '#54788a',
     flamingo: '#e7bab5',
     gold: '#FFD700'
-  }
+  },
+  typography: {
+    fontSize: 14,
+  },
 });
 
 export default theme;
