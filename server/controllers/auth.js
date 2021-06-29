@@ -142,13 +142,6 @@ exports.signin = (req, res) => {
                   return res.status(200).json({
                     success: true,
                     token: access_token,
-                    message: {
-                      _id: user._id,
-                      username: user.username,
-                      email: user.email,
-                      role: user.role,
-                      dec: decoded,
-                    },
                   });
                 }
               }

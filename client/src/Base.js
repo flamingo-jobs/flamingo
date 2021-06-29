@@ -16,7 +16,6 @@ import Categories from "./admin/Categories";
 import CreateJobForm from "./jobs/createJob/createJobForm";
 import Organizations from "./employer/Organizations";
 
-import { Redirect } from "react-router-dom";
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
@@ -78,107 +77,351 @@ function Base() {
   //Redirect user to signin page if not logged in
   const token = sessionStorage.getItem("userToken");
   if (!token) {
-    return <Redirect to="/signin" />;
-  }
-
-  const header = jwt.decode(token, { complete: true });
-  const user = {
-    id: header.payload.userId,
-    name: header.payload.username,
-    email: header.payload.email,
-    role: header.payload.userRole,
-  };
-
-  return (
-    <div className={classes.root}>
-      <div className="overlay">
-        <Container maxWidth={false} className={classes.container}>
-          <Grid
-            container
-            direction="row"
-            spacing={3}
-            className={classes.mainGrid}
-            justify="space-between"
-            alignItems="flex-start"
-          >
+    return (
+      <div className={classes.root}>
+        <div className="overlay">
+          <Container maxWidth={false} className={classes.container}>
             <Grid
-              item
-              xs={false}
-              sm={4}
-              md={3}
-              lg={2}
-              className={classes.sideDrawer}
-            >
-              <SideDrawer />
-            </Grid>
-            <Grid
-              item
-              xs={false}
-              sm={4}
-              md={3}
-              lg={2}
-              className={classes.sideDrawerGrid}
-            ></Grid>
-            <Grid
-              item
               container
-              xs={12}
-              sm={8}
-              md={9}
-              lg={10}
+              direction="row"
               spacing={3}
-              className={classes.topBarGrid}
-              direction="column"
+              className={classes.mainGrid}
               justify="space-between"
+              alignItems="flex-start"
             >
-              <Grid item sm={12}>
-                <Topbar {...user}/>
+              <Grid
+                item
+                xs={false}
+                sm={4}
+                md={3}
+                lg={2}
+                className={classes.sideDrawer}
+              >
+                <SideDrawer />
               </Grid>
               <Grid
+                item
+                xs={false}
+                sm={4}
+                md={3}
+                lg={2}
+                className={classes.sideDrawerGrid}
+              ></Grid>
+              <Grid
+                item
                 container
                 xs={12}
-                spacing={0}
+                sm={8}
+                md={9}
+                lg={10}
+                spacing={3}
+                className={classes.topBarGrid}
                 direction="column"
-                alignItems="center"
-                className={classes.screen}
+                justify="space-between"
               >
-                {/* start your routes here */}
-
-                <Route path="/" exact>
-                  <Home />
-                </Route>
-                <Route path="/jobs" exact>
-                  <Jobs />
-                </Route>
-                <Route path="/employee" exact>
-                  <Profile />
-                </Route>
-                <Route path="/employer" exact>
-                  <Employer />
-                </Route>
-                <Route path="/organizations" exact>
-                  <Organizations />
-                </Route>
-                <Route path="/jobDescription" exact>
-                  <JobDescription />
-                </Route>
-                <Route path="/admin/categories" exact>
-                  <Categories />
-                </Route>
-                <Route path="/createJob" exact>
-                  <CreateJobForm />
-                </Route>
-                {/* ends your routes here */}
-              </Grid>
-              <Grid item xs={12}>
-                <Footer />
+                <Grid item sm={12}>
+                  <Topbar />
+                </Grid>
+                <Grid
+                  container
+                  xs={12}
+                  spacing={0}
+                  direction="column"
+                  alignItems="center"
+                  className={classes.screen}
+                >
+                  {/* start your routes here */}
+                  <Route path="/" exact>
+                    <Home />
+                  </Route>
+                  <Route path="/jobs" exact>
+                    <Jobs />
+                  </Route>
+                  <Route path="/organizations" exact>
+                    <Organizations />
+                  </Route>
+                  <Route path="/jobDescription" exact>
+                    <JobDescription />
+                  </Route>
+                  {/* ends your routes here */}
+                </Grid>
+                <Grid item xs={12}>
+                  <Footer />
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-        </Container>
+          </Container>
+        </div>
       </div>
-    </div>
-  );
+    );
+  } else {
+    const header = jwt.decode(token, { complete: true });
+    const role = header.payload.userRole;
+    switch (role) {
+      case "employer":
+        return (
+          <div className={classes.root}>
+            <div className="overlay">
+              <Container maxWidth={false} className={classes.container}>
+                <Grid
+                  container
+                  direction="row"
+                  spacing={3}
+                  className={classes.mainGrid}
+                  justify="space-between"
+                  alignItems="flex-start"
+                >
+                  <Grid
+                    item
+                    xs={false}
+                    sm={4}
+                    md={3}
+                    lg={2}
+                    className={classes.sideDrawer}
+                  >
+                    <SideDrawer />
+                  </Grid>
+                  <Grid
+                    item
+                    xs={false}
+                    sm={4}
+                    md={3}
+                    lg={2}
+                    className={classes.sideDrawerGrid}
+                  ></Grid>
+                  <Grid
+                    item
+                    container
+                    xs={12}
+                    sm={8}
+                    md={9}
+                    lg={10}
+                    spacing={3}
+                    className={classes.topBarGrid}
+                    direction="column"
+                    justify="space-between"
+                  >
+                    <Grid item sm={12}>
+                      <Topbar />
+                    </Grid>
+                    <Grid
+                      container
+                      xs={12}
+                      spacing={0}
+                      direction="column"
+                      alignItems="center"
+                      className={classes.screen}
+                    >
+                      {/* start your routes here */}
+
+                      <Route path="/" exact>
+                        <Home />
+                      </Route>
+                      <Route path="/employer" exact>
+                        <Employer />
+                      </Route>
+                      <Route path="/organizations" exact>
+                        <Organizations />
+                      </Route>
+                      <Route path="/jobDescription" exact>
+                        <JobDescription />
+                      </Route>
+                      <Route path="/createJob" exact>
+                        <CreateJobForm />
+                      </Route>
+                      {/* ends your routes here */}
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Footer />
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Container>
+            </div>
+          </div>
+        );
+      case "jobseeker":
+        return (
+          <div className={classes.root}>
+            <div className="overlay">
+              <Container maxWidth={false} className={classes.container}>
+                <Grid
+                  container
+                  direction="row"
+                  spacing={3}
+                  className={classes.mainGrid}
+                  justify="space-between"
+                  alignItems="flex-start"
+                >
+                  <Grid
+                    item
+                    xs={false}
+                    sm={4}
+                    md={3}
+                    lg={2}
+                    className={classes.sideDrawer}
+                  >
+                    <SideDrawer />
+                  </Grid>
+                  <Grid
+                    item
+                    xs={false}
+                    sm={4}
+                    md={3}
+                    lg={2}
+                    className={classes.sideDrawerGrid}
+                  ></Grid>
+                  <Grid
+                    item
+                    container
+                    xs={12}
+                    sm={8}
+                    md={9}
+                    lg={10}
+                    spacing={3}
+                    className={classes.topBarGrid}
+                    direction="column"
+                    justify="space-between"
+                  >
+                    <Grid item sm={12}>
+                      <Topbar />
+                    </Grid>
+                    <Grid
+                      container
+                      xs={12}
+                      spacing={0}
+                      direction="column"
+                      alignItems="center"
+                      className={classes.screen}
+                    >
+                      {/* start your routes here */}
+
+                      <Route path="/" exact>
+                        <Home />
+                      </Route>
+                      <Route path="/jobs" exact>
+                        <Jobs />
+                      </Route>
+                      <Route path="/jobseeker" exact>
+                        <Profile />
+                      </Route>
+                      <Route path="/organizations" exact>
+                        <Organizations />
+                      </Route>
+                      <Route path="/jobDescription" exact>
+                        <JobDescription />
+                      </Route>
+                      {/* ends your routes here */}
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Footer />
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Container>
+            </div>
+          </div>
+        );
+      case "admin":
+        return (
+          <div className={classes.root}>
+            <div className="overlay">
+              <Container maxWidth={false} className={classes.container}>
+                <Grid
+                  container
+                  direction="row"
+                  spacing={3}
+                  className={classes.mainGrid}
+                  justify="space-between"
+                  alignItems="flex-start"
+                >
+                  <Grid
+                    item
+                    xs={false}
+                    sm={4}
+                    md={3}
+                    lg={2}
+                    className={classes.sideDrawer}
+                  >
+                    <SideDrawer />
+                  </Grid>
+                  <Grid
+                    item
+                    xs={false}
+                    sm={4}
+                    md={3}
+                    lg={2}
+                    className={classes.sideDrawerGrid}
+                  ></Grid>
+                  <Grid
+                    item
+                    container
+                    xs={12}
+                    sm={8}
+                    md={9}
+                    lg={10}
+                    spacing={3}
+                    className={classes.topBarGrid}
+                    direction="column"
+                    justify="space-between"
+                  >
+                    <Grid item sm={12}>
+                      <Topbar />
+                    </Grid>
+                    <Grid
+                      container
+                      xs={12}
+                      spacing={0}
+                      direction="column"
+                      alignItems="center"
+                      className={classes.screen}
+                    >
+                      {/* start your routes here */}
+
+                      <Route path="/" exact>
+                        <Home />
+                      </Route>
+                      <Route path="/jobs" exact>
+                        <Jobs />
+                      </Route>
+                      <Route path="/jobseeker" exact>
+                        <Profile />
+                      </Route>
+                      <Route path="/employer" exact>
+                        <Employer />
+                      </Route>
+                      <Route path="/organizations" exact>
+                        <Organizations />
+                      </Route>
+                      <Route path="/jobDescription" exact>
+                        <JobDescription />
+                      </Route>
+                      <Route path="/admin/categories" exact>
+                        <Categories />
+                      </Route>
+                      <Route path="/createJob" exact>
+                        <CreateJobForm />
+                      </Route>
+                      {/* ends your routes here */}
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Footer />
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Container>
+            </div>
+          </div>
+        );
+      default:
+        return (
+          <div>
+            <h1>404 error!</h1>
+            <p>Role not found</p>
+          </div>
+        );
+    }
+  }
 }
 
 export default Base;

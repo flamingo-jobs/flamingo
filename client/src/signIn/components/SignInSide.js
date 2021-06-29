@@ -2,6 +2,7 @@ import { React, useState } from "react";
 import { useForm } from "react-hooks-helper";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import cardImage from "../../signIn/images/flamingo.gif";
+import logo from "../images/logo.jpg";
 import FloatCard from "../../components/FloatCard";
 import {
   Chip,
@@ -30,6 +31,8 @@ import ArrowBackRoundedIcon from "@material-ui/icons/ArrowBackRounded";
 
 import axios from "axios";
 import BACKEND_URL from "../../Config";
+
+const jwt = require("jsonwebtoken");
 
 function Copyright() {
   return (
@@ -90,6 +93,9 @@ const useStyles = makeStyles((theme) => ({
   media: {
     height: "80vh",
   },
+  logo: {
+    height: 40,
+  },
   textField: {
     margin: 10,
     width: 300,
@@ -140,11 +146,12 @@ export default function SignInSide() {
         if (res.data.success) {
           if (remember) {
             localStorage.setItem("userToken", res.data.token);
+            sessionStorage.setItem("userToken", res.data.token);
           } else {
             sessionStorage.setItem("userToken", res.data.token);
-            sessionStorage.setItem("loggedIn", "true");
           }
-          window.location = "/";
+          const header = jwt.decode(res.data.token, { complete: true });
+          window.location = "/" + header.payload.userRole;
         } else {
           handleAlert();
         }
@@ -196,12 +203,7 @@ export default function SignInSide() {
               <div className={classes.paper}>
                 {/* Return Back */}
                 <Link to="/">
-                  <Chip
-                    className={classes.return}
-                    clickable
-                    icon={<ArrowBackRoundedIcon />}
-                    label="Return"
-                  />
+                  <img src={logo} className={classes.logo} />
                 </Link>
 
                 {/* Title */}

@@ -24,6 +24,9 @@ import PeopleAltRoundedIcon from "@material-ui/icons/PeopleAltRounded";
 import PhoneRoundedIcon from "@material-ui/icons/PhoneRounded";
 import ThumbsUpDownRoundedIcon from "@material-ui/icons/ThumbsUpDownRounded";
 
+const jwt = require("jsonwebtoken");
+const token = sessionStorage.getItem("userToken");
+
 const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: 100,
@@ -212,35 +215,51 @@ export default function Topbar({ id, name, email, role }) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <Button className={classes.startHiring}>Start Hiring</Button>
-      <Button className={classes.signInMobile}>Sign In</Button>
-      {/* <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem> */}
+      {!token && (
+        <>
+          <Button className={classes.startHiring}>Start Hiring</Button>
+          <Button
+            onClick={() => {
+              window.location = "/signin";
+            }}
+            className={classes.signIn}
+          >
+            Sign In
+          </Button>
+        </>
+      )}
+      {token && (
+        <>
+          {" "}
+          <MenuItem>
+            <IconButton aria-label="show 4 new mails" color="inherit">
+              <Badge badgeContent={4} color="secondary">
+                <MailIcon />
+              </Badge>
+            </IconButton>
+            <p>Messages</p>
+          </MenuItem>
+          <MenuItem>
+            <IconButton aria-label="show 11 new notifications" color="inherit">
+              <Badge badgeContent={11} color="secondary">
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+            <p>Notifications</p>
+          </MenuItem>
+          <MenuItem onClick={handleProfileMenuOpen}>
+            <IconButton
+              aria-label="account of current user"
+              aria-controls="primary-search-account-menu"
+              aria-haspopup="true"
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
+            <p>Profile</p>
+          </MenuItem>{" "}
+        </>
+      )}
       <div className={classes.mobileSideMenuItems}>
         <MenuItem>
           <IconButton color="inherit">
@@ -305,29 +324,58 @@ export default function Topbar({ id, name, email, role }) {
               </div>
               <div className={classes.grow} />
               <div className={classes.sectionDesktop}>
-                {/* <IconButton aria-label="show 4 new mails" color="primary">
-              <Badge badgeContent={4} color="secondary">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="primary">
-              <Badge badgeContent={17} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="primary"
-            >
-              <AccountCircle />
-            </IconButton> */}
-
-                <Button className={classes.startHiring}>Start Hiring</Button>
-                <Button className={classes.signIn}>Sign In</Button>
+                {token && (
+                  <>
+                    <IconButton aria-label="show 4 new mails" color="primary">
+                      <Badge badgeContent={4} color="secondary">
+                        <MailIcon />
+                      </Badge>
+                    </IconButton>
+                    <IconButton
+                      aria-label="show 17 new notifications"
+                      color="primary"
+                    >
+                      <Badge badgeContent={17} color="secondary">
+                        <NotificationsIcon />
+                      </Badge>
+                    </IconButton>
+                    <IconButton
+                      edge="end"
+                      aria-label="account of current user"
+                      aria-controls={menuId}
+                      aria-haspopup="true"
+                      onClick={handleProfileMenuOpen}
+                      color="primary"
+                    >
+                      <AccountCircle />
+                    </IconButton>
+                    <Button
+                      onClick={() => {
+                        localStorage.clear("userToken");
+                        sessionStorage.clear("userToken");
+                        window.location = "/";
+                      }}
+                      className={classes.signIn}
+                    >
+                      Log Out
+                    </Button>
+                  </>
+                )}
+                {!token && (
+                  <>
+                    <Button className={classes.startHiring}>
+                      Start Hiring
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        window.location = "/signin";
+                      }}
+                      className={classes.signIn}
+                    >
+                      Sign In
+                    </Button>
+                  </>
+                )}
               </div>
               <div className={classes.sectionMobile}>
                 <IconButton
