@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
         paddingRight: 20,
         "&:hover": {
             backgroundColor: theme.palette.white,
-            color: theme.palette.pinkyRed,
+            color: theme.palette.tuftsBlueHover,
         }
     },
 }))

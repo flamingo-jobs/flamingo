@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.tuftsBlue,
     color: theme.palette.white,
     "&:hover": {
-      backgroundColor: theme.palette.mediumTurquoise,
+      backgroundColor: theme.palette.tuftsBlueHover,
     }
   },
   savBtn: {

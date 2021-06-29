@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 25,
     padding: "10px 5px 10px 5px",
     "&:hover": {
-      backgroundColor: theme.palette.tuftsBlue,
+      backgroundColor: theme.palette.skyBlueCrayolaHover,
       color: "white",
       boxShadow: "none",
     },

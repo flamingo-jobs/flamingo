@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
     color: theme.palette.stateBlue,
     "&:hover": {
-      color: theme.palette.frenchViolet,
+      color: theme.palette.stateBlueHover,
     },
   },
 }));

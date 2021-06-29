@@ -19,8 +19,8 @@ const useStyles = makeStyles((theme) => ({
         marginTop: 16
     },
     headerLogo: {
-        textAlign: '-webkit-center',
-        textAlign: 'center',
+        display: 'flex',
+        justifyContent: 'center',
         marginBottom: 15,
     },
     label: {
@@ -75,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.vividSkyBlue,
         color: theme.palette.white,
         "&:hover": {
-            backgroundColor: theme.palette.mediumTurquoise,
+            backgroundColor: theme.palette.vividSkyBlueHover,
         }
     },
     favButton: {

@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.shape.borderRadius,
     backgroundColor: 'transparent',
     '&:hover': {
-      backgroundColor: fade(theme.palette.tuftsBlue, 0.1),
+      backgroundColor: fade(theme.palette.tuftsBlueHover, 0.1),
     },
     marginRight: theme.spacing(2),
     marginLeft: 0,
@@ -116,7 +116,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 20,
     paddingRight: 20,
     "&:hover": {
-      backgroundColor: theme.palette.mediumTurquoise,
+      backgroundColor: theme.palette.tuftsBlueHover,
       color: 'white',
     }
   },
@@ -130,7 +130,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 20,
     paddingRight: 20,
     "&:hover": {
-      backgroundColor: theme.palette.mediumTurquoise,
+      backgroundColor: theme.palette.tuftsBlueHover,
       color: 'white',
     }
   },
@@ -154,7 +154,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 20,
     paddingRight: 20,
     "&:hover": {
-      backgroundColor: theme.palette.mediumTurquoise,
+      backgroundColor: theme.palette.tuftsBlueHover,
       color: 'white',
     }
   }
