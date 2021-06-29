@@ -139,9 +139,9 @@ function JobDescription() {
   };
 
   const displayCompanySummary = () => {
-    return (
-      <CompanySummary />
-    );
+    if (job != "empty") {
+      return <CompanySummary job={job} />
+    }
   }
 
   const displayMoreFromJobs = () => {

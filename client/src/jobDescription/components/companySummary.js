@@ -106,7 +106,7 @@ function CompanySummary(props) {
     }
 
     const retrieveOrganizations = () => {
-        axios.get(`${BACKEND_URL}/employers/60c246913542f942e4c84454`,).then(res => {
+        axios.get(`${BACKEND_URL}/employers/${props.job.organization.id}`,).then(res => {
             if (res.data.success) {
                 setSummary(res.data.employer)
             } else {

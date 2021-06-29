@@ -80,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
 function JobCard(props) {
 
     const classes = useStyles();
-
+    const { loading = false } = props;
     return (
         <FloatCard >
         <div className={classes.root}>
