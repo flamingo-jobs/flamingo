@@ -5,7 +5,6 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import FloatCard from '../../components/FloatCard';
 import theme from '../../Theme';
-import EditIcon from '@material-ui/icons/Edit';
 import WorkIcon from '@material-ui/icons/Work';
 import AddIcon from '@material-ui/icons/Add';
 import Grid from '@material-ui/core/Grid';
@@ -157,10 +156,11 @@ function WorkExperience() {
   }
 
   const displayWork = () => {
+    let i=0;
     if (work) {
       if (work.length > 0) {
       return work.map(wk => (
-            <WorkExpItem place={wk.place} description={wk.description} position={wk.position} from={wk.from} to={wk.to} task={wk.taskAndResponsibility} />
+            <WorkExpItem index={i++} place={wk.place} description={wk.description} position={wk.position} from={wk.from} to={wk.to} task={wk.taskAndResponsibility} />
             ))
       }else{
         return (<Typography variant="body2" color="textSecondary" component="p">Work experience details not added.</Typography>)
