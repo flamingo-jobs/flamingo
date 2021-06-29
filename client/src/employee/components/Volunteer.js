@@ -5,8 +5,6 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import FloatCard from '../../components/FloatCard';
 import theme from '../../Theme';
-import EditIcon from '@material-ui/icons/Edit';
-import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
 import Grid from '@material-ui/core/Grid';
 import VolunteerItem from './VolunteerItem';
 import BACKEND_URL from '../../Config';
@@ -96,10 +94,6 @@ function Volunteer() {
     setOpen(false);
   }
 
-  function handleFetch(){
-    setFetchedData(1);
-  }
-
   //---------------------------- text field onChange events
   function onChangeTitle(e){
     setState(prevState => {
@@ -152,7 +146,7 @@ function Volunteer() {
     if (volunteer) {
       if (volunteer.length > 0) {
       return volunteer.map(vol => (
-            <VolunteerItem index={i++} title={vol.title} organization={vol.organization} from={vol.from} to={vol.to} description={vol.description} parentFunction={handleFetch} />
+            <VolunteerItem index={i++} title={vol.title} organization={vol.organization} from={vol.from} to={vol.to} description={vol.description} />
             ))
       }else{
         return (<Typography variant="body2" color="textSecondary" component="p">Volunteering details not added.</Typography>)

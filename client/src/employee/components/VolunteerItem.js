@@ -6,15 +6,11 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import theme from '../../Theme';
-import StarIcon from '@material-ui/icons/Star';
-import Avatar from '@material-ui/core/Avatar';
-import volunteerImage from '../images/volunteering.jpg';
 import EditIcon from '@material-ui/icons/Edit';
 import BACKEND_URL from '../../Config';
 import Fade from '@material-ui/core/Fade';
 import Divider from '@material-ui/core/Divider';
 import CloseIcon from '@material-ui/icons/Close';
-import AddIcon from '@material-ui/icons/Add';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import TextField from '@material-ui/core/TextField';
@@ -83,7 +79,6 @@ function VolunteerItem(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [styleEdit, setStyleEdit] = useState({display: 'none'});
-  const setFetch = props.handleFetch;
   const [state, setState] = useState({title: props.title, organization: props.organization, from: props.from, to: props.to, description: props.description});
 
   function handleOpen(){
@@ -151,18 +146,18 @@ function VolunteerItem(props) {
        <Grid container spacing={3}>
         <Grid item xs={3}>
             <Typography variant="body2" color="textSecondary" component="p">
-                {props.from} - {props.to}
+                {state.from} - {state.to}
             </Typography>
         </Grid>
         <Grid item xs={8} spacing={2} style={{marginTop:"-5px"}}>
             <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'15px',fontWeight:'bold',paddingTop:'5px'}}>
-                {props.title}
+                {state.title}
             </Typography>
             <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'15px',}}>
-                {props.description}
+                {state.description}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',paddingTop:'5px'}}>
-                Organization : {props.organization}
+                Organization : {state.organization}
             </Typography>
         </Grid>
         <Grid item xs={1} spacing={2} style={{marginTop:"-5px"}}>
@@ -188,7 +183,7 @@ function VolunteerItem(props) {
                 <Grid container xs={12} direction="row">
                   <Grid item xs={10}>
                     <Typography gutterBottom variant="h5" style={{textAlign:'center',paddingLeft:'50px',color:theme.palette.stateBlue}}>
-                      Add Volunteer Project
+                      Edit Volunteer Project
                     </Typography>
                     <Divider variant="middle" style={{marginLeft:'100px'}} />
                   </Grid>
@@ -199,7 +194,7 @@ function VolunteerItem(props) {
                   </Grid>
                 </Grid>
               </div>
-              <form className={classes.form}  onSubmit={onSubmit,setFetch}>
+              <form className={classes.form}  onSubmit={onSubmit}>
                 <div>
                 <TextField
                   className={classes.field}
