@@ -130,13 +130,13 @@ exports.signin = (req, res) => {
             }
 
             // Create an access token
-            let access_token = createJWT(user.email, user._id, user.role, 3600);
+            let access_token = createJWT( user._id, user.username, user.email, user.role, 3600);
             jwt.verify(
               access_token,
               process.env.TOKEN_SECRET,
               (err, decoded) => {
                 if (err) {
-                  res.status(500).json({ errors: err });
+                  res.status(500).json({ errors: "err1" });
                 }
                 if (decoded) {
                   return res.status(200).json({
@@ -147,6 +147,7 @@ exports.signin = (req, res) => {
                       username: user.username,
                       email: user.email,
                       role: user.role,
+                      dec: decoded,
                     },
                   });
                 }
@@ -154,7 +155,7 @@ exports.signin = (req, res) => {
             );
           })
           .catch((err) => {
-            res.status(500).json({ errors: err });
+            res.status(500).json({ errors: "err2" });
           });
       }
     })

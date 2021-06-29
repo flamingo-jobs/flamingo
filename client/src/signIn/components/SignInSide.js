@@ -1,25 +1,35 @@
-import React from "react";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
-import Box from "@material-ui/core/Box";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import { React, useState } from "react";
+import { useForm } from "react-hooks-helper";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import CardMedia from "@material-ui/core/CardMedia";
 import cardImage from "../../signIn/images/flamingo.gif";
 import FloatCard from "../../components/FloatCard";
-import { Chip, Container, IconButton } from "@material-ui/core";
-import backgroundImage from "../images/background.jfif";
+import {
+  Chip,
+  Container,
+  IconButton,
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Link,
+  Box,
+  Grid,
+  Typography,
+  CardMedia,
+  Snackbar,
+} from "@material-ui/core";
+import { Redirect } from "react-router-dom";
+import MuiAlert from "@material-ui/lab/Alert";
+
 import FacebookIcon from "@material-ui/icons/Facebook";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import GitHubIcon from "@material-ui/icons/GitHub";
-import theme from "../../Theme";
 import ArrowBackRoundedIcon from "@material-ui/icons/ArrowBackRounded";
+
+import axios from "axios";
+import BACKEND_URL from "../../Config";
 
 function Copyright() {
   return (
@@ -107,7 +117,63 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignInSide() {
+  // Form data register
+  const defaultData = {
+    email: "",
+    password: "",
+  };
+  const [formData, setForm] = useForm(defaultData);
+  const [remember, setRemember] = useState(false);
+  const handleRemember = () => setRemember(!remember);
+
+  const login = (e) => {
+    e.preventDefault();
+
+    const loginData = {
+      email: formData.email,
+      password: formData.password,
+    };
+
+    axios
+      .post(`${BACKEND_URL}/api/signin`, loginData)
+      .then((res) => {
+        if (res.data.success) {
+          if (remember) {
+            localStorage.setItem("userToken", res.data.token);
+          } else {
+            sessionStorage.setItem("userToken", res.data.token);
+            sessionStorage.setItem("loggedIn", "true");
+          }
+          window.location = "/";
+        } else {
+          handleAlert();
+        }
+      })
+      .catch((err) => {
+        handleAlert();
+      });
+  };
+
   const classes = useStyles();
+
+  // Alert Handler
+  const [open, setOpen] = useState(false);
+  const handleAlert = () => {
+    setOpen(true);
+  };
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+
+  if (sessionStorage.getItem("userToken")) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <div className={classes.background}>
@@ -171,17 +237,24 @@ export default function SignInSide() {
                 </div>
 
                 {/* Login Form */}
-                <form className={classes.form} noValidate>
+                <form className={classes.form} onSubmit={login}>
                   <TextField
                     required
+                    name="email"
+                    onChange={setForm}
+                    value={formData.email}
                     id="outlined-required"
-                    label="Username"
+                    label="Email Address"
+                    type="email"
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
                   />
                   <TextField
                     required
+                    name="password"
+                    onChange={setForm}
+                    value={formData.password}
                     id="outlined-password-input"
                     label="Password"
                     type="password"
@@ -191,7 +264,13 @@ export default function SignInSide() {
                     className={classes.textField}
                   />
                   <FormControlLabel
-                    control={<Checkbox value="remember" color="primary" />}
+                    control={
+                      <Checkbox
+                        checked={remember}
+                        color="primary"
+                        onClick={handleRemember}
+                      />
+                    }
                     label="Remember me"
                     style={{ marginTop: "5%" }}
                   />
@@ -226,6 +305,11 @@ export default function SignInSide() {
             </FloatCard>
           </Grid>
         </Grid>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="error">
+            Login Failed! Incorrect email address or password!
+          </Alert>
+        </Snackbar>
       </Container>
     </div>
   );
