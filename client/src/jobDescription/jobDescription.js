@@ -48,11 +48,11 @@ function JobDescription() {
 
   let { id } = useParams();
 
-  const [jobId, setJobId] = useState(id);
+  const [jobId, setJobId] = useState(window.location.pathname.split("/")[2]);
 
   useEffect(() => {
-    setJobId(id);
-  }, [id]);
+    setJobId(window.location.pathname.split("/")[2]);
+  }, [window.location.pathname]);
 
   useEffect(() => {
     retrieveJob();
