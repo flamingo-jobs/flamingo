@@ -10,6 +10,11 @@
         name: flamingo
         image: "thatz98/flamingo:{{PREV_DOCKER_TAG}}"
         state: stopped
+    - name: Remove previous container
+      docker_container:
+        name: flamingo
+        image: "thatz98/flamingo:{{PREV_DOCKER_TAG}}"
+        state: absent
     - name: Start the container
       docker_container:
         name: flamingo
