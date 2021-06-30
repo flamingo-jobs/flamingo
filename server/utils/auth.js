@@ -1,8 +1,9 @@
 const jwt = require("jsonwebtoken");
-exports.createJWT = (email, userId, userRole, duration) => {
+exports.createJWT = (userId, username, email, userRole, duration) => {
   const payload = {
-    email,
     userId,
+    username,
+    email,
     userRole,
     duration,
   };

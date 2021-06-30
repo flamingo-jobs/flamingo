@@ -1,4 +1,8 @@
-import React from "react";
+
+import { React, useState, forwardRef } from "react";
+import { useForm } from "react-hooks-helper";
+
+
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -8,18 +12,52 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
+
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import CardMedia from "@material-ui/core/CardMedia";
 import cardImage from "../../signIn/images/flamingo.gif";
+import logo from "../images/logo.jpg";
 import FloatCard from "../../components/FloatCard";
-import { Chip, Container, IconButton } from "@material-ui/core";
-import backgroundImage from "../images/background.jfif";
+import {
+  Chip,
+  Container,
+  IconButton,
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Link,
+  Box,
+  Grid,
+  Typography,
+  CardMedia,
+  Snackbar,
+  Dialog,
+  List,
+  ListItem,
+  ListItemText,
+  Divider,
+  Slide,
+} from "@material-ui/core";
+import { Redirect } from "react-router-dom";
+
+import MuiAlert from "@material-ui/lab/Alert";
+import MuiDialogTitle from "@material-ui/core/DialogTitle";
+import MuiDialogContent from "@material-ui/core/DialogContent";
+import MuiDialogActions from "@material-ui/core/DialogActions";
+
 import FacebookIcon from "@material-ui/icons/Facebook";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import GitHubIcon from "@material-ui/icons/GitHub";
-import theme from "../../Theme";
+import CloseIcon from "@material-ui/icons/Close";
 import ArrowBackRoundedIcon from "@material-ui/icons/ArrowBackRounded";
 import { Link } from 'react-router-dom'
+
+import axios from "axios";
+import BACKEND_URL from "../../Config";
+
+const jwt = require("jsonwebtoken");
 
 function Copyright() {
   return (
@@ -90,9 +128,18 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: "none",
     },
   },
+  closeButton: {
+    position: "absolute",
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
   media: {
     height: "60vh",
     backgroundSize: 'contain'
+  },
+  logo: {
+    height: 40,
   },
   textField: {
     margin: 10,
@@ -110,6 +157,9 @@ const useStyles = makeStyles((theme) => ({
   title: {
     marginBottom: 20,
     fontWeight: 500
+  },
+  link: {
+    cursor: "pointer",
   },
   animation: {
     [theme.breakpoints.down("xs")]: {
@@ -136,7 +186,95 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignInSide() {
+  // Form data register
+  const defaultData = {
+    email: "",
+    password: "",
+  };
+  const [formData, setForm] = useForm(defaultData);
+  const [remember, setRemember] = useState(false);
+  const handleRemember = () => setRemember(!remember);
+
+  const login = (e) => {
+    e.preventDefault();
+
+    const loginData = {
+      email: formData.email,
+      password: formData.password,
+    };
+
+    axios
+      .post(`${BACKEND_URL}/api/signin`, loginData)
+      .then((res) => {
+        if (res.data.success) {
+          if (remember) {
+            localStorage.setItem("userToken", res.data.token);
+            sessionStorage.setItem("userToken", res.data.token);
+          } else {
+            sessionStorage.setItem("userToken", res.data.token);
+          }
+          const header = jwt.decode(res.data.token, { complete: true });
+          window.location = "/" + header.payload.userRole;
+        } else {
+          handleAlert();
+        }
+      })
+      .catch((err) => {
+        handleAlert();
+      });
+  };
+
   const classes = useStyles();
+
+  // Alert Handler
+  const [open, setOpen] = useState(false);
+  const handleAlert = () => {
+    setOpen(true);
+  };
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+
+  const [choice, setChoice] = useState(false);
+  const handleClickChoice = () => {
+    setChoice(true);
+  };
+  const handleCloseChoice = () => {
+    setChoice(false);
+  };
+  const Transition = forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+  });
+  const DialogTitle = withStyles(classes)((props) => {
+    const { children, classes, onClose, ...other } = props;
+    return (
+      <MuiDialogTitle disableTypography className={classes.root} {...other}>
+        <Typography variant="h6">{children}</Typography>
+      </MuiDialogTitle>
+    );
+  });
+  const DialogContent = withStyles((theme) => ({
+    root: {
+      padding: theme.spacing(2),
+    },
+  }))(MuiDialogContent);
+
+  const DialogActions = withStyles((theme) => ({
+    root: {
+      margin: 0,
+      padding: theme.spacing(1),
+    },
+  }))(MuiDialogActions);
+
+  if (sessionStorage.getItem("userToken")) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <div className={classes.root}>
@@ -160,6 +298,7 @@ export default function SignInSide() {
             <FloatCard>
               <div className={classes.paper}>
                 {/* Return Back */}
+
                 <Link to="/" className={classes.return}>
                   <Chip
 
@@ -168,6 +307,7 @@ export default function SignInSide() {
                     label="Return"
                     style={{backgroundColor: theme.palette.lightSkyBlue,}}
                   />
+
                 </Link>
 
                 {/* Title */}
@@ -203,17 +343,24 @@ export default function SignInSide() {
                 </div>
 
                 {/* Login Form */}
-                <form className={classes.form} noValidate>
+                <form className={classes.form} onSubmit={login}>
                   <TextField
                     required
+                    name="email"
+                    onChange={setForm}
+                    value={formData.email}
                     id="outlined-required"
-                    label="Username"
+                    label="Email Address"
+                    type="email"
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
                   />
                   <TextField
                     required
+                    name="password"
+                    onChange={setForm}
+                    value={formData.password}
                     id="outlined-password-input"
                     label="Password"
                     type="password"
@@ -223,7 +370,13 @@ export default function SignInSide() {
                     className={classes.textField}
                   />
                   <FormControlLabel
-                    control={<Checkbox value="remember" color="primary" />}
+                    control={
+                      <Checkbox
+                        checked={remember}
+                        color="primary"
+                        onClick={handleRemember}
+                      />
+                    }
                     label="Remember me"
                     style={{ marginTop: "5%" }}
                   />
@@ -236,28 +389,78 @@ export default function SignInSide() {
                     Sign In
                   </Button>
 
+
                   {/* Forgot Password or Register */}
                   <Grid container>
                     <Grid item xs={12} sm={4} className={classes.forgotPwd}>
-                      <Link href="#" variant="body2">
-                        Forgot password?
-                      </Link>
+                      <Link className={classes.link}>Forgot password?</Link>
                     </Grid>
                     <Grid item xs={12} sm={8} className={classes.signUp}>
-                      <Link href="#" variant="body2">
-                        {"Don't have an account? Sign Up"}
-                      </Link>
+                      <Link className={classes.link} onClick={handleClickChoice}>
+                      Don't have an account? Sign Up
+                    </Link>
                     </Grid>
+
                   </Grid>
+                </Grid>
+
 
                   <Box mt={3}>
                     <Copyright />
                   </Box>
                 </form>
+
               </div>
             </FloatCard>
           </Grid>
         </Grid>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="error">
+            Login Failed! Incorrect email address or password!
+          </Alert>
+        </Snackbar>
+        <Dialog
+          onClose={handleCloseChoice}
+          aria-labelledby="customized-dialog-title"
+          open={choice}
+        >
+          <DialogTitle id="customized-dialog-title" onClose={handleCloseChoice}>
+            Sign up as
+          </DialogTitle>
+          <DialogContent dividers>
+            <Grid container direction="row" className={classes.root}>
+              <Grid item xs={12} md={6}>
+                <ListItem
+                  button
+                  onClick={() => {
+                    window.location = "/getHired";
+                  }}
+                >
+                  <Box mt={5} mb={5} ml={10} mr={10}>
+                    <Typography>JobSeeker</Typography>
+                  </Box>
+                </ListItem>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <ListItem
+                  button
+                  onClick={() => {
+                    window.location = "/startHiring";
+                  }}
+                >
+                  <Box mt={5} mb={5} ml={10} mr={10}>
+                    <Typography>Employer</Typography>
+                  </Box>
+                </ListItem>
+              </Grid>
+            </Grid>
+          </DialogContent>
+          <DialogActions>
+            <Button autoFocus onClick={handleCloseChoice} color="primary">
+              Cancel
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Container>
     </div>
   );
