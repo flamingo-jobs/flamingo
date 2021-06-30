@@ -12,16 +12,22 @@ import {
 } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import FloatCard from "./../components/FloatCard";
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import backgroundImage from "./images/background.jfif";
 import axios from "axios";
 import BACKEND_URL from "../Config";
+import { Avatar, Badge } from "@material-ui/core";
+import AddRoundedIcon from '@material-ui/icons/AddRounded';
+import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
+  root: {
+    textAlign: "left"
+  },
   container: {
     paddingTop: 50,
     paddingBottom: 50,
@@ -55,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.white,
     backgroundColor: theme.palette.skyBlueCrayola,
     borderRadius: 25,
-    marginTop: "50px",
+    margin: "15px 10px 10px 10px",
     "&:hover": {
       backgroundColor: theme.palette.skyBlueCrayolaHover,
       color: "white",
@@ -66,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "none",
     color: theme.palette.black,
     backgroundColor: theme.palette.white,
-    marginTop: "50px",
+    margin: "15px 10px 10px 10px",
     "&:hover": {
       backgroundColor: theme.palette.white,
       color: "black",
@@ -77,7 +83,19 @@ const useStyles = makeStyles((theme) => ({
     height: "80vh",
   },
   textField: {
-    [theme.breakpoints.up("md")]: {
+    [theme.breakpoints.down("md")]: {
+      width: "100%",
+    },
+    "& fieldset": {
+      borderColor: theme.palette.tuftsBlue,
+    },
+    "&:hover fieldset": {
+      borderColor: theme.palette.pinkyRed + " !important",
+    },
+  },
+  shortTextField: {
+    width: "80%",
+    [theme.breakpoints.down("md")]: {
       width: "100%",
     },
     "& fieldset": {
@@ -88,7 +106,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   title: {
-    marginBottom: 5,
+    textAlign: 'left'
   },
   animation: {
     [theme.breakpoints.down("xs")]: {
@@ -102,6 +120,43 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "left",
     marginBottom: theme.spacing(4),
   },
+  addBadge: {
+    '& .MuiBadge-anchorOriginBottomRightCircle': {
+      right: '4%',
+      bottom: '4%'
+    }
+  },
+  gridCont: {
+    paddingLeft: "5%",
+    [theme.breakpoints.down("md")]: {
+      paddingLeft: '3%',
+    },
+    [theme.breakpoints.down("sm")]: {
+      padding: '2%',
+    },
+  },
+  mainTitle: {
+    fontSize: 36,
+    fontWeight: 500,
+    marginTop: 20
+  },
+  link: {
+    cursor: "pointer",
+  },
+  actions: {
+    justifyContent: 'flex-end',
+    [theme.breakpoints.down("sm")]: {
+      justifyContent: 'center',
+    },
+  },
+  signIn: {
+    justifyContent: 'flex-start',
+    marginRight: 10,
+    [theme.breakpoints.down("sm")]: {
+      justifyContent: 'center',
+    },
+
+  }
 }));
 
 export default function StartHiring() {
@@ -259,48 +314,53 @@ export default function StartHiring() {
       <div className={classes.overlay}>
         <Container className={classes.container}>
           <FloatCard>
-            <Container>
-              <form className={classes.form} onSubmit={createAccount}>
-                {/* Basic details */}
-                <Container
-                  maxWidth="lg"
-                  className={classes.jobDetailsContainer}
-                >
-                  <Box mt={5} mb={5}>
-                    <Typography component="h1" variant="h5">
-                      Company Details
-                    </Typography>
-                  </Box>
-                  <Typography className={classes.title}>
-                    Basic Details
+            <form className={classes.form} onSubmit={createAccount}>
+              {/* Basic details */}
+              <Grid container spacing={3} justify="space-between" className={classes.gridCont}>
+                <Grid item xs={12} align="left">
+                  <Typography className={classes.mainTitle}>
+                    Sign Up
                   </Typography>
-                  <Grid container alignItems="center" spacing={2}>
-                    <Grid item xs={12} md={6} align="center">
-                      <TextField
-                        label="Company Name"
-                        name="name"
-                        value={formData.name}
-                        onChange={setForm}
-                        variant="outlined"
-                        className={classes.textField}
-                        required
-                        fullWidth
-                      />
+                </Grid>
+
+                <Grid item xs={12} md={5} lg={4}>
+                  <Grid container alignItems="center" spacing={3}>
+                    <Grid item xs={12} align="left">
+                      <Typography className={classes.title}>
+                        Company Logo
+                      </Typography>
                     </Grid>
-                    <Grid item xs={12} md={6} align="center">
+                    <Grid item xs={12} align="left">
+                      <Badge
+                        overlap="circle"
+                        anchorOrigin={{
+                          vertical: 'bottom',
+                          horizontal: 'right',
+                        }}
+                        badgeContent={<IconButton aria-label="delete" color="primary">
+                          <AddCircleRoundedIcon />
+                        </IconButton>}
+                        className={classes.addBadge}
+                      >
+                        <Avatar variant="square" style={{ width: 70, height: 70, borderRadius: 12, }} src="/static/images/avatar/2.jpg" />
+                      </Badge>
+                    </Grid>
+
+                    <Grid item xs={12} md={6} align="left">
                       {isFilePicked ? (
                         <Grid container alignItems="center" spacing={2}>
-                          <Grid item xs={10} md={10} align="center">
+                          <Grid item xs={10} md={10} align="left">
                             <TextField
                               label="Logo name"
                               value={selectedFile.name}
                               variant="outlined"
                               className={classes.textField}
                               fullWidth
+                              size="small"
                               disabled
                             />
                           </Grid>
-                          <Grid item xs={2} md={2} align="center">
+                          <Grid item xs={2} md={2} align="left">
                             <Button onClick={() => setIsFilePicked(false)}>
                               Remove
                             </Button>
@@ -315,10 +375,29 @@ export default function StartHiring() {
                           variant="outlined"
                           className={classes.textField}
                           fullWidth
+                          size="small"
                         />
                       )}
                     </Grid>
-                    <Grid item xs={12} md={12} align="center">
+                    <Grid item xs={12} align="left">
+                      <Typography className={classes.title}>
+                        Basic Details
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12} align="left">
+
+                      <TextField
+                        label="Company Name"
+                        name="name"
+                        value={formData.name}
+                        onChange={setForm}
+                        variant="outlined"
+                        className={classes.shortTextField}
+                        required
+                        size="small"
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={12} align="left">
                       <TextField
                         label="Description"
                         name="description"
@@ -326,56 +405,220 @@ export default function StartHiring() {
                         onChange={setForm}
                         variant="outlined"
                         className={classes.textField}
+                        size="small"
                         fullWidth
+                        multiline
                       />
                     </Grid>
-                  </Grid>
-                  {locations.map((x, i) => {
-                    return (
-                      <Grid container alignItems="center" spacing={2}>
-                        <Grid item xs={12} md={10} align="center">
-                          <TextField
-                            className={classes.textField}
-                            variant="outlined"
-                            fullWidth
-                            name="name"
-                            label="Location"
-                            value={x.name}
-                            onChange={(e) => handleLocationInputChange(e, i)}
-                          />
-                        </Grid>
-                        <Grid item xs={12} md={2} align="center">
-                          {locations.length !== 1 && (
-                            <IconButton
-                              onClick={() => handleLocationRemoveClick(i)}
-                              color="secondary"
-                              aria-label="Add new location"
-                            >
-                              <RemoveCircleOutlineIcon />
-                            </IconButton>
-                          )}
-                          {locations.length - 1 === i && (
-                            <IconButton
-                              onClick={handleLocationAddClick}
-                              color="primary"
-                              aria-label="Remove location"
-                            >
-                              <AddCircleOutlineIcon />
-                            </IconButton>
-                          )}
-                        </Grid>
-                      </Grid>
-                    );
-                  })}
-                </Container>
 
-                {/* Technology Stack 
+                    {locations.map((x, i) => {
+                      return (
+                        <Grid item container alignItems="flex-start" spacing={1}>
+                          <Grid item xs={12} md={8} align="left">
+                            <TextField
+                              className={classes.textField}
+                              variant="outlined"
+                              fullWidth
+                              name="name"
+                              label="Location"
+                              size="small"
+                              value={x.name}
+                              onChange={(e) => handleLocationInputChange(e, i)}
+                            />
+                          </Grid>
+                          <Grid item xs={12} md={4} align="left">
+                            {locations.length !== 1 && (
+                              <IconButton
+                                onClick={() => handleLocationRemoveClick(i)}
+                                color="secondary"
+                                aria-label="Add new location"
+                              >
+                                <RemoveCircleOutlineIcon />
+                              </IconButton>
+                            )}
+                            {locations.length - 1 === i && (
+                              <IconButton
+                                onClick={handleLocationAddClick}
+                                color="primary"
+                                aria-label="Remove location"
+                              >
+                                <AddCircleOutlineIcon />
+                              </IconButton>
+                            )}
+                          </Grid>
+                        </Grid>
+                      );
+                    })}
+                  </Grid>
+                </Grid>
+                {/* Social Media Links */}
+
+                <Grid item xs={12} md={6} lg={5} >
+                  <Grid container alignItems="center" spacing={3} >
+                    <Grid item xs={12} align="left">
+                      <Typography className={classes.title}>
+                        Media Links
+                      </Typography>
+                    </Grid>
+                    {social.map((x, i) => {
+                      return (
+                        <Grid item container alignItems="flex-start" spacing={1}>
+                          <Grid item xs={12} md={3} align="left">
+                            <Autocomplete
+                              id="combo-box-demo"
+                              options={socialMediaPlatforms}
+                              getOptionLabel={(option) => option.title}
+                              disableClearable
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  name="platform"
+                                  label="Platform"
+                                  variant="outlined"
+                                  size="small"
+                                  value={x.platform}
+                                  onChange={(e) => handleSocialInputChange(e, i)}
+                                />
+                              )}
+                            />
+                          </Grid>
+                          <Grid item xs={12} md={6} align="left">
+                            <TextField
+                              className={classes.textField}
+                              variant="outlined"
+                              fullWidth
+                              size="small"
+                              name="link"
+                              label="Link"
+                              value={x.link}
+                              onChange={(e) => handleSocialInputChange(e, i)}
+                            />
+                          </Grid>
+                          <Grid item xs={12} md={3} align="left">
+                            {social.length !== 1 && (
+                              <IconButton
+                                onClick={() => handleSocialRemoveClick(i)}
+                                color="secondary"
+                                aria-label="Add new social"
+                              >
+                                <RemoveCircleOutlineIcon />
+                              </IconButton>
+                            )}
+                            {social.length - 1 === i && (
+                              <IconButton
+                                onClick={handleSocialAddClick}
+                                color="primary"
+                                aria-label="Remove social"
+                              >
+                                <AddCircleOutlineIcon />
+                              </IconButton>
+                            )}
+                          </Grid>
+                        </Grid>
+                      );
+                    })}
+
+                    <Grid item xs={11} align="left">
+                      <Typography className={classes.title}>
+                        Login Credentials
+                      </Typography>
+                    </Grid>
+                    <Grid item container alignItems="center" spacing={3}>
+                      <Grid item xs={12} md={11} align="left">
+                        <TextField
+                          label="Email Address"
+                          name="email"
+                          type="email"
+                          size="small"
+                          value={formData.email}
+                          onChange={setForm}
+                          variant="outlined"
+                          className={classes.shortTextField}
+                          required
+                        />
+                      </Grid>
+                      <Grid item xs={12} md={11} align="left">
+                        <TextField
+                          label="Password"
+                          name="password"
+                          type="password"
+                          value={formData.password}
+                          onChange={setForm}
+                          variant="outlined"
+                          className={classes.shortTextField}
+                          required
+                          size="small"
+                        />
+                      </Grid>
+                      <Grid item xs={12} md={11} align="left">
+                        <TextField
+                          label="Confirm Password"
+                          name="confirmPassword"
+                          type="password"
+                          value={formData.confirmPassword}
+                          onChange={setForm}
+                          variant="outlined"
+                          className={classes.shortTextField}
+                          required
+                          size="small"
+                        />
+                      </Grid>
+
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid item container xs={12} className={classes.signIn} alignItems="center">
+                  <Grid item md={6} align="left">
+                    <Link className={classes.link}>
+                      Have an account already? Sign In
+                    </Link>
+                  </Grid>
+                <Grid item container md={6} className={classes.actions}>
+                  <Grid item>
+                    <Button
+                      fullWidth
+                      type="submit"
+                      variant="contained"
+                      className={classes.submit}
+                    >
+                      Sign Up
+                    </Button>
+                  </Grid>
+                  <Grid item>
+                    <Button
+                      fullWidth
+                      onClick={() => {
+                        window.location = "/";
+                      }}
+                      variant="contained"
+                      className={classes.cancel}
+                    >
+                      Cancel
+                    </Button>
+                  </Grid>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </form>
+          </FloatCard>
+          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="error">
+              Signup Failed! Please check whether your passwords are matching.
+            </Alert>
+          </Snackbar>
+        </Container>
+      </div>
+    </div >
+  );
+}
+
+{/* Technology Stack 
               <Container maxWidth="lg" className={classes.jobDetailsContainer}>
                 <Typography className={classes.title}>
                   Technology Stack Details
                 </Typography>
                 <Grid container alignItems="center" spacing={2}>
-                  <Grid item xs={12} md={12} align="center">
+                  <Grid item xs={12} md={12} align="left">
                     <Autocomplete
                       multiple
                       id="tags-outlined"
@@ -396,151 +639,3 @@ export default function StartHiring() {
                 </Grid>
               </Container>
               */}
-                {/* Social Media Links */}
-                <Container
-                  maxWidth="lg"
-                  className={classes.jobDetailsContainer}
-                >
-                  <Typography className={classes.title}>
-                    Social Media Links
-                  </Typography>
-                  {social.map((x, i) => {
-                    return (
-                      <Grid container alignItems="center" spacing={2}>
-                        <Grid item xs={12} md={3} align="center">
-                          <Autocomplete
-                            id="combo-box-demo"
-                            options={socialMediaPlatforms}
-                            getOptionLabel={(option) => option.title}
-                            renderInput={(params) => (
-                              <TextField
-                                {...params}
-                                name="platform"
-                                label="Platform"
-                                variant="outlined"
-                                value={x.platform}
-                                onChange={(e) => handleSocialInputChange(e, i)}
-                              />
-                            )}
-                          />
-                        </Grid>
-                        <Grid item xs={12} md={7} align="center">
-                          <TextField
-                            className={classes.textField}
-                            variant="outlined"
-                            fullWidth
-                            name="link"
-                            label="Link"
-                            value={x.link}
-                            onChange={(e) => handleSocialInputChange(e, i)}
-                          />
-                        </Grid>
-                        <Grid item xs={12} md={2} align="center">
-                          {social.length !== 1 && (
-                            <IconButton
-                              onClick={() => handleSocialRemoveClick(i)}
-                              color="secondary"
-                              aria-label="Add new social"
-                            >
-                              <RemoveCircleOutlineIcon />
-                            </IconButton>
-                          )}
-                          {social.length - 1 === i && (
-                            <IconButton
-                              onClick={handleSocialAddClick}
-                              color="primary"
-                              aria-label="Remove social"
-                            >
-                              <AddCircleOutlineIcon />
-                            </IconButton>
-                          )}
-                        </Grid>
-                      </Grid>
-                    );
-                  })}
-                </Container>
-
-                {/* Login details */}
-                <Container className={classes.jobDetailsContainer}>
-                  <Typography className={classes.title}>
-                    Login Credentials
-                  </Typography>
-                  <Grid container alignItems="center" spacing={2}>
-                    <Grid item xs={12} md={12} align="center">
-                      <TextField
-                        label="Email Address"
-                        name="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={setForm}
-                        variant="outlined"
-                        className={classes.textField}
-                        required
-                        fullWidth
-                      />
-                    </Grid>
-                    <Grid item xs={12} md={6} align="center">
-                      <TextField
-                        label="Password"
-                        name="password"
-                        type="password"
-                        value={formData.password}
-                        onChange={setForm}
-                        variant="outlined"
-                        className={classes.textField}
-                        required
-                        fullWidth
-                      />
-                    </Grid>
-                    <Grid item xs={12} md={6} align="center">
-                      <TextField
-                        label="Confirm Password"
-                        name="confirmPassword"
-                        type="password"
-                        value={formData.confirmPassword}
-                        onChange={setForm}
-                        variant="outlined"
-                        className={classes.textField}
-                        required
-                        fullWidth
-                      />
-                    </Grid>
-                    <Grid container alignItems="center" justify="flex-end">
-                      <Grid item align="center">
-                        <Button
-                          fullWidth
-                          type="submit"
-                          variant="contained"
-                          className={classes.submit}
-                        >
-                          Sign Up
-                        </Button>
-                      </Grid>
-                      <Grid item align="center">
-                        <Button
-                          fullWidth
-                          onClick={() => {
-                            window.location = "/";
-                          }}
-                          variant="contained"
-                          className={classes.cancel}
-                        >
-                          Cancel
-                        </Button>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </Container>
-              </form>
-            </Container>
-          </FloatCard>
-          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-            <Alert onClose={handleClose} severity="error">
-              Signup Failed! Please check whether your passwords are matching.
-            </Alert>
-          </Snackbar>
-        </Container>
-      </div>
-    </div>
-  );
-}
