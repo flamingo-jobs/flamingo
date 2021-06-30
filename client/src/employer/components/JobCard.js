@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor:theme.palette.blueJeans,
         padding:1,
         "&:hover": {
-            backgroundColor: theme.palette.vividSkyBlue,
+            backgroundColor: theme.palette.blueJeansHover,
         }
     },
 }))

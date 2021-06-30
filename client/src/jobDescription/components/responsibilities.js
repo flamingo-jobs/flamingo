@@ -7,7 +7,7 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
-import StarBorderOutlinedIcon from "@material-ui/icons/StarBorderOutlined";
+import FiberManualRecordRoundedIcon from '@material-ui/icons/FiberManualRecordRounded';
 
 const useStyles = makeStyles((theme) => ({
   border: {
@@ -19,14 +19,13 @@ const useStyles = makeStyles((theme) => ({
   },
   resTitle: {
     textAlign: "left",
-    paddingLeft: theme.spacing(2),
     color: theme.palette.black,
   },
   readMoreBtn: {
     cursor: "pointer",
     color: theme.palette.stateBlue,
     "&:hover": {
-      color: theme.palette.frenchViolet,
+      color: theme.palette.stateBlueHover,
     },
   },
 }));
@@ -59,8 +58,8 @@ const Responsibilities = ({ responsibilities }) => {
       <List dense={true}>
         {duties.map((dutie) => (
           <ListItem key={duties.indexOf(dutie)}>
-            <ListItemIcon>
-              <StarBorderOutlinedIcon />
+            <ListItemIcon style={{minWidth: 24}}>
+              <FiberManualRecordRoundedIcon fontSize="inherit" />
             </ListItemIcon>
             <ListItemText primary={dutie} />
           </ListItem>

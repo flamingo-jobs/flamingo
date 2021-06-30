@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
         "&:hover": {
             borderRadius: 12,
             color: theme.palette.white + '!important',
-            backgroundColor: theme.palette.greenyLightSky + '!important',
+            backgroundColor: theme.palette.lightSkyBlueHover + '!important',
         },
     },
     active: {

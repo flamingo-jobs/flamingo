@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.vividSkyBlue,
         color: theme.palette.white,
         "&:hover": {
-            backgroundColor: theme.palette.mediumTurquoise,
+            backgroundColor: theme.palette.vividSkyBlueHover,
         }
     },
     headerInfo: {
@@ -84,7 +84,7 @@ function OrganizationCard(props) {
 
     const classes = useStyles();
 
-    const getAvgRating = (arr=[]) => {
+    const getAvgRating = (arr = []) => {
         console.log(arr);
         return arr.map(item => item.rating).reduce((a, x) => a + x, 0) / arr.length;
     }

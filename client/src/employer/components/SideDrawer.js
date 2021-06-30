@@ -54,11 +54,11 @@ const useStyles = makeStyles((theme) => ({
         "&:hover": {
             borderRadius: 12,
             color: theme.palette.white + '!important',
-            backgroundColor: theme.palette.greenyLightSky + '!important',
+            backgroundColor: theme.palette.lightSkyBlue + '!important',
         },
     },
     active: {
-        backgroundColor: theme.palette.lightSkyBlue + '!important',
+        backgroundColor: theme.palette.lightSkyBlueHover + '!important',
         borderRadius: 12,
         "& $linkText": {
             color: theme.palette.frenchViolet,

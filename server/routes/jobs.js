@@ -15,6 +15,8 @@ router.post('/jobs', jobsController.getAll);
 
 router.get('/jobs/featuredJobs', jobsController.getFeaturedJobs);
 
+router.get('/jobs/filterByOrganization/:id', jobsController.getJobsFromEmployer);
+
 // get specific
 
 router.post('/jobs/getJobCount', jobsController.getJobCount);
