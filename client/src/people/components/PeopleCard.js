@@ -5,7 +5,7 @@ import { FavoriteRounded } from '@material-ui/icons';
 import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 import FloatCard from '../../components/FloatCard';
-
+import SchoolRoundedIcon from '@material-ui/icons/SchoolRounded';
 const useStyles = makeStyles((theme) => ({
     root: {
         textAlign: 'left'
@@ -37,11 +37,10 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
         fontWeight: 500,
-        marginBottom: 5
+        marginLeft: 10
     },
-    info: {
-        display: 'block',
-        marginLeft: 10,
+    infoTags: {
+        margin: 10
     },
     tag: {
         marginRight: 10,
@@ -60,23 +59,31 @@ const useStyles = makeStyles((theme) => ({
     },
     logo: {
         borderRadius: 12,
-        width: theme.spacing(7),
-        height: theme.spacing(7),
+        width: 70,
+        height: 70
     },
     company: {
-
+        marginLeft: 10,
         fontWeight: 500
     },
     applyButton: {
         borderRadius: 12,
-        backgroundColor: theme.palette.mediumTurquoise,
+        backgroundColor: theme.palette.vividSkyBlue,
         color: theme.palette.white,
         "&:hover": {
-            backgroundColor: theme.palette.mediumTurquoiseHover,
+            backgroundColor: theme.palette.vividSkyBlueHover,
         }
     },
+    headerInfo: {
+        display: 'block'
+    },
+    tagline: {
+        marginLeft: 10,
+        marginRight: 10
+    }
 }))
-function Organization(props) {
+
+function PeopleCard(props) {
 
     const classes = useStyles();
 
@@ -85,19 +92,38 @@ function Organization(props) {
             <div className={classes.root}>
                 <div className={classes.header}>
                     <div className={classes.headerLeft}>
-                        <Avatar className={classes.logo} src={require(`../images/${props.info.logo}`).default} variant="square" />
-                        <div className={classes.info}>
-                            <Typography variant="h6" className={classes.company}>{props.info.name}</Typography>
-                            <Typography>{props.info.openings} openings</Typography>
+                        <Avatar className={classes.logo} variant="square" />
+                        <div className={classes.headerInfo}>
+                            <Typography variant="h5" className={classes.title} >{props.info.name}</Typography>
+                            <Typography className={classes.tagline}>{props.info.tagline}</Typography>
                         </div>
                     </div>
-                    <div className={classes.headerRight} >
-                        <FavoriteRounded className={classes.favorite} />
+                    <div className={classes.headerRight}>
+                    </div>
+
+                </div>
+                <div className={classes.body} >
+
+                    <Typography noWrap className={classes.description} >{props.info.intro}</Typography>
+                    <div className={classes.infoTags}>
+                        { props.info.education.length > 0 ? <Chip icon={<SchoolRoundedIcon />} label={props.info.education[0].university} className={classes.tag} /> : null}
+                        { props.info.work.length > 0 ? <Chip icon={<WorkRoundedIcon />} label={props.info.work[0].place} className={classes.tag} /> : null}
+
+                    </div>
+                </div>
+
+                <div className={classes.footer} >
+
+                    <div className={classes.footerLeft}>
+
+                    </div>
+                    <div className={classes.footerRight} >
+                        <Button className={classes.applyButton}>View Profile</Button>
                     </div>
                 </div>
             </div>
-        </FloatCard>
+        </FloatCard >
     )
 }
 
-export default Organization
+export default PeopleCard

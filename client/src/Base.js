@@ -14,10 +14,15 @@ import Employer from "./employer/Employer";
 import JobDescription from "./jobDescription/jobDescription";
 import Categories from "./admin/Categories";
 import CreateJobForm from "./jobs/createJob/createJobForm";
+import People from './people/People';
+import Technologies from './admin/Technologies';
+import { Switch } from "react-router";
 import Organizations from "./employer/Organizations";
 
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -99,6 +104,7 @@ function Base() {
               >
                 <SideDrawer />
               </Grid>
+
               <Grid
                 item
                 xs={false}
@@ -148,6 +154,7 @@ function Base() {
                 <Grid item xs={12}>
                   <Footer />
                 </Grid>
+
               </Grid>
             </Grid>
           </Container>

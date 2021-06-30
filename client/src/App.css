@@ -18,3 +18,7 @@ a {
 .app-bar {
   background-color: transparent;
 }
+
+.MuiLink-underlineHover:hover{
+  text-decoration: none !important;
+}

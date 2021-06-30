@@ -23,7 +23,7 @@ const useStyles = makeStyles({
     backgroundColor: theme.palette.stateBlue,
     color: theme.palette.white,
     "&:hover": {
-      backgroundColor: '#0088cc',
+      backgroundColor: theme.palette.stateBlueHover,
       color: 'white',
     }
   },
@@ -136,10 +136,11 @@ function Achievements() {
   }
   
   const displayAwardFields = () => {
+    let i=0;
     if (award) {
       if (award.length > 0) {
       return award.map(awd => (
-            <AwardItem title={awd.title} issuedBy={awd.issuedBy} date={awd.date} description={awd.description} />
+            <AwardItem index={i++} title={awd.title} issuedBy={awd.issuedBy} date={awd.date} description={awd.description} />
             ))
       }else{
         return (<Typography variant="body2" color="textSecondary" component="p">Award details not added.</Typography>)

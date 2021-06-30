@@ -4,10 +4,10 @@ import { Avatar, Button, Chip, makeStyles, Typography } from '@material-ui/core'
 import { FavoriteRounded } from '@material-ui/icons';
 import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
-import ifs from '../images/ifs.png';
 import FloatCard from '../../components/FloatCard';
-
+import { Link } from 'react-router-dom';
 import ReactTimeAgo from 'react-time-ago'
+import BookmarkBorderRoundedIcon from '@material-ui/icons/BookmarkBorderRounded';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -73,14 +73,14 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.vividSkyBlue,
         color: theme.palette.white,
         "&:hover": {
-            backgroundColor: theme.palette.mediumTurquoise,
+            backgroundColor: theme.palette.vividSkyBlueHover,
         }
     },
 }))
 function JobCard(props) {
 
     const classes = useStyles();
-
+    const { loading = false } = props;
     return (
         <FloatCard >
         <div className={classes.root}>
@@ -90,7 +90,7 @@ function JobCard(props) {
                     <Typography className={classes.time}><ReactTimeAgo date={props.info.postedDate} locale="en-US"/></Typography>
                 </div>
                 <div className={classes.headerRight}>
-                    <FavoriteRounded className={classes.favorite} />
+                    <BookmarkBorderRoundedIcon className={classes.favorite} />
                 </div>
 
             </div>
@@ -104,11 +104,11 @@ function JobCard(props) {
             </div>
             <div className={classes.footer} >
                 <div className={classes.footerLeft}>
-                    <Avatar className={classes.logo} src={ifs} variant="square" />
+                    <Avatar className={classes.logo} src={require(`../../employer/images/${props.info.organization.logo}`).default} variant="square" />
                     <Typography className={classes.company}>{props.info.organization.name}</Typography>
                 </div>
                 <div className={classes.footerRight} >
-                    <Button className={classes.applyButton}>View Job</Button>
+                <Link to={`/jobDescription/${props.info._id}`}><Button className={classes.applyButton}>View Job</Button></Link>
                 </div>
             </div>
         </div>

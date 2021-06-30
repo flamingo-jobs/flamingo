@@ -4,7 +4,6 @@ import { Avatar, Button, Chip, makeStyles, Typography } from '@material-ui/core'
 import { FavoriteRounded } from '@material-ui/icons';
 import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
-import ifs from '../images/ifs.png';
 import FloatCard from '../../components/FloatCard';
 import Rating from '@material-ui/lab/Rating';
 
@@ -73,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.vividSkyBlue,
         color: theme.palette.white,
         "&:hover": {
-            backgroundColor: theme.palette.mediumTurquoise,
+            backgroundColor: theme.palette.vividSkyBlueHover,
         }
     },
     headerInfo: {
@@ -85,7 +84,7 @@ function OrganizationCard(props) {
 
     const classes = useStyles();
 
-    const getAvgRating = (arr=[]) => {
+    const getAvgRating = (arr = []) => {
         console.log(arr);
         return arr.map(item => item.rating).reduce((a, x) => a + x, 0) / arr.length;
     }

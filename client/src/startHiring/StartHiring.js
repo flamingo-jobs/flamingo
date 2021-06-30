@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 25,
     marginTop: "50px",
     "&:hover": {
-      backgroundColor: theme.palette.tuftsBlue,
+      backgroundColor: theme.palette.skyBlueCrayolaHover,
       color: "white",
       boxShadow: "none",
     },

@@ -55,6 +55,20 @@ const getJobCount = (req, res) => {
     });
 }
 
+const getJobsFromEmployer = (req, res) => {
+    Jobs.find({ 'organization.id' : req.params.id }, null, { limit: 3 }, (err, moreFromJobs) => {
+        if (err) {
+            return res.status(400).json({
+                error: err
+            })
+        }
+        return res.status(200).json({
+            success: true,
+            moreFromJobs: moreFromJobs
+        });
+    });
+}
+
 const getFeaturedJobs = (req, res) => {
     Jobs.find({ isFeatured: true }, null, { limit: 3 }, (err, featuredJobs) => {
         if (err) {
@@ -111,6 +125,7 @@ module.exports = {
     update,
     remove,
     getFeaturedJobs,
-    getJobCount
+    getJobCount,
+    getJobsFromEmployer
 
 }

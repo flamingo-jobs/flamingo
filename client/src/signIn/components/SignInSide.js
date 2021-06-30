@@ -1,5 +1,18 @@
+
 import { React, useState, forwardRef } from "react";
 import { useForm } from "react-hooks-helper";
+
+
+import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import Box from "@material-ui/core/Box";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import cardImage from "../../signIn/images/flamingo.gif";
 import logo from "../images/logo.jpg";
@@ -39,6 +52,7 @@ import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import CloseIcon from "@material-ui/icons/Close";
 import ArrowBackRoundedIcon from "@material-ui/icons/ArrowBackRounded";
+import { Link } from 'react-router-dom'
 
 import axios from "axios";
 import BACKEND_URL from "../../Config";
@@ -59,17 +73,29 @@ function Copyright() {
 }
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
+  root: {
+    backgroundColor: "#6fbada",
+    minHeight: '100vh',
+    backgroundSize: 'cover',
+  },
   container: {
-    paddingTop: "6vh",
-    paddingBottom: "6vh",
-    minHeight: "100vh",
+    display: 'flex',
+    width: '100%',
+    margin: '0 auto',
+    padding: 10,
+    paddingLeft: 40,
+    paddingRight: 40,
+    minHeight: '100vh',
+    [theme.breakpoints.down("xs")]: {
+      paddingLeft: 8,
+      paddingRight: 8,
+    },
   },
   overlay: {
-    minHeight: "100vh",
+    // minHeight: "100vh",
   },
   background: {
-    backgroundColor: theme.palette.flamingo,
+    backgroundColor: theme.palette.lightSkyBlue,
     backgroundSize: "cover",
   },
   paper: {
@@ -86,17 +112,18 @@ const useStyles = makeStyles((theme) => ({
     width: "100%", // Fix IE 11 issue.
     marginTop: 20,
     display: "contents",
+    
   },
   submit: {
     width: "30%",
     boxShadow: "none",
     color: theme.palette.white,
     backgroundColor: theme.palette.skyBlueCrayola,
-    margin: " 5% 35% 10% 35%",
+    margin: " 5% 35% 5% 35%",
     borderRadius: 25,
     padding: "10px 5px 10px 5px",
     "&:hover": {
-      backgroundColor: theme.palette.tuftsBlue,
+      backgroundColor: theme.palette.skyBlueCrayolaHover,
       color: "white",
       boxShadow: "none",
     },
@@ -108,7 +135,8 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.grey[500],
   },
   media: {
-    height: "80vh",
+    height: "60vh",
+    backgroundSize: 'contain'
   },
   logo: {
     height: 40,
@@ -128,6 +156,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     marginBottom: 20,
+    fontWeight: 500
   },
   link: {
     cursor: "pointer",
@@ -138,8 +167,22 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   return: {
-    alignSelf: "self-start",
+    alignSelf: "end",
   },
+  forgotPwd: {
+    textAlign: 'left',
+    [theme.breakpoints.down("xs")]: {
+      textAlign: 'center',
+      marginBottom: 15
+    },
+  },
+  signUp: {
+    textAlign: 'right',
+    [theme.breakpoints.down("xs")]: {
+      textAlign: 'center',
+    },
+
+  }
 }));
 
 export default function SignInSide() {
@@ -234,13 +277,15 @@ export default function SignInSide() {
   }
 
   return (
-    <div className={classes.background}>
-      <Container className={classes.container}>
-        <Grid container direction="row" className={classes.root}>
+    <div className={classes.root}>
+      <Container maxWidth={false} className={classes.container}>
+        <Grid item container direction="row"
+          justify="center"
+          alignItems="center">
           <CssBaseline />
 
           {/* Flamingo Animation */}
-          <Grid item sm={5} md={7} className={classes.animation}>
+          <Grid item sm={5} md={5} lg={5} className={classes.animation}>
             <CardMedia
               className={classes.media}
               image={cardImage}
@@ -249,12 +294,20 @@ export default function SignInSide() {
           </Grid>
 
           {/* Login Card */}
-          <Grid item xs={12} sm={7} md={5}>
+          <Grid item xs={12} sm={7} md={5} lg={4}>
             <FloatCard>
               <div className={classes.paper}>
                 {/* Return Back */}
-                <Link to="/">
-                  <img src={logo} className={classes.logo} />
+
+                <Link to="/" className={classes.return}>
+                  <Chip
+
+                    clickable
+                    icon={<ArrowBackRoundedIcon />}
+                    label="Return"
+                    style={{backgroundColor: theme.palette.lightSkyBlue,}}
+                  />
+
                 </Link>
 
                 {/* Title */}
@@ -268,7 +321,7 @@ export default function SignInSide() {
 
                 {/* Social Login */}
                 <div className={classes.socialSection}>
-                  <Typography className={classes.text}>Use</Typography>
+                  <Typography className={classes.text}>with</Typography>
                   <div className={classes.icons}>
                     <IconButton>
                       <Avatar className={classes.avatar}>
@@ -286,7 +339,7 @@ export default function SignInSide() {
                       </Avatar>
                     </IconButton>
                   </div>
-                  <Typography className={classes.text}>Or</Typography>
+                  <Typography className={classes.text}>or</Typography>
                 </div>
 
                 {/* Login Form */}
@@ -335,22 +388,28 @@ export default function SignInSide() {
                   >
                     Sign In
                   </Button>
-                </form>
-                {/* Forgot Password or Register */}
-                <Grid container>
-                  <Grid item xs style={{ textAlign: "left" }}>
-                    <Link className={classes.link}>Forgot password?</Link>
-                  </Grid>
-                  <Grid item style={{ textAlign: "right" }}>
-                    <Link className={classes.link} onClick={handleClickChoice}>
+
+
+                  {/* Forgot Password or Register */}
+                  <Grid container>
+                    <Grid item xs={12} sm={4} className={classes.forgotPwd}>
+                      <Link className={classes.link}>Forgot password?</Link>
+                    </Grid>
+                    <Grid item xs={12} sm={8} className={classes.signUp}>
+                      <Link className={classes.link} onClick={handleClickChoice}>
                       Don't have an account? Sign Up
                     </Link>
+                    </Grid>
+
                   </Grid>
                 </Grid>
 
-                <Box mt={5}>
-                  <Copyright />
-                </Box>
+
+                  <Box mt={3}>
+                    <Copyright />
+                  </Box>
+                </form>
+
               </div>
             </FloatCard>
           </Grid>
