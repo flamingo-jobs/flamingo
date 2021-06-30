@@ -43,7 +43,7 @@ const useStyles = makeStyles({
     backgroundColor: theme.palette.secondary.main,
   },
   paperCont: {
-    backgroundColor: 'Snow',
+    backgroundColor: 'MintCream',
     paddingLeft: 10,
     paddingRight: 10,
     marginBottom: 25,

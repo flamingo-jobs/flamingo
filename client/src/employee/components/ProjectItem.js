@@ -23,9 +23,16 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import TextField from '@material-ui/core/TextField';
 
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
+
 const useStyles = makeStyles((theme) => ({
     paperCont: {
-        backgroundColor: 'SeaShell',
+        backgroundColor: '#E6E6FA',
         padding: '20px 0px 20px 20px',
         borderRadius: 10,
         "&:hover": {
@@ -87,6 +94,36 @@ function ProjectItem(props) {
   const [styleEdit, setStyleEdit] = useState({display: 'none'});
   const [state, setState] = useState({name: props.name, link: props.link, description: props.description, from: props.from, to: props.to, usedTech: props.usedTech});
 
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deleteSuccess, setDeleteSuccess] = useState(false);
+  const [alertData, setAlertData] = useState({severity: "", msg: ""});
+  const [loading, setLoading] = useState(true);
+  const [alertShow, setAlertShow] = React.useState(false);
+  
+  useEffect(() => {
+    if (deleteSuccess == true) {
+        setAlertData({severity: "success", msg: "Item deleted successfully!"});
+        handleAlert();
+    }
+    setLoading(true);
+   // retrieveCategories();
+    setDeleteSuccess(false);
+}, [deleteSuccess]);
+
+// deletion
+
+  const handleClickOpen = () => {
+    setConfirmDelete(true);
+  };
+
+  const handleClickClose = () => {
+    setConfirmDelete(false);
+  };
+
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+ 
   function handleOpen(){
     setOpen(true);
   }
@@ -156,7 +193,7 @@ function ProjectItem(props) {
             </Typography>
         </TimelineOppositeContent>
         <TimelineSeparator>
-            <TimelineDot style={{backgroundColor: "thistle"}}>
+            <TimelineDot style={{backgroundColor: "Plum"}}>
                 <LaptopMacIcon />
             </TimelineDot>
             <TimelineConnector />
@@ -189,9 +226,30 @@ function ProjectItem(props) {
                         <EditIcon style={styleEdit} className={classes.editIcon} size="small" onClick={handleOpen} />
                     </Button>
                     <Button style={{minWidth:'25px',width:'25px'}}>
-                        <DeleteIcon style={styleEdit} className={classes.editIcon} size="small" onClick={handleOpen} />
+                        <DeleteIcon style={styleEdit} className={classes.editIcon} size="small"  onClick={handleClickOpen} />
                     </Button>
-                    {/*-------------- add new volunteer field popup content ------------------- */}
+                    <Dialog
+                        open={confirmDelete}
+                        onClose={handleClickClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <DialogTitle id="alert-dialog-title">{"Confirm Delete?"}</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                Are you sure that you want to delete the selected item? This cannot be undone.
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleClickClose} color="primary">
+                                No
+                            </Button>
+                            <Button color="primary" autoFocus>
+                                Yes
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                    {/*-------------- add new project field popup content ------------------- */}
                     <Modal
                     aria-labelledby="transition-modal-title"
                     aria-describedby="transition-modal-description"
