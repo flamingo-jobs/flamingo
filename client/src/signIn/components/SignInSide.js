@@ -194,7 +194,7 @@ export default function SignInSide() {
             sessionStorage.setItem("userToken", res.data.token);
           }
           const header = jwt.decode(res.data.token, { complete: true });
-          window.location = "/" + header.payload.userRole;
+          window.location = "/";
         } else {
           handleAlert();
         }

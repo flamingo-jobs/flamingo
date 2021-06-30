@@ -1,4 +1,3 @@
-
 import React from "react";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -27,7 +26,7 @@ import ThumbsUpDownRoundedIcon from "@material-ui/icons/ThumbsUpDownRounded";
 
 const jwt = require("jsonwebtoken");
 const token = sessionStorage.getItem("userToken");
-
+const header = jwt.decode(token, { complete: true });
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -56,10 +55,9 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     borderRadius: theme.shape.borderRadius,
 
-    backgroundColor: 'transparent',
-    '&:hover': {
+    backgroundColor: "transparent",
+    "&:hover": {
       backgroundColor: fade(theme.palette.tuftsBlueHover, 0.1),
-
     },
     marginRight: theme.spacing(2),
     marginLeft: 0,
@@ -123,11 +121,9 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 20,
     paddingRight: 20,
     "&:hover": {
-
       backgroundColor: theme.palette.tuftsBlueHover,
-      color: 'white',
-    }
-
+      color: "white",
+    },
   },
   signInMobile: {
     backgroundColor: theme.palette.white,
@@ -139,11 +135,9 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 20,
     paddingRight: 20,
     "&:hover": {
-
       backgroundColor: theme.palette.tuftsBlueHover,
-      color: 'white',
-    }
-
+      color: "white",
+    },
   },
   getHired: {
     backgroundColor: theme.palette.pinkyRed,
@@ -165,12 +159,10 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 20,
     paddingRight: 20,
     "&:hover": {
-
       backgroundColor: theme.palette.tuftsBlueHover,
-      color: 'white',
-    }
-  }
-
+      color: "white",
+    },
+  },
 }));
 
 export default function Topbar({ id, name, email, role }) {
@@ -198,6 +190,10 @@ export default function Topbar({ id, name, email, role }) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const loadMyAccount = () => {
+    window.location = "/" + header.payload.userRole;
+  };
+
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
@@ -210,7 +206,7 @@ export default function Topbar({ id, name, email, role }) {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={loadMyAccount}>My account</MenuItem>
     </Menu>
   );
 
@@ -334,7 +330,6 @@ export default function Topbar({ id, name, email, role }) {
               </div>
               <div className={classes.grow} />
               <div className={classes.sectionDesktop}>
-
                 {token && (
                   <>
                     <IconButton aria-label="show 4 new mails" color="primary">
@@ -387,7 +382,6 @@ export default function Topbar({ id, name, email, role }) {
                     </Button>
                   </>
                 )}
-
               </div>
               <div className={classes.sectionMobile}>
                 <IconButton
