@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useRef } from "react";
 import { useForm } from "react-hooks-helper";
 import {
   Button,
@@ -20,13 +20,14 @@ import backgroundImage from "./images/background.jfif";
 import axios from "axios";
 import BACKEND_URL from "../Config";
 import { Avatar, Badge } from "@material-ui/core";
-import AddRoundedIcon from '@material-ui/icons/AddRounded';
-import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
+import AddRoundedIcon from "@material-ui/icons/AddRounded";
+import AddCircleRoundedIcon from "@material-ui/icons/AddCircleRounded";
+import RemoveCircleRoundedIcon from "@material-ui/icons/RemoveCircleRounded";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    textAlign: "left"
+    textAlign: "left",
   },
   container: {
     paddingTop: 50,
@@ -106,7 +107,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   title: {
-    textAlign: 'left'
+    textAlign: "left",
   },
   animation: {
     [theme.breakpoints.down("xs")]: {
@@ -121,42 +122,41 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(4),
   },
   addBadge: {
-    '& .MuiBadge-anchorOriginBottomRightCircle': {
-      right: '4%',
-      bottom: '4%'
-    }
+    "& .MuiBadge-anchorOriginBottomRightCircle": {
+      right: "4%",
+      bottom: "4%",
+    },
   },
   gridCont: {
     paddingLeft: "5%",
     [theme.breakpoints.down("md")]: {
-      paddingLeft: '3%',
+      paddingLeft: "3%",
     },
     [theme.breakpoints.down("sm")]: {
-      padding: '2%',
+      padding: "2%",
     },
   },
   mainTitle: {
     fontSize: 36,
     fontWeight: 500,
-    marginTop: 20
+    marginTop: 20,
   },
   link: {
     cursor: "pointer",
   },
   actions: {
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
     [theme.breakpoints.down("sm")]: {
-      justifyContent: 'center',
+      justifyContent: "center",
     },
   },
   signIn: {
-    justifyContent: 'flex-start',
+    justifyContent: "flex-start",
     marginRight: 10,
     [theme.breakpoints.down("sm")]: {
-      justifyContent: 'center',
+      justifyContent: "center",
     },
-
-  }
+  },
 }));
 
 export default function StartHiring() {
@@ -219,10 +219,8 @@ export default function StartHiring() {
 
   // File upload handler
   const [selectedFile, setSelectedFile] = useState();
-  const [isFilePicked, setIsFilePicked] = useState(false);
   const changeHandler = (event) => {
     setSelectedFile(event.target.files[0]);
-    setIsFilePicked(true);
   };
   const handleUploads = () => {
     formData.logo = selectedFile ? selectedFile.name : "";
@@ -309,6 +307,8 @@ export default function StartHiring() {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
 
+  const fileInput = useRef();
+
   return (
     <div className={classes.background}>
       <div className={classes.overlay}>
@@ -316,11 +316,14 @@ export default function StartHiring() {
           <FloatCard>
             <form className={classes.form} onSubmit={createAccount}>
               {/* Basic details */}
-              <Grid container spacing={3} justify="space-between" className={classes.gridCont}>
+              <Grid
+                container
+                spacing={3}
+                justify="space-between"
+                className={classes.gridCont}
+              >
                 <Grid item xs={12} align="left">
-                  <Typography className={classes.mainTitle}>
-                    Sign Up
-                  </Typography>
+                  <Typography className={classes.mainTitle}>Sign Up</Typography>
                 </Grid>
 
                 <Grid item xs={12} md={5} lg={4}>
@@ -330,62 +333,75 @@ export default function StartHiring() {
                         Company Logo
                       </Typography>
                     </Grid>
-                    <Grid item xs={12} align="left">
-                      <Badge
-                        overlap="circle"
-                        anchorOrigin={{
-                          vertical: 'bottom',
-                          horizontal: 'right',
-                        }}
-                        badgeContent={<IconButton aria-label="delete" color="primary">
-                          <AddCircleRoundedIcon />
-                        </IconButton>}
-                        className={classes.addBadge}
-                      >
-                        <Avatar variant="square" style={{ width: 70, height: 70, borderRadius: 12, }} src="/static/images/avatar/2.jpg" />
-                      </Badge>
-                    </Grid>
-
-                    <Grid item xs={12} md={6} align="left">
-                      {isFilePicked ? (
-                        <Grid container alignItems="center" spacing={2}>
-                          <Grid item xs={10} md={10} align="left">
-                            <TextField
-                              label="Logo name"
-                              value={selectedFile.name}
-                              variant="outlined"
-                              className={classes.textField}
-                              fullWidth
-                              size="small"
-                              disabled
-                            />
-                          </Grid>
-                          <Grid item xs={2} md={2} align="left">
-                            <Button onClick={() => setIsFilePicked(false)}>
-                              Remove
-                            </Button>
-                          </Grid>
-                        </Grid>
-                      ) : (
-                        <TextField
-                          accept="image/*"
-                          name="selectedFile"
-                          type="file"
-                          onChange={changeHandler}
-                          variant="outlined"
-                          className={classes.textField}
-                          fullWidth
-                          size="small"
-                        />
-                      )}
-                    </Grid>
+                    {!!selectedFile ? (
+                      <Grid item xs={12} align="left">
+                        <Badge
+                          overlap="circle"
+                          anchorOrigin={{
+                            vertical: "bottom",
+                            horizontal: "right",
+                          }}
+                          badgeContent={
+                            <IconButton
+                              onClick={() => {
+                                setSelectedFile(null);
+                              }}
+                              aria-label="delete"
+                              color="secondary"
+                            >
+                              <RemoveCircleRoundedIcon />
+                            </IconButton>
+                          }
+                          className={classes.addBadge}
+                        >
+                          <Avatar
+                            variant="square"
+                            style={{ width: 70, height: 70, borderRadius: 12 }}
+                            src={URL.createObjectURL(selectedFile)}
+                          />
+                        </Badge>
+                      </Grid>
+                    ) : (
+                      <Grid item xs={12} align="left">
+                        <Badge
+                          overlap="circle"
+                          anchorOrigin={{
+                            vertical: "bottom",
+                            horizontal: "right",
+                          }}
+                          badgeContent={
+                            <IconButton
+                              onClick={() => fileInput.current.click()}
+                              aria-label="delete"
+                              color="primary"
+                            >
+                              <AddCircleRoundedIcon />
+                            </IconButton>
+                          }
+                          className={classes.addBadge}
+                        >
+                          <Avatar
+                            variant="square"
+                            style={{ width: 70, height: 70, borderRadius: 12 }}
+                            src="/static/images/avatar/2.jpg"
+                            onClick={() => fileInput.current.click()}
+                          />
+                        </Badge>
+                      </Grid>
+                    )}
+                    <input
+                      ref={fileInput}
+                      name="selectedFile"
+                      type="file"
+                      onChange={changeHandler}
+                      style={{ display: "none" }}
+                    />
                     <Grid item xs={12} align="left">
                       <Typography className={classes.title}>
                         Basic Details
                       </Typography>
                     </Grid>
                     <Grid item xs={12} align="left">
-
                       <TextField
                         label="Company Name"
                         name="name"
@@ -413,7 +429,12 @@ export default function StartHiring() {
 
                     {locations.map((x, i) => {
                       return (
-                        <Grid item container alignItems="flex-start" spacing={1}>
+                        <Grid
+                          item
+                          container
+                          alignItems="flex-start"
+                          spacing={1}
+                        >
                           <Grid item xs={12} md={8} align="left">
                             <TextField
                               className={classes.textField}
@@ -453,8 +474,8 @@ export default function StartHiring() {
                 </Grid>
                 {/* Social Media Links */}
 
-                <Grid item xs={12} md={6} lg={5} >
-                  <Grid container alignItems="center" spacing={3} >
+                <Grid item xs={12} md={6} lg={5}>
+                  <Grid container alignItems="center" spacing={3}>
                     <Grid item xs={12} align="left">
                       <Typography className={classes.title}>
                         Media Links
@@ -462,7 +483,12 @@ export default function StartHiring() {
                     </Grid>
                     {social.map((x, i) => {
                       return (
-                        <Grid item container alignItems="flex-start" spacing={1}>
+                        <Grid
+                          item
+                          container
+                          alignItems="flex-start"
+                          spacing={1}
+                        >
                           <Grid item xs={12} md={3} align="left">
                             <Autocomplete
                               id="combo-box-demo"
@@ -477,7 +503,9 @@ export default function StartHiring() {
                                   variant="outlined"
                                   size="small"
                                   value={x.platform}
-                                  onChange={(e) => handleSocialInputChange(e, i)}
+                                  onChange={(e) =>
+                                    handleSocialInputChange(e, i)
+                                  }
                                 />
                               )}
                             />
@@ -563,39 +591,44 @@ export default function StartHiring() {
                           size="small"
                         />
                       </Grid>
-
                     </Grid>
                   </Grid>
                 </Grid>
-                <Grid item container xs={12} className={classes.signIn} alignItems="center">
+                <Grid
+                  item
+                  container
+                  xs={12}
+                  className={classes.signIn}
+                  alignItems="center"
+                >
                   <Grid item md={6} align="left">
                     <Link className={classes.link}>
                       Have an account already? Sign In
                     </Link>
                   </Grid>
-                <Grid item container md={6} className={classes.actions}>
-                  <Grid item>
-                    <Button
-                      fullWidth
-                      type="submit"
-                      variant="contained"
-                      className={classes.submit}
-                    >
-                      Sign Up
-                    </Button>
-                  </Grid>
-                  <Grid item>
-                    <Button
-                      fullWidth
-                      onClick={() => {
-                        window.location = "/";
-                      }}
-                      variant="contained"
-                      className={classes.cancel}
-                    >
-                      Cancel
-                    </Button>
-                  </Grid>
+                  <Grid item container md={6} className={classes.actions}>
+                    <Grid item>
+                      <Button
+                        fullWidth
+                        type="submit"
+                        variant="contained"
+                        className={classes.submit}
+                      >
+                        Sign Up
+                      </Button>
+                    </Grid>
+                    <Grid item>
+                      <Button
+                        fullWidth
+                        onClick={() => {
+                          window.location = "/";
+                        }}
+                        variant="contained"
+                        className={classes.cancel}
+                      >
+                        Cancel
+                      </Button>
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>
@@ -608,11 +641,12 @@ export default function StartHiring() {
           </Snackbar>
         </Container>
       </div>
-    </div >
+    </div>
   );
 }
 
-{/* Technology Stack 
+{
+  /* Technology Stack 
               <Container maxWidth="lg" className={classes.jobDetailsContainer}>
                 <Typography className={classes.title}>
                   Technology Stack Details
@@ -638,4 +672,5 @@ export default function StartHiring() {
                   </Grid>
                 </Grid>
               </Container>
-              */}
+              */
+}

@@ -157,40 +157,37 @@ export const PersonalDetails = ({
     }
   };
   const sendData = () => {
-    navigation.next();
-    /*
-    const address ={
-      "street": formData.street,
-      "city": formData.city,
-      "zipCode": formData.zipcode,
-    } 
-    const contact ={
-      "email": formData.email,
-      "phone": formData.landLine,
-      "mobile": formData.mobile,
-    } 
     const jobSeekerData = {
-      "name": formData.firstName,
-      "gender": formData.gender,
-      "intro": formData.description,
-      "address": address,
-      "contact": contact,
-    };
-    const x ={
-      "name": "firstName",
-      "gender": "gender",
-      "intro": "description",
-      "address": {
-        "city" : "Matara",
-        "street" : "strs",
-        "zipcode" : "zpc"
+      name: formData.firstName,
+      gender: formData.gender,
+      intro: formData.description,
+      address: {
+        street: formData.street,
+        city: formData.city,
+        zipCode: formData.zipcode,
       },
-      "contact" : { 
-        "email":"em1",
-        "phone" : "ph1",
-        "mobile" : "mb1"
-      }
-    }
+      contact: {
+        email: formData.email,
+        phone: formData.landLine,
+        mobile: formData.mobile,
+      },
+    };
+    console.log(jobSeekerData);
+    const x = {
+      name: "firstName",
+      gender: "gender",
+      intro: "description",
+      address: {
+        city: "Matara",
+        street: "strs",
+        zipcode: "zpc",
+      },
+      contact: {
+        email: "em1",
+        phone: "ph1",
+        mobile: "mb1",
+      },
+    };
     axios.post(`${BACKEND_URL}/jobseeker/create`, jobSeekerData).then((res) => {
       if (res.data.success) {
         navigation.next();
@@ -198,7 +195,6 @@ export const PersonalDetails = ({
         console.log("Failed!");
       }
     });
-    */
   };
   return (
     <div className={classes.background}>
@@ -249,7 +245,7 @@ export const PersonalDetails = ({
                       <Autocomplete
                         id="combo-box-demo"
                         options={[{ title: "Male" }, { title: "Female" }]}
-                        getOptionLabel={(options) => options.title}
+                        getOptionLabel={(option) => option.title}
                         renderInput={(params) => (
                           <TextField
                             {...params}
