@@ -333,62 +333,82 @@ export default function StartHiring() {
                         Company Logo
                       </Typography>
                     </Grid>
-                    {!!selectedFile ? (
-                      <Grid item xs={12} align="left">
-                        <Badge
-                          overlap="circle"
-                          anchorOrigin={{
-                            vertical: "bottom",
-                            horizontal: "right",
-                          }}
-                          badgeContent={
-                            <IconButton
-                              onClick={() => {
-                                setSelectedFile(null);
+                    <Grid item xs={12} align="left">
+                      {!!selectedFile ? (
+                        <Grid container direction="row" alignItems="center">
+                          <Grid item xs={5} align="left">
+                            <Badge
+                              overlap="circle"
+                              anchorOrigin={{
+                                vertical: "bottom",
+                                horizontal: "right",
                               }}
-                              aria-label="delete"
-                              color="secondary"
+                              badgeContent={
+                                <IconButton
+                                  onClick={() => {
+                                    setSelectedFile(null);
+                                  }}
+                                  aria-label="delete"
+                                  color="secondary"
+                                >
+                                  <RemoveCircleRoundedIcon />
+                                </IconButton>
+                              }
+                              className={classes.addBadge}
                             >
-                              <RemoveCircleRoundedIcon />
-                            </IconButton>
-                          }
-                          className={classes.addBadge}
-                        >
-                          <Avatar
-                            variant="square"
-                            style={{ width: 70, height: 70, borderRadius: 12 }}
-                            src={URL.createObjectURL(selectedFile)}
-                          />
-                        </Badge>
-                      </Grid>
-                    ) : (
-                      <Grid item xs={12} align="left">
-                        <Badge
-                          overlap="circle"
-                          anchorOrigin={{
-                            vertical: "bottom",
-                            horizontal: "right",
-                          }}
-                          badgeContent={
-                            <IconButton
-                              onClick={() => fileInput.current.click()}
-                              aria-label="delete"
-                              color="primary"
+                              <Avatar
+                                variant="square"
+                                style={{
+                                  width: 70,
+                                  height: 70,
+                                  borderRadius: 12,
+                                }}
+                                src={URL.createObjectURL(selectedFile)}
+                              />
+                            </Badge>
+                          </Grid>
+                          <Grid item xs={7} align="left">
+                            <Typography>{selectedFile.name}</Typography>
+                          </Grid>
+                        </Grid>
+                      ) : (
+                        <Grid container direction="row" alignItems="center">
+                          <Grid item xs={5} align="left">
+                            <Badge
+                              overlap="circle"
+                              anchorOrigin={{
+                                vertical: "bottom",
+                                horizontal: "right",
+                              }}
+                              badgeContent={
+                                <IconButton
+                                  onClick={() => fileInput.current.click()}
+                                  aria-label="delete"
+                                  color="primary"
+                                >
+                                  <AddCircleRoundedIcon />
+                                </IconButton>
+                              }
+                              className={classes.addBadge}
                             >
-                              <AddCircleRoundedIcon />
-                            </IconButton>
-                          }
-                          className={classes.addBadge}
-                        >
-                          <Avatar
-                            variant="square"
-                            style={{ width: 70, height: 70, borderRadius: 12 }}
-                            src="/static/images/avatar/2.jpg"
-                            onClick={() => fileInput.current.click()}
-                          />
-                        </Badge>
-                      </Grid>
-                    )}
+                              <Avatar
+                                variant="square"
+                                style={{
+                                  width: 70,
+                                  height: 70,
+                                  borderRadius: 12,
+                                }}
+                                src="/static/images/avatar/2.jpg"
+                                onClick={() => fileInput.current.click()}
+                              />
+                            </Badge>
+                          </Grid>
+                          <Grid item xs={7} align="left">
+                            <Typography>No file selected</Typography>
+                          </Grid>
+                        </Grid>
+                      )}
+                    </Grid>
                     <input
                       ref={fileInput}
                       name="selectedFile"
