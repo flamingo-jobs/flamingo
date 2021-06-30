@@ -9,7 +9,7 @@ import theme from '../../Theme';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    backgroundColor: 'Snow',
+    backgroundColor: 'MintCream',
     paddingLeft: 10,
     paddingRight: 10,
     marginBottom: 25,
