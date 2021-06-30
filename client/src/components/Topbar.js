@@ -207,8 +207,8 @@ export default function Topbar({ id, name, email, role }) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      [<MenuItem onClick={handleMenuClose}>Profile</MenuItem>,
-      <MenuItem onClick={loadMyAccount}>My account</MenuItem>]
+      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={loadMyAccount}>My account</MenuItem>
     </Menu>
   );
 
@@ -226,7 +226,15 @@ export default function Topbar({ id, name, email, role }) {
     >
       {!token && (
         <div>
-          <Button className={classes.startHiring}>Start Hiring</Button>
+          
+          <Button
+            onClick={() => {
+              window.location = "/startHiring";
+            }}
+            className={classes.startHiring}
+          >
+            Start Hiring
+          </Button>
           <Button
             onClick={() => {
               window.location = "/signin";
@@ -334,7 +342,7 @@ export default function Topbar({ id, name, email, role }) {
               <div className={classes.grow} />
               <div className={classes.sectionDesktop}>
                 {token && (
-                  <>
+                  <div>
                     <IconButton aria-label="show 4 new mails" color="primary">
                       <Badge badgeContent={4} color="secondary">
                         <MailIcon />
@@ -368,11 +376,16 @@ export default function Topbar({ id, name, email, role }) {
                     >
                       Log Out
                     </Button>
-                  </>
+                  </div>
                 )}
                 {!token && (
-                  <>
-                    <Button className={classes.startHiring}>
+                  <div>
+                    <Button
+                      onClick={() => {
+                        window.location = "/startHiring";
+                      }}
+                      className={classes.startHiring}
+                    >
                       Start Hiring
                     </Button>
                     <Button
@@ -383,7 +396,7 @@ export default function Topbar({ id, name, email, role }) {
                     >
                       Sign In
                     </Button>
-                  </>
+                  </div>
                 )}
               </div>
               <div className={classes.sectionMobile}>

@@ -62,6 +62,17 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: "none",
     },
   },
+  cancel: {
+    boxShadow: "none",
+    color: theme.palette.black,
+    backgroundColor: theme.palette.white,
+    marginTop: "50px",
+    "&:hover": {
+      backgroundColor: theme.palette.white,
+      color: "black",
+      boxShadow: "none",
+    },
+  },
   media: {
     height: "80vh",
   },
@@ -103,13 +114,33 @@ export default function StartHiring() {
     description: "",
     openings: "",
     email: "",
-    subscription: "Premium",
-    scale: "Large-scale",
-    isFeatured: false,
     password: "",
     confirmPassword: "",
   };
   const [formData, setForm] = useForm(defaultData);
+
+  const createAccount = (e) => {
+    e.preventDefault();
+    const signupData = {
+      name: formData.name,
+      email: formData.email,
+      password: formData.password,
+      password_confirmation: formData.confirmPassword,
+      role: "employer",
+    };
+    if (formData.password === formData.confirmPassword) {
+      axios.post(`${BACKEND_URL}/api/signup`, signupData).then((res) => {
+        if (res.data.success) {
+          sessionStorage.setItem("userToken", res.data.token);
+          sendData();
+        } else {
+          handleAlert();
+        }
+      });
+    } else {
+      handleAlert();
+    }
+  };
 
   const sendData = () => {
     handleUploads();
@@ -119,48 +150,16 @@ export default function StartHiring() {
       description: formData.description,
       locations: locations,
       email: formData.email,
-      technologyStack: {
-        webDevelopment: {
-          frontEnd: ["Angular", "React"],
-          backEnd: ["Spring Boot", "Java"],
-        },
-        mobileDevelopment: {
-          frontEnd: ["Flutter", "React-Native"],
-          backEnd: ["Dart", "JavaScript"],
-        },
-      },
       dateRegistered: new Date(),
-      subscription: formData.subscription,
-      scale: formData.scale,
-      isFeatured: formData.isFeatured,
       links: social,
     };
     axios.post(`${BACKEND_URL}/employers/create`, employerData).then((res) => {
       if (res.data.success) {
-        handleAlert();
+        window.location = "/";
       } else {
         console.log("Failed!");
       }
     });
-    /*
-    if (formData.password === formData.confirmPassword) {
-      axios
-        .post(`${BACKEND_URL}/users/create`, {
-          username: formData.email,
-          password: formData.password,
-          role: "employer",
-        })
-        .then((res) => {
-          if (res.data.success) {
-            
-          } else {
-            console.log(res);
-          }
-        });
-    } else {
-      handleAlert();
-    }
-    */
   };
 
   // File upload handler
@@ -171,7 +170,7 @@ export default function StartHiring() {
     setIsFilePicked(true);
   };
   const handleUploads = () => {
-    formData.logo = selectedFile.name;
+    formData.logo = selectedFile ? selectedFile.name : "";
     /*
     const image = selectedFile;
     fetch("https://freeimage.host/api/1/upload?key=<YOUR_API_KEY>", {
@@ -260,18 +259,21 @@ export default function StartHiring() {
       <div className={classes.overlay}>
         <Container className={classes.container}>
           <FloatCard>
-            <Grid container spacing={2}>
-              {/* Basic details */}
-              <Grid item lg={12} >
+            <Container>
+              <form className={classes.form} onSubmit={createAccount}>
+                {/* Basic details */}
+                <Container
+                  maxWidth="lg"
+                  className={classes.jobDetailsContainer}
+                >
                   <Box mt={5} mb={5}>
                     <Typography component="h1" variant="h5">
                       Company Details
                     </Typography>
                   </Box>
-                  </Grid>
-              <Grid item lg={6} >
-
-                  <Typography className={classes.title}>Basic Details</Typography>
+                  <Typography className={classes.title}>
+                    Basic Details
+                  </Typography>
                   <Grid container alignItems="center" spacing={2}>
                     <Grid item xs={12} md={6} align="center">
                       <TextField
@@ -365,39 +367,43 @@ export default function StartHiring() {
                       </Grid>
                     );
                   })}
-              </Grid>
-              <Grid item lg={6} >
-
-                {/*Technology Stack */}
-                <Container maxWidth="lg" className={classes.jobDetailsContainer}>
-                  <Typography className={classes.title}>
-                    Technology Stack Details
-                  </Typography>
-                  <Grid container alignItems="center" spacing={2}>
-                    <Grid item xs={12} md={12} align="center">
-                      <Autocomplete
-                        multiple
-                        id="tags-outlined"
-                        options={techStack}
-                        getOptionLabel={(option) => option.title}
-                        filterSelectedOptions
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            className={classes.textField}
-                            variant="outlined"
-                            label="Technology Stack"
-                            placeholder="Used Technologies"
-                          />
-                        )}
-                      />
-                    </Grid>
-                  </Grid>
                 </Container>
 
+                {/* Technology Stack 
+              <Container maxWidth="lg" className={classes.jobDetailsContainer}>
+                <Typography className={classes.title}>
+                  Technology Stack Details
+                </Typography>
+                <Grid container alignItems="center" spacing={2}>
+                  <Grid item xs={12} md={12} align="center">
+                    <Autocomplete
+                      multiple
+                      id="tags-outlined"
+                      options={techStack}
+                      getOptionLabel={(option) => option.title}
+                      filterSelectedOptions
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          className={classes.textField}
+                          variant="outlined"
+                          label="Technology Stack"
+                          placeholder="Used Technologies"
+                        />
+                      )}
+                    />
+                  </Grid>
+                </Grid>
+              </Container>
+              */}
                 {/* Social Media Links */}
-                <Container maxWidth="lg" className={classes.jobDetailsContainer}>
-                  <Typography className={classes.title}>Links</Typography>
+                <Container
+                  maxWidth="lg"
+                  className={classes.jobDetailsContainer}
+                >
+                  <Typography className={classes.title}>
+                    Social Media Links
+                  </Typography>
                   {social.map((x, i) => {
                     return (
                       <Grid container alignItems="center" spacing={2}>
@@ -453,68 +459,84 @@ export default function StartHiring() {
                     );
                   })}
                 </Container>
-              </Grid>
-              {/* Login details */}
-              <Container className={classes.jobDetailsContainer}>
-                <Typography className={classes.title}>
-                  Login Credentials
-                </Typography>
-                <Grid container alignItems="center" spacing={2}>
-                  <Grid item xs={12} md={12} align="center">
-                    <TextField
-                      label="Email Address"
-                      name="email"
-                      value={formData.email}
-                      onChange={setForm}
-                      variant="outlined"
-                      className={classes.textField}
-                      required
-                      fullWidth
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={6} align="center">
-                    <TextField
-                      label="Password"
-                      name="password"
-                      value={formData.password}
-                      onChange={setForm}
-                      variant="outlined"
-                      className={classes.textField}
-                      required
-                      fullWidth
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={6} align="center">
-                    <TextField
-                      label="Confirm Password"
-                      name="confirmPassword"
-                      value={formData.confirmPassword}
-                      onChange={setForm}
-                      variant="outlined"
-                      className={classes.textField}
-                      required
-                      fullWidth
-                    />
-                  </Grid>
-                  <Grid container alignItems="center" justify="flex-end">
-                    <Grid item align="center">
-                      <Button
+
+                {/* Login details */}
+                <Container className={classes.jobDetailsContainer}>
+                  <Typography className={classes.title}>
+                    Login Credentials
+                  </Typography>
+                  <Grid container alignItems="center" spacing={2}>
+                    <Grid item xs={12} md={12} align="center">
+                      <TextField
+                        label="Email Address"
+                        name="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={setForm}
+                        variant="outlined"
+                        className={classes.textField}
+                        required
                         fullWidth
-                        variant="contained"
-                        className={classes.submit}
-                        onClick={sendData}
-                      >
-                        Sign Up
-                      </Button>
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={6} align="center">
+                      <TextField
+                        label="Password"
+                        name="password"
+                        type="password"
+                        value={formData.password}
+                        onChange={setForm}
+                        variant="outlined"
+                        className={classes.textField}
+                        required
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={6} align="center">
+                      <TextField
+                        label="Confirm Password"
+                        name="confirmPassword"
+                        type="password"
+                        value={formData.confirmPassword}
+                        onChange={setForm}
+                        variant="outlined"
+                        className={classes.textField}
+                        required
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid container alignItems="center" justify="flex-end">
+                      <Grid item align="center">
+                        <Button
+                          fullWidth
+                          type="submit"
+                          variant="contained"
+                          className={classes.submit}
+                        >
+                          Sign Up
+                        </Button>
+                      </Grid>
+                      <Grid item align="center">
+                        <Button
+                          fullWidth
+                          onClick={() => {
+                            window.location = "/";
+                          }}
+                          variant="contained"
+                          className={classes.cancel}
+                        >
+                          Cancel
+                        </Button>
+                      </Grid>
                     </Grid>
                   </Grid>
-                </Grid>
-              </Container>
-            </Grid>
+                </Container>
+              </form>
+            </Container>
           </FloatCard>
           <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-            <Alert onClose={handleClose} severity="success">
-              Account created successfully! Check your email for verification link.
+            <Alert onClose={handleClose} severity="error">
+              Signup Failed! Please check whether your passwords are matching.
             </Alert>
           </Snackbar>
         </Container>

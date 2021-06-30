@@ -70,9 +70,10 @@ exports.signup = (req, res, next) => {
             user
               .save()
               .then((response) => {
+                let access_token = createJWT( response._id, user.username, user.email, user.role, 3600);
                 res.status(200).json({
                   success: true,
-                  result: response,
+                  token: access_token,
                 });
               })
               .catch((err) => {
