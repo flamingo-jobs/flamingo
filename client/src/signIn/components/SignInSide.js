@@ -407,7 +407,7 @@ export default function SignInSide() {
             Sign up as
           </DialogTitle>
           <DialogContent dividers>
-            <Grid container direction="row" className={classes.root}>
+            <Grid container direction="row">
               <Grid item xs={12} md={6}>
                 <ListItem
                   button
