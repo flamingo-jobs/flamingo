@@ -20,7 +20,7 @@ function App() {
         <BrowserRouter>
           <ThemeProvider theme={theme}>
             <Route
-              path="(/|/jobs|/jobDescription|/categories|/organizations)"
+              path="(/|/jobs|/jobDescription|/people|/organizations)"
               exact
             >
               <Base />
@@ -90,8 +90,7 @@ function App() {
             <BrowserRouter>
               <ThemeProvider theme={theme}>
                 <Route
-                  path="(/|/jobs|/employer|/jobseeker|/jobDescription|/createJob|/admin/categories|/organizations)"
-                  exact
+                  path="(/|/jobs|/employer|/jobseeker|/jobDescription|/createJob|/admin/categories|/organizations|/people|/admin/technologies)"
                 >
                   <Base />
                 </Route>

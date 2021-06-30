@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Container, makeStyles } from "@material-ui/core";
 import SideDrawer from "./components/SideDrawer";
 import Grid from "@material-ui/core/Grid";
@@ -16,13 +16,11 @@ import Categories from "./admin/Categories";
 import CreateJobForm from "./jobs/createJob/createJobForm";
 import People from './people/People';
 import Technologies from './admin/Technologies';
-import { Switch } from "react-router";
+import { Switch } from "react-router-dom";
 import Organizations from "./employer/Organizations";
 
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -81,354 +79,155 @@ function Base() {
 
   //Redirect user to signin page if not logged in
   const token = sessionStorage.getItem("userToken");
-  if (!token) {
+
+  const [role, setRole] = useState(jwt.decode(token, { complete: true })? jwt.decode(token, { complete: true }).payload.userRole: null);
+
+  useEffect(() => {
+    loadEmployer();
+    loadJobSeeker();
+    loadAdmin();
+    loadDefault();
+    console.log(token);
+  }, [role]);
+
+  const loadDefault = () => {
     return (
-      <div className={classes.root}>
-        <div className="overlay">
-          <Container maxWidth={false} className={classes.container}>
-            <Grid
-              container
-              direction="row"
-              spacing={3}
-              className={classes.mainGrid}
-              justify="space-between"
-              alignItems="flex-start"
-            >
-              <Grid
-                item
-                xs={false}
-                sm={4}
-                md={3}
-                lg={2}
-                className={classes.sideDrawer}
-              >
-                <SideDrawer />
-              </Grid>
+      <>
+        <Route path="/jobs">
+          <Jobs />
+        </Route>
+        <Route path="/organizations">
+          <Organizations />
+        </Route>
+        <Route path="/jobDescription" >
+          <JobDescription />
+        </Route>
+        <Route path="/people">
+          <People />
+        </Route>
+        <Route path="/" exact>
+          <Home />
+        </Route>
+      </>
+    )
+  }
 
-              <Grid
-                item
-                xs={false}
-                sm={4}
-                md={3}
-                lg={2}
-                className={classes.sideDrawerGrid}
-              ></Grid>
-              <Grid
-                item
-                container
-                xs={12}
-                sm={8}
-                md={9}
-                lg={10}
-                spacing={3}
-                className={classes.topBarGrid}
-                direction="column"
-                justify="space-between"
-              >
-                <Grid item sm={12}>
-                  <Topbar />
-                </Grid>
-                <Grid
-                  container
-                  xs={12}
-                  spacing={0}
-                  direction="column"
-                  alignItems="center"
-                  className={classes.screen}
-                >
-                  {/* start your routes here */}
-                  <Route path="/" exact>
-                    <Home />
-                  </Route>
-                  <Route path="/jobs" exact>
-                    <Jobs />
-                  </Route>
-                  <Route path="/organizations" exact>
-                    <Organizations />
-                  </Route>
-                  <Route path="/jobDescription" exact>
-                    <JobDescription />
-                  </Route>
-                  {/* ends your routes here */}
-                </Grid>
-                <Grid item xs={12}>
-                  <Footer />
-                </Grid>
+  const loadJobSeeker = () => {
+    if (role == "jobseeker") {
+      return (
+        <>
+          <Route path="/jobseeker">
+            <Profile />
+          </Route>
+        </>
+      )
+    }
 
-              </Grid>
-            </Grid>
-          </Container>
-        </div>
-      </div>
-    );
-  } else {
-    const header = jwt.decode(token, { complete: true });
-    const role = header.payload.userRole;
-    switch (role) {
-      case "employer":
-        return (
-          <div className={classes.root}>
-            <div className="overlay">
-              <Container maxWidth={false} className={classes.container}>
-                <Grid
-                  container
-                  direction="row"
-                  spacing={3}
-                  className={classes.mainGrid}
-                  justify="space-between"
-                  alignItems="flex-start"
-                >
-                  <Grid
-                    item
-                    xs={false}
-                    sm={4}
-                    md={3}
-                    lg={2}
-                    className={classes.sideDrawer}
-                  >
-                    <SideDrawer />
-                  </Grid>
-                  <Grid
-                    item
-                    xs={false}
-                    sm={4}
-                    md={3}
-                    lg={2}
-                    className={classes.sideDrawerGrid}
-                  ></Grid>
-                  <Grid
-                    item
-                    container
-                    xs={12}
-                    sm={8}
-                    md={9}
-                    lg={10}
-                    spacing={3}
-                    className={classes.topBarGrid}
-                    direction="column"
-                    justify="space-between"
-                  >
-                    <Grid item sm={12}>
-                      <Topbar />
-                    </Grid>
-                    <Grid
-                      container
-                      xs={12}
-                      spacing={0}
-                      direction="column"
-                      alignItems="center"
-                      className={classes.screen}
-                    >
-                      {/* start your routes here */}
+  }
 
-                      <Route path="/" exact>
-                        <Home />
-                      </Route>
-                      <Route path="/employer" exact>
-                        <Employer />
-                      </Route>
-                      <Route path="/organizations" exact>
-                        <Organizations />
-                      </Route>
-                      <Route path="/jobDescription" exact>
-                        <JobDescription />
-                      </Route>
-                      <Route path="/createJob" exact>
-                        <CreateJobForm />
-                      </Route>
-                      {/* ends your routes here */}
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Footer />
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Container>
-            </div>
-          </div>
-        );
-      case "jobseeker":
-        return (
-          <div className={classes.root}>
-            <div className="overlay">
-              <Container maxWidth={false} className={classes.container}>
-                <Grid
-                  container
-                  direction="row"
-                  spacing={3}
-                  className={classes.mainGrid}
-                  justify="space-between"
-                  alignItems="flex-start"
-                >
-                  <Grid
-                    item
-                    xs={false}
-                    sm={4}
-                    md={3}
-                    lg={2}
-                    className={classes.sideDrawer}
-                  >
-                    <SideDrawer />
-                  </Grid>
-                  <Grid
-                    item
-                    xs={false}
-                    sm={4}
-                    md={3}
-                    lg={2}
-                    className={classes.sideDrawerGrid}
-                  ></Grid>
-                  <Grid
-                    item
-                    container
-                    xs={12}
-                    sm={8}
-                    md={9}
-                    lg={10}
-                    spacing={3}
-                    className={classes.topBarGrid}
-                    direction="column"
-                    justify="space-between"
-                  >
-                    <Grid item sm={12}>
-                      <Topbar />
-                    </Grid>
-                    <Grid
-                      container
-                      xs={12}
-                      spacing={0}
-                      direction="column"
-                      alignItems="center"
-                      className={classes.screen}
-                    >
-                      {/* start your routes here */}
-
-                      <Route path="/" exact>
-                        <Home />
-                      </Route>
-                      <Route path="/jobs" exact>
-                        <Jobs />
-                      </Route>
-                      <Route path="/jobseeker" exact>
-                        <Profile />
-                      </Route>
-                      <Route path="/organizations" exact>
-                        <Organizations />
-                      </Route>
-                      <Route path="/jobDescription" exact>
-                        <JobDescription />
-                      </Route>
-                      {/* ends your routes here */}
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Footer />
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Container>
-            </div>
-          </div>
-        );
-      case "admin":
-        return (
-          <div className={classes.root}>
-            <div className="overlay">
-              <Container maxWidth={false} className={classes.container}>
-                <Grid
-                  container
-                  direction="row"
-                  spacing={3}
-                  className={classes.mainGrid}
-                  justify="space-between"
-                  alignItems="flex-start"
-                >
-                  <Grid
-                    item
-                    xs={false}
-                    sm={4}
-                    md={3}
-                    lg={2}
-                    className={classes.sideDrawer}
-                  >
-                    <SideDrawer />
-                  </Grid>
-                  <Grid
-                    item
-                    xs={false}
-                    sm={4}
-                    md={3}
-                    lg={2}
-                    className={classes.sideDrawerGrid}
-                  ></Grid>
-                  <Grid
-                    item
-                    container
-                    xs={12}
-                    sm={8}
-                    md={9}
-                    lg={10}
-                    spacing={3}
-                    className={classes.topBarGrid}
-                    direction="column"
-                    justify="space-between"
-                  >
-                    <Grid item sm={12}>
-                      <Topbar />
-                    </Grid>
-                    <Grid
-                      container
-                      xs={12}
-                      spacing={0}
-                      direction="column"
-                      alignItems="center"
-                      className={classes.screen}
-                    >
-                      {/* start your routes here */}
-
-                      <Route path="/" exact>
-                        <Home />
-                      </Route>
-                      <Route path="/jobs" exact>
-                        <Jobs />
-                      </Route>
-                      <Route path="/jobseeker" exact>
-                        <Profile />
-                      </Route>
-                      <Route path="/employer" exact>
-                        <Employer />
-                      </Route>
-                      <Route path="/organizations" exact>
-                        <Organizations />
-                      </Route>
-                      <Route path="/jobDescription" exact>
-                        <JobDescription />
-                      </Route>
-                      <Route path="/admin/categories" exact>
-                        <Categories />
-                      </Route>
-                      <Route path="/createJob" exact>
-                        <CreateJobForm />
-                      </Route>
-                      {/* ends your routes here */}
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Footer />
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Container>
-            </div>
-          </div>
-        );
-      default:
-        return (
-          <div>
-            <h1>404 error!</h1>
-            <p>Role not found</p>
-          </div>
-        );
+  const loadEmployer = () => {
+    if (role == "employer") {
+      return (
+        <>
+          <Route path="/createJob">
+            <CreateJobForm />
+          </Route>
+        </>
+      )
     }
   }
+
+  const loadAdmin = () => {
+    if (role == "admin") {
+      return (
+        <>
+          <Route path="/admin/categories">
+            <Categories />
+          </Route>
+          <Route path="/admin/technologies">
+            <Technologies />
+          </Route>
+          <Route path="/createJob">
+            <CreateJobForm />
+          </Route>
+        </>
+      )
+    }
+  }
+
+  return (
+    <div className={classes.root}>
+      <div className="overlay">
+        <Container maxWidth={false} className={classes.container}>
+          <Grid
+            container
+            direction="row"
+            spacing={3}
+            className={classes.mainGrid}
+            justify="space-between"
+            alignItems="flex-start"
+          >
+            <Grid
+              item
+              xs={false}
+              sm={4}
+              md={3}
+              lg={2}
+              className={classes.sideDrawer}
+            >
+              <SideDrawer />
+            </Grid>
+
+            <Grid
+              item
+              xs={false}
+              sm={4}
+              md={3}
+              lg={2}
+              className={classes.sideDrawerGrid}
+            ></Grid>
+            <Grid
+              item
+              container
+              xs={12}
+              sm={8}
+              md={9}
+              lg={10}
+              spacing={3}
+              className={classes.topBarGrid}
+              direction="column"
+              justify="space-between"
+            >
+              <Grid item sm={12}>
+                <Topbar />
+              </Grid>
+              <Grid
+                container
+                xs={12}
+                spacing={0}
+                direction="column"
+                alignItems="center"
+                className={classes.screen}
+              >
+                <Switch>
+                  {loadEmployer()}
+                  {loadJobSeeker()}
+                  {loadAdmin()}
+                </Switch>
+                <Switch>
+                {loadDefault()}
+                </Switch>
+              </Grid>
+              <Grid item xs={12}>
+                <Footer />
+              </Grid>
+
+            </Grid>
+          </Grid>
+        </Container>
+      </div>
+    </div>
+  );
 }
 
 export default Base;

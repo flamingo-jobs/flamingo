@@ -163,6 +163,7 @@ const useStyles = makeStyles((theme) => ({
       color: "white",
     },
   },
+  menu: {marginTop: 50}
 }));
 
 export default function Topbar({ id, name, email, role }) {
@@ -191,7 +192,7 @@ export default function Topbar({ id, name, email, role }) {
   };
 
   const loadMyAccount = () => {
-    window.location = "/" + header.payload.userRole;
+    window.location = "/account/" + header.payload.userId;
   };
 
   const menuId = "primary-search-account-menu";
@@ -205,8 +206,8 @@ export default function Topbar({ id, name, email, role }) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={loadMyAccount}>My account</MenuItem>
+      [<MenuItem onClick={handleMenuClose}>Profile</MenuItem>,
+      <MenuItem onClick={loadMyAccount}>My account</MenuItem>]
     </Menu>
   );
 
@@ -220,22 +221,23 @@ export default function Topbar({ id, name, email, role }) {
       transformOrigin={{ vertical: "top", horizontal: "right" }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
+      className={classes.menu}
     >
       {!token && (
-        <>
+        <div>
           <Button className={classes.startHiring}>Start Hiring</Button>
           <Button
             onClick={() => {
               window.location = "/signin";
             }}
-            className={classes.signIn}
+            className={classes.signInMobile}
           >
             Sign In
           </Button>
-        </>
+        </div>
       )}
       {token && (
-        <>
+        <div>
           {" "}
           <MenuItem>
             <IconButton aria-label="show 4 new mails" color="inherit">
@@ -264,7 +266,7 @@ export default function Topbar({ id, name, email, role }) {
             </IconButton>
             <p>Profile</p>
           </MenuItem>{" "}
-        </>
+        </div>
       )}
       <div className={classes.mobileSideMenuItems}>
         <MenuItem>
