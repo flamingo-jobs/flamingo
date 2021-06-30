@@ -218,6 +218,7 @@ export default function StartHiring() {
   };
 
   // File upload handler
+  const fileInput = useRef();
   const [selectedFile, setSelectedFile] = useState();
   const changeHandler = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -306,8 +307,6 @@ export default function StartHiring() {
   function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
-
-  const fileInput = useRef();
 
   return (
     <div className={classes.background}>
