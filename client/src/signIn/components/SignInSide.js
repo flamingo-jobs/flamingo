@@ -1,8 +1,6 @@
 
 import { React, useState, forwardRef } from "react";
 import { useForm } from "react-hooks-helper";
-
-
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -12,48 +10,30 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-
+import theme from "../../Theme";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import cardImage from "../../signIn/images/flamingo.gif";
-import logo from "../images/logo.jpg";
 import FloatCard from "../../components/FloatCard";
 import {
   Chip,
   Container,
   IconButton,
-  Avatar,
-  Button,
-  CssBaseline,
-  TextField,
-  FormControlLabel,
-  Checkbox,
-  Link,
-  Box,
-  Grid,
-  Typography,
   CardMedia,
   Snackbar,
   Dialog,
-  List,
   ListItem,
-  ListItemText,
-  Divider,
   Slide,
 } from "@material-ui/core";
 import { Redirect } from "react-router-dom";
-
 import MuiAlert from "@material-ui/lab/Alert";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogContent from "@material-ui/core/DialogContent";
 import MuiDialogActions from "@material-ui/core/DialogActions";
-
 import FacebookIcon from "@material-ui/icons/Facebook";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import GitHubIcon from "@material-ui/icons/GitHub";
-import CloseIcon from "@material-ui/icons/Close";
 import ArrowBackRoundedIcon from "@material-ui/icons/ArrowBackRounded";
 import { Link } from 'react-router-dom'
-
 import axios from "axios";
 import BACKEND_URL from "../../Config";
 
@@ -112,7 +92,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%", // Fix IE 11 issue.
     marginTop: 20,
     display: "contents",
-    
+
   },
   submit: {
     width: "30%",
@@ -305,7 +285,7 @@ export default function SignInSide() {
                     clickable
                     icon={<ArrowBackRoundedIcon />}
                     label="Return"
-                    style={{backgroundColor: theme.palette.lightSkyBlue,}}
+                    style={{ backgroundColor: theme.palette.lightSkyBlue, }}
                   />
 
                 </Link>
@@ -397,12 +377,11 @@ export default function SignInSide() {
                     </Grid>
                     <Grid item xs={12} sm={8} className={classes.signUp}>
                       <Link className={classes.link} onClick={handleClickChoice}>
-                      Don't have an account? Sign Up
-                    </Link>
+                        Don't have an account? Sign Up
+                      </Link>
                     </Grid>
 
                   </Grid>
-                </Grid>
 
 
                   <Box mt={3}>
