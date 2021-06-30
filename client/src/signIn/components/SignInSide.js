@@ -5,7 +5,6 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -20,6 +19,7 @@ import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import theme from "../../Theme";
 import ArrowBackRoundedIcon from "@material-ui/icons/ArrowBackRounded";
+import { Link } from 'react-router-dom'
 
 function Copyright() {
   return (
@@ -35,17 +35,29 @@ function Copyright() {
 }
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
+  root: {
+    backgroundColor: "#6fbada",
+    minHeight: '100vh',
+    backgroundSize: 'cover',
+  },
   container: {
-    paddingTop: "6vh",
-    paddingBottom: "6vh",
-    minHeight: "100vh",
+    display: 'flex',
+    width: '100%',
+    margin: '0 auto',
+    padding: 10,
+    paddingLeft: 40,
+    paddingRight: 40,
+    minHeight: '100vh',
+    [theme.breakpoints.down("xs")]: {
+      paddingLeft: 8,
+      paddingRight: 8,
+    },
   },
   overlay: {
-    minHeight: "100vh",
+    // minHeight: "100vh",
   },
   background: {
-    backgroundColor: theme.palette.flamingo,
+    backgroundColor: theme.palette.lightSkyBlue,
     backgroundSize: "cover",
   },
   paper: {
@@ -62,13 +74,14 @@ const useStyles = makeStyles((theme) => ({
     width: "100%", // Fix IE 11 issue.
     marginTop: 20,
     display: "contents",
+    
   },
   submit: {
     width: "30%",
     boxShadow: "none",
     color: theme.palette.white,
     backgroundColor: theme.palette.skyBlueCrayola,
-    margin: " 5% 35% 10% 35%",
+    margin: " 5% 35% 5% 35%",
     borderRadius: 25,
     padding: "10px 5px 10px 5px",
     "&:hover": {
@@ -78,7 +91,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   media: {
-    height: "80vh",
+    height: "60vh",
+    backgroundSize: 'contain'
   },
   textField: {
     margin: 10,
@@ -95,6 +109,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     marginBottom: 20,
+    fontWeight: 500
   },
   animation: {
     [theme.breakpoints.down("xs")]: {
@@ -102,21 +117,37 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   return: {
-    alignSelf: "self-start",
+    alignSelf: "end",
   },
+  forgotPwd: {
+    textAlign: 'left',
+    [theme.breakpoints.down("xs")]: {
+      textAlign: 'center',
+      marginBottom: 15
+    },
+  },
+  signUp: {
+    textAlign: 'right',
+    [theme.breakpoints.down("xs")]: {
+      textAlign: 'center',
+    },
+
+  }
 }));
 
 export default function SignInSide() {
   const classes = useStyles();
 
   return (
-    <div className={classes.background}>
-      <Container className={classes.container}>
-        <Grid container direction="row" className={classes.root}>
+    <div className={classes.root}>
+      <Container maxWidth={false} className={classes.container}>
+        <Grid item container direction="row"
+          justify="center"
+          alignItems="center">
           <CssBaseline />
 
           {/* Flamingo Animation */}
-          <Grid item sm={5} md={7} className={classes.animation}>
+          <Grid item sm={5} md={5} lg={5} className={classes.animation}>
             <CardMedia
               className={classes.media}
               image={cardImage}
@@ -125,16 +156,17 @@ export default function SignInSide() {
           </Grid>
 
           {/* Login Card */}
-          <Grid item xs={12} sm={7} md={5}>
+          <Grid item xs={12} sm={7} md={5} lg={4}>
             <FloatCard>
               <div className={classes.paper}>
                 {/* Return Back */}
-                <Link to="/">
+                <Link to="/" className={classes.return}>
                   <Chip
-                    className={classes.return}
+
                     clickable
                     icon={<ArrowBackRoundedIcon />}
                     label="Return"
+                    style={{backgroundColor: theme.palette.lightSkyBlue,}}
                   />
                 </Link>
 
@@ -149,7 +181,7 @@ export default function SignInSide() {
 
                 {/* Social Login */}
                 <div className={classes.socialSection}>
-                  <Typography className={classes.text}>Use</Typography>
+                  <Typography className={classes.text}>with</Typography>
                   <div className={classes.icons}>
                     <IconButton>
                       <Avatar className={classes.avatar}>
@@ -167,7 +199,7 @@ export default function SignInSide() {
                       </Avatar>
                     </IconButton>
                   </div>
-                  <Typography className={classes.text}>Or</Typography>
+                  <Typography className={classes.text}>or</Typography>
                 </div>
 
                 {/* Login Form */}
@@ -206,19 +238,19 @@ export default function SignInSide() {
 
                   {/* Forgot Password or Register */}
                   <Grid container>
-                    <Grid item xs style={{ textAlign: "left" }}>
+                    <Grid item xs={12} sm={4} className={classes.forgotPwd}>
                       <Link href="#" variant="body2">
                         Forgot password?
                       </Link>
                     </Grid>
-                    <Grid item style={{ textAlign: "right" }}>
+                    <Grid item xs={12} sm={8} className={classes.signUp}>
                       <Link href="#" variant="body2">
                         {"Don't have an account? Sign Up"}
                       </Link>
                     </Grid>
                   </Grid>
 
-                  <Box mt={5}>
+                  <Box mt={3}>
                     <Copyright />
                   </Box>
                 </form>

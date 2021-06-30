@@ -14,7 +14,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import MenuRoundedIcon from '@material-ui/icons/MenuRounded';
 import './styles/Custom.css'
 import logo from './images/logo.jpg'
-import { Button, Link } from '@material-ui/core';
+import { Button} from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
@@ -23,6 +23,7 @@ import BusinessRoundedIcon from '@material-ui/icons/BusinessRounded';
 import PeopleAltRoundedIcon from '@material-ui/icons/PeopleAltRounded';
 import PhoneRoundedIcon from '@material-ui/icons/PhoneRounded';
 import ThumbsUpDownRoundedIcon from '@material-ui/icons/ThumbsUpDownRounded';
+import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -327,8 +328,8 @@ export default function Topbar() {
               <AccountCircle />
             </IconButton> */}
 
-                <Button className={classes.startHiring}>Start Hiring</Button>
-                <Button className={classes.signIn}>Sign In</Button>
+                <Link to="/getHired" ><Button className={classes.startHiring}>Start Hiring</Button></Link>
+                <Link to="/signIn" ><Button className={classes.signIn}>Sign In</Button></Link>
               </div>
               <div className={classes.sectionMobile}>
                 <IconButton
