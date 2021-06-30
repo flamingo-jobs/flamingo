@@ -62,6 +62,17 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: "none",
     },
   },
+  cancel: {
+    boxShadow: "none",
+    color: theme.palette.black,
+    backgroundColor: theme.palette.white,
+    marginTop: "50px",
+    "&:hover": {
+      backgroundColor: theme.palette.white,
+      color: "black",
+      boxShadow: "none",
+    },
+  },
   media: {
     height: "80vh",
   },
@@ -103,13 +114,33 @@ export default function StartHiring() {
     description: "",
     openings: "",
     email: "",
-    subscription: "Premium",
-    scale: "Large-scale",
-    isFeatured: false,
     password: "",
     confirmPassword: "",
   };
   const [formData, setForm] = useForm(defaultData);
+
+  const createAccount = (e) => {
+    e.preventDefault();
+    const signupData = {
+      name: formData.name,
+      email: formData.email,
+      password: formData.password,
+      password_confirmation: formData.confirmPassword,
+      role: "employer",
+    };
+    if (formData.password === formData.confirmPassword) {
+      axios.post(`${BACKEND_URL}/api/signup`, signupData).then((res) => {
+        if (res.data.success) {
+          sessionStorage.setItem("userToken", res.data.token);
+          sendData();
+        } else {
+          handleAlert();
+        }
+      });
+    } else {
+      handleAlert();
+    }
+  };
 
   const sendData = () => {
     handleUploads();
@@ -119,48 +150,16 @@ export default function StartHiring() {
       description: formData.description,
       locations: locations,
       email: formData.email,
-      technologyStack: {
-        webDevelopment: {
-          frontEnd: ["Angular", "React"],
-          backEnd: ["Spring Boot", "Java"],
-        },
-        mobileDevelopment: {
-          frontEnd: ["Flutter", "React-Native"],
-          backEnd: ["Dart", "JavaScript"],
-        },
-      },
       dateRegistered: new Date(),
-      subscription: formData.subscription,
-      scale: formData.scale,
-      isFeatured: formData.isFeatured,
       links: social,
     };
     axios.post(`${BACKEND_URL}/employers/create`, employerData).then((res) => {
       if (res.data.success) {
-        handleAlert();
+        window.location = "/";
       } else {
         console.log("Failed!");
       }
     });
-    /*
-    if (formData.password === formData.confirmPassword) {
-      axios
-        .post(`${BACKEND_URL}/users/create`, {
-          username: formData.email,
-          password: formData.password,
-          role: "employer",
-        })
-        .then((res) => {
-          if (res.data.success) {
-            
-          } else {
-            console.log(res);
-          }
-        });
-    } else {
-      handleAlert();
-    }
-    */
   };
 
   // File upload handler
@@ -171,7 +170,7 @@ export default function StartHiring() {
     setIsFilePicked(true);
   };
   const handleUploads = () => {
-    formData.logo = selectedFile.name;
+    formData.logo = selectedFile ? selectedFile.name : "";
     /*
     const image = selectedFile;
     fetch("https://freeimage.host/api/1/upload?key=<YOUR_API_KEY>", {
@@ -261,110 +260,116 @@ export default function StartHiring() {
         <Container className={classes.container}>
           <FloatCard>
             <Container>
-              {/* Basic details */}
-              <Container maxWidth="lg" className={classes.jobDetailsContainer}>
-                <Box mt={5} mb={5}>
-                  <Typography component="h1" variant="h5">
-                    Company Details
+              <form className={classes.form} onSubmit={createAccount}>
+                {/* Basic details */}
+                <Container
+                  maxWidth="lg"
+                  className={classes.jobDetailsContainer}
+                >
+                  <Box mt={5} mb={5}>
+                    <Typography component="h1" variant="h5">
+                      Company Details
+                    </Typography>
+                  </Box>
+                  <Typography className={classes.title}>
+                    Basic Details
                   </Typography>
-                </Box>
-                <Typography className={classes.title}>Basic Details</Typography>
-                <Grid container alignItems="center" spacing={2}>
-                  <Grid item xs={12} md={6} align="center">
-                    <TextField
-                      label="Company Name"
-                      name="name"
-                      value={formData.name}
-                      onChange={setForm}
-                      variant="outlined"
-                      className={classes.textField}
-                      required
-                      fullWidth
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={6} align="center">
-                    {isFilePicked ? (
-                      <Grid container alignItems="center" spacing={2}>
-                        <Grid item xs={10} md={10} align="center">
-                          <TextField
-                            label="Logo name"
-                            value={selectedFile.name}
-                            variant="outlined"
-                            className={classes.textField}
-                            fullWidth
-                            disabled
-                          />
-                        </Grid>
-                        <Grid item xs={2} md={2} align="center">
-                          <Button onClick={() => setIsFilePicked(false)}>
-                            Remove
-                          </Button>
-                        </Grid>
-                      </Grid>
-                    ) : (
+                  <Grid container alignItems="center" spacing={2}>
+                    <Grid item xs={12} md={6} align="center">
                       <TextField
-                        accept="image/*"
-                        name="selectedFile"
-                        type="file"
-                        onChange={changeHandler}
+                        label="Company Name"
+                        name="name"
+                        value={formData.name}
+                        onChange={setForm}
+                        variant="outlined"
+                        className={classes.textField}
+                        required
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={6} align="center">
+                      {isFilePicked ? (
+                        <Grid container alignItems="center" spacing={2}>
+                          <Grid item xs={10} md={10} align="center">
+                            <TextField
+                              label="Logo name"
+                              value={selectedFile.name}
+                              variant="outlined"
+                              className={classes.textField}
+                              fullWidth
+                              disabled
+                            />
+                          </Grid>
+                          <Grid item xs={2} md={2} align="center">
+                            <Button onClick={() => setIsFilePicked(false)}>
+                              Remove
+                            </Button>
+                          </Grid>
+                        </Grid>
+                      ) : (
+                        <TextField
+                          accept="image/*"
+                          name="selectedFile"
+                          type="file"
+                          onChange={changeHandler}
+                          variant="outlined"
+                          className={classes.textField}
+                          fullWidth
+                        />
+                      )}
+                    </Grid>
+                    <Grid item xs={12} md={12} align="center">
+                      <TextField
+                        label="Description"
+                        name="description"
+                        value={formData.description}
+                        onChange={setForm}
                         variant="outlined"
                         className={classes.textField}
                         fullWidth
                       />
-                    )}
-                  </Grid>
-                  <Grid item xs={12} md={12} align="center">
-                    <TextField
-                      label="Description"
-                      name="description"
-                      value={formData.description}
-                      onChange={setForm}
-                      variant="outlined"
-                      className={classes.textField}
-                      fullWidth
-                    />
-                  </Grid>
-                </Grid>
-                {locations.map((x, i) => {
-                  return (
-                    <Grid container alignItems="center" spacing={2}>
-                      <Grid item xs={12} md={10} align="center">
-                        <TextField
-                          className={classes.textField}
-                          variant="outlined"
-                          fullWidth
-                          name="name"
-                          label="Location"
-                          value={x.name}
-                          onChange={(e) => handleLocationInputChange(e, i)}
-                        />
-                      </Grid>
-                      <Grid item xs={12} md={2} align="center">
-                        {locations.length !== 1 && (
-                          <IconButton
-                            onClick={() => handleLocationRemoveClick(i)}
-                            color="secondary"
-                            aria-label="Add new location"
-                          >
-                            <RemoveCircleOutlineIcon />
-                          </IconButton>
-                        )}
-                        {locations.length - 1 === i && (
-                          <IconButton
-                            onClick={handleLocationAddClick}
-                            color="primary"
-                            aria-label="Remove location"
-                          >
-                            <AddCircleOutlineIcon />
-                          </IconButton>
-                        )}
-                      </Grid>
                     </Grid>
-                  );
-                })}
-              </Container>
+                  </Grid>
+                  {locations.map((x, i) => {
+                    return (
+                      <Grid container alignItems="center" spacing={2}>
+                        <Grid item xs={12} md={10} align="center">
+                          <TextField
+                            className={classes.textField}
+                            variant="outlined"
+                            fullWidth
+                            name="name"
+                            label="Location"
+                            value={x.name}
+                            onChange={(e) => handleLocationInputChange(e, i)}
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={2} align="center">
+                          {locations.length !== 1 && (
+                            <IconButton
+                              onClick={() => handleLocationRemoveClick(i)}
+                              color="secondary"
+                              aria-label="Add new location"
+                            >
+                              <RemoveCircleOutlineIcon />
+                            </IconButton>
+                          )}
+                          {locations.length - 1 === i && (
+                            <IconButton
+                              onClick={handleLocationAddClick}
+                              color="primary"
+                              aria-label="Remove location"
+                            >
+                              <AddCircleOutlineIcon />
+                            </IconButton>
+                          )}
+                        </Grid>
+                      </Grid>
+                    );
+                  })}
+                </Container>
 
-              {/*Technology Stack */}
+                {/* Technology Stack 
               <Container maxWidth="lg" className={classes.jobDetailsContainer}>
                 <Typography className={classes.title}>
                   Technology Stack Details
@@ -390,127 +395,148 @@ export default function StartHiring() {
                   </Grid>
                 </Grid>
               </Container>
-
-              {/* Social Media Links */}
-              <Container maxWidth="lg" className={classes.jobDetailsContainer}>
-                <Typography className={classes.title}>Links</Typography>
-                {social.map((x, i) => {
-                  return (
-                    <Grid container alignItems="center" spacing={2}>
-                      <Grid item xs={12} md={3} align="center">
-                        <Autocomplete
-                          id="combo-box-demo"
-                          options={socialMediaPlatforms}
-                          getOptionLabel={(option) => option.title}
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              name="platform"
-                              label="Platform"
-                              variant="outlined"
-                              value={x.platform}
-                              onChange={(e) => handleSocialInputChange(e, i)}
-                            />
+              */}
+                {/* Social Media Links */}
+                <Container
+                  maxWidth="lg"
+                  className={classes.jobDetailsContainer}
+                >
+                  <Typography className={classes.title}>
+                    Social Media Links
+                  </Typography>
+                  {social.map((x, i) => {
+                    return (
+                      <Grid container alignItems="center" spacing={2}>
+                        <Grid item xs={12} md={3} align="center">
+                          <Autocomplete
+                            id="combo-box-demo"
+                            options={socialMediaPlatforms}
+                            getOptionLabel={(option) => option.title}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                name="platform"
+                                label="Platform"
+                                variant="outlined"
+                                value={x.platform}
+                                onChange={(e) => handleSocialInputChange(e, i)}
+                              />
+                            )}
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={7} align="center">
+                          <TextField
+                            className={classes.textField}
+                            variant="outlined"
+                            fullWidth
+                            name="link"
+                            label="Link"
+                            value={x.link}
+                            onChange={(e) => handleSocialInputChange(e, i)}
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={2} align="center">
+                          {social.length !== 1 && (
+                            <IconButton
+                              onClick={() => handleSocialRemoveClick(i)}
+                              color="secondary"
+                              aria-label="Add new social"
+                            >
+                              <RemoveCircleOutlineIcon />
+                            </IconButton>
                           )}
-                        />
+                          {social.length - 1 === i && (
+                            <IconButton
+                              onClick={handleSocialAddClick}
+                              color="primary"
+                              aria-label="Remove social"
+                            >
+                              <AddCircleOutlineIcon />
+                            </IconButton>
+                          )}
+                        </Grid>
                       </Grid>
-                      <Grid item xs={12} md={7} align="center">
-                        <TextField
-                          className={classes.textField}
-                          variant="outlined"
-                          fullWidth
-                          name="link"
-                          label="Link"
-                          value={x.link}
-                          onChange={(e) => handleSocialInputChange(e, i)}
-                        />
-                      </Grid>
-                      <Grid item xs={12} md={2} align="center">
-                        {social.length !== 1 && (
-                          <IconButton
-                            onClick={() => handleSocialRemoveClick(i)}
-                            color="secondary"
-                            aria-label="Add new social"
-                          >
-                            <RemoveCircleOutlineIcon />
-                          </IconButton>
-                        )}
-                        {social.length - 1 === i && (
-                          <IconButton
-                            onClick={handleSocialAddClick}
-                            color="primary"
-                            aria-label="Remove social"
-                          >
-                            <AddCircleOutlineIcon />
-                          </IconButton>
-                        )}
-                      </Grid>
-                    </Grid>
-                  );
-                })}
-              </Container>
+                    );
+                  })}
+                </Container>
 
-              {/* Login details */}
-              <Container className={classes.jobDetailsContainer}>
-                <Typography className={classes.title}>
-                  Login Credentials
-                </Typography>
-                <Grid container alignItems="center" spacing={2}>
-                  <Grid item xs={12} md={12} align="center">
-                    <TextField
-                      label="Email Address"
-                      name="email"
-                      value={formData.email}
-                      onChange={setForm}
-                      variant="outlined"
-                      className={classes.textField}
-                      required
-                      fullWidth
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={6} align="center">
-                    <TextField
-                      label="Password"
-                      name="password"
-                      value={formData.password}
-                      onChange={setForm}
-                      variant="outlined"
-                      className={classes.textField}
-                      required
-                      fullWidth
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={6} align="center">
-                    <TextField
-                      label="Confirm Password"
-                      name="confirmPassword"
-                      value={formData.confirmPassword}
-                      onChange={setForm}
-                      variant="outlined"
-                      className={classes.textField}
-                      required
-                      fullWidth
-                    />
-                  </Grid>
-                  <Grid container alignItems="center" justify="flex-end">
-                    <Grid item align="center">
-                      <Button
+                {/* Login details */}
+                <Container className={classes.jobDetailsContainer}>
+                  <Typography className={classes.title}>
+                    Login Credentials
+                  </Typography>
+                  <Grid container alignItems="center" spacing={2}>
+                    <Grid item xs={12} md={12} align="center">
+                      <TextField
+                        label="Email Address"
+                        name="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={setForm}
+                        variant="outlined"
+                        className={classes.textField}
+                        required
                         fullWidth
-                        variant="contained"
-                        className={classes.submit}
-                        onClick={sendData}
-                      >
-                        Sign Up
-                      </Button>
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={6} align="center">
+                      <TextField
+                        label="Password"
+                        name="password"
+                        type="password"
+                        value={formData.password}
+                        onChange={setForm}
+                        variant="outlined"
+                        className={classes.textField}
+                        required
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={6} align="center">
+                      <TextField
+                        label="Confirm Password"
+                        name="confirmPassword"
+                        type="password"
+                        value={formData.confirmPassword}
+                        onChange={setForm}
+                        variant="outlined"
+                        className={classes.textField}
+                        required
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid container alignItems="center" justify="flex-end">
+                      <Grid item align="center">
+                        <Button
+                          fullWidth
+                          type="submit"
+                          variant="contained"
+                          className={classes.submit}
+                        >
+                          Sign Up
+                        </Button>
+                      </Grid>
+                      <Grid item align="center">
+                        <Button
+                          fullWidth
+                          onClick={() => {
+                            window.location = "/";
+                          }}
+                          variant="contained"
+                          className={classes.cancel}
+                        >
+                          Cancel
+                        </Button>
+                      </Grid>
                     </Grid>
                   </Grid>
-                </Grid>
-              </Container>
+                </Container>
+              </form>
             </Container>
           </FloatCard>
           <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-            <Alert onClose={handleClose} severity="success">
-              Account created successfully! Check your email for verification link.
+            <Alert onClose={handleClose} severity="error">
+              Signup Failed! Please check whether your passwords are matching.
             </Alert>
           </Snackbar>
         </Container>
