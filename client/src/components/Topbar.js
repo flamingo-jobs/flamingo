@@ -152,6 +152,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   startHiring: {
+    height: 40,
     backgroundColor: theme.palette.tuftsBlue,
     color: theme.palette.white,
     marginLeft: 20,
@@ -371,7 +372,7 @@ export default function Topbar({ id, name, email, role }) {
                         sessionStorage.clear("userToken");
                         window.location = "/";
                       }}
-                      className={classes.signIn}
+                      className={classes.startHiring}
                     >
                       Log Out
                     </Button>

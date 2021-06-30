@@ -175,7 +175,7 @@ function Base() {
               lg={2}
               className={classes.sideDrawer}
             >
-              <SideDrawer />
+              <SideDrawer user={role}/>
             </Grid>
 
             <Grid
