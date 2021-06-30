@@ -260,196 +260,200 @@ export default function StartHiring() {
       <div className={classes.overlay}>
         <Container className={classes.container}>
           <FloatCard>
-            <Container>
+            <Grid container spacing={2}>
               {/* Basic details */}
-              <Container maxWidth="lg" className={classes.jobDetailsContainer}>
-                <Box mt={5} mb={5}>
-                  <Typography component="h1" variant="h5">
-                    Company Details
-                  </Typography>
-                </Box>
-                <Typography className={classes.title}>Basic Details</Typography>
-                <Grid container alignItems="center" spacing={2}>
-                  <Grid item xs={12} md={6} align="center">
-                    <TextField
-                      label="Company Name"
-                      name="name"
-                      value={formData.name}
-                      onChange={setForm}
-                      variant="outlined"
-                      className={classes.textField}
-                      required
-                      fullWidth
-                    />
+              <Grid item lg={12} >
+                  <Box mt={5} mb={5}>
+                    <Typography component="h1" variant="h5">
+                      Company Details
+                    </Typography>
+                  </Box>
                   </Grid>
-                  <Grid item xs={12} md={6} align="center">
-                    {isFilePicked ? (
-                      <Grid container alignItems="center" spacing={2}>
-                        <Grid item xs={10} md={10} align="center">
-                          <TextField
-                            label="Logo name"
-                            value={selectedFile.name}
-                            variant="outlined"
-                            className={classes.textField}
-                            fullWidth
-                            disabled
-                          />
-                        </Grid>
-                        <Grid item xs={2} md={2} align="center">
-                          <Button onClick={() => setIsFilePicked(false)}>
-                            Remove
-                          </Button>
-                        </Grid>
-                      </Grid>
-                    ) : (
+              <Grid item lg={6} >
+
+                  <Typography className={classes.title}>Basic Details</Typography>
+                  <Grid container alignItems="center" spacing={2}>
+                    <Grid item xs={12} md={6} align="center">
                       <TextField
-                        accept="image/*"
-                        name="selectedFile"
-                        type="file"
-                        onChange={changeHandler}
+                        label="Company Name"
+                        name="name"
+                        value={formData.name}
+                        onChange={setForm}
+                        variant="outlined"
+                        className={classes.textField}
+                        required
+                        fullWidth
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={6} align="center">
+                      {isFilePicked ? (
+                        <Grid container alignItems="center" spacing={2}>
+                          <Grid item xs={10} md={10} align="center">
+                            <TextField
+                              label="Logo name"
+                              value={selectedFile.name}
+                              variant="outlined"
+                              className={classes.textField}
+                              fullWidth
+                              disabled
+                            />
+                          </Grid>
+                          <Grid item xs={2} md={2} align="center">
+                            <Button onClick={() => setIsFilePicked(false)}>
+                              Remove
+                            </Button>
+                          </Grid>
+                        </Grid>
+                      ) : (
+                        <TextField
+                          accept="image/*"
+                          name="selectedFile"
+                          type="file"
+                          onChange={changeHandler}
+                          variant="outlined"
+                          className={classes.textField}
+                          fullWidth
+                        />
+                      )}
+                    </Grid>
+                    <Grid item xs={12} md={12} align="center">
+                      <TextField
+                        label="Description"
+                        name="description"
+                        value={formData.description}
+                        onChange={setForm}
                         variant="outlined"
                         className={classes.textField}
                         fullWidth
                       />
-                    )}
-                  </Grid>
-                  <Grid item xs={12} md={12} align="center">
-                    <TextField
-                      label="Description"
-                      name="description"
-                      value={formData.description}
-                      onChange={setForm}
-                      variant="outlined"
-                      className={classes.textField}
-                      fullWidth
-                    />
-                  </Grid>
-                </Grid>
-                {locations.map((x, i) => {
-                  return (
-                    <Grid container alignItems="center" spacing={2}>
-                      <Grid item xs={12} md={10} align="center">
-                        <TextField
-                          className={classes.textField}
-                          variant="outlined"
-                          fullWidth
-                          name="name"
-                          label="Location"
-                          value={x.name}
-                          onChange={(e) => handleLocationInputChange(e, i)}
-                        />
-                      </Grid>
-                      <Grid item xs={12} md={2} align="center">
-                        {locations.length !== 1 && (
-                          <IconButton
-                            onClick={() => handleLocationRemoveClick(i)}
-                            color="secondary"
-                            aria-label="Add new location"
-                          >
-                            <RemoveCircleOutlineIcon />
-                          </IconButton>
-                        )}
-                        {locations.length - 1 === i && (
-                          <IconButton
-                            onClick={handleLocationAddClick}
-                            color="primary"
-                            aria-label="Remove location"
-                          >
-                            <AddCircleOutlineIcon />
-                          </IconButton>
-                        )}
-                      </Grid>
                     </Grid>
-                  );
-                })}
-              </Container>
-
-              {/*Technology Stack */}
-              <Container maxWidth="lg" className={classes.jobDetailsContainer}>
-                <Typography className={classes.title}>
-                  Technology Stack Details
-                </Typography>
-                <Grid container alignItems="center" spacing={2}>
-                  <Grid item xs={12} md={12} align="center">
-                    <Autocomplete
-                      multiple
-                      id="tags-outlined"
-                      options={techStack}
-                      getOptionLabel={(option) => option.title}
-                      filterSelectedOptions
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          className={classes.textField}
-                          variant="outlined"
-                          label="Technology Stack"
-                          placeholder="Used Technologies"
-                        />
-                      )}
-                    />
                   </Grid>
-                </Grid>
-              </Container>
-
-              {/* Social Media Links */}
-              <Container maxWidth="lg" className={classes.jobDetailsContainer}>
-                <Typography className={classes.title}>Links</Typography>
-                {social.map((x, i) => {
-                  return (
-                    <Grid container alignItems="center" spacing={2}>
-                      <Grid item xs={12} md={3} align="center">
-                        <Autocomplete
-                          id="combo-box-demo"
-                          options={socialMediaPlatforms}
-                          getOptionLabel={(option) => option.title}
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              name="platform"
-                              label="Platform"
-                              variant="outlined"
-                              value={x.platform}
-                              onChange={(e) => handleSocialInputChange(e, i)}
-                            />
+                  {locations.map((x, i) => {
+                    return (
+                      <Grid container alignItems="center" spacing={2}>
+                        <Grid item xs={12} md={10} align="center">
+                          <TextField
+                            className={classes.textField}
+                            variant="outlined"
+                            fullWidth
+                            name="name"
+                            label="Location"
+                            value={x.name}
+                            onChange={(e) => handleLocationInputChange(e, i)}
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={2} align="center">
+                          {locations.length !== 1 && (
+                            <IconButton
+                              onClick={() => handleLocationRemoveClick(i)}
+                              color="secondary"
+                              aria-label="Add new location"
+                            >
+                              <RemoveCircleOutlineIcon />
+                            </IconButton>
                           )}
-                        />
+                          {locations.length - 1 === i && (
+                            <IconButton
+                              onClick={handleLocationAddClick}
+                              color="primary"
+                              aria-label="Remove location"
+                            >
+                              <AddCircleOutlineIcon />
+                            </IconButton>
+                          )}
+                        </Grid>
                       </Grid>
-                      <Grid item xs={12} md={7} align="center">
-                        <TextField
-                          className={classes.textField}
-                          variant="outlined"
-                          fullWidth
-                          name="link"
-                          label="Link"
-                          value={x.link}
-                          onChange={(e) => handleSocialInputChange(e, i)}
-                        />
-                      </Grid>
-                      <Grid item xs={12} md={2} align="center">
-                        {social.length !== 1 && (
-                          <IconButton
-                            onClick={() => handleSocialRemoveClick(i)}
-                            color="secondary"
-                            aria-label="Add new social"
-                          >
-                            <RemoveCircleOutlineIcon />
-                          </IconButton>
-                        )}
-                        {social.length - 1 === i && (
-                          <IconButton
-                            onClick={handleSocialAddClick}
-                            color="primary"
-                            aria-label="Remove social"
-                          >
-                            <AddCircleOutlineIcon />
-                          </IconButton>
-                        )}
-                      </Grid>
-                    </Grid>
-                  );
-                })}
-              </Container>
+                    );
+                  })}
+              </Grid>
+              <Grid item lg={6} >
 
+                {/*Technology Stack */}
+                <Container maxWidth="lg" className={classes.jobDetailsContainer}>
+                  <Typography className={classes.title}>
+                    Technology Stack Details
+                  </Typography>
+                  <Grid container alignItems="center" spacing={2}>
+                    <Grid item xs={12} md={12} align="center">
+                      <Autocomplete
+                        multiple
+                        id="tags-outlined"
+                        options={techStack}
+                        getOptionLabel={(option) => option.title}
+                        filterSelectedOptions
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            className={classes.textField}
+                            variant="outlined"
+                            label="Technology Stack"
+                            placeholder="Used Technologies"
+                          />
+                        )}
+                      />
+                    </Grid>
+                  </Grid>
+                </Container>
+
+                {/* Social Media Links */}
+                <Container maxWidth="lg" className={classes.jobDetailsContainer}>
+                  <Typography className={classes.title}>Links</Typography>
+                  {social.map((x, i) => {
+                    return (
+                      <Grid container alignItems="center" spacing={2}>
+                        <Grid item xs={12} md={3} align="center">
+                          <Autocomplete
+                            id="combo-box-demo"
+                            options={socialMediaPlatforms}
+                            getOptionLabel={(option) => option.title}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                name="platform"
+                                label="Platform"
+                                variant="outlined"
+                                value={x.platform}
+                                onChange={(e) => handleSocialInputChange(e, i)}
+                              />
+                            )}
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={7} align="center">
+                          <TextField
+                            className={classes.textField}
+                            variant="outlined"
+                            fullWidth
+                            name="link"
+                            label="Link"
+                            value={x.link}
+                            onChange={(e) => handleSocialInputChange(e, i)}
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={2} align="center">
+                          {social.length !== 1 && (
+                            <IconButton
+                              onClick={() => handleSocialRemoveClick(i)}
+                              color="secondary"
+                              aria-label="Add new social"
+                            >
+                              <RemoveCircleOutlineIcon />
+                            </IconButton>
+                          )}
+                          {social.length - 1 === i && (
+                            <IconButton
+                              onClick={handleSocialAddClick}
+                              color="primary"
+                              aria-label="Remove social"
+                            >
+                              <AddCircleOutlineIcon />
+                            </IconButton>
+                          )}
+                        </Grid>
+                      </Grid>
+                    );
+                  })}
+                </Container>
+              </Grid>
               {/* Login details */}
               <Container className={classes.jobDetailsContainer}>
                 <Typography className={classes.title}>
@@ -506,7 +510,7 @@ export default function StartHiring() {
                   </Grid>
                 </Grid>
               </Container>
-            </Container>
+            </Grid>
           </FloatCard>
           <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
             <Alert onClose={handleClose} severity="success">
