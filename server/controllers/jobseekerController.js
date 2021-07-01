@@ -277,10 +277,11 @@ const remove = (req, res) => {
 }
 
 const removeProject = (req,res) => {
-    Jobseeker.findByIdAndUpdate(
-        { _id: req.params.id }, 
-        { $pull: { project: { name: req.body.name} } },
-        { multi: true },
+    Jobseeker.updateOne(
+        { _id: req.params.id },
+        {
+            $set:{ project : req.body }
+        },
         (err,jobseeker) =>{
             if(err){
                 return res.status(400).json({
@@ -295,10 +296,11 @@ const removeProject = (req,res) => {
 }
 
 const removeWork = (req,res) => {
-    Jobseeker.findByIdAndUpdate(
-        { _id: req.params.id }, 
-        { $pull: { work: { place: req.body.place, position: req.body.position} } },
-        { multi: true },
+    Jobseeker.updateOne(
+        { _id: req.params.id },
+        {
+            $set:{ work : req.body }
+        },
         (err,jobseeker) =>{
             if(err){
                 return res.status(400).json({
@@ -313,10 +315,11 @@ const removeWork = (req,res) => {
 }
 
 const removeAward = (req,res) => {
-    Jobseeker.findByIdAndUpdate(
-        { _id: req.params.id }, 
-        { $pull: { award: { title: req.body.title, date: req.body.date} } },
-        { multi: true },
+    Jobseeker.updateOne(
+        { _id: req.params.id },
+        {
+            $set:{ award : req.body }
+        },
         (err,jobseeker) =>{
             if(err){
                 return res.status(400).json({
@@ -324,17 +327,18 @@ const removeAward = (req,res) => {
                 })
             }
             return res.status(200).json({
-                sucess: "Deleted successfully"
+                sucess: "Udeleted successfully"
             });
         }
     );
 }
 
 const removeVolunteer = (req,res) => {
-    Jobseeker.findByIdAndUpdate(
-        { _id: req.params.id }, 
-        { $pull: { volunteer: { title: req.body.title} } },
-        { multi: true },
+    Jobseeker.updateOne(
+        { _id: req.params.id },
+        {
+            $set:{ volunteer : req.body }
+        },
         (err,jobseeker) =>{
             if(err){
                 return res.status(400).json({

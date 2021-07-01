@@ -111,8 +111,9 @@ function ProjectsSection() {
     setFetchedData(0)
   }
 
-  function deleteData(projectName){
-    axios.delete(`${BACKEND_URL}/jobseeker/removeProject/60c5f2e555244d11c8012480`,{data: {name: projectName}})
+  function deleteData(index){
+    project.splice(index,1)
+    axios.delete(`${BACKEND_URL}/jobseeker/removeProject/60c5f2e555244d11c8012480`,project)
     .then(res => console.log("aaa"));
     handleClose();
     setFetchedData(1)

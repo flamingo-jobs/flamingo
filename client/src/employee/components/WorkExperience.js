@@ -89,6 +89,14 @@ function WorkExperience() {
     setFetchedData(0)
   }
 
+  function deleteData(index){
+    work.splice(index,1)
+    axios.delete(`${BACKEND_URL}/jobseeker/removeWork/60c5f2e555244d11c8012480`,work)
+    .then(res => console.log("aaa"));
+    handleClose();
+    setFetchedData(1)
+  }
+
   useEffect(()=>{
     fetchData()
   },[fetchedData])
@@ -160,7 +168,7 @@ function WorkExperience() {
     if (work) {
       if (work.length > 0) {
       return work.map(wk => (
-            <WorkExpItem index={i++} place={wk.place} description={wk.description} position={wk.position} from={wk.from} to={wk.to} task={wk.taskAndResponsibility} />
+            <WorkExpItem index={i++} place={wk.place} description={wk.description} position={wk.position} from={wk.from} to={wk.to} task={wk.taskAndResponsibility} parentFunction={deleteData} />
             ))
       }else{
         return (<Typography variant="body2" color="textSecondary" component="p">Work experience details not added.</Typography>)

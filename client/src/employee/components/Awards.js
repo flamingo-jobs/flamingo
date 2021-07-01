@@ -83,6 +83,14 @@ function Achievements() {
     setFetchedData(0)
   }
 
+  function deleteData(index){
+    award.splice(index,1)
+    axios.delete(`${BACKEND_URL}/jobseeker/removeAward/60c5f2e555244d11c8012480`,award)
+    .then(res => console.log("aaa"));
+    handleClose();
+    setFetchedData(1)
+  }
+
   useEffect(()=>{
     fetchData()
   },[fetchedData])
@@ -140,7 +148,7 @@ function Achievements() {
     if (award) {
       if (award.length > 0) {
       return award.map(awd => (
-            <AwardItem index={i++} title={awd.title} issuedBy={awd.issuedBy} date={awd.date} description={awd.description} />
+            <AwardItem index={i++} title={awd.title} issuedBy={awd.issuedBy} date={awd.date} description={awd.description} parentFunction={deleteData} />
             ))
       }else{
         return (<Typography variant="body2" color="textSecondary" component="p">Award details not added.</Typography>)
