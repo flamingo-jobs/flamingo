@@ -111,6 +111,13 @@ function ProjectsSection() {
     setFetchedData(0)
   }
 
+  function deleteData(projectName){
+    axios.delete(`${BACKEND_URL}/jobseeker/removeProject/60c5f2e555244d11c8012480`,{data: {name: projectName}})
+    .then(res => console.log("aaa"));
+    handleClose();
+    setFetchedData(1)
+  }
+
   useEffect(()=>{
     fetchData()
   },[fetchedData])
@@ -182,7 +189,7 @@ function ProjectsSection() {
     if (project) {
       if (project.length > 0) {
       return project.map(pro => (
-            <ProjectItem index={i++} name={pro.name} link={pro.link} description={pro.description} from={pro.from} to={pro.to} usedTech={pro.usedTech} />
+            <ProjectItem index={i++} name={pro.name} link={pro.link} description={pro.description} from={pro.from} to={pro.to} usedTech={pro.usedTech} parentFunction={deleteData} />
             ))
       }else{
         return (<Typography variant="body2" color="textSecondary" component="p">Project details not added.</Typography>)

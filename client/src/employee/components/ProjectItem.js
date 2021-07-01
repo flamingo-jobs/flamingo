@@ -99,6 +99,7 @@ function ProjectItem(props) {
   const [alertData, setAlertData] = useState({severity: "", msg: ""});
   const [loading, setLoading] = useState(true);
   const [alertShow, setAlertShow] = React.useState(false);
+  const index = props.index;
   
   useEffect(() => {
     if (deleteSuccess == true) {
@@ -109,6 +110,10 @@ function ProjectItem(props) {
    // retrieveCategories();
     setDeleteSuccess(false);
 }, [deleteSuccess]);
+
+const handleDelete = () => {
+  props.parentFunction(state.name)
+}
 
 // deletion
 
@@ -180,7 +185,7 @@ function ProjectItem(props) {
         usedTech: state.usedTech
   }
 
-    axios.put(`${BACKEND_URL}/jobseeker/updateProject/60c5f2e555244d11c8012480`,{index:props.index,project:project})
+    axios.delete(`${BACKEND_URL}/jobseeker/updateProject/60c5f2e555244d11c8012480`,{index:props.index,project:project})
     .then(res => console.log(project));
     handleClose();
   }
@@ -244,7 +249,8 @@ function ProjectItem(props) {
                             <Button onClick={handleClickClose} color="primary">
                                 No
                             </Button>
-                            <Button color="primary" autoFocus>
+                            <Button onClick={handleDelete}
+                              color="primary" autoFocus>
                                 Yes
                             </Button>
                         </DialogActions>
