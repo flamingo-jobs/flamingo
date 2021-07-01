@@ -84,7 +84,6 @@ const SummaryForm = ({
             fullWidth
             className={classes.textField}
             onChange={handleTitleChange}
-            // helperText="Title of the job"
           />
 
           {/* Category    */}

@@ -75,7 +75,6 @@ const getCurrentDate = () => {
 const CreateJobForm = () => {
   const classes = useStyles();
 
-  // const [modalStyle] = React.useState(getModalStyle);
   const [successOpen, setSuccessOpen] = useState(false);
   const [unsuccessOpen, setUnsuccessOpen] = useState(false);
 
