@@ -261,6 +261,7 @@ const addWork = (req,res) => {
     );
 }
 
+// -------- remove -------------------------------
 const remove = (req, res) => {
     Jobseeker.findByIdAndDelete(req.params.id).exec((err,deletedJobseeker) => {
         if(err){
@@ -276,10 +277,68 @@ const remove = (req, res) => {
 }
 
 const removeProject = (req,res) => {
-    Jobseeker.findByIdAndUpdate(
-        { _id: req.params.id }, 
-        { $pull: { project: { name: req.body.name} } },
-  { multi: true },
+    Jobseeker.updateOne(
+        { _id: req.params.id },
+        {
+            $set:{ project : req.body }
+        },
+        (err,jobseeker) =>{
+            if(err){
+                return res.status(400).json({
+                    error:err
+                })
+            }
+            return res.status(200).json({
+                sucess: "Deleted successfully"
+            });
+        }
+    );
+}
+
+const removeWork = (req,res) => {
+    Jobseeker.updateOne(
+        { _id: req.params.id },
+        {
+            $set:{ work : req.body }
+        },
+        (err,jobseeker) =>{
+            if(err){
+                return res.status(400).json({
+                    error:err
+                })
+            }
+            return res.status(200).json({
+                sucess: "Deleted successfully"
+            });
+        }
+    );
+}
+
+const removeAward = (req,res) => {
+    Jobseeker.updateOne(
+        { _id: req.params.id },
+        {
+            $set:{ award : req.body }
+        },
+        (err,jobseeker) =>{
+            if(err){
+                return res.status(400).json({
+                    error:err
+                })
+            }
+            return res.status(200).json({
+                sucess: "Udeleted successfully"
+            });
+        }
+    );
+}
+
+const removeVolunteer = (req,res) => {
+    Jobseeker.updateOne(
+        { _id: req.params.id },
+        {
+            $set:{ volunteer : req.body }
+        },
         (err,jobseeker) =>{
             if(err){
                 return res.status(400).json({
@@ -309,6 +368,9 @@ module.exports = {
     updateProject,
     remove,
     removeProject,
+    removeWork,
+    removeAward,
+    removeVolunteer,
     getFiltered,
     getCount
 }

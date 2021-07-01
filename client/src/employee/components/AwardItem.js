@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import theme from '../../Theme';
 import StarIcon from '@material-ui/icons/Star';
 import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import BACKEND_URL from '../../Config';
 import Fade from '@material-ui/core/Fade';
 import Divider from '@material-ui/core/Divider';
@@ -15,6 +16,12 @@ import CloseIcon from '@material-ui/icons/Close';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import TextField from '@material-ui/core/TextField';
+
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const useStyles = makeStyles((theme) => ({
   paperCont: {
@@ -82,7 +89,38 @@ function AchievementItem(props) {
   const [styleEdit, setStyleEdit] = useState({display: 'none'});
   const [state, setState] = useState({title: props.title, issuedBy: props.issuedBy, date: props.date, description: props.description});
 
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deleteSuccess, setDeleteSuccess] = useState(false);
+  const [alertData, setAlertData] = useState({severity: "", msg: ""});
+  const [loading, setLoading] = useState(true);
+  const [alertShow, setAlertShow] = React.useState(false);
+  const index = props.index;
   
+  useEffect(() => {
+    if (deleteSuccess == true) {
+        setAlertData({severity: "success", msg: "Item deleted successfully!"});
+        handleAlert();
+    }
+    setLoading(true);
+    setDeleteSuccess(false);
+  }, [deleteSuccess]);
+
+  const handleDelete = () => {
+    props.parentFunction(index)
+  }
+
+  const handleClickOpen = () => {
+    setConfirmDelete(true);
+  };
+
+  const handleClickClose = () => {
+    setConfirmDelete(false);
+  };
+
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+
   function handleOpen(){
     setOpen(true);
   }
@@ -143,7 +181,7 @@ function AchievementItem(props) {
         <Grid item xs={1}>
         <StarIcon style={{color: theme.palette.pinkyRed,}} />
         </Grid>
-        <Grid item xs={10}>
+        <Grid item xs={9}>
             <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'15px',fontWeight:'bold',paddingTop:'5px'}}>
                 {state.title}
             </Typography>
@@ -157,10 +195,35 @@ function AchievementItem(props) {
                 Issued date : {state.date}
             </Typography>
         </Grid>
-        <Grid item xs={1} spacing={2} style={{marginTop:"-5px"}}>
-            <Button style={{minWidth:'25px',width:'25px'}}>
-                <EditIcon style={styleEdit} className={classes.editIcon} size="small" onClick={handleOpen} />
-            </Button>
+        <Grid item xs={2} spacing={2} style={{marginTop:"-5px",padding:"20px 0px 0px 0px"}}>
+          <Button style={{minWidth:'25px',width:'25px',marginRight:"10px"}}>
+              <EditIcon style={styleEdit} className={classes.editIcon} size="small" onClick={handleOpen} />
+          </Button>
+          <Button style={{minWidth:'25px',width:'25px'}}>
+              <DeleteIcon style={styleEdit} className={classes.editIcon} size="small"  onClick={handleClickOpen} />
+          </Button>
+          <Dialog
+              open={confirmDelete}
+              onClose={handleClickClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+          >
+              <DialogTitle id="alert-dialog-title">{"Confirm Delete?"}</DialogTitle>
+              <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                      Are you sure that you want to delete the selected item? This cannot be undone.
+                  </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                  <Button onClick={handleClickClose} color="primary">
+                      No
+                  </Button>
+                  <Button onClick={handleDelete}
+                    color="primary" autoFocus>
+                      Yes
+                  </Button>
+              </DialogActions>
+          </Dialog>
             {/*-------------- add new volunteer field popup content ------------------- */}
         <Modal
           aria-labelledby="transition-modal-title"

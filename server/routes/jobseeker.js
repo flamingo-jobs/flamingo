@@ -31,9 +31,12 @@ router.put('/jobseeker/addVolunteering/:id', jobseekerController.addVolunteering
 router.put('/jobseeker/addProject/:id', jobseekerController.addProject);
 router.put('/jobseeker/addWork/:id', jobseekerController.addWork);
 
-// delete job
+// delete
 
 router.delete('/jobseeker/delete/:id', jobseekerController.remove);
 router.delete('/jobseeker/removeProject/:id', jobseekerController.removeProject);
+router.delete('/jobseeker/removeWork/:id', jobseekerController.removeWork);
+router.delete('/jobseeker/removeAward/:id', jobseekerController.removeAward);
+router.delete('/jobseeker/removeVolunteer/:id', jobseekerController.removeVolunteer);
 
 module.exports = router;

@@ -82,6 +82,14 @@ function Volunteer() {
     setFetchedData(0)
   }
 
+  function deleteData(index){
+    volunteer.splice(index,1)
+    axios.delete(`${BACKEND_URL}/jobseeker/removeVolunteer/60c5f2e555244d11c8012480`,volunteer)
+    .then(res => console.log("aaa"));
+    handleClose();
+    setFetchedData(1)
+  }
+
   useEffect(()=>{
     fetchData()
   },[fetchedData])
@@ -146,7 +154,7 @@ function Volunteer() {
     if (volunteer) {
       if (volunteer.length > 0) {
       return volunteer.map(vol => (
-            <VolunteerItem index={i++} title={vol.title} organization={vol.organization} from={vol.from} to={vol.to} description={vol.description} />
+            <VolunteerItem index={i++} title={vol.title} organization={vol.organization} from={vol.from} to={vol.to} description={vol.description} parentFunction={deleteData} />
             ))
       }else{
         return (<Typography variant="body2" color="textSecondary" component="p">Volunteering details not added.</Typography>)

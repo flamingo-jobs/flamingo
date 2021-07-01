@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import theme from '../../Theme';
 import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import BACKEND_URL from '../../Config';
 import Fade from '@material-ui/core/Fade';
 import Divider from '@material-ui/core/Divider';
@@ -14,6 +15,12 @@ import CloseIcon from '@material-ui/icons/Close';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import TextField from '@material-ui/core/TextField';
+
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const useStyles = makeStyles((theme) => ({
   paperCont: {
@@ -80,6 +87,38 @@ function WorkExpItem(props) {
   const [open, setOpen] = useState(false);
   const [styleEdit, setStyleEdit] = useState({display: 'none'});
   const [state, setState] = useState({place: props.place, description: props.description, position: props.position, from: props.from, to: props.to, taskAndResponsibility: props.task});
+
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deleteSuccess, setDeleteSuccess] = useState(false);
+  const [alertData, setAlertData] = useState({severity: "", msg: ""});
+  const [loading, setLoading] = useState(true);
+  const [alertShow, setAlertShow] = React.useState(false);
+  const index = props.index;
+  
+  useEffect(() => {
+    if (deleteSuccess == true) {
+        setAlertData({severity: "success", msg: "Item deleted successfully!"});
+        handleAlert();
+    }
+    setLoading(true);
+    setDeleteSuccess(false);
+  }, [deleteSuccess]);
+
+  const handleDelete = () => {
+    props.parentFunction(index)
+  }
+
+  const handleClickOpen = () => {
+    setConfirmDelete(true);
+  };
+
+  const handleClickClose = () => {
+    setConfirmDelete(false);
+  };
+
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
 
   function handleOpen(){
     setOpen(true);
@@ -152,7 +191,7 @@ function WorkExpItem(props) {
           setStyleEdit({display: 'none'});
     }}>
         <Grid container spacing={3}>
-          <Grid item xs={11} spacing={2} style={{marginTop:"-5px"}}>
+          <Grid item xs={10} spacing={2} style={{marginTop:"-5px"}}>
             <Typography gutterBottom style={{textAlign:'justify',fontSize:'16px',fontWeight:'bold',color:'#666'}}>
                 {state.position}
             </Typography>
@@ -169,10 +208,35 @@ function WorkExpItem(props) {
               <b> Tasks & Responsibilities : </b>{state.taskAndResponsibility}
             </Typography>
           </Grid>
-          <Grid item xs={1} spacing={2} style={{marginTop:"-5px"}}>
-            <Button style={{minWidth:'25px',width:'25px'}}>
+          <Grid item xs={2} spacing={2} style={{marginTop:"-5px",padding:"20px 0px 0px 0px"}}>
+            <Button style={{minWidth:'25px',width:'25px',marginRight:"10px"}}>
                 <EditIcon style={styleEdit} className={classes.editIcon} size="small" onClick={handleOpen} />
             </Button>
+            <Button style={{minWidth:'25px',width:'25px',marginRight:'-50px'}}>
+                <DeleteIcon style={styleEdit} className={classes.editIcon} size="small"  onClick={handleClickOpen} />
+            </Button>
+            <Dialog
+                open={confirmDelete}
+                onClose={handleClickClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">{"Confirm Delete?"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Are you sure that you want to delete the selected item? This cannot be undone.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClickClose} color="primary">
+                        No
+                    </Button>
+                    <Button onClick={handleDelete}
+                      color="primary" autoFocus>
+                        Yes
+                    </Button>
+                </DialogActions>
+            </Dialog>
             {/*-------------- add new volunteer field popup content ------------------- */}
             <Modal
               aria-labelledby="transition-modal-title"

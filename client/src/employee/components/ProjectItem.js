@@ -28,7 +28,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
 
 const useStyles = makeStyles((theme) => ({
     paperCont: {
@@ -112,10 +111,8 @@ function ProjectItem(props) {
 }, [deleteSuccess]);
 
 const handleDelete = () => {
-  props.parentFunction(state.name)
+  props.parentFunction(index)
 }
-
-// deletion
 
   const handleClickOpen = () => {
     setConfirmDelete(true);
