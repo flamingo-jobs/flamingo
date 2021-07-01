@@ -275,6 +275,24 @@ const remove = (req, res) => {
     });
 }
 
+const removeProject = (req,res) => {
+    Jobseeker.findByIdAndUpdate(
+        { _id: req.params.id }, 
+        { $pull: { project: { name: req.body.name} } },
+  { multi: true },
+        (err,jobseeker) =>{
+            if(err){
+                return res.status(400).json({
+                    error:err
+                })
+            }
+            return res.status(200).json({
+                sucess: "Deleted successfully"
+            });
+        }
+    );
+}
+
 module.exports = {
     create,
     getAll,
@@ -290,6 +308,7 @@ module.exports = {
     updateWork,
     updateProject,
     remove,
+    removeProject,
     getFiltered,
     getCount
 }

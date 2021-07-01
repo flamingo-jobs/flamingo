@@ -34,5 +34,6 @@ router.put('/jobseeker/addWork/:id', jobseekerController.addWork);
 // delete job
 
 router.delete('/jobseeker/delete/:id', jobseekerController.remove);
+router.delete('/jobseeker/removeProject/:id', jobseekerController.removeProject);
 
 module.exports = router;
