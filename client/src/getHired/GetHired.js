@@ -39,7 +39,7 @@ export default function GetHired() {
   const [formData, setForm] = useForm(defaultData);
   const { step, navigation } = useStep({
     steps,
-    initialStep: token ? 1 : 0,
+    initialStep: token ? 1 : 1,
   });
 
   const [birthday, setBirthday] = useState(new Date("2014-08-18"));
