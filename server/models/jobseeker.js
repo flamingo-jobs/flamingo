@@ -1,36 +1,38 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const jobseekerSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    intro: {
-        type: String,
-        required: true
-    },
-    education: {
-        type: Array,
-        required: true
-    },
-    work: {
-        type: Array,
-        required: true
-    },
-    project: {
-        type: Array,
-        required: true
-    },
-    award: {
-        type: Array,
-        required: true
-    },
-    volunteer: {
-        type: Array,
-        required: true
-    },
-    
+  name: {
+    type: String,
+    required: true,
+  },
+
+  gender: {
+    type: String,
+  },
+  intro: {
+    type: String,
+  },
+  address: {
+    type: Object,
+  },
+  contact: {
+    type: Object,
+  },
+  education: {
+    type: Array,
+  },
+  work: {
+    type: Array,
+  },
+  project: {
+    type: Array,
+  },
+  award: {
+    type: Array,
+  },
+  volunteer: {
+    type: Array,
+  },
 });
 
-
-module.exports = mongoose.model('Jobseeker', jobseekerSchema);
+module.exports = mongoose.model("Jobseeker", jobseekerSchema);

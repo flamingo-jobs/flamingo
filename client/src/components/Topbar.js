@@ -1,4 +1,3 @@
-
 import React from "react";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -27,7 +26,7 @@ import ThumbsUpDownRoundedIcon from "@material-ui/icons/ThumbsUpDownRounded";
 
 const jwt = require("jsonwebtoken");
 const token = sessionStorage.getItem("userToken");
-
+const header = jwt.decode(token, { complete: true });
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -56,10 +55,9 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     borderRadius: theme.shape.borderRadius,
 
-    backgroundColor: 'transparent',
-    '&:hover': {
+    backgroundColor: "transparent",
+    "&:hover": {
       backgroundColor: fade(theme.palette.tuftsBlueHover, 0.1),
-
     },
     marginRight: theme.spacing(2),
     marginLeft: 0,
@@ -123,11 +121,9 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 20,
     paddingRight: 20,
     "&:hover": {
-
       backgroundColor: theme.palette.tuftsBlueHover,
-      color: 'white',
-    }
-
+      color: "white",
+    },
   },
   signInMobile: {
     backgroundColor: theme.palette.white,
@@ -139,11 +135,9 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 20,
     paddingRight: 20,
     "&:hover": {
-
       backgroundColor: theme.palette.tuftsBlueHover,
-      color: 'white',
-    }
-
+      color: "white",
+    },
   },
   getHired: {
     backgroundColor: theme.palette.pinkyRed,
@@ -158,6 +152,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   startHiring: {
+    height: 40,
     backgroundColor: theme.palette.tuftsBlue,
     color: theme.palette.white,
     marginLeft: 20,
@@ -165,12 +160,11 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 20,
     paddingRight: 20,
     "&:hover": {
-
       backgroundColor: theme.palette.tuftsBlueHover,
-      color: 'white',
-    }
-  }
-
+      color: "white",
+    },
+  },
+  menu: {marginTop: 50}
 }));
 
 export default function Topbar({ id, name, email, role }) {
@@ -198,6 +192,10 @@ export default function Topbar({ id, name, email, role }) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const loadMyAccount = () => {
+    window.location = "/account/" + header.payload.userId;
+  };
+
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
@@ -210,7 +208,7 @@ export default function Topbar({ id, name, email, role }) {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={loadMyAccount}>My account</MenuItem>
     </Menu>
   );
 
@@ -224,22 +222,31 @@ export default function Topbar({ id, name, email, role }) {
       transformOrigin={{ vertical: "top", horizontal: "right" }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
+      className={classes.menu}
     >
       {!token && (
-        <>
-          <Button className={classes.startHiring}>Start Hiring</Button>
+        <div>
+          
+          <Button
+            onClick={() => {
+              window.location = "/startHiring";
+            }}
+            className={classes.startHiring}
+          >
+            Start Hiring
+          </Button>
           <Button
             onClick={() => {
               window.location = "/signin";
             }}
-            className={classes.signIn}
+            className={classes.signInMobile}
           >
             Sign In
           </Button>
-        </>
+        </div>
       )}
       {token && (
-        <>
+        <div>
           {" "}
           <MenuItem>
             <IconButton aria-label="show 4 new mails" color="inherit">
@@ -268,7 +275,7 @@ export default function Topbar({ id, name, email, role }) {
             </IconButton>
             <p>Profile</p>
           </MenuItem>{" "}
-        </>
+        </div>
       )}
       <div className={classes.mobileSideMenuItems}>
         <MenuItem>
@@ -334,9 +341,8 @@ export default function Topbar({ id, name, email, role }) {
               </div>
               <div className={classes.grow} />
               <div className={classes.sectionDesktop}>
-
                 {token && (
-                  <>
+                  <div>
                     <IconButton aria-label="show 4 new mails" color="primary">
                       <Badge badgeContent={4} color="secondary">
                         <MailIcon />
@@ -366,15 +372,20 @@ export default function Topbar({ id, name, email, role }) {
                         sessionStorage.clear("userToken");
                         window.location = "/";
                       }}
-                      className={classes.signIn}
+                      className={classes.startHiring}
                     >
                       Log Out
                     </Button>
-                  </>
+                  </div>
                 )}
                 {!token && (
-                  <>
-                    <Button className={classes.startHiring}>
+                  <div>
+                    <Button
+                      onClick={() => {
+                        window.location = "/startHiring";
+                      }}
+                      className={classes.startHiring}
+                    >
                       Start Hiring
                     </Button>
                     <Button
@@ -385,9 +396,8 @@ export default function Topbar({ id, name, email, role }) {
                     >
                       Sign In
                     </Button>
-                  </>
+                  </div>
                 )}
-
               </div>
               <div className={classes.sectionMobile}>
                 <IconButton

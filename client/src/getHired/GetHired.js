@@ -8,6 +8,8 @@ import { Volunteering } from "./components/Volunteering";
 import { TechnologyStack } from "./components/TechnologyStack";
 import { Review } from "./components/Review";
 
+const token = sessionStorage.getItem("userToken");
+
 const defaultData = {
   firstName: "",
   lastName: "",
@@ -37,7 +39,7 @@ export default function GetHired() {
   const [formData, setForm] = useForm(defaultData);
   const { step, navigation } = useStep({
     steps,
-    initialStep: 0,
+    initialStep: token ? 1 : 0,
   });
 
   const [birthday, setBirthday] = useState(new Date("2014-08-18"));

@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
         paddingRight: 10,
         marginBottom: 10,
         "&:hover": {
-            backgroundColor: theme.palette.tuftsBlueHover,
+            backgroundColor: theme.palette.lightSkyBlue,
         }
     }
 }))
