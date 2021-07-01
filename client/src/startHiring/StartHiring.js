@@ -30,8 +30,10 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "left",
   },
   container: {
-    paddingTop: 50,
-    paddingBottom: 50,
+    width: "auto",
+    margin: "0 auto",
+    paddingTop: 10,
+    paddingBottom: 10,
     minHeight: "100vh",
   },
   overlay: {
@@ -62,7 +64,6 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.white,
     backgroundColor: theme.palette.skyBlueCrayola,
     borderRadius: 25,
-    margin: "15px 10px 10px 10px",
     "&:hover": {
       backgroundColor: theme.palette.skyBlueCrayolaHover,
       color: "white",
@@ -73,7 +74,6 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "none",
     color: theme.palette.black,
     backgroundColor: theme.palette.white,
-    margin: "15px 10px 10px 10px",
     "&:hover": {
       backgroundColor: theme.palette.white,
       color: "black",
@@ -128,13 +128,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   gridCont: {
-    paddingLeft: "5%",
-    [theme.breakpoints.down("md")]: {
-      paddingLeft: "3%",
-    },
-    [theme.breakpoints.down("sm")]: {
-      padding: "2%",
-    },
+
   },
   mainTitle: {
     fontSize: 36,
@@ -143,6 +137,9 @@ const useStyles = makeStyles((theme) => ({
   },
   link: {
     cursor: "pointer",
+    '&:hover': {
+      color: theme.palette.pinkyRed + "!important"
+    }
   },
   actions: {
     justifyContent: "flex-end",
@@ -156,6 +153,16 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       justifyContent: "center",
     },
+  },
+  footer: {
+    marginBottom: 10,
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+      justifyContent: "space-between",
+    },
+  },
+  mainGrid: {
+    minHeight: '100vh'
   },
 }));
 
@@ -312,353 +319,366 @@ export default function StartHiring() {
     <div className={classes.background}>
       <div className={classes.overlay}>
         <Container className={classes.container}>
-          <FloatCard>
-            <form className={classes.form} onSubmit={createAccount}>
-              {/* Basic details */}
-              <Grid
-                container
-                spacing={3}
-                justify="space-between"
-                className={classes.gridCont}
-              >
-                <Grid item xs={12} align="left">
-                  <Typography className={classes.mainTitle}>Sign Up</Typography>
-                </Grid>
+          <Grid container spacing={3} justify="center" alignItems="center" className={classes.mainGrid}>
+            <Grid item xs={12} align="center">
+              <FloatCard>
+                <Container>
+                  <form className={classes.form} onSubmit={createAccount}>
+                    {/* Basic details */}
+                    <Grid
+                      container
+                      spacing={4}
+                      justify="space-between"
+                      className={classes.gridCont}
+                    >
+                      <Grid item xs={12} align="left">
+                        <Typography className={classes.mainTitle}>Sign Up</Typography>
+                      </Grid>
 
-                <Grid item xs={12} md={5} lg={4}>
-                  <Grid container alignItems="center" spacing={3}>
-                    <Grid item xs={12} align="left">
-                      <Typography className={classes.title}>
-                        Company Logo
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={12} align="left">
-                      {!!selectedFile ? (
-                        <Grid container direction="row" alignItems="center">
-                          <Grid item xs={5} align="left">
-                            <Badge
-                              overlap="circle"
-                              anchorOrigin={{
-                                vertical: "bottom",
-                                horizontal: "right",
-                              }}
-                              badgeContent={
-                                <IconButton
-                                  onClick={() => {
-                                    setSelectedFile(null);
-                                  }}
-                                  aria-label="delete"
-                                  color="secondary"
-                                >
-                                  <RemoveCircleRoundedIcon />
-                                </IconButton>
-                              }
-                              className={classes.addBadge}
-                            >
-                              <Avatar
-                                variant="square"
-                                style={{
-                                  width: 70,
-                                  height: 70,
-                                  borderRadius: 12,
-                                }}
-                                src={URL.createObjectURL(selectedFile)}
-                              />
-                            </Badge>
+                      <Grid item xs={12} md={5} lg={4}>
+                        <Grid container alignItems="center" spacing={3}>
+                          <Grid item xs={12} align="left">
+                            <Typography className={classes.title}>
+                              Company Logo
+                            </Typography>
                           </Grid>
-                          <Grid item xs={7} align="left">
-                            <Typography>{selectedFile.name}</Typography>
+                          <Grid item xs={12} align="left">
+                            {!!selectedFile ? (
+                              <Grid container direction="row" alignItems="center">
+                                <Grid item xs={5} align="left">
+                                  <Badge
+                                    overlap="circle"
+                                    anchorOrigin={{
+                                      vertical: "bottom",
+                                      horizontal: "right",
+                                    }}
+                                    badgeContent={
+                                      <IconButton
+                                        onClick={() => {
+                                          setSelectedFile(null);
+                                        }}
+                                        aria-label="delete"
+                                        color="secondary"
+                                      >
+                                        <RemoveCircleRoundedIcon />
+                                      </IconButton>
+                                    }
+                                    className={classes.addBadge}
+                                  >
+                                    <Avatar
+                                      variant="square"
+                                      style={{
+                                        width: 70,
+                                        height: 70,
+                                        borderRadius: 12,
+                                      }}
+                                      src={URL.createObjectURL(selectedFile)}
+                                    />
+                                  </Badge>
+                                </Grid>
+                                <Grid item xs={7} align="left">
+                                  <Typography>{selectedFile.name}</Typography>
+                                </Grid>
+                              </Grid>
+                            ) : (
+                              <Grid container direction="row" alignItems="center">
+                                <Grid item xs={5} align="left">
+                                  <Badge
+                                    overlap="circle"
+                                    anchorOrigin={{
+                                      vertical: "bottom",
+                                      horizontal: "right",
+                                    }}
+                                    badgeContent={
+                                      <IconButton
+                                        onClick={() => fileInput.current.click()}
+                                        aria-label="delete"
+                                        color="primary"
+                                      >
+                                        <AddCircleRoundedIcon />
+                                      </IconButton>
+                                    }
+                                    className={classes.addBadge}
+                                  >
+                                    <Avatar
+                                      variant="square"
+                                      style={{
+                                        width: 70,
+                                        height: 70,
+                                        borderRadius: 12,
+                                      }}
+                                      src="/static/images/avatar/2.jpg"
+                                      onClick={() => fileInput.current.click()}
+                                    />
+                                  </Badge>
+                                </Grid>
+                                <Grid item xs={7} align="left">
+                                  <Typography>No file selected</Typography>
+                                </Grid>
+                              </Grid>
+                            )}
                           </Grid>
-                        </Grid>
-                      ) : (
-                        <Grid container direction="row" alignItems="center">
-                          <Grid item xs={5} align="left">
-                            <Badge
-                              overlap="circle"
-                              anchorOrigin={{
-                                vertical: "bottom",
-                                horizontal: "right",
-                              }}
-                              badgeContent={
-                                <IconButton
-                                  onClick={() => fileInput.current.click()}
-                                  aria-label="delete"
-                                  color="primary"
-                                >
-                                  <AddCircleRoundedIcon />
-                                </IconButton>
-                              }
-                              className={classes.addBadge}
-                            >
-                              <Avatar
-                                variant="square"
-                                style={{
-                                  width: 70,
-                                  height: 70,
-                                  borderRadius: 12,
-                                }}
-                                src="/static/images/avatar/2.jpg"
-                                onClick={() => fileInput.current.click()}
-                              />
-                            </Badge>
+                          <input
+                            ref={fileInput}
+                            name="selectedFile"
+                            type="file"
+                            onChange={changeHandler}
+                            style={{ display: "none" }}
+                          />
+                          <Grid item xs={12} align="left">
+                            <Typography className={classes.title}>
+                              Basic Details
+                            </Typography>
                           </Grid>
-                          <Grid item xs={7} align="left">
-                            <Typography>No file selected</Typography>
-                          </Grid>
-                        </Grid>
-                      )}
-                    </Grid>
-                    <input
-                      ref={fileInput}
-                      name="selectedFile"
-                      type="file"
-                      onChange={changeHandler}
-                      style={{ display: "none" }}
-                    />
-                    <Grid item xs={12} align="left">
-                      <Typography className={classes.title}>
-                        Basic Details
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={12} align="left">
-                      <TextField
-                        label="Company Name"
-                        name="name"
-                        value={formData.name}
-                        onChange={setForm}
-                        variant="outlined"
-                        className={classes.shortTextField}
-                        required
-                        size="small"
-                      />
-                    </Grid>
-                    <Grid item xs={12} md={12} align="left">
-                      <TextField
-                        label="Description"
-                        name="description"
-                        value={formData.description}
-                        onChange={setForm}
-                        variant="outlined"
-                        className={classes.textField}
-                        size="small"
-                        fullWidth
-                        multiline
-                      />
-                    </Grid>
-
-                    {locations.map((x, i) => {
-                      return (
-                        <Grid
-                          item
-                          container
-                          alignItems="flex-start"
-                          spacing={1}
-                        >
-                          <Grid item xs={12} md={8} align="left">
+                          <Grid item xs={12} align="left">
                             <TextField
-                              className={classes.textField}
-                              variant="outlined"
-                              fullWidth
+                              label="Company Name"
                               name="name"
-                              label="Location"
+                              value={formData.name}
+                              onChange={setForm}
+                              variant="outlined"
+                              className={classes.shortTextField}
+                              required
                               size="small"
-                              value={x.name}
-                              onChange={(e) => handleLocationInputChange(e, i)}
                             />
                           </Grid>
-                          <Grid item xs={12} md={4} align="left">
-                            {locations.length !== 1 && (
-                              <IconButton
-                                onClick={() => handleLocationRemoveClick(i)}
-                                color="secondary"
-                                aria-label="Add new location"
+                          <Grid item xs={12} md={12} align="left">
+                            <TextField
+                              label="Description"
+                              name="description"
+                              value={formData.description}
+                              onChange={setForm}
+                              variant="outlined"
+                              className={classes.textField}
+                              size="small"
+                              fullWidth
+                              multiline
+                            />
+                          </Grid>
+
+                          {locations.map((x, i) => {
+                            return (
+                              <Grid
+                                item
+                                container
+                                alignItems="flex-start"
+                                spacing={1}
                               >
-                                <RemoveCircleOutlineIcon />
-                              </IconButton>
-                            )}
-                            {locations.length - 1 === i && (
-                              <IconButton
-                                onClick={handleLocationAddClick}
-                                color="primary"
-                                aria-label="Remove location"
+                                <Grid item xs={12} md={8} align="left">
+                                  <TextField
+                                    className={classes.textField}
+                                    variant="outlined"
+                                    fullWidth
+                                    name="name"
+                                    label="Location"
+                                    size="small"
+                                    value={x.name}
+                                    onChange={(e) => handleLocationInputChange(e, i)}
+                                  />
+                                </Grid>
+                                <Grid item xs={12} md={4} align="left">
+                                  {locations.length !== 1 && (
+                                    <IconButton
+                                      onClick={() => handleLocationRemoveClick(i)}
+                                      color="secondary"
+                                      aria-label="Add new location"
+                                    >
+                                      <RemoveCircleOutlineIcon />
+                                    </IconButton>
+                                  )}
+                                  {locations.length - 1 === i && (
+                                    <IconButton
+                                      onClick={handleLocationAddClick}
+                                      color="primary"
+                                      aria-label="Remove location"
+                                    >
+                                      <AddCircleOutlineIcon />
+                                    </IconButton>
+                                  )}
+                                </Grid>
+                              </Grid>
+                            );
+                          })}
+                        </Grid>
+                      </Grid>
+                      {/* Social Media Links */}
+
+                      <Grid item xs={12} md={6} lg={5}>
+                        <Grid container alignItems="center" spacing={3}>
+                          <Grid item xs={12} align="left">
+                            <Typography className={classes.title}>
+                              Media Links
+                            </Typography>
+                          </Grid>
+                          {social.map((x, i) => {
+                            return (
+                              <Grid
+                                item
+                                container
+                                alignItems="flex-start"
+                                spacing={1}
                               >
-                                <AddCircleOutlineIcon />
-                              </IconButton>
-                            )}
+                                <Grid item xs={12} md={3} align="left">
+                                  <Autocomplete
+                                    id="combo-box-demo"
+                                    options={socialMediaPlatforms}
+                                    getOptionLabel={(option) => option.title}
+                                    disableClearable
+                                    renderInput={(params) => (
+                                      <TextField
+                                        {...params}
+                                        name="platform"
+                                        label="Platform"
+                                        variant="outlined"
+                                        size="small"
+                                        value={x.platform}
+                                        onChange={(e) =>
+                                          handleSocialInputChange(e, i)
+                                        }
+                                      />
+                                    )}
+                                  />
+                                </Grid>
+                                <Grid item xs={12} md={6} align="left">
+                                  <TextField
+                                    className={classes.textField}
+                                    variant="outlined"
+                                    fullWidth
+                                    size="small"
+                                    name="link"
+                                    label="Link"
+                                    value={x.link}
+                                    onChange={(e) => handleSocialInputChange(e, i)}
+                                  />
+                                </Grid>
+                                <Grid item xs={12} md={3} align="left">
+                                  {social.length !== 1 && (
+                                    <IconButton
+                                      onClick={() => handleSocialRemoveClick(i)}
+                                      color="secondary"
+                                      aria-label="Add new social"
+                                    >
+                                      <RemoveCircleOutlineIcon />
+                                    </IconButton>
+                                  )}
+                                  {social.length - 1 === i && (
+                                    <IconButton
+                                      onClick={handleSocialAddClick}
+                                      color="primary"
+                                      aria-label="Remove social"
+                                    >
+                                      <AddCircleOutlineIcon />
+                                    </IconButton>
+                                  )}
+                                </Grid>
+                              </Grid>
+                            );
+                          })}
+
+                          <Grid item xs={11} align="left">
+                            <Typography className={classes.title}>
+                              Login Credentials
+                            </Typography>
+                          </Grid>
+                          <Grid item container alignItems="center" spacing={3}>
+                            <Grid item xs={12} md={11} align="left">
+                              <TextField
+                                label="Email Address"
+                                name="email"
+                                type="email"
+                                size="small"
+                                value={formData.email}
+                                onChange={setForm}
+                                variant="outlined"
+                                className={classes.shortTextField}
+                                required
+                              />
+                            </Grid>
+                            <Grid item xs={12} md={11} align="left">
+                              <TextField
+                                label="Password"
+                                name="password"
+                                type="password"
+                                value={formData.password}
+                                onChange={setForm}
+                                variant="outlined"
+                                className={classes.shortTextField}
+                                required
+                                size="small"
+                              />
+                            </Grid>
+                            <Grid item xs={12} md={11} align="left">
+                              <TextField
+                                label="Confirm Password"
+                                name="confirmPassword"
+                                type="password"
+                                value={formData.confirmPassword}
+                                onChange={setForm}
+                                variant="outlined"
+                                className={classes.shortTextField}
+                                required
+                                size="small"
+                              />
+                            </Grid>
                           </Grid>
                         </Grid>
-                      );
-                    })}
-                  </Grid>
-                </Grid>
-                {/* Social Media Links */}
-
-                <Grid item xs={12} md={6} lg={5}>
-                  <Grid container alignItems="center" spacing={3}>
-                    <Grid item xs={12} align="left">
-                      <Typography className={classes.title}>
-                        Media Links
-                      </Typography>
-                    </Grid>
-                    {social.map((x, i) => {
-                      return (
+                      </Grid>
+                      <Grid item xs={12}>
                         <Grid
                           item
                           container
-                          alignItems="flex-start"
-                          spacing={1}
+                          xs={12}
+                          className={classes.footer}
+                          alignItems="center"
+                          justify="center"
+                          spacing={3}
                         >
-                          <Grid item xs={12} md={3} align="left">
-                            <Autocomplete
-                              id="combo-box-demo"
-                              options={socialMediaPlatforms}
-                              getOptionLabel={(option) => option.title}
-                              disableClearable
-                              renderInput={(params) => (
-                                <TextField
-                                  {...params}
-                                  name="platform"
-                                  label="Platform"
-                                  variant="outlined"
-                                  size="small"
-                                  value={x.platform}
-                                  onChange={(e) =>
-                                    handleSocialInputChange(e, i)
-                                  }
-                                />
-                              )}
-                            />
+                          <Grid item md={6} align="left">
+                            <Link to="/signIn">
+                              <Typography className={classes.link} >
+                                Have an account already? Sign In
+                              </Typography>
+                            </Link>
                           </Grid>
-                          <Grid item xs={12} md={6} align="left">
-                            <TextField
-                              className={classes.textField}
-                              variant="outlined"
-                              fullWidth
-                              size="small"
-                              name="link"
-                              label="Link"
-                              value={x.link}
-                              onChange={(e) => handleSocialInputChange(e, i)}
-                            />
-                          </Grid>
-                          <Grid item xs={12} md={3} align="left">
-                            {social.length !== 1 && (
-                              <IconButton
-                                onClick={() => handleSocialRemoveClick(i)}
-                                color="secondary"
-                                aria-label="Add new social"
+                          <Grid item container md={6} className={classes.actions}>
+                            <Grid item>
+                              <Button
+                                fullWidth
+                                type="submit"
+                                variant="contained"
+                                className={classes.submit}
                               >
-                                <RemoveCircleOutlineIcon />
-                              </IconButton>
-                            )}
-                            {social.length - 1 === i && (
-                              <IconButton
-                                onClick={handleSocialAddClick}
-                                color="primary"
-                                aria-label="Remove social"
+                                Sign Up
+                              </Button>
+                            </Grid>
+                            <Grid item>
+                              <Button
+                                fullWidth
+                                onClick={() => {
+                                  window.location = "/";
+                                }}
+                                variant="contained"
+                                className={classes.cancel}
                               >
-                                <AddCircleOutlineIcon />
-                              </IconButton>
-                            )}
+                                Cancel
+                              </Button>
+                            </Grid>
                           </Grid>
                         </Grid>
-                      );
-                    })}
-
-                    <Grid item xs={11} align="left">
-                      <Typography className={classes.title}>
-                        Login Credentials
-                      </Typography>
-                    </Grid>
-                    <Grid item container alignItems="center" spacing={3}>
-                      <Grid item xs={12} md={11} align="left">
-                        <TextField
-                          label="Email Address"
-                          name="email"
-                          type="email"
-                          size="small"
-                          value={formData.email}
-                          onChange={setForm}
-                          variant="outlined"
-                          className={classes.shortTextField}
-                          required
-                        />
-                      </Grid>
-                      <Grid item xs={12} md={11} align="left">
-                        <TextField
-                          label="Password"
-                          name="password"
-                          type="password"
-                          value={formData.password}
-                          onChange={setForm}
-                          variant="outlined"
-                          className={classes.shortTextField}
-                          required
-                          size="small"
-                        />
-                      </Grid>
-                      <Grid item xs={12} md={11} align="left">
-                        <TextField
-                          label="Confirm Password"
-                          name="confirmPassword"
-                          type="password"
-                          value={formData.confirmPassword}
-                          onChange={setForm}
-                          variant="outlined"
-                          className={classes.shortTextField}
-                          required
-                          size="small"
-                        />
                       </Grid>
                     </Grid>
-                  </Grid>
-                </Grid>
-                <Grid
-                  item
-                  container
-                  xs={12}
-                  className={classes.signIn}
-                  alignItems="center"
-                >
-                  <Grid item md={6} align="left">
-                    <Link className={classes.link}>
-                      Have an account already? Sign In
-                    </Link>
-                  </Grid>
-                  <Grid item container md={6} className={classes.actions}>
-                    <Grid item>
-                      <Button
-                        fullWidth
-                        type="submit"
-                        variant="contained"
-                        className={classes.submit}
-                      >
-                        Sign Up
-                      </Button>
-                    </Grid>
-                    <Grid item>
-                      <Button
-                        fullWidth
-                        onClick={() => {
-                          window.location = "/";
-                        }}
-                        variant="contained"
-                        className={classes.cancel}
-                      >
-                        Cancel
-                      </Button>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </form>
-          </FloatCard>
+                  </form>
+                </Container>
+              </FloatCard>
+            </Grid>
+          </Grid>
           <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
             <Alert onClose={handleClose} severity="error">
               Signup Failed! Please check whether your passwords are matching.
             </Alert>
           </Snackbar>
         </Container>
+
       </div>
     </div>
   );

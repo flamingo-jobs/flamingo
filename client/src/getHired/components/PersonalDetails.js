@@ -6,6 +6,11 @@ import {
   Grid,
   Typography,
   Container,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  InputAdornment
 } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
@@ -14,6 +19,7 @@ import theme from "../../Theme";
 import backgroundImage from "../images/background.jfif";
 import axios from "axios";
 import BACKEND_URL from "../../Config";
+import { Link } from "react-router-dom";
 //import DateFnsUtils from "@date-io/date-fns";
 //import { MuiPickersUtilsProvider, KeyboardDatePicker, } from "@material-ui/pickers";
 
@@ -25,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundSize: "cover",
   },
   container: {
-    width: "100%",
+    width: "auto",
     margin: "0 auto",
     paddingTop: 10,
     paddingBottom: 10,
@@ -59,7 +65,6 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.white,
     backgroundColor: theme.palette.skyBlueCrayola,
     borderRadius: 25,
-    marginTop: "50px",
     "&:hover": {
       backgroundColor: theme.palette.skyBlueCrayolaHover,
       color: "white",
@@ -70,7 +75,6 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "none",
     color: theme.palette.black,
     backgroundColor: theme.palette.white,
-    marginTop: "50px",
     "&:hover": {
       backgroundColor: theme.palette.white,
       color: "black",
@@ -92,6 +96,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   title: {
+    marginTop: 10,
+    fontWeight: 500,
     marginBottom: 5,
   },
   animation: {
@@ -106,6 +112,45 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "left",
     marginBottom: theme.spacing(4),
   },
+  link: {
+    cursor: "pointer",
+    '&:hover': {
+      color: theme.palette.pinkyRed + "!important"
+    }
+  },
+  actions: {
+    justifyContent: "flex-end",
+    [theme.breakpoints.down("sm")]: {
+      justifyContent: "center",
+    },
+  },
+  signIn: {
+    justifyContent: "flex-start",
+    marginRight: 10,
+    [theme.breakpoints.down("sm")]: {
+      justifyContent: "center",
+    },
+  },
+  mainTitle: {
+    fontSize: 36,
+    fontWeight: 500,
+    marginTop: 20,
+  },
+  select: {
+    '& :focus': {
+      backgroundColor: 'transparent'
+    }
+  },
+  mainGrid: {
+    minHeight: '100vh'
+  },
+  footer: {
+    marginBottom: 10,
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+      justifyContent: "space-between",
+    },
+  }
 }));
 
 export const PersonalDetails = ({
@@ -200,49 +245,57 @@ export const PersonalDetails = ({
     <div className={classes.background}>
       <div className={classes.overlay}>
         <Container className={classes.container}>
-          <FloatCard>
-            <Container>
-              <form onSubmit={createJobSeeker}>
-                {/* Personal Details */}
-                <Container
-                  maxWidth="lg"
-                  className={classes.jobDetailsContainer}
-                >
-                  <Box mt={5} mb={5}>
-                    <Typography component="h1" variant="h5">
-                      Personal Details
-                    </Typography>
-                  </Box>
-                  <Typography className={classes.title}>
-                    <h4>Basic Details</h4>
-                  </Typography>
-                  <Grid container alignItems="center" spacing={2}>
-                    <Grid item xs={12} md={6} align="center">
-                      <TextField
-                        label="First Name"
-                        name="firstName"
-                        value={firstName}
-                        onChange={setForm}
-                        variant="outlined"
-                        className={classes.textField}
-                        fullWidth
-                        required
-                      />
-                    </Grid>
-                    <Grid item xs={12} md={6} align="center">
-                      <TextField
-                        label="Last Name"
-                        name="lastName"
-                        value={lastName}
-                        onChange={setForm}
-                        variant="outlined"
-                        className={classes.textField}
-                        fullWidth
-                        required
-                      />
-                    </Grid>
-                    <Grid item xs={12} md={6} align="center">
-                      <Autocomplete
+          <Grid container spacing={3} justify="center" alignItems="center" className={classes.mainGrid}>
+            <Grid item xs={12} align="center">
+              <FloatCard>
+                <Container>
+                  <form onSubmit={createJobSeeker}>
+                    {/* Personal Details */}
+
+                    <Grid
+                      container
+                      spacing={4}
+                      justify="space-between"
+                      className={classes.gridCont}
+                    >
+                      <Grid item xs={12} align="left">
+                        <Typography className={classes.mainTitle}>Sign Up</Typography>
+                      </Grid>
+                      <Grid item xs={12} md={5} lg={4}>
+                        <Grid container alignItems="center" spacing={3}>
+                          <Grid item xs={12} align="left">
+                            <Typography className={classes.title}>
+                              Basic Details
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={12} md={6} align="left">
+                            <TextField
+                              label="First Name"
+                              name="firstName"
+                              value={firstName}
+                              onChange={setForm}
+                              variant="outlined"
+                              className={classes.textField}
+                              size="small"
+                              fullWidth
+                              required
+                            />
+                          </Grid>
+                          <Grid item xs={12} md={6} align="left">
+                            <TextField
+                              label="Last Name"
+                              name="lastName"
+                              value={lastName}
+                              onChange={setForm}
+                              variant="outlined"
+                              className={classes.textField}
+                              size="small"
+                              fullWidth
+                              required
+                            />
+                          </Grid>
+                          <Grid item xs={12} md={6} align="left">
+                            {/* <Autocomplete
                         id="combo-box-demo"
                         options={[{ title: "Male" }, { title: "Female" }]}
                         getOptionLabel={(option) => option.title}
@@ -257,9 +310,27 @@ export const PersonalDetails = ({
                             required
                           />
                         )}
-                      />
-                    </Grid>
-                    {/* 
+                      /> */}
+                            <FormControl variant="outlined" className={classes.textField} size="small"
+                              fullWidth required>
+                              <InputLabel id="demo-simple-select-outlined-label">Gender</InputLabel>
+                              <Select
+                                labelId="demo-simple-select-outlined-label"
+                                id="demo-simple-select-outlined"
+                                value={gender}
+                                onChange={setForm}
+                                label="Gender"
+                                className={classes.select}
+
+                              >
+                                <MenuItem value={10}>Male</MenuItem>
+                                <MenuItem value={20}>Female</MenuItem>
+                                <MenuItem value={30}>Other</MenuItem>
+                                <MenuItem value={30}>Prefer not to say</MenuItem>
+                              </Select>
+                            </FormControl>
+                          </Grid>
+                          {/* 
                   <Grid item xs={12} md={6} align="center">
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <Grid container>
@@ -280,184 +351,230 @@ export const PersonalDetails = ({
                     </MuiPickersUtilsProvider>
                   </Grid>
                         */}
-                  </Grid>
-                </Container>
-                <Container
-                  maxWidth="lg"
-                  className={classes.jobDetailsContainer}
-                >
-                  <Typography className={classes.title}>
-                    <h4>Description</h4>
-                  </Typography>
-                  <Grid container alignItems="center" spacing={2}>
-                    <Grid item xs={12} md={12} align="center">
-                      <TextField
-                        label="Description"
-                        name="description"
-                        value={description}
-                        onChange={setForm}
-                        variant="outlined"
-                        className={classes.textField}
-                        fullWidth
-                      />
-                    </Grid>
-                  </Grid>
-                </Container>
 
-                {/* Address */}
-                <Container className={classes.jobDetailsContainer}>
-                  <Typography className={classes.title}>
-                    <h4>Address</h4>
-                  </Typography>
-                  <Grid container alignItems="center" spacing={2}>
-                    <Grid item xs={12} md={6} align="center">
-                      <TextField
-                        label="Street"
-                        name="street"
-                        value={street}
-                        onChange={setForm}
-                        variant="outlined"
-                        className={classes.textField}
-                        fullWidth
-                        required
-                      />
-                    </Grid>
-                    <Grid item xs={12} md={6} align="center">
-                      <TextField
-                        label="City"
-                        name="city"
-                        value={city}
-                        onChange={setForm}
-                        variant="outlined"
-                        className={classes.textField}
-                        fullWidth
-                        required
-                      />
-                    </Grid>
-                    <Grid item xs={12} md={6} align="center">
-                      <TextField
-                        label="Zip Code"
-                        name="zipcode"
-                        value={zipcode}
-                        onChange={setForm}
-                        variant="outlined"
-                        className={classes.textField}
-                        fullWidth
-                        required
-                      />
-                    </Grid>
-                  </Grid>
-                </Container>
-
-                {/* Contact */}
-                <Container
-                  maxWidth="lg"
-                  className={classes.jobDetailsContainer}
-                >
-                  <Typography className={classes.title}>
-                    <h4>Contact Details</h4>
-                  </Typography>
-                  <Grid container alignItems="center" spacing={2}>
-                    <Grid item xs={12} md={6} align="center">
-                      <TextField
-                        label="Phone"
-                        name="landLine"
-                        value={landLine}
-                        onChange={setForm}
-                        variant="outlined"
-                        className={classes.textField}
-                        fullWidth
-                      />
-                    </Grid>
-                    <Grid item xs={12} md={6} align="center">
-                      <TextField
-                        label="Mobile"
-                        name="mobile"
-                        value={mobile}
-                        onChange={setForm}
-                        variant="outlined"
-                        className={classes.textField}
-                        fullWidth
-                      />
-                    </Grid>
-                  </Grid>
-                </Container>
-
-                {/* Login Credentials */}
-                <Container className={classes.jobDetailsContainer}>
-                  <Typography className={classes.title}>
-                    <h4>Login Credentials</h4>
-                  </Typography>
-                  <Grid container alignItems="center" spacing={2}>
-                    <Grid item xs={12} md={12} align="center">
-                      <TextField
-                        label="E-mail Address"
-                        name="email"
-                        value={email}
-                        onChange={setForm}
-                        variant="outlined"
-                        className={classes.textField}
-                        fullWidth
-                        required
-                      />
-                    </Grid>
-                    <Grid item xs={12} md={6} align="center">
-                      <TextField
-                        label="Password"
-                        name="password"
-                        type="password"
-                        value={password}
-                        onChange={setForm}
-                        variant="outlined"
-                        className={classes.textField}
-                        fullWidth
-                        required
-                      />
-                    </Grid>
-                    <Grid item xs={12} md={6} align="center">
-                      <TextField
-                        label="Confirm Password"
-                        name="confirmPassword"
-                        type="password"
-                        value={confirmPassword}
-                        onChange={setForm}
-                        variant="outlined"
-                        className={classes.textField}
-                        fullWidth
-                        required
-                      />
-                    </Grid>
-                    <Grid container alignItems="center" justify="flex-end">
-                      <Grid item align="center">
-                        <Button
-                          fullWidth
-                          type="submit"
-                          variant="contained"
-                          className={classes.submit}
-                        >
-                          Signup
-                        </Button>
+                          <Grid item xs={12} md={12} align="left">
+                            <Typography className={classes.title}>
+                              About
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={12} md={12} align="left">
+                            <TextField
+                              label="Tagline"
+                              name="tagline"
+                              variant="outlined"
+                              multiline
+                              size="small"
+                              className={classes.textField}
+                              fullWidth
+                            />
+                          </Grid>
+                          <Grid item xs={12} md={12} align="left">
+                            <TextField
+                              label="Description"
+                              name="description"
+                              value={description}
+                              onChange={setForm}
+                              variant="outlined"
+                              size="small"
+                              multiline
+                              className={classes.textField}
+                              fullWidth
+                            />
+                          </Grid>
+                        </Grid>
                       </Grid>
-                      <Grid item align="center">
-                        <Button
-                          fullWidth
-                          onClick={() => {
-                            window.location = "/";
-                          }}
-                          variant="contained"
-                          className={classes.cancel}
+                      {/* Address */}
+                      <Grid item xs={12} md={5} lg={4}>
+                        <Grid container alignItems="center" spacing={3}>
+                          <Grid item xs={12} md={12} align="left">
+                            <Typography className={classes.title}>
+                              Address
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={12} align="center">
+                            <TextField
+                              label="Street"
+                              name="street"
+                              value={street}
+                              onChange={setForm}
+                              variant="outlined"
+                              className={classes.textField}
+                              size="small"
+                              fullWidth
+                              required
+                            />
+                          </Grid>
+                          <Grid item xs={12} md={6} align="center">
+                            <TextField
+                              label="City"
+                              name="city"
+                              value={city}
+                              onChange={setForm}
+                              variant="outlined"
+                              className={classes.textField}
+                              size="small"
+                              fullWidth
+                              required
+                            />
+                          </Grid>
+                          <Grid item xs={12} md={6} align="center">
+                            <TextField
+                              label="Zip Code"
+                              name="zipcode"
+                              value={zipcode}
+                              onChange={setForm}
+                              variant="outlined"
+                              className={classes.textField}
+                              size="small"
+                              fullWidth
+                              required
+                            />
+                          </Grid>
+                          {/* Contact */}
+
+                          <Grid item xs={12} align="left">
+                            <Typography className={classes.title}>
+                              Contact Details
+                            </Typography>
+                          </Grid>
+
+                          <Grid item xs={12} align="left">
+                            <TextField
+                              label="Phone"
+                              name="landLine"
+                              value={landLine}
+                              onChange={setForm}
+                              variant="outlined"
+                              className={classes.textField}
+                              size="small"
+                              fullWidth
+                              InputProps={{
+                                startAdornment: <InputAdornment position="start">+94</InputAdornment>,
+                              }}
+                            />
+
+                          </Grid>
+                          <Grid item xs={12} align="center">
+                            <TextField
+                              label="Mobile"
+                              name="mobile"
+                              value={mobile}
+                              onChange={setForm}
+                              variant="outlined"
+                              className={classes.textField}
+                              size="small"
+                              fullWidth
+                              InputProps={{
+                                startAdornment: <InputAdornment position="start">+94</InputAdornment>,
+                              }}
+                            />
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                      {/* Login Credentials */}
+                      <Grid item xs={12} md={5} lg={4}>
+                        <Grid container alignItems="center" spacing={3}>
+                          <Grid item xs={12} md={12} align="left">
+                            <Typography className={classes.title}>
+                              Login Credentials
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={12} align="left">
+                            <TextField
+                              label="E-mail Address"
+                              name="email"
+                              value={email}
+                              onChange={setForm}
+                              variant="outlined"
+                              className={classes.textField}
+                              size="small"
+                              fullWidth
+                              required
+                            />
+                          </Grid>
+                          <Grid item xs={12} align="left">
+                            <TextField
+                              label="Password"
+                              name="password"
+                              type="password"
+                              value={password}
+                              onChange={setForm}
+                              variant="outlined"
+                              className={classes.textField}
+                              size="small"
+                              fullWidth
+                              required
+                            />
+                          </Grid>
+                          <Grid item xs={12} align="left">
+                            <TextField
+                              label="Confirm Password"
+                              name="confirmPassword"
+                              type="password"
+                              value={confirmPassword}
+                              onChange={setForm}
+                              variant="outlined"
+                              className={classes.textField}
+                              size="small"
+                              fullWidth
+                              required
+                            />
+                          </Grid>
+                        </Grid>
+                      </Grid>
+
+                      <Grid item xs={12}>
+                        <Grid
+                          item
+                          container
+                          xs={12}
+                          className={classes.footer}
+                          alignItems="center"
+                          justify="center"
+                          spacing={3}
                         >
-                          Cancel
-                        </Button>
+                          <Grid item md={6} align="left">
+                            <Link to="/signIn">
+                              <Typography className={classes.link} >
+                                Have an account already? Sign In
+                              </Typography>
+                            </Link>
+                          </Grid>
+                          <Grid item container md={6} className={classes.actions}>
+                            <Grid item>
+                              <Button
+                                fullWidth
+                                type="submit"
+                                variant="contained"
+                                className={classes.submit}
+                              >
+                                Sign Up
+                              </Button>
+                            </Grid>
+                            <Grid item>
+                              <Button
+                                fullWidth
+                                onClick={() => {
+                                  window.location = "/";
+                                }}
+                                variant="contained"
+                                className={classes.cancel}
+                              >
+                                Cancel
+                              </Button>
+                            </Grid>
+                          </Grid>
+                        </Grid>
                       </Grid>
                     </Grid>
-                  </Grid>
+                  </form>
                 </Container>
-              </form>
-            </Container>
-          </FloatCard>
-        </Container>
-      </div>
-    </div>
+              </FloatCard>
+            </Grid>
+          </Grid>
+
+        </Container >
+      </div >
+    </div >
   );
 };
