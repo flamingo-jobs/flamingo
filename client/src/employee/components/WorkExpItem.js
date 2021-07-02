@@ -201,10 +201,10 @@ function WorkExpItem(props) {
             <Typography variant="body2" component="p" style={{textAlign:'justify',color:theme.palette.stateBlue}}>
                 {state.from} - {state.to}
             </Typography>
-            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',paddingTop:'10px'}}>
+            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',paddingTop:'10px',marginRight:"-60px"}}>
                 {state.description}
             </Typography>
-            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',paddingTop:'10px'}}>
+            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',paddingTop:'10px',marginRight:"-60px"}}>
               <b> Tasks & Responsibilities : </b>{state.taskAndResponsibility}
             </Typography>
           </Grid>

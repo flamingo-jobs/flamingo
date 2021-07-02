@@ -72,11 +72,16 @@ function Achievements() {
   const [open, setOpen] = useState(false);
   const [award, setAward] = useState(null);
   const [state, setState] = useState({title: null, issuedBy: null, date: null, description: null});
+  let i=0;
 
   function fetchData(){
     axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
     .then(res => {
       if(res.data.success){
+        if(Object.keys(res.data.jobseeker.award[0]).length === 0){
+          res.data.jobseeker.award.splice(0,1)
+          i++;
+        }
         setAward(res.data.jobseeker.award)
       }
     })
@@ -144,10 +149,9 @@ function Achievements() {
   }
   
   const displayAwardFields = () => {
-    let i=0;
     if (award) {
       if (award.length > 0) {
-      return award.map(awd => (
+        return award.map(awd => (
             <AwardItem index={i++} title={awd.title} issuedBy={awd.issuedBy} date={awd.date} description={awd.description} parentFunction={deleteData} />
             ))
       }else{

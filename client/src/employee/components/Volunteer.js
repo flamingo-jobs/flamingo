@@ -71,11 +71,16 @@ function Volunteer() {
   const [open, setOpen] = useState(false);
   const [volunteer, setVolunteer] = useState(null);
   const [state, setState] = useState({title: null, organization: null, from: null, to: null, description: null});
+  let i=0;
 
   function fetchData(){
     axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
     .then(res => {
       if(res.data.success){
+        if(Object.keys(res.data.jobseeker.volunteer[0]).length === 0){
+          res.data.jobseeker.volunteer.splice(0,1)
+          i++;
+        }
         setVolunteer(res.data.jobseeker.volunteer)
       }
     })
@@ -150,7 +155,6 @@ function Volunteer() {
   }
   
   const displayVolunteeringFields = () => {
-    let i=0;
     if (volunteer) {
       if (volunteer.length > 0) {
       return volunteer.map(vol => (

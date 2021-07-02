@@ -16,6 +16,10 @@ import CloseIcon from '@material-ui/icons/Close';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import TextField from '@material-ui/core/TextField';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
 
 const useStyles = makeStyles({
   media: {
@@ -78,11 +82,16 @@ function WorkExperience() {
   const [open, setOpen] = useState(false);
   const [work, setWork] = useState(null);
   const [state, setState] = useState({place: null, description: null, position: null, from: null, to: null, taskAndResponsibility: null});
+  let i=0;
 
   function fetchData(){
     axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
     .then(res => {
       if(res.data.success){
+        if(Object.keys(res.data.jobseeker.work[0]).length === 0){
+          res.data.jobseeker.work.splice(0,1)
+          i++;
+        }
         setWork(res.data.jobseeker.work)
       }
     })
@@ -146,6 +155,17 @@ function WorkExperience() {
     })
   }
 
+  function getYearsFrom(){
+    let minOffset = 0, maxOffset = 25;
+    let thisYear = (new Date()).getFullYear();
+    let allYears = [];
+    for(let x = 0; x <= maxOffset; x++) {
+        allYears.push(thisYear - x)
+    }
+
+    return allYears.map((x) => (<MenuItem value={x}>{x}</MenuItem>));
+  }
+
   function onSubmit(e){
     e.preventDefault();
     const newWork = {
@@ -164,7 +184,6 @@ function WorkExperience() {
   }
 
   const displayWork = () => {
-    let i=0;
     if (work) {
       if (work.length > 0) {
       return work.map(wk => (
@@ -244,7 +263,7 @@ function WorkExperience() {
                     onChange={onChangePlace}
                   />
                   <Grid container direction="row" style={{marginTop:'-18px'}}>
-                    <TextField
+                    {/* <TextField
                     className={classes.field}
                     id="outlined-basic"
                     label="From"
@@ -253,7 +272,19 @@ function WorkExperience() {
                     size="small"
                     onChange={onChangeFrom}
                     style={{width:'30%',marginRight:'10%'}}
-                    />
+                    /> */}
+                    <FormControl variant="outlined" className={classes.field}>
+                      <InputLabel id="demo-simple-select-outlined-label">From</InputLabel>
+                      <Select
+                        labelId="demo-simple-select-outlined-label"
+                        id="demo-simple-select-outlined"
+                        label="From"
+                        onChange={onChangeFrom}
+                        style={{width:'120px',marginRight:'20px'}}
+                      >
+                        {getYearsFrom()}
+                      </Select>
+                    </FormControl>
                     <TextField
                     className={classes.field}
                     id="outlined-basic"

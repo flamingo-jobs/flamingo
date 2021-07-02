@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   Button,
   TextField,
-  Box,
   Grid,
   Typography,
   Container,
@@ -13,10 +12,9 @@ import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import RemoveIcon from "@material-ui/icons/Remove";
 import AddIcon from "@material-ui/icons/Add";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import FloatCard from "../../components/FloatCard";
 import backgroundImage from "../images/background.jfif";
-import SideDrawer from "../../components/SideDrawer";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
 const useStyles = makeStyles((theme) => ({
