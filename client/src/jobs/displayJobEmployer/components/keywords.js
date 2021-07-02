@@ -34,7 +34,11 @@ const useStyles = makeStyles((theme) => ({
   },
   chip: {
     color: theme.palette.white,
-    background: theme.palette.stateBlue,
+    background: "#6c757d",
+    "&:hover":{
+      background: theme.palette.black,
+      cursor: "pointer",
+    }
   },
   iconButton: {
     "&:hover": {
@@ -43,6 +47,11 @@ const useStyles = makeStyles((theme) => ({
   },
   addIcon: {
     color: theme.palette.tagIcon,
+    transition: "0.3s",
+    "&:hover":{
+      transition: "0.3s",
+      color: theme.palette.black,
+    }
   },
   iconGridItem: {
     display: "flex",
@@ -84,13 +93,13 @@ const Keywords = (props) => {
         updateFields
       );
       // console.log(response);
-      props.setChangesApplied(true);
       handleClose();
-      setTimeout(() => props.setChangesApplied(false), 10000);
+      props.setAlertData({ severity: "success", msg: "Changes saved successfully!" });
+      props.handleAlert();
     } catch (err) {
-      props.setChangesNotApplied(true);
       handleClose();
-      setTimeout(() => props.setChangesNotApplied(false), 10000);
+      props.setAlertData({ severity: "error", msg: "Changes could not be applied" });
+      props.handleAlert();
       console.log("Error: ", err);
     }
   };
