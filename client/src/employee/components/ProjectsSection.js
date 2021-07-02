@@ -100,11 +100,16 @@ function ProjectsSection() {
   const [open, setOpen] = useState(false);
   const [project, setProject] = useState(null);
   const [state, setState] = useState({name: null, link: null, description: null, from: null, to: null, usedTech: null});
+  let i=0;
 
   function fetchData(){
     axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
     .then(res => {
       if(res.data.success){
+        if(Object.keys(res.data.jobseeker.project[0]).length === 0){
+          res.data.jobseeker.project.splice(0,1)
+          i++;
+        }
         setProject(res.data.jobseeker.project)
       }
     })
@@ -186,7 +191,6 @@ function ProjectsSection() {
   }
   
   const displayProjectFields = () => {
-    let i=0;
     if (project) {
       if (project.length > 0) {
       return project.map(pro => (
