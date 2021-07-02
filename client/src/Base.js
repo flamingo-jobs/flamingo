@@ -18,6 +18,7 @@ import People from './people/People';
 import Technologies from './admin/Technologies';
 import { Switch } from "react-router-dom";
 import Organizations from "./employer/Organizations";
+import DisplayJob from './jobs/displayJobEmployer/displayJob';
 
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -95,6 +96,9 @@ function Base() {
       <>
         <Route path="/jobs">
           <Jobs />
+        </Route>
+        <Route path="/job" exact>
+          <DisplayJob />
         </Route>
         <Route path="/organizations">
           <Organizations />

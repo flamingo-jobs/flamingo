@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import Chip from "@material-ui/core/Chip";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import CancelIcon from '@material-ui/icons/Cancel';
 
 // Custom components
 import FloatCard from "../../../components/FloatCard";
@@ -61,6 +62,7 @@ const TechStack = ({ techStack, handleTechStack }) => {
                   label={option}
                   {...getTagProps({ index })}
                   className={classes.chip}
+                  deleteIcon={<CancelIcon className={classes.chipRemove} />}
                 />
               ))
             }
