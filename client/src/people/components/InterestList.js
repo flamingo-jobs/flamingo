@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function CategoryList(props) {
+export default function InterestList(props) {
     const classes = useStyles();
     const [openCategories, setOpenCategories] = React.useState(true);
     const [categories, setCategories] = useState([]);
@@ -145,7 +145,7 @@ export default function CategoryList(props) {
             })
         } else {
             return (
-                <Typography>No category available</Typography>
+                <Typography>No areas available</Typography>
             )
         }
     }
@@ -157,7 +157,7 @@ export default function CategoryList(props) {
                 className={classes.root}
             >
                 <ListItem button onClick={handleCategoryClick}>
-                    <ListItemText primary={<Typography className={classes.listTitle} >Category</Typography>}></ListItemText>
+                    <ListItemText primary={<Typography className={classes.listTitle} >Interested Areas</Typography>}></ListItemText>
                     {openCategories ? <ExpandLess className={classes.listDown} /> : <ExpandMore className={classes.listDown} />}
                 </ListItem>
                 <Collapse in={openCategories} timeout="auto" unmountOnExit>

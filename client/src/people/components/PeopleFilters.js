@@ -2,9 +2,9 @@ import { makeStyles } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import FloatCard from '../../components/FloatCard'
 import theme from '../../Theme'
-import CategoryList from './CategoryList'
+import InterestList from './InterestList'
 import OrganizationList from './OrganizationList'
-import TitileList from './TitleList'
+import TechnologyList from './TechnologyList'
 import TypeList from './TypeList'
 
 const useStyles = makeStyles(() => ({
@@ -18,12 +18,15 @@ function JobFilters(props) {
 
     const [type, setType] = useState(0);
     // const [title, setTitle] = useState(0);
-    const [category, setCategory] = useState(0);
+    const [interests, setCategory] = useState(0);
     const [organization, setOrganization] = useState(0);
+    const [technologyStack, setTechnologyStack] = useState(0);
+
 
     useEffect(() => {
         combineFilters();
-    }, [type, category, organization]);
+
+    }, [type, interests, organization, technologyStack]);
 
     const updateType = (filterData) => {
         setType(filterData);
@@ -41,6 +44,10 @@ function JobFilters(props) {
         setOrganization(filterData);
     }
 
+    const updateTechnologyData = (filterData) => {
+        setTechnologyStack(filterData);
+    }
+
     const combineFilters = () => {
         let filterObjects = {};
 
@@ -48,18 +55,18 @@ function JobFilters(props) {
             filterObjects = { ...filterObjects, type };
         }
 
-        // if (title != 0) {
-        //     filterObjects = { ...filterObjects, title };
-        // }
+        if (technologyStack != 0) {
+            filterObjects = { ...filterObjects, $and : technologyStack };
+        }
 
-        if (category != 0) {
-            filterObjects = { ...filterObjects, category };
+        if (interests != 0) {
+            filterObjects = { ...filterObjects, interests };
         }
 
         if (organization != 0) {
             filterObjects = { ...filterObjects, "organization.name": organization };
         }
-
+        console.log("fuvk");
         props.onChange(filterObjects);
     }
 
@@ -70,7 +77,10 @@ function JobFilters(props) {
                 <TypeList onChange={updateType} />
             </div>
             <div className={classes.categories}>
-                <CategoryList onChange={updateCategory} />
+                <InterestList onChange={updateCategory} />
+            </div>
+            <div className={classes.categories}>
+                <TechnologyList onChange={updateTechnologyData} />
             </div>
             {/* <div className={classes.titles}>
                 <TitileList onChange={updateTitle} />

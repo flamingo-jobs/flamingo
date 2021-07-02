@@ -2,7 +2,7 @@ import React from 'react'
 import { colors, makeStyles, Typography } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid';
 import JobSearchBar from './components/JobSearchBar';
-import JobFilters from './components/JobFilters';
+import PeopleFilters from './components/PeopleFilters';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import BACKEND_URL from '../Config';
@@ -141,7 +141,7 @@ function People() {
                     </Grid>
                 </Grid>
                 <Grid item xs={12} sm={12} md={4} lg={3} className={classes.filterGrid}>
-                    <JobFilters onChange={updateFilters} />
+                    <PeopleFilters onChange={updateFilters} />
                 </Grid>
             </Grid>
         </>

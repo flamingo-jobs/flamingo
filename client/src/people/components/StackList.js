@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -41,32 +42,38 @@ const useStyles = makeStyles((theme) => ({
     listDown: {
         color: theme.palette.tuftsBlue,
     },
+    checkBox: {
+        color: theme.palette.pinkyRed,
+        fill: theme.palette.pinkyRed
+    },
     itemCheckBox: {
         minWidth: 'auto'
     }
 }));
 
-export default function TypeList(props) {
-    const classes = useStyles();
-    const [openTypes, setOpenTypes] = React.useState(true);
+export default function StackList(props) {
 
-    const handleTypeClick = () => {
-        setOpenTypes(!openTypes);
+    const classes = useStyles();
+    const [openStack, setOpenStack] = React.useState(true);
+    const [stack, setStack] = useState(props.technology.stack);
+
+    const handleTechnologyClick = () => {
+        setOpenStack(!openStack);
 
     };
 
 
-    const [checked, setChecked] = React.useState([]);
-    const [types, setTypes] = useState([]);
+    const [checked, setChecked] = useState([]);
 
     useEffect(() => {
         passFilters();
+
     }, [checked])
 
-    useEffect(() => {
-        retrieveTypes();
-    }, [])
-    
+    // useEffect(() => {
+    //     retrieveStack();
+    // }, [])
+
     const handleToggle = (value, itemId) => () => {
 
         const newChecked = [...checked];
@@ -90,31 +97,31 @@ export default function TypeList(props) {
             props.onChange(0);
         } else {
             checked.map((value) => values.push(value.name));
-            props.onChange({ $in: values });
+            if (stack.list) {
+                props.onChange({ name: props.technology.name, stack: values, type: "list" });
+            } else{
+                props.onChange({ name: props.technology.name, stack: values, type: "dual" });
+            }
+
         }
 
 
     }
 
-    const retrieveTypes = () => {
-        // console.log(filters);s
-        axios.get(`${BACKEND_URL}/types`).then(res => {
-            if (res.data.success) {
-                setTypes(res.data.existingTypes)
-            } else {
-                setTypes(null)
-            }
-        })
-    }
-    
-    const displayTypes = () => {
+    const displayStack = () => {
 
-        if (types) {
-            return types.map(type => {
-                const labelId = `category-list-${type._id}`;
-                const itemId = type._id;
+        if (stack) {
+            let listArray = [];
+            if (stack.list) {
+                listArray = stack.list;
+            } else {
+                listArray = stack.frontEnd.concat(stack.backEnd);
+            }
+            return listArray.map(item => {
+                const labelId = `category-list-${item}`;
+                const itemId = item;
                 return (
-                    <ListItem className={classes.listItem} key={itemId} role={undefined} dense button onClick={handleToggle(type.name, itemId)}>
+                    <ListItem className={classes.listItem} key={itemId} role={undefined} dense button onClick={handleToggle(item, itemId)}>
                         <ListItemIcon className={classes.itemCheckBox}>
                             <Checkbox
                                 edge="start"
@@ -123,15 +130,15 @@ export default function TypeList(props) {
                                 disableRipple
                                 inputProps={{ 'aria-labelledby': labelId }}
                                 className={classes.checkBox}
-                                style ={{
+                                style={{
                                     color: theme.palette.vividSkyBlue,
-                                  }}
+                                }}
                             />
                         </ListItemIcon>
-                        <ListItemText id={labelId} primary={type.name} />
+                        <ListItemText id={labelId} primary={item} />
                         <ListItemSecondaryAction>
                             <Avatar className={classes.count} variant="square" >
-                                <Typography className={classes.countText}>{5}</Typography>
+                                <Typography className={classes.countText}>5</Typography>
                             </Avatar>
                         </ListItemSecondaryAction>
                     </ListItem>
@@ -139,25 +146,24 @@ export default function TypeList(props) {
             })
         } else {
             return (
-                <Typography>No type available</Typography>
+                <Typography>No technologies available</Typography>
             )
         }
     }
 
-    
     return (
         <>
             <List
                 component="nav"
                 className={classes.root}
             >
-                <ListItem button onClick={handleTypeClick}>
-                    <ListItemText primary={<Typography className={classes.listTitle} >Type</Typography>}></ListItemText>
-                    {openTypes ? <ExpandLess className={classes.listDown} /> : <ExpandMore className={classes.listDown} />}
+                <ListItem button onClick={handleTechnologyClick}>
+                    <ListItemText primary={<Typography className={classes.listTitle} >{props.technology.name}</Typography>}></ListItemText>
+                    {openStack ? <ExpandLess className={classes.listDown} /> : <ExpandMore className={classes.listDown} />}
                 </ListItem>
-                <Collapse in={openTypes} timeout="auto" unmountOnExit>
+                <Collapse in={openStack} timeout="auto" unmountOnExit>
                     <List className={classes.root}>
-                        {displayTypes()}
+                        {displayStack()}
                     </List>
                 </Collapse>
             </List>
