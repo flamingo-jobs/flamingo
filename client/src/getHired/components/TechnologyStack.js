@@ -145,6 +145,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const TechnologyStack = ({
+  university,
+  college,
+  course,
+  award,
+  achievement,
+  work,
+  project,
+  volunteer,
   tech,
   handleTechInputChange,
   handleTechAddClick,
@@ -152,6 +160,10 @@ export const TechnologyStack = ({
   navigation,
 }) => {
   const classes = useStyles();
+
+  const finishForm = () => {
+    //send data to database
+  };
 
   return (
     <div className={classes.background}>
@@ -303,7 +315,7 @@ export const TechnologyStack = ({
                                   fullWidth
                                   variant="contained"
                                   className={classes.next}
-                                  onClick={() => navigation.next()}
+                                  onClick={finishForm}
                                 >
                                   Finish
                                 </Button>

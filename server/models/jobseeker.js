@@ -5,7 +5,9 @@ const jobseekerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-
+  tagline: {
+    type: String,
+  },
   gender: {
     type: String,
   },

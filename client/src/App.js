@@ -1,5 +1,6 @@
 import SignInSide from "./signIn/components/SignInSide.js";
-import GetHired from "./getHired/GetHired.js";
+import SetupProfile from "./getHired/SetupProfile";
+import GetHired from "./getHired/GetHired";
 import StartHiring from "./startHiring/StartHiring.js";
 import "./App.css";
 import { ThemeProvider } from "@material-ui/styles";
@@ -12,7 +13,6 @@ import BACKEND_URL from "./Config.js";
 const jwt = require("jsonwebtoken");
 
 function App() {
-
   return (
     <div className="App">
       <BrowserRouter>
@@ -25,6 +25,9 @@ function App() {
           </Route>
           <Route path="/getHired">
             <GetHired />
+          </Route>
+          <Route path="/setupProfile">
+            <SetupProfile />
           </Route>
           <Route path="/startHiring">
             <StartHiring />
