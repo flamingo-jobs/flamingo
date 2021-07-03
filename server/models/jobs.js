@@ -49,11 +49,11 @@ const jobSchema = new mongoose.Schema({
         type: Array,
     },
     postedDate: {
-        type: String,
+        type: Date,
         required: true
     },
     dueDate: {
-        type: String,
+        type: Date,
         required: true
     },
     isPublished: {

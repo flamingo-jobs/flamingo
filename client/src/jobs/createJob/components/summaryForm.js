@@ -1,19 +1,51 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  Grid,
-  MenuItem,
-  Typography,
-  Container,
-} from "@material-ui/core";
+import { Grid, MenuItem, Typography, Container } from "@material-ui/core";
 import { StateBlueTextField } from "../styles/customTextField";
 import FloatCard from "../../../components/FloatCard";
 import {
   MuiPickersUtilsProvider,
-  KeyboardTimePicker,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
+import { createMuiTheme } from "@material-ui/core";
+import { ThemeProvider } from "@material-ui/styles";
+
+const materialTheme = createMuiTheme({
+  spacing: 5,
+  overrides: {
+    MuiPickersToolbar: {
+      toolbar: {
+        backgroundColor: "#5E60CE",
+      },
+    },
+    MuiPickersCalendarHeader: {
+      switchHeader: {
+        // backgroundColor: "#5E60CE",
+        // color: "white",
+      },
+    },
+    MuiPickersDay: {
+      day: {
+        color: "#555",
+      },
+      daySelected: {
+        backgroundColor: "#5E60CE",
+      },
+      dayDisabled: {
+        color: "#5E60CE",
+      },
+      current: {
+        color: "#5E60CE",
+      },
+    },
+    MuiPickersModal: {
+      dialogAction: {
+        color: "#5E60CE",
+      },
+    },
+  },
+});
 
 const useStyles = makeStyles((theme) => ({
   summaryContainer: {
@@ -31,39 +63,29 @@ const useStyles = makeStyles((theme) => ({
   textField: {
     marginBottom: theme.spacing(3),
   },
+  dateWrapper:{
+    marginLeft: theme.spacing(2),
+    width: "50%",
+    display: "flex",
+    flexDirection: "column",
+    justify: "flex-end"
+  },
 }));
-
-const jobTypes = [
-  {
-    id: 1,
-    name: "Full-time",
-  },
-  {
-    id: 2,
-    name: "Part-time",
-  },
-];
-const categories = [
-  {
-    id: "design",
-    name: "Design",
-  },
-  {
-    id: "Development",
-    name: "Development",
-  },
-];
-const locations = ["Colombo, SL", "Rajagiruya", "Nugegoda"];
 
 const SummaryForm = ({
   location,
+  empLocations,
   jobType,
+  types,
   category,
+  categories,
+  dueDate,
   handleTitleChange,
   handleCategoryChange,
   handleJobTypeChange,
   handleDescriptionChange,
   handleLocationChange,
+  handleDateChange,
   handleMinSalaryChange,
   handleMaxSalaryChange,
 }) => {
@@ -117,7 +139,7 @@ const SummaryForm = ({
                 variant="outlined"
                 fullWidth
               >
-                {jobTypes.map((type) => (
+                {types.map((type) => (
                   <MenuItem key={type.id} value={type.name}>
                     {type.name}
                   </MenuItem>
@@ -150,32 +172,33 @@ const SummaryForm = ({
                 variant="outlined"
                 fullWidth
               >
-                {locations.map((location) => (
+                {empLocations.map((location) => (
                   <MenuItem key={location} value={location}>
                     {location}
                   </MenuItem>
                 ))}
               </StateBlueTextField>
             </Grid>
-
-            {/* <Grid item xs={6}>
-              <Grid container className={classes.textField}>
-                <Grid item container xs={6} justify="flex-start">
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
-                      format="MM/dd/yyyy"
-                      id="dueDate"
-                      label="Due Date"
-                      // value={selectedDate}
-                      // onChange={handleDateChange}
-                      KeyboardButtonProps={{
-                        "aria-label": "change date",
-                      }}
-                    />
-                  </MuiPickersUtilsProvider>
-                </Grid>
-              </Grid>
-            </Grid> */}
+            {/* style={{border: "1px solid red"}} */}
+            <Grid item xs={6} className={classes.textField}>
+                  <div className={classes.dateWrapper}>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <ThemeProvider theme={materialTheme}>
+                      <KeyboardDatePicker
+                        format="dd/MM/yyyy"
+                        placeholder="DD/MM/YYYY"
+                        id="dueDate"
+                        label="Due Date"
+                        value={dueDate}
+                        onChange={handleDateChange}
+                        KeyboardButtonProps={{
+                          "aria-label": "Change date",
+                        }}
+                      />
+                      </ThemeProvider>
+                    </MuiPickersUtilsProvider>
+                  </div>
+            </Grid>
           </Grid>
 
           {/* Salary range */}

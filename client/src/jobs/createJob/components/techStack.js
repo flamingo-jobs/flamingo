@@ -37,8 +37,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TechStack = ({ techStack, handleTechStack }) => {
+const TechStack = ({ technologies, techStack, handleTechStack }) => {
   const classes = useStyles();
+
+  const options = technologies
+    .map((technology) => technology.stack)
+    .map((stackElement) => {
+      for (const item in stackElement) {
+        return stackElement[item].map((finalTechnology) => finalTechnology);
+      }
+    })
+    .flat(1);
 
   return (
     <Grid item xs={12} className={classes.card}>
@@ -51,7 +60,7 @@ const TechStack = ({ techStack, handleTechStack }) => {
           <Autocomplete
             multiple
             id="techStack"
-            options={techStack.map((item) => item.name)}
+            options={options}
             defaultValue={undefined}
             freeSolo
             onChange={(event, values) => handleTechStack(values)}
