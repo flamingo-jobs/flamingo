@@ -52,6 +52,9 @@ const useStyles = makeStyles((theme) => ({
             color: theme.palette.tuftsBlueHover,
         }
     },
+    jobGridCard: {
+        display: "grid"
+    }
 }))
 function MoreFromJobs(props) {
     const classes = useStyles();
@@ -86,7 +89,7 @@ function MoreFromJobs(props) {
         if (moreFromJobs) {
 
             return moreFromJobs.map(featuredJob => (
-                <Grid item sm={12} key={featuredJob._id}>
+                <Grid item sm={12} key={featuredJob._id} className={classes.jobGridCard}>
                     <JobCard info={featuredJob} />
                 </Grid>
             ))
