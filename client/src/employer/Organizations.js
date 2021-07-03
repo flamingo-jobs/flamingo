@@ -44,6 +44,9 @@ const useStyles = makeStyles((theme) => ({
     },
     pagination: {
         justifyContent: 'center',
+    },
+    gridCard: {
+        display: "grid"
     }
 
 }));
@@ -116,7 +119,7 @@ function Organizations() {
     const displayOrganizations = () => {
         if (organizations) {
             return organizations.map(org => (
-                <Grid item xs={12} md={12}>
+                <Grid item xs={12} md={12} className={classes.gridCard}>
                     <OrganizationCard info={org} />
                 </Grid>
             ))

@@ -43,6 +43,9 @@ const useStyles = makeStyles((theme) => ({
     },
     pagination: {
         justifyContent: 'center',
+    },
+    gridCard: {
+        display: "grid"
     }
 
 }));
@@ -115,7 +118,7 @@ function People() {
     const displayPeople = () => {
         if (people) {
             return people.map(job => (
-                <Grid key={job._id} item xs={12} md={12} lg={12}>
+                <Grid key={job._id} item xs={12} md={12} lg={12} className={classes.gridCard}>
                     <PeopleCard info={job} />
                 </Grid>
             ))

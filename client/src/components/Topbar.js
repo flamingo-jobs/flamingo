@@ -23,6 +23,9 @@ import BusinessRoundedIcon from "@material-ui/icons/BusinessRounded";
 import PeopleAltRoundedIcon from "@material-ui/icons/PeopleAltRounded";
 import PhoneRoundedIcon from "@material-ui/icons/PhoneRounded";
 import ThumbsUpDownRoundedIcon from "@material-ui/icons/ThumbsUpDownRounded";
+import NavMenu from "./NavMenu";
+import Backdrop from '@material-ui/core/Backdrop';
+import ExitToAppRoundedIcon from '@material-ui/icons/ExitToAppRounded';
 
 const jwt = require("jsonwebtoken");
 const token = sessionStorage.getItem("userToken");
@@ -103,6 +106,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   mobileSideMenuItems: {
+    marginTop: 24,
     display: "block",
     [theme.breakpoints.up("sm")]: {
       display: "none",
@@ -164,10 +168,28 @@ const useStyles = makeStyles((theme) => ({
       color: "white",
     },
   },
-  menu: {marginTop: 50}
+  menu: { marginTop: 50 },
+  mobileMenu: {
+    marginTop: 50,
+
+    '& .MuiMenu-paper': {
+      minWidth: "70%",
+      padding: 16,
+      borderRadius: 12,
+      boxShadow: 'rgba(83, 144, 217, 0.6) 0px 4px 12px',
+
+    }
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
+  logoutIcon: {
+    marginRight: 10
+  }
 }));
 
-export default function Topbar({ id, name, email, role }) {
+export default function Topbar(props) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -212,110 +234,80 @@ export default function Topbar({ id, name, email, role }) {
     </Menu>
   );
 
+
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-      className={classes.menu}
-    >
-      {!token && (
-        <div>
-          
+    <Backdrop className={classes.backdrop} open={isMobileMenuOpen} onClick={handleMobileMenuClose}>
+      <Menu
+        anchorEl={mobileMoreAnchorEl}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        id={mobileMenuId}
+        keepMounted
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
+        open={isMobileMenuOpen}
+        onClose={handleMobileMenuClose}
+        className={classes.mobileMenu}
+      >
+        {!token && (
+          <div>
+            <Button
+              onClick={() => {
+                window.location = "/startHiring";
+              }}
+              className={classes.startHiring}
+            >
+              Start Hiring
+            </Button>
+            <Button
+              onClick={() => {
+                window.location = "/signin";
+              }}
+              className={classes.signInMobile}
+            >
+              Sign In
+            </Button>
+          </div>
+        )}
+        {token && (
+          <div className={classes.sectionMobile}>
+            {" "}
+
+            <MenuItem>
+              <IconButton aria-label="show 11 new notifications" color="inherit">
+                <Badge badgeContent={11} color="secondary">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
+            </MenuItem>
+            <MenuItem onClick={handleProfileMenuOpen}>
+              <IconButton
+                aria-label="account of current user"
+                aria-controls="primary-search-account-menu"
+                aria-haspopup="true"
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+            </MenuItem>{" "}
+          </div>
+        )}
+        <div className={classes.mobileSideMenuItems}>
+          <NavMenu user={props.user} />
+        </div>
+        {token && (
           <Button
             onClick={() => {
-              window.location = "/startHiring";
+              localStorage.clear("userToken");
+              sessionStorage.clear("userToken");
+              window.location = "/signin";
             }}
             className={classes.startHiring}
           >
-            Start Hiring
+            <ExitToAppRoundedIcon className={classes.logoutIcon} />Log Out
           </Button>
-          <Button
-            onClick={() => {
-              window.location = "/signin";
-            }}
-            className={classes.signInMobile}
-          >
-            Sign In
-          </Button>
-        </div>
-      )}
-      {token && (
-        <div>
-          {" "}
-          <MenuItem>
-            <IconButton aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <p>Messages</p>
-          </MenuItem>
-          <MenuItem>
-            <IconButton aria-label="show 11 new notifications" color="inherit">
-              <Badge badgeContent={11} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            <p>Notifications</p>
-          </MenuItem>
-          <MenuItem onClick={handleProfileMenuOpen}>
-            <IconButton
-              aria-label="account of current user"
-              aria-controls="primary-search-account-menu"
-              aria-haspopup="true"
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-            <p>Profile</p>
-          </MenuItem>{" "}
-        </div>
-      )}
-      <div className={classes.mobileSideMenuItems}>
-        <MenuItem>
-          <IconButton color="inherit">
-            <HomeRoundedIcon />
-          </IconButton>
-          <p>Home</p>
-        </MenuItem>
-        <MenuItem>
-          <IconButton color="inherit">
-            <WorkRoundedIcon />
-          </IconButton>
-          <p>Jobs</p>
-        </MenuItem>
-        <MenuItem>
-          <IconButton color="inherit">
-            <BusinessRoundedIcon />
-          </IconButton>
-          <p>Ogranizations</p>
-        </MenuItem>
-        <MenuItem>
-          <IconButton color="inherit">
-            <PeopleAltRoundedIcon />
-          </IconButton>
-          <p>People</p>
-        </MenuItem>
-        <MenuItem>
-          <IconButton color="inherit">
-            <ThumbsUpDownRoundedIcon />
-          </IconButton>
-          <p>Services</p>
-        </MenuItem>
-        <MenuItem>
-          <IconButton color="inherit">
-            <PhoneRoundedIcon />
-          </IconButton>
-          <p>Contact Us</p>
-        </MenuItem>
-      </div>
-    </Menu>
+        )}
+      </Menu>
+    </Backdrop>
   );
   const preventDefault = (event) => event.preventDefault();
   return (
@@ -370,11 +362,11 @@ export default function Topbar({ id, name, email, role }) {
                       onClick={() => {
                         localStorage.clear("userToken");
                         sessionStorage.clear("userToken");
-                        window.location = "/";
+                        window.location = "/signin";
                       }}
                       className={classes.startHiring}
                     >
-                      Log Out
+                      <ExitToAppRoundedIcon className={classes.logoutIcon} />Log Out
                     </Button>
                   </div>
                 )}

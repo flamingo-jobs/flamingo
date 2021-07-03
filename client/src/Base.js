@@ -204,7 +204,7 @@ function Base() {
               justify="space-between"
             >
               <Grid item sm={12}>
-                <Topbar />
+                <Topbar user={role}/>
               </Grid>
               <Grid
                 container
