@@ -132,11 +132,17 @@ function JobSummary(props) {
     if (event.target.name === "min" || event.target.name === "max") {
       newJob.salaryRange[event.target.name] = event.target.value;
     } else {
-      console.log("changed value", event.target.value);
+      // console.log("changed value", event.target.value);
       newJob[event.target.name] = event.target.value;
     }
     props.setJob(newJob);
   };
+
+  const handleDueDateChange = (date) => {
+    const newJob = { ...props.job };
+    newJob.dueDate = date;
+    props.setJob(newJob);
+  }
 
   const handleSummarySubmit = async (e) => {
     e.preventDefault();
@@ -187,6 +193,7 @@ function JobSummary(props) {
         handleClose={handleClose}
         handleSummaryChange={handleSummaryChange}
         handleSummarySubmit={handleSummarySubmit}
+        handleDueDateChange={handleDueDateChange}
       ></JobSummaryModal>
 
       <FloatCard>
@@ -201,7 +208,7 @@ function JobSummary(props) {
                 />
                 <div className={classes.time}>
                   <Typography>
-                    <ReactTimeAgo date={props.job.dueDate} locale="en-US" />
+                    <ReactTimeAgo date={props.job.postedDate} locale="en-US" />
                   </Typography>
                 </div>
               </Grid>
@@ -230,12 +237,6 @@ function JobSummary(props) {
                 <Typography className={classes.companyName}>
                   {props.job.organization.name}
                 </Typography>
-                {/* <Typography
-                  variant="subtitle2"
-                  className={classes.companyAddress}
-                >
-                  {props.job.location}
-                </Typography> */}
               </Grid>
             </Grid>
 

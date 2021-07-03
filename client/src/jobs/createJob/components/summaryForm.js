@@ -179,7 +179,7 @@ const SummaryForm = ({
                 ))}
               </StateBlueTextField>
             </Grid>
-            {/* style={{border: "1px solid red"}} */}
+            
             <Grid item xs={6} className={classes.textField}>
                   <div className={classes.dateWrapper}>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
