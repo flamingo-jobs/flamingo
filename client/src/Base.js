@@ -88,7 +88,6 @@ function Base() {
     loadJobSeeker();
     loadAdmin();
     loadDefault();
-    console.log(token);
   }, [role]);
 
   const loadDefault = () => {

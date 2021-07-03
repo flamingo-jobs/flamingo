@@ -44,6 +44,9 @@ const useStyles = makeStyles((theme) => ({
     },
     itemCheckBox: {
         minWidth: 'auto'
+    },
+    listHeader: {
+        borderRadius: 8
     }
 }));
 
@@ -53,7 +56,7 @@ export default function TechnologyList(props) {
     const [openTechList, setOpenTechList] = React.useState([]);
     const [checked, setChecked] = React.useState([]);
     const [technologies, setTechnologies] = useState([]);
-    const [stack, setStack] = useState(0);
+    const [stack, setStack] = useState([]);
 
     const handleTechnologyClick = () => {
 
@@ -73,13 +76,20 @@ export default function TechnologyList(props) {
     const updateStackData = (filterData) => {
         const newStack = [...stack];
         const currentIndex = stack.findIndex(x => x.name === filterData.name);
-        
-        const itemObj = { name: filterData.name , stack : filterData.stack, type: filterData.type };
+
+        const itemObj = { name: filterData.name, stack: filterData.stack, type: filterData.type };
 
         if (currentIndex === -1) {
-            newStack.push(itemObj);
+            if (itemObj.stack.length != 0) {
+                newStack.push(itemObj);
+            }
         } else {
-            newStack.splice(currentIndex, 1);
+            if (itemObj.stack.length == 0) {
+                newStack.splice(currentIndex, 1);
+            } else {
+                newStack.splice(currentIndex, 1);
+                newStack.push(itemObj);
+            }
         }
 
         setStack(newStack);
@@ -89,6 +99,7 @@ export default function TechnologyList(props) {
 
     useEffect(() => {
         passFilters();
+        console.log(stack)
     }, [stack])
 
     useEffect(() => {
@@ -115,17 +126,23 @@ export default function TechnologyList(props) {
     // };
 
     const passFilters = () => {
-        console.log("commo")
+        console.log(stack)
         let list = [];
-        let dual = [];
-//         if (stack.length == 0) {
-//             props.onChange(0);
-//         } else {
-// stack.map(item => item.type === "list" ? list.push(item.stack) : dual.push)
-//             props.onChange(stack);
-//         }
-//         { $or: [{ "technologyStack.stack.frontEnd": { $in: values }, "technologyStack.stack.backEnd": { $in: values } }] }
+        let completeStack = [];
 
+        if (stack.length == 0) {
+            props.onChange(0);
+        } else {
+            stack.map(item => {
+                if (item.type === "list") {
+                    list.push({ "technologyStack.stack.list": { $in: item.stack } })
+                } else {
+                    list.push({ $or: [{ "technologyStack.stack.frontEnd": { $in: item.stack } }, { "technologyStack.stack.backEnd": { $in: item.stack } }] })
+                }
+            })
+
+            props.onChange(list);
+        }
     }
 
     const retrieveTechnologies = () => {
@@ -184,7 +201,7 @@ export default function TechnologyList(props) {
                 const labelId = `category-list-${technology._id}`;
                 const itemId = technology._id;
                 return (
-                    <StackList key={itemId} technology={technology} onChange={updateStackData}/>
+                    <StackList key={itemId} technology={technology} onChange={updateStackData} />
                     // <List
                     //     component="nav"
                     //     className={classes.root}
@@ -214,7 +231,7 @@ export default function TechnologyList(props) {
                 component="nav"
                 className={classes.root}
             >
-                <ListItem button onClick={handleTechnologyClick}>
+                <ListItem button onClick={handleTechnologyClick} className={classes.listHeader}>
                     <ListItemText primary={<Typography className={classes.listTitle} >Technology</Typography>}></ListItemText>
                     {openTechnologies ? <ExpandLess className={classes.listDown} /> : <ExpandMore className={classes.listDown} />}
                 </ListItem>

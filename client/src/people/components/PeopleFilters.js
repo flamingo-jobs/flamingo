@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core'
+import { makeStyles, Typography } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import FloatCard from '../../components/FloatCard'
 import theme from '../../Theme'
@@ -6,9 +6,26 @@ import InterestList from './InterestList'
 import OrganizationList from './OrganizationList'
 import TechnologyList from './TechnologyList'
 import TypeList from './TypeList'
+import FilterListRoundedIcon from '@material-ui/icons/FilterListRounded';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
+    titleDiv: {
+        textAlign: "left",
+        backgroundColor: theme.palette.lightSkyBlue,
+        padding: 8,
+        paddingLeft: 16,
+        borderRadius: 8,
 
+    },
+    title: {
+        alignItems: "center",
+        display: "flex",
+        color: theme.palette.stateBlue,
+        fontWeight: 700
+    },
+    icon: {
+        marginRight: 8
+    }
 }))
 
 function JobFilters(props) {
@@ -51,12 +68,8 @@ function JobFilters(props) {
     const combineFilters = () => {
         let filterObjects = {};
 
-        if (type != 0) {
-            filterObjects = { ...filterObjects, type };
-        }
-
         if (technologyStack != 0) {
-            filterObjects = { ...filterObjects, $and : technologyStack };
+            filterObjects = { ...filterObjects, $and: technologyStack };
         }
 
         if (interests != 0) {
@@ -64,18 +77,20 @@ function JobFilters(props) {
         }
 
         if (organization != 0) {
-            filterObjects = { ...filterObjects, "organization.name": organization };
+            filterObjects = { ...filterObjects, "work.place": organization };
         }
-        console.log("fuvk");
         props.onChange(filterObjects);
     }
 
 
     return (
         <FloatCard >
-            <div className={classes.types}>
-                <TypeList onChange={updateType} />
+            <div className={classes.titleDiv} >
+                <Typography className={classes.title}><FilterListRoundedIcon className={classes.icon}/> Filter by</Typography>
             </div>
+            {/* <div className={classes.types}>
+                <TypeList onChange={updateType} />
+            </div> */}
             <div className={classes.categories}>
                 <InterestList onChange={updateCategory} />
             </div>

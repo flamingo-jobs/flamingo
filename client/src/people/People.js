@@ -96,7 +96,6 @@ function People() {
         axios.post(`${BACKEND_URL}/jobseekers/getJobseekerCount`, queryParams).then(res => {
             if (res.data.success) {
                 setCount(res.data.jobseekerCount)
-                console.log(res.data);
             } else {
                 setCount(0)
             }
@@ -116,7 +115,7 @@ function People() {
     const displayPeople = () => {
         if (people) {
             return people.map(job => (
-                <Grid item xs={12} md={12} lg={12}>
+                <Grid key={job._id} item xs={12} md={12} lg={12}>
                     <PeopleCard info={job} />
                 </Grid>
             ))

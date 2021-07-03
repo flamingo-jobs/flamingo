@@ -204,10 +204,8 @@ function Categories() {
     const deleteRecord = () => {
         axios.post(`${BACKEND_URL}/categories/delete`, { _id: { $in: selectionModel } }).then(res => {
             if (res.data.success) {
-                console.log("deleted");
                 setDeleteSuccess(true);
             } else {
-                console.log("error");
                 setDeleteFailed(true);
             }
         })

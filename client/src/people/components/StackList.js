@@ -17,6 +17,14 @@ const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
         maxWidth: 360,
+        marginBottom: 8,
+        backgroundColor: theme.palette.background.paper,
+    },
+    sub: {
+        width: '100%',
+        maxWidth: 360,
+        paddingTop: 3,
+        paddingBottom: 3,
         backgroundColor: theme.palette.background.paper,
     },
     count: {
@@ -36,11 +44,11 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: 8
     },
     listTitle: {
-        color: theme.palette.tuftsBlue,
-        fontWeight: 700
+        color: theme.palette.blueJeans,
+        fontWeight: 500
     },
     listDown: {
-        color: theme.palette.tuftsBlue,
+        color: theme.palette.blueJeans,
     },
     checkBox: {
         color: theme.palette.pinkyRed,
@@ -48,13 +56,16 @@ const useStyles = makeStyles((theme) => ({
     },
     itemCheckBox: {
         minWidth: 'auto'
+    },
+    listHeader: {
+        borderRadius: 8
     }
 }));
 
 export default function StackList(props) {
 
     const classes = useStyles();
-    const [openStack, setOpenStack] = React.useState(true);
+    const [openStack, setOpenStack] = React.useState(false);
     const [stack, setStack] = useState(props.technology.stack);
 
     const handleTechnologyClick = () => {
@@ -67,7 +78,6 @@ export default function StackList(props) {
 
     useEffect(() => {
         passFilters();
-
     }, [checked])
 
     // useEffect(() => {
@@ -88,13 +98,12 @@ export default function StackList(props) {
 
         setChecked(newChecked);
 
-
     };
 
     const passFilters = () => {
         let values = [];
         if (checked.length == 0) {
-            props.onChange(0);
+            props.onChange({ name: props.technology.name, stack: [], type: null});
         } else {
             checked.map((value) => values.push(value.name));
             if (stack.list) {
@@ -155,14 +164,14 @@ export default function StackList(props) {
         <>
             <List
                 component="nav"
-                className={classes.root}
+                className={classes.sub}
             >
-                <ListItem button onClick={handleTechnologyClick}>
+                <ListItem button onClick={handleTechnologyClick} className={classes.listHeader}>
                     <ListItemText primary={<Typography className={classes.listTitle} >{props.technology.name}</Typography>}></ListItemText>
                     {openStack ? <ExpandLess className={classes.listDown} /> : <ExpandMore className={classes.listDown} />}
                 </ListItem>
                 <Collapse in={openStack} timeout="auto" unmountOnExit>
-                    <List className={classes.root}>
+                    <List className={classes.sub}>
                         {displayStack()}
                     </List>
                 </Collapse>

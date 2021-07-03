@@ -19,7 +19,6 @@ const create = (req,res) => {
 }
 
 const getAll = (req,res) => {
-    console.log("Types requesting");
     Types.find().exec((err,types) => {
         if(err){
             return res.status(400).json({

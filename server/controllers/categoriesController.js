@@ -82,7 +82,6 @@ const update = (req,res) => {
 }
 
 const remove = (req, res) => {
-    console.log(req.body);
     Categories.deleteMany(req.body).exec((err,deletedCategory) => {
         if(err){
             return res.status(400).json({

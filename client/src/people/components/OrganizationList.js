@@ -47,13 +47,16 @@ const useStyles = makeStyles((theme) => ({
     },
     itemCheckBox: {
         minWidth: 'auto'
+    },
+    listHeader: {
+        borderRadius: 8
     }
 }));
 
 export default function OrganizationList(props) {
     const classes = useStyles();
 
-    const [openOrganizations, setOpenOrganizations] = useState(true);
+    const [openOrganizations, setOpenOrganizations] = useState(false);
     const [organizations, setOrganizations] = useState([]);
 
     const handleOrgClick = () => {
@@ -153,7 +156,7 @@ export default function OrganizationList(props) {
                 component="nav"
                 className={classes.root}
             >
-                <ListItem button onClick={handleOrgClick}>
+                <ListItem button onClick={handleOrgClick} className={classes.listHeader}>
                     <ListItemText primary={<Typography className={classes.listTitle} >Organizations</Typography>}></ListItemText>
                     {openOrganizations ? <ExpandLess className={classes.listDown} /> : <ExpandMore className={classes.listDown} />}
                 </ListItem>

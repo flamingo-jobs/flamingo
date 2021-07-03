@@ -48,12 +48,15 @@ const useStyles = makeStyles((theme) => ({
     },
     itemCheckBox: {
         minWidth: 'auto'
+    },
+    listHeader: {
+        borderRadius: 8
     }
 }));
 
 export default function InterestList(props) {
     const classes = useStyles();
-    const [openCategories, setOpenCategories] = React.useState(true);
+    const [openCategories, setOpenCategories] = React.useState(false);
     const [categories, setCategories] = useState([]);
 
     const handleCategoryClick = () => {
@@ -156,7 +159,7 @@ export default function InterestList(props) {
                 component="nav"
                 className={classes.root}
             >
-                <ListItem button onClick={handleCategoryClick}>
+                <ListItem button onClick={handleCategoryClick} className={classes.listHeader}>
                     <ListItemText primary={<Typography className={classes.listTitle} >Interested Areas</Typography>}></ListItemText>
                     {openCategories ? <ExpandLess className={classes.listDown} /> : <ExpandMore className={classes.listDown} />}
                 </ListItem>

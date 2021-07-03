@@ -33,7 +33,6 @@ const getAll = (req,res) => {
 }
 
 const getFiltered = (req, res) => {
-    console.log(JSON.stringify(req.body));
     Jobseeker.find(req.body.queryParams, null, req.body.options).exec((err, jobSeekers) => {
         if (err) {
             return res.status(400).json({
