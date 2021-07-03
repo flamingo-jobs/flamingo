@@ -9,13 +9,14 @@ import { Route, BrowserRouter } from "react-router-dom";
 import Base from "./Base";
 import Users from "./Users";
 import BACKEND_URL from "./Config.js";
-
+import ScrollToTop from "./components/ScrollToTop.js";
 const jwt = require("jsonwebtoken");
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
+        <ScrollToTop />
         <ThemeProvider theme={theme}>
           <Route path="(/|/jobs|/employer|/jobseeker|/jobDescription|/createJob|/admin|/organizations|/people|/job)">
             <Base />
