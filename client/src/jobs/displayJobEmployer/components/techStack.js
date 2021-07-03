@@ -12,6 +12,7 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import TechStackModal from "./techStackModal";
 import axios from "axios";
 import BACKEND_URL from "../../../Config";
+import transitions from "@material-ui/core/styles/transitions";
 
 const useStyles = makeStyles((theme) => ({
   techStackContainer: {
@@ -34,7 +35,11 @@ const useStyles = makeStyles((theme) => ({
   },
   chip: {
     color: theme.palette.white,
-    background: theme.palette.stateBlue,
+    background: "#6c757d",
+    "&:hover":{
+      background: theme.palette.black,
+      cursor: "pointer",
+    }
   },
   iconButton: {
     "&:hover": {
@@ -43,6 +48,11 @@ const useStyles = makeStyles((theme) => ({
   },
   addIcon: {
     color: theme.palette.tagIcon,
+    transition: "0.3s",
+    "&:hover":{
+      transition: "0.3s",
+      color: theme.palette.black,
+    }
   },
   iconGridItem: {
     display: "flex",
@@ -79,13 +89,13 @@ const TechStack = (props) => {
         `${BACKEND_URL}/jobs/update/${props.jobId}`,
         updateFields
       );
-      props.setChangesApplied(true);
       handleClose();
-      setTimeout(() => props.setChangesApplied(false), 10000);
+      props.setAlertData({ severity: "success", msg: "Changes saved successfully!" });
+      props.handleAlert();
     } catch (err) {
-      props.setChangesNotApplied(true);
       handleClose();
-      setTimeout(() => props.setChangesNotApplied(false), 10000);
+      props.setAlertData({ severity: "error", msg: "Changes could not be applied" });
+      props.handleAlert();
       console.log("Error: ", err);
     }
   };

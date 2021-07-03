@@ -40,6 +40,11 @@ const useStyles = makeStyles((theme) => ({
   createIcon: {
     fontSize: "20px",
     color: theme.palette.tagIcon,
+    transition: "0.3s",
+    "&:hover":{
+      transition: "0.3s",
+      color: theme.palette.black,
+    }
   },
   iconGridItem: {
     display: "flex",
@@ -99,13 +104,13 @@ const Qualifications = (props) => {
         updateFields
       );
       // console.log(response);
-      props.setChangesApplied(true);
       handleClose();
-      setTimeout(() => props.setChangesApplied(false), 10000);
+      props.setAlertData({ severity: "success", msg: "Changes saved successfully!" });
+      props.handleAlert();
     } catch (err) {
-      props.setChangesNotApplied(true);
       handleClose();
-      setTimeout(() => props.setChangesNotApplied(false), 10000);
+      props.setAlertData({ severity: "error", msg: "Changes could not be applied" });
+      props.handleAlert();
       console.log("Error: ", err);
     }
   };
@@ -139,8 +144,8 @@ const Qualifications = (props) => {
           <List dense={true} className={classes.list}>
             {props.job.qualifications.map((qualification) => (
               <ListItem key={qualification}>
-                <ListItemIcon>
-                  <FiberManualRecordIcon fontSize="small" />
+                <ListItemIcon style={{minWidth: 25}}>
+                  <FiberManualRecordIcon fontSize="inherit" />
                 </ListItemIcon>
                 <ListItemText primary={qualification} />
               </ListItem>
