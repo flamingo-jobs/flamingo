@@ -190,13 +190,13 @@ function VolunteerItem(props) {
         </Grid>
 
         <Grid item xs={7} spacing={2} style={{marginTop:"-5px"}}>
-            <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'15px',fontWeight:'bold',paddingTop:'5px'}}>
+            <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'15px',fontWeight:'bold',paddingTop:'5px'}}>
                 {state.title}
             </Typography>
-            <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'15px',marginRight:"-50px"}}>
+            <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'15px',marginRight:"-50px"}}>
                 {state.description}
             </Typography>
-            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',paddingTop:'5px',marginRight:"-50px"}}>
+            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',paddingTop:'5px',marginRight:"-50px"}}>
                 Organization : {state.organization}
             </Typography>
         </Grid>
@@ -230,7 +230,7 @@ function VolunteerItem(props) {
                   </Button>
               </DialogActions>
           </Dialog>
-            {/*-------------- add new volunteer field popup content ------------------- */}
+            {/*-------------- edit volunteer field popup content ------------------- */}
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"

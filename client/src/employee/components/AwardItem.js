@@ -182,16 +182,16 @@ function AchievementItem(props) {
         <StarIcon style={{color: theme.palette.pinkyRed,}} />
         </Grid>
         <Grid item xs={9}>
-            <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'15px',fontWeight:'bold',paddingTop:'5px'}}>
+            <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'15px',fontWeight:'bold',paddingTop:'5px'}}>
                 {state.title}
             </Typography>
-            <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'15px',marginRight:"-50px"}}>
+            <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'15px',marginRight:"-50px"}}>
                 {state.description}
             </Typography>
-            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',paddingTop:'5px',marginRight:"-50px"}}>
+            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',paddingTop:'5px',marginRight:"-50px"}}>
                 Issued by : {state.issuedBy}
             </Typography>
-            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',paddingTop:'5px'}}>
+            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',paddingTop:'5px'}}>
                 Issued date : {state.date}
             </Typography>
         </Grid>
@@ -224,7 +224,7 @@ function AchievementItem(props) {
                   </Button>
               </DialogActions>
           </Dialog>
-            {/*-------------- add new volunteer field popup content ------------------- */}
+            {/*-------------- update award field popup content ------------------- */}
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
@@ -243,7 +243,7 @@ function AchievementItem(props) {
                 <Grid container xs={12} direction="row">
                   <Grid item xs={10}>
                     <Typography gutterBottom variant="h5" style={{textAlign:'center',paddingLeft:'50px',color:theme.palette.stateBlue}}>
-                      Add Volunteer Project
+                      Edit Award Details
                     </Typography>
                     <Divider variant="middle" style={{marginLeft:'100px'}} />
                   </Grid>
