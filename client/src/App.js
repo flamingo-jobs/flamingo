@@ -1,5 +1,4 @@
 import SignInSide from "./signIn/components/SignInSide.js";
-import SetupProfile from "./getHired/SetupProfile";
 import GetHired from "./getHired/GetHired";
 import StartHiring from "./startHiring/StartHiring.js";
 import "./App.css";
@@ -10,6 +9,7 @@ import Base from "./Base";
 import Users from "./Users";
 import BACKEND_URL from "./Config.js";
 import ScrollToTop from "./components/ScrollToTop.js";
+import ProfileSetup from "./getHired/ProfileSetup.js";
 const jwt = require("jsonwebtoken");
 
 function App() {
@@ -28,7 +28,7 @@ function App() {
             <GetHired />
           </Route>
           <Route path="/setupProfile">
-            <SetupProfile />
+            <ProfileSetup />
           </Route>
           <Route path="/startHiring">
             <StartHiring />

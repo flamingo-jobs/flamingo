@@ -14,6 +14,7 @@ import { makeStyles, withStyles } from "@material-ui/core/styles";
 import FloatCard from "../../components/FloatCard";
 import backgroundImage from "../images/background.jfif";
 import SideDrawer from "../../components/SideDrawer";
+import Technologies from "./Technologies";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -166,172 +167,186 @@ export const TechnologyStack = ({
   };
 
   return (
-    <div className={classes.background}>
-      <div className={classes.overlay}>
-        <Container maxWidth={false} className={classes.container}>
-          <Grid
-            container
-            direction="row"
-            spacing={3}
-            className={classes.mainGrid}
-            justify="space-between"
-            alignItems="flex-start"
-          >
-            <Grid
-              item
-              xs={false}
-              sm={4}
-              md={3}
-              lg={2}
-              className={classes.sideDrawer}
-            >
-              <SideDrawer />
-            </Grid>
-            <Grid
-              item
-              xs={false}
-              sm={4}
-              md={3}
-              lg={2}
-              className={classes.sideDrawerGrid}
-            ></Grid>
-            <Grid
-              item
-              container
-              xs={12}
-              sm={8}
-              md={9}
-              lg={10}
-              spacing={3}
-              className={classes.topBarGrid}
-              direction="column"
-              justify="space-between"
-            >
-              <Container className={classes.container}>
-                <FloatCard>
-                  <Container>
-                    {/* Technology Stack */}
-                    <Container
-                      maxWidth="lg"
-                      className={classes.jobDetailsContainer}
-                    >
-                      <Box mt={5} mb={5}>
-                        <Typography component="h1" variant="h5">
-                          Technology Details
-                        </Typography>
-                      </Box>
-                      <Typography className={classes.title}>
-                        <h4>Technology Stack</h4>
-                      </Typography>
-                      {tech.map((x, i) => {
-                        return (
-                          <Grid container alignItems="center" spacing={2}>
-                            <Grid item xs={12} md={7} align="center">
-                              <TextField
-                                className={classes.textField}
-                                variant="outlined"
-                                fullWidth
-                                name="tech"
-                                label="Technology/ Programming Language"
-                                value={x.tech}
-                                onChange={(e) => handleTechInputChange(e, i)}
-                              />
-                            </Grid>
-                            <Grid item xs={12} md={2} align="center">
-                              <TextField
-                                className={classes.textField}
-                                variant="outlined"
-                                fullWidth
-                                name="techRate"
-                                label="Rate"
-                                type="number"
-                                InputProps={{
-                                  inputProps: { min: 0, max: 10 },
-                                }}
-                                value={x.techRate}
-                                onChange={(e) => handleTechInputChange(e, i)}
-                              />
-                            </Grid>
-                            <Grid item xs={12} md={1} align="center">
-                              <Typography className={classes.title}>
-                                / 10
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={12} md={2} align="center">
-                              {tech.length !== 1 && (
-                                <IconButton
-                                  onClick={() => handleTechRemoveClick(i)}
-                                  color="secondary"
-                                  aria-label="Add new technology/ programming language"
-                                >
-                                  <RemoveCircleOutlineIcon />
-                                </IconButton>
-                              )}
-                              {tech.length - 1 === i && (
-                                <IconButton
-                                  onClick={handleTechAddClick}
-                                  color="primary"
-                                  aria-label="Remove technology/ programming language"
-                                >
-                                  <AddCircleOutlineIcon />
-                                </IconButton>
-                              )}
-                            </Grid>
-                          </Grid>
-                        );
-                      })}
-                      <Grid item xs={12} md={6} align="center"></Grid>
-                      <Grid item xs={12} md={6} align="center"></Grid>
-                    </Container>
-
-                    {/* Navigation Buttons */}
-                    <Container className={classes.jobDetailsContainer}>
-                      <Grid container alignItems="center" spacing={2}>
-                        <Grid
-                          container
-                          direction="row"
-                          alignItems="center"
-                          justify="flex-end"
-                        >
-                          <Grid item sm={6} md={6} align="center">
-                            <Grid
-                              container
-                              alignItems="center"
-                              justify="flex-end"
-                              spacing={2}
-                            >
-                              <Grid item align="center">
-                                <Button
-                                  fullWidth
-                                  variant="outlined"
-                                  className={classes.previous}
-                                  onClick={() => navigation.previous()}
-                                >
-                                  Previous
-                                </Button>
-                              </Grid>{" "}
-                              <Grid item align="center">
-                                <Button
-                                  fullWidth
-                                  variant="contained"
-                                  className={classes.next}
-                                  onClick={finishForm}
-                                >
-                                  Finish
-                                </Button>
-                              </Grid>
-                            </Grid>
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                    </Container>
-                  </Container>
-                </FloatCard>
-              </Container>
+    <Container maxWidth="false">
+      <Grid
+        container
+        spacing={4}
+        justify="space-between"
+        className={classes.gridCont}
+      >
+        <Grid item xs={12}>
+          <Grid container alignItems="center" spacing={3}>
+            <Grid item xs={12} align="left">
+              <Technologies />
             </Grid>
           </Grid>
-        </Container>
-      </div>
-    </div>
-  );
-};
+        </Grid>
+      </Grid>
+    </Container>
+  )
+}
+//   return (
+//     // <div className={classes.background}>
+//     //   <div className={classes.overlay}>
+//     //     <Container maxWidth={false} className={classes.container}>
+//     //       <Grid
+//     //         container
+//     //         direction="row"
+//     //         spacing={3}
+//     //         className={classes.mainGrid}
+//     //         justify="space-between"
+//     //         alignItems="flex-start"
+//     //       >
+//     //         <Grid
+//     //           item
+//     //           xs={false}
+//     //           sm={4}
+//     //           md={3}
+//     //           lg={2}
+//     //           className={classes.sideDrawer}
+//     //         >
+//     //           <SideDrawer />
+//     //         </Grid>
+//     //         <Grid
+//     //           item
+//     //           xs={false}
+//     //           sm={4}
+//     //           md={3}
+//     //           lg={2}
+//     //           className={classes.sideDrawerGrid}
+//     //         ></Grid>
+//     //         <Grid
+//     //           item
+//     //           container
+//     //           xs={12}
+//     //           sm={8}
+//     //           md={9}
+//     //           lg={10}
+//     //           spacing={3}
+//     //           className={classes.topBarGrid}
+//     //           direction="column"
+//     //           justify="space-between"
+//     //         >
+//     //           <Container className={classes.container}>
+//     //             <FloatCard>
+//                   <Container>
+//                     {/* Technology Stack */}
+//                     <Container
+//                       maxWidth="lg"
+//                       className={classes.jobDetailsContainer}
+//                     >
+//                       <Typography className={classes.title}>
+//                         <h4>Technology Stack</h4>
+//                       </Typography>
+//                       {tech.map((x, i) => {
+//                         return (
+//                           <Grid container alignItems="center" spacing={2}>
+//                             <Grid item xs={12} md={7} align="center">
+//                               <TextField
+//                                 className={classes.textField}
+//                                 variant="outlined"
+//                                 fullWidth
+//                                 name="tech"
+//                                 label="Technology/ Programming Language"
+//                                 value={x.tech}
+//                                 onChange={(e) => handleTechInputChange(e, i)}
+//                               />
+//                             </Grid>
+//                             <Grid item xs={12} md={2} align="center">
+//                               <TextField
+//                                 className={classes.textField}
+//                                 variant="outlined"
+//                                 fullWidth
+//                                 name="techRate"
+//                                 label="Rate"
+//                                 type="number"
+//                                 InputProps={{
+//                                   inputProps: { min: 0, max: 10 },
+//                                 }}
+//                                 value={x.techRate}
+//                                 onChange={(e) => handleTechInputChange(e, i)}
+//                               />
+//                             </Grid>
+//                             <Grid item xs={12} md={1} align="center">
+//                               <Typography className={classes.title}>
+//                                 / 10
+//                               </Typography>
+//                             </Grid>
+//                             <Grid item xs={12} md={2} align="center">
+//                               {tech.length !== 1 && (
+//                                 <IconButton
+//                                   onClick={() => handleTechRemoveClick(i)}
+//                                   color="secondary"
+//                                   aria-label="Add new technology/ programming language"
+//                                 >
+//                                   <RemoveCircleOutlineIcon />
+//                                 </IconButton>
+//                               )}
+//                               {tech.length - 1 === i && (
+//                                 <IconButton
+//                                   onClick={handleTechAddClick}
+//                                   color="primary"
+//                                   aria-label="Remove technology/ programming language"
+//                                 >
+//                                   <AddCircleOutlineIcon />
+//                                 </IconButton>
+//                               )}
+//                             </Grid>
+//                           </Grid>
+//                         );
+//                       })}
+//                       <Grid item xs={12} md={6} align="center"></Grid>
+//                       <Grid item xs={12} md={6} align="center"></Grid>
+//                     </Container>
+
+//                     {/* Navigation Buttons */}
+//                     <Container className={classes.jobDetailsContainer}>
+//                       <Grid container alignItems="center" spacing={2}>
+//                         <Grid
+//                           container
+//                           direction="row"
+//                           alignItems="center"
+//                           justify="flex-end"
+//                         >
+//                           <Grid item sm={6} md={6} align="center">
+//                             <Grid
+//                               container
+//                               alignItems="center"
+//                               justify="flex-end"
+//                               spacing={2}
+//                             >
+//                               <Grid item align="center">
+//                                 <Button
+//                                   fullWidth
+//                                   variant="outlined"
+//                                   className={classes.previous}
+//                                   onClick={() => navigation.previous()}
+//                                 >
+//                                   Previous
+//                                 </Button>
+//                               </Grid>{" "}
+//                               <Grid item align="center">
+//                                 <Button
+//                                   fullWidth
+//                                   variant="contained"
+//                                   className={classes.next}
+//                                   onClick={finishForm}
+//                                 >
+//                                   Finish
+//                                 </Button>
+//                               </Grid>
+//                             </Grid>
+//                           </Grid>
+//                         </Grid>
+//                       </Grid>
+//                     </Container>
+//                   </Container>
+//     //             </FloatCard>
+//     //           </Container>
+//     //         </Grid>
+//     //       </Grid>
+//     //     </Container>
+//     //   </div>
+//     // </div>
+//   );
+// };
