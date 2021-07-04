@@ -16,7 +16,6 @@ const useStyles = makeStyles((theme) => ({
     },
     container: {
         marginTop: 16,
-        maxWidth: 'unset'
     },
     allJobs: {
         paddingTop: 9,
@@ -52,6 +51,9 @@ const useStyles = makeStyles((theme) => ({
             color: theme.palette.tuftsBlueHover,
         }
     },
+    jobGridCard: {
+        display: "grid"
+    }
 }))
 function RelatedJobs(props) {
     const classes = useStyles();
@@ -60,9 +62,9 @@ function RelatedJobs(props) {
 
     const retrieveRelatedJobs = () => {
         let regexExp = props.job.title.replace(" ", "|");
-        let params = {$or : [ {title: { $regex : regexExp, $options : "i"}}, {description: { $regex : regexExp, $options : "i"}}]}
+        let params = { $or: [{ title: { $regex: regexExp, $options: "i" } }, { description: { $regex: regexExp, $options: "i" } }] }
 
-        axios.post(`${BACKEND_URL}/jobs`, { queryParams: params, options: {limit: 3 } }).then(res => {
+        axios.post(`${BACKEND_URL}/jobs`, { queryParams: params, options: { limit: 3 } }).then(res => {
             if (res.data.success) {
                 if (props.job) {
                     setRelatedJobs(res.data.existingJobs.filter((job) => job._id !== props.job._id));
@@ -87,7 +89,7 @@ function RelatedJobs(props) {
         if (relatedJobs) {
 
             return relatedJobs.map(featuredJob => (
-                <Grid item sm={12} key={featuredJob._id}>
+                <Grid item sm={12} key={featuredJob._id} className={classes.jobGridCard}>
                     <JobCard info={featuredJob} />
                 </Grid>
             ))

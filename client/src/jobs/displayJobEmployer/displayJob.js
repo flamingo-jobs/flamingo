@@ -9,8 +9,7 @@ import Qualifications from "./components/qualifications";
 import Responsibilities from "./components/responsibilities";
 import TechStack from "./components/techStack";
 import Keywords from "./components/keywords";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import ErrorIcon from "@material-ui/icons/Error";
+import SnackBarAlert from "../../components/SnackBarAlert";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
   containerGridLastItem: {
     marginBottom: theme.spacing(3),
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("md")]: {
       marginBottom: "0px",
     },
   },
@@ -51,38 +50,48 @@ const useStyles = makeStyles((theme) => ({
 
 const DisplayJob = () => {
   const classes = useStyles();
-  const techs = [
-    {
-      _id: "60d9d8f5a66e6d5941d57fca",
-      name: "Programming Languages",
-      stack: {
-        list: ["Java", "C", "C#", "Scala"],
-      },
-    },
-    {
-      _id: "60d9d8f5a66e6d5941d57fcw",
-      name: "Programming",
-      stack: {
-        list: ["wwww", "rrrr", "tttt", "gggg"],
-      },
-    },
-  ];
-  const [changesApplied, setChangesApplied] = useState(false);
-  const [changesNotApplied, setChangesNotApplied] = useState(false);
+
   const [job, setJob] = useState("empty");
   const [categories, setCategories] = useState("empty");
   const [types, setTypes] = useState("empty");
   const [employer, setEmployer] = useState("empty");
-  const [technologies, setTechnologies] = useState(techs);
+  const [technologies, setTechnologies] = useState("empty");
   const jobId = "60c184a2c76c4d325461e7f0";
   const empId = "60c246913542f942e4c84454";
+
+  const [alertShow, setAlertShow] = React.useState(false);
+  const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
 
   useEffect(() => {
     retrieveJob();
     retrieveCategories();
     retrieveJobTypes();
     retrieveEmployer();
+    retrieveTechnologies();
   }, []);
+
+  // Error related stuff
+  const displayAlert = () => {
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
+
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertShow(false);
+  };
 
   const retrieveJob = async () => {
     try {
@@ -130,7 +139,7 @@ const DisplayJob = () => {
 
   const retrieveTechnologies = async () => {
     try {
-      const response = await axios.get(`${BACKEND_URL}/technologies}`);
+      const response = await axios.get(`${BACKEND_URL}/technologies`);
       if (response.data.success) {
         setTechnologies(response.data.existingTechnologies);
       }
@@ -160,8 +169,8 @@ const DisplayJob = () => {
           categories={categories}
           types={types}
           locations={employer.locations}
-          setChangesApplied={setChangesApplied}
-          setChangesNotApplied={setChangesNotApplied}
+          setAlertData={setAlertData}
+          handleAlert={handleAlert}
         ></JobSummary>
       );
     }
@@ -180,8 +189,8 @@ const DisplayJob = () => {
           jobId={jobId}
           job={job}
           setJob={setJob}
-          setChangesApplied={setChangesApplied}
-          setChangesNotApplied={setChangesNotApplied}
+          setAlertData={setAlertData}
+          handleAlert={handleAlert}
         ></Qualifications>
       );
     }
@@ -200,12 +209,13 @@ const DisplayJob = () => {
           jobId={jobId}
           job={job}
           setJob={setJob}
-          setChangesApplied={setChangesApplied}
-          setChangesNotApplied={setChangesNotApplied}
+          setAlertData={setAlertData}
+          handleAlert={handleAlert}
         ></Responsibilities>
       );
     }
   };
+
   const displayTechStack = () => {
     if (job === "empty" || technologies === "empty") {
       return (
@@ -220,12 +230,13 @@ const DisplayJob = () => {
           job={job}
           setJob={setJob}
           technologies={technologies}
-          setChangesApplied={setChangesApplied}
-          setChangesNotApplied={setChangesNotApplied}
+          setAlertData={setAlertData}
+          handleAlert={handleAlert}
         ></TechStack>
       );
     }
   };
+
   const displayKeywords = () => {
     if (job === "empty") {
       return (
@@ -239,50 +250,17 @@ const DisplayJob = () => {
           jobId={jobId}
           job={job}
           setJob={setJob}
-          setChangesApplied={setChangesApplied}
-          setChangesNotApplied={setChangesNotApplied}
+          setAlertData={setAlertData}
+          handleAlert={handleAlert}
         ></Keywords>
       );
-    }
-  };
-
-  const displaySuccessMsg = () => {
-    if (changesApplied) {
-      return (
-        <div className={classes.feedbackMsgContainer}>
-          <div className={classes.feedbackMsg}>
-            <CheckCircleIcon className={classes.checkIcon} />
-            <Typography alignItems="center">Changes applied !</Typography>
-          </div>
-        </div>
-      );
-    } else {
-      return null;
-    }
-  };
-
-  const displayUnsuccessMsg = () => {
-    if (changesNotApplied) {
-      return (
-        <div className={classes.feedbackMsgContainer}>
-          <div className={classes.feedbackMsg}>
-            <ErrorIcon className={classes.errorIcon} />
-            <Typography alignItems="center">
-              Changes could not be applied !
-            </Typography>
-          </div>
-        </div>
-      );
-    } else {
-      return null;
     }
   };
 
   //  style={{border: "1px solid red"}}
   return (
     <>
-      {displaySuccessMsg()}
-      {displayUnsuccessMsg()}
+      {displayAlert()}
       <Grid container xs={12} spacing={3}>
         {/* Left column */}
         <Grid item xs={12} lg={6}>

@@ -8,9 +8,7 @@ import {
   Modal,
   Button,
   IconButton,
-  MenuItem,
   Chip,
-  TextField,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import { StateBlueTextField } from "../styles/customTextField";
@@ -90,9 +88,8 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "2px",
     marginRight: "2px",
   },
-  chipRemove:{
+  chipRemove: {
     color: "#f8f9fa",
-
   },
 }));
 
@@ -101,7 +98,12 @@ const JobSummaryModal = (props) => {
   const classes = useStyles();
 
   const options = props.technologies
-    .map((object) => object.stack.list.map((technology) => technology))
+    .map((technology) => technology.stack)
+    .map((stackElement) => {
+      for (const item in stackElement) {
+        return stackElement[item].map((finalTechnology) => finalTechnology);
+      }
+    })
     .flat(1);
 
   return (

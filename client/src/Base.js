@@ -81,14 +81,13 @@ function Base() {
   //Redirect user to signin page if not logged in
   const token = sessionStorage.getItem("userToken");
 
-  const [role, setRole] = useState(jwt.decode(token, { complete: true })? jwt.decode(token, { complete: true }).payload.userRole: null);
+  const [role, setRole] = useState(jwt.decode(token, { complete: true }) ? jwt.decode(token, { complete: true }).payload.userRole : null);
 
   useEffect(() => {
     loadEmployer();
     loadJobSeeker();
     loadAdmin();
     loadDefault();
-    console.log(token);
   }, [role]);
 
   const loadDefault = () => {
@@ -99,6 +98,9 @@ function Base() {
         </Route>
         <Route path="/job" exact>
           <DisplayJob />
+        </Route>
+        <Route path="/jobseeker">
+          <Profile />
         </Route>
         <Route path="/organizations">
           <Organizations />
@@ -126,7 +128,6 @@ function Base() {
         </>
       )
     }
-
   }
 
   const loadEmployer = () => {
@@ -179,7 +180,7 @@ function Base() {
               lg={2}
               className={classes.sideDrawer}
             >
-              <SideDrawer user={role}/>
+              <SideDrawer user={role} />
             </Grid>
 
             <Grid
@@ -203,7 +204,7 @@ function Base() {
               justify="space-between"
             >
               <Grid item sm={12}>
-                <Topbar />
+                <Topbar user={role}/>
               </Grid>
               <Grid
                 container
@@ -219,7 +220,7 @@ function Base() {
                   {loadAdmin()}
                 </Switch>
                 <Switch>
-                {loadDefault()}
+                  {loadDefault()}
                 </Switch>
               </Grid>
               <Grid item xs={12}>

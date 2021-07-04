@@ -20,7 +20,6 @@ export default function AddNewCatePopup(props) {
     const onSubmit = (e) => {
         e.preventDefault();
 
-        console.log(name);
         const category = {
           name: name
         }

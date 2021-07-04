@@ -2,7 +2,7 @@ import React from 'react'
 import { colors, makeStyles, Typography } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid';
 import JobSearchBar from './components/JobSearchBar';
-import JobFilters from './components/JobFilters';
+import PeopleFilters from './components/PeopleFilters';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import BACKEND_URL from '../Config';
@@ -43,6 +43,9 @@ const useStyles = makeStyles((theme) => ({
     },
     pagination: {
         justifyContent: 'center',
+    },
+    gridCard: {
+        display: "grid"
     }
 
 }));
@@ -96,7 +99,6 @@ function People() {
         axios.post(`${BACKEND_URL}/jobseekers/getJobseekerCount`, queryParams).then(res => {
             if (res.data.success) {
                 setCount(res.data.jobseekerCount)
-                console.log(res.data);
             } else {
                 setCount(0)
             }
@@ -116,7 +118,7 @@ function People() {
     const displayPeople = () => {
         if (people) {
             return people.map(job => (
-                <Grid item xs={12} md={12} lg={12}>
+                <Grid key={job._id} item xs={12} md={12} lg={12} className={classes.gridCard}>
                     <PeopleCard info={job} />
                 </Grid>
             ))
@@ -141,7 +143,7 @@ function People() {
                     </Grid>
                 </Grid>
                 <Grid item xs={12} sm={12} md={4} lg={3} className={classes.filterGrid}>
-                    <JobFilters onChange={updateFilters} />
+                    <PeopleFilters onChange={updateFilters} />
                 </Grid>
             </Grid>
         </>

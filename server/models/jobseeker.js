@@ -5,11 +5,16 @@ const jobseekerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-
+  tagline: {
+    type: String,
+  },
   gender: {
     type: String,
   },
   intro: {
+    type: String,
+  },
+  tagLine: {
     type: String,
   },
   address: {
@@ -39,7 +44,13 @@ const jobseekerSchema = new mongoose.Schema({
   award: {
     type: Array,
   },
+  interests: {
+    type: Array
+  },
   volunteer: {
+    type: Array,
+  },
+  technologyStack: {
     type: Array,
   },
 });

@@ -117,7 +117,7 @@ function CompanySummary(props) {
 
     useEffect(() => {
         retrieveOrganizations();
-    }, [])
+    }, [props])
 
     useEffect(() => {
         displaySummary();

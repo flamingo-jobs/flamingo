@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -41,32 +42,39 @@ const useStyles = makeStyles((theme) => ({
     listDown: {
         color: theme.palette.tuftsBlue,
     },
+    checkBox: {
+        color: theme.palette.pinkyRed,
+        fill: theme.palette.pinkyRed
+    },
     itemCheckBox: {
         minWidth: 'auto'
+    },
+    listHeader: {
+        borderRadius: 8
     }
 }));
 
-export default function TypeList(props) {
+export default function InterestList(props) {
     const classes = useStyles();
-    const [openTypes, setOpenTypes] = React.useState(true);
+    const [openCategories, setOpenCategories] = React.useState(false);
+    const [categories, setCategories] = useState([]);
 
-    const handleTypeClick = () => {
-        setOpenTypes(!openTypes);
+    const handleCategoryClick = () => {
+        setOpenCategories(!openCategories);
 
     };
 
 
-    const [checked, setChecked] = React.useState([]);
-    const [types, setTypes] = useState([]);
+    const [checked, setChecked] = useState([]);
 
     useEffect(() => {
         passFilters();
     }, [checked])
 
     useEffect(() => {
-        retrieveTypes();
+        retrieveCategories();
     }, [])
-    
+
     const handleToggle = (value, itemId) => () => {
 
         const newChecked = [...checked];
@@ -96,25 +104,26 @@ export default function TypeList(props) {
 
     }
 
-    const retrieveTypes = () => {
-        // console.log(filters);s
-        axios.get(`${BACKEND_URL}/types`).then(res => {
+
+    const retrieveCategories = () => {
+        // console.log(filters);
+        axios.get(`${BACKEND_URL}/categories`).then(res => {
             if (res.data.success) {
-                setTypes(res.data.existingTypes)
+                setCategories(res.data.existingCategories)
             } else {
-                setTypes(null)
+                setCategories(null)
             }
         })
     }
     
-    const displayTypes = () => {
+    const displayCategories = () => {
 
-        if (types) {
-            return types.map(type => {
-                const labelId = `category-list-${type._id}`;
-                const itemId = type._id;
+        if (categories) {
+            return categories.map(category => {
+                const labelId = `category-list-${category._id}`;
+                const itemId = category._id;
                 return (
-                    <ListItem className={classes.listItem} key={itemId} role={undefined} dense button onClick={handleToggle(type.name, itemId)}>
+                    <ListItem className={classes.listItem} key={itemId} role={undefined} dense button onClick={handleToggle(category.name, itemId)}>
                         <ListItemIcon className={classes.itemCheckBox}>
                             <Checkbox
                                 edge="start"
@@ -128,10 +137,10 @@ export default function TypeList(props) {
                                   }}
                             />
                         </ListItemIcon>
-                        <ListItemText id={labelId} primary={type.name} />
+                        <ListItemText id={labelId} primary={category.name} />
                         <ListItemSecondaryAction>
                             <Avatar className={classes.count} variant="square" >
-                                <Typography className={classes.countText}>{5}</Typography>
+                                <Typography className={classes.countText}>{category.count}</Typography>
                             </Avatar>
                         </ListItemSecondaryAction>
                     </ListItem>
@@ -139,25 +148,24 @@ export default function TypeList(props) {
             })
         } else {
             return (
-                <Typography>No type available</Typography>
+                <Typography>No areas available</Typography>
             )
         }
     }
 
-    
     return (
         <>
             <List
                 component="nav"
                 className={classes.root}
             >
-                <ListItem button onClick={handleTypeClick}>
-                    <ListItemText primary={<Typography className={classes.listTitle} >Type</Typography>}></ListItemText>
-                    {openTypes ? <ExpandLess className={classes.listDown} /> : <ExpandMore className={classes.listDown} />}
+                <ListItem button onClick={handleCategoryClick} className={classes.listHeader}>
+                    <ListItemText primary={<Typography className={classes.listTitle} >Interested Areas</Typography>}></ListItemText>
+                    {openCategories ? <ExpandLess className={classes.listDown} /> : <ExpandMore className={classes.listDown} />}
                 </ListItem>
-                <Collapse in={openTypes} timeout="auto" unmountOnExit>
+                <Collapse in={openCategories} timeout="auto" unmountOnExit>
                     <List className={classes.root}>
-                        {displayTypes()}
+                        {displayCategories()}
                     </List>
                 </Collapse>
             </List>

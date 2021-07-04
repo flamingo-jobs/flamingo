@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   Button,
   TextField,
-  Box,
   Grid,
   Typography,
   Container,
@@ -13,18 +12,17 @@ import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import RemoveIcon from "@material-ui/icons/Remove";
 import AddIcon from "@material-ui/icons/Add";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import FloatCard from "../../components/FloatCard";
 import backgroundImage from "../images/background.jfif";
-import SideDrawer from "../../components/SideDrawer";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    background: `url(${backgroundImage}) no-repeat`,
-    backgroundAttachment: "fixed",
-    minHeight: "100vh",
-    backgroundSize: "cover",
+    // background: `url(${backgroundImage}) no-repeat`,
+    // backgroundAttachment: "fixed",
+    // minHeight: "100vh",
+    // backgroundSize: "cover",
   },
   container: {
     margin: "0 auto",
@@ -37,8 +35,8 @@ const useStyles = makeStyles((theme) => ({
     minHeight: "100vh",
   },
   background: {
-    background: `url(${backgroundImage}) no-repeat`,
-    backgroundSize: "cover",
+    // background: `url(${backgroundImage}) no-repeat`,
+    // backgroundSize: "cover",
   },
   paper: {
     display: "flex",
@@ -209,12 +207,12 @@ export const Experience = ({
   }
 
   return (
-    <div className={classes.background}>
-      <div className={classes.overlay}>
-        <Container maxWidth="false" className={classes.container}>
-          <Grid container spacing={3} justify="center" alignItems="center" className={classes.mainGrid}>
-            <Grid item xs={12} align="center">
-              <FloatCard>
+    // <div className={classes.background}>
+    //   <div className={classes.overlay}>
+    //     <Container maxWidth="false" className={classes.container}>
+          // <Grid container spacing={3} justify="center" alignItems="center" >
+          //   <Grid item xs={12} align="center">
+          //     <FloatCard>
                 <Container maxWidth="false">
                   <Grid
                     container
@@ -222,9 +220,6 @@ export const Experience = ({
                     justify="space-between"
                     className={classes.gridCont}
                   >
-                    <Grid item xs={12} align="left">
-                      <Typography className={classes.mainTitle}>Continue setting up you profile...</Typography>
-                    </Grid>
                     <Grid item xs={12} lg={6}>
                       <Grid container alignItems="center" spacing={3}>
                         <Grid item xs={12} align="left">
@@ -616,7 +611,7 @@ export const Experience = ({
                         </Grid>
 
                         {/* Navigation Buttons */}
-                        <Grid item xs={12}>
+                        {/* <Grid item xs={12}>
                           <Grid
                             item
                             container
@@ -648,16 +643,16 @@ export const Experience = ({
                               </Grid>
                             </Grid>
                           </Grid>
-                        </Grid>
+                        </Grid> */}
                       </Grid>
                     </Grid>
                   </Grid>
                 </Container>
-              </FloatCard>
-            </Grid>
-          </Grid>
-        </Container>
-      </div >
-    </div >
+          //     </FloatCard>
+          //   </Grid>
+          // </Grid>
+    //     </Container>
+    //   </div >
+    // </div >
   );
 };

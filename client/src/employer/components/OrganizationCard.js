@@ -85,7 +85,6 @@ function OrganizationCard(props) {
     const classes = useStyles();
 
     const getAvgRating = (arr = []) => {
-        console.log(arr);
         return arr.map(item => item.rating).reduce((a, x) => a + x, 0) / arr.length;
     }
 

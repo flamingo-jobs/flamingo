@@ -67,7 +67,6 @@ const update = (req,res) => {
 }
 
 const remove = (req, res) => {
-    console.log(req.body);
     Technologies.deleteMany(req.body).exec((err,deletedTechnology) => {
         if(err){
             return res.status(400).json({

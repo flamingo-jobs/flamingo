@@ -13,6 +13,13 @@ import {
 import CloseIcon from "@material-ui/icons/Close";
 import { StateBlueTextField } from "../styles/customTextField";
 import FloatCard from "../../../components/FloatCard";
+import { createMuiTheme } from "@material-ui/core";
+import { ThemeProvider } from "@material-ui/styles";
+import DateFnsUtils from "@date-io/date-fns";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -83,7 +90,48 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.white,
     },
   },
+  date: {
+    width:"100%",
+    display: "flex",
+    justifyContent:"center",
+  },
 }));
+
+const materialTheme = createMuiTheme({
+  spacing: 5,
+  overrides: {
+    MuiPickersToolbar: {
+      toolbar: {
+        backgroundColor: "#5E60CE",
+      },
+    },
+    MuiPickersCalendarHeader: {
+      switchHeader: {
+        // backgroundColor: "#5E60CE",
+        // color: "white",
+      },
+    },
+    MuiPickersDay: {
+      day: {
+        color: "#555",
+      },
+      daySelected: {
+        backgroundColor: "#5E60CE",
+      },
+      dayDisabled: {
+        color: "#5E60CE",
+      },
+      current: {
+        color: "#5E60CE",
+      },
+    },
+    MuiPickersModal: {
+      dialogAction: {
+        color: "#5E60CE",
+      },
+    },
+  },
+});
 
 // style={{border: "1px solid red"}}
 const JobSummaryModal = (props) => {
@@ -207,25 +255,27 @@ const JobSummaryModal = (props) => {
                         </StateBlueTextField>
                       </Grid>
 
-                      {/* <Grid item xs={6}>
-                        <Grid container className={classes.textField}>
-                          <Grid item container xs={6} justify="flex-start">
+                      <Grid item xs={6}>
+                        <Grid container className={`${classes.textField}`}>
+                          <div className={classes.date}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                              <KeyboardDatePicker
-                                format="MM/dd/yyyy"
-                                id="dueDate"
-                                name="dueDate"
-                                label="Due Date"
-                                // value={selectedDate}
-                                // onChange={handleSummaryChange}
-                                KeyboardButtonProps={{
-                                  "aria-label": "change date",
-                                }}
-                              />
+                              <ThemeProvider theme={materialTheme}>
+                                <KeyboardDatePicker
+                                  format="dd/MM/yyyy"
+                                  id="dueDate"
+                                  name="dueDate"
+                                  label="Due Date"
+                                  value={props.job.dueDate}
+                                  onChange={props.handleDueDateChange}
+                                  KeyboardButtonProps={{
+                                    "aria-label": "change date",
+                                  }}
+                                />
+                              </ThemeProvider>
                             </MuiPickersUtilsProvider>
-                          </Grid>
+                          </div>
                         </Grid>
-                      </Grid> */}
+                      </Grid>
                     </Grid>
 
                     {/* Salary range */}

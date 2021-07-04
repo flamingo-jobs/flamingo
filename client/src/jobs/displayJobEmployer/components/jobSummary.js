@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import WorkOutlineIcon from "@material-ui/icons/WorkOutline";
+import WorkIcon from "@material-ui/icons/Work";
 import CreateIcon from "@material-ui/icons/Create";
 import LocalOfferRoundedIcon from "@material-ui/icons/LocalOfferRounded";
 import axios from "axios";
 import BACKEND_URL from "../../../Config";
+import LocationOnIcon from "@material-ui/icons/LocationOn";
+import ReactTimeAgo from "react-time-ago";
 
 import {
   Typography,
@@ -17,6 +19,7 @@ import {
 import FloatCard from "../../../components/FloatCard";
 import ninix from "../images/99x.png";
 import JobSummaryModal from "./jobSummaryModal";
+import TodayIcon from '@material-ui/icons/Today';
 
 const useStyles = makeStyles((theme) => ({
   summaryContainer: {
@@ -32,23 +35,25 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.tagIcon,
   },
   jobTitle: {
+    fontSize: "23px",
     fontWeight: 600,
     textAlign: "left",
     color: theme.palette.black,
   },
   companyIcon: {
     borderRadius: "12px",
+    width: 50,
+    height: 50,
   },
   companyName: {
     textAlign: "left",
     color: theme.palette.black,
+    fontSize: "17px",
+    fontWeight: 500,
   },
   companyAddress: {
     textAlign: "left",
     color: theme.palette.black,
-  },
-  jobCategory: {
-    color: theme.palette.tagIcon,
   },
   jobDetailsContainer: {
     textAlign: "left",
@@ -62,17 +67,59 @@ const useStyles = makeStyles((theme) => ({
   createIcon: {
     fontSize: "20px",
     color: theme.palette.tagIcon,
+    transition: "0.3s",
+    "&:hover": {
+      transition: "0.3s",
+      color: theme.palette.black,
+    },
   },
   description: {
     marginTop: theme.spacing(2),
     color: theme.palette.black,
   },
+  locationAndType: {
+    width: "100%",
+    display: "flex",
+    gap: "30px",
+    marginTop: "12px",
+  },
+  location: {
+    display: "flex",
+    gap: "10px",
+  },
+  type: {
+    display: "flex",
+    gap: "10px",
+  },
+  locationIcon: {
+    color: "#666",
+  },
+  locationText: {
+    color: "#666",
+  },
+  typeIcon: {
+    color: "#666",
+  },
+  typeText: {
+    color: "#666",
+  },
+  time:{
+    padding: "4px 0px",
+    marginLeft: "20px",
+  },
 }));
+
+const getFormattedDate = (date) => {
+  // console.log("Due date", date);
+  const dateStr = date.toString().slice(0,10).replaceAll("-","/");
+  return dateStr;
+};
 
 function JobSummary(props) {
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -85,11 +132,17 @@ function JobSummary(props) {
     if (event.target.name === "min" || event.target.name === "max") {
       newJob.salaryRange[event.target.name] = event.target.value;
     } else {
-      console.log("changed value", event.target.value);
+      // console.log("changed value", event.target.value);
       newJob[event.target.name] = event.target.value;
     }
     props.setJob(newJob);
   };
+
+  const handleDueDateChange = (date) => {
+    const newJob = { ...props.job };
+    newJob.dueDate = date;
+    props.setJob(newJob);
+  }
 
   const handleSummarySubmit = async (e) => {
     e.preventDefault();
@@ -111,18 +164,24 @@ function JobSummary(props) {
         `${BACKEND_URL}/jobs/update/${props.jobId}`,
         updateFields
       );
-      props.setChangesApplied(true);
       handleClose();
-      setTimeout(() => props.setChangesApplied(false), 10000);
+      props.setAlertData({
+        severity: "success",
+        msg: "Changes saved successfully!",
+      });
+      props.handleAlert();
       // console.log(response);
     } catch (err) {
-      props.setChangesNotApplied(true);
       handleClose();
-      setTimeout(() => props.setChangesNotApplied(false), 10000);
+      props.setAlertData({
+        severity: "error",
+        msg: "Changes could not be applied",
+      });
+      props.handleAlert();
       console.log("Error: ", err);
     }
   };
-
+  // style={{border: "1px solid red"}}
   return (
     <>
       <JobSummaryModal
@@ -134,6 +193,7 @@ function JobSummary(props) {
         handleClose={handleClose}
         handleSummaryChange={handleSummaryChange}
         handleSummarySubmit={handleSummarySubmit}
+        handleDueDateChange={handleDueDateChange}
       ></JobSummaryModal>
 
       <FloatCard>
@@ -146,6 +206,11 @@ function JobSummary(props) {
                   label={props.job.category}
                   className={classes.label}
                 />
+                <div className={classes.time}>
+                  <Typography>
+                    <ReactTimeAgo date={props.job.postedDate} locale="en-US" />
+                  </Typography>
+                </div>
               </Grid>
               <Grid item xs={1}>
                 <IconButton className={classes.iconButton} onClick={handleOpen}>
@@ -154,62 +219,66 @@ function JobSummary(props) {
               </Grid>
             </Grid>
 
-            <Typography variant="h5" className={classes.jobTitle}>
-              {props.job.title}
-            </Typography>
             <Grid item container spacing={2} alignItems="center">
               <Grid item>
                 <Avatar
                   className={classes.companyIcon}
-                  alt="99x"
-                  src={ninix}
+                  src={
+                    require(`../../../employer/images/${props.job.organization.logo}`)
+                      .default
+                  }
                   variant="square"
                 ></Avatar>
               </Grid>
               <Grid item>
-                <Typography variant="h6" className={classes.companyName}>
-                  {props.job.organization.name}
+                <Typography className={classes.jobTitle}>
+                  {props.job.title}
                 </Typography>
-                <Typography
-                  variant="subtitle2"
-                  className={classes.companyAddress}
-                >
-                  {props.job.location}
+                <Typography className={classes.companyName}>
+                  {props.job.organization.name}
                 </Typography>
               </Grid>
             </Grid>
 
-            <Grid item>
-              <Grid
-                item
-                container
-                alignItems="center"
-                spacing={1}
-                className={classes.jobCategory}
-              >
-                <Grid item>
-                  <WorkOutlineIcon fontSize="small"></WorkOutlineIcon>
-                </Grid>
-                <Grid item>
-                  <Typography variant="subtitle2">{props.job.type}</Typography>
-                </Grid>
-              </Grid>
-              <Grid item container className={classes.jobCategory} spacing={3}>
-                <Grid item>
-                  <Typography variant="subtitle2">
-                    Posted Date: {props.job.postedDate}
+            <Grid item xs={12}>
+              <div className={classes.locationAndType}>
+                <div className={classes.location}>
+                  <LocationOnIcon
+                    fontSize="small"
+                    className={classes.locationIcon}
+                  ></LocationOnIcon>
+                  <Typography
+                    variant="subtitle2"
+                    className={classes.locationText}
+                  >
+                    {props.job.location}
                   </Typography>
-                </Grid>
-                <Grid item>
-                  <Typography variant="subtitle2">
-                    Due Date: {props.job.dueDate}
+                </div>
+
+                <div className={classes.type}>
+                  <WorkIcon
+                    fontSize="small"
+                    className={classes.typeIcon}
+                  ></WorkIcon>
+                  <Typography variant="subtitle2" className={classes.typeText}>
+                    {props.job.type}
                   </Typography>
-                </Grid>
-              </Grid>
+                </div>
+
+                <div className={classes.type}>
+                  <TodayIcon
+                    fontSize="small"
+                    className={classes.typeIcon}
+                  ></TodayIcon>
+                  <Typography variant="subtitle2" className={classes.typeText}>
+                    {getFormattedDate(props.job.dueDate)}
+                  </Typography>
+                </div>
+              </div>
             </Grid>
             <Grid item xs={12}>
               <Typography align="left" className={classes.description}>
-                {props.job.description}
+                {(props.job.description)}
               </Typography>
             </Grid>
           </Grid>

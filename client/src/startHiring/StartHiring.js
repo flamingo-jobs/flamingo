@@ -127,9 +127,7 @@ const useStyles = makeStyles((theme) => ({
       bottom: "4%",
     },
   },
-  gridCont: {
-
-  },
+  gridCont: {},
   mainTitle: {
     fontSize: 36,
     fontWeight: 500,
@@ -137,9 +135,9 @@ const useStyles = makeStyles((theme) => ({
   },
   link: {
     cursor: "pointer",
-    '&:hover': {
-      color: theme.palette.pinkyRed + "!important"
-    }
+    "&:hover": {
+      color: theme.palette.pinkyRed + "!important",
+    },
   },
   actions: {
     justifyContent: "flex-end",
@@ -162,7 +160,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   mainGrid: {
-    minHeight: '100vh'
+    minHeight: "100vh",
   },
 }));
 
@@ -319,7 +317,13 @@ export default function StartHiring() {
     <div className={classes.background}>
       <div className={classes.overlay}>
         <Container className={classes.container}>
-          <Grid container spacing={3} justify="center" alignItems="center" className={classes.mainGrid}>
+          <Grid
+            container
+            spacing={3}
+            justify="center"
+            alignItems="center"
+            className={classes.mainGrid}
+          >
             <Grid item xs={12} align="center">
               <FloatCard>
                 <Container>
@@ -332,7 +336,9 @@ export default function StartHiring() {
                       className={classes.gridCont}
                     >
                       <Grid item xs={12} align="left">
-                        <Typography className={classes.mainTitle}>Sign Up</Typography>
+                        <Typography className={classes.mainTitle}>
+                          Sign Up
+                        </Typography>
                       </Grid>
 
                       <Grid item xs={12} md={5} lg={4}>
@@ -344,7 +350,11 @@ export default function StartHiring() {
                           </Grid>
                           <Grid item xs={12} align="left">
                             {!!selectedFile ? (
-                              <Grid container direction="row" alignItems="center">
+                              <Grid
+                                container
+                                direction="row"
+                                alignItems="center"
+                              >
                                 <Grid item xs={5} align="left">
                                   <Badge
                                     overlap="circle"
@@ -381,7 +391,11 @@ export default function StartHiring() {
                                 </Grid>
                               </Grid>
                             ) : (
-                              <Grid container direction="row" alignItems="center">
+                              <Grid
+                                container
+                                direction="row"
+                                alignItems="center"
+                              >
                                 <Grid item xs={5} align="left">
                                   <Badge
                                     overlap="circle"
@@ -391,7 +405,9 @@ export default function StartHiring() {
                                     }}
                                     badgeContent={
                                       <IconButton
-                                        onClick={() => fileInput.current.click()}
+                                        onClick={() =>
+                                          fileInput.current.click()
+                                        }
                                         aria-label="delete"
                                         color="primary"
                                       >
@@ -473,13 +489,17 @@ export default function StartHiring() {
                                     label="Location"
                                     size="small"
                                     value={x.name}
-                                    onChange={(e) => handleLocationInputChange(e, i)}
+                                    onChange={(e) =>
+                                      handleLocationInputChange(e, i)
+                                    }
                                   />
                                 </Grid>
                                 <Grid item xs={12} md={4} align="left">
                                   {locations.length !== 1 && (
                                     <IconButton
-                                      onClick={() => handleLocationRemoveClick(i)}
+                                      onClick={() =>
+                                        handleLocationRemoveClick(i)
+                                      }
                                       color="secondary"
                                       aria-label="Add new location"
                                     >
@@ -548,7 +568,9 @@ export default function StartHiring() {
                                     name="link"
                                     label="Link"
                                     value={x.link}
-                                    onChange={(e) => handleSocialInputChange(e, i)}
+                                    onChange={(e) =>
+                                      handleSocialInputChange(e, i)
+                                    }
                                   />
                                 </Grid>
                                 <Grid item xs={12} md={3} align="left">
@@ -635,12 +657,17 @@ export default function StartHiring() {
                         >
                           <Grid item md={6} align="left">
                             <Link to="/signIn">
-                              <Typography className={classes.link} >
+                              <Typography className={classes.link}>
                                 Have an account already? Sign In
                               </Typography>
                             </Link>
                           </Grid>
-                          <Grid item container md={6} className={classes.actions}>
+                          <Grid
+                            item
+                            container
+                            md={6}
+                            className={classes.actions}
+                          >
                             <Grid item>
                               <Button
                                 fullWidth
@@ -678,7 +705,6 @@ export default function StartHiring() {
             </Alert>
           </Snackbar>
         </Container>
-
       </div>
     </div>
   );

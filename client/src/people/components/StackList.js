@@ -17,6 +17,14 @@ const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
         maxWidth: 360,
+        marginBottom: 8,
+        backgroundColor: theme.palette.background.paper,
+    },
+    sub: {
+        width: '100%',
+        maxWidth: 360,
+        paddingTop: 3,
+        paddingBottom: 3,
         backgroundColor: theme.palette.background.paper,
     },
     count: {
@@ -36,11 +44,11 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: 8
     },
     listTitle: {
-        color: theme.palette.tuftsBlue,
-        fontWeight: 700
+        color: theme.palette.blueJeans,
+        fontWeight: 500
     },
     listDown: {
-        color: theme.palette.tuftsBlue,
+        color: theme.palette.blueJeans,
     },
     checkBox: {
         color: theme.palette.pinkyRed,
@@ -48,16 +56,20 @@ const useStyles = makeStyles((theme) => ({
     },
     itemCheckBox: {
         minWidth: 'auto'
+    },
+    listHeader: {
+        borderRadius: 8
     }
 }));
 
-export default function CategoryList(props) {
-    const classes = useStyles();
-    const [openCategories, setOpenCategories] = React.useState(true);
-    const [categories, setCategories] = useState([]);
+export default function StackList(props) {
 
-    const handleCategoryClick = () => {
-        setOpenCategories(!openCategories);
+    const classes = useStyles();
+    const [openStack, setOpenStack] = React.useState(false);
+    const [stack, setStack] = useState(props.technology.stack);
+
+    const handleTechnologyClick = () => {
+        setOpenStack(!openStack);
 
     };
 
@@ -68,9 +80,9 @@ export default function CategoryList(props) {
         passFilters();
     }, [checked])
 
-    useEffect(() => {
-        retrieveCategories();
-    }, [])
+    // useEffect(() => {
+    //     retrieveStack();
+    // }, [])
 
     const handleToggle = (value, itemId) => () => {
 
@@ -86,41 +98,39 @@ export default function CategoryList(props) {
 
         setChecked(newChecked);
 
-
     };
 
     const passFilters = () => {
         let values = [];
         if (checked.length == 0) {
-            props.onChange(0);
+            props.onChange({ name: props.technology.name, stack: [], type: null});
         } else {
             checked.map((value) => values.push(value.name));
-            props.onChange({ $in: values });
+            if (stack.list) {
+                props.onChange({ name: props.technology.name, stack: values, type: "list" });
+            } else{
+                props.onChange({ name: props.technology.name, stack: values, type: "dual" });
+            }
+
         }
 
 
     }
 
+    const displayStack = () => {
 
-    const retrieveCategories = () => {
-        // console.log(filters);
-        axios.get(`${BACKEND_URL}/categories`).then(res => {
-            if (res.data.success) {
-                setCategories(res.data.existingCategories)
+        if (stack) {
+            let listArray = [];
+            if (stack.list) {
+                listArray = stack.list;
             } else {
-                setCategories(null)
+                listArray = stack.frontEnd.concat(stack.backEnd);
             }
-        })
-    }
-    
-    const displayCategories = () => {
-
-        if (categories) {
-            return categories.map(category => {
-                const labelId = `category-list-${category._id}`;
-                const itemId = category._id;
+            return listArray.map(item => {
+                const labelId = `category-list-${item}`;
+                const itemId = item;
                 return (
-                    <ListItem className={classes.listItem} key={itemId} role={undefined} dense button onClick={handleToggle(category.name, itemId)}>
+                    <ListItem className={classes.listItem} key={itemId} role={undefined} dense button onClick={handleToggle(item, itemId)}>
                         <ListItemIcon className={classes.itemCheckBox}>
                             <Checkbox
                                 edge="start"
@@ -129,15 +139,15 @@ export default function CategoryList(props) {
                                 disableRipple
                                 inputProps={{ 'aria-labelledby': labelId }}
                                 className={classes.checkBox}
-                                style ={{
+                                style={{
                                     color: theme.palette.vividSkyBlue,
-                                  }}
+                                }}
                             />
                         </ListItemIcon>
-                        <ListItemText id={labelId} primary={category.name} />
+                        <ListItemText id={labelId} primary={item} />
                         <ListItemSecondaryAction>
                             <Avatar className={classes.count} variant="square" >
-                                <Typography className={classes.countText}>{category.count}</Typography>
+                                <Typography className={classes.countText}>5</Typography>
                             </Avatar>
                         </ListItemSecondaryAction>
                     </ListItem>
@@ -145,7 +155,7 @@ export default function CategoryList(props) {
             })
         } else {
             return (
-                <Typography>No category available</Typography>
+                <Typography>No technologies available</Typography>
             )
         }
     }
@@ -154,15 +164,15 @@ export default function CategoryList(props) {
         <>
             <List
                 component="nav"
-                className={classes.root}
+                className={classes.sub}
             >
-                <ListItem button onClick={handleCategoryClick}>
-                    <ListItemText primary={<Typography className={classes.listTitle} >Category</Typography>}></ListItemText>
-                    {openCategories ? <ExpandLess className={classes.listDown} /> : <ExpandMore className={classes.listDown} />}
+                <ListItem button onClick={handleTechnologyClick} className={classes.listHeader}>
+                    <ListItemText primary={<Typography className={classes.listTitle} >{props.technology.name}</Typography>}></ListItemText>
+                    {openStack ? <ExpandLess className={classes.listDown} /> : <ExpandMore className={classes.listDown} />}
                 </ListItem>
-                <Collapse in={openCategories} timeout="auto" unmountOnExit>
-                    <List className={classes.root}>
-                        {displayCategories()}
+                <Collapse in={openStack} timeout="auto" unmountOnExit>
+                    <List className={classes.sub}>
+                        {displayStack()}
                     </List>
                 </Collapse>
             </List>
