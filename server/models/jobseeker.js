@@ -26,10 +26,10 @@ const jobseekerSchema = new mongoose.Schema({
   university: {
     type: Array,
   },
-  college: {
+  school: {
     type: Array,
   },
-  highschool: {
+  course: {
     type: Array,
   },
   course: {

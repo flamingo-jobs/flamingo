@@ -95,12 +95,14 @@ function EducationSection() {
   const classes = useStyles();
   const [fetchedData, setFetchedData] = useState('');
   const [universityFields, setUniversityFields] = useState(null);
+  const [schoolFields, setSchoolFields] = useState(null);
   const [university, setUniversity] = useState({university: null, degree: null,fieldOfStudy: null, GPA: null, startDate: null, endDate: null, societiesAndActivities: null});
+  const [school, setSchool] = useState({school: null, startDate: null, endDate: null, description: null});
   const [level, setLevel] = useState(null);
-  const [selectedDegree, setSelectedDegree] = useState(null);
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
+  let eduCount=0;
 
   const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
 
@@ -125,7 +127,7 @@ function EducationSection() {
     setOpen(false);
   }
 
-  //---------------------------- text field onChange events
+  //---------------------------- university text fields onChange events
   function onChangeUniversity(e){
     setUniversity(prevState => {
       return {...prevState, university: e.target.value}
@@ -168,17 +170,43 @@ function EducationSection() {
     })
   }
 
+  //---------------------------- school text fields onChange events
+  function onChangeSchool(e){
+    setSchool(prevState => {
+      return {...prevState, school: e.target.value}
+    })
+  }
+
+  function onChangestartDate(e){
+    setSchool(prevState => {
+      return {...prevState, startDate: e.target.value}
+    })
+  }
+
+  function onChangeEndDate(e){
+    setSchool(prevState => {
+      return {...prevState, endDate: e.target.value}
+    })
+  }
+
+  function onChangeDescription(e){
+    setSchool(prevState => {
+      return {...prevState, description: e.target.value}
+    })
+  }
+
   function fetchData(){
     axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
     .then(res => {
       if(res.data.success){
         setUniversityFields(res.data.jobseeker.university)
+        setSchoolFields(res.data.jobseeker.school)
       }
     })
     setFetchedData(0);
   }
 
-  function onSubmit(e){
+  function onSubmitUniversity(e){
     e.preventDefault();
     const uni = {
         university: university.university,
@@ -196,6 +224,21 @@ function EducationSection() {
     handleClose();
   }
 
+  function onSubmitSchool(e){
+    e.preventDefault();
+    const sch = {
+        school: school.school,
+        startDate: school.startDate,
+        endDate: school.endDate,
+        description: school.description
+      }
+
+    axios.put(`${BACKEND_URL}/jobseeker/addSchool/60c5f2e555244d11c8012480`,sch)
+    .then(res => console.log(sch));
+    setFetchedData(1);
+    handleClose();
+  }
+
   useEffect(()=>{
     setUniversity({
       university: null,
@@ -206,26 +249,43 @@ function EducationSection() {
       endDate: null,
       societiesAndActivities: null
     })
+    setSchool({
+      school: null,
+      startDate: null,
+      endDate: null,
+      description: null
+    })
     fetchData()
   },[fetchedData])
 
-  const displayEduFields = () => {
+  const displayUniFields = () => {
     if (universityFields) {
+      eduCount=1;
       if (universityFields.length > 0) {
         return universityFields.map(edu => (
               <EduItem level="University" startYear={edu.startDate} endYear={edu.endDate} university={edu.university} degree={edu.degree} fieldOfStudy={edu.fieldOfStudy} gpa={"GPA : "+edu.GPA} societiesAndActivities={edu.societiesAndActivities} />
               ))
-        }else{
-          return (<Typography variant="body2" color="textSecondary" component="p">Education details not added.</Typography>)
-        }
-      }else{
-        return (<Typography variant="body2" color="textSecondary" component="p">Education details not added.</Typography>)
       }
+    }
+  }
+
+  const displaySchoolFields = () => {
+    if (schoolFields) {
+      eduCount=1;
+      if (schoolFields.length > 0) {
+        return schoolFields.map(edu => (
+              <EduItem level="School" startYear={edu.startDate} endYear={edu.endDate} school={edu.school} description={edu.description} />
+              ))
+      }
+    }
+    if(eduCount==0){
+      return (<Typography variant="body2" color="textSecondary" component="p">Education details not added.</Typography>);
+    }
   }
 
   useEffect(()=>{
     if (level == "University") {
-      let temp = <form className={classes.form} onSubmit={onSubmit}>
+      let temp = <form className={classes.form} onSubmit={onSubmitUniversity}>
       <div>
       <TextField
         className={classes.field}
@@ -262,7 +322,10 @@ function EducationSection() {
         className={classes.field}
           id="outlined-basic"
           label="GPA"
-          type="number"
+          min="0.00"
+          step="0.01"
+          max="4.25"
+          presicion={2}  
           variant="outlined"
           size="small"
           onChange={onChangeGPA}
@@ -303,17 +366,17 @@ function EducationSection() {
         <Button type="submit" className={classes.defaultButton} style={{ width:'100%',marginTop:'5%'}}>Apply Changes</Button>
     </form>;
       setForm(temp);
-    }else if(level=="College"){
-      let temp=<form className={classes.form} onSubmit={onSubmit}>
+    }else if(level=="School"){
+      let temp=<form className={classes.form} onSubmit={onSubmitSchool}>
       <div>
-      {/* <TextField
+      <TextField
         className={classes.field}
           id="outlined-basic"
-          label="College"
+          label="School"
           type="text"
           variant="outlined"
           size="small"
-          onChange={onChangeCollege}
+          onChange={onChangeSchool}
         />
         <Grid container direction="row">
         <TextField
@@ -336,51 +399,22 @@ function EducationSection() {
           onChange={onChangeEndDate}
           style={{width:'30%'}}
         />
-        </Grid> */}
-        </div>
-        <Button type="submit" className={classes.defaultButton} style={{ width:'100%',marginTop:'5%'}}>Apply Changes</Button>
-    </form>;
-    setForm(temp);
-    }else if(level=="Highschool"){
-      let temp=<form className={classes.form} onSubmit={onSubmit}>
-      <div>
-      {/* <TextField
-        className={classes.field}
-          id="outlined-basic"
-          label="Highschool"
-          type="text"
-          variant="outlined"
-          size="small"
-          onChange={onChangeHighschool}
-        />
-        <Grid container direction="row">
+        </Grid>
         <TextField
-        className={classes.field}
-          id="outlined-basic"
-          label="Start year"
-          type="number"
+          className={classes.field}
+          id="outlined-multiline-static"
+          label="Description"
+          multiline
+          rows={5}
           variant="outlined"
-          size="small"
-          onChange={onChangestartDate}
-          style={{width:'30%',marginRight:'10%'}}
+          onChange= {onChangeDescription}
         />
-        <TextField
-        className={classes.field}
-          id="outlined-basic"
-          label="End year"
-          type="number"
-          variant="outlined"
-          size="small"
-          onChange={onChangeEndDate}
-          style={{width:'30%'}}
-        />
-        </Grid> */}
         </div>
         <Button type="submit" className={classes.defaultButton} style={{ width:'100%',marginTop:'5%'}}>Apply Changes</Button>
     </form>;
     setForm(temp);
     }
-  },[level,university])
+  },[level,university,school])
 
   return (
     <FloatCard>
@@ -410,21 +444,17 @@ function EducationSection() {
                 }}>University</MenuItem>
               <MenuItem onClick={()=>{
                 handleCloseMenu()
-                setLevel("College")
+                setLevel("School")
                 handleOpen()
-                }}>College</MenuItem>
-              <MenuItem onClick={()=>{
-                handleCloseMenu()
-                setLevel("Highschool")
-                handleOpen()
-                }}>Highschool</MenuItem>
+                }}>School</MenuItem>
             </Menu>
         </Grid>
         
       </Grid>
       <Grid container spacing={3}>
             <Grid item xs={12}>
-              {displayEduFields()}
+              {displayUniFields()}
+              {displaySchoolFields()}
             </Grid>
         </Grid>
 
