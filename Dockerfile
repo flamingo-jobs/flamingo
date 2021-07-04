@@ -16,10 +16,10 @@ ADD . /usr/apps/flamingo-docker/
 
 WORKDIR /usr/apps/flamingo-docker/client
 
-RUN npm install
+RUN npm install --save
 
 WORKDIR /usr/apps/flamingo-docker/server
 
-RUN npm install
+RUN npm install --save
 
 CMD ["npm", "run", "dev"]
