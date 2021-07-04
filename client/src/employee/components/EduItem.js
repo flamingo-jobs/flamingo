@@ -66,22 +66,15 @@ function EduItem(props) {
                 </Grid>
             </React.Fragment>
         );
-    }else if(props.level == "College"){
+    }else if(props.level == "School"){
         return (
             <React.Fragment>
                 <Grid item xs={8} spacing={2} style={{marginTop:"-15px",marginBottom:'-15px'}}>
                     <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'15px',fontWeight:'bold',}}>
-                        {props.college}
+                        {props.school}
                     </Typography>
-                </Grid>
-            </React.Fragment>
-        );
-    }else if(props.level == "Highschool"){
-        return (
-            <React.Fragment>
-                <Grid item xs={8} spacing={2} style={{marginTop:"-15px",marginBottom:'-15px'}}>
-                    <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'15px',fontWeight:'bold',}}>
-                        {props.highschool}
+                    <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',}}>
+                        {props.description}
                     </Typography>
                 </Grid>
             </React.Fragment>
