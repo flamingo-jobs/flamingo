@@ -20,13 +20,23 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import PhoneIcon from '@material-ui/icons/Phone';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
 import CloseIcon from '@material-ui/icons/Close';
 import BACKEND_URL from '../../Config';
 import Divider from '@material-ui/core/Divider';
-
+import IconButton from "@material-ui/core/IconButton";
+import Avatar from "@material-ui/core/Avatar";
+import Paper from '@material-ui/core/Paper';
 
 const useStyles = makeStyles((theme) => ({
+  paperCont: {
+    backgroundColor: 'MintCream',
+    padding: '15px',
+    marginLeft:'-10px',
+    marginRight:'-10px',
+    borderRadius: 10,
+  },
   media: {
     height: '150px',
     width: '150px',
@@ -90,7 +100,11 @@ const useStyles = makeStyles((theme) => ({
       color: "#777",
       fontSize: '16px',
     }
-  }
+  },
+  avatar: {
+    backgroundColor: theme.palette.lightSkyBlue,
+    color: theme.palette.stateBlue,
+  },
 }));
 
 
@@ -218,21 +232,55 @@ function IntroSection() {
           />
         </Typography>
           <CardContent>
-            <Typography gutterBottom variant="h5" style={{color: theme.palette.stateBlue,}}>
+            <Typography gutterBottom variant="h5" style={{color: theme.palette.stateBlue,fontWeight:'bold'}}>
               {name}
             </Typography>
+            <Typography gutterBottom style={{color: theme.palette.stateBlue,marginTop:'-5px'}}>
+              Undergraduate at UCSC
+            </Typography>
+            <Grid container>
+          <Grid item xs style={{ textAlign: 'left',margin:"0px 0px 0px 0px" }}>
+            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',}}>
+              <IconButton>
+                <PhoneIcon style={{color: '#666',}} />
+              </IconButton>
+              +94719736858
+            </Typography>
+          </Grid>
+          <Grid item style={{ textAlign: 'right' }}>
+            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',}}>
+              <IconButton>
+                <LocationOnIcon style={{color: '#666',}} />
+              </IconButton>
+              Kalutara District, Sri Lanka
+            </Typography>
+          </Grid>
+        </Grid>
+        <Paper elevation={0} className={classes.paperCont}>
             <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',}}>
               {intro}
             </Typography>
-          </CardContent>
+        </Paper>
+        </CardContent>
   
-        <CardActions>
+        <CardActions style={{marginBottom:"-10px"}}>
         <Grid container>
-          <Grid item xs style={{ textAlign: 'left' }}>
-            <GitHubIcon className={classes.socialMediaButton} style={{fontSize:'27px',}} />
-            <LinkedInIcon className={classes.socialMediaButton} />
-            <EmailIcon className={classes.socialMediaButton} />
-            <FacebookIcon className={classes.socialMediaButton} />
+          <Grid item xs style={{ textAlign: 'left',margin:"-15px 0px 0px 0px" }}>
+              <IconButton>
+                <Avatar className={classes.avatar}>
+                  <FacebookIcon />
+                </Avatar>
+              </IconButton>
+              <IconButton>
+                <Avatar className={classes.avatar}>
+                  <LinkedInIcon />
+                </Avatar>
+              </IconButton>
+              <IconButton>
+                <Avatar className={classes.avatar}>
+                  <GitHubIcon />
+                </Avatar>
+              </IconButton>
           </Grid>
           <Grid item style={{ textAlign: 'right' }}>
               <Button className={classes.defaultButton} style={{ float: 'right',marginRight: '0px',}}>Upload CV</Button>

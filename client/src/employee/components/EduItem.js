@@ -55,10 +55,13 @@ function EduItem(props) {
                         {props.university}
                     </Typography>
                     <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'15px',}}>
-                        Degree : {props.degree}
+                        {props.fieldOfStudy} ({props.degree})
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',}}>
                         {props.gpa}
+                    </Typography>
+                    <Typography variant="body2" component="p" style={{textAlign:'justify',color: '#666',marginTop:'15px'}}>
+                        <b>Societies & activities : </b>{props.societiesAndActivities}
                     </Typography>
                 </Grid>
             </React.Fragment>
