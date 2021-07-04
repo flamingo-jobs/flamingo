@@ -171,11 +171,11 @@ const updateProject = (req,res) => {
     );
 }
 //--------------- add --------------------------------------------
-const addEducation = (req,res) => {
+const addUniversity = (req,res) => {
 
     Jobseeker.findOneAndUpdate(
         { _id: req.params.id }, 
-        { $push: { education: req.body  } },
+        { $push: { university: req.body  } },
         (err,jobseeker) =>{
             if(err){
                 return res.status(400).json({
@@ -357,7 +357,7 @@ module.exports = {
     getAll,
     getById,
     update,
-    addEducation,
+    addUniversity,
     addAward,
     addVolunteering,
     addProject,
