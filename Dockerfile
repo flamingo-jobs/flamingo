@@ -16,10 +16,12 @@ ADD . /usr/apps/flamingo-docker/
 
 WORKDIR /usr/apps/flamingo-docker/client
 
-RUN npm install --save
+RUN npm install
+
+RUN npm i --save date-fns@next @date-io/date-fns
 
 WORKDIR /usr/apps/flamingo-docker/server
 
-RUN npm install --save
+RUN npm install
 
 CMD ["npm", "run", "dev"]
