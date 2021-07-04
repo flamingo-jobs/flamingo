@@ -119,7 +119,7 @@ function Organizations() {
     const displayOrganizations = () => {
         if (organizations) {
             return organizations.map(org => (
-                <Grid item xs={12} md={12} className={classes.gridCard}>
+                <Grid item xs={12} md={12} key={org._id} className={classes.gridCard}>
                     <OrganizationCard info={org} />
                 </Grid>
             ))

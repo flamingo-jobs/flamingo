@@ -9,7 +9,7 @@ import Base from "./Base";
 import Users from "./Users";
 import BACKEND_URL from "./Config.js";
 import ScrollToTop from "./components/ScrollToTop.js";
-import ProfileSetup from "./getHired/ProfileSetup.js";
+import ProfileSetup from "./getHired/ProfileSetup"
 const jwt = require("jsonwebtoken");
 
 function App() {

@@ -117,7 +117,7 @@ function Jobs() {
     const displayJobs = () => {
         if (jobs) {
             return jobs.map(job => (
-                <Grid item xs={12} md={12} lg={6} className={classes.gridCard}>
+                <Grid item key={job._id} xs={12} md={12} lg={6} className={classes.gridCard}>
                     <JobCard info={job} />
                 </Grid>
             ))

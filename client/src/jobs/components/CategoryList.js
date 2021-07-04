@@ -48,17 +48,19 @@ const useStyles = makeStyles((theme) => ({
     },
     itemCheckBox: {
         minWidth: 'auto'
+    },
+    listHeader: {
+        borderRadius: 8
     }
 }));
 
 export default function CategoryList(props) {
     const classes = useStyles();
-    const [openCategories, setOpenCategories] = React.useState(true);
+    const [openCategories, setOpenCategories] = React.useState(false);
     const [categories, setCategories] = useState([]);
 
     const handleCategoryClick = () => {
         setOpenCategories(!openCategories);
-
     };
 
 
@@ -83,10 +85,7 @@ export default function CategoryList(props) {
         } else {
             newChecked.splice(currentIndex, 1);
         }
-
         setChecked(newChecked);
-
-
     };
 
     const passFilters = () => {
@@ -97,8 +96,6 @@ export default function CategoryList(props) {
             checked.map((value) => values.push(value.name));
             props.onChange({ $in: values });
         }
-
-
     }
 
 
@@ -156,7 +153,7 @@ export default function CategoryList(props) {
                 component="nav"
                 className={classes.root}
             >
-                <ListItem button onClick={handleCategoryClick}>
+                <ListItem button onClick={handleCategoryClick} className={classes.listHeader}>
                     <ListItemText primary={<Typography className={classes.listTitle} >Category</Typography>}></ListItemText>
                     {openCategories ? <ExpandLess className={classes.listDown} /> : <ExpandMore className={classes.listDown} />}
                 </ListItem>
