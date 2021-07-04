@@ -133,6 +133,63 @@ const updateAward = (req,res) => {
     );
 }
 
+const updateUniversity = (req,res) => {
+    Jobseeker.updateOne(
+        { _id: req.params.id },
+        {
+            $set:{ [`university.${req.body.index}`]: req.body.university }
+        },
+        (err,jobseeker) =>{
+            if(err){
+                return res.status(400).json({
+                    error:err
+                })
+            }
+            return res.status(200).json({
+                sucess: "Updated successfully"
+            });
+        }
+    );
+}
+
+const updateSchool = (req,res) => {
+    Jobseeker.updateOne(
+        { _id: req.params.id },
+        {
+            $set:{ [`school.${req.body.index}`]: req.body.school }
+        },
+        (err,jobseeker) =>{
+            if(err){
+                return res.status(400).json({
+                    error:err
+                })
+            }
+            return res.status(200).json({
+                sucess: "Updated successfully"
+            });
+        }
+    );
+}
+
+const updateCourse = (req,res) => {
+    Jobseeker.updateOne(
+        { _id: req.params.id },
+        {
+            $set:{ [`course.${req.body.index}`]: req.body.course }
+        },
+        (err,jobseeker) =>{
+            if(err){
+                return res.status(400).json({
+                    error:err
+                })
+            }
+            return res.status(200).json({
+                sucess: "Updated successfully"
+            });
+        }
+    );
+}
+
 const updateWork = (req,res) => {
     Jobseeker.updateOne(
         { _id: req.params.id },
@@ -171,11 +228,47 @@ const updateProject = (req,res) => {
     );
 }
 //--------------- add --------------------------------------------
-const addEducation = (req,res) => {
+const addUniversity = (req,res) => {
 
     Jobseeker.findOneAndUpdate(
         { _id: req.params.id }, 
-        { $push: { education: req.body  } },
+        { $push: { university: req.body  } },
+        (err,jobseeker) =>{
+            if(err){
+                return res.status(400).json({
+                    error:err
+                })
+            }
+            return res.status(200).json({
+                sucess: "Updated successfully"
+            });
+        }
+    );
+}
+
+const addSchool = (req,res) => {
+
+    Jobseeker.findOneAndUpdate(
+        { _id: req.params.id }, 
+        { $push: { school: req.body  } },
+        (err,jobseeker) =>{
+            if(err){
+                return res.status(400).json({
+                    error:err
+                })
+            }
+            return res.status(200).json({
+                sucess: "Updated successfully"
+            });
+        }
+    );
+}
+
+const addCourse = (req,res) => {
+
+    Jobseeker.findOneAndUpdate(
+        { _id: req.params.id }, 
+        { $push: { course: req.body  } },
         (err,jobseeker) =>{
             if(err){
                 return res.status(400).json({
@@ -314,6 +407,63 @@ const removeWork = (req,res) => {
     );
 }
 
+const removeUniversity = (req,res) => {
+    Jobseeker.updateOne(
+        { _id: req.params.id },
+        {
+            $set:{ university : req.body }
+        },
+        (err,jobseeker) =>{
+            if(err){
+                return res.status(400).json({
+                    error:err
+                })
+            }
+            return res.status(200).json({
+                sucess: "Udeleted successfully"
+            });
+        }
+    );
+}
+
+const removeSchool = (req,res) => {
+    Jobseeker.updateOne(
+        { _id: req.params.id },
+        {
+            $set:{ school : req.body }
+        },
+        (err,jobseeker) =>{
+            if(err){
+                return res.status(400).json({
+                    error:err
+                })
+            }
+            return res.status(200).json({
+                sucess: "Udeleted successfully"
+            });
+        }
+    );
+}
+
+const removeCourse = (req,res) => {
+    Jobseeker.updateOne(
+        { _id: req.params.id },
+        {
+            $set:{ course : req.body }
+        },
+        (err,jobseeker) =>{
+            if(err){
+                return res.status(400).json({
+                    error:err
+                })
+            }
+            return res.status(200).json({
+                sucess: "Udeleted successfully"
+            });
+        }
+    );
+}
+
 const removeAward = (req,res) => {
     Jobseeker.updateOne(
         { _id: req.params.id },
@@ -357,16 +507,24 @@ module.exports = {
     getAll,
     getById,
     update,
-    addEducation,
+    addUniversity,
+    addSchool,
+    addCourse,
     addAward,
     addVolunteering,
     addProject,
     addWork,
+    updateUniversity,
+    updateSchool,
+    updateCourse,
     updateVolunteer,
     updateAward,
     updateWork,
     updateProject,
     remove,
+    removeUniversity,
+    removeSchool,
+    removeCourse,
     removeProject,
     removeWork,
     removeAward,

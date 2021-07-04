@@ -55,30 +55,26 @@ function EduItem(props) {
                         {props.university}
                     </Typography>
                     <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'15px',}}>
-                        Degree : {props.degree}
+                        {props.fieldOfStudy} ({props.degree})
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',}}>
                         {props.gpa}
                     </Typography>
-                </Grid>
-            </React.Fragment>
-        );
-    }else if(props.level == "College"){
-        return (
-            <React.Fragment>
-                <Grid item xs={8} spacing={2} style={{marginTop:"-15px",marginBottom:'-15px'}}>
-                    <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'15px',fontWeight:'bold',}}>
-                        {props.college}
+                    <Typography variant="body2" component="p" style={{textAlign:'justify',color: '#666',marginTop:'15px'}}>
+                        <b>Societies & activities : </b>{props.societiesAndActivities}
                     </Typography>
                 </Grid>
             </React.Fragment>
         );
-    }else if(props.level == "Highschool"){
+    }else if(props.level == "School"){
         return (
             <React.Fragment>
                 <Grid item xs={8} spacing={2} style={{marginTop:"-15px",marginBottom:'-15px'}}>
                     <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'15px',fontWeight:'bold',}}>
-                        {props.highschool}
+                        {props.school}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',}}>
+                        {props.description}
                     </Typography>
                 </Grid>
             </React.Fragment>
