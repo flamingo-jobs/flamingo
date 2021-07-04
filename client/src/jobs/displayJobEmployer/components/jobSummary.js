@@ -6,6 +6,7 @@ import LocalOfferRoundedIcon from "@material-ui/icons/LocalOfferRounded";
 import axios from "axios";
 import BACKEND_URL from "../../../Config";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
+import ReactTimeAgo from "react-time-ago";
 
 import {
   Typography,
@@ -18,6 +19,7 @@ import {
 import FloatCard from "../../../components/FloatCard";
 import ninix from "../images/99x.png";
 import JobSummaryModal from "./jobSummaryModal";
+import TodayIcon from '@material-ui/icons/Today';
 
 const useStyles = makeStyles((theme) => ({
   summaryContainer: {
@@ -66,10 +68,10 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "20px",
     color: theme.palette.tagIcon,
     transition: "0.3s",
-    "&:hover":{
+    "&:hover": {
       transition: "0.3s",
       color: theme.palette.black,
-    }
+    },
   },
   description: {
     marginTop: theme.spacing(2),
@@ -101,7 +103,17 @@ const useStyles = makeStyles((theme) => ({
   typeText: {
     color: "#666",
   },
+  time:{
+    padding: "4px 0px",
+    marginLeft: "20px",
+  },
 }));
+
+const getFormattedDate = (date) => {
+  // console.log("Due date", date);
+  const dateStr = date.toString().slice(0,10).replaceAll("-","/");
+  return dateStr;
+};
 
 function JobSummary(props) {
   const classes = useStyles();
@@ -120,11 +132,17 @@ function JobSummary(props) {
     if (event.target.name === "min" || event.target.name === "max") {
       newJob.salaryRange[event.target.name] = event.target.value;
     } else {
-      console.log("changed value", event.target.value);
+      // console.log("changed value", event.target.value);
       newJob[event.target.name] = event.target.value;
     }
     props.setJob(newJob);
   };
+
+  const handleDueDateChange = (date) => {
+    const newJob = { ...props.job };
+    newJob.dueDate = date;
+    props.setJob(newJob);
+  }
 
   const handleSummarySubmit = async (e) => {
     e.preventDefault();
@@ -147,12 +165,18 @@ function JobSummary(props) {
         updateFields
       );
       handleClose();
-      props.setAlertData({ severity: "success", msg: "Changes saved successfully!" });
+      props.setAlertData({
+        severity: "success",
+        msg: "Changes saved successfully!",
+      });
       props.handleAlert();
       // console.log(response);
     } catch (err) {
       handleClose();
-      props.setAlertData({ severity: "error", msg: "Changes could not be applied" });
+      props.setAlertData({
+        severity: "error",
+        msg: "Changes could not be applied",
+      });
       props.handleAlert();
       console.log("Error: ", err);
     }
@@ -169,6 +193,7 @@ function JobSummary(props) {
         handleClose={handleClose}
         handleSummaryChange={handleSummaryChange}
         handleSummarySubmit={handleSummarySubmit}
+        handleDueDateChange={handleDueDateChange}
       ></JobSummaryModal>
 
       <FloatCard>
@@ -181,6 +206,11 @@ function JobSummary(props) {
                   label={props.job.category}
                   className={classes.label}
                 />
+                <div className={classes.time}>
+                  <Typography>
+                    <ReactTimeAgo date={props.job.postedDate} locale="en-US" />
+                  </Typography>
+                </div>
               </Grid>
               <Grid item xs={1}>
                 <IconButton className={classes.iconButton} onClick={handleOpen}>
@@ -207,12 +237,6 @@ function JobSummary(props) {
                 <Typography className={classes.companyName}>
                   {props.job.organization.name}
                 </Typography>
-                {/* <Typography
-                  variant="subtitle2"
-                  className={classes.companyAddress}
-                >
-                  {props.job.location}
-                </Typography> */}
               </Grid>
             </Grid>
 
@@ -240,11 +264,21 @@ function JobSummary(props) {
                     {props.job.type}
                   </Typography>
                 </div>
+
+                <div className={classes.type}>
+                  <TodayIcon
+                    fontSize="small"
+                    className={classes.typeIcon}
+                  ></TodayIcon>
+                  <Typography variant="subtitle2" className={classes.typeText}>
+                    {getFormattedDate(props.job.dueDate)}
+                  </Typography>
+                </div>
               </div>
             </Grid>
             <Grid item xs={12}>
               <Typography align="left" className={classes.description}>
-                {props.job.description}
+                {(props.job.description)}
               </Typography>
             </Grid>
           </Grid>

@@ -1,10 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { withStyles } from "@material-ui/core/styles";
-import { Grid, Typography, Checkbox, Button } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import axios from "axios";
-
-// Custom components
 import FloatCard from "../../components/FloatCard";
 import SummaryForm from "./components/summaryForm";
 import TaskForm from "./components/tasksForm";
@@ -12,9 +9,7 @@ import QualificationsForm from "./components/qualificationsForm";
 import Keywords from "./components/keywords";
 import TechStack from "./components/techStack";
 import BACKEND_URL from "../../Config";
-import FeedbackModal from "./components/feedbackModal";
-import checkAnimation from "./lotties/check.json";
-import ExclamationMarkAnimation from "./lotties/exclamation.json";
+import SnackBarAlert from "../../components/SnackBarAlert";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,10 +38,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const jobTypes = [{ name: "Full-time" }, { name: "Part-time" }];
-
-const categories = [{ name: "Design" }, { name: "Development" }];
-
 const keywords = [
   { name: "Devops" },
   { name: "Development" },
@@ -55,40 +46,36 @@ const keywords = [
   { name: "Back end" },
 ];
 
-const techStack = [
-  { name: "React" },
-  { name: "Express" },
-  { name: "Node" },
-  { name: "MongoDB" },
-];
-
-const getCurrentDate = () => {
-  const date = new Date();
-  const dateStr = `${date.getDate().toString().padStart(2, "0")}/${(
-    date.getMonth() + 1
-  )
-    .toString()
-    .padStart(2, "0")}/${date.getFullYear().toString()}`;
+const getFormattedDate = (date) => {
+  const dateStr = `${date.getDate().toString().padStart(2, "0")}/
+  ${(date.getMonth() + 1).toString().padStart(2, "0")}/
+  ${date.getFullYear().toString()}`;
   return dateStr;
 };
 
 const CreateJobForm = () => {
   const classes = useStyles();
+  const empId = "60c246913542f942e4c84454";
 
-  const [successOpen, setSuccessOpen] = useState(false);
-  const [unsuccessOpen, setUnsuccessOpen] = useState(false);
+  // Data retrieved from DB
+  const [categories, setCategories] = useState("empty");
+  const [types, setTypes] = useState("empty");
+  const [employer, setEmployer] = useState("empty");
+  const [technologies, setTechnologies] = useState("empty");
 
+  // Job state
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("Development");
   const [jobType, setJobType] = useState("Full-time");
   const [description, setDescription] = useState("");
   const [organization, setOrganization] = useState({
-    id: "12345",
-    name: "Virtusa",
+    id: "",
+    name: "",
+    logo: "",
   });
   const [location, setLocation] = useState("");
-  const [currentDate, setCurrentDate] = useState(getCurrentDate());
-  const [dueDate, setDueDate] = useState("12/12/2012");
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [dueDate, setDueDate] = useState(null);
   const [minSalary, setMinSalary] = useState(0);
   const [maxSalary, setMaxSalary] = useState(0);
   const [tasksFields, setTasksFields] = useState([""]);
@@ -98,15 +85,15 @@ const CreateJobForm = () => {
   const [isFeatured, setIsFeatured] = useState(false);
   const [isPublished, setIsPublished] = useState(true);
 
-  // console.log("currentDate", currentDate)
+  const [alertShow, setAlertShow] = React.useState(false);
+  const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
 
-  // Modals
-  const handleSuccessClose = () => {
-    setSuccessOpen(false);
-  };
-  const handleUnsuccessClose = () => {
-    setUnsuccessOpen(false);
-  };
+  useEffect(() => {
+    retrieveCategories();
+    retrieveJobTypes();
+    retrieveEmployer();
+    retrieveTechnologies();
+  }, []);
 
   // Job basic details
   const handleTitleChange = (event) => {
@@ -123,6 +110,10 @@ const CreateJobForm = () => {
   };
   const handleLocationChange = (event) => {
     setLocation(event.target.value);
+  };
+  const handleDateChange = (date) => {
+    // setDueDate(getFormattedDate(date));
+    setDueDate(date);
   };
   const handleMinSalaryChange = (event) => {
     setMinSalary(parseFloat(event.target.value, 10));
@@ -193,6 +184,29 @@ const CreateJobForm = () => {
     setKeywords(values);
   };
 
+  // Alert stuff
+  const displayAlert = () => {
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
+
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertShow(false);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const newJob = {
@@ -218,33 +232,131 @@ const CreateJobForm = () => {
     try {
       const response = await axios.post(`${BACKEND_URL}/jobs/create`, newJob);
       if (response.data.success === true) {
-        setSuccessOpen(true);
+        setAlertData({
+          severity: "success",
+          msg: "Job created successfully!",
+        });
+        handleAlert();
       } else {
-        setUnsuccessOpen(true);
+        setAlertData({
+          severity: "error",
+          msg: "Job could not be created!",
+        });
+        handleAlert();
       }
     } catch (err) {
-      setUnsuccessOpen(true);
+      setAlertData({
+        severity: "error",
+        msg: "Job could not be created!",
+      });
+      handleAlert();
       // console.log(err);
+    }
+  };
+
+  const displaySummary = () => {
+    if (categories === "empty" || types === "empty" || employer === "empty") {
+      return null;
+    } else {
+      return (
+        <SummaryForm
+          location={location}
+          empLocations={employer.locations}
+          types={types}
+          jobType={jobType}
+          category={category}
+          categories={categories}
+          dueDate={dueDate}
+          handleTitleChange={handleTitleChange}
+          handleCategoryChange={handleCategoryChange}
+          handleJobTypeChange={handleJobTypeChange}
+          handleDescriptionChange={handleDescriptionChange}
+          handleLocationChange={handleLocationChange}
+          handleDateChange={handleDateChange}
+          handleMinSalaryChange={handleMinSalaryChange}
+          handleMaxSalaryChange={handleMaxSalaryChange}
+        ></SummaryForm>
+      );
+    }
+  };
+  const displayTechStack = () => {
+    if (technologies === "empty") {
+      return null;
+    } else {
+      return (
+        <TechStack
+          technologies={technologies}
+          handleTechStack={handleTechStack}
+        ></TechStack>
+      );
+    }
+  };
+
+  const displayKeywords = () => {
+    if (technologies === "empty") {
+      return null;
+    } else {
+      return (
+        <Keywords
+          keywords={keywords}
+          handleKeywordsChange={handleKeywordsChange}
+        ></Keywords>
+      );
+    }
+  };
+
+  const retrieveCategories = async () => {
+    try {
+      const response = await axios.get(`${BACKEND_URL}/categories`);
+      if (response.data.success) {
+        setCategories(response.data.existingCategories);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const retrieveJobTypes = async () => {
+    try {
+      const response = await axios.get(`${BACKEND_URL}/types`);
+      if (response.data.success) {
+        setTypes(response.data.existingTypes);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const retrieveEmployer = async () => {
+    try {
+      const response = await axios.get(`${BACKEND_URL}/employers/${empId}`);
+      if (response.data.success) {
+        setEmployer(response.data.employer);
+        setOrganization({
+          id: response.data.employer._id,
+          name: response.data.employer.name,
+          logo: response.data.employer.logo,
+        });
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const retrieveTechnologies = async () => {
+    try {
+      const response = await axios.get(`${BACKEND_URL}/technologies`);
+      if (response.data.success) {
+        setTechnologies(response.data.existingTechnologies);
+      }
+    } catch (err) {
+      console.error(err);
     }
   };
 
   return (
     <>
-      <FeedbackModal
-        open={successOpen}
-        handleClose={handleSuccessClose}
-        animation={checkAnimation}
-        loop={false}
-        msg={"Job Created, successfully !"}
-      ></FeedbackModal>
-
-      <FeedbackModal
-        open={unsuccessOpen}
-        handleClose={handleUnsuccessClose}
-        animation={ExclamationMarkAnimation}
-        loop={true}
-        msg={"Sorry. Something went wrong. Please try again later."}
-      ></FeedbackModal>
+      {displayAlert()}
 
       <Grid container spacing={2} className={classes.root} justify="center">
         <Grid item xs={10}>
@@ -258,19 +370,7 @@ const CreateJobForm = () => {
         <Grid item xs={10}>
           <form onSubmit={handleSubmit}>
             <Grid container xs={12}>
-              {/* Job summary */}
-              <SummaryForm
-                location={location}
-                jobType={jobType}
-                category={category}
-                handleTitleChange={handleTitleChange}
-                handleCategoryChange={handleCategoryChange}
-                handleJobTypeChange={handleJobTypeChange}
-                handleDescriptionChange={handleDescriptionChange}
-                handleLocationChange={handleLocationChange}
-                handleMinSalaryChange={handleMinSalaryChange}
-                handleMaxSalaryChange={handleMaxSalaryChange}
-              ></SummaryForm>
+              {displaySummary()}
 
               {/* Tasks and Responsibilities card */}
               <TaskForm
@@ -288,17 +388,9 @@ const CreateJobForm = () => {
                 handleQualificationAdd={handleQualificationAdd}
               ></QualificationsForm>
 
-              {/* Technology Stack */}
-              <TechStack
-                techStack={techStack}
-                handleTechStack={handleTechStack}
-              ></TechStack>
+              {displayTechStack()}
 
-              {/* Keywords */}
-              <Keywords
-                keywords={keywords}
-                handleKeywordsChange={handleKeywordsChange}
-              ></Keywords>
+              {displayKeywords()}
             </Grid>
           </form>
         </Grid>

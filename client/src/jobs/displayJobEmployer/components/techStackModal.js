@@ -8,9 +8,7 @@ import {
   Modal,
   Button,
   IconButton,
-  MenuItem,
   Chip,
-  TextField,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import { StateBlueTextField } from "../styles/customTextField";
