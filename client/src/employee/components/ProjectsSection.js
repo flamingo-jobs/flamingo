@@ -106,10 +106,12 @@ function ProjectsSection() {
     axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
     .then(res => {
       if(res.data.success){
-        if(Object.keys(res.data.jobseeker.project[0]).length === 0){
-          res.data.jobseeker.project.splice(0,1)
-          i++;
-        }
+        if(res.data.jobseeker.project.length > 0){
+          if(Object.keys(res.data.jobseeker.project[0]).length === 0){
+            res.data.jobseeker.project.splice(0,1)
+            i++;
+          }
+        }       
         setProject(res.data.jobseeker.project)
       }
     })
@@ -118,14 +120,16 @@ function ProjectsSection() {
 
   function deleteData(index){
     project.splice(index,1)
-    axios.delete(`${BACKEND_URL}/jobseeker/removeProject/60c5f2e555244d11c8012480`,project)
+    axios.put(`${BACKEND_URL}/jobseeker/removeProject/60c5f2e555244d11c8012480`,project)
     .then(res => console.log("aaa"));
     handleClose();
     setFetchedData(1)
   }
 
   useEffect(()=>{
-    fetchData()
+    setState({name: null, link: null, description: null, from: null, to: null, usedTech: null});
+    setProject(null);
+    fetchData();
   },[fetchedData])
 
   function handleOpen(){

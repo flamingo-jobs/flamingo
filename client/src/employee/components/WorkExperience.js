@@ -88,9 +88,11 @@ function WorkExperience() {
     axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
     .then(res => {
       if(res.data.success){
-        if(Object.keys(res.data.jobseeker.work[0]).length === 0){
-          res.data.jobseeker.work.splice(0,1)
-          i++;
+        if(res.data.jobseeker.work.length > 0){
+          if(Object.keys(res.data.jobseeker.work[0]).length === 0){
+            res.data.jobseeker.work.splice(0,1)
+            i++;
+          }
         }
         setWork(res.data.jobseeker.work)
       }
@@ -100,14 +102,16 @@ function WorkExperience() {
 
   function deleteData(index){
     work.splice(index,1)
-    axios.delete(`${BACKEND_URL}/jobseeker/removeWork/60c5f2e555244d11c8012480`,work)
+    axios.put(`${BACKEND_URL}/jobseeker/removeWork/60c5f2e555244d11c8012480`,work)
     .then(res => console.log("aaa"));
     handleClose();
     setFetchedData(1)
   }
 
   useEffect(()=>{
-    fetchData()
+    setState({place: null, description: null, position: null, from: null, to: null, taskAndResponsibility: null});
+    setWork(null);
+    fetchData();
   },[fetchedData])
 
   function handleOpen(){

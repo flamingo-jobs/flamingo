@@ -78,9 +78,11 @@ function Achievements() {
     axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
     .then(res => {
       if(res.data.success){
-        if(Object.keys(res.data.jobseeker.award[0]).length === 0){
-          res.data.jobseeker.award.splice(0,1)
-          i++;
+        if(res.data.jobseeker.award.length > 0){
+          if(Object.keys(res.data.jobseeker.award[0]).length === 0){
+            res.data.jobseeker.award.splice(0,1)
+            i++;
+          }
         }
         setAward(res.data.jobseeker.award)
       }
@@ -90,14 +92,16 @@ function Achievements() {
 
   function deleteData(index){
     award.splice(index,1)
-    axios.delete(`${BACKEND_URL}/jobseeker/removeAward/60c5f2e555244d11c8012480`,award)
+    axios.put(`${BACKEND_URL}/jobseeker/removeAward/60c5f2e555244d11c8012480`,award)
     .then(res => console.log("aaa"));
     handleClose();
     setFetchedData(1)
   }
 
   useEffect(()=>{
-    fetchData()
+    setState({title: null, issuedBy: null, date: null, description: null});
+    setAward(null);
+    fetchData();
   },[fetchedData])
 
   function handleOpen(){

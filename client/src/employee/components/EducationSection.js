@@ -293,21 +293,6 @@ function EducationSection() {
     setFetchedData(1)  
   }
 
-  function addUni(){
-    axios.put(`${BACKEND_URL}/jobseeker/addUniversity/60c5f2e555244d11c8012480`,universityFields)
-    .then(res => console.log("added"));
-    handleClose();
-    setFetchedData(1)
-  }
-
-  function deleteSchool(index){
-    schoolFields.splice(index,1);
-    console.log(schoolFields);
-    axios.put(`${BACKEND_URL}/jobseeker/removeSchool/60c5f2e555244d11c8012480`,schoolFields)
-    .then(res => console.log("deleted"));
-    handleClose();
-    setFetchedData(1)
-  }
 
   const displayUniFields = () => {
     if (universityFields) {
