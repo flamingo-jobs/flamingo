@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Typography,
-  Card,
-  Grid,
+  IconButton,
   Container,
   Button,
   TextField,
@@ -14,6 +13,8 @@ import FloatCard from "../../components/FloatCard";
 import BACKEND_URL from "../../Config";
 import axios from "axios";
 import DescriptionIcon from "@material-ui/icons/Description";
+import CloseIcon from '@material-ui/icons/Close';
+import SnackBarAlert from "../../components/SnackBarAlert";
 
 const useStyles = makeStyles((theme) => ({
   applyFormWrapper: {
@@ -55,19 +56,31 @@ const useStyles = makeStyles((theme) => ({
       transition: "0.3s",
     },
   },
-  fileNameContainer:{
+  fileNameContainer: {
     marginTop: "5px",
     display: "flex",
     justifyContent: "center",
   },
-  fileIcon:{
+  fileIcon: {
     color: theme.palette.stateBlue,
+    marginRight: "7px",
   },
   fileName: {
     paddingTop: "2px",
     color: theme.palette.stateBlue,
-  },
+    marginRight: "7px",
 
+  },
+  removeBtn:{
+    padding: "0px",
+    "&:hover":{
+      background: theme.palette.white,
+    }
+  },
+  removeIcon:{
+    height: "18px",
+    color: theme.palette.stateBlue,
+  },
 }));
 
 // const uploadButton = createMuiTheme({
@@ -80,10 +93,13 @@ const ApplyForm = (props) => {
   const classes = useStyles();
 
   const [userId, setUserId] = useState(props.userId);
-  const [name, setName] = useState("empty");
-  const [email, setEmail] = useState("empty");
-  const [phoneNumber, setPhoneNumber] = useState("empty");
-  const [fileData, setFileData] = useState();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [fileData, setFileData] = useState("empty");
+
+  const [alertShow, setAlertShow] = React.useState(false);
+  const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
 
   const handleNameChange = (e) => {
     setName(e.target.value);
@@ -97,17 +113,46 @@ const ApplyForm = (props) => {
   const handleFileChange = (e) => {
     setFileData(e.target.files[0]);
   };
+  const handleFileRemove = () => {
+    setFileData("empty");
+  }
+
+  // Error related stuff
+  const displayAlert = () => {
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
+
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertShow(false);
+  };
 
   const displayFileName = () => {
-    if (fileData !== undefined) {
-      return (
-        <div className={classes.fileNameContainer}>
-          <DescriptionIcon className={classes.fileIcon}></DescriptionIcon>
-          <div className={classes.fileName}>{fileData.name}</div>
-        </div>
-      );
+    if (fileData === "empty") {
+      return null;
     }
-    return null;
+    return (
+      <div className={classes.fileNameContainer}>
+        <DescriptionIcon className={classes.fileIcon}></DescriptionIcon>
+        <div className={classes.fileName}>{fileData.name}</div>
+        {/* <IconButton className={classes.removeBtn} onClick={handleFileRemove}>
+          <CloseIcon className={classes.removeIcon}/>
+        </IconButton> */}
+      </div>
+    );
   };
 
   const handleFormSubmit = async (e) => {
@@ -139,17 +184,33 @@ const ApplyForm = (props) => {
       );
 
       if (resumeResponse.data.success && resumeDetailsResponse.data.success) {
-        console.log("Resume uploaded");
+        // console.log("Resume uploaded");
+        setAlertData({
+          severity: "success",
+          msg: "Application sent!",
+        });
+        handleAlert();
       } else {
-        console.log("Resume wasn't uploaded");
+        // console.log("Resume wasn't uploaded");
+        setAlertData({
+          severity: "error",
+          msg: "Something went wrong!",
+        });
+        handleAlert();
       }
     } catch (err) {
-      console.log("Resume error: ", err);
+      // console.log("Resume error: ", err);
+      setAlertData({
+        severity: "error",
+        msg: "Something went wrong!",
+      });
+      handleAlert();
     }
   };
 
   return (
     <div className={classes.applyFormWrapper}>
+      {displayAlert()}
       <FloatCard>
         <Container className={classes.res}>
           <Typography variant="h6" className={classes.formTitle} id="applyForm">
@@ -211,7 +272,7 @@ const ApplyForm = (props) => {
               color="primary"
               className={classes.submitButton}
               type="submit"
-              disabled={fileData === undefined}
+              disabled={name === "" || email === "" || phoneNumber === "" || fileData === "empty"}
             >
               Submit Application
             </Button>
