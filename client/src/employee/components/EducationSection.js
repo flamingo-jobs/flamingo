@@ -102,8 +102,9 @@ function EducationSection() {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
+  let i=0;
+  let j=0;
   let eduCount=0;
-  let i,j=0;
 
   const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
 
@@ -178,13 +179,13 @@ function EducationSection() {
     })
   }
 
-  function onChangestartDate(e){
+  function onChangeSchoolstartDate(e){
     setSchool(prevState => {
       return {...prevState, startDate: e.target.value}
     })
   }
 
-  function onChangeEndDate(e){
+  function onChangeSchoolEndDate(e){
     setSchool(prevState => {
       return {...prevState, endDate: e.target.value}
     })
@@ -200,19 +201,24 @@ function EducationSection() {
     axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
     .then(res => {
       if(res.data.success){
-        if(Object.keys(res.data.jobseeker.university[0]).length === 0){
-          res.data.jobseeker.university.splice(0,1)
-          i++;
+        if(res.data.jobseeker.university.length > 0){
+          if(Object.keys(res.data.jobseeker.university[0]).length === 0){
+            res.data.jobseeker.university.splice(0,1)
+            i++;
+          }
         }
-        if(Object.keys(res.data.jobseeker.school[0]).length === 0){
-          res.data.jobseeker.school.splice(0,1)
-          j++;
+        if(res.data.jobseeker.school.length > 0){
+          if(Object.keys(res.data.jobseeker.school[0]).length === 0){
+            res.data.jobseeker.school.splice(0,1)
+            j++;
+          }
         }
         setUniversityFields(res.data.jobseeker.university)
         setSchoolFields(res.data.jobseeker.school)
+        console.log("data fetched");
       }
     })
-    setFetchedData(0);
+    setFetchedData(0)
   }
 
   function onSubmitUniversity(e){
@@ -264,20 +270,40 @@ function EducationSection() {
       endDate: null,
       description: null
     })
+    setUniversityFields(null);
+    setSchoolFields(null);
     fetchData()
   },[fetchedData])
 
   function deleteUniversity(index){
     universityFields.splice(index,1);
-    axios.delete(`${BACKEND_URL}/jobseeker/removeUniversity/60c5f2e555244d11c8012480`,university)
+    console.log(universityFields)
+    axios.put(`${BACKEND_URL}/jobseeker/removeUniversity/60c5f2e555244d11c8012480`,universityFields)
     .then(res => console.log("deleted"));
+    handleClose();
+    setFetchedData(1)  
+  }
+
+  function deleteSchool(index){
+    schoolFields.splice(index,1);
+    console.log(schoolFields)
+    axios.put(`${BACKEND_URL}/jobseeker/removeSchool/60c5f2e555244d11c8012480`,schoolFields)
+    .then(res => console.log("deleted"));
+    handleClose();
+    setFetchedData(1)  
+  }
+
+  function addUni(){
+    axios.put(`${BACKEND_URL}/jobseeker/addUniversity/60c5f2e555244d11c8012480`,universityFields)
+    .then(res => console.log("added"));
     handleClose();
     setFetchedData(1)
   }
 
   function deleteSchool(index){
     schoolFields.splice(index,1);
-    axios.delete(`${BACKEND_URL}/jobseeker/removeSchool/60c5f2e555244d11c8012480`,school)
+    console.log(schoolFields);
+    axios.put(`${BACKEND_URL}/jobseeker/removeSchool/60c5f2e555244d11c8012480`,schoolFields)
     .then(res => console.log("deleted"));
     handleClose();
     setFetchedData(1)
@@ -285,8 +311,8 @@ function EducationSection() {
 
   const displayUniFields = () => {
     if (universityFields) {
-      eduCount=1;
       if (universityFields.length > 0) {
+        eduCount=1;
         return universityFields.map(edu => (
               <EduItem index={i++} level="University" startYear={edu.startDate} endYear={edu.endDate} university={edu.university} degree={edu.degree} fieldOfStudy={edu.fieldOfStudy} gpa={"GPA : "+edu.GPA} societiesAndActivities={edu.societiesAndActivities}  parentFunction={deleteUniversity} />
               ))
@@ -296,15 +322,15 @@ function EducationSection() {
 
   const displaySchoolFields = () => {
     if (schoolFields) {
-      eduCount=1;
       if (schoolFields.length > 0) {
+        eduCount=1;
         return schoolFields.map(edu => (
               <EduItem index={j++} level="School" startYear={edu.startDate} endYear={edu.endDate} school={edu.school} description={edu.description}  parentFunction={deleteSchool} />
               ))
       }
     }
-    if(eduCount==0){
-      return (<Typography variant="body2" color="textSecondary" component="p">Education details not added.</Typography>);
+    if(eduCount == 0){
+      return (<Typography variant="body2" color="textSecondary" component="p">Education details not added.</Typography>)
     }
   }
 
@@ -411,7 +437,7 @@ function EducationSection() {
           type="number"
           variant="outlined"
           size="small"
-          onChange={onChangestartDate}
+          onChange={onChangeSchoolstartDate}
           style={{width:'30%',marginRight:'10%'}}
         />
         <TextField
@@ -421,7 +447,7 @@ function EducationSection() {
           type="number"
           variant="outlined"
           size="small"
-          onChange={onChangeEndDate}
+          onChange={onChangeSchoolEndDate}
           style={{width:'30%'}}
         />
         </Grid>
