@@ -1,7 +1,7 @@
 import React from 'react'
 import { colors, makeStyles, Typography } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid';
-import JobSearchBar from './components/JobSearchBar';
+import PeopleSearchBar from './components/PeopleSearchBar';
 import PeopleFilters from './components/PeopleFilters';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -108,7 +108,7 @@ function People() {
         axios.post(`${BACKEND_URL}/jobseekers/filter`, { queryParams: queryParams, options: { skip: start, limit: 10 } }).then(res => {
             
             if (res.data.success) {
-                setPeople(res.data.existingJobSeekers);
+                setPeople(res.data.existingData);
             } else {
                 setPeople(null)
             }
@@ -134,7 +134,7 @@ function People() {
         <>
             <Grid item container sm={12} spacing={3} direction="row" justify="space-between" className={classes.mainGrid} alignItems="flex-start">
                 <Grid item sm={12} className={classes.searchGrid}>
-                    <JobSearchBar onChange={updateSearch} />
+                    <PeopleSearchBar onChange={updateSearch} />
                 </Grid>
                 <Grid item container xs={12} sm={12} md={8} lg={9} spacing={2} direction="row" className={classes.peopleGrid} justify="flex-start" alignItems="flex-start">
                     {displayPeople()}

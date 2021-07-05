@@ -44,10 +44,10 @@ function JobDescription() {
 
   const [job, setJob] = useState("empty");
   const [moreFromJobs, setMoreFromJobs] = useState(null);
-  const isSignedIn = false;
+  const isSignedIn = true;
+  const userId = "60c5f18255244d11c801247f";
 
   let { id } = useParams();
-
   const [jobId, setJobId] = useState(window.location.pathname.split("/")[2]);
 
   useEffect(() => {
@@ -127,12 +127,10 @@ function JobDescription() {
   };
 
   const displayApplyForm = () => {
-    if (isSignedIn === true) {
+    if (isSignedIn === true || userId !== "empty") {
       return (
         <Grid item sm={12}>
-          <FloatCard>
-            <ApplyForm></ApplyForm>
-          </FloatCard>
+          <ApplyForm userId={userId}></ApplyForm>
         </Grid>
       );
     }
@@ -140,19 +138,19 @@ function JobDescription() {
 
   const displayCompanySummary = () => {
     if (job != "empty") {
-      return <CompanySummary job={job} />
+      return <CompanySummary job={job} />;
     }
-  }
+  };
 
   const displayMoreFromJobs = () => {
     if (job != "empty") {
-      return <MoreFromJobs job={job} />
+      return <MoreFromJobs job={job} />;
     }
   };
 
   const displayRelatedJobs = () => {
     if (job != "empty") {
-      return <RelatedJobs job={job} />
+      return <RelatedJobs job={job} />;
     }
   };
 
@@ -178,10 +176,11 @@ function JobDescription() {
                 {displayRequirements()}
               </Grid>
             </FloatCard>
+            <Grid item xs={12}>
+              {displayApplyForm()}
+            </Grid>
           </Grid>
-          <Grid item xs={12}>
           {displayRelatedJobs()}
-          </Grid>
         </Grid>
 
         <Grid item md={12} lg={5}>

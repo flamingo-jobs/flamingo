@@ -106,7 +106,7 @@ function PeopleCard(props) {
 
                     <Typography noWrap className={classes.description} >{props.info.intro}</Typography>
                     <div className={classes.infoTags}>
-                        { props.info.education.length > 0 ? <Chip icon={<SchoolRoundedIcon />} label={props.info.education[0].university} className={classes.tag} /> : null}
+                        { props.info.education && props.info.education.length > 0 ? <Chip icon={<SchoolRoundedIcon />} label={props.info.education[0].university} className={classes.tag} /> : null}
                         { props.info.work.length > 0 ? <Chip icon={<WorkRoundedIcon />} label={props.info.work[0].place} className={classes.tag} /> : null}
 
                     </div>

@@ -107,7 +107,7 @@ function Jobs() {
         let start = (page - 1) * 10;
         axios.post(`${BACKEND_URL}/jobs`, { queryParams: queryParams, options: { skip: start, limit: 10 } }).then(res => {
             if (res.data.success) {
-                setJobs(res.data.existingJobs)
+                setJobs(res.data.existingData)
             } else {
                 setJobs(null)
             }
@@ -117,7 +117,7 @@ function Jobs() {
     const displayJobs = () => {
         if (jobs) {
             return jobs.map(job => (
-                <Grid item xs={12} md={12} lg={6} className={classes.gridCard}>
+                <Grid item key={job._id} xs={12} md={12} lg={6} className={classes.gridCard}>
                     <JobCard info={job} />
                 </Grid>
             ))

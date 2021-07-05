@@ -22,7 +22,7 @@ const employerSchema = new mongoose.Schema({
         required: true
     },
     technologyStack: {
-        type: Object,
+        type: Array,
     },
     dateRegistered: {
         type: Date,
@@ -53,6 +53,9 @@ const employerSchema = new mongoose.Schema({
         blog: {
             type: String
         }
+    },
+    categories: {
+        type: Array
     }
 
 });

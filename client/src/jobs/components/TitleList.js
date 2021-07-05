@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function TitileList(props) {
     const classes = useStyles();
-    const [openTitles, setOpenTitles] = useState(true);
+    const [openTitles, setOpenTitles] = useState(false);
 
     const handleTitleClick = () => {
         setOpenTitles(!openTitles);

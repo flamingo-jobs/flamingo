@@ -27,7 +27,7 @@ const getAll = (req,res) => {
         }
         return res.status(200).json({
             success: true,
-            existingJobseeker: jobseeker
+            existingData: jobseeker
         });
     });
 }
@@ -41,7 +41,7 @@ const getFiltered = (req, res) => {
         }
         return res.status(200).json({
             success: true,
-            existingJobSeekers: jobSeekers
+            existingData: jobSeekers
         });
     });
 }
@@ -227,6 +227,19 @@ const updateProject = (req,res) => {
         }
     );
 }
+
+const updateResumeDetails =  async (req, res) => {
+    try{
+        const updatedPost = await Jobseeker.findByIdAndUpdate(
+            req.params.id,
+            {$set: req.body}
+        );
+        res.status(200).json({ success: true});
+    } catch(err){
+        res.status(400).json({ success: false, msg: err});
+    }
+}
+
 //--------------- add --------------------------------------------
 const addUniversity = (req,res) => {
 
@@ -365,6 +378,20 @@ const remove = (req, res) => {
         return res.status(200).json({
             success: "Jobseeker deleted successfully",
             deletedJobseeker
+        });
+    });
+}
+
+const block = (req, res) => {
+    Jobseeker.deleteMany(req.body).exec((err,deletedJobSeeker) => {
+        if(err){
+            return res.status(400).json({
+                error: err
+            });
+        }
+        return res.status(200).json({
+            success: "Category deleted successfully",
+            blockedJobSeeker: deletedJobSeeker,
         });
     });
 }
@@ -521,6 +548,7 @@ module.exports = {
     updateAward,
     updateWork,
     updateProject,
+    updateResumeDetails,
     remove,
     removeUniversity,
     removeSchool,
@@ -530,5 +558,6 @@ module.exports = {
     removeAward,
     removeVolunteer,
     getFiltered,
-    getCount
+    getCount,
+    block
 }

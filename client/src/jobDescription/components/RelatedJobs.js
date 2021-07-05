@@ -67,9 +67,9 @@ function RelatedJobs(props) {
         axios.post(`${BACKEND_URL}/jobs`, { queryParams: params, options: { limit: 3 } }).then(res => {
             if (res.data.success) {
                 if (props.job) {
-                    setRelatedJobs(res.data.existingJobs.filter((job) => job._id !== props.job._id));
+                    setRelatedJobs(res.data.existingData.filter((job) => job._id !== props.job._id));
                 } else {
-                    setRelatedJobs(res.data.existingJobs);
+                    setRelatedJobs(res.data.existingData);
                 }
             } else {
                 setRelatedJobs(null)

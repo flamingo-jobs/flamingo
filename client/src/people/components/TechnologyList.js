@@ -148,12 +148,12 @@ export default function TechnologyList(props) {
     const retrieveTechnologies = () => {
         axios.get(`${BACKEND_URL}/technologies`).then(res => {
             if (res.data.success) {
-                let subList = res.data.existingTechnologies.map(technology => {
+                let subList = res.data.existingData.map(technology => {
                     return { open: false }
                 });
                 setOpenTechList(subList);
 
-                setTechnologies(res.data.existingTechnologies);
+                setTechnologies(res.data.existingData);
             } else {
                 setTechnologies(null)
             }

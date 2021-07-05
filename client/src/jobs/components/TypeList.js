@@ -43,12 +43,15 @@ const useStyles = makeStyles((theme) => ({
     },
     itemCheckBox: {
         minWidth: 'auto'
+    },
+    listHeader: {
+        borderRadius: 8
     }
 }));
 
 export default function TypeList(props) {
     const classes = useStyles();
-    const [openTypes, setOpenTypes] = React.useState(true);
+    const [openTypes, setOpenTypes] = React.useState(false);
 
     const handleTypeClick = () => {
         setOpenTypes(!openTypes);
@@ -100,7 +103,7 @@ export default function TypeList(props) {
         // console.log(filters);s
         axios.get(`${BACKEND_URL}/types`).then(res => {
             if (res.data.success) {
-                setTypes(res.data.existingTypes)
+                setTypes(res.data.existingData)
             } else {
                 setTypes(null)
             }
@@ -150,7 +153,7 @@ export default function TypeList(props) {
                 component="nav"
                 className={classes.root}
             >
-                <ListItem button onClick={handleTypeClick}>
+                <ListItem button onClick={handleTypeClick} className={classes.listHeader}>
                     <ListItemText primary={<Typography className={classes.listTitle} >Type</Typography>}></ListItemText>
                     {openTypes ? <ExpandLess className={classes.listDown} /> : <ExpandMore className={classes.listDown} />}
                 </ListItem>

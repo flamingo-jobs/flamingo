@@ -51,7 +51,7 @@ function Technologies() {
     const retrieveTechnoliges = () => {
         axios.get(`${BACKEND_URL}/technologies`).then(res => {
             if (res.data.success) {
-                setTechnologies(res.data.existingTechnologies)
+                setTechnologies(res.data.existingData)
             } else {
                 setTechnologies([])
             }

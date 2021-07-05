@@ -109,7 +109,7 @@ function Organizations() {
         axios.post(`${BACKEND_URL}/employers/filter`, { queryParams: queryParams, options: { skip: start, limit: 10 } }).then(res => {
             
             if (res.data.success) {
-                setOrganizations(res.data.existingEmployers)
+                setOrganizations(res.data.existingData)
             } else {
                 setOrganizations(null)
             }
@@ -119,7 +119,7 @@ function Organizations() {
     const displayOrganizations = () => {
         if (organizations) {
             return organizations.map(org => (
-                <Grid item xs={12} md={12} className={classes.gridCard}>
+                <Grid item xs={12} md={12} key={org._id} className={classes.gridCard}>
                     <OrganizationCard info={org} />
                 </Grid>
             ))
