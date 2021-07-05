@@ -74,13 +74,26 @@ const useStyles = makeStyles((theme) => ({
         padding: '5% 15% 5% 15%'
       },
       field: {
-        margin: "20px 0px 20px 0px",
+        margin: "25px 0px 20px 0px",
         display: "flex",
         fontSize: "16px",
         "& label": {
           color: "#777",
           fontSize: '16px',
         }
+      },
+      select: {
+        minWidth: "200px",
+        fontSize: "16px",
+        display: "flex",
+        "& .MuiSelect-outlined": {
+          padding: "10px 10px 10px 10px"
+        }
+      },
+      placeholder: {
+        color: "#777",
+          fontSize: '16px',
+          marginTop:"-8px",
       }
 }));
 
@@ -247,6 +260,7 @@ function EduItem(props) {
           size="small"
           value={university.university}
           onChange={onChangeUniversity}
+          style={{marginBottom: "32px"}}
         />
         <FormControl variant="outlined" className={classes.formControl}>
         <InputLabel className={classes.placeholder} htmlFor="outlined-age-native-simple">Select Degree</InputLabel>
@@ -319,6 +333,7 @@ function EduItem(props) {
           size="small"
           value={university.societiesAndActivities}
           onChange={onChangeSocietiesAndActivities}
+          style={{marginTop:"10px"}}
         />
         </div>
         <Button type="submit" className={classes.defaultButton} style={{ width:'100%',marginTop:'5%'}}>Apply Changes</Button>
@@ -398,7 +413,7 @@ function EduItem(props) {
                     {university.degree} - {university.fieldOfStudy}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',}}>
-                        {university.GPA}
+                        GPA : {university.GPA}
                     </Typography>
                     <Typography variant="body2" component="p" style={{textAlign:'left',color: '#666',marginTop:'15px'}}>
                         <b>Societies & activities : </b>{university.societiesAndActivities}

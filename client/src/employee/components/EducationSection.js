@@ -21,6 +21,7 @@ import BACKEND_URL from '../../Config';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
+import SnackBarAlert from "../../components/SnackBarAlert";
 
 
 const useStyles = makeStyles({
@@ -84,10 +85,24 @@ const useStyles = makeStyles({
       padding: "10px 10px 10px 10px"
     }
   },
+  selectDate: {
+    margin: "20px 10px 0px 0px",
+    minWidth: "150px",
+    fontSize: "16px",
+    display: "flex",
+    "& .MuiSelect-outlined": {
+      padding: "10px 10px 10px 10px"
+    }
+  },
   placeholder: {
     color: "#777",
       fontSize: '16px',
       marginTop:"-8px",
+  },
+  placeholderDate: {
+    color: "#777",
+      fontSize: '16px',
+      marginTop:"12px",
   }
 });
 
@@ -102,16 +117,22 @@ function EducationSection() {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [alertShow, setAlertShow] = React.useState(false);
+  const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
   let i=0;
   let j=0;
   let eduCount=0;
 
-  const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
+  function getYearsFrom(){
+    let minOffset = 0, maxOffset = 25;
+    let thisYear = (new Date()).getFullYear();
+    let allYears = [];
+    for(let x = 0; x <= maxOffset; x++) {
+        allYears.push(thisYear - x)
+    }
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
-
+    return allYears.map((x) => (<option value={x}>{x}</option>));
+  }
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -128,6 +149,29 @@ function EducationSection() {
   function handleClose(){
     setOpen(false);
   }
+
+  // Alert stuff
+  const displayAlert = () => {
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
+
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertShow(false);
+  };
 
   //---------------------------- university text fields onChange events
   function onChangeUniversity(e){
@@ -234,7 +278,15 @@ function EducationSection() {
     }
 
     axios.put(`${BACKEND_URL}/jobseeker/addUniversity/60c5f2e555244d11c8012480`,uni)
-    .then(res => console.log(uni));
+    .then(res => {
+      if(res.data.success){
+        setAlertData({
+          severity: "success",
+          msg: "University added successfully!",
+        });
+        handleAlert();
+      }
+    });
     setFetchedData(1);
     handleClose();
   }
@@ -299,7 +351,7 @@ function EducationSection() {
       if (universityFields.length > 0) {
         eduCount=1;
         return universityFields.map(edu => (
-              <EduItem index={i++} level="University" startYear={edu.startDate} endYear={edu.endDate} university={edu.university} degree={edu.degree} fieldOfStudy={edu.fieldOfStudy} gpa={"GPA : "+edu.GPA} societiesAndActivities={edu.societiesAndActivities}  parentFunction={deleteUniversity} />
+              <EduItem index={i++} level="University" startYear={edu.startDate} endYear={edu.endDate} university={edu.university} degree={edu.degree} fieldOfStudy={edu.fieldOfStudy} gpa={edu.GPA} societiesAndActivities={edu.societiesAndActivities}  parentFunction={deleteUniversity} />
               ))
       }
     }
@@ -368,26 +420,30 @@ function EducationSection() {
           style={{width:'30%'}}
         />
         <Grid container direction="row" style={{marginTop:'-18px'}}>
-        <TextField
-        className={classes.field}
-          id="outlined-basic"
-          label="Start year"
-          type="number"
-          variant="outlined"
-          size="small"
-          onChange={onChangestartDate}
-          style={{width:'30%',marginRight:'10%'}}
-        />
-        <TextField
-        className={classes.field}
-          id="outlined-basic"
-          label="End year"
-          type="number"
-          variant="outlined"
-          size="small"
-          onChange={onChangeEndDate}
-          style={{width:'30%'}}
-        />
+        <FormControl variant="outlined" className={classes.formControl}>
+          <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">Start Date</InputLabel>
+          <Select
+            native
+            onChange={onChangestartDate}
+            label="Start Date"
+            className={classes.selectDate}
+          >
+            <option aria-label="None" value="" />
+            {getYearsFrom()}
+          </Select>
+        </FormControl>
+        <FormControl variant="outlined" className={classes.formControl}>
+          <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">End Date</InputLabel>
+          <Select
+            native
+            onChange={onChangeEndDate}
+            label="End Date"
+            className={classes.selectDate}
+          >
+            <option aria-label="None" value="" />
+            {getYearsFrom()}
+          </Select>
+        </FormControl>
         </Grid>
         <TextField
         className={classes.field}
@@ -453,6 +509,8 @@ function EducationSection() {
   },[level,university,school])
 
   return (
+    <>
+    {displayAlert()}
     <FloatCard>
       <Grid container spacing={3}>
         <Grid item xs style={{ textAlign: 'left',}}>
@@ -530,6 +588,7 @@ function EducationSection() {
           </Fade>
         </Modal>
     </FloatCard>
+    </>
   );
 }
 
