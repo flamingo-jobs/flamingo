@@ -40,12 +40,12 @@ router.put('/jobseeker/addWork/:id', jobseekerController.addWork);
 // delete
 
 router.delete('/jobseeker/delete/:id', jobseekerController.remove);
-router.delete('/jobseeker/removeUniversity/:id', jobseekerController.removeUniversity);
-router.delete('/jobseeker/removeSchool/:id', jobseekerController.removeSchool);
-router.delete('/jobseeker/removeCourse/:id', jobseekerController.removeCourse);
-router.delete('/jobseeker/removeProject/:id', jobseekerController.removeProject);
-router.delete('/jobseeker/removeWork/:id', jobseekerController.removeWork);
-router.delete('/jobseeker/removeAward/:id', jobseekerController.removeAward);
-router.delete('/jobseeker/removeVolunteer/:id', jobseekerController.removeVolunteer);
+router.put('/jobseeker/removeUniversity/:id', jobseekerController.removeUniversity);
+router.put('/jobseeker/removeSchool/:id', jobseekerController.removeSchool);
+router.put('/jobseeker/removeCourse/:id', jobseekerController.removeCourse);
+router.put('/jobseeker/removeProject/:id', jobseekerController.removeProject);
+router.put('/jobseeker/removeWork/:id', jobseekerController.removeWork);
+router.put('/jobseeker/removeAward/:id', jobseekerController.removeAward);
+router.put('/jobseeker/removeVolunteer/:id', jobseekerController.removeVolunteer);
 
 module.exports = router;
