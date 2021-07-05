@@ -15,6 +15,7 @@ const typeRoutes = require('./routes/types');
 const employerRoutes = require('./routes/employers');
 const jobSeekerRoutes = require('./routes/jobseeker');
 const authRoutes = require('./routes/auth');
+const resumeRoutes = require("./routes/resumes");
 
 // app middleware
 app.use(bodyParser.json());
@@ -28,6 +29,7 @@ app.use(technologyRoutes);
 app.use(typeRoutes);
 app.use(employerRoutes);
 app.use(jobSeekerRoutes);
+app.use(resumeRoutes);
 app.use('/api', authRoutes);
 
 const PORT = 8000;

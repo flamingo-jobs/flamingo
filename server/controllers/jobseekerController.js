@@ -227,6 +227,19 @@ const updateProject = (req,res) => {
         }
     );
 }
+
+const updateResumeDetails =  async (req, res) => {
+    try{
+        const updatedPost = await Jobseeker.findByIdAndUpdate(
+            req.params.id,
+            {$set: req.body}
+        );
+        res.status(200).json({ success: true});
+    } catch(err){
+        res.status(400).json({ success: false, msg: err});
+    }
+}
+
 //--------------- add --------------------------------------------
 const addUniversity = (req,res) => {
 
@@ -535,6 +548,7 @@ module.exports = {
     updateAward,
     updateWork,
     updateProject,
+    updateResumeDetails,
     remove,
     removeUniversity,
     removeSchool,
