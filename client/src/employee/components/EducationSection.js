@@ -285,6 +285,12 @@ function EducationSection() {
           msg: "University added successfully!",
         });
         handleAlert();
+      } else {
+        setAlertData({
+          severity: "error",
+          msg: "University could not be added!",
+        });
+        handleAlert();
       }
     });
     setFetchedData(1);
@@ -301,7 +307,21 @@ function EducationSection() {
     }
 
     axios.put(`${BACKEND_URL}/jobseeker/addSchool/60c5f2e555244d11c8012480`,sch)
-    .then(res => console.log(sch));
+    .then(res => {
+      if(res.data.success){
+        setAlertData({
+          severity: "success",
+          msg: "School added successfully!",
+        });
+        handleAlert();
+      } else {
+        setAlertData({
+          severity: "error",
+          msg: "School could not be added!",
+        });
+        handleAlert();
+      }
+    });
     setFetchedData(1);
     handleClose();
   }
@@ -331,7 +351,21 @@ function EducationSection() {
     universityFields.splice(index,1);
     console.log(universityFields)
     axios.put(`${BACKEND_URL}/jobseeker/removeUniversity/60c5f2e555244d11c8012480`,universityFields)
-    .then(res => console.log("deleted"));
+    .then(res => {
+      if(res.data.success){
+        setAlertData({
+          severity: "success",
+          msg: "University deleted successfully!",
+        });
+        handleAlert();
+      } else {
+        setAlertData({
+          severity: "error",
+          msg: "University could not be deleted!",
+        });
+        handleAlert();
+      }
+    });
     handleClose();
     setFetchedData(1)  
   }
@@ -340,7 +374,21 @@ function EducationSection() {
     schoolFields.splice(index,1);
     console.log(schoolFields)
     axios.put(`${BACKEND_URL}/jobseeker/removeSchool/60c5f2e555244d11c8012480`,schoolFields)
-    .then(res => console.log("deleted"));
+    .then(res => {
+      if(res.data.success){
+        setAlertData({
+          severity: "success",
+          msg: "School deleted successfully!",
+        });
+        handleAlert();
+      } else {
+        setAlertData({
+          severity: "error",
+          msg: "School could not be deleted!",
+        });
+        handleAlert();
+      }
+    });
     handleClose();
     setFetchedData(1)  
   }

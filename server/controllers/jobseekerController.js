@@ -11,7 +11,7 @@ const create = (req,res) => {
             });
         }
         return res.status(200).json({
-            success: "Jobseeker saved successfully"
+            success: true
         });
 
     });
@@ -89,7 +89,7 @@ const update = (req,res) => {
                 })
             }
             return res.status(200).json({
-                sucess: "Updated successfully"
+                success: true
             });
         }
     );
@@ -108,7 +108,7 @@ const updateVolunteer = (req,res) => {
                 })
             }
             return res.status(200).json({
-                sucess: "Updated successfully"
+                success: true
             });
         }
     );
@@ -127,7 +127,7 @@ const updateAward = (req,res) => {
                 })
             }
             return res.status(200).json({
-                sucess: "Updated successfully"
+                success: true
             });
         }
     );
@@ -146,7 +146,7 @@ const updateUniversity = (req,res) => {
                 })
             }
             return res.status(200).json({
-                sucess: "Updated successfully"
+                success: true
             });
         }
     );
@@ -165,7 +165,7 @@ const updateSchool = (req,res) => {
                 })
             }
             return res.status(200).json({
-                sucess: "Updated successfully"
+                success: true
             });
         }
     );
@@ -184,7 +184,7 @@ const updateCourse = (req,res) => {
                 })
             }
             return res.status(200).json({
-                sucess: "Updated successfully"
+                success: true
             });
         }
     );
@@ -203,7 +203,7 @@ const updateWork = (req,res) => {
                 })
             }
             return res.status(200).json({
-                sucess: "Updated successfully"
+                success: true
             });
         }
     );
@@ -222,7 +222,7 @@ const updateProject = (req,res) => {
                 })
             }
             return res.status(200).json({
-                sucess: "Updated successfully"
+                success: true
             });
         }
     );
@@ -271,7 +271,7 @@ const addSchool = (req,res) => {
                 })
             }
             return res.status(200).json({
-                success: "Updated successfully"
+                success: true
             });
         }
     );
@@ -289,7 +289,7 @@ const addCourse = (req,res) => {
                 })
             }
             return res.status(200).json({
-                success: "Updated successfully"
+                success: true
             });
         }
     );
@@ -307,7 +307,7 @@ const addAward = (req,res) => {
                 })
             }
             return res.status(200).json({
-                success: "Updated successfully"
+                success: true
             });
         }
     );
@@ -325,7 +325,7 @@ const addVolunteering = (req,res) => {
                 })
             }
             return res.status(200).json({
-                success: "Updated successfully"
+                success: true
             });
         }
     );
@@ -343,7 +343,7 @@ const addProject = (req,res) => {
                 })
             }
             return res.status(200).json({
-                success: "Updated successfully"
+                success: true
             });
         }
     );
@@ -361,7 +361,7 @@ const addWork = (req,res) => {
                 })
             }
             return res.status(200).json({
-                success: "Updated successfully"
+                success: true
             });
         }
     );
@@ -376,7 +376,7 @@ const remove = (req, res) => {
             });
         }
         return res.status(200).json({
-            success: "Jobseeker deleted successfully",
+            success: true,
             deletedJobseeker
         });
     });
@@ -390,7 +390,7 @@ const block = (req, res) => {
             });
         }
         return res.status(200).json({
-            success: "Category deleted successfully",
+            success: true,
             blockedJobSeeker: deletedJobSeeker,
         });
     });
@@ -409,7 +409,7 @@ const removeProject = (req,res) => {
                 })
             }
             return res.status(200).json({
-                sucess: "Updated successfully"
+                success: true
             });
         }
     );
@@ -428,7 +428,7 @@ const removeWork = (req,res) => {
                 })
             }
             return res.status(200).json({
-                sucess: "Updated successfully"
+                success: true
             });
         }
     );
@@ -447,7 +447,7 @@ const removeUniversity = (req,res) => {
                 })
             }
             return res.status(200).json({
-                sucess: "Updated successfully"
+                success: true
             });
         }
     );
@@ -466,7 +466,7 @@ const removeSchool = (req,res) => {
                 })
             }
             return res.status(200).json({
-                sucess: "Updated successfully"
+                success: true
             });
         }
     );
@@ -485,7 +485,7 @@ const removeCourse = (req,res) => {
                 })
             }
             return res.status(200).json({
-                sucess: "Updated successfully"
+                success: true
             });
         }
     );
@@ -504,7 +504,7 @@ const removeAward = (req,res) => {
                 })
             }
             return res.status(200).json({
-                sucess: "Updated successfully"
+                success: true
             });
         }
     );
@@ -523,7 +523,7 @@ const removeVolunteer = (req,res) => {
                 })
             }
             return res.status(200).json({
-                sucess: "Updated successfully"
+                success: true
             });
         }
     );
