@@ -80,7 +80,7 @@ const update = (req,res) => {
     Jobseeker.findByIdAndUpdate(
         req.params.id,
         {
-            $set:req.body
+            $set: req.body
         },
         (err,jobseeker) =>{
             if(err){
@@ -397,10 +397,10 @@ const block = (req, res) => {
 }
 
 const removeProject = (req,res) => {
-    Jobseeker.updateOne(
-        { _id: req.params.id },
+    Jobseeker.findByIdAndUpdate(
+        req.params.id,
         {
-            $set:{ project : req.body }
+            $set: { project: req.body  }
         },
         (err,jobseeker) =>{
             if(err){
@@ -409,17 +409,17 @@ const removeProject = (req,res) => {
                 })
             }
             return res.status(200).json({
-                sucess: "Deleted successfully"
+                sucess: "Updated successfully"
             });
         }
     );
 }
 
 const removeWork = (req,res) => {
-    Jobseeker.updateOne(
-        { _id: req.params.id },
+    Jobseeker.findByIdAndUpdate(
+        req.params.id,
         {
-            $set:{ work : req.body }
+            $set: { work: req.body  }
         },
         (err,jobseeker) =>{
             if(err){
@@ -428,17 +428,17 @@ const removeWork = (req,res) => {
                 })
             }
             return res.status(200).json({
-                sucess: "Deleted successfully"
+                sucess: "Updated successfully"
             });
         }
     );
 }
 
 const removeUniversity = (req,res) => {
-    Jobseeker.updateOne(
-        { _id: req.params.id },
+    Jobseeker.findByIdAndUpdate(
+        req.params.id,
         {
-            $set:{ university : req.body }
+            $set: { university: req.body  }
         },
         (err,jobseeker) =>{
             if(err){
@@ -447,17 +447,17 @@ const removeUniversity = (req,res) => {
                 })
             }
             return res.status(200).json({
-                sucess: "Udeleted successfully"
+                sucess: "Updated successfully"
             });
         }
     );
 }
 
 const removeSchool = (req,res) => {
-    Jobseeker.updateOne(
-        { _id: req.params.id },
+    Jobseeker.findByIdAndUpdate(
+        req.params.id,
         {
-            $set:{ school : req.body }
+            $set: { school: req.body  }
         },
         (err,jobseeker) =>{
             if(err){
@@ -466,17 +466,17 @@ const removeSchool = (req,res) => {
                 })
             }
             return res.status(200).json({
-                sucess: "Udeleted successfully"
+                sucess: "Updated successfully"
             });
         }
     );
 }
 
 const removeCourse = (req,res) => {
-    Jobseeker.updateOne(
-        { _id: req.params.id },
+    Jobseeker.findByIdAndUpdate(
+        req.params.id,
         {
-            $set:{ course : req.body }
+            $set: { course: req.body  }
         },
         (err,jobseeker) =>{
             if(err){
@@ -485,17 +485,17 @@ const removeCourse = (req,res) => {
                 })
             }
             return res.status(200).json({
-                sucess: "Udeleted successfully"
+                sucess: "Updated successfully"
             });
         }
     );
 }
 
 const removeAward = (req,res) => {
-    Jobseeker.updateOne(
-        { _id: req.params.id },
+    Jobseeker.findByIdAndUpdate(
+        req.params.id,
         {
-            $set:{ award : req.body }
+            $set: { award: req.body  }
         },
         (err,jobseeker) =>{
             if(err){
@@ -504,17 +504,17 @@ const removeAward = (req,res) => {
                 })
             }
             return res.status(200).json({
-                sucess: "Udeleted successfully"
+                sucess: "Updated successfully"
             });
         }
     );
 }
 
 const removeVolunteer = (req,res) => {
-    Jobseeker.updateOne(
-        { _id: req.params.id },
+    Jobseeker.findByIdAndUpdate(
+        req.params.id,
         {
-            $set:{ volunteer : req.body }
+            $set: { volunteer: req.body  }
         },
         (err,jobseeker) =>{
             if(err){
@@ -523,7 +523,7 @@ const removeVolunteer = (req,res) => {
                 })
             }
             return res.status(200).json({
-                sucess: "Deleted successfully"
+                sucess: "Updated successfully"
             });
         }
     );

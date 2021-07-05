@@ -77,9 +77,11 @@ function Volunteer() {
     axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
     .then(res => {
       if(res.data.success){
-        if(Object.keys(res.data.jobseeker.volunteer[0]).length === 0){
-          res.data.jobseeker.volunteer.splice(0,1)
-          i++;
+        if(res.data.jobseeker.volunteer.length > 0){
+          if(Object.keys(res.data.jobseeker.volunteer[0]).length === 0){
+            res.data.jobseeker.volunteer.splice(0,1)
+            i++;
+          }
         }
         setVolunteer(res.data.jobseeker.volunteer)
       }
@@ -89,13 +91,15 @@ function Volunteer() {
 
   function deleteData(index){
     volunteer.splice(index,1)
-    axios.delete(`${BACKEND_URL}/jobseeker/removeVolunteer/60c5f2e555244d11c8012480`,volunteer)
+    axios.put(`${BACKEND_URL}/jobseeker/removeVolunteer/60c5f2e555244d11c8012480`,volunteer)
     .then(res => console.log("aaa"));
     handleClose();
     setFetchedData(1)
   }
 
   useEffect(()=>{
+    setState({title: null, organization: null, from: null, to: null, description: null});
+    setVolunteer(null);
     fetchData()
   },[fetchedData])
 

@@ -89,7 +89,7 @@ function EduItem(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [styleEdit, setStyleEdit] = useState({display: 'none'});
-  const [university, setUniversity] = useState({university: props.university, degree: props.degree,fieldOfStudy: props.fieldOfStudy, GPA: props.gpa, startDate: props.startYear, endDate: props.endYear, societiesAndActivities: props.societiesAndActivities});
+  const [university, setUniversity] = useState({university: props.university, degree: props.degree, fieldOfStudy: props.fieldOfStudy, GPA: props.gpa, startDate: props.startYear, endDate: props.endYear, societiesAndActivities: props.societiesAndActivities});
   const [school, setSchool] = useState({school: props.school, startDate: props.startYear, endDate: props.endYear, description: props.description});
 
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -97,7 +97,6 @@ function EduItem(props) {
   const [alertData, setAlertData] = useState({severity: "", msg: ""});
   const [loading, setLoading] = useState(true);
   const [alertShow, setAlertShow] = React.useState(false);
-  const index = props.index;
   
   const [form, setForm] = useState(null);
 
@@ -111,7 +110,7 @@ function EduItem(props) {
   }, [deleteSuccess]);
 
   const handleDelete = () => {
-    props.parentFunction(index)
+    props.parentFunction(props.index)
   }
 
   const handleClickOpen = () => {
@@ -283,7 +282,7 @@ function EduItem(props) {
           presicion={2}  
           variant="outlined"
           size="small"
-          value={university.gpa}
+          value={university.GPA}
           onChange={onChangeGPA}
           style={{width:'30%'}}
         />
@@ -377,7 +376,7 @@ function EduItem(props) {
     </form>;
     setForm(temp);
     }
-  },[])
+  },[university,school])
 
   const filterFields = () => {
     if(props.level == "University"){
@@ -399,7 +398,7 @@ function EduItem(props) {
                     {university.degree} - {university.fieldOfStudy}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',}}>
-                        {university.gpa}
+                        {university.GPA}
                     </Typography>
                     <Typography variant="body2" component="p" style={{textAlign:'left',color: '#666',marginTop:'15px'}}>
                         <b>Societies & activities : </b>{university.societiesAndActivities}
