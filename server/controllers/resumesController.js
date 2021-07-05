@@ -1,13 +1,17 @@
-// const Jobs = require('../models/resumes');
+const Jobseeker = require("../models/jobseeker");
+
 const multer = require("multer");
 const path = require("path");
+
+// const fileName = Date.now().toString();
+let fileName = "";
 
 const fileStorageEngine = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.join(__dirname, "../resumes/"));
   },
   filename: (req, file, cb) => {
-    var fileName = Date.now().toString() + "--" + file.originalname;
+    fileName = req.body.id + path.extname(file.originalname);
     fileName.replace(/:/g, "-");
     cb(null, fileName);
   },

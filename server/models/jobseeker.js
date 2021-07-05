@@ -53,6 +53,9 @@ const jobseekerSchema = new mongoose.Schema({
   technologyStack: {
     type: Array,
   },
+  applicationDetails:{
+    type: Object,
+  }
 });
 
 module.exports = mongoose.model("Jobseeker", jobseekerSchema);

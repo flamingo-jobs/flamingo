@@ -45,9 +45,9 @@ function JobDescription() {
   const [job, setJob] = useState("empty");
   const [moreFromJobs, setMoreFromJobs] = useState(null);
   const isSignedIn = true;
+  const userId = "60c5f18255244d11c801247f";
 
   let { id } = useParams();
-
   const [jobId, setJobId] = useState(window.location.pathname.split("/")[2]);
 
   useEffect(() => {
@@ -127,10 +127,10 @@ function JobDescription() {
   };
 
   const displayApplyForm = () => {
-    if (isSignedIn === true) {
+    if (isSignedIn === true || userId !== "empty") {
       return (
         <Grid item sm={12}>
-          <ApplyForm></ApplyForm>
+          <ApplyForm userId={userId}></ApplyForm>
         </Grid>
       );
     }
