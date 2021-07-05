@@ -24,6 +24,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import SnackBarAlert from "../../components/SnackBarAlert";
 
 const useStyles = makeStyles((theme) => ({
     paperCont: {
@@ -134,10 +135,6 @@ function EduItem(props) {
     setConfirmDelete(false);
   };
 
-  const handleAlert = () => {
-    setAlertShow(true);
-  };
-
   function handleOpen(){
     setOpen(true);
   }
@@ -145,6 +142,30 @@ function EduItem(props) {
   function handleClose(){
     setOpen(false);
   }
+
+  
+  // Alert stuff
+  const displayAlert = () => {
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
+
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertShow(false);
+  };
 
   
   //---------------------------- university text fields onChange events
@@ -228,7 +249,21 @@ function EduItem(props) {
     }
 
     axios.put(`${BACKEND_URL}/jobseeker/updateUniversity/60c5f2e555244d11c8012480`,{index:props.index,university:uni})
-    .then(res => console.log(uni));
+    .then(res => {
+      if(res.data.success){
+        setAlertData({
+          severity: "success",
+          msg: "University updated successfully!",
+        });
+        handleAlert();
+      } else {
+        setAlertData({
+          severity: "error",
+          msg: "University could not be updated!",
+        });
+        handleAlert();
+      }
+    });
     handleClose();
   }
 
@@ -242,7 +277,21 @@ function EduItem(props) {
     }
 
     axios.put(`${BACKEND_URL}/jobseeker/updateSchool/60c5f2e555244d11c8012480`,{index:props.index,school:sch})
-    .then(res => console.log(sch));
+    .then(res => {
+      if(res.data.success){
+        setAlertData({
+          severity: "success",
+          msg: "School updated successfully!",
+        });
+        handleAlert();
+      } else {
+        setAlertData({
+          severity: "error",
+          msg: "School could not be updated!",
+        });
+        handleAlert();
+      }
+    });
     handleClose();
   }
   
@@ -446,6 +495,8 @@ function EduItem(props) {
   }
 
   return (
+    <>
+    {displayAlert()}
       <Paper elevation={0} className={classes.paperCont}
       onMouseEnter={e => {
           setStyleEdit({display: 'block'});
@@ -521,6 +572,7 @@ function EduItem(props) {
         </Grid>
        </Grid>
       </Paper>
+      </>
   );
 }
 
