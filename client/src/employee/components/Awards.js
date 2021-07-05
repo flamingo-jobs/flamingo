@@ -17,6 +17,7 @@ import AddIcon from '@material-ui/icons/Add';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import TextField from '@material-ui/core/TextField';
+import SnackBarAlert from "../../components/SnackBarAlert";
 
 const useStyles = makeStyles({
   defaultButton: {
@@ -72,6 +73,9 @@ function Achievements() {
   const [open, setOpen] = useState(false);
   const [award, setAward] = useState(null);
   const [state, setState] = useState({title: null, issuedBy: null, date: null, description: null});
+
+  const [alertShow, setAlertShow] = React.useState(false);
+  const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
   let i=0;
 
   function fetchData(){
@@ -93,7 +97,21 @@ function Achievements() {
   function deleteData(index){
     award.splice(index,1)
     axios.put(`${BACKEND_URL}/jobseeker/removeAward/60c5f2e555244d11c8012480`,award)
-    .then(res => console.log("aaa"));
+    .then(res => {
+      if(res.data.success){
+        setAlertData({
+          severity: "success",
+          msg: "Award deleted successfully!",
+        });
+        handleAlert();
+      } else {
+        setAlertData({
+          severity: "error",
+          msg: "Award could not be deleted!",
+        });
+        handleAlert();
+      }
+    });
     handleClose();
     setFetchedData(1)
   }
@@ -111,6 +129,30 @@ function Achievements() {
   function handleClose(){
     setOpen(false);
   }
+
+    // Alert stuff
+    const displayAlert = () => {
+      return (
+        <SnackBarAlert
+          open={alertShow}
+          onClose={handleAlertClose}
+          severity={alertData.severity}
+          msg={alertData.msg}
+        />
+      );
+    };
+  
+    const handleAlert = () => {
+      setAlertShow(true);
+    };
+  
+    const handleAlertClose = (event, reason) => {
+      if (reason === "clickaway") {
+        return;
+      }
+      setAlertShow(false);
+    };
+  
 
   //---------------------------- text field onChange events
   function onChangeTitle(e){
@@ -147,7 +189,21 @@ function Achievements() {
     }
 
     axios.put(`${BACKEND_URL}/jobseeker/addAward/60c5f2e555244d11c8012480`,newAward)
-    .then(res => console.log(newAward));
+    .then(res => {
+      if(res.data.success){
+        setAlertData({
+          severity: "success",
+          msg: "Award added successfully!",
+        });
+        handleAlert();
+      } else {
+        setAlertData({
+          severity: "error",
+          msg: "Award could not be added!",
+        });
+        handleAlert();
+      }
+    });
     setFetchedData(1);
     handleClose();
   }
@@ -167,6 +223,8 @@ function Achievements() {
   }
 
   return (
+    <>
+    {displayAlert()}
     <FloatCard>
       <Grid container spacing={3}>
         <Grid item xs style={{ textAlign: 'left',}}>
@@ -265,6 +323,7 @@ function Achievements() {
             </Grid>
         </Grid>
     </FloatCard>
+    </>
   );
 }
 

@@ -28,6 +28,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import SnackBarAlert from "../../components/SnackBarAlert";
 
 const useStyles = makeStyles((theme) => ({
     paperCont: {
@@ -121,10 +122,6 @@ const handleDelete = () => {
   const handleClickClose = () => {
     setConfirmDelete(false);
   };
-
-  const handleAlert = () => {
-    setAlertShow(true);
-  };
  
   function handleOpen(){
     setOpen(true);
@@ -133,6 +130,30 @@ const handleDelete = () => {
   function handleClose(){
     setOpen(false);
   }
+  
+  // Alert stuff
+  const displayAlert = () => {
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
+
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertShow(false);
+  };
+
 
    //---------------------------- text field onChange events
    function onChangeName(e){
@@ -183,11 +204,27 @@ const handleDelete = () => {
   }
 
     axios.delete(`${BACKEND_URL}/jobseeker/updateProject/60c5f2e555244d11c8012480`,{index:props.index,project:project})
-    .then(res => console.log(project));
+    .then(res => {
+      if(res.data.success){
+        setAlertData({
+          severity: "success",
+          msg: "Project updated successfully!",
+        });
+        handleAlert();
+      } else {
+        setAlertData({
+          severity: "error",
+          msg: "Project could not be updated!",
+        });
+        handleAlert();
+      }
+    });
     handleClose();
   }
 
-  return (   
+  return (  
+    <>
+    {displayAlert()} 
     <TimelineItem>
         <TimelineOppositeContent style={{flex:'0.2'}}>
             <Typography variant="body2" color="textSecondary">
@@ -359,6 +396,7 @@ const handleDelete = () => {
           </Paper>
         </TimelineContent>
     </TimelineItem>
+    </>
   );
 }
 

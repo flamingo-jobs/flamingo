@@ -23,6 +23,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import TextField from '@material-ui/core/TextField';
+import SnackBarAlert from "../../components/SnackBarAlert";
 
 const useStyles = makeStyles({
   defaultButton: {
@@ -100,6 +101,9 @@ function ProjectsSection() {
   const [open, setOpen] = useState(false);
   const [project, setProject] = useState(null);
   const [state, setState] = useState({name: null, link: null, description: null, from: null, to: null, usedTech: null});
+
+  const [alertShow, setAlertShow] = React.useState(false);
+  const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
   let i=0;
 
   function fetchData(){
@@ -121,7 +125,21 @@ function ProjectsSection() {
   function deleteData(index){
     project.splice(index,1)
     axios.put(`${BACKEND_URL}/jobseeker/removeProject/60c5f2e555244d11c8012480`,project)
-    .then(res => console.log("aaa"));
+    .then(res => {
+      if(res.data.success){
+        setAlertData({
+          severity: "success",
+          msg: "Project deleted successfully!",
+        });
+        handleAlert();
+      } else {
+        setAlertData({
+          severity: "error",
+          msg: "Project could not be deleted!",
+        });
+        handleAlert();
+      }
+    });
     handleClose();
     setFetchedData(1)
   }
@@ -139,6 +157,30 @@ function ProjectsSection() {
   function handleClose(){
     setOpen(false);
   }
+  
+  // Alert stuff
+  const displayAlert = () => {
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
+
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertShow(false);
+  };
+
 
   //---------------------------- text field onChange events
   function onChangeName(e){
@@ -189,7 +231,21 @@ function ProjectsSection() {
     }
 
     axios.put(`${BACKEND_URL}/jobseeker/addProject/60c5f2e555244d11c8012480`,newProject)
-    .then(res => console.log(newProject));
+    .then(res => {
+      if(res.data.success){
+        setAlertData({
+          severity: "success",
+          msg: "Project added successfully!",
+        });
+        handleAlert();
+      } else {
+        setAlertData({
+          severity: "error",
+          msg: "Project could not be added!",
+        });
+        handleAlert();
+      }
+    });
     setFetchedData(1);
     handleClose();
   }
@@ -210,6 +266,8 @@ function ProjectsSection() {
 
 
   return (
+    <>
+    {displayAlert()}
     <FloatCard>
       <Grid container spacing={3}>
         <Grid item xs style={{ textAlign: 'left',}}>
@@ -336,6 +394,7 @@ function ProjectsSection() {
         </Paper>
       </Grid>
     </FloatCard>
+    </>
   );
 }
 

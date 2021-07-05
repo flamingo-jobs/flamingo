@@ -21,6 +21,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import SnackBarAlert from "../../components/SnackBarAlert";
 
 const useStyles = makeStyles((theme) => ({
     paperCont: {
@@ -90,9 +91,9 @@ function VolunteerItem(props) {
 
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
-  const [alertData, setAlertData] = useState({severity: "", msg: ""});
   const [loading, setLoading] = useState(true);
   const [alertShow, setAlertShow] = React.useState(false);
+  const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
   const index = props.index;
   
   useEffect(() => {
@@ -116,10 +117,6 @@ function VolunteerItem(props) {
     setConfirmDelete(false);
   };
 
-  const handleAlert = () => {
-    setAlertShow(true);
-  };
-
   function handleOpen(){
     setOpen(true);
   }
@@ -127,6 +124,30 @@ function VolunteerItem(props) {
   function handleClose(){
     setOpen(false);
   }
+
+    // Alert stuff
+    const displayAlert = () => {
+      return (
+        <SnackBarAlert
+          open={alertShow}
+          onClose={handleAlertClose}
+          severity={alertData.severity}
+          msg={alertData.msg}
+        />
+      );
+    };
+  
+    const handleAlert = () => {
+      setAlertShow(true);
+    };
+  
+    const handleAlertClose = (event, reason) => {
+      if (reason === "clickaway") {
+        return;
+      }
+      setAlertShow(false);
+    };
+  
 
    //---------------------------- text field onChange events
    function onChangeTitle(e){
@@ -170,11 +191,27 @@ function VolunteerItem(props) {
     }
 
     axios.put(`${BACKEND_URL}/jobseeker/updateVolunteer/60c5f2e555244d11c8012480`,{index:props.index,volunteer:volunteer})
-    .then(res => console.log(volunteer));
+    .then(res => {
+      if(res.data.success){
+        setAlertData({
+          severity: "success",
+          msg: "Volunteering project updated successfully!",
+        });
+        handleAlert();
+      } else {
+        setAlertData({
+          severity: "error",
+          msg: "Volunteering project could not be updated!",
+        });
+        handleAlert();
+      }
+    });
     handleClose();
   }
 
   return (
+    <>
+    {displayAlert()}
       <Paper elevation={0} className={classes.paperCont}
         onMouseEnter={e => {
             setStyleEdit({display: 'block'});
@@ -327,6 +364,7 @@ function VolunteerItem(props) {
         
        </Grid>
       </Paper>
+      </>
   );
 }
 
