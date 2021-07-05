@@ -20,6 +20,7 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
+import SnackBarAlert from "../../components/SnackBarAlert";
 
 const useStyles = makeStyles({
   media: {
@@ -82,6 +83,9 @@ function WorkExperience() {
   const [open, setOpen] = useState(false);
   const [work, setWork] = useState(null);
   const [state, setState] = useState({place: null, description: null, position: null, from: null, to: null, taskAndResponsibility: null});
+
+  const [alertShow, setAlertShow] = React.useState(false);
+  const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
   let i=0;
 
   function fetchData(){
@@ -103,7 +107,21 @@ function WorkExperience() {
   function deleteData(index){
     work.splice(index,1)
     axios.put(`${BACKEND_URL}/jobseeker/removeWork/60c5f2e555244d11c8012480`,work)
-    .then(res => console.log("aaa"));
+    .then(res => {
+      if(res.data.success){
+        setAlertData({
+          severity: "success",
+          msg: "Work deleted successfully!",
+        });
+        handleAlert();
+      } else {
+        setAlertData({
+          severity: "error",
+          msg: "Work could not be deleted!",
+        });
+        handleAlert();
+      }
+    });
     handleClose();
     setFetchedData(1)
   }
@@ -121,6 +139,30 @@ function WorkExperience() {
   function handleClose(){
     setOpen(false);
   }
+  
+  // Alert stuff
+  const displayAlert = () => {
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
+
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertShow(false);
+  };
+
 
   //---------------------------- text field onChange events
   function onChangePlace(e){
@@ -182,7 +224,21 @@ function WorkExperience() {
     }
 
     axios.put(`${BACKEND_URL}/jobseeker/addWork/60c5f2e555244d11c8012480`,newWork)
-    .then(res => console.log(newWork));
+    .then(res => {
+      if(res.data.success){
+        setAlertData({
+          severity: "success",
+          msg: "Work added successfully!",
+        });
+        handleAlert();
+      } else {
+        setAlertData({
+          severity: "error",
+          msg: "Work could not be added!",
+        });
+        handleAlert();
+      }
+    });
     setFetchedData(1);
     handleClose();
   }
@@ -202,6 +258,8 @@ function WorkExperience() {
   }
 
   return (
+    <>
+    {displayAlert()}
     <FloatCard>
       <Grid container spacing={3}>
         <Grid item xs style={{ textAlign: 'left',}}>
@@ -335,6 +393,7 @@ function WorkExperience() {
             </Grid>
         </Grid>
     </FloatCard>
+    </>
   );
 }
 

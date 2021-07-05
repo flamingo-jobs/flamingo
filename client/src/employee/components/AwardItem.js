@@ -22,6 +22,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import SnackBarAlert from "../../components/SnackBarAlert";
 
 const useStyles = makeStyles((theme) => ({
   paperCont: {
@@ -91,9 +92,9 @@ function AchievementItem(props) {
 
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
-  const [alertData, setAlertData] = useState({severity: "", msg: ""});
   const [loading, setLoading] = useState(true);
   const [alertShow, setAlertShow] = React.useState(false);
+  const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
   const index = props.index;
   
   useEffect(() => {
@@ -117,10 +118,6 @@ function AchievementItem(props) {
     setConfirmDelete(false);
   };
 
-  const handleAlert = () => {
-    setAlertShow(true);
-  };
-
   function handleOpen(){
     setOpen(true);
   }
@@ -128,6 +125,30 @@ function AchievementItem(props) {
   function handleClose(){
     setOpen(false);
   }
+
+    // Alert stuff
+    const displayAlert = () => {
+      return (
+        <SnackBarAlert
+          open={alertShow}
+          onClose={handleAlertClose}
+          severity={alertData.severity}
+          msg={alertData.msg}
+        />
+      );
+    };
+  
+    const handleAlert = () => {
+      setAlertShow(true);
+    };
+  
+    const handleAlertClose = (event, reason) => {
+      if (reason === "clickaway") {
+        return;
+      }
+      setAlertShow(false);
+    };
+  
 
   //---------------------------- text field onChange events
   function onChangeTitle(e){
@@ -164,12 +185,28 @@ function AchievementItem(props) {
     }
 
     axios.put(`${BACKEND_URL}/jobseeker/updateAward/60c5f2e555244d11c8012480`,{index:props.index,award:award})
-    .then(res => console.log(award));
+    .then(res => {
+      if(res.data.success){
+        setAlertData({
+          severity: "success",
+          msg: "Award updated successfully!",
+        });
+        handleAlert();
+      } else {
+        setAlertData({
+          severity: "error",
+          msg: "Award could not be updated!",
+        });
+        handleAlert();
+      }
+    });
     handleClose();
   }
   
 
   return (
+    <>
+    {displayAlert()}
       <Paper elevation={0} className={classes.paperCont}
       onMouseEnter={e => {
           setStyleEdit({display: 'block'});
@@ -308,6 +345,7 @@ function AchievementItem(props) {
         
        </Grid>
       </Paper>
+      </>
   );
 }
 

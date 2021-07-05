@@ -21,6 +21,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import SnackBarAlert from "../../components/SnackBarAlert";
 
 const useStyles = makeStyles((theme) => ({
   paperCont: {
@@ -116,10 +117,6 @@ function WorkExpItem(props) {
     setConfirmDelete(false);
   };
 
-  const handleAlert = () => {
-    setAlertShow(true);
-  };
-
   function handleOpen(){
     setOpen(true);
   }
@@ -127,6 +124,30 @@ function WorkExpItem(props) {
   function handleClose(){
     setOpen(false);
   }
+  
+  // Alert stuff
+  const displayAlert = () => {
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
+
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertShow(false);
+  };
+
 
    //---------------------------- text field onChange events
 
@@ -178,11 +199,27 @@ function WorkExpItem(props) {
   }
 
     axios.put(`${BACKEND_URL}/jobseeker/updateWork/60c5f2e555244d11c8012480`,{index:props.index,work:work})
-    .then(res => console.log(work));
+    .then(res => {
+      if(res.data.success){
+        setAlertData({
+          severity: "success",
+          msg: "Work updated successfully!",
+        });
+        handleAlert();
+      } else {
+        setAlertData({
+          severity: "error",
+          msg: "Work could not be updated!",
+        });
+        handleAlert();
+      }
+    });
     handleClose();
   }
 
   return (
+    <>
+    {displayAlert()}
       <Paper elevation={0} className={classes.paperCont}
       onMouseEnter={e => {
           setStyleEdit({display: 'block'});
@@ -343,6 +380,7 @@ function WorkExpItem(props) {
           </Grid>
         </Grid>
       </Paper>
+      </>
   );
 }
 

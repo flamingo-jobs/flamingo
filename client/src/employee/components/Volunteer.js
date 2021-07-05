@@ -16,6 +16,7 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import TextField from '@material-ui/core/TextField';
 import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
+import SnackBarAlert from "../../components/SnackBarAlert";
 
 const useStyles = makeStyles({
   defaultButton: {
@@ -71,6 +72,9 @@ function Volunteer() {
   const [open, setOpen] = useState(false);
   const [volunteer, setVolunteer] = useState(null);
   const [state, setState] = useState({title: null, organization: null, from: null, to: null, description: null});
+
+  const [alertShow, setAlertShow] = React.useState(false);
+  const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
   let i=0;
 
   function fetchData(){
@@ -92,7 +96,21 @@ function Volunteer() {
   function deleteData(index){
     volunteer.splice(index,1)
     axios.put(`${BACKEND_URL}/jobseeker/removeVolunteer/60c5f2e555244d11c8012480`,volunteer)
-    .then(res => console.log("aaa"));
+    .then(res => {
+      if(res.data.success){
+        setAlertData({
+          severity: "success",
+          msg: "Volunteering project deleted successfully!",
+        });
+        handleAlert();
+      } else {
+        setAlertData({
+          severity: "error",
+          msg: "Volunteering project could not be deleted!",
+        });
+        handleAlert();
+      }
+    });
     handleClose();
     setFetchedData(1)
   }
@@ -110,6 +128,30 @@ function Volunteer() {
   function handleClose(){
     setOpen(false);
   }
+
+    // Alert stuff
+    const displayAlert = () => {
+      return (
+        <SnackBarAlert
+          open={alertShow}
+          onClose={handleAlertClose}
+          severity={alertData.severity}
+          msg={alertData.msg}
+        />
+      );
+    };
+  
+    const handleAlert = () => {
+      setAlertShow(true);
+    };
+  
+    const handleAlertClose = (event, reason) => {
+      if (reason === "clickaway") {
+        return;
+      }
+      setAlertShow(false);
+    };
+  
 
   //---------------------------- text field onChange events
   function onChangeTitle(e){
@@ -153,7 +195,21 @@ function Volunteer() {
     }
 
     axios.put(`${BACKEND_URL}/jobseeker/addVolunteering/60c5f2e555244d11c8012480`,newVolunteering)
-    .then(res => console.log(newVolunteering));
+    .then(res => {
+      if(res.data.success){
+        setAlertData({
+          severity: "success",
+          msg: "Volunteering project added successfully!",
+        });
+        handleAlert();
+      } else {
+        setAlertData({
+          severity: "error",
+          msg: "Volunteering project could not be added!",
+        });
+        handleAlert();
+      }
+    });
     setFetchedData(1);
     handleClose();
   }
@@ -173,6 +229,8 @@ function Volunteer() {
   }
 
   return (
+    <>
+    {displayAlert()}
     <FloatCard>
       <Grid container spacing={3}>
         <Grid item xs style={{ textAlign: 'left',}}>
@@ -283,6 +341,7 @@ function Volunteer() {
             </Grid>
         </Grid>
     </FloatCard>
+    </>
   );
 }
 
