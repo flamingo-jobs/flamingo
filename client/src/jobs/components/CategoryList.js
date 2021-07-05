@@ -103,7 +103,7 @@ export default function CategoryList(props) {
         // console.log(filters);
         axios.get(`${BACKEND_URL}/categories`).then(res => {
             if (res.data.success) {
-                setCategories(res.data.existingCategories)
+                setCategories(res.data.existingData)
             } else {
                 setCategories(null)
             }

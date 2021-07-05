@@ -27,7 +27,7 @@ const getAll = (req,res) => {
         }
         return res.status(200).json({
             success: true,
-            existingEmployers: employers
+            existingData: employers
         });
     });
 }
@@ -41,7 +41,7 @@ const getFiltered = (req, res) => {
         }
         return res.status(200).json({
             success: true,
-            existingEmployers: employers
+            existingData: employers
         });
     });
 }

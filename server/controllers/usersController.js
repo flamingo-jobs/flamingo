@@ -25,7 +25,7 @@ const users = [{
 }]
         return res.status(200).json({
             success: true,
-            existingUsers: users
+            existingData: users
         });
 
 }

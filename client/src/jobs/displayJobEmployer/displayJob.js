@@ -108,7 +108,7 @@ const DisplayJob = () => {
     try {
       const response = await axios.get(`${BACKEND_URL}/categories`);
       if (response.data.success) {
-        setCategories(response.data.existingCategories);
+        setCategories(response.data.existingData);
       }
     } catch (err) {
       console.error(err);
@@ -119,7 +119,7 @@ const DisplayJob = () => {
     try {
       const response = await axios.get(`${BACKEND_URL}/types`);
       if (response.data.success) {
-        setTypes(response.data.existingTypes);
+        setTypes(response.data.existingData);
       }
     } catch (err) {
       console.error(err);
@@ -141,7 +141,7 @@ const DisplayJob = () => {
     try {
       const response = await axios.get(`${BACKEND_URL}/technologies`);
       if (response.data.success) {
-        setTechnologies(response.data.existingTechnologies);
+        setTechnologies(response.data.existingData);
       }
     } catch (err) {
       console.error(err);

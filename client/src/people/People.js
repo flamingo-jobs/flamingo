@@ -108,7 +108,7 @@ function People() {
         axios.post(`${BACKEND_URL}/jobseekers/filter`, { queryParams: queryParams, options: { skip: start, limit: 10 } }).then(res => {
             
             if (res.data.success) {
-                setPeople(res.data.existingJobSeekers);
+                setPeople(res.data.existingData);
             } else {
                 setPeople(null)
             }

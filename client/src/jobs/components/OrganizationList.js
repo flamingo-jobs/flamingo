@@ -106,7 +106,7 @@ export default function OrganizationList(props) {
     const retrieveOrganizations = () => {
         axios.get(`${BACKEND_URL}/employers`).then(res => {
             if (res.data.success) {
-                setOrganizations(res.data.existingEmployers)
+                setOrganizations(res.data.existingData)
             } else {
                 setOrganizations(null)
             }

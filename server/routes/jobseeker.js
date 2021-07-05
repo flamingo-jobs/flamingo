@@ -11,7 +11,7 @@ router.post('/jobseeker/create', jobseekerController.create);
 router.get('/jobseekers', jobseekerController.getAll);
 router.post('/jobseekers/filter', jobseekerController.getFiltered);
 router.post('/jobseekers/getJobseekerCount', jobseekerController.getCount);
-
+router.post('/jobseekers/delete', jobseekerController.block);
 // get specific
 
 router.get('/jobseeker/:id', jobseekerController.getById);

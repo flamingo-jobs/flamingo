@@ -109,7 +109,7 @@ function Organizations() {
         axios.post(`${BACKEND_URL}/employers/filter`, { queryParams: queryParams, options: { skip: start, limit: 10 } }).then(res => {
             
             if (res.data.success) {
-                setOrganizations(res.data.existingEmployers)
+                setOrganizations(res.data.existingData)
             } else {
                 setOrganizations(null)
             }
