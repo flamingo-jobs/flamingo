@@ -253,7 +253,7 @@ const addUniversity = (req,res) => {
                 })
             }
             return res.status(200).json({
-                sucess: "Updated successfully"
+                success: true
             });
         }
     );
@@ -271,7 +271,7 @@ const addSchool = (req,res) => {
                 })
             }
             return res.status(200).json({
-                sucess: "Updated successfully"
+                success: "Updated successfully"
             });
         }
     );
@@ -289,7 +289,7 @@ const addCourse = (req,res) => {
                 })
             }
             return res.status(200).json({
-                sucess: "Updated successfully"
+                success: "Updated successfully"
             });
         }
     );
@@ -307,7 +307,7 @@ const addAward = (req,res) => {
                 })
             }
             return res.status(200).json({
-                sucess: "Updated successfully"
+                success: "Updated successfully"
             });
         }
     );
@@ -325,7 +325,7 @@ const addVolunteering = (req,res) => {
                 })
             }
             return res.status(200).json({
-                sucess: "Updated successfully"
+                success: "Updated successfully"
             });
         }
     );
@@ -343,7 +343,7 @@ const addProject = (req,res) => {
                 })
             }
             return res.status(200).json({
-                sucess: "Updated successfully"
+                success: "Updated successfully"
             });
         }
     );
@@ -361,7 +361,7 @@ const addWork = (req,res) => {
                 })
             }
             return res.status(200).json({
-                sucess: "Updated successfully"
+                success: "Updated successfully"
             });
         }
     );
