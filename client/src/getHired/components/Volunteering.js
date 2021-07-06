@@ -135,7 +135,6 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "auto",
     [theme.breakpoints.down("xs")]: {
       display: "block",
-      maxWidth: "unset",
       paddingLeft: "0 !important",
       paddingRight: "0 !important",
     },
@@ -167,7 +166,7 @@ export const Volunteering = ({
   return (
     // <div className={classes.background}>
     //   <div className={classes.overlay}>
-    //     <Container maxWidth={false} className={classes.container}>
+    //     <Container className={classes.container}>
     // <Grid
     //   container
     //   direction="row"
@@ -208,7 +207,7 @@ export const Volunteering = ({
     //   >
     //     <Container className={classes.container}>
     //       <FloatCard>
-    <Container maxWidth="false">
+    <Container>
       <Grid
         container
         spacing={4}
@@ -218,79 +217,80 @@ export const Volunteering = ({
         <Grid item xs={12} lg={4}>
           <Grid container alignItems="center" spacing={3}>
             <Grid item xs={12} align="left">
-              <Typography className={classes.title}>
+              <Typography component={"span"} className={classes.title}>
                 <h4>Volunteering Details</h4>
               </Typography>
             </Grid>
             <Grid item xs={12} align="left">
               {volunteer.map((x, i) => {
                 return (
-                  <Grid container alignItems="center" spacing={3} style={{ marginBottom: 20 }}>
-                    <Grid item xs={12} md={9} align="center" >
+                  <Grid
+                    container
+                    alignItems="center"
+                    spacing={3}
+                    style={{ marginBottom: 20 }}
+                    key={i}
+                  >
+                    <Grid item xs={12} md={9} align="center">
                       <Grid container alignItems="center" spacing={2}>
                         <Grid item xs={12} align="center">
-                          <TextField size="small"
+                          <TextField
+                            size="small"
                             className={classes.textField}
                             variant="outlined"
                             fullWidth
                             name="title"
                             label="Title"
                             value={x.title}
-                            onChange={(e) =>
-                              handleVolunteerInputChange(e, i)
-                            }
+                            onChange={(e) => handleVolunteerInputChange(e, i)}
                           />
                         </Grid>
                         <Grid item xs={12} align="center">
-                          <TextField size="small"
+                          <TextField
+                            size="small"
                             className={classes.textField}
                             variant="outlined"
                             fullWidth
                             name="organization"
                             label="Description"
                             value={x.organization}
-                            onChange={(e) =>
-                              handleVolunteerInputChange(e, i)
-                            }
+                            onChange={(e) => handleVolunteerInputChange(e, i)}
                           />
                         </Grid>
                         <Grid item xs={12} md={4} align="center">
-                          <TextField size="small"
+                          <TextField
+                            size="small"
                             className={classes.textField}
                             variant="outlined"
                             fullWidth
                             name="from"
                             label="From"
                             value={x.from}
-                            onChange={(e) =>
-                              handleVolunteerInputChange(e, i)
-                            }
+                            onChange={(e) => handleVolunteerInputChange(e, i)}
                           />
                         </Grid>
                         <Grid item xs={12} md={4} align="center">
-                          <TextField size="small"
+                          <TextField
+                            size="small"
                             className={classes.textField}
                             variant="outlined"
                             fullWidth
                             name="to"
                             label="To"
                             value={x.to}
-                            onChange={(e) =>
-                              handleVolunteerInputChange(e, i)
-                            }
+                            onChange={(e) => handleVolunteerInputChange(e, i)}
                           />
                         </Grid>
                         <Grid item xs={12} md={12} align="center">
-                          <TextField size="small"
+                          <TextField
+                            size="small"
                             className={classes.textField}
                             variant="outlined"
                             fullWidth
                             name="description"
                             label="Description"
                             value={x.description}
-                            onChange={(e) =>
-                              handleVolunteerInputChange(e, i)
-                            }
+                            onChange={(e) => handleVolunteerInputChange(e, i)}
                           />
                         </Grid>
                       </Grid>
@@ -325,66 +325,68 @@ export const Volunteering = ({
         <Grid item xs={12} lg={4}>
           <Grid container alignItems="center" spacing={3}>
             <Grid item xs={12} align="left">
-              <Typography className={classes.title}>
+              <Typography component={"span"} className={classes.title}>
                 <h4>Award Details</h4>
               </Typography>
             </Grid>
             <Grid item xs={12} align="left">
               {award.map((x, i) => {
                 return (
-                  <Grid container alignItems="center" spacing={3} style={{ marginBottom: 20 }}>
-                    <Grid item xs={12} md={9} align="center" >
+                  <Grid
+                    container
+                    alignItems="center"
+                    spacing={3}
+                    style={{ marginBottom: 20 }}
+                    key={i}
+                  >
+                    <Grid item xs={12} md={9} align="center">
                       <Grid container alignItems="center" spacing={2}>
                         <Grid item xs={12} align="center">
-                          <TextField size="small"
+                          <TextField
+                            size="small"
                             className={classes.textField}
                             variant="outlined"
                             fullWidth
                             name="title"
                             label="Award Title"
                             value={x.title}
-                            onChange={(e) =>
-                              handleAwardInputChange(e, i)
-                            }
+                            onChange={(e) => handleAwardInputChange(e, i)}
                           />
                         </Grid>
                         <Grid item xs={12} align="center">
-                          <TextField size="small"
+                          <TextField
+                            size="small"
                             className={classes.textField}
                             variant="outlined"
                             fullWidth
                             name="issuedBy"
                             label="Issued By"
                             value={x.issuedBy}
-                            onChange={(e) =>
-                              handleAwardInputChange(e, i)
-                            }
+                            onChange={(e) => handleAwardInputChange(e, i)}
                           />
                         </Grid>
                         <Grid item xs={12} md={8} align="center">
-                          <TextField size="small"
+                          <TextField
+                            size="small"
                             className={classes.textField}
                             variant="outlined"
                             fullWidth
                             name="date"
                             label="Date (mm/yyyy)"
                             value={x.date}
-                            onChange={(e) =>
-                              handleAwardInputChange(e, i)
-                            }
+                            onChange={(e) => handleAwardInputChange(e, i)}
                           />
                         </Grid>
                         <Grid item xs={12} md={12} align="center">
-                          <TextField size="small"
+                          <TextField
+                            size="small"
                             className={classes.textField}
                             variant="outlined"
                             fullWidth
                             name="description"
                             label="Description"
                             value={x.description}
-                            onChange={(e) =>
-                              handleAwardInputChange(e, i)
-                            }
+                            onChange={(e) => handleAwardInputChange(e, i)}
                           />
                         </Grid>
                       </Grid>
@@ -420,27 +422,32 @@ export const Volunteering = ({
         <Grid item xs={12} lg={4}>
           <Grid container alignItems="center" spacing={3}>
             <Grid item xs={12} align="left">
-              <Typography className={classes.title}>
+              <Typography component={'span'} className={classes.title}>
                 <h4>Achievement Details</h4>
               </Typography>
             </Grid>
             <Grid item xs={12} align="left">
               {achievement.map((x, i) => {
                 return (
-                  <Grid container alignItems="center" spacing={3} style={{ marginBottom: 20 }}>
-                    <Grid item xs={12} md={9} align="center" >
+                  <Grid
+                    container
+                    alignItems="center"
+                    spacing={3}
+                    style={{ marginBottom: 20 }}
+                    key={i}
+                  >
+                    <Grid item xs={12} md={9} align="center">
                       <Grid container alignItems="center" spacing={2}>
                         <Grid item xs={12} align="center">
-                          <TextField size="small"
+                          <TextField
+                            size="small"
                             className={classes.textField}
                             variant="outlined"
                             fullWidth
                             name="title"
                             label="Title"
                             value={x.title}
-                            onChange={(e) =>
-                              handleAchievementInputChange(e, i)
-                            }
+                            onChange={(e) => handleAchievementInputChange(e, i)}
                           />
                         </Grid>
                         <Grid item xs={12} align="center">
@@ -448,7 +455,8 @@ export const Volunteering = ({
                             options={university}
                             getOptionLabel={(option) => option.university}
                             renderInput={(params) => (
-                              <TextField size="small"
+                              <TextField
+                                size="small"
                                 {...params}
                                 name="relatedTo"
                                 label="Related To"
@@ -462,16 +470,15 @@ export const Volunteering = ({
                           />
                         </Grid>
                         <Grid item xs={12} md={6} align="center">
-                          <TextField size="small"
+                          <TextField
+                            size="small"
                             className={classes.textField}
                             variant="outlined"
                             fullWidth
                             name="date"
                             label="Date"
                             value={x.date}
-                            onChange={(e) =>
-                              handleAchievementInputChange(e, i)
-                            }
+                            onChange={(e) => handleAchievementInputChange(e, i)}
                           />
                         </Grid>
                       </Grid>
@@ -479,9 +486,7 @@ export const Volunteering = ({
                     <Grid item xs={12} md={3} align="left">
                       {achievement.length !== 1 && (
                         <IconButton
-                          onClick={() =>
-                            handleAchievementRemoveClick(i)
-                          }
+                          onClick={() => handleAchievementRemoveClick(i)}
                           color="secondary"
                           aria-label="Add new achievement"
                         >
@@ -546,9 +551,7 @@ export const Volunteering = ({
                         </Grid>
                       </Grid>
                     </Container> */}
-
       </Grid>
-
-    </Container >
+    </Container>
   );
 };

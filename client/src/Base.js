@@ -10,7 +10,6 @@ import Profile from "./employee/components/Profile";
 import "./App.css";
 import { Route } from "react-router-dom";
 import Jobs from "./jobs/Jobs";
-import Employer from "./employer/Employer";
 import JobDescription from "./jobDescription/jobDescription";
 import Categories from "./admin/Categories";
 import CreateJobForm from "./jobs/createJob/createJobForm";
@@ -121,7 +120,7 @@ function Base() {
   }
 
   const loadJobSeeker = () => {
-    if (role == "jobseeker") {
+    if (role === "jobseeker") {
       return (
         <>
           <Route path="/jobseeker">
@@ -133,7 +132,7 @@ function Base() {
   }
 
   const loadEmployer = () => {
-    if (role == "employer") {
+    if (role === "employer") {
       return (
         <>
           <Route path="/createJob">
@@ -145,7 +144,7 @@ function Base() {
   }
 
   const loadAdmin = () => {
-    if (role == "admin") {
+    if (role === "admin") {
       return (
         <>
           <Route path="/admin/categories">

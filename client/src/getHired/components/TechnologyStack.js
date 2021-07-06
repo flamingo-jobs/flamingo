@@ -166,8 +166,15 @@ export const TechnologyStack = ({
     //send data to database
   };
 
+  const props = {
+    tech,
+    handleTechInputChange,
+    handleTechAddClick,
+    handleTechRemoveClick,
+  };
+
   return (
-    <Container maxWidth="false">
+    <Container>
       <Grid
         container
         spacing={4}
@@ -177,18 +184,19 @@ export const TechnologyStack = ({
         <Grid item xs={12}>
           <Grid container alignItems="center" spacing={3}>
             <Grid item xs={12} align="left">
-              <Technologies />
+              {console.log(tech)}
+              <Technologies {...props} />
             </Grid>
           </Grid>
         </Grid>
       </Grid>
     </Container>
-  )
-}
+  );
+};
 //   return (
 //     // <div className={classes.background}>
 //     //   <div className={classes.overlay}>
-//     //     <Container maxWidth={false} className={classes.container}>
+//     //     <Container  className={classes.container}>
 //     //       <Grid
 //     //         container
 //     //         direction="row"

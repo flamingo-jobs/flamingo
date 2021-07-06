@@ -133,7 +133,6 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "auto",
     [theme.breakpoints.down("xs")]: {
       display: "block",
-      maxWidth: "unset",
       paddingLeft: "0 !important",
       paddingRight: "0 !important",
     },
@@ -164,7 +163,7 @@ export const Education = ({
   return (
     // <div className={classes.background}>
     //   <div className={classes.overlay}>
-    //     <Container maxWidth={false} className={classes.container}>
+    //     <Container className={classes.container}>
     //       <Grid
     //         container
     //         direction="row"
@@ -205,7 +204,7 @@ export const Education = ({
     //         >
     // <Container className={classes.container}>
     //   <FloatCard>
-    <Container maxWidth="false">
+    <Container>
       <Grid
         container
         spacing={4}
@@ -215,14 +214,14 @@ export const Education = ({
         <Grid item xs={12} md={6}>
           <Grid container alignItems="center" spacing={3}>
             <Grid item xs={12} align="left">
-              <Typography className={classes.title}>
+              <Typography component={'span'} className={classes.title}>
                 <h4>Unversity Details</h4>
               </Typography>
             </Grid>
             <Grid item xs={12} align="left">
               {university.map((x, i) => {
                 return (
-                  <Grid container alignItems="center" spacing={3} style={{ marginBottom: 20 }}>
+                  <Grid container alignItems="center" spacing={3} style={{ marginBottom: 20 }} key={i}>
                     <Grid item xs={12} md={9} align="center" >
                       <Grid container alignItems="center" spacing={2}>
                         <Grid item xs={12} md={8} align="center">
@@ -311,14 +310,14 @@ export const Education = ({
         <Grid item xs={12} lg={6}>
           <Grid container alignItems="center" spacing={3}>
             <Grid item xs={12} align="left">
-              <Typography className={classes.title}>
+              <Typography component={'span'} className={classes.title}>
                 <h4>Course Details</h4>
               </Typography>
             </Grid>
             <Grid item xs={12} align="left">
               {course.map((x, i) => {
                 return (
-                  <Grid container alignItems="center" spacing={3} style={{ marginBottom: 20 }}>
+                  <Grid container alignItems="center" spacing={3} style={{ marginBottom: 20 }} key={i}>
                     <Grid item xs={12} md={9} align="center" >
                       <Grid container alignItems="center" spacing={2}>
                         <Grid item xs={12} align="center">

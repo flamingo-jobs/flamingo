@@ -1,3 +1,6 @@
+const uuid = require("uuid").v4;
+const sendEmail = require("../utils/sendEmail");
+
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { createJWT } = require("../utils/auth");
@@ -70,7 +73,13 @@ exports.signup = (req, res, next) => {
             user
               .save()
               .then((response) => {
-                let access_token = createJWT( response._id, user.username, user.email, user.role, 3600);
+                let access_token = createJWT(
+                  response._id,
+                  user.username,
+                  user.email,
+                  user.role,
+                  3600
+                );
                 res.status(200).json({
                   success: true,
                   token: access_token,
@@ -131,7 +140,13 @@ exports.signin = (req, res) => {
             }
 
             // Create an access token
-            let access_token = createJWT( user._id, user.username, user.email, user.role, 3600);
+            let access_token = createJWT(
+              user._id,
+              user.username,
+              user.email,
+              user.role,
+              3600
+            );
             jwt.verify(
               access_token,
               process.env.TOKEN_SECRET,
@@ -156,4 +171,27 @@ exports.signin = (req, res) => {
     .catch((err) => {
       res.status(500).json({ errors: err });
     });
+};
+
+exports.forgotPassword = async (req, res) => {
+  const email = req.params;
+  const passwordResetCode = uuid();
+  const result = User.updateOne(email, { $set: { passwordResetCode } });
+  if (result.nModified > 0) {
+    try {
+      await sendEmail({
+        to: email,
+        from: "flamingojobs.help@gmail.com",
+        subject: "password reset",
+        text: `
+      To reset your password, click this link:
+      http://localhost:3000/reset-password/${passwordResetCode}
+      `,
+      });
+    } catch (e) {
+      console.log(e);
+      res.sendStatus(500);
+    }
+  }
+  res.sendStatus(200);
 };
