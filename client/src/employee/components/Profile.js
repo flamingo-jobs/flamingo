@@ -9,6 +9,7 @@ import Achievements from './Awards';
 import Space from './Space';
 import WorkExperience from './WorkExperience';
 import Volunteer from './Volunteer';
+import Course from './Course';
 import TechnologySection from './TechnologySection';
 
 const useStyles = makeStyles((theme) => ({
@@ -38,6 +39,8 @@ function Profile() {
                 <IntroSection />
                 <Space />
                 <EducationSection />
+                <Space />
+                <Course />
                 <Space />
                 <Achievements />
                 <Space />
