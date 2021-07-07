@@ -14,9 +14,6 @@ const jobseekerSchema = new mongoose.Schema({
   intro: {
     type: String,
   },
-  tagLine: {
-    type: String,
-  },
   address: {
     type: Object,
   },
@@ -27,9 +24,6 @@ const jobseekerSchema = new mongoose.Schema({
     type: Array,
   },
   school: {
-    type: Array,
-  },
-  course: {
     type: Array,
   },
   course: {
