@@ -229,10 +229,14 @@ const updateProject = (req,res) => {
 }
 
 const updateResumeDetails =  async (req, res) => {
+    const resumeDetails = {
+        applicationDetails: req.body
+    };
+
     try{
         const updatedPost = await Jobseeker.findByIdAndUpdate(
             req.params.id,
-            {$set: req.body}
+            {$set: resumeDetails}
         );
         res.status(200).json({ success: true});
     } catch(err){

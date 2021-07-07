@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const jobseekerController = require('../controllers/jobseekerController');
 
+// Validations
+const {applyFormValidations, applyFormValidationResults} = require("../validations/applyForm");
+
 // create jobseeker
 
 router.post('/jobseeker/create', jobseekerController.create);
@@ -26,7 +29,7 @@ router.put('/jobseeker/updateVolunteer/:id', jobseekerController.updateVolunteer
 router.put('/jobseeker/updateAward/:id', jobseekerController.updateAward);
 router.put('/jobseeker/updateWork/:id', jobseekerController.updateWork);
 router.put('/jobseeker/updateProject/:id', jobseekerController.updateProject);
-router.patch('/jobseeker/updateResumeDetails/:id', jobseekerController.updateResumeDetails);
+router.patch('/jobseeker/updateResumeDetails/:id', applyFormValidations, applyFormValidationResults, jobseekerController.updateResumeDetails);
 
 // add new fields
 router.put('/jobseeker/addUniversity/:id', jobseekerController.addUniversity);

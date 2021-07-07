@@ -13,7 +13,6 @@ import FloatCard from "../../components/FloatCard";
 import BACKEND_URL from "../../Config";
 import axios from "axios";
 import DescriptionIcon from "@material-ui/icons/Description";
-import CloseIcon from '@material-ui/icons/Close';
 import SnackBarAlert from "../../components/SnackBarAlert";
 
 const useStyles = makeStyles((theme) => ({
@@ -69,15 +68,14 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: "2px",
     color: theme.palette.stateBlue,
     marginRight: "7px",
-
   },
-  removeBtn:{
+  removeBtn: {
     padding: "0px",
-    "&:hover":{
+    "&:hover": {
       background: theme.palette.white,
-    }
+    },
   },
-  removeIcon:{
+  removeIcon: {
     height: "18px",
     color: theme.palette.stateBlue,
   },
@@ -115,7 +113,7 @@ const ApplyForm = (props) => {
   };
   const handleFileRemove = () => {
     setFileData("empty");
-  }
+  };
 
   // Error related stuff
   const displayAlert = () => {
@@ -167,34 +165,33 @@ const ApplyForm = (props) => {
       "." + fileData.name.split(".")[fileData.name.split(".").length - 1];
 
     const resumeDetails = {
-      applicationDetails: {
-        name: name,
-        email: email,
-        phoneNumber: phoneNumber,
-        resumeName: userId + resumeExt,
-      },
+      name: name,
+      email: email,
+      phoneNumber: phoneNumber,
+      resumeName: userId + resumeExt,
     };
 
     try {
-      const resumeResponse = await axios.post(`${BACKEND_URL}/resume`, data);
+    const resumeResponse = await axios.post(`${BACKEND_URL}/resume`, data);
 
       const resumeDetailsResponse = await axios.patch(
         `${BACKEND_URL}/jobseeker/updateResumeDetails/${userId}`,
         resumeDetails
       );
 
-      if (resumeResponse.data.success && resumeDetailsResponse.data.success) {
+      if (resumeDetailsResponse.data.success && resumeResponse.data.success) {
         // console.log("Resume uploaded");
         setAlertData({
           severity: "success",
           msg: "Application sent!",
         });
         handleAlert();
+
       } else {
         // console.log("Resume wasn't uploaded");
         setAlertData({
           severity: "error",
-          msg: "Something went wrong!",
+          msg: resumeDetailsResponse.data.error,
         });
         handleAlert();
       }
@@ -220,6 +217,7 @@ const ApplyForm = (props) => {
             <TextField
               required
               id="name"
+              name="name"
               label="Name with initials"
               variant="outlined"
               fullWidth
@@ -229,6 +227,7 @@ const ApplyForm = (props) => {
             <TextField
               required
               id="email"
+              name="email"
               label="Email"
               variant="outlined"
               fullWidth
@@ -238,6 +237,7 @@ const ApplyForm = (props) => {
             <TextField
               required
               id="phonenumber"
+              name="phoneNumber"
               label="Phone number"
               variant="outlined"
               fullWidth
