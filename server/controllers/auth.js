@@ -1,6 +1,5 @@
 const uuid = require("uuid").v4;
-const sendEmail = require("../utils/sendEmail");
-
+const sendEmail = require("../utils/sendEmail").sendEmail;
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { createJWT } = require("../utils/auth");
@@ -176,22 +175,27 @@ exports.signin = (req, res) => {
 exports.forgotPassword = async (req, res) => {
   const email = req.params;
   const passwordResetCode = uuid();
-  const result = User.updateOne(email, { $set: { passwordResetCode } });
+  const result = await User.updateOne(email, { $set: { passwordResetCode } });
   if (result.nModified > 0) {
     try {
       await sendEmail({
         to: email,
         from: "flamingojobs.help@gmail.com",
-        subject: "password reset",
+        subject: "Password Reset - Flamingo",
         text: `
-      To reset your password, click this link:
+      Hi, We're sending you this email because you requested
+      a password reset. Click on this link to create a new password:
       http://localhost:3000/reset-password/${passwordResetCode}
+      If you didn't request a password reset, you can
+      ignore this email. Your password will not be changed.
       `,
       });
     } catch (e) {
       console.log(e);
       res.sendStatus(500);
     }
+  } else {
+    res.sendStatus(502);
   }
   res.sendStatus(200);
 };
