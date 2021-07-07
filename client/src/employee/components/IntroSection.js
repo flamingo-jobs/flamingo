@@ -93,7 +93,7 @@ const useStyles = makeStyles((theme) => ({
     padding: '5% 15% 5% 15%'
   },
   field: {
-    margin: "20px 0px 20px 0px",
+    margin: "10px 0px 20px 0px",
     display: "flex",
     fontSize: "16px",
     "& label": {
@@ -113,9 +113,19 @@ function IntroSection() {
 
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [state, setState] = useState({name:'bbb', intro:'ccc'});
-  const name = state.name;
-  const intro = state.intro;
+  const [state, setState] = useState({
+    firstName: "",
+    lastName: "",
+    gender: "",
+    tagline: "",
+    intro: "",
+    street: "",
+    city: "",
+    zipCode: "",
+    mobile: "",
+    landLine: "",
+    email: ""
+  });
 
 
   useEffect(()=>{
@@ -123,8 +133,16 @@ function IntroSection() {
     .then(res => {
       if(res.data.success){
         setState({
-          name: res.data.jobseeker.name,
-          intro: res.data.jobseeker.intro
+          firstName: res.data.jobseeker.firstName,
+          lastName: res.data.jobseeker.lastName,
+          tagline: res.data.jobseeker.lagline,
+          intro: res.data.jobseeker.intro,
+          street: res.data.jobseeker.address.street,
+          city: res.data.jobseeker.address.city,
+          zipCode: res.data.jobseeker.address.zipCode,
+          mobile: res.data.jobseeker.contact.mobile,
+          landLine: res.data.jobseeker.contact.phone,
+          email: res.data.jobseeker.contact.email
         })
       }
     })
@@ -138,9 +156,15 @@ function IntroSection() {
     setOpen(false);
   }
 
-  function onChangeName(e){
+  function onChangeFirstName(e){
     setState(prevState => {
-      return {...prevState, name: e.target.value}
+      return {...prevState, firstName: e.target.value}
+    })
+  }
+
+  function onChangeLastName(e){
+    setState(prevState => {
+      return {...prevState, lastName: e.target.value}
     })
   }
 
@@ -150,11 +174,59 @@ function IntroSection() {
     })
   }
 
+  function onChangeMobile(e){
+    setState(prevState => {
+      return {...prevState, mobile: e.target.value}
+    })
+  }
+
+  function onChangeLandLine(e){
+    setState(prevState => {
+      return {...prevState, landLine: e.target.value}
+    })
+  }
+
+  function onChangeEmail(e){
+    setState(prevState => {
+      return {...prevState, email: e.target.value}
+    })
+  }
+
+  function onChangeStreet(e){
+    setState(prevState => {
+      return {...prevState, street: e.target.value}
+    })
+  }
+
+  function onChangeCity(e){
+    setState(prevState => {
+      return {...prevState, city: e.target.value}
+    })
+  }
+
+  function onChangeZipCode(e){
+    setState(prevState => {
+      return {...prevState, zipCode: e.target.value}
+    })
+  }
+
   function onSubmit(e){
     e.preventDefault();
     const jobseeker = {
-      name: name,
-      intro: intro
+      name: state.firstName+" "+state.lastName,
+      gender: state.gender,
+      tagline: state.tagline,
+      intro: state.intro,
+      address: {
+        street: state.street,
+        city: state.city,
+        zipCode: state.zipcode,
+      },
+      contact: {
+        email: state.email,
+        phone: state.landLine,
+        mobile: state.mobile,
+      },
     }
 
     axios.put(`${BACKEND_URL}/jobseeker/update/60c5f2e555244d11c8012480`,jobseeker)
@@ -187,7 +259,7 @@ function IntroSection() {
                 <Grid container xs={12} direction="row">
                   <Grid item xs={10}>
                     <Typography gutterBottom variant="h5" style={{textAlign:'center',paddingLeft:'50px',color:theme.palette.stateBlue}}>
-                      Add Education
+                      Edit Profile
                     </Typography>
                     <Divider variant="middle" style={{marginLeft:'100px'}} />
                   </Grid>
@@ -199,15 +271,28 @@ function IntroSection() {
                 </Grid>
               </div>
               <form className={classes.form} onSubmit={onSubmit}>
-                  <TextField
+                  <Grid container direction="row" style={{marginTop:'-18px'}}>
+                    <TextField
                     className={classes.field}
                     id="outlined-basic"
-                    label="Name"
-                    value= {name}
+                    label="First Name"
                     variant="outlined"
                     size="small"
-                    onChange= {onChangeName}
-                  />
+                    value={state.firstName}
+                    onChange={onChangeFirstName}
+                    style={{width:'45%',marginRight:'10%'}}
+                    />
+                    <TextField
+                    className={classes.field}
+                    id="outlined-basic"
+                    label="Last Name"
+                    variant="outlined"
+                    size="small"
+                    value={state.lastName}
+                    onChange={onChangeLastName}
+                    style={{width:'45%'}}
+                    />
+                  </Grid>
                   <TextField
                     className={classes.field}
                     id="outlined-multiline-static"
@@ -215,9 +300,76 @@ function IntroSection() {
                     multiline
                     rows={5}
                     variant="outlined"
-                    value= {intro}
+                    value= {state.intro}
                     onChange= {onChangeIntro}
                   />
+                  <Grid container direction="row" style={{marginTop:'35px'}}>
+                  <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'18px',fontStyle:'italic',width:'100%',marginBottom:'10px'}}>
+                    Contact Details
+                  </Typography>
+                    <TextField
+                    className={classes.field}
+                    id="outlined-basic"
+                    label="Mobile"
+                    variant="outlined"
+                    size="small"
+                    value={state.mobile}
+                    onChange={onChangeMobile}
+                    style={{width:'45%',marginRight:'10%'}}
+                    />
+                    <TextField
+                    className={classes.field}
+                    id="outlined-basic"
+                    label="Land Line"
+                    variant="outlined"
+                    size="small"
+                    value={state.landLine}
+                    onChange={onChangeLandLine}
+                    style={{width:'45%'}}
+                    />
+                  </Grid>
+                  <TextField
+                    className={classes.field}
+                    id="outlined-basic"
+                    label="Email"
+                    type="text"
+                    variant="outlined"
+                    size="small"
+                    value={state.email}
+                    onChange={onChangeEmail}
+                  />
+                  <Grid container direction="row">
+                    <TextField
+                    className={classes.field}
+                    id="outlined-basic"
+                    label="Street Name"
+                    variant="outlined"
+                    size="small"
+                    value={state.street}
+                    onChange={onChangeStreet}
+                    style={{width:'45%',marginRight:'10%'}}
+                    />
+                    <TextField
+                    className={classes.field}
+                    id="outlined-basic"
+                    label="City"
+                    variant="outlined"
+                    size="small"
+                    value={state.city}
+                    onChange={onChangeCity}
+                    style={{width:'45%'}}
+                    />
+                  </Grid>
+                  <TextField
+                    className={classes.field}
+                    id="outlined-basic"
+                    label="Zip Code"
+                    variant="outlined"
+                    size="small"
+                    value={state.zipCode}
+                    onChange={onChangeZipCode}
+                    style={{width:'35%'}}
+                    />
                   <Button type="submit" style={{ width:'100%',marginTop:'5%',backgroundColor:theme.palette.stateBlue,color:'white'}}>Apply Changes</Button>
               </form>
             </div>
@@ -233,10 +385,10 @@ function IntroSection() {
         </Typography>
           <CardContent>
             <Typography gutterBottom variant="h5" style={{color: theme.palette.stateBlue,fontWeight:'bold'}}>
-              {name}
+              {state.firstName+" "+state.lastName}
             </Typography>
             <Typography gutterBottom style={{color: theme.palette.stateBlue,marginTop:'-5px'}}>
-              Undergraduate at UCSC
+              {state.tagline}
             </Typography>
             <Grid container>
           <Grid item xs style={{ textAlign: 'left',margin:"0px 0px 0px 0px" }}>
@@ -244,7 +396,7 @@ function IntroSection() {
               <IconButton>
                 <PhoneIcon style={{color: '#666',}} />
               </IconButton>
-              +94719736858
+              {state.mobile}
             </Typography>
           </Grid>
           <Grid item style={{ textAlign: 'right' }}>
@@ -252,13 +404,13 @@ function IntroSection() {
               <IconButton>
                 <LocationOnIcon style={{color: '#666',}} />
               </IconButton>
-              Kalutara District, Sri Lanka
+              {state.street+", "+state.city}
             </Typography>
           </Grid>
         </Grid>
         <Paper elevation={0} className={classes.paperCont}>
             <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',}}>
-              {intro}
+              {state.intro}
             </Typography>
         </Paper>
         </CardContent>
