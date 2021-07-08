@@ -126,9 +126,9 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: "left",
     backgroundColor: theme.palette.tagYellow,
   },
-  location:{
-    backgroundColor:theme.palette.tagYellow,
-  }
+  location: {
+    backgroundColor: theme.palette.tagYellow,
+  },
 }));
 
 export default function CustomizedTables() {

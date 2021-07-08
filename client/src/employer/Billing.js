@@ -1,63 +1,60 @@
-import React from 'react';
+import React from "react";
 // import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { CssBaseline, Container, ThemeProvider, makeStyles,useTheme } from '@material-ui/core'
-import Grid from '@material-ui/core/Grid';
-import CompanyInfo from './components/CompanyInfo'
-import TechStack from './components/TechStack'
-import FeaturedJobs from './components/FeaturedJobs'
-import Reviews from './components/Reviews'
-
+import {
+  CssBaseline,
+  Container,
+  ThemeProvider,
+  makeStyles,
+  useTheme,
+} from "@material-ui/core";
+import Grid from "@material-ui/core/Grid";
+import BillingPackageCard from "./components/BillingPackageCard";
+import FloatCard from "./components/FloatCard";
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        backgroundSize: 'cover',
-        minHeight: '100vh'
-        
+  root: {
+    backgroundSize: "cover",
+    // minHeight: "100vh",
+    marginLeft: 10, 
+    marginRight: 10, 
+  },
+  container: {
+    paddingTop: 20,
+    [theme.breakpoints.down("xs")]: {
+      paddingTop: 0,
     },
-    container: {
-        paddingTop: 20,
-        [theme.breakpoints.down('xs')]: {
-            paddingTop: 0,
-        },
+  },
+  FeaturedOrganizations: {
+    paddingTop: 25,
+  },
+  topBarGrid: {
+    [theme.breakpoints.down("xs")]: {
+      display: "block",
+      maxWidth: "unset",
     },
-    FeaturedOrganizations: {
-        paddingTop: 25
+  },
+  sideDrawerGrid: {
+    [theme.breakpoints.down("xs")]: {
+      display: "none",
     },
-    topBarGrid: {
-        [theme.breakpoints.down('xs')]: {
-            display: 'block',
-            maxWidth: 'unset'
-        },
-    },
-    sideDrawerGrid: {
-        [theme.breakpoints.down('xs')]: {
-            display: 'none'
-        },
-    }
+  },
 }));
 
-const Employer = () => {
-    const classes = useStyles();
+const Billing = () => {
+  const classes = useStyles();
 
-    return (
+  return (
+    <div className={classes.root}>
+      <FloatCard>
+        {/* <Grid container xs={12} direction="row" spacing={1}>
+          <Grid item xs={12}> */}
+            <BillingPackageCard></BillingPackageCard>
+          {/* </Grid>
+        </Grid> */}
+      </FloatCard>
 
-        <Grid container xs={12} spacing={3} direction="row" justify="space-between" alignItems="flex-start">
+    </div>
+  );
+};
 
-            <Grid  item containerxs={7} sm={7} spacing={3}>
-                <CompanyInfo></CompanyInfo>
-                <br></br>
-                <FeaturedJobs></FeaturedJobs> 
-            </Grid>
-
-            <Grid item xs={5} sm={5} spacing={3}>
-               <TechStack></TechStack>
-               <br></br>
-               <Reviews></Reviews>  
-            </Grid> 
-
-        </Grid>
-    )
-}
-
-export default Employer
-
+export default Billing;
