@@ -8,6 +8,7 @@ import {
   useTheme,
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
+import JobTable from "./components/JobTable";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,6 +35,9 @@ const useStyles = makeStyles((theme) => ({
       display: "none",
     },
   },
+  Table:{
+      marginLeft: 2,
+  }
 }));
 
 const EmployerJobList = () => {
@@ -44,10 +48,18 @@ const EmployerJobList = () => {
       container
       xs={12}
       spacing={3}
-      direction="row"
+      direction="column"
       justify="space-between"
       alignItems="flex-start"
-    ></Grid>
+    >
+      <Grid item container xs={12} spacing={3} className={classes.Table}>
+        <JobTable />
+      </Grid>
+
+      <Grid item xs={12} spacing={3}>
+    
+      </Grid>
+    </Grid>
   );
 };
 
