@@ -122,6 +122,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   mainGrid: {
+    minHeight: "100vh",
     [theme.breakpoints.down("xs")]: {
       justifyContent: "center",
     },
@@ -161,9 +162,6 @@ const useStyles = makeStyles((theme) => ({
     "& :focus": {
       backgroundColor: "transparent",
     },
-  },
-  mainGrid: {
-    minHeight: "100vh",
   },
   footer: {
     marginBottom: 10,
@@ -205,12 +203,6 @@ export const Experience = ({
   };
 
   return (
-    // <div className={classes.background}>
-    //   <div className={classes.overlay}>
-    //     <Container className={classes.container}>
-    // <Grid container spacing={3} justify="center" alignItems="center" >
-    //   <Grid item xs={12} align="center">
-    //     <FloatCard>
     <Container>
       <Grid
         container
@@ -221,7 +213,7 @@ export const Experience = ({
         <Grid item xs={12} lg={6}>
           <Grid container alignItems="center" spacing={3}>
             <Grid item xs={12} align="left">
-              <Typography component={'span'} className={classes.title}>
+              <Typography component={"span"} className={classes.title}>
                 <h4>Working Experience</h4>
               </Typography>
             </Grid>
@@ -371,7 +363,7 @@ export const Experience = ({
         <Grid item xs={12} lg={6}>
           <Grid container alignItems="center" spacing={3}>
             <Grid item xs={12} align="left">
-              <Typography component={'span'} className={classes.title}>
+              <Typography component={"span"} className={classes.title}>
                 <h4>Project Details</h4>
               </Typography>
             </Grid>

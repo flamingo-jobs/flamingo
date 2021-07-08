@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
@@ -10,7 +10,6 @@ import Typography from "@material-ui/core/Typography";
 import { Container, Grid } from "@material-ui/core";
 import FloatCard from "../components/FloatCard";
 import backgroundImage from "./images/background.jfif";
-import { useStep } from "react-hooks-helper";
 import { Experience } from "./components/Experience";
 import { Education } from "./components/Education";
 import { Volunteering } from "./components/Volunteering";
@@ -55,7 +54,8 @@ const useStyles = makeStyles((theme) => ({
   mainTitle: {
     fontSize: 36,
     fontWeight: 500,
-    marginTop: 20,
+    marginTop: 40,
+    marginLeft: 20,
   },
   next: {
     boxShadow: "none",
@@ -79,6 +79,10 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: "none",
     },
   },
+  skip: {
+    marginTop: 50,
+    marginRight: 20,
+  },
   label: {
     textAlign: "left",
     fontWeight: 600,
@@ -100,30 +104,17 @@ function getSteps() {
   return ["Experience", "Education", "Volunteering", "Technology Stack"];
 }
 
-function retrieveTechnoliges() {
-  axios.get(`${BACKEND_URL}/technologies`).then((res) => {
-    if (res.data.success) {
-      return res.data.existingData.map((technology) => {
-        return { name: technology.name, list: [], frontend: [], backend: [] };
-      });
-    } else {
-      return [];
-    }
-  });
-}
-
 export default function ProfileSetup() {
-  const [technologies, setTechnologies] = useState([]);
-  useEffect(() => {
-    console.log(retrieveTechnoliges());
-  }, []);
-
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    if (activeStep === steps.length - 1) {
+      //Send data
+    } else {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
   };
 
   const handleBack = () => {
@@ -354,19 +345,8 @@ export default function ProfileSetup() {
   };
 
   const [tech, setTech] = useState([]);
-  const handleTechInputChange = (e, index, tag) => {
-    //const { name, value } = e.target;
-    const list = [...tech];
-    list[index][tag] = e;
-    setTech(list);
-  };
-  const handleTechRemoveClick = (index) => {
-    const list = [...tech];
-    list.splice(index, 1);
-    setTech(list);
-  };
   const handleTechAddClick = (techName) => {
-    setTech([...tech, techName]);
+    setTech(techName);
   };
 
   const props = {
@@ -409,9 +389,7 @@ export default function ProfileSetup() {
     handleVolunteerAddClick,
     handleVolunteerRemoveClick,
     tech,
-    handleTechInputChange,
     handleTechAddClick,
-    handleTechRemoveClick,
   };
 
   const getStepContent = (step) => {
@@ -431,7 +409,6 @@ export default function ProfileSetup() {
 
   return (
     <div className={classes.root}>
-      {console.log(technologies)}
       <div className={classes.background}>
         <div className={classes.overlay}>
           <Container className={classes.container}>
@@ -453,10 +430,17 @@ export default function ProfileSetup() {
                       alignItems="stretch"
                       className={classes.gridCont}
                     >
-                      <Grid item xs={12} align="left">
-                        <Typography className={classes.mainTitle}>
-                          Continue setting up you profile...
-                        </Typography>
+                      <Grid container direction="row">
+                        <Grid item xs={6} align="left">
+                          <Typography className={classes.mainTitle}>
+                            Continue setting up your profile...
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={6} align="right">
+                          <Button className={classes.skip}>
+                            Skip and do this later
+                          </Button>
+                        </Grid>
                       </Grid>
                       <Stepper
                         activeStep={activeStep}
@@ -485,7 +469,7 @@ export default function ProfileSetup() {
                                         (window.location = "/jobs")
                                       }
                                     >
-                                      Skip setting up profile
+                                      Cancel
                                     </Button>
                                   ) : (
                                     <Button
