@@ -8,8 +8,6 @@ import {
   useTheme,
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
-import ProfileStatCard from "./components/ProfileStatCard";
-import FeaturedJobs from "./components/FeaturedJobs";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Dashboard = () => {
+const EmployerJobList = () => {
   const classes = useStyles();
 
   return (
@@ -49,17 +47,8 @@ const Dashboard = () => {
       direction="row"
       justify="space-between"
       alignItems="flex-start"
-    >
-      <Grid item containerxs={7} sm={7} spacing={3}>
-        <FeaturedJobs />
-      </Grid>
-
-      <Grid item xs={5} sm={5} spacing={3}>
-        <ProfileStatCard />
-        <br></br>
-      </Grid>
-    </Grid>
+    ></Grid>
   );
 };
 
-export default Dashboard;
+export default EmployerJobList;

@@ -16,6 +16,7 @@ import CreateJobForm from "./jobs/createJob/createJobForm";
 import People from './people/People';
 import Employer from './employer/Employer';
 import EmployerDashboard from './employer/Dashboard';
+import EmployerJobList from './employer/EmployerJobList';
 import Technologies from './admin/Technologies';
 import { Switch } from "react-router-dom";
 import Organizations from "./employer/Organizations";
@@ -144,7 +145,7 @@ function Base() {
             <EmployerDashboard/>
           </Route>
           <Route path="/employer/jobs">
-            jobs
+            <EmployerJobList/>
           </Route>
           <Route path="/employer/company">
             <Employer />
