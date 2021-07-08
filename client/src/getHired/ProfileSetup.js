@@ -160,6 +160,13 @@ export default function ProfileSetup() {
             });
             handleAlert();
           }
+        })
+        .catch((e) => {
+          setAlertData({
+            severity: "error",
+            msg: "Failed to update details! No worries. You can alwasy update/ change these details in your profile page",
+          });
+          handleAlert();
         });
     } else {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -489,7 +496,12 @@ export default function ProfileSetup() {
                           </Typography>
                         </Grid>
                         <Grid item xs={6} align="right">
-                          <Button className={classes.skip}>
+                          <Button
+                            onClick={() => {
+                              window.location = "/";
+                            }}
+                            className={classes.skip}
+                          >
                             Skip and do this later
                           </Button>
                         </Grid>
