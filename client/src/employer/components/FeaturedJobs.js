@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
         paddingLeft: 20,
         paddingRight: 20,
         "&:hover": {
-            backgroundColor: theme.palette.blueJeans,
+            backgroundColor: theme.palette.tuftsBlueHover,
             color: 'white',
         },
         [theme.breakpoints.down('md')]: {
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
         paddingRight: 20,
         "&:hover": {
             backgroundColor: theme.palette.white,
-            color: theme.palette.pinkyRed,
+            color: theme.palette.tuftsBlueHover,
         }
     },
 }))

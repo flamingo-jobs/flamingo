@@ -1,33 +1,38 @@
 import SignInSide from "./signIn/components/SignInSide.js";
-import GetHired from "./getHired/GetHired.js";
+import { ForgotPassword } from "./signIn/components/ForgotPassword.js";
+import GetHired from "./getHired/GetHired";
 import StartHiring from "./startHiring/StartHiring.js";
 import "./App.css";
 import { ThemeProvider } from "@material-ui/styles";
 import theme from "./Theme";
 import { Route, BrowserRouter } from "react-router-dom";
 import Base from "./Base";
-import Users from "./Users";
-import BACKEND_URL from "./Config.js";
+import ScrollToTop from "./components/ScrollToTop.js";
+import ProfileSetup from "./getHired/ProfileSetup";
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
+        <ScrollToTop />
         <ThemeProvider theme={theme}>
-          <Route path="(/|/jobs|/employer|/employee|/jobDescription)" exact>
+          <Route path="(/|/jobs|/employer|/jobseeker|/jobDescription|/createJob|/admin|/organizations|/people|/job)">
             <Base />
           </Route>
-          <Route path="/signIn" exact>
+          <Route path="/signIn">
             <SignInSide />
           </Route>
-          <Route path="/getHired" exact>
+          <Route path="/forgot">
+            <ForgotPassword />
+          </Route>
+          <Route path="/getHired">
             <GetHired />
           </Route>
-          <Route path="/startHiring" exact>
-            <StartHiring />
+          <Route path="/setupProfile">
+            <ProfileSetup />
           </Route>
-          <Route path="/users" exact>
-            <Users />
+          <Route path="/startHiring">
+            <StartHiring />
           </Route>
         </ThemeProvider>
       </BrowserRouter>

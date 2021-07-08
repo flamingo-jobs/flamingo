@@ -1,26 +1,19 @@
 const Jobs = require('../models/jobs');
 
 
-const create = (req, res) => {
-    let newJob = new Jobs(req.body);
-
-    newJob.save((err) => {
-        if (err) {
-            return res.status(400).json({
-                error: err
-            });
-        }
-        return res.status(200).json({
-            success: "Job saved successfully"
-        });
-
-    });
+const create = async (req, res) => {
+    const newJob = new Jobs(req.body);
+    try{
+        const savedPost = await newJob.save();
+        res.status(200).json({success: true});
+    }catch(err){
+        res.status(400).json({error: err});
+    }
 
 }
 
 const getAll = (req, res) => {
-    console.log(req.body);
-    Jobs.find(req.body).exec((err, jobs) => {
+    Jobs.find(req.body.queryParams, null, req.body.options).exec((err, jobs) => {
         if (err) {
             return res.status(400).json({
                 error: err
@@ -28,7 +21,7 @@ const getAll = (req, res) => {
         }
         return res.status(200).json({
             success: true,
-            existingJobs: jobs
+            existingData: jobs
         });
     });
 }
@@ -47,18 +40,46 @@ const getById = (req, res) => {
     });
 }
 
+const getJobCount = (req, res) => {
+    Jobs.countDocuments(req.body).exec((err, jobCount) => {
+        if (err) {
+            return res.status(400).json({
+                error: err
+            })
+        }
+        return res.status(200).json({
+            success: true,
+            jobCount: jobCount
+        });
+    });
+}
+
+const getJobsFromEmployer = (req, res) => {
+    Jobs.find({ 'organization.id' : req.params.id }, null, { limit: 3 }, (err, moreFromJobs) => {
+        if (err) {
+            return res.status(400).json({
+                error: err
+            })
+        }
+        return res.status(200).json({
+            success: true,
+            moreFromJobs: moreFromJobs
+        });
+    });
+}
+
 const getFeaturedJobs = (req, res) => {
     Jobs.find({ isFeatured: true }, null, { limit: 3 }, (err, featuredJobs) => {
-            if (err) {
-                return res.status(400).json({
-                    error: err
-                })
-            }
-            return res.status(200).json({
-                success: true,
-                featuredJobs: featuredJobs
-            });
+        if (err) {
+            return res.status(400).json({
+                error: err
+            })
+        }
+        return res.status(200).json({
+            success: true,
+            featuredJobs: featuredJobs
         });
+    });
 }
 
 
@@ -102,6 +123,8 @@ module.exports = {
     getById,
     update,
     remove,
-    getFeaturedJobs
+    getFeaturedJobs,
+    getJobCount,
+    getJobsFromEmployer
 
 }

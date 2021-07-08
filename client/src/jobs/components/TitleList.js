@@ -46,8 +46,12 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.tuftsBlue,
     },
     checkBox: {
-        color: theme.palette.pinkyRed,
-        fill: theme.palette.pinkyRed
+        color: theme.palette.tuftsBlue,
+        fill: theme.palette.tuftsBlue,
+        '&:checked': {
+            color: theme.palette.blueJeans,
+            fill: theme.palette.tuftsBlue,
+        }
     },
     itemCheckBox: {
         minWidth: 'auto'
@@ -56,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function TitileList(props) {
     const classes = useStyles();
-    const [openTitles, setOpenTitles] = useState(true);
+    const [openTitles, setOpenTitles] = useState(false);
 
     const handleTitleClick = () => {
         setOpenTitles(!openTitles);

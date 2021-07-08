@@ -13,7 +13,7 @@ function Users() {
     const retrieveUsers = () => {
         axios.get(`${BACKEND_URL}/users`).then(res => {
             if (res.data.success) {
-                setUsers(res.data.existingUsers)
+                setUsers(res.data.existingData)
             }
         })
     }

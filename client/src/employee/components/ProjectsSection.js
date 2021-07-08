@@ -23,13 +23,14 @@ import CloseIcon from '@material-ui/icons/Close';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import TextField from '@material-ui/core/TextField';
+import SnackBarAlert from "../../components/SnackBarAlert";
 
 const useStyles = makeStyles({
   defaultButton: {
     backgroundColor: theme.palette.stateBlue,
     color: theme.palette.white,
     "&:hover": {
-      backgroundColor: '#0088cc',
+      backgroundColor: theme.palette.stateBlueHover,
       color: 'white',
     }
   },
@@ -43,7 +44,7 @@ const useStyles = makeStyles({
     backgroundColor: theme.palette.secondary.main,
   },
   paperCont: {
-    backgroundColor: 'Snow',
+    backgroundColor: 'MintCream',
     paddingLeft: 10,
     paddingRight: 10,
     marginBottom: 25,
@@ -96,18 +97,58 @@ const useStyles = makeStyles({
 
 function ProjectsSection() {
   const classes = useStyles();
+  const [fetchedData, setFetchedData] = useState('');
   const [open, setOpen] = useState(false);
   const [project, setProject] = useState(null);
   const [state, setState] = useState({name: null, link: null, description: null, from: null, to: null, usedTech: null});
 
-  useEffect(()=>{
+  const [alertShow, setAlertShow] = React.useState(false);
+  const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
+  let i=0;
+
+  function fetchData(){
     axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
     .then(res => {
       if(res.data.success){
+        if(res.data.jobseeker.project.length > 0){
+          if(Object.keys(res.data.jobseeker.project[0]).length === 0){
+            res.data.jobseeker.project.splice(0,1)
+            i++;
+          }
+        }       
         setProject(res.data.jobseeker.project)
       }
     })
-  },[])
+    setFetchedData(0)
+  }
+
+  function deleteData(index){
+    project.splice(index,1)
+    axios.put(`${BACKEND_URL}/jobseeker/removeProject/60c5f2e555244d11c8012480`,project)
+    .then(res => {
+      if(res.data.success){
+        setAlertData({
+          severity: "success",
+          msg: "Project deleted successfully!",
+        });
+        handleAlert();
+      } else {
+        setAlertData({
+          severity: "error",
+          msg: "Project could not be deleted!",
+        });
+        handleAlert();
+      }
+    });
+    handleClose();
+    setFetchedData(1)
+  }
+
+  useEffect(()=>{
+    setState({name: null, link: null, description: null, from: null, to: null, usedTech: null});
+    setProject(null);
+    fetchData();
+  },[fetchedData])
 
   function handleOpen(){
     setOpen(true);
@@ -116,6 +157,30 @@ function ProjectsSection() {
   function handleClose(){
     setOpen(false);
   }
+  
+  // Alert stuff
+  const displayAlert = () => {
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
+
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertShow(false);
+  };
+
 
   //---------------------------- text field onChange events
   function onChangeName(e){
@@ -166,7 +231,22 @@ function ProjectsSection() {
     }
 
     axios.put(`${BACKEND_URL}/jobseeker/addProject/60c5f2e555244d11c8012480`,newProject)
-    .then(res => console.log(newProject));
+    .then(res => {
+      if(res.data.success){
+        setAlertData({
+          severity: "success",
+          msg: "Project added successfully!",
+        });
+        handleAlert();
+      } else {
+        setAlertData({
+          severity: "error",
+          msg: "Project could not be added!",
+        });
+        handleAlert();
+      }
+    });
+    setFetchedData(1);
     handleClose();
   }
   
@@ -174,7 +254,7 @@ function ProjectsSection() {
     if (project) {
       if (project.length > 0) {
       return project.map(pro => (
-            <ProjectItem name={pro.name} link={pro.link} description={pro.description} from={pro.from} to={pro.to} usedTech={pro.usedTech} />
+            <ProjectItem index={i++} name={pro.name} link={pro.link} description={pro.description} from={pro.from} to={pro.to} usedTech={pro.usedTech} parentFunction={deleteData} />
             ))
       }else{
         return (<Typography variant="body2" color="textSecondary" component="p">Project details not added.</Typography>)
@@ -186,6 +266,8 @@ function ProjectsSection() {
 
 
   return (
+    <>
+    {displayAlert()}
     <FloatCard>
       <Grid container spacing={3}>
         <Grid item xs style={{ textAlign: 'left',}}>
@@ -209,6 +291,7 @@ function ProjectsSection() {
           className={classes.modal}
           open={open}
           onClose={handleClose}
+          onChange={fetchData}
           closeAfterTransition
           BackdropComponent={Backdrop}
           BackdropProps={{
@@ -311,6 +394,7 @@ function ProjectsSection() {
         </Paper>
       </Grid>
     </FloatCard>
+    </>
   );
 }
 

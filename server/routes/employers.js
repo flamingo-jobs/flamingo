@@ -14,6 +14,10 @@ router.get('/employers', employersController.getAll);
 
 router.get('/employers/featuredEmployers', employersController.getFeaturedEmployers);
 
+router.post('/employers/getEmployerCount', employersController.getEmployerCount);
+
+router.post('/employers/filter', employersController.getFiltered);
+
 // get specific
 
 router.get('/employers/:id', employersController.getById);
@@ -23,7 +27,6 @@ router.get('/employers/:id', employersController.getById);
 router.put('/employers/update/:id', employersController.update);
 
 // delete employer
-
-router.delete('/employers/delete/:id', employersController.remove);
+router.post('/employer/delete', employersController.remove);
 
 module.exports = router;

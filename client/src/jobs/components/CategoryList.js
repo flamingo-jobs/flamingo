@@ -11,6 +11,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import { Avatar, Checkbox, ListItemSecondaryAction, Typography } from '@material-ui/core';
 import BACKEND_URL from '../../Config';
 import axios from 'axios';
+import theme from '../../Theme';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -47,17 +48,19 @@ const useStyles = makeStyles((theme) => ({
     },
     itemCheckBox: {
         minWidth: 'auto'
+    },
+    listHeader: {
+        borderRadius: 8
     }
 }));
 
 export default function CategoryList(props) {
     const classes = useStyles();
-    const [openCategories, setOpenCategories] = React.useState(true);
+    const [openCategories, setOpenCategories] = React.useState(false);
     const [categories, setCategories] = useState([]);
 
     const handleCategoryClick = () => {
         setOpenCategories(!openCategories);
-
     };
 
 
@@ -82,10 +85,7 @@ export default function CategoryList(props) {
         } else {
             newChecked.splice(currentIndex, 1);
         }
-
         setChecked(newChecked);
-
-
     };
 
     const passFilters = () => {
@@ -96,8 +96,6 @@ export default function CategoryList(props) {
             checked.map((value) => values.push(value.name));
             props.onChange({ $in: values });
         }
-
-
     }
 
 
@@ -105,7 +103,7 @@ export default function CategoryList(props) {
         // console.log(filters);
         axios.get(`${BACKEND_URL}/categories`).then(res => {
             if (res.data.success) {
-                setCategories(res.data.existingCategories)
+                setCategories(res.data.existingData)
             } else {
                 setCategories(null)
             }
@@ -128,6 +126,9 @@ export default function CategoryList(props) {
                                 disableRipple
                                 inputProps={{ 'aria-labelledby': labelId }}
                                 className={classes.checkBox}
+                                style ={{
+                                    color: theme.palette.vividSkyBlue,
+                                  }}
                             />
                         </ListItemIcon>
                         <ListItemText id={labelId} primary={category.name} />
@@ -152,7 +153,7 @@ export default function CategoryList(props) {
                 component="nav"
                 className={classes.root}
             >
-                <ListItem button onClick={handleCategoryClick}>
+                <ListItem button onClick={handleCategoryClick} className={classes.listHeader}>
                     <ListItemText primary={<Typography className={classes.listTitle} >Category</Typography>}></ListItemText>
                     {openCategories ? <ExpandLess className={classes.listDown} /> : <ExpandMore className={classes.listDown} />}
                 </ListItem>

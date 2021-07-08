@@ -7,15 +7,12 @@ const employerSchema = new mongoose.Schema({
     },
     logo: {
         type: String,
-        required: true
     },
     description: {
         type: String,
-        required: true
     },
     locations: {
         type: Array,
-        required: true
     },
     openings: {
         type: Number,
@@ -25,8 +22,7 @@ const employerSchema = new mongoose.Schema({
         required: true
     },
     technologyStack: {
-        type: Object,
-        required: true
+        type: Array,
     },
     dateRegistered: {
         type: Date,
@@ -34,15 +30,12 @@ const employerSchema = new mongoose.Schema({
     },
     subscription: {
         type: String,
-        required: true
     },
     scale: {
         type: String,
-        required: true
     },
     isFeatured: {
         type: Boolean,
-        required: true
     },
     links: {
         website: {
@@ -60,6 +53,9 @@ const employerSchema = new mongoose.Schema({
         blog: {
             type: String
         }
+    },
+    categories: {
+        type: Array
     }
 
 });

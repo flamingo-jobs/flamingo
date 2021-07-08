@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -17,6 +17,11 @@ import Lottie from 'react-lottie';
 import Flamingo from './lotties/flamingo.json';
 import FloatCard from './FloatCard';
 import { Link } from 'react-router-dom'
+import { Route, BrowserRouter } from "react-router-dom";
+import OfflineBoltRoundedIcon from '@material-ui/icons/OfflineBoltRounded';
+import CategoryRoundedIcon from '@material-ui/icons/CategoryRounded';
+import CodeRoundedIcon from '@material-ui/icons/CodeRounded';
+import NavMenu from './NavMenu';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -50,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
         "&:hover": {
             borderRadius: 12,
             color: theme.palette.white + '!important',
-            backgroundColor: theme.palette.greenyLightSky + '!important',
+            backgroundColor: theme.palette.lightSkyBlueHover + '!important',
         },
     },
     active: {
@@ -64,15 +69,8 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-export default function MiniDrawer() {
+export default function MiniDrawer(props) {
     const classes = useStyles();
-    const theme = useTheme();
-    const [selectedIndex, setSelectedIndex] = React.useState(1);
-
-    const handleListItemClick = (event, index) => {
-        setSelectedIndex(index);
-    };
-
     const defaultOptions = {
         loop: true,
         autoplay: true,
@@ -81,7 +79,6 @@ export default function MiniDrawer() {
             preserveAspectRatio: "xMidYMid slice"
         }
     };
-
     return (
         <div className={classes.root}>
             <FloatCard>
@@ -89,37 +86,7 @@ export default function MiniDrawer() {
                     <CssBaseline />
                     <Grid container direction="row" spacing={3}>
                         <Grid item xs={12}>
-
-                            <List>
-                                <Link to="/">
-                                    <ListItem button key="Home" selected={selectedIndex === 1} onClick={(event) => handleListItemClick(event, 1)} classes={{ selected: classes.active }} className={classes.listItem}>
-                                        <ListItemIcon className={classes.linkIcon}><HomeRoundedIcon /></ListItemIcon>
-                                        <ListItemText className={classes.linkText} primary="Home" />
-                                    </ListItem>
-                                </Link>
-                                <Link to="/jobs">
-                                    <ListItem button key="Jobs" selected={selectedIndex === 2} onClick={(event) => handleListItemClick(event, 2)} classes={{ selected: classes.active }} className={classes.listItem}>
-                                        <ListItemIcon className={classes.linkIcon}><WorkRoundedIcon /></ListItemIcon>
-                                        <ListItemText className={classes.linkText} primary="Jobs" />
-                                    </ListItem>
-                                </Link>
-                                <ListItem button key="Ogranizations" selected={selectedIndex === 3} onClick={(event) => handleListItemClick(event, 3)} classes={{ selected: classes.active }} className={classes.listItem}>
-                                    <ListItemIcon className={classes.linkIcon}><BusinessRoundedIcon /></ListItemIcon>
-                                    <ListItemText className={classes.linkText} primary="Ogranizations" />
-                                </ListItem>
-                                <ListItem button key="People" selected={selectedIndex === 4} onClick={(event) => handleListItemClick(event, 4)} classes={{ selected: classes.active }} className={classes.listItem}>
-                                    <ListItemIcon className={classes.linkIcon}><PeopleAltRoundedIcon /></ListItemIcon>
-                                    <ListItemText className={classes.linkText} primary="People" />
-                                </ListItem>
-                                <ListItem button key="Services" selected={selectedIndex === 5} onClick={(event) => handleListItemClick(event, 5)} classes={{ selected: classes.active }} className={classes.listItem}>
-                                    <ListItemIcon className={classes.linkIcon}><ThumbsUpDownRoundedIcon /></ListItemIcon>
-                                    <ListItemText className={classes.linkText} primary="Services" />
-                                </ListItem>
-                                <ListItem button key="Contact Us" selected={selectedIndex === 6} onClick={(event) => handleListItemClick(event, 6)} classes={{ selected: classes.active }} className={classes.listItem}>
-                                    <ListItemIcon className={classes.linkIcon}><PhoneRoundedIcon /></ListItemIcon>
-                                    <ListItemText className={classes.linkText} primary="Contact Us" />
-                                </ListItem>
-                            </List>
+                            <NavMenu user={props.user} />
                         </Grid>
                         <Grid item xs={12}>
 

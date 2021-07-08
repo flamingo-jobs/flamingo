@@ -5,8 +5,6 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import FloatCard from '../../components/FloatCard';
 import theme from '../../Theme';
-import EditIcon from '@material-ui/icons/Edit';
-import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
 import Grid from '@material-ui/core/Grid';
 import VolunteerItem from './VolunteerItem';
 import BACKEND_URL from '../../Config';
@@ -18,13 +16,14 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import TextField from '@material-ui/core/TextField';
 import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
+import SnackBarAlert from "../../components/SnackBarAlert";
 
 const useStyles = makeStyles({
   defaultButton: {
     backgroundColor: theme.palette.stateBlue,
     color: theme.palette.white,
     "&:hover": {
-      backgroundColor: '#0088cc',
+      backgroundColor: theme.palette.stateBlueHover,
       color: 'white',
     }
   },
@@ -69,18 +68,58 @@ const useStyles = makeStyles({
 
 function Volunteer() {
   const classes = useStyles();
+  const [fetchedData, setFetchedData] = useState('');
   const [open, setOpen] = useState(false);
   const [volunteer, setVolunteer] = useState(null);
   const [state, setState] = useState({title: null, organization: null, from: null, to: null, description: null});
 
-  useEffect(()=>{
+  const [alertShow, setAlertShow] = React.useState(false);
+  const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
+  let i=0;
+
+  function fetchData(){
     axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
     .then(res => {
       if(res.data.success){
+        if(res.data.jobseeker.volunteer.length > 0){
+          if(Object.keys(res.data.jobseeker.volunteer[0]).length === 0){
+            res.data.jobseeker.volunteer.splice(0,1)
+            i++;
+          }
+        }
         setVolunteer(res.data.jobseeker.volunteer)
       }
     })
-  },[])
+    setFetchedData(0)
+  }
+
+  function deleteData(index){
+    volunteer.splice(index,1)
+    axios.put(`${BACKEND_URL}/jobseeker/removeVolunteer/60c5f2e555244d11c8012480`,volunteer)
+    .then(res => {
+      if(res.data.success){
+        setAlertData({
+          severity: "success",
+          msg: "Volunteering project deleted successfully!",
+        });
+        handleAlert();
+      } else {
+        setAlertData({
+          severity: "error",
+          msg: "Volunteering project could not be deleted!",
+        });
+        handleAlert();
+      }
+    });
+    handleClose();
+    setFetchedData(1)
+  }
+
+  useEffect(()=>{
+    setState({title: null, organization: null, from: null, to: null, description: null});
+    setVolunteer(null);
+    fetchData()
+  },[fetchedData])
 
   function handleOpen(){
     setOpen(true);
@@ -89,6 +128,30 @@ function Volunteer() {
   function handleClose(){
     setOpen(false);
   }
+
+    // Alert stuff
+    const displayAlert = () => {
+      return (
+        <SnackBarAlert
+          open={alertShow}
+          onClose={handleAlertClose}
+          severity={alertData.severity}
+          msg={alertData.msg}
+        />
+      );
+    };
+  
+    const handleAlert = () => {
+      setAlertShow(true);
+    };
+  
+    const handleAlertClose = (event, reason) => {
+      if (reason === "clickaway") {
+        return;
+      }
+      setAlertShow(false);
+    };
+  
 
   //---------------------------- text field onChange events
   function onChangeTitle(e){
@@ -132,7 +195,22 @@ function Volunteer() {
     }
 
     axios.put(`${BACKEND_URL}/jobseeker/addVolunteering/60c5f2e555244d11c8012480`,newVolunteering)
-    .then(res => console.log(newVolunteering));
+    .then(res => {
+      if(res.data.success){
+        setAlertData({
+          severity: "success",
+          msg: "Volunteering project added successfully!",
+        });
+        handleAlert();
+      } else {
+        setAlertData({
+          severity: "error",
+          msg: "Volunteering project could not be added!",
+        });
+        handleAlert();
+      }
+    });
+    setFetchedData(1);
     handleClose();
   }
   
@@ -140,7 +218,7 @@ function Volunteer() {
     if (volunteer) {
       if (volunteer.length > 0) {
       return volunteer.map(vol => (
-            <VolunteerItem title={vol.title} organization={vol.organization} from={vol.from} to={vol.to} description={vol.description} />
+            <VolunteerItem index={i++} title={vol.title} organization={vol.organization} from={vol.from} to={vol.to} description={vol.description} parentFunction={deleteData} />
             ))
       }else{
         return (<Typography variant="body2" color="textSecondary" component="p">Volunteering details not added.</Typography>)
@@ -151,6 +229,8 @@ function Volunteer() {
   }
 
   return (
+    <>
+    {displayAlert()}
     <FloatCard>
       <Grid container spacing={3}>
         <Grid item xs style={{ textAlign: 'left',}}>
@@ -165,7 +245,7 @@ function Volunteer() {
             </Button>
         </Grid>
 
-        {/*-------------- add new edu field popup content ------------------- */}
+        {/*-------------- add new volunteer field popup content ------------------- */}
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
@@ -261,6 +341,7 @@ function Volunteer() {
             </Grid>
         </Grid>
     </FloatCard>
+    </>
   );
 }
 

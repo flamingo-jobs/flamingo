@@ -17,13 +17,14 @@ import AddIcon from '@material-ui/icons/Add';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import TextField from '@material-ui/core/TextField';
+import SnackBarAlert from "../../components/SnackBarAlert";
 
 const useStyles = makeStyles({
   defaultButton: {
     backgroundColor: theme.palette.stateBlue,
     color: theme.palette.white,
     "&:hover": {
-      backgroundColor: '#0088cc',
+      backgroundColor: theme.palette.stateBlueHover,
       color: 'white',
     }
   },
@@ -68,18 +69,58 @@ const useStyles = makeStyles({
 
 function Achievements() {
   const classes = useStyles();
+  const [fetchedData, setFetchedData] = useState('');
   const [open, setOpen] = useState(false);
   const [award, setAward] = useState(null);
   const [state, setState] = useState({title: null, issuedBy: null, date: null, description: null});
 
-  useEffect(()=>{
+  const [alertShow, setAlertShow] = React.useState(false);
+  const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
+  let i=0;
+
+  function fetchData(){
     axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
     .then(res => {
       if(res.data.success){
+        if(res.data.jobseeker.award.length > 0){
+          if(Object.keys(res.data.jobseeker.award[0]).length === 0){
+            res.data.jobseeker.award.splice(0,1)
+            i++;
+          }
+        }
         setAward(res.data.jobseeker.award)
       }
     })
-  },[])
+    setFetchedData(0)
+  }
+
+  function deleteData(index){
+    award.splice(index,1)
+    axios.put(`${BACKEND_URL}/jobseeker/removeAward/60c5f2e555244d11c8012480`,award)
+    .then(res => {
+      if(res.data.success){
+        setAlertData({
+          severity: "success",
+          msg: "Award deleted successfully!",
+        });
+        handleAlert();
+      } else {
+        setAlertData({
+          severity: "error",
+          msg: "Award could not be deleted!",
+        });
+        handleAlert();
+      }
+    });
+    handleClose();
+    setFetchedData(1)
+  }
+
+  useEffect(()=>{
+    setState({title: null, issuedBy: null, date: null, description: null});
+    setAward(null);
+    fetchData();
+  },[fetchedData])
 
   function handleOpen(){
     setOpen(true);
@@ -88,6 +129,30 @@ function Achievements() {
   function handleClose(){
     setOpen(false);
   }
+
+    // Alert stuff
+    const displayAlert = () => {
+      return (
+        <SnackBarAlert
+          open={alertShow}
+          onClose={handleAlertClose}
+          severity={alertData.severity}
+          msg={alertData.msg}
+        />
+      );
+    };
+  
+    const handleAlert = () => {
+      setAlertShow(true);
+    };
+  
+    const handleAlertClose = (event, reason) => {
+      if (reason === "clickaway") {
+        return;
+      }
+      setAlertShow(false);
+    };
+  
 
   //---------------------------- text field onChange events
   function onChangeTitle(e){
@@ -124,15 +189,30 @@ function Achievements() {
     }
 
     axios.put(`${BACKEND_URL}/jobseeker/addAward/60c5f2e555244d11c8012480`,newAward)
-    .then(res => console.log(newAward));
+    .then(res => {
+      if(res.data.success){
+        setAlertData({
+          severity: "success",
+          msg: "Award added successfully!",
+        });
+        handleAlert();
+      } else {
+        setAlertData({
+          severity: "error",
+          msg: "Award could not be added!",
+        });
+        handleAlert();
+      }
+    });
+    setFetchedData(1);
     handleClose();
   }
   
   const displayAwardFields = () => {
     if (award) {
       if (award.length > 0) {
-      return award.map(awd => (
-            <AwardItem title={awd.title} issuedBy={awd.issuedBy} date={awd.date} description={awd.description} />
+        return award.map(awd => (
+            <AwardItem index={i++} title={awd.title} issuedBy={awd.issuedBy} date={awd.date} description={awd.description} parentFunction={deleteData} />
             ))
       }else{
         return (<Typography variant="body2" color="textSecondary" component="p">Award details not added.</Typography>)
@@ -143,6 +223,8 @@ function Achievements() {
   }
 
   return (
+    <>
+    {displayAlert()}
     <FloatCard>
       <Grid container spacing={3}>
         <Grid item xs style={{ textAlign: 'left',}}>
@@ -176,7 +258,7 @@ function Achievements() {
                 <Grid container xs={12} direction="row">
                   <Grid item xs={10}>
                     <Typography gutterBottom variant="h5" style={{textAlign:'center',paddingLeft:'50px',color:theme.palette.stateBlue}}>
-                      Add Education
+                      Add Award
                     </Typography>
                     <Divider variant="middle" style={{marginLeft:'100px'}} />
                   </Grid>
@@ -241,6 +323,7 @@ function Achievements() {
             </Grid>
         </Grid>
     </FloatCard>
+    </>
   );
 }
 

@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
         paddingLeft: 20,
         paddingRight: 20,
         "&:hover": {
-            backgroundColor: theme.palette.blueJeans,
+            backgroundColor: theme.palette.tuftsBlueHover,
             color: 'white',
         },
         [theme.breakpoints.down('md')]: {
@@ -48,21 +48,28 @@ const useStyles = makeStyles((theme) => ({
         paddingRight: 20,
         "&:hover": {
             backgroundColor: theme.palette.white,
-            color: theme.palette.pinkyRed,
+            color: theme.palette.tuftsBlueHover,
         }
     },
+    jobGridCard: {
+        display: "grid"
+    }
 }))
-function FeaturedJobs() {
+function FeaturedJobs(props) {
     const classes = useStyles();
 
     const [featuredJobs, setFeaturedJobs] = useState([]);
 
-        
+
 
     const retrieveFeaturedJobs = () => {
         axios.get(`${BACKEND_URL}/jobs/featuredJobs`).then(res => {
             if (res.data.success) {
-                setFeaturedJobs(res.data.featuredJobs)
+                if (props.skip) {
+                    setFeaturedJobs(res.data.featuredJobs.filter((job) => job._id !== props.skip));
+                } else {
+                    setFeaturedJobs(res.data.featuredJobs);
+                }
             } else {
                 setFeaturedJobs(null)
             }
@@ -71,14 +78,13 @@ function FeaturedJobs() {
 
     useEffect(() => {
         retrieveFeaturedJobs();
-
-    }, [])
+    }, [props.skip])
 
     const displayFeaturedJobs = () => {
         if (featuredJobs) {
 
             return featuredJobs.map(featuredJob => (
-                <Grid item sm={12}>
+                <Grid item sm={12} key={featuredJob._id} className={classes.jobGridCard}>
                     <JobCard info={featuredJob} />
                 </Grid>
             ))
@@ -111,7 +117,7 @@ function FeaturedJobs() {
                             endIcon={<ArrowForwardRoundedIcon />}
                         >
                             See All Featured Jobs
-      </Button>
+                        </Button>
                     </FloatCard>
                 </Grid>
                 <Grid item sm={12}>
@@ -121,7 +127,7 @@ function FeaturedJobs() {
                                 <Typography variant="h6" className={classes.text}>Want to dive into?</Typography>
                             </Grid>
                             <Grid item xs={12} lg={6}>
-                                <Button className={classes.button} endIcon={<ArrowForwardRoundedIcon />}> Browse All Public Jobs </Button>
+                                <Button className={classes.button} endIcon={<ArrowForwardRoundedIcon />}> Browse All Jobs </Button>
                             </Grid>
                         </Grid>
                     </FloatCard>

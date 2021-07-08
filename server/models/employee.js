@@ -9,21 +9,15 @@ const employeeSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  gender: { type: String },
   description: {
     type: String,
-    required: true,
   },
   address: {
-    street: {
-      type: String,
-      required: true,
-    },
-    city: { type: String, required: true },
-    zipCode: { type: String, required: true },
+    type: Object,
   },
   contact: {
-    phone: { type: String, required: true },
-    mobile: { type: String, required: true },
+    type: Object,
   },
   email: {
     type: String,
@@ -35,51 +29,54 @@ const employeeSchema = new mongoose.Schema({
   },
   school: [
     {
-      schoolName: { type: String, required: true },
-      degree: { type: String, required: true },
-      schoolFrom: { type: String, required: true },
-      schoolTo: { type: String, required: true },
+      schoolName: { type: String },
+      degree: { type: String },
+      schoolFrom: { type: String },
+      schoolTo: { type: String },
     },
   ],
   course: [
     {
-      courseName: { type: String, required: true },
-      institute: { type: String, required: true },
+      courseName: { type: String },
+      institute: { type: String },
     },
   ],
   award: [
     {
-      awardTitle: { type: String, required: true },
-      awardDescription: { type: String, required: true },
+      awardTitle: { type: String },
+      awardDescription: { type: String },
     },
   ],
   achievement: [
     {
-      achievementTitle: { type: String, required: true },
-      achievementDescription: { type: String, required: true },
+      achievementTitle: { type: String },
+      achievementDescription: { type: String },
     },
   ],
   work: [
     {
-      workPlace: { type: String, required: true },
-      position: { type: String, required: true },
-      workFrom: { type: String, required: true },
-      workTo: { type: String, required: true },
+      workPlace: { type: String },
+      position: { type: String },
+      workFrom: { type: String },
+      workTo: { type: String },
     },
-  ],project: [
+  ],
+  project: [
     {
-      projectName: { type: String, required: true },
-      projectLink: { type: String, required: true },
+      projectName: { type: String },
+      projectLink: { type: String },
     },
-  ],volunteer: [
+  ],
+  volunteer: [
     {
-      volunteerTitle: { type: String, required: true },
-      volunteerDescription: { type: String, required: true },
+      volunteerTitle: { type: String },
+      volunteerDescription: { type: String },
     },
-  ],technology: [
+  ],
+  technology: [
     {
-      technologyName: { type: String, required: true },
-      rate: { type: Number, required: true },
+      technologyName: { type: String },
+      rate: { type: Number },
     },
   ],
 });

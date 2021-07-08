@@ -15,6 +15,7 @@ import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import Technologies from './Technologies';
 
 const useStyles = makeStyles({
   defaultButton: {
@@ -25,12 +26,12 @@ const useStyles = makeStyles({
     paddingLeft: 20,
     paddingRight: 20,
     "&:hover": {
-      backgroundColor: theme.palette.mediumTurquoise,
+      backgroundColor: theme.palette.tuftsBlueHover,
       color: 'white',
     }
   },
   paper: {
-    backgroundColor: 'Snow',
+    backgroundColor: 'MintCream',
     paddingLeft: 10,
     paddingRight: 10,
     marginBottom: 25,
@@ -59,26 +60,7 @@ function TechnologySection() {
       </Grid>
       <Grid container spacing={3}>
             <Grid item xs={12}>
-                {/* <Paper elevation={0} className={classes.paper}>
-                    <Typography gutterBottom style={{textAlign:'justify',fontSize:'16px',fontWeight:'bold',color:'#666'}}>
-                        Programming Languages
-                    </Typography>
-                </Paper>
-                <Paper elevation={0} className={classes.paper}>
-                    <Typography gutterBottom style={{textAlign:'justify',fontSize:'16px',fontWeight:'bold',color:'#666'}}>
-                        Web Development
-                    </Typography>
-                </Paper>
-                <Paper elevation={0} className={classes.paper}>
-                    <Typography gutterBottom style={{textAlign:'justify',fontSize:'16px',fontWeight:'bold',color:'#666'}}>
-                        Database
-                    </Typography>
-                </Paper>
-                <Paper elevation={0} className={classes.paper}>
-                    <Typography gutterBottom style={{textAlign:'justify',fontSize:'16px',fontWeight:'bold',color:'#666'}}>
-                        Other
-                    </Typography>
-                </Paper> */}
+                <Technologies />
             </Grid>
         </Grid>
     </FloatCard>

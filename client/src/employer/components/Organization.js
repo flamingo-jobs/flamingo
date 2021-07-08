@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.mediumTurquoise,
         color: theme.palette.white,
         "&:hover": {
-            backgroundColor: theme.palette.vividSkyBlue,
+            backgroundColor: theme.palette.mediumTurquoiseHover,
         }
     },
 }))

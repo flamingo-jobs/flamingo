@@ -24,6 +24,6 @@ router.put('/categories/update/:id', categoriesController.update);
 
 // delete category
 
-router.delete('/categories/delete/:id', categoriesController.remove);
+router.post('/categories/delete', categoriesController.remove);
 
 module.exports = router;
