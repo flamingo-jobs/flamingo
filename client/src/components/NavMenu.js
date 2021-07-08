@@ -140,34 +140,37 @@ function NavMenu(props) {
         if (props.user == "employer") {
             return (
                 <>
-                    <Link to="/employer">
+                    <Link to="/employer/home">
                         <ListItem button key="dashboard" selected={selectedIndex === "dashboard"} onClick={(event) => handleListItemClick(event, "dashboard")} classes={{ selected: classes.active }} className={classes.listItem}>
                             <ListItemIcon className={classes.linkIcon}><DashboardRoundedIcon /></ListItemIcon>
                             <ListItemText className={classes.linkText} primary="Dashboard" />
                         </ListItem>
                     </Link>
+                    <Link to="/employer/company">
+                        <ListItem button key="company" selected={selectedIndex === "company"} onClick={(event) => handleListItemClick(event, "company")} classes={{ selected: classes.active }} className={classes.listItem}>
+                            <ListItemIcon className={classes.linkIcon}><WorkRoundedIcon /></ListItemIcon>
+                            <ListItemText className={classes.linkText} primary="Company" />
+                        </ListItem>
+                    </Link>
                     <Link to="/employer/jobs">
                         <ListItem button key="jobs" selected={selectedIndex === "jobs"} onClick={(event) => handleListItemClick(event, "jobs")} classes={{ selected: classes.active }} className={classes.listItem}>
-                            <ListItemIcon className={classes.linkIcon}><WorkRoundedIcon /></ListItemIcon>
+                            <ListItemIcon className={classes.linkIcon}><OfflineBoltRoundedIcon /></ListItemIcon>
                             <ListItemText className={classes.linkText} primary="Jobs" />
                         </ListItem>
                     </Link>
-                    <Link to="/employer/recomendations">
-                        <ListItem button key="recommendations" selected={selectedIndex === "recommendations"} onClick={(event) => handleListItemClick(event, "recommendations")} classes={{ selected: classes.active }} className={classes.listItem}>
-                            <ListItemIcon className={classes.linkIcon}><OfflineBoltRoundedIcon /></ListItemIcon>
-                            <ListItemText className={classes.linkText} primary="Recommendations" />
-                        </ListItem>
-                    </Link>
-                    <Link to="/people">
-                        <ListItem button key="people" selected={selectedIndex === "people"} onClick={(event) => handleListItemClick(event, "people")} classes={{ selected: classes.active }} className={classes.listItem}>
+                    <Link to="/employer/analytics">
+                        <ListItem button key="analytics" selected={selectedIndex === "analytics"} onClick={(event) => handleListItemClick(event, "analytics")} classes={{ selected: classes.active }} className={classes.listItem}>
                             <ListItemIcon className={classes.linkIcon}><PeopleAltRoundedIcon /></ListItemIcon>
-                            <ListItemText className={classes.linkText} primary="People" />
+                            <ListItemText className={classes.linkText} primary="Analytics" />
                         </ListItem>
                     </Link>
-                    <ListItem button key="services" selected={selectedIndex === "services"} onClick={(event) => handleListItemClick(event, "services")} classes={{ selected: classes.active }} className={classes.listItem}>
-                        <ListItemIcon className={classes.linkIcon}><ThumbsUpDownRoundedIcon /></ListItemIcon>
-                        <ListItemText className={classes.linkText} primary="Services" />
-                    </ListItem>
+                    <Link to="/employer/billing">
+                        <ListItem button key="billing" selected={selectedIndex === "billing"} onClick={(event) => handleListItemClick(event, "billing")} classes={{ selected: classes.active }} className={classes.listItem}>
+                            <ListItemIcon className={classes.linkIcon}><PeopleAltRoundedIcon /></ListItemIcon>
+                            <ListItemText className={classes.linkText} primary="Billing" />
+                        </ListItem>
+                    </Link>
+ 
                     <ListItem button key="contactUs" selected={selectedIndex === "contactUs"} onClick={(event) => handleListItemClick(event, "contactUs")} classes={{ selected: classes.active }} className={classes.listItem}>
                         <ListItemIcon className={classes.linkIcon}><PhoneRoundedIcon /></ListItemIcon>
                         <ListItemText className={classes.linkText} primary="Contact Us" />

@@ -113,9 +113,9 @@ function Base() {
         <Route path="/people">
           <People />
         </Route>
-        <Route path="/employer">
+        {/* <Route path="/employer">
           <Employer />
-        </Route>
+        </Route> */}
         <Route path="/" exact>
           <Home />
         </Route>
@@ -139,13 +139,19 @@ function Base() {
     if (role === "employer") {
       return (
         <>
-          <Route path="/createJob">
-            <CreateJobForm />
+          <Route path="/employer/home">
+            dashboard
           </Route>
+          <Route path="/employer/jobs">jobs</Route>
+          <Route path="/employer/company">
+            <Employer />
+          </Route>
+          <Route path="/employer/analytics">Analytics</Route>
+          <Route path="/employer/billing">Billling</Route>
         </>
-      )
+      );
     }
-  }
+  };
 
   const loadAdmin = () => {
     if (role === "admin") {
