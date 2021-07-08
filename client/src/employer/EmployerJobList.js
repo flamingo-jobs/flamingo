@@ -7,8 +7,11 @@ import {
   makeStyles,
   useTheme,
 } from "@material-ui/core";
+import { useHistory } from 'react-router-dom';
 import Grid from "@material-ui/core/Grid";
 import JobTable from "./components/JobTable";
+import Button from '@material-ui/core/Button';
+import AddIcon from '@material-ui/icons/Add';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,11 +40,24 @@ const useStyles = makeStyles((theme) => ({
   },
   Table:{
       marginLeft: 2,
+  },
+  button:{
+      backgroundColor: theme.palette.blueJeans,
+      color: theme.palette.white,
+      marginLeft:12,
+      marginBottom:10,
+      '&:hover': {
+        backgroundColor: theme.palette.blueJeansHover,
+        color: theme.palette.white,
+      }
   }
 }));
 
 const EmployerJobList = () => {
   const classes = useStyles();
+
+  const history = useHistory();
+  const handleClick = () => history.push('../jobs/createJob/createJobForm');
 
   return (
     <Grid
@@ -52,6 +68,16 @@ const EmployerJobList = () => {
       justify="space-between"
       alignItems="flex-start"
     >
+      <Grid item container xs={12} spacing={3}>
+        <Button
+            variant="contained"
+            className={classes.button}
+            startIcon={<AddIcon />}
+            onClick={handleClick}
+        >
+            Add new job 
+        </Button>
+      </Grid>
       <Grid item container xs={12} spacing={3} className={classes.Table}>
         <JobTable />
       </Grid>

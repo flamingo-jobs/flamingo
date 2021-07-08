@@ -52,6 +52,8 @@ const theme = createMuiTheme({
     flamingoHover: '#E49D95',
     gold: '#FFD700',
     goldHover: '#FEE768',
+    green: '#ADFF2F',
+    lightRed: '#ff4c4c',
     red: "#cf1515"
   },
   typography: {
