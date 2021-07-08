@@ -15,6 +15,7 @@ import Categories from "./admin/Categories";
 import CreateJobForm from "./jobs/createJob/createJobForm";
 import People from './people/People';
 import Employer from './employer/Employer';
+import EmployerDashboard from './employer/Dashboard';
 import Technologies from './admin/Technologies';
 import { Switch } from "react-router-dom";
 import Organizations from "./employer/Organizations";
@@ -140,14 +141,20 @@ function Base() {
       return (
         <>
           <Route path="/employer/home">
-            dashboard
+            <EmployerDashboard/>
           </Route>
-          <Route path="/employer/jobs">jobs</Route>
+          <Route path="/employer/jobs">
+            jobs
+          </Route>
           <Route path="/employer/company">
             <Employer />
           </Route>
-          <Route path="/employer/analytics">Analytics</Route>
-          <Route path="/employer/billing">Billling</Route>
+          <Route path="/employer/analytics">
+            Analytics
+          </Route>
+          <Route path="/employer/billing">
+            Billling
+          </Route>
         </>
       );
     }
