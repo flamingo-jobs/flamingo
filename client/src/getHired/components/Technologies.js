@@ -47,6 +47,7 @@ function Technologies({ tech, handleTechAddClick }) {
             <DetailedAccordion
               key={technology._id}
               info={technology}
+              current={tech[techIndex]}
               onChange={handleTech}
             />
           </div>
