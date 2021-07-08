@@ -9,7 +9,11 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Chip from "@material-ui/core/Chip";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import CancelIcon from '@material-ui/icons/Cancel';
+import CancelIcon from "@material-ui/icons/Cancel";
+import Button from "@material-ui/core/Button";
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import LocalOfferRoundedIcon from "@material-ui/icons/LocalOfferRounded";
+import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -29,28 +33,102 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData(title, postedDate, dueDate, isPublished, noOfResumes) {
-  return { title, postedDate, dueDate, isPublished, noOfResumes };
+function createData(
+  title,
+  category,
+  location,
+  postedDate,
+  dueDate,
+  isPublished,
+  noOfResumes
+) {
+  return {
+    title,
+    category,
+    location,
+    postedDate,
+    dueDate,
+    isPublished,
+    noOfResumes,
+  };
 }
 
 const rows = [
-  createData("Sodtware Engineer", "2021-02-03", "2021-08-22", true, 5),
-  createData("Sodtware Engineer", "2021-02-03", "2021-08-22", false, 0),
-  createData("Sodtware Engineer", "2021-02-03", "2021-08-22", true, 2),
-  createData("Sodtware Engineer", "2021-02-03", "2021-08-22", false, 6),
-  createData("Sodtware Engineer", "2021-02-03", "2021-08-22", true, 4),
-  createData("Sodtware Engineer", "2021-02-03", "2021-08-22", true, 3),
+  createData(
+    "Software Engineer",
+    "Development",
+    "Colombo",
+    "2021-02-03",
+    "2021-08-22",
+    true,
+    5
+  ),
+  createData(
+    "Software Engineer",
+    "Development",
+    "Colombo",
+    "2021-02-03",
+    "2021-08-22",
+    false,
+    5
+  ),
+  createData(
+    "Software Engineer",
+    "Development",
+    "Colombo",
+    "2021-02-03",
+    "2021-08-22",
+    true,
+    5
+  ),
+  createData(
+    "Software Engineer",
+    "Development",
+    "Colombo",
+    "2021-02-03",
+    "2021-08-22",
+    false,
+    5
+  ),
+  createData(
+    "Software Engineer",
+    "Development",
+    "Colombo",
+    "2021-02-03",
+    "2021-08-22",
+    true,
+    5
+  ),
+  createData(
+    "Software Engineer",
+    "Development",
+    "Colombo",
+    "2021-02-03",
+    "2021-08-22",
+    true,
+    5
+  ),
 ];
 
 const useStyles = makeStyles((theme) => ({
-    activeChip:{
-        backgroundColor: theme.palette.green,
-        color: theme.palette.black,
-    },
-    inactiveChip:{
-        backgroundColor: theme.palette.lightRed,
-        color: theme.palette.black,
-    }
+  activeChip: {
+    backgroundColor: theme.palette.green,
+    color: theme.palette.black,
+  },
+  inactiveChip: {
+    backgroundColor: theme.palette.lightRed,
+    color: theme.palette.black,
+  },
+  button: {
+    color: theme.palette.blueJeans,
+  },
+  category: {
+    alignSelf: "left",
+    backgroundColor: theme.palette.tagYellow,
+  },
+  location:{
+    backgroundColor:theme.palette.tagYellow,
+  }
 }));
 
 export default function CustomizedTables() {
@@ -64,12 +142,16 @@ export default function CustomizedTables() {
           <col style={{ width: "10%" }} />
           <col style={{ width: "10%" }} />
           <col style={{ width: "10%" }} />
+          <col style={{ width: "10%" }} />
+          <col style={{ width: "10%" }} />
           <col style={{ width: "5%" }} />
-          <col style={{ width: "30%" }} />
+          <col style={{ width: "10%" }} />
         </colgroup>
         <TableHead>
           <TableRow>
             <StyledTableCell align="center">Job Title</StyledTableCell>
+            <StyledTableCell align="center">Category</StyledTableCell>
+            <StyledTableCell align="center">Location</StyledTableCell>
             <StyledTableCell align="center">Posted Date</StyledTableCell>
             <StyledTableCell align="center">Due Date</StyledTableCell>
             <StyledTableCell align="center">Active</StyledTableCell>
@@ -83,17 +165,33 @@ export default function CustomizedTables() {
               <StyledTableCell component="th" scope="row">
                 {row.title}
               </StyledTableCell>
+              <StyledTableCell align="center">
+                <Chip
+                  icon={<LocalOfferRoundedIcon />}
+                  label={row.category}
+                  className={classes.category}
+                />
+              </StyledTableCell>
+
+              <StyledTableCell align="center">
+                <Chip
+                  icon={<LocationOnRoundedIcon />}
+                  label={row.location}
+                  className={classes.location}
+                />
+              </StyledTableCell>
+
               <StyledTableCell align="center">{row.postedDate}</StyledTableCell>
               <StyledTableCell align="center">{row.dueDate}</StyledTableCell>
               <StyledTableCell align="center">
                 {row.isPublished ? (
                   <Chip
-                  icon={<CheckCircleIcon />}
-                  label="Active"
-                  className={classes.activeChip}
-                />
+                    icon={<CheckCircleIcon />}
+                    label="Active"
+                    className={classes.activeChip}
+                  />
                 ) : (
-                    <Chip
+                  <Chip
                     icon={<CancelIcon />}
                     label="Inactive"
                     className={classes.inactiveChip}
@@ -103,7 +201,16 @@ export default function CustomizedTables() {
               <StyledTableCell align="center">
                 {row.noOfResumes}
               </StyledTableCell>
-              <StyledTableCell align="right"></StyledTableCell>
+              <StyledTableCell align="right">
+                <Button
+                  variant="outlined"
+                  size="small"
+                  className={classes.button}
+                  endIcon={<NavigateNextIcon />}
+                >
+                  View
+                </Button>
+              </StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
