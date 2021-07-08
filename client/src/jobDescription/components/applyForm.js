@@ -14,6 +14,7 @@ import BACKEND_URL from "../../Config";
 import axios from "axios";
 import DescriptionIcon from "@material-ui/icons/Description";
 import SnackBarAlert from "../../components/SnackBarAlert";
+import { StateBlueTextField } from "../components/customTextField";
 
 const useStyles = makeStyles((theme) => ({
   applyFormWrapper: {
@@ -81,11 +82,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// const uploadButton = createMuiTheme({
-//   palette: {
-//     primary: "#5E60CE",
-//   },
-// });
+// Validation schema
+// const phoneNumberRegex = /^\d{10}$/;
 
 const ApplyForm = (props) => {
   const classes = useStyles();
@@ -96,8 +94,8 @@ const ApplyForm = (props) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [fileData, setFileData] = useState("empty");
 
-  const [alertShow, setAlertShow] = React.useState(false);
-  const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
+  const [alertShow, setAlertShow] = useState(false);
+  const [alertData, setAlertData] = useState({ severity: "", msg: "" });
 
   const handleNameChange = (e) => {
     setName(e.target.value);
@@ -172,21 +170,21 @@ const ApplyForm = (props) => {
     };
 
     try {
-    const resumeResponse = await axios.post(`${BACKEND_URL}/resume`, data);
-
       const resumeDetailsResponse = await axios.patch(
         `${BACKEND_URL}/jobseeker/updateResumeDetails/${userId}`,
         resumeDetails
       );
 
-      if (resumeDetailsResponse.data.success && resumeResponse.data.success) {
-        // console.log("Resume uploaded");
-        setAlertData({
-          severity: "success",
-          msg: "Application sent!",
-        });
-        handleAlert();
-
+      if (resumeDetailsResponse.data.success) {
+        const resumeResponse = await axios.post(`${BACKEND_URL}/resume`, data);
+        if (resumeResponse.data.success) {
+          // console.log("Resume uploaded");
+          setAlertData({
+            severity: "success",
+            msg: "Application sent!",
+          });
+          handleAlert();
+        }
       } else {
         // console.log("Resume wasn't uploaded");
         setAlertData({
@@ -214,8 +212,7 @@ const ApplyForm = (props) => {
             Apply for this job
           </Typography>
           <form onSubmit={handleFormSubmit} encType="multipart/form-data">
-            <TextField
-              required
+            <StateBlueTextField
               id="name"
               name="name"
               label="Name with initials"
@@ -224,8 +221,8 @@ const ApplyForm = (props) => {
               className={classes.textField}
               onChange={handleNameChange}
             />
-            <TextField
-              required
+
+            <StateBlueTextField
               id="email"
               name="email"
               label="Email"
@@ -234,8 +231,7 @@ const ApplyForm = (props) => {
               className={classes.textField}
               onChange={handleEmailChange}
             />
-            <TextField
-              required
+            <StateBlueTextField
               id="phonenumber"
               name="phoneNumber"
               label="Phone number"
@@ -272,7 +268,12 @@ const ApplyForm = (props) => {
               color="primary"
               className={classes.submitButton}
               type="submit"
-              disabled={name === "" || email === "" || phoneNumber === "" || fileData === "empty"}
+              // disabled={
+              //   name === "" ||
+              //   email === "" ||
+              //   phoneNumber === "" ||
+              //   fileData === "empty"
+              // }
             >
               Submit Application
             </Button>
