@@ -41,10 +41,6 @@ function Reviews() {
                         <ReviewCard></ReviewCard>
                     </Grid>
 
-                    <Grid item sm={12}>
-                        <ReviewCard></ReviewCard>
-                    </Grid>
-
                 </Grid>
 
             </FloatCard>
