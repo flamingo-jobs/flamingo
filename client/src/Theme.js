@@ -53,6 +53,7 @@ const theme = createMuiTheme({
     gold: '#FFD700',
     goldHover: '#FEE768',
     green: '#ADFF2F',
+    darkGreen: '#32CD32',
     lightRed: '#ff4c4c',
     red: "#cf1515"
   },

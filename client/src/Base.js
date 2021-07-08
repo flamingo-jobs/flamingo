@@ -15,6 +15,7 @@ import Categories from "./admin/Categories";
 import CreateJobForm from "./jobs/createJob/createJobForm";
 import People from './people/People';
 import Employer from './employer/Employer';
+import EmployerBilling from './employer/Billing';
 import EmployerDashboard from './employer/Dashboard';
 import EmployerJobList from './employer/EmployerJobList';
 import Technologies from './admin/Technologies';
@@ -154,7 +155,7 @@ function Base() {
             Analytics
           </Route>
           <Route path="/employer/billing">
-            Billling
+            <EmployerBilling/>
           </Route>
         </>
       );
