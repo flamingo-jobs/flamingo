@@ -3,16 +3,14 @@ import { useForm } from "react-hooks-helper";
 import {
   Button,
   TextField,
-  Box,
   Grid,
   Typography,
   Container,
   IconButton,
-  Snackbar,
 } from "@material-ui/core";
-import MuiAlert from "@material-ui/lab/Alert";
+import SnackBarAlert from "../components/SnackBarAlert";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import FloatCard from "./../components/FloatCard";
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
@@ -20,10 +18,11 @@ import backgroundImage from "./images/background.jfif";
 import axios from "axios";
 import BACKEND_URL from "../Config";
 import { Avatar, Badge } from "@material-ui/core";
-import AddRoundedIcon from "@material-ui/icons/AddRounded";
 import AddCircleRoundedIcon from "@material-ui/icons/AddCircleRounded";
 import RemoveCircleRoundedIcon from "@material-ui/icons/RemoveCircleRounded";
 import { Link } from "react-router-dom";
+
+const jwt = require("jsonwebtoken");
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -167,6 +166,29 @@ const useStyles = makeStyles((theme) => ({
 export default function StartHiring() {
   const classes = useStyles();
 
+  // Alert stuff
+  const [alertShow, setAlertShow] = useState(false);
+  const [alertData, setAlertData] = useState({ severity: "", msg: "" });
+  const displayAlert = () => {
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertShow(false);
+  };
+
   // Form data register
   const defaultData = {
     name: "",
@@ -192,17 +214,27 @@ export default function StartHiring() {
       axios.post(`${BACKEND_URL}/api/signup`, signupData).then((res) => {
         if (res.data.success) {
           sessionStorage.setItem("userToken", res.data.token);
-          sendData();
+          const userId = jwt.decode(res.data.token, { complete: true }).payload
+            .userId;
+          sendData(userId);
         } else {
+          setAlertData({
+            severity: "error",
+            msg: "User account creation failed!",
+          });
           handleAlert();
         }
       });
     } else {
+      setAlertData({
+        severity: "error",
+        msg: "Please check whether your passwords are matching!",
+      });
       handleAlert();
     }
   };
 
-  const sendData = () => {
+  const sendData = (userId) => {
     handleUploads();
     const employerData = {
       name: formData.name,
@@ -215,9 +247,29 @@ export default function StartHiring() {
     };
     axios.post(`${BACKEND_URL}/employers/create`, employerData).then((res) => {
       if (res.data.success) {
+        handleSuccessLogin(userId, res.data.existingData);
+      } else {
+        setAlertData({
+          severity: "error",
+          msg: "Employer account creation failed!",
+        });
+        handleAlert();
+      }
+    });
+  };
+
+  const handleSuccessLogin = (id, loginId) => {
+    const linker = { id: id, loginId: loginId };
+    axios.post(`${BACKEND_URL}/api/link-account`, linker).then((res) => {
+      if (res.data.success) {
+        sessionStorage.setItem("loginId", loginId);
         window.location = "/";
       } else {
-        console.log("Failed!");
+        setAlertData({
+          severity: "error",
+          msg: "Account linking failed!",
+        });
+        handleAlert();
       }
     });
   };
@@ -280,14 +332,6 @@ export default function StartHiring() {
   };
 
   // Autocomplete arrays
-  const techStack = [
-    { title: "Web Development" },
-    { title: "Desktop" },
-    { title: "Database" },
-    { title: "Mobile" },
-    { title: "DevOps" },
-    { title: "Other" },
-  ];
   const socialMediaPlatforms = [
     { title: "Website" },
     { title: "Facebook" },
@@ -298,24 +342,10 @@ export default function StartHiring() {
     { title: "Other" },
   ];
 
-  // Alert Handler
-  const [open, setOpen] = useState(false);
-  const handleAlert = () => {
-    setOpen(true);
-  };
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpen(false);
-  };
-  function Alert(props) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-  }
-
   return (
     <div className={classes.background}>
       <div className={classes.overlay}>
+        {displayAlert()}
         <Container className={classes.container}>
           <Grid
             container
@@ -328,7 +358,6 @@ export default function StartHiring() {
               <FloatCard>
                 <Container>
                   <form className={classes.form} onSubmit={createAccount}>
-                    {/* Basic details */}
                     <Grid
                       container
                       spacing={4}
@@ -343,6 +372,7 @@ export default function StartHiring() {
 
                       <Grid item xs={12} md={5} lg={4}>
                         <Grid container alignItems="center" spacing={3}>
+                          {/* Basic Details */}
                           <Grid item xs={12} align="left">
                             <Typography className={classes.title}>
                               Company Logo
@@ -521,10 +551,10 @@ export default function StartHiring() {
                           })}
                         </Grid>
                       </Grid>
-                      {/* Social Media Links */}
 
                       <Grid item xs={12} md={6} lg={5}>
                         <Grid container alignItems="center" spacing={3}>
+                          {/* Social Media Links */}
                           <Grid item xs={12} align="left">
                             <Typography className={classes.title}>
                               Media Links
@@ -597,6 +627,7 @@ export default function StartHiring() {
                             );
                           })}
 
+                          {/* Login Credentials */}
                           <Grid item xs={11} align="left">
                             <Typography className={classes.title}>
                               Login Credentials
@@ -645,6 +676,8 @@ export default function StartHiring() {
                           </Grid>
                         </Grid>
                       </Grid>
+
+                      {/* Submit Buttons */}
                       <Grid item xs={12}>
                         <Grid
                           item
@@ -699,43 +732,8 @@ export default function StartHiring() {
               </FloatCard>
             </Grid>
           </Grid>
-          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-            <Alert onClose={handleClose} severity="error">
-              Signup Failed! Please check whether your passwords are matching.
-            </Alert>
-          </Snackbar>
         </Container>
       </div>
     </div>
   );
-}
-
-{
-  /* Technology Stack 
-              <Container maxWidth="lg" className={classes.jobDetailsContainer}>
-                <Typography className={classes.title}>
-                  Technology Stack Details
-                </Typography>
-                <Grid container alignItems="center" spacing={2}>
-                  <Grid item xs={12} md={12} align="left">
-                    <Autocomplete
-                      multiple
-                      id="tags-outlined"
-                      options={techStack}
-                      getOptionLabel={(option) => option.title}
-                      filterSelectedOptions
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          className={classes.textField}
-                          variant="outlined"
-                          label="Technology Stack"
-                          placeholder="Used Technologies"
-                        />
-                      )}
-                    />
-                  </Grid>
-                </Grid>
-              </Container>
-              */
 }

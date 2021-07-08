@@ -79,6 +79,11 @@ exports.signup = (req, res, next) => {
                   user.role,
                   3600
                 );
+
+                /*
+                  // Send verification email
+                */
+
                 res.status(200).json({
                   success: true,
                   token: access_token,
@@ -98,6 +103,20 @@ exports.signup = (req, res, next) => {
         errors: [{ error: "Something went wrong" }],
       });
     });
+};
+
+exports.linkAccount = (req, res) => {
+  let { id, loginId } = req.body;
+  User.findByIdAndUpdate(id, { $set: { loginId } }, (err) => {
+    if (err) {
+      return res.status(400).json({
+        error: err,
+      });
+    }
+    return res.status(200).json({
+      success: true,
+    });
+  });
 };
 
 // User Login
@@ -156,6 +175,7 @@ exports.signin = (req, res) => {
                 if (decoded) {
                   return res.status(200).json({
                     success: true,
+                    loginId: user.loginId,
                     token: access_token,
                   });
                 }

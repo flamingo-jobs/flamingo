@@ -36,8 +36,6 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import BACKEND_URL from "../../Config";
 
-const jwt = require("jsonwebtoken");
-
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -186,18 +184,16 @@ export default function SignInSide() {
         if (res.data.success) {
           if (remember) {
             localStorage.setItem("userToken", res.data.token);
-            sessionStorage.setItem("userToken", res.data.token);
-          } else {
-            sessionStorage.setItem("userToken", res.data.token);
           }
-          const header = jwt.decode(res.data.token, { complete: true });
+          sessionStorage.setItem("userToken", res.data.token);
+          sessionStorage.setItem("loginId", res.data.loginId);
           window.location = "/";
         } else {
           handleCredentialError();
         }
       })
       .catch((err) => {
-        console.log(err.message)
+        console.log(err.message);
         if (err.message === "Network Error") handleServerError();
         else handleCredentialError();
       });
