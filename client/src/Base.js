@@ -14,6 +14,7 @@ import JobDescription from "./jobDescription/jobDescription";
 import Categories from "./admin/Categories";
 import CreateJobForm from "./jobs/createJob/createJobForm";
 import People from './people/People';
+import Employer from './employer/Employer';
 import Technologies from './admin/Technologies';
 import { Switch } from "react-router-dom";
 import Organizations from "./employer/Organizations";
@@ -111,6 +112,9 @@ function Base() {
         </Route>
         <Route path="/people">
           <People />
+        </Route>
+        <Route path="/employer">
+          <Employer />
         </Route>
         <Route path="/" exact>
           <Home />
