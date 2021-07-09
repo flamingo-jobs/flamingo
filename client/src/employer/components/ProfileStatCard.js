@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     button: {
         marginTop:-0.5,
         color:theme.palette.white,
-        backgroundColor:theme.palette.frenchViolet,
+        backgroundColor:theme.palette.blueJeans,
         margin: theme.spacing(1),
     
     },
@@ -71,7 +71,7 @@ function ProfileStatCard() {
 
         <div className={classes.root}>
 
-            <FloatCard backColor={'#5E60CE'}>
+            <FloatCard backColor={'#4EA8DE'}>
 
                 <Grid item container spacing={2}>
 
