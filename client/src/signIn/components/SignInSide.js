@@ -374,7 +374,7 @@ export default function SignInSide() {
                   {/* Forgot Password or Register */}
                   <Grid container>
                     <Grid item xs={12} sm={4} className={classes.forgotPwd}>
-                      <Link className={classes.link}>Forgot password?</Link>
+                      <Link to="/forgot-password" className={classes.link}>Forgot password?</Link>
                     </Grid>
                     <Grid item xs={12} sm={8} className={classes.signUp}>
                       <Link

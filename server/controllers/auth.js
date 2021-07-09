@@ -219,3 +219,21 @@ exports.forgotPassword = async (req, res) => {
   }
   res.sendStatus(200);
 };
+
+exports.resetPassword = async (req, res) => {
+  const { passwordResetCode } = req.params;
+  const { newPassword } = req.body;
+  const newPasswordHash = await bcrypt.hash(newPassword, 10);
+  await User.findOneAndUpdate(
+    { passwordResetCode: passwordResetCode },
+    {
+      $set: { password: newPasswordHash },
+      $unset: { passwordResetCode: "" },
+    }
+  ).then((result) => {
+    if (!result) {
+      return res.sendStatus(500);
+    }
+  });
+  res.sendStatus(200);
+};
