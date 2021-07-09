@@ -8,10 +8,8 @@ import {
   useTheme,
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
-import CompanyInfo from "./components/CompanyInfo";
-import TechStack from "./components/TechStack";
+import ProfileStatCard from "./components/ProfileStatCard";
 import FeaturedJobs from "./components/FeaturedJobs";
-import Reviews from "./components/Reviews";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Employer = () => {
+const Dashboard = () => {
   const classes = useStyles();
 
   return (
@@ -53,18 +51,15 @@ const Employer = () => {
       alignItems="flex-start"
     >
       <Grid item containerxs={7} sm={7} spacing={3}>
-        <CompanyInfo></CompanyInfo>
-        <br></br>
-        <FeaturedJobs></FeaturedJobs>
+        <FeaturedJobs />
       </Grid>
 
       <Grid item xs={5} sm={5} spacing={3}>
-        <TechStack></TechStack>
+        <ProfileStatCard />
         <br></br>
-        <Reviews></Reviews>
       </Grid>
     </Grid>
   );
 };
 
-export default Employer;
+export default Dashboard;

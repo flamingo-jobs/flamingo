@@ -36,6 +36,9 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import differenceBy from 'lodash/differenceBy'
+
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -239,13 +242,16 @@ function CompanyInfo() {
     });
   }
 
-  function onChangeLocations(e) {
-    locations.push(e.target.value);
-    console.log(e.target.value);
-    // setState((prevState) => {
-    //   return { ...prevState, locations: e.target.value };
-    // });
-  }
+  // function onChangeLocations(e) {
+  //   locations=e;
+  //   state.locations=e;
+
+  //   setState((prevState) => {
+  //     return { ...prevState, locations: e};
+  //   });
+  //   console.log(e);
+  //   console.log(state.locations)
+  // }
 
   
 
@@ -254,7 +260,7 @@ function CompanyInfo() {
     const employer = {
       name: name,
       description: description,
-    //   locations: locations,
+      // locations: locations,
 
       links: {
         website: website,
@@ -263,6 +269,9 @@ function CompanyInfo() {
         twitter: twitter,
       },
     };
+
+    console.log('test');
+    console.log(employer)
 
     axios
       .put(`${BACKEND_URL}/employers/update/60c246913542f942e4c84454`, employer)
@@ -371,9 +380,10 @@ function CompanyInfo() {
                               <Autocomplete
                                 multiple
                                 id="locations"
+                                // options={ differenceBy(cities, mycities, 'city')}
                                 options={cities}
                                 getOptionLabel={(option) => option.city}
-                                defaultValue={[cities[1], cities[4], cities[5]]}
+                                defaultValue={[cities[1],cities[2],cities[5]]}
                                 renderInput={(params) => (
                                   <TextField
                                     {...params}
@@ -381,7 +391,9 @@ function CompanyInfo() {
                                     label="Locations"
                                   />
                                 )}
-                                onClick={onChangeLocations}
+                                // onClick={onChangeLocations}
+                                // onChange={(event, value) => onChangeLocations(value)} 
+
                               />
                             </Grid>
 
@@ -573,7 +585,7 @@ function CompanyInfo() {
               >
                 <Grid item xs={1}>
                   <IconButton
-                    onClick={() => window.open("https://" + links.website)}
+                    onClick={() => window.open("https://" + website)}
                     variant="outlined"
                     aria-label="website"
                   >
@@ -583,7 +595,7 @@ function CompanyInfo() {
 
                 <Grid item xs={1}>
                   <IconButton
-                    onClick={() => window.open("https://" + links.linkedIn)}
+                    onClick={() => window.open("https://" + linkedIn)}
                     variant="outlined"
                     aria-label="website"
                   >
@@ -592,7 +604,7 @@ function CompanyInfo() {
                 </Grid>
                 <Grid item xs={1}>
                   <IconButton
-                    onClick={() => window.open("https://" + links.twitter)}
+                    onClick={() => window.open("https://" + twitter)}
                     variant="outlined"
                     aria-label="website"
                   >
@@ -601,7 +613,7 @@ function CompanyInfo() {
                 </Grid>
                 <Grid item xs={1}>
                   <IconButton
-                    onClick={() => window.open("https://" + links.facebook)}
+                    onClick={() => window.open("https://" + facebook)}
                     variant="outlined"
                     aria-label="website"
                   >
@@ -667,6 +679,13 @@ function CompanyInfo() {
 
 // list of locations
 
+const mycities = [
+  { city: "A" },
+  { city: "B" },
+  { city: "C" },
+  
+];
+
 const cities = [
   { city: "Colombo" },
   { city: "Gampaha" },
@@ -679,6 +698,9 @@ const cities = [
   { city: "Uppsala" },
   { city: "Göteborg" },
   { city: "Linköping" },
+  { city: "A" },
+  { city: "B" },
+  { city: "C" },
 ];
 
 export default CompanyInfo;

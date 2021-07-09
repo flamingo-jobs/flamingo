@@ -1,5 +1,6 @@
 import SignInSide from "./signIn/components/SignInSide.js";
 import { ForgotPassword } from "./signIn/components/ForgotPassword.js";
+import { ResetPassword } from "./signIn/components/ResetPassword.js";
 import GetHired from "./getHired/GetHired";
 import StartHiring from "./startHiring/StartHiring.js";
 import "./App.css";
@@ -22,8 +23,11 @@ function App() {
           <Route path="/signIn">
             <SignInSide />
           </Route>
-          <Route path="/forgot">
+          <Route path="/forgot-password">
             <ForgotPassword />
+          </Route>
+          <Route path="/reset-password/:passwordResetCode">
+            <ResetPassword />
           </Route>
           <Route path="/getHired">
             <GetHired />

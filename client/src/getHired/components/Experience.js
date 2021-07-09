@@ -13,8 +13,6 @@ import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import RemoveIcon from "@material-ui/icons/Remove";
 import AddIcon from "@material-ui/icons/Add";
 import { makeStyles } from "@material-ui/core/styles";
-import FloatCard from "../../components/FloatCard";
-import backgroundImage from "../images/background.jfif";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
 const useStyles = makeStyles((theme) => ({
@@ -122,6 +120,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   mainGrid: {
+    minHeight: "100vh",
     [theme.breakpoints.down("xs")]: {
       justifyContent: "center",
     },
@@ -162,9 +161,6 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "transparent",
     },
   },
-  mainGrid: {
-    minHeight: "100vh",
-  },
   footer: {
     marginBottom: 10,
     [theme.breakpoints.down("sm")]: {
@@ -192,25 +188,16 @@ export const Experience = ({
   handleProjectAddClick,
   handleProjectRemoveClick,
   handleProjectTechInputChange,
-  handleProjectTechAddClick,
-  handleProjectTechRemoveClick,
-  navigation,
 }) => {
-  const classes = useStyles();
-
   const [techStack, setTechStack] = useState([]);
 
   const handleTechStackChange = (event, value) => {
     setTechStack(value);
   };
 
+  const classes = useStyles();
+
   return (
-    // <div className={classes.background}>
-    //   <div className={classes.overlay}>
-    //     <Container className={classes.container}>
-    // <Grid container spacing={3} justify="center" alignItems="center" >
-    //   <Grid item xs={12} align="center">
-    //     <FloatCard>
     <Container>
       <Grid
         container
@@ -221,7 +208,7 @@ export const Experience = ({
         <Grid item xs={12} lg={6}>
           <Grid container alignItems="center" spacing={3}>
             <Grid item xs={12} align="left">
-              <Typography component={'span'} className={classes.title}>
+              <Typography component={"span"} className={classes.title}>
                 <h4>Working Experience</h4>
               </Typography>
             </Grid>
@@ -371,7 +358,7 @@ export const Experience = ({
         <Grid item xs={12} lg={6}>
           <Grid container alignItems="center" spacing={3}>
             <Grid item xs={12} align="left">
-              <Typography component={'span'} className={classes.title}>
+              <Typography component={"span"} className={classes.title}>
                 <h4>Project Details</h4>
               </Typography>
             </Grid>
@@ -453,8 +440,8 @@ export const Experience = ({
                         <Grid item xs={12} md={12} align="center">
                           <Autocomplete
                             multiple
-                            options={[]}
-                            defaultValue={techStack}
+                            options={["Angular", "React", "Vue JS"]}
+                            defaultValue={x.techStack}
                             freeSolo
                             disableClearable
                             renderTags={(value, getTagProps) =>
@@ -479,106 +466,13 @@ export const Experience = ({
                                 fullWidth
                               />
                             )}
-                            onChange={(event, value) =>
-                              handleTechStackChange(event, value)
-                            }
+                            value={x.techStack}
+                            onChange={(e,v)=>handleProjectTechInputChange(e,v,i)}
                             classes={{
                               inputRoot: classes.inputRoot,
                               input: classes.inputInput,
                             }}
                           />
-                          {/* {x.usedTech.map((y, j) => {
-                                        return (
-                                          <div>
-                                            <Grid
-                                              container
-                                              alignItems="center"
-                                              spacing={1}
-                                            >
-                                              <Grid
-                                                item
-                                                xs={10}
-                                                md={6}
-                                                align="center"
-                                              >
-                                                <TextField size="small"
-                                                  className={classes.textField}
-                                                  variant="outlined"
-                                                  fullWidth
-                                                  name="category"
-                                                  label={
-                                                    "Technology (e.g. Database)"
-                                                  }
-                                                  value={y.category}
-                                                  onChange={(e) =>
-                                                    handleProjectTechInputChange(
-                                                      e,
-                                                      i,
-                                                      j
-                                                    )
-                                                  }
-                                                />
-                                              </Grid>
-                                              <Grid
-                                                item
-                                                xs={10}
-                                                md={10}
-                                                align="center"
-                                              >
-                                                <TextField size="small"
-                                                  className={classes.textField}
-                                                  variant="outlined"
-                                                  fullWidth
-                                                  name="language"
-                                                  label={
-                                                    "Programming Language (e.g. MySQL, MongoDB)"
-                                                  }
-                                                  value={y.language}
-                                                  onChange={(e) =>
-                                                    handleProjectTechInputChange(
-                                                      e,
-                                                      i,
-                                                      j
-                                                    )
-                                                  }
-                                                />
-                                              </Grid>
-                                              <Grid
-                                                item
-                                                xs={2}
-                                                md={2}
-                                                align="left"
-                                              >
-                                                {x.usedTech.length !== 1 && (
-                                                  <IconButton
-                                                    onClick={() =>
-                                                      handleProjectTechRemoveClick(
-                                                        i,
-                                                        j
-                                                      )
-                                                    }
-                                                    color="secondary"
-                                                    aria-label="Add new work"
-                                                  >
-                                                    <RemoveIcon />
-                                                  </IconButton>
-                                                )}
-                                                {x.usedTech.length - 1 === j && (
-                                                  <IconButton
-                                                    onClick={() =>
-                                                      handleProjectTechAddClick(i)
-                                                    }
-                                                    color="primary"
-                                                    aria-label="Remove work"
-                                                  >
-                                                    <AddIcon />
-                                                  </IconButton>
-                                                )}
-                                              </Grid>
-                                            </Grid>
-                                          </div>
-                                        );
-                                      })} */}
                         </Grid>
                       </Grid>
                     </Grid>
@@ -606,50 +500,9 @@ export const Experience = ({
                 );
               })}
             </Grid>
-
-            {/* Navigation Buttons */}
-            {/* <Grid item xs={12}>
-                          <Grid
-                            item
-                            container
-                            xs={12}
-                            className={classes.footer}
-                            alignItems="center"
-                            justify="center"
-                            spacing={3}
-                          >
-                            <Grid item container md={12} className={classes.actions} spacing={4}>
-                              <Grid item >
-                                <Button
-                                  fullWidth
-                                  className={classes.previous}
-                                  onClick={() => window.location = '/jobs'}
-                                >
-                                  Skip setting up profile
-                                </Button>
-                              </Grid>
-                              <Grid item>
-                                <Button
-                                  fullWidth
-                                  variant="contained"
-                                  className={classes.next}
-                                  onClick={() => navigation.next()}
-                                >
-                                  Next
-                                </Button>
-                              </Grid>
-                            </Grid>
-                          </Grid>
-                        </Grid> */}
           </Grid>
         </Grid>
       </Grid>
     </Container>
-    //     </FloatCard>
-    //   </Grid>
-    // </Grid>
-    //     </Container>
-    //   </div >
-    // </div >
   );
 };

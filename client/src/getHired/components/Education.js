@@ -1,8 +1,6 @@
 import { React } from "react";
 import {
-  Button,
   TextField,
-  Box,
   Grid,
   Typography,
   Container,
@@ -10,10 +8,8 @@ import {
 } from "@material-ui/core";
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import FloatCard from "../../components/FloatCard";
+import { makeStyles } from "@material-ui/core/styles";
 import backgroundImage from "../images/background.jfif";
-import SideDrawer from "../../components/SideDrawer";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -144,11 +140,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const Education = ({
-  navigation,
   university,
-  handleSchoolInputChange,
-  handleSchoolAddClick,
-  handleSchoolRemoveClick,
+  handleUniversityInputChange,
+  handleUniversityAddClick,
+  handleUniversityRemoveClick,
   college,
   handleCollegeInputChange,
   handleCollegeAddClick,
@@ -161,49 +156,6 @@ export const Education = ({
   const classes = useStyles();
 
   return (
-    // <div className={classes.background}>
-    //   <div className={classes.overlay}>
-    //     <Container className={classes.container}>
-    //       <Grid
-    //         container
-    //         direction="row"
-    //         spacing={3}
-    //         className={classes.mainGrid}
-    //         justify="space-between"
-    //         alignItems="flex-start"
-    //       >
-    //         <Grid
-    //           item
-    //           xs={false}
-    //           sm={4}
-    //           md={3}
-    //           lg={2}
-    //           className={classes.sideDrawer}
-    //         >
-    //           <SideDrawer />
-    //         </Grid>
-    //         <Grid
-    //           item
-    //           xs={false}
-    //           sm={4}
-    //           md={3}
-    //           lg={2}
-    //           className={classes.sideDrawerGrid}
-    //         ></Grid>
-    //         <Grid
-    //           item
-    //           container
-    //           xs={12}
-    //           sm={8}
-    //           md={9}
-    //           lg={10}
-    //           spacing={3}
-    //           className={classes.topBarGrid}
-    //           direction="column"
-    //           justify="space-between"
-    //         >
-    // <Container className={classes.container}>
-    //   <FloatCard>
     <Container>
       <Grid
         container
@@ -211,72 +163,98 @@ export const Education = ({
         justify="space-between"
         className={classes.gridCont}
       >
+        {/* University Details */}
         <Grid item xs={12} md={6}>
           <Grid container alignItems="center" spacing={3}>
             <Grid item xs={12} align="left">
-              <Typography component={'span'} className={classes.title}>
+              <Typography component={"span"} className={classes.title}>
                 <h4>Unversity Details</h4>
               </Typography>
             </Grid>
             <Grid item xs={12} align="left">
               {university.map((x, i) => {
                 return (
-                  <Grid container alignItems="center" spacing={3} style={{ marginBottom: 20 }} key={i}>
-                    <Grid item xs={12} md={9} align="center" >
+                  <Grid
+                    container
+                    alignItems="center"
+                    spacing={3}
+                    style={{ marginBottom: 20 }}
+                    key={i}
+                  >
+                    <Grid item xs={12} md={9} align="center">
                       <Grid container alignItems="center" spacing={2}>
-                        <Grid item xs={12} md={8} align="center">
-                          <TextField size="small"
+                        <Grid item xs={12} md={4} align="center">
+                          <TextField
+                            size="small"
                             className={classes.textField}
                             variant="outlined"
                             fullWidth
                             name="degree"
                             label="Degree"
+                            helperText="i.e. BSc/ MSc"
                             value={x.degree}
-                            onChange={(e) => handleSchoolInputChange(e, i)}
+                            onChange={(e) => handleUniversityInputChange(e, i)}
                           />
                         </Grid>
-                        <Grid item xs={12} md={4} align="center">
-                          <TextField size="small"
+                        <Grid item xs={12} md={8} align="center">
+                          <TextField
+                            size="small"
                             className={classes.textField}
                             variant="outlined"
                             fullWidth
-                            name="gpa"
-                            label="GPA"
-                            value={x.gpa}
-                            onChange={(e) => handleSchoolInputChange(e, i)}
+                            name="fieldOfStudy"
+                            label="Field Of Study"
+                            helperText="i.e. Computer Science/ Management"
+                            value={x.fieldOfStudy}
+                            onChange={(e) => handleUniversityInputChange(e, i)}
                           />
                         </Grid>
                         <Grid item xs={12} align="center">
-                          <TextField size="small"
+                          <TextField
+                            size="small"
                             className={classes.textField}
                             variant="outlined"
                             fullWidth
                             name="university"
                             label="University Name"
                             value={x.university}
-                            onChange={(e) => handleSchoolInputChange(e, i)}
+                            onChange={(e) => handleUniversityInputChange(e, i)}
                           />
                         </Grid>
                         <Grid item xs={12} md={4} align="center">
-                          <TextField size="small"
+                          <TextField
+                            size="small"
                             className={classes.textField}
                             variant="outlined"
                             fullWidth
-                            name="from"
+                            name="GPA"
+                            label="GPA"
+                            value={x.GPA}
+                            onChange={(e) => handleUniversityInputChange(e, i)}
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={4} align="center">
+                          <TextField
+                            size="small"
+                            className={classes.textField}
+                            variant="outlined"
+                            fullWidth
+                            name="startDate"
                             label="From"
-                            value={x.from}
-                            onChange={(e) => handleSchoolInputChange(e, i)}
+                            value={x.startDate}
+                            onChange={(e) => handleUniversityInputChange(e, i)}
                           />
                         </Grid>
                         <Grid item xs={12} md={4} align="center">
-                          <TextField size="small"
+                          <TextField
+                            size="small"
                             className={classes.textField}
                             variant="outlined"
                             fullWidth
-                            name="to"
+                            name="endDate"
                             label="To"
-                            value={x.to}
-                            onChange={(e) => handleSchoolInputChange(e, i)}
+                            value={x.endDate}
+                            onChange={(e) => handleUniversityInputChange(e, i)}
                           />
                         </Grid>
                       </Grid>
@@ -284,7 +262,7 @@ export const Education = ({
                     <Grid item xs={12} md={3} align="left">
                       {university.length !== 1 && (
                         <IconButton
-                          onClick={() => handleSchoolRemoveClick(i)}
+                          onClick={() => handleUniversityRemoveClick(i)}
                           color="secondary"
                         >
                           <RemoveCircleOutlineIcon />
@@ -292,7 +270,104 @@ export const Education = ({
                       )}
                       {university.length - 1 === i && (
                         <IconButton
-                          onClick={handleSchoolAddClick}
+                          onClick={handleUniversityAddClick}
+                          color="primary"
+                        >
+                          <AddCircleOutlineIcon />
+                        </IconButton>
+                      )}
+                    </Grid>
+                  </Grid>
+                );
+              })}
+            </Grid>
+          </Grid>
+        </Grid>
+
+        {/* College Details */}
+        <Grid item xs={12} md={6}>
+          <Grid container alignItems="center" spacing={3}>
+            <Grid item xs={12} align="left">
+              <Typography component={"span"} className={classes.title}>
+                <h4>School Details</h4>
+              </Typography>
+            </Grid>
+            <Grid item xs={12} align="left">
+              {college.map((x, i) => {
+                return (
+                  <Grid
+                    container
+                    alignItems="center"
+                    spacing={3}
+                    style={{ marginBottom: 20 }}
+                    key={i}
+                  >
+                    <Grid item xs={12} md={9} align="center">
+                      <Grid container alignItems="center" spacing={2}>
+                        <Grid item xs={12} md={12} align="center">
+                          <TextField
+                            size="small"
+                            className={classes.textField}
+                            variant="outlined"
+                            fullWidth
+                            name="school"
+                            label="School Name"
+                            value={x.school}
+                            onChange={(e) => handleCollegeInputChange(e, i)}
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={4} align="center">
+                          <TextField
+                            size="small"
+                            className={classes.textField}
+                            variant="outlined"
+                            fullWidth
+                            name="startDate"
+                            label="From"
+                            value={x.startDate}
+                            onChange={(e) => handleCollegeInputChange(e, i)}
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={4} align="center">
+                          <TextField
+                            size="small"
+                            className={classes.textField}
+                            variant="outlined"
+                            fullWidth
+                            name="endDate"
+                            label="To"
+                            value={x.endDate}
+                            onChange={(e) => handleCollegeInputChange(e, i)}
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={12} align="center">
+                          <TextField
+                            size="small"
+                            className={classes.textField}
+                            variant="outlined"
+                            fullWidth
+                            multiline
+                            rows={2}
+                            name="description"
+                            label="Description"
+                            value={x.description}
+                            onChange={(e) => handleCollegeInputChange(e, i)}
+                          />
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    <Grid item xs={12} md={3} align="left">
+                      {college.length !== 1 && (
+                        <IconButton
+                          onClick={() => handleCollegeRemoveClick(i)}
+                          color="secondary"
+                        >
+                          <RemoveCircleOutlineIcon />
+                        </IconButton>
+                      )}
+                      {college.length - 1 === i && (
+                        <IconButton
+                          onClick={handleCollegeAddClick}
                           color="primary"
                         >
                           <AddCircleOutlineIcon />
@@ -310,18 +385,25 @@ export const Education = ({
         <Grid item xs={12} lg={6}>
           <Grid container alignItems="center" spacing={3}>
             <Grid item xs={12} align="left">
-              <Typography component={'span'} className={classes.title}>
+              <Typography component={"span"} className={classes.title}>
                 <h4>Course Details</h4>
               </Typography>
             </Grid>
             <Grid item xs={12} align="left">
               {course.map((x, i) => {
                 return (
-                  <Grid container alignItems="center" spacing={3} style={{ marginBottom: 20 }} key={i}>
-                    <Grid item xs={12} md={9} align="center" >
+                  <Grid
+                    container
+                    alignItems="center"
+                    spacing={3}
+                    style={{ marginBottom: 20 }}
+                    key={i}
+                  >
+                    <Grid item xs={12} md={9} align="center">
                       <Grid container alignItems="center" spacing={2}>
                         <Grid item xs={12} align="center">
-                          <TextField size="small"
+                          <TextField
+                            size="small"
                             className={classes.textField}
                             variant="outlined"
                             fullWidth
@@ -332,7 +414,8 @@ export const Education = ({
                           />
                         </Grid>
                         <Grid item xs={12} align="center">
-                          <TextField size="small"
+                          <TextField
+                            size="small"
                             className={classes.textField}
                             variant="outlined"
                             fullWidth
@@ -343,7 +426,8 @@ export const Education = ({
                           />
                         </Grid>
                         <Grid item xs={12} md={4} align="center">
-                          <TextField size="small"
+                          <TextField
+                            size="small"
                             className={classes.textField}
                             variant="outlined"
                             fullWidth
@@ -354,7 +438,8 @@ export const Education = ({
                           />
                         </Grid>
                         <Grid item xs={12} md={4} align="center">
-                          <TextField size="small"
+                          <TextField
+                            size="small"
                             className={classes.textField}
                             variant="outlined"
                             fullWidth
@@ -393,53 +478,6 @@ export const Education = ({
           </Grid>
         </Grid>
       </Grid>
-   
-  {/* <Container className={classes.jobDetailsContainer}>
-                      <Grid container alignItems="center" spacing={2}>
-                        <Grid
-                          container
-                          direction="row"
-                          alignItems="center"
-                          justify="flex-end"
-                        >
-                          <Grid item sm={6} md={6} align="center">
-                            <Grid
-                              container
-                              alignItems="center"
-                              justify="flex-end"
-                              spacing={2}
-                            >
-                              <Grid item align="center">
-                                <Button
-                                  fullWidth
-                                  variant="outlined"
-                                  className={classes.previous}
-                                  onClick={() => navigation.previous()}
-                                >
-                                  Previous
-                                </Button>
-                              </Grid>{" "}
-                              <Grid item align="center">
-                                <Button
-                                  fullWidth
-                                  variant="contained"
-                                  className={classes.next}
-                                  onClick={() => navigation.next()}
-                                >
-                                  Next
-                                </Button>
-                              </Grid>
-                            </Grid>
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                    </Container> */}
-
-    {/* //         </Grid>
-    //       </Grid>
-    //     </Container>
-    //   </div>
-    // </div> */}
     </Container>
   );
 };

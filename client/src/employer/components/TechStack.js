@@ -48,10 +48,10 @@ const useStyles = makeStyles((theme) => ({
   topBar: {
     marginBottom: -30,
   },
-  title:{
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+  title: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
 }));
 
@@ -95,14 +95,13 @@ function TechStack() {
 
   return (
     <div className={classes.root}>
-        
       <Grid container xs={12} direction="column" spacing={1}>
         <Grid item sm={12} className={classes.topBar}>
           {/* Floatcard for the top bar */}
 
           <FloatCard>
-            <Grid item container sm={12} direction="row" spacing={1} >
-              <Grid item sm={10} >
+            <Grid item container sm={12} direction="row" spacing={1}>
+              <Grid item sm={10}>
                 <Typography variant="h6" className={classes.title}>
                   Technology Stack
                 </Typography>

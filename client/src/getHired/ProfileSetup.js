@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
@@ -9,8 +9,8 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import { Container, Grid } from "@material-ui/core";
 import FloatCard from "../components/FloatCard";
+import SnackBarAlert from "../components/SnackBarAlert";
 import backgroundImage from "./images/background.jfif";
-import { useStep } from "react-hooks-helper";
 import { Experience } from "./components/Experience";
 import { Education } from "./components/Education";
 import { Volunteering } from "./components/Volunteering";
@@ -55,7 +55,8 @@ const useStyles = makeStyles((theme) => ({
   mainTitle: {
     fontSize: 36,
     fontWeight: 500,
-    marginTop: 20,
+    marginTop: 40,
+    marginLeft: 20,
   },
   next: {
     boxShadow: "none",
@@ -79,6 +80,10 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: "none",
     },
   },
+  skip: {
+    marginTop: 50,
+    marginRight: 20,
+  },
   label: {
     textAlign: "left",
     fontWeight: 600,
@@ -100,30 +105,72 @@ function getSteps() {
   return ["Experience", "Education", "Volunteering", "Technology Stack"];
 }
 
-function retrieveTechnoliges() {
-  axios.get(`${BACKEND_URL}/technologies`).then((res) => {
-    if (res.data.success) {
-      return res.data.existingData.map((technology) => {
-        return { name: technology.name, list: [], frontend: [], backend: [] };
-      });
-    } else {
-      return [];
-    }
-  });
-}
-
 export default function ProfileSetup() {
-  const [technologies, setTechnologies] = useState([]);
-  useEffect(() => {
-    console.log(retrieveTechnoliges());
-  }, []);
-
   const classes = useStyles();
+
+  // Alert stuff
+  const [alertShow, setAlertShow] = useState(false);
+  const [alertData, setAlertData] = useState({ severity: "", msg: "" });
+  const displayAlert = () => {
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertShow(false);
+  };
+
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    if (activeStep === steps.length - 1) {
+      const jobSeekerData = {
+        university: university,
+        school: college,
+        course: course,
+        award: award,
+        achievement: achievement,
+        work: work,
+        project: project,
+        volunteer: volunteer,
+        technologyStack: tech,
+      };
+      const loginId = sessionStorage.getItem("loginId");
+      axios
+        .put(`${BACKEND_URL}/jobseeker/update/${loginId}`, jobSeekerData)
+        .then((res) => {
+          if (res.data.success) {
+            window.location = "/";
+          } else {
+            setAlertData({
+              severity: "error",
+              msg: "Failed to update details! No worries. You can alwasy update/ change these details in your profile page",
+            });
+            handleAlert();
+          }
+        })
+        .catch((e) => {
+          setAlertData({
+            severity: "error",
+            msg: "Failed to update details! No worries. You can alwasy update/ change these details in your profile page",
+          });
+          handleAlert();
+        });
+    } else {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
   };
 
   const handleBack = () => {
@@ -135,28 +182,42 @@ export default function ProfileSetup() {
   };
 
   const [university, setUniversity] = useState([
-    { university: "", degree: "", GPA: 0, startDate: "", endDate: "" },
+    {
+      university: "",
+      degree: "",
+      fieldOfStudy: "",
+      GPA: 0,
+      startDate: "",
+      endDate: "",
+    },
   ]);
-  const handleSchoolInputChange = (e, index) => {
+  const handleUniversityInputChange = (e, index) => {
     const { name, value } = e.target;
     const list = [...university];
     list[index][name] = value;
     setUniversity(list);
   };
-  const handleSchoolRemoveClick = (index) => {
+  const handleUniversityRemoveClick = (index) => {
     const list = [...university];
     list.splice(index, 1);
     setUniversity(list);
   };
-  const handleSchoolAddClick = () => {
+  const handleUniversityAddClick = () => {
     setUniversity([
       ...university,
-      { university: "", degree: "", GPA: 0, startDate: "", endDate: "" },
+      {
+        university: "",
+        degree: "",
+        fieldOfStudy: "",
+        GPA: 0,
+        startDate: "",
+        endDate: "",
+      },
     ]);
   };
 
   const [college, setCollege] = useState([
-    { college: "", startDate: "", endDate: "" },
+    { school: "", startDate: "", endDate: "", description: "" },
   ]);
   const handleCollegeInputChange = (e, index) => {
     const { name, value } = e.target;
@@ -170,7 +231,10 @@ export default function ProfileSetup() {
     setCollege(list);
   };
   const handleCollegeAddClick = () => {
-    setCollege([...college, { college: "", startDate: "", endDate: "" }]);
+    setCollege([
+      ...college,
+      { school: "", startDate: "", endDate: "", description: "" },
+    ]);
   };
 
   const [course, setCourse] = useState([
@@ -233,7 +297,6 @@ export default function ProfileSetup() {
   const [work, setWork] = useState([
     {
       place: "",
-      description: "",
       position: "",
       from: "",
       to: "",
@@ -267,7 +330,6 @@ export default function ProfileSetup() {
       ...work,
       {
         place: "",
-        description: "",
         position: "",
         from: "",
         to: "",
@@ -288,7 +350,7 @@ export default function ProfileSetup() {
       description: "",
       from: "",
       to: "",
-      usedTech: [{ category: "", language: "" }],
+      techStack: [],
     },
   ]);
   const handleProjectInputChange = (e, index) => {
@@ -297,20 +359,14 @@ export default function ProfileSetup() {
     list[index][name] = value;
     setProject(list);
   };
-  const handleProjectTechInputChange = (e, index, secondIndex) => {
-    const { name, value } = e.target;
-    const list = [...project];
-    list[index]["usedTech"][secondIndex][name] = value;
+  const handleProjectTechInputChange = (event, value, index) => {
+    let list = [...project];
+    list[index]["techStack"] = value;
     setProject(list);
   };
   const handleProjectRemoveClick = (index) => {
     const list = [...project];
     list.splice(index, 1);
-    setProject(list);
-  };
-  const handleProjectTechRemoveClick = (index, secondIndex) => {
-    const list = [...project];
-    list[index]["usedTech"].splice(secondIndex, 1);
     setProject(list);
   };
   const handleProjectAddClick = () => {
@@ -322,14 +378,9 @@ export default function ProfileSetup() {
         description: "",
         from: "",
         to: "",
-        usedTech: [{ category: "", language: "" }],
+        techStack: [],
       },
     ]);
-  };
-  const handleProjectTechAddClick = (index) => {
-    const list = [...project];
-    list[index]["usedTech"].push({ category: "", language: "" });
-    setProject(list);
   };
 
   const [volunteer, setVolunteer] = useState([
@@ -354,26 +405,15 @@ export default function ProfileSetup() {
   };
 
   const [tech, setTech] = useState([]);
-  const handleTechInputChange = (e, index, tag) => {
-    //const { name, value } = e.target;
-    const list = [...tech];
-    list[index][tag] = e;
-    setTech(list);
-  };
-  const handleTechRemoveClick = (index) => {
-    const list = [...tech];
-    list.splice(index, 1);
-    setTech(list);
-  };
   const handleTechAddClick = (techName) => {
-    setTech([...tech, techName]);
+    setTech(techName);
   };
 
   const props = {
     university,
-    handleSchoolInputChange,
-    handleSchoolAddClick,
-    handleSchoolRemoveClick,
+    handleUniversityInputChange,
+    handleUniversityAddClick,
+    handleUniversityRemoveClick,
     college,
     handleCollegeInputChange,
     handleCollegeAddClick,
@@ -402,16 +442,12 @@ export default function ProfileSetup() {
     handleProjectAddClick,
     handleProjectRemoveClick,
     handleProjectTechInputChange,
-    handleProjectTechAddClick,
-    handleProjectTechRemoveClick,
     volunteer,
     handleVolunteerInputChange,
     handleVolunteerAddClick,
     handleVolunteerRemoveClick,
     tech,
-    handleTechInputChange,
     handleTechAddClick,
-    handleTechRemoveClick,
   };
 
   const getStepContent = (step) => {
@@ -431,9 +467,9 @@ export default function ProfileSetup() {
 
   return (
     <div className={classes.root}>
-      {console.log(technologies)}
       <div className={classes.background}>
         <div className={classes.overlay}>
+          {displayAlert()}
           <Container className={classes.container}>
             <Grid
               container
@@ -453,10 +489,22 @@ export default function ProfileSetup() {
                       alignItems="stretch"
                       className={classes.gridCont}
                     >
-                      <Grid item xs={12} align="left">
-                        <Typography className={classes.mainTitle}>
-                          Continue setting up you profile...
-                        </Typography>
+                      <Grid container direction="row">
+                        <Grid item xs={6} align="left">
+                          <Typography className={classes.mainTitle}>
+                            Continue setting up your profile...
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={6} align="right">
+                          <Button
+                            onClick={() => {
+                              window.location = "/";
+                            }}
+                            className={classes.skip}
+                          >
+                            Skip and do this later
+                          </Button>
+                        </Grid>
                       </Grid>
                       <Stepper
                         activeStep={activeStep}
@@ -485,7 +533,7 @@ export default function ProfileSetup() {
                                         (window.location = "/jobs")
                                       }
                                     >
-                                      Skip setting up profile
+                                      Cancel
                                     </Button>
                                   ) : (
                                     <Button

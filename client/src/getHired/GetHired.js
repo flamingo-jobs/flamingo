@@ -6,18 +6,24 @@ import {
   Grid,
   Typography,
   Container,
+  Box,
   FormControl,
   InputLabel,
   Select,
   MenuItem,
   InputAdornment,
+  LinearProgress,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import PropTypes from "prop-types";
 import FloatCard from "../components/FloatCard";
 import backgroundImage from "./images/background.jfif";
+import SnackBarAlert from "../components/SnackBarAlert";
 import axios from "axios";
 import BACKEND_URL from "../Config";
 import { Link } from "react-router-dom";
+
+const jwt = require("jsonwebtoken");
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -71,6 +77,7 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "none",
     color: theme.palette.black,
     backgroundColor: theme.palette.white,
+    borderRadius: 25,
     "&:hover": {
       backgroundColor: theme.palette.white,
       color: "black",
@@ -149,6 +156,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function LinearProgressWithLabel(props) {
+  return (
+    <Box display="flex" alignItems="center">
+      <Box width="100%" mr={1}>
+        <LinearProgress variant="determinate" {...props} />
+      </Box>
+      <Box minWidth={35}>
+        <Typography variant="body2" color="textSecondary">{`${Math.round(
+          props.value
+        )}%`}</Typography>
+      </Box>
+    </Box>
+  );
+}
+
+LinearProgressWithLabel.propTypes = {
+  /**
+   * The value of the progress indicator for the determinate and buffer variants.
+   * Value between 0 and 100.
+   */
+  value: PropTypes.number.isRequired,
+};
+
 const defaultData = {
   firstName: "",
   lastName: "",
@@ -167,6 +197,42 @@ const defaultData = {
 export default function GetHired() {
   const classes = useStyles();
 
+  // Alert stuff
+  const [alertShow, setAlertShow] = useState(false);
+  const [alertData, setAlertData] = useState({ severity: "", msg: "" });
+  const displayAlert = () => {
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertShow(false);
+  };
+
+  const [progress, setProgress] = useState(0);
+  /*
+    useEffect(() => {
+      const timer = setInterval(() => {
+        setProgress((prevProgress) =>
+          prevProgress >= 100 ? 10 : prevProgress + 10
+        );
+      }, 800);
+      return () => {
+        clearInterval(timer);
+      };
+    }, []);
+  */
   const [formData, setForm] = useForm(defaultData);
   const [gender, setGender] = useState("Male");
   const selectGender = (e) => {
@@ -174,6 +240,7 @@ export default function GetHired() {
   };
 
   const createJobSeeker = (e) => {
+    setProgress(20);
     e.preventDefault();
     const signupData = {
       name: formData.firstName,
@@ -185,21 +252,33 @@ export default function GetHired() {
     if (formData.password === formData.confirmPassword) {
       axios.post(`${BACKEND_URL}/api/signup`, signupData).then((res) => {
         if (res.data.success) {
+          setProgress(30);
           sessionStorage.setItem("userToken", res.data.token);
-          sendData();
+          const userId = jwt.decode(res.data.token, { complete: true }).payload
+            .userId;
+          setProgress(40);
+          sendData(userId);
         } else {
-          console.log("res data not success");
-          // handleAlert();
+          setProgress(0);
+          setAlertData({
+            severity: "error",
+            msg: "Failed to create user account!",
+          });
+          handleAlert();
         }
       });
     } else {
-      console.log("password not match");
-      //handleAlert();
+      setProgress(0);
+      setAlertData({
+        severity: "error",
+        msg: "Please check whether your passwords are matching",
+      });
+      handleAlert();
     }
   };
-  const sendData = () => {
+  const sendData = (userId) => {
     const jobSeekerData = {
-      name: formData.firstName,
+      name: formData.firstName + " " + formData.lastName,
       gender: gender,
       tagline: formData.tagline,
       intro: formData.description,
@@ -214,17 +293,45 @@ export default function GetHired() {
         mobile: formData.mobile,
       },
     };
+    setProgress(50);
     axios.post(`${BACKEND_URL}/jobseeker/create`, jobSeekerData).then((res) => {
       if (res.data.success) {
-        //Go to multi step form
+        setProgress(60);
+        handleSuccessLogin(userId, res.data.existingData);
       } else {
-        console.log("Failed!");
+        setProgress(0);
+        setAlertData({
+          severity: "error",
+          msg: "Failed to create job seeker account!",
+        });
+        handleAlert();
+      }
+    });
+  };
+
+  const handleSuccessLogin = (id, loginId) => {
+    const linker = { id: id, loginId: loginId };
+    setProgress(70);
+    axios.post(`${BACKEND_URL}/api/link-account`, linker).then((res) => {
+      if (res.data.success) {
+        setProgress(85);
+        sessionStorage.setItem("loginId", loginId);
+        setProgress(100);
+        window.location = "/setupprofile";
+      } else {
+        setProgress(0);
+        setAlertData({
+          severity: "error",
+          msg: "Failed to link accounts!",
+        });
+        handleAlert();
       }
     });
   };
   return (
     <div className={classes.background}>
       <div className={classes.overlay}>
+        {displayAlert()}
         <Container className={classes.container}>
           <Grid
             container
@@ -452,6 +559,7 @@ export default function GetHired() {
                             <TextField
                               label="E-mail Address"
                               name="email"
+                              type="email"
                               value={formData.email}
                               onChange={setForm}
                               variant="outlined"
@@ -503,11 +611,17 @@ export default function GetHired() {
                           spacing={3}
                         >
                           <Grid item md={6} align="left">
-                            <Link to="/signIn">
-                              <Typography className={classes.link}>
-                                Have an account already? Sign In
-                              </Typography>
-                            </Link>
+                            {progress > 0 ? (
+                              <div>
+                                <LinearProgressWithLabel value={progress} />
+                              </div>
+                            ) : (
+                              <Link to="/signIn">
+                                <Typography className={classes.link}>
+                                  Have an account already? Sign In
+                                </Typography>
+                              </Link>
+                            )}
                           </Grid>
                           <Grid
                             item
@@ -521,6 +635,7 @@ export default function GetHired() {
                                 type="submit"
                                 variant="contained"
                                 className={classes.submit}
+                                disabled={progress !== 0}
                               >
                                 Sign Up
                               </Button>
@@ -533,6 +648,7 @@ export default function GetHired() {
                                 }}
                                 variant="contained"
                                 className={classes.cancel}
+                                disabled={progress !== 0}
                               >
                                 Cancel
                               </Button>

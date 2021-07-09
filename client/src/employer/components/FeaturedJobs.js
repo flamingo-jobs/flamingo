@@ -4,6 +4,9 @@ import FloatCard from './FloatCard';
 import JobCard from './JobCard';
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
 import theme from '../../Theme';
+import axios from "axios";
+import BACKEND_URL from "../../Config";
+import { useState, useEffect } from "react";
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -48,8 +51,50 @@ const useStyles = makeStyles((theme) => ({
         }
     },
 }))
+
+
 function FeaturedJobs() {
     const classes = useStyles();
+
+    const [featuredJobs, setFeaturedJobs] = useState([]);
+
+    const retrieveFeaturedJobs = () => {
+        axios.get(`${BACKEND_URL}/jobs/featuredJobs`).then(res => {
+            if (res.data.success) {
+                setFeaturedJobs(res.data.featuredJobs)
+            } else {
+                setFeaturedJobs(null)
+            }
+        })
+    }
+
+    useEffect(() => {
+        retrieveFeaturedJobs();
+
+    }, [])
+
+    const displayFeaturedJobs = () => {
+        if (featuredJobs) {
+
+            return featuredJobs.map(featuredJob => (
+                <Grid item sm={12}>
+                    <JobCard info={featuredJob} />
+                </Grid>
+            ))
+        } 
+        else {
+            return (
+                <Grid item sm={12}>
+                    <Typography>No featured Jobs</Typography>
+                </Grid>
+            )
+        }
+    }
+
+    const isEmpty = (obj) => {
+        for (var i in obj) return false;
+        return true;
+    }
 
     return (
         <div>
@@ -59,14 +104,21 @@ function FeaturedJobs() {
                         <Typography variant="h5" className={classes.title}>Featured Jobs</Typography>
                     </FloatCard>
                 </Grid>
+                {/* <Grid item sm={12}>
+                    {displayFeaturedJobs()}
+                </Grid> */}
+
                 <Grid item sm={12}>
-                    <JobCard />
+                    <JobCard></JobCard>
                 </Grid>
                 <Grid item sm={12}>
-                    <JobCard />
+                    <JobCard></JobCard>
                 </Grid>
                 <Grid item sm={12}>
-                    <JobCard />
+                    <JobCard></JobCard>
+                </Grid>
+                <Grid item sm={12}>
+                    <JobCard></JobCard>
                 </Grid>
 
                 <Grid item sm={12}>
@@ -76,7 +128,7 @@ function FeaturedJobs() {
                             endIcon={<ArrowForwardRoundedIcon />}
                         >
                             See All Featured Jobs
-      </Button>
+                        </Button>
                     </FloatCard>
                 </Grid>
                 

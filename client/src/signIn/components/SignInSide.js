@@ -1,4 +1,3 @@
-
 import { React, useState, forwardRef } from "react";
 import { useForm } from "react-hooks-helper";
 import Avatar from "@material-ui/core/Avatar";
@@ -33,11 +32,9 @@ import FacebookIcon from "@material-ui/icons/Facebook";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import ArrowBackRoundedIcon from "@material-ui/icons/ArrowBackRounded";
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
 import axios from "axios";
 import BACKEND_URL from "../../Config";
-
-const jwt = require("jsonwebtoken");
 
 function Copyright() {
   return (
@@ -55,17 +52,17 @@ function Copyright() {
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: "#6fbada",
-    minHeight: '100vh',
-    backgroundSize: 'cover',
+    minHeight: "100vh",
+    backgroundSize: "cover",
   },
   container: {
-    display: 'flex',
-    width: '100%',
-    margin: '0 auto',
+    display: "flex",
+    width: "100%",
+    margin: "0 auto",
     padding: 10,
     paddingLeft: 40,
     paddingRight: 40,
-    minHeight: '100vh',
+    minHeight: "100vh",
     [theme.breakpoints.down("xs")]: {
       paddingLeft: 8,
       paddingRight: 8,
@@ -92,7 +89,6 @@ const useStyles = makeStyles((theme) => ({
     width: "100%", // Fix IE 11 issue.
     marginTop: 20,
     display: "contents",
-
   },
   submit: {
     width: "30%",
@@ -116,7 +112,7 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: "60vh",
-    backgroundSize: 'contain'
+    backgroundSize: "contain",
   },
   logo: {
     height: 40,
@@ -136,7 +132,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     marginBottom: 20,
-    fontWeight: 500
+    fontWeight: 500,
   },
   link: {
     cursor: "pointer",
@@ -150,19 +146,18 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: "end",
   },
   forgotPwd: {
-    textAlign: 'left',
+    textAlign: "left",
     [theme.breakpoints.down("xs")]: {
-      textAlign: 'center',
-      marginBottom: 15
+      textAlign: "center",
+      marginBottom: 15,
     },
   },
   signUp: {
-    textAlign: 'right',
+    textAlign: "right",
     [theme.breakpoints.down("xs")]: {
-      textAlign: 'center',
+      textAlign: "center",
     },
-
-  }
+  },
 }));
 
 export default function SignInSide() {
@@ -189,33 +184,38 @@ export default function SignInSide() {
         if (res.data.success) {
           if (remember) {
             localStorage.setItem("userToken", res.data.token);
-            sessionStorage.setItem("userToken", res.data.token);
-          } else {
-            sessionStorage.setItem("userToken", res.data.token);
           }
-          const header = jwt.decode(res.data.token, { complete: true });
+          sessionStorage.setItem("userToken", res.data.token);
+          sessionStorage.setItem("loginId", res.data.loginId);
           window.location = "/";
         } else {
-          handleAlert();
+          handleCredentialError();
         }
       })
       .catch((err) => {
-        handleAlert();
+        console.log(err.message);
+        if (err.message === "Network Error") handleServerError();
+        else handleCredentialError();
       });
   };
 
   const classes = useStyles();
 
   // Alert Handler
-  const [open, setOpen] = useState(false);
-  const handleAlert = () => {
-    setOpen(true);
+  const [credentialError, setCredentialError] = useState(false);
+  const [serverError, setServerError] = useState(false);
+  const handleCredentialError = () => {
+    setCredentialError(true);
+  };
+  const handleServerError = () => {
+    setServerError(true);
   };
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
-    setOpen(false);
+    setCredentialError(false);
+    setServerError(false);
   };
   function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -259,9 +259,13 @@ export default function SignInSide() {
   return (
     <div className={classes.root}>
       <Container maxWidth={false} className={classes.container}>
-        <Grid item container direction="row"
+        <Grid
+          item
+          container
+          direction="row"
           justify="center"
-          alignItems="center">
+          alignItems="center"
+        >
           <CssBaseline />
 
           {/* Flamingo Animation */}
@@ -281,13 +285,11 @@ export default function SignInSide() {
 
                 <Link to="/" className={classes.return}>
                   <Chip
-
                     clickable
                     icon={<ArrowBackRoundedIcon />}
                     label="Return"
-                    style={{ backgroundColor: theme.palette.lightSkyBlue, }}
+                    style={{ backgroundColor: theme.palette.lightSkyBlue }}
                   />
-
                 </Link>
 
                 {/* Title */}
@@ -369,35 +371,51 @@ export default function SignInSide() {
                     Sign In
                   </Button>
 
-
                   {/* Forgot Password or Register */}
                   <Grid container>
                     <Grid item xs={12} sm={4} className={classes.forgotPwd}>
-                      <Link className={classes.link}>Forgot password?</Link>
+                      <Link to="/forgot-password" className={classes.link}>Forgot password?</Link>
                     </Grid>
                     <Grid item xs={12} sm={8} className={classes.signUp}>
-                      <Link className={classes.link} onClick={handleClickChoice}>
+                      <Link
+                        className={classes.link}
+                        onClick={handleClickChoice}
+                      >
                         Don't have an account? Sign Up
                       </Link>
                     </Grid>
-
                   </Grid>
-
 
                   <Box mt={3}>
                     <Copyright />
                   </Box>
                 </form>
-
               </div>
             </FloatCard>
           </Grid>
         </Grid>
-        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+
+        <Snackbar
+          open={credentialError}
+          autoHideDuration={6000}
+          onClose={handleClose}
+        >
           <Alert onClose={handleClose} severity="error">
             Login Failed! Incorrect email address or password!
           </Alert>
         </Snackbar>
+
+        <Snackbar
+          open={serverError}
+          autoHideDuration={6000}
+          onClose={handleClose}
+        >
+          <Alert onClose={handleClose} severity="error">
+            Server Error! We can't connect to the server right now. Please try
+            again later!
+          </Alert>
+        </Snackbar>
+
         <Dialog
           onClose={handleCloseChoice}
           aria-labelledby="customized-dialog-title"

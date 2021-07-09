@@ -79,6 +79,11 @@ exports.signup = (req, res, next) => {
                   user.role,
                   3600
                 );
+
+                /*
+                  // Send verification email
+                */
+
                 res.status(200).json({
                   success: true,
                   token: access_token,
@@ -98,6 +103,20 @@ exports.signup = (req, res, next) => {
         errors: [{ error: "Something went wrong" }],
       });
     });
+};
+
+exports.linkAccount = (req, res) => {
+  let { id, loginId } = req.body;
+  User.findByIdAndUpdate(id, { $set: { loginId } }, (err) => {
+    if (err) {
+      return res.status(400).json({
+        error: err,
+      });
+    }
+    return res.status(200).json({
+      success: true,
+    });
+  });
 };
 
 // User Login
@@ -156,6 +175,7 @@ exports.signin = (req, res) => {
                 if (decoded) {
                   return res.status(200).json({
                     success: true,
+                    loginId: user.loginId,
                     token: access_token,
                   });
                 }
@@ -197,5 +217,23 @@ exports.forgotPassword = async (req, res) => {
   } else {
     res.sendStatus(502);
   }
+  res.sendStatus(200);
+};
+
+exports.resetPassword = async (req, res) => {
+  const { passwordResetCode } = req.params;
+  const { newPassword } = req.body;
+  const newPasswordHash = await bcrypt.hash(newPassword, 10);
+  await User.findOneAndUpdate(
+    { passwordResetCode: passwordResetCode },
+    {
+      $set: { password: newPasswordHash },
+      $unset: { passwordResetCode: "" },
+    }
+  ).then((result) => {
+    if (!result) {
+      return res.sendStatus(500);
+    }
+  });
   res.sendStatus(200);
 };
