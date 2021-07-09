@@ -46,6 +46,10 @@ const useStyles = makeStyles((theme) => ({
   button:{
     backgroundColor: theme.palette.stateBlue,
     color:theme.palette.white,
+    '&:hover': {
+      backgroundColor: theme.palette.stateBlueHover,
+    }
+
   },
 }));
 

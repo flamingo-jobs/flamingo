@@ -69,7 +69,7 @@ const getJobsFromEmployer = (req, res) => {
 }
 
 const getAllJobsFromEmployer = (req, res) => {
-    Jobs.find({ 'organization.id' : req.params.id }, null, (err, moreFromJobs) => {
+    Jobs.find({ 'organization.id' : req.params.id }, (err, employerJobs) => {
         if (err) {
             return res.status(400).json({
                 error: err
@@ -77,7 +77,7 @@ const getAllJobsFromEmployer = (req, res) => {
         }
         return res.status(200).json({
             success: true,
-            moreFromJobs: moreFromJobs
+            employerJobs: employerJobs
         });
     });
 }

@@ -14,6 +14,9 @@ import Button from "@material-ui/core/Button";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import LocalOfferRoundedIcon from "@material-ui/icons/LocalOfferRounded";
 import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
+import axios from "axios";
+import BACKEND_URL from "../../Config";
+import { useState, useEffect } from "react";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -32,83 +35,6 @@ const StyledTableRow = withStyles((theme) => ({
     },
   },
 }))(TableRow);
-
-function createData(
-  title,
-  category,
-  location,
-  postedDate,
-  dueDate,
-  isPublished,
-  noOfResumes
-) {
-  return {
-    title,
-    category,
-    location,
-    postedDate,
-    dueDate,
-    isPublished,
-    noOfResumes,
-  };
-}
-
-const rows = [
-  createData(
-    "Software Engineer",
-    "Development",
-    "Colombo",
-    "2021-02-03",
-    "2021-08-22",
-    true,
-    5
-  ),
-  createData(
-    "Software Engineer",
-    "Development",
-    "Colombo",
-    "2021-02-03",
-    "2021-08-22",
-    false,
-    5
-  ),
-  createData(
-    "Software Engineer",
-    "Development",
-    "Colombo",
-    "2021-02-03",
-    "2021-08-22",
-    true,
-    5
-  ),
-  createData(
-    "Software Engineer",
-    "Development",
-    "Colombo",
-    "2021-02-03",
-    "2021-08-22",
-    false,
-    5
-  ),
-  createData(
-    "Software Engineer",
-    "Development",
-    "Colombo",
-    "2021-02-03",
-    "2021-08-22",
-    true,
-    5
-  ),
-  createData(
-    "Software Engineer",
-    "Development",
-    "Colombo",
-    "2021-02-03",
-    "2021-08-22",
-    true,
-    5
-  ),
-];
 
 const useStyles = makeStyles((theme) => ({
   activeChip: {
@@ -134,11 +60,32 @@ const useStyles = makeStyles((theme) => ({
 export default function CustomizedTables() {
   const classes = useStyles();
 
+  const [value, setValue] = React.useState(2);
+
+  const [state, setState] = useState({
+    allJobs: [],
+  });
+
+  const allJobs = state.allJobs;
+
+  useEffect(() => {
+    axios
+      .get(`${BACKEND_URL}/jobs/filterAllByOrganization/` + "60c246913542f942e4c84454")
+      .then((res) => {
+        console.log(res.data.employerJobs);
+        if (res.data.success) {
+          setState({
+            allJobs: res.data.employerJobs,
+          });
+        }
+      });
+  }, []);
+
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="customized table">
         <colgroup>
-          <col style={{ width: "15%" }} />
+          <col style={{ width: "20%" }} />
           <col style={{ width: "10%" }} />
           <col style={{ width: "10%" }} />
           <col style={{ width: "10%" }} />
@@ -160,7 +107,7 @@ export default function CustomizedTables() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {allJobs.map((row) => (
             <StyledTableRow key={row.name}>
               <StyledTableCell component="th" scope="row">
                 {row.title}
@@ -181,8 +128,8 @@ export default function CustomizedTables() {
                 />
               </StyledTableCell>
 
-              <StyledTableCell align="center">{row.postedDate}</StyledTableCell>
-              <StyledTableCell align="center">{row.dueDate}</StyledTableCell>
+              <StyledTableCell align="center">{row.postedDate.slice(0, 10)}</StyledTableCell>
+              <StyledTableCell align="center">{row.dueDate.slice(0, 10)}</StyledTableCell>
               <StyledTableCell align="center">
                 {row.isPublished ? (
                   <Chip
