@@ -14,11 +14,10 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 import MenuRoundedIcon from "@material-ui/icons/MenuRounded";
 import "./styles/Custom.css";
 import logo from "./images/logo.jpg";
-import { Button, Link } from "@material-ui/core";
+import { Button, Avatar, Typography } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import HomeRoundedIcon from "@material-ui/icons/HomeRounded";
-import WorkRoundedIcon from "@material-ui/icons/WorkRounded";
 import BusinessRoundedIcon from "@material-ui/icons/BusinessRounded";
 import PeopleAltRoundedIcon from "@material-ui/icons/PeopleAltRounded";
 import PhoneRoundedIcon from "@material-ui/icons/PhoneRounded";
@@ -26,6 +25,9 @@ import ThumbsUpDownRoundedIcon from "@material-ui/icons/ThumbsUpDownRounded";
 import NavMenu from "./NavMenu";
 import Backdrop from '@material-ui/core/Backdrop';
 import ExitToAppRoundedIcon from '@material-ui/icons/ExitToAppRounded';
+import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
+import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
+import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 
 const jwt = require("jsonwebtoken");
 const token = sessionStorage.getItem("userToken");
@@ -170,13 +172,16 @@ const useStyles = makeStyles((theme) => ({
   },
   menu: { marginTop: 50 },
   mobileMenu: {
-    marginTop: 50,
+    marginTop: 60,
 
     '& .MuiMenu-paper': {
       minWidth: "70%",
       padding: 16,
       borderRadius: 12,
       boxShadow: 'rgba(83, 144, 217, 0.6) 0px 4px 12px',
+      [theme.breakpoints.up("xs")]: {
+        minWidth: "unset",
+      }
 
     }
   },
@@ -186,6 +191,50 @@ const useStyles = makeStyles((theme) => ({
   },
   logoutIcon: {
     marginRight: 10
+  },
+  profilepic: {
+    borderRadius: 12
+  },
+  profileMenu: {
+    marginTop: 60,
+    '& .MuiMenu-paper': {
+      padding: 16,
+      borderRadius: 12,
+      boxShadow: 'rgba(83, 144, 217, 0.6) 0px 4px 12px',
+
+    }
+  },
+  logOut: {
+    backgroundColor: theme.palette.tuftsBlue,
+    color: theme.palette.white,
+    height: 40,
+    marginTop: 16,
+    borderRadius: 25,
+    paddingLeft: 20,
+    paddingRight: 20,
+    "&:hover": {
+      backgroundColor: theme.palette.tuftsBlueHover,
+      color: "white",
+    },
+  },
+  menuItem: {
+    paddingTop: 12,
+    paddingBottom: 12,
+    marginBottom: theme.spacing(2),
+    borderRadius: 12,
+    "&:hover": {
+      borderRadius: 12,
+      backgroundColor: theme.palette.lightSkyBlueHover + '!important',
+    },
+  },
+  menuIcon: {
+    display: 'flex',
+    color: theme.palette.stateBlue,
+    marginRight: theme.spacing(2),
+  },
+  menuText: {
+    color: theme.palette.black,
+    fontWeight: 500
   }
 }));
 
@@ -218,20 +267,63 @@ export default function Topbar(props) {
     window.location = "/account/" + header.payload.userId;
   };
 
+  const loadProfilePic = () => {
+    try {
+      console.log(header.payload.userRole)
+      if (header.payload.userRole == "employer") {
+        return require(`../employer/images/${header.payload.userId}`).default
+      } else if (header.payload.userRole == "jobseeker") {
+        return require(`../employee/images/${header.payload.userId}`).default
+      } else if (header.payload.userRole == "admin") {
+        return require(`../admin/images/profilepic.jpg`).default
+      }
+    } catch (err) {
+      return require(`../employee/images/profilePic.jpg`).default
+    }
+  }
+
+  const profileLink = () => {
+
+  }
+
   const menuId = "primary-search-account-menu";
   const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={loadMyAccount}>My account</MenuItem>
-    </Menu>
+    <Backdrop className={classes.backdrop} open={isMenuOpen} onClick={handleMenuClose}>
+      <Menu
+        anchorEl={anchorEl}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        id={menuId}
+        keepMounted
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
+        open={isMenuOpen}
+        onClose={handleMenuClose}
+        className={classes.profileMenu}
+
+      >
+        <MenuItem className={classes.menuItem} onClick={handleMenuClose}>
+          <div className={classes.menuIcon}>
+            <PersonRoundedIcon />
+          </div>
+          <Typography className={classes.menuText} >Profile</Typography>
+        </MenuItem>
+        <MenuItem className={classes.menuItem} >
+          <div className={classes.menuIcon}>
+            <SettingsRoundedIcon />
+          </div>
+          <Typography className={classes.menuText} >Settings</Typography>
+        </MenuItem>
+        <Button
+          onClick={() => {
+            localStorage.clear("userToken");
+            sessionStorage.clear("userToken");
+            window.location = "/signin";
+          }}
+          className={classes.logOut}
+        >
+          <ExitToAppRoundedIcon className={classes.logoutIcon} />Log Out
+        </Button>
+      </Menu>
+    </Backdrop>
   );
 
 
@@ -270,42 +362,32 @@ export default function Topbar(props) {
         )}
         {token && (
           <div className={classes.sectionMobile}>
-            {" "}
+            <IconButton aria-label="show 4 new mails" color="primary">
+              <Badge badgeContent={4} color="secondary">
+                <WorkRoundedIcon />
+              </Badge>
+            </IconButton>
+            <IconButton aria-label="show 11 new notifications" color="inherit" style={{ width: 64 }}>
+              <Badge badgeContent={11} color="secondary">
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+            <IconButton
+              aria-label="account of current user"
+              aria-controls="primary-search-account-menu"
+              aria-haspopup="true"
+              color="inherit"
+              onClick={handleProfileMenuOpen}
+            >
 
-            <MenuItem>
-              <IconButton aria-label="show 11 new notifications" color="inherit">
-                <Badge badgeContent={11} color="secondary">
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
-            </MenuItem>
-            <MenuItem onClick={handleProfileMenuOpen}>
-              <IconButton
-                aria-label="account of current user"
-                aria-controls="primary-search-account-menu"
-                aria-haspopup="true"
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-            </MenuItem>{" "}
+              <Avatar className={classes.profilepic} src={loadProfilePic()} variant="square" />
+
+            </IconButton>
           </div>
         )}
         <div className={classes.mobileSideMenuItems}>
           <NavMenu user={props.user} />
         </div>
-        {token && (
-          <Button
-            onClick={() => {
-              localStorage.clear("userToken");
-              sessionStorage.clear("userToken");
-              window.location = "/signin";
-            }}
-            className={classes.startHiring}
-          >
-            <ExitToAppRoundedIcon className={classes.logoutIcon} />Log Out
-          </Button>
-        )}
       </Menu>
     </Backdrop>
   );
@@ -337,14 +419,14 @@ export default function Topbar(props) {
                   <div>
                     <IconButton aria-label="show 4 new mails" color="primary">
                       <Badge badgeContent={4} color="secondary">
-                        <MailIcon />
+                        <WorkRoundedIcon />
                       </Badge>
                     </IconButton>
                     <IconButton
                       aria-label="show 17 new notifications"
                       color="primary"
                     >
-                      <Badge badgeContent={17} color="secondary">
+                      <Badge badgeContent={17} color="secondary" >
                         <NotificationsIcon />
                       </Badge>
                     </IconButton>
@@ -356,18 +438,9 @@ export default function Topbar(props) {
                       onClick={handleProfileMenuOpen}
                       color="primary"
                     >
-                      <AccountCircle />
+                      <Avatar className={classes.profilepic} src={loadProfilePic()} variant="square" />
                     </IconButton>
-                    <Button
-                      onClick={() => {
-                        localStorage.clear("userToken");
-                        sessionStorage.clear("userToken");
-                        window.location = "/signin";
-                      }}
-                      className={classes.startHiring}
-                    >
-                      <ExitToAppRoundedIcon className={classes.logoutIcon} />Log Out
-                    </Button>
+
                   </div>
                 )}
                 {!token && (
