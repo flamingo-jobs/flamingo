@@ -117,6 +117,45 @@ const update = (req, res) => {
     );
 }
 
+const updateResumeDetails =  async (req, res) => {
+    console.log("req.params.id", req.params.id)
+    console.log("req.body", req.body)
+
+    Jobs.findByIdAndUpdate(
+        req.params.id,
+        {
+            $pull: { applicationDetails: {resumeName: req.body.resumeName}  }
+        },
+        { safe: true, multi:true },
+        (err, job) => {
+            if (err) {
+                return res.status(400).json({
+                    success: false,
+                    error: err
+                })
+            }
+        }
+    );
+
+    Jobs.findByIdAndUpdate(
+        req.params.id,
+        {
+            $push: { applicationDetails: req.body  }
+        },
+        (err, job) => {
+            if (err) {
+                return res.status(400).json({
+                    success: false,
+                    error: err
+                })
+            }
+            return res.status(200).json({
+                success: true
+            });
+        }
+    );
+}
+
 const remove = (req, res) => {
     Jobs.findByIdAndDelete(req.params.id).exec((err, deletedJob) => {
         if (err) {
@@ -136,6 +175,7 @@ module.exports = {
     getAll,
     getById,
     update,
+    updateResumeDetails,
     remove,
     getFeaturedJobs,
     getJobCount,

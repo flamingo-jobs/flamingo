@@ -227,20 +227,27 @@ const updateProject = (req, res) => {
   );
 };
 
-const updateResumeDetails = async (req, res) => {
-  const resumeDetails = {
-    applicationDetails: req.body,
-  };
+const updateResumeDetails =  async (req, res) => {
+    try{
+        const removedArrayElement = await Jobseeker.findByIdAndUpdate(
+            req.params.id,
+            {$pull:{applicationDetails:{resumeName: req.body.resumeName}}},
+            { safe: true, multi:true }
+        );
+    }catch{
+        res.status(400).json({ success: false, error: err});
+    }
 
-  try {
-    const updatedPost = await Jobseeker.findByIdAndUpdate(req.params.id, {
-      $set: resumeDetails,
-    });
-    res.status(200).json({ success: true });
-  } catch (err) {
-    res.status(400).json({ success: false, error: err });
-  }
-};
+    try{
+        const updatedJobseeker = await Jobseeker.findByIdAndUpdate(
+            req.params.id,
+            { $push: { applicationDetails: req.body  } },
+        );
+        res.status(200).json({ success: true});
+    } catch(err){
+        res.status(400).json({ success: false, error: err});
+    }
+}
 
 //--------------- add --------------------------------------------
 const addUniversity = (req, res) => {

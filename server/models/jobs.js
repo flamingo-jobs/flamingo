@@ -63,8 +63,11 @@ const jobSchema = new mongoose.Schema({
     isFeatured: {
         type:Boolean,
         required: true
-    }
-    
+    },   
+    applicationDetails:{
+        type: Array,
+    }, 
+
 });
 
 module.exports = mongoose.model('Jobs', jobSchema);

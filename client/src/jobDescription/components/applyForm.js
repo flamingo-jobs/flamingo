@@ -89,6 +89,8 @@ const ApplyForm = (props) => {
   const classes = useStyles();
 
   const [userId, setUserId] = useState(props.userId);
+  const [jobId, setJobId] = useState(props.jobId);
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -154,47 +156,83 @@ const ApplyForm = (props) => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
+    // Data to rename the pdf
     const data = new FormData();
     data.append("id", userId);
+    data.append("jobId", jobId);
     data.append("resume", fileData);
 
     // DB resume details
     const resumeExt =
       "." + fileData.name.split(".")[fileData.name.split(".").length - 1];
 
-    const resumeDetails = {
+    const resumeDetailsJobSeeker = {
       name: name,
       email: email,
       phoneNumber: phoneNumber,
-      resumeName: userId + resumeExt,
+      jobId: jobId,
+      resumeName: jobId + "--" + userId + resumeExt,
+    };
+
+    const resumeDetailsJob = {
+      name: name,
+      email: email,
+      phoneNumber: phoneNumber,
+      userId: userId,
+      resumeName: jobId + "--" + userId + resumeExt,
     };
 
     try {
-      const resumeDetailsResponse = await axios.patch(
+      // Update resume details in jobseeker collection
+      const resumeDetailsResponseJobSeeker = await axios.patch(
         `${BACKEND_URL}/jobseeker/updateResumeDetails/${userId}`,
-        resumeDetails
+        resumeDetailsJobSeeker
       );
 
-      if (resumeDetailsResponse.data.success) {
-        const resumeResponse = await axios.post(`${BACKEND_URL}/resume`, data);
-        if (resumeResponse.data.success) {
-          // console.log("Resume uploaded");
+      if (resumeDetailsResponseJobSeeker.data.success) {
+        // Update resume details in jobs collection
+        const resumeDetailsResponseJob = await axios.patch(
+          `${BACKEND_URL}/jobs/updateResumeDetails/${jobId}`,
+          resumeDetailsJob
+        );
+
+        if (resumeDetailsResponseJob.data.success) {
+          // Add resume to the server
+          const resumeResponse = await axios.post(
+            `${BACKEND_URL}/resume`,
+            data
+          );
+          if (resumeResponse.data.success) {
+            setAlertData({
+              severity: "success",
+              msg: "Application sent!",
+            });
+            handleAlert();
+          } else {
+            setAlertData({
+              severity: "error",
+              msg: "Application could not be sent !",
+            });
+            handleAlert();
+          }
+        } else {
           setAlertData({
-            severity: "success",
-            msg: "Application sent!",
+            severity: "error",
+            msg: "Job collection!",
           });
           handleAlert();
         }
       } else {
-        // console.log("Resume wasn't uploaded");
-        setAlertData({
-          severity: "error",
-          msg: resumeDetailsResponse.data.error,
-        });
-        handleAlert();
+        // Error occured in job seeker update
+        if (resumeDetailsResponseJobSeeker.data.error) {
+          setAlertData({
+            severity: "error",
+            msg: "Job seeker collection",
+          });
+          handleAlert();
+        }
       }
-    } catch (err) {
-      // console.log("Resume error: ", err);
+    } catch {
       setAlertData({
         severity: "error",
         msg: "Something went wrong!",

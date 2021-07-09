@@ -48,7 +48,7 @@ const jobseekerSchema = new mongoose.Schema({
     type: Array,
   },
   applicationDetails:{
-    type: Object,
+    type: Array,
   }
 });
 
