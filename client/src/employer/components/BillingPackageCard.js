@@ -31,12 +31,14 @@ const useStyles = makeStyles((theme) => ({
   },
   features: {
     backgroundColor: theme.palette.white,
+    float: "left",
+    marginLeft: "15%",
   },
   icon: {
     color: theme.palette.darkGreen,
   },
   featuresContainer: {
-    marginBottom: 20,
+    marginBottom: "70%",
   },
   annual:{
     color: theme.palette.stateBlue,
@@ -48,9 +50,13 @@ const useStyles = makeStyles((theme) => ({
     color:theme.palette.white,
     '&:hover': {
       backgroundColor: theme.palette.stateBlueHover,
-    }
+    },
+    float: "center",
 
   },
+  firstDivider:{
+    marginTop: "12%",
+  }
 }));
 
 export default function BillingPackageCard() {
@@ -87,7 +93,7 @@ export default function BillingPackageCard() {
               >
                 FREE
               </Box>
-              <Divider variant="middle" />
+              <Divider variant="middle" className={classes.firstDivider}/>
             </Typography>
 
             <div className={classes.featuresContainer}>

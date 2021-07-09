@@ -10,6 +10,7 @@ import {
 import Grid from "@material-ui/core/Grid";
 import ProfileStatCard from "./components/ProfileStatCard";
 import FeaturedJobs from "./components/FeaturedJobs";
+import Reviews from "./components/Reviews";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,6 +58,7 @@ const Dashboard = () => {
       <Grid item xs={5} sm={5} spacing={3}>
         <ProfileStatCard />
         <br></br>
+        <Reviews/>
       </Grid>
     </Grid>
   );
