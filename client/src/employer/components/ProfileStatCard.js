@@ -11,7 +11,8 @@ import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
 import TimelineConnector from '@material-ui/lab/TimelineConnector';
 import TimelineContent from '@material-ui/lab/TimelineContent';
 import TimelineDot from '@material-ui/lab/TimelineDot';
-import HelpIcon from '@material-ui/icons/Help';
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import Box from "@material-ui/core/Box";
 
 
 
@@ -36,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: 20,
     },
     ratingText: {
-        color: theme.palette.white,
+        color: theme.palette.black,
         marginTop:5,
         marginLeft:5,
 
@@ -46,20 +47,27 @@ const useStyles = makeStyles((theme) => ({
     },
     paper: {
         padding: '6px 16px',
+        backgroundColor:theme.palette.greenyLightSky,
     },
     secondaryTail: {
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor:theme.palette.greenyLightSky,
     },
     timelineIcons:{
         color: theme.palette.white,
     },
     button: {
         marginTop:-0.5,
-        color:theme.palette.white,
-        backgroundColor:theme.palette.blueJeans,
+        color:theme.palette.black,
+        backgroundColor:theme.palette.greenyLightSky,
         margin: theme.spacing(1),
+        '&:hover': {
+            backgroundColor: theme.palette.greenyLightSkyHover,
+        }
     
     },
+    ratingAverage:{
+        marginLeft: "20%",
+    }
 }))
 
 function ProfileStatCard() {
@@ -71,26 +79,51 @@ function ProfileStatCard() {
 
         <div className={classes.root}>
 
-            <FloatCard backColor={'#4EA8DE'}>
+            <FloatCard>
+                <Grid item container spacing={1} justify="center" alignItems="center">
 
-                <Grid item container spacing={2}>
-
-                    <Grid item xs={4}>
-                        <div className={classes.rating}>
-                            <Rating name="half-rating-read" defaultValue={2.5} precision={0.5} readOnly />
-                        </div>                       
-                    </Grid>
-                    
-                    <Grid item xs={8} >
-                        <div className={classes.ratingText}>
+                    <Grid item xs={3} >
+                        <div className={classes.ratingAverage}>
                             <Typography variant="body2">
-                                4.5 stars based on 124 reviews
+                                <Box
+                                    fontWeight={1500}
+                                    fontSize={50}
+                                    m={1}
+                                >
+                                    3.5
+                                </Box>
                             </Typography>
 
                         </div>                    
                     </Grid>
 
+                    <Grid item xs={5}>
+                        <div className={classes.rating}>
+                            <Rating name="half-rating-read" size="large" defaultValue={2.5} precision={0.5} readOnly />
+                        </div>                       
+                    </Grid>
+
+                    <Grid item xs={4}>
+                        <div className={classes.ratingText}>
+
+                            <Typography variant="body2">
+                                (124 reviews)
+                            </Typography>
+
+                        </div> 
+                    </Grid>
+
                 </Grid>
+
+               
+
+            </FloatCard>
+
+            <br />
+
+            <FloatCard backColor={'#4EA8DE'}>
+
+               
 
                 <div>
 
@@ -120,11 +153,11 @@ function ProfileStatCard() {
                                             </Grid>
                                             <Grid item xs={4}>
                                                 <Button
-                                                variant="contained" size="small"
-                                                className={classes.button}
-                                                startIcon={<HelpIcon />}
-                                                >
-                                                    
+                                                    variant="contained" size="small"
+                                                    className={classes.button}
+                                                    endIcon={<NavigateNextIcon />}
+                                                    >
+                                                    MORE 
                                                 </Button>
                                             </Grid>
 
@@ -153,12 +186,12 @@ function ProfileStatCard() {
 
                                             </Grid>
                                             <Grid item xs={4}>
-                                                <Button
+                                            <Button
                                                 variant="contained" size="small"
                                                 className={classes.button}
-                                                startIcon={<HelpIcon />}
+                                                endIcon={<NavigateNextIcon />}
                                                 >
-                                                    
+                                                   MORE 
                                                 </Button>
                                             </Grid>
 
@@ -187,12 +220,12 @@ function ProfileStatCard() {
 
                                             </Grid>
                                             <Grid item xs={4}>
-                                                <Button
+                                            <Button
                                                 variant="contained" size="small"
                                                 className={classes.button}
-                                                startIcon={<HelpIcon />}
+                                                endIcon={<NavigateNextIcon />}
                                                 >
-                                                    
+                                                   MORE 
                                                 </Button>
                                             </Grid>
 
@@ -224,9 +257,9 @@ function ProfileStatCard() {
                                                 <Button
                                                 variant="contained" size="small"
                                                 className={classes.button}
-                                                startIcon={<HelpIcon />}
+                                                endIcon={<NavigateNextIcon />}
                                                 >
-                                                    
+                                                   MORE 
                                                 </Button>
                                             </Grid>
 

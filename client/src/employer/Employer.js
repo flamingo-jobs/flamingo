@@ -54,14 +54,10 @@ const Employer = () => {
     >
       <Grid item containerxs={7} sm={7} spacing={3}>
         <CompanyInfo></CompanyInfo>
-        <br></br>
-        <FeaturedJobs></FeaturedJobs>
       </Grid>
 
       <Grid item xs={5} sm={5} spacing={3}>
         <TechStack></TechStack>
-        <br></br>
-        <Reviews></Reviews>
       </Grid>
     </Grid>
   );

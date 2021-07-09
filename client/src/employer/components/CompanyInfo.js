@@ -647,7 +647,15 @@ function CompanyInfo() {
               </label>
             </Grid>
           </Grid>
+        </Grid>
+      </FloatCard>
 
+
+      <br />
+
+
+      <FloatCard>
+        <Grid container xs={12} direction="row" spacing={3}>
           {/* BODY PART OF THE COMPANY INFO CARD */}
 
           <Grid item xs={12}>
@@ -671,6 +679,7 @@ function CompanyInfo() {
               </Typography>
             </div>
           </Grid>
+
         </Grid>
       </FloatCard>
     </div>
