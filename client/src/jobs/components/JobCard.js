@@ -81,6 +81,23 @@ function JobCard(props) {
 
     const classes = useStyles();
     const { loading = false } = props;
+
+    const loadLogo = () => {
+        try {
+            return require(`../../employer/images/${props.info.organization.logo}`).default;
+        } catch (err) {
+            return require(`../../employer/images/default_company_logo.png`).default;
+        }
+    }
+
+    const loadName = () => {
+        try {
+            return props.info.organization.name;
+        } catch (err) {
+            return "No Organization";
+        }
+    }
+
     return (
         <FloatCard >
         <div className={classes.root}>
@@ -104,8 +121,8 @@ function JobCard(props) {
             </div>
             <div className={classes.footer} >
                 <div className={classes.footerLeft}>
-                    <Avatar className={classes.logo} src={require(`../../employer/images/${props.info.organization.logo}`).default} variant="square" />
-                    <Typography className={classes.company}>{props.info.organization.name}</Typography>
+                    <Avatar className={classes.logo} src={loadLogo()} variant="square" />
+                    <Typography className={classes.company}>{loadName()}</Typography>
                 </div>
                 <div className={classes.footerRight} >
                 <Link to={`/jobDescription/${props.info._id}`}><Button className={classes.applyButton}>View Job</Button></Link>

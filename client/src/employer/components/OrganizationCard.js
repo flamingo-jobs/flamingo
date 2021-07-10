@@ -88,12 +88,20 @@ function OrganizationCard(props) {
         return arr.map(item => item.rating).reduce((a, x) => a + x, 0) / arr.length;
     }
 
+    const loadLogo = () => {
+        try {
+            return require(`../images/${props.info.logo}`).default;
+        } catch (err) {
+            return require(`../images/default_company_logo.png`).default;
+        }
+    }
+
     return (
         <FloatCard >
             <div className={classes.root}>
                 <div className={classes.header}>
                     <div className={classes.headerLeft}>
-                        <Avatar className={classes.logo} src={require(`../images/${props.info.logo}`).default} variant="square" />
+                        <Avatar className={classes.logo} src={loadLogo()} variant="square" />
                         <div className={classes.headerInfo}>
                             <Typography variant="h5" className={classes.title} >{props.info.name}</Typography>
                             <Chip icon={<LocationOnRoundedIcon />} label={props.info.locations.join(', ')} className={classes.tag} />
