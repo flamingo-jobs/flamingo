@@ -105,9 +105,10 @@ function ProjectsSection() {
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
   let i=0;
+  let loginId=sessionStorage.getItem("loginId");
 
   function fetchData(){
-    axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
+    axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
     .then(res => {
       if(res.data.success){
         if(res.data.jobseeker.project.length > 0){
@@ -124,7 +125,7 @@ function ProjectsSection() {
 
   function deleteData(index){
     project.splice(index,1)
-    axios.put(`${BACKEND_URL}/jobseeker/removeProject/60c5f2e555244d11c8012480`,project)
+    axios.put(`${BACKEND_URL}/jobseeker/removeProject/${loginId}`,project)
     .then(res => {
       if(res.data.success){
         setAlertData({
@@ -230,7 +231,7 @@ function ProjectsSection() {
         usedTech: state.usedTech
     }
 
-    axios.put(`${BACKEND_URL}/jobseeker/addProject/60c5f2e555244d11c8012480`,newProject)
+    axios.put(`${BACKEND_URL}/jobseeker/addProject/${loginId}`,newProject)
     .then(res => {
       if(res.data.success){
         setAlertData({

@@ -76,9 +76,10 @@ function Volunteer() {
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
   let i=0;
+  let loginId=sessionStorage.getItem("loginId");
 
   function fetchData(){
-    axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
+    axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
     .then(res => {
       if(res.data.success){
         if(res.data.jobseeker.volunteer.length > 0){
@@ -95,7 +96,7 @@ function Volunteer() {
 
   function deleteData(index){
     volunteer.splice(index,1)
-    axios.put(`${BACKEND_URL}/jobseeker/removeVolunteer/60c5f2e555244d11c8012480`,volunteer)
+    axios.put(`${BACKEND_URL}/jobseeker/removeVolunteer/${loginId}`,volunteer)
     .then(res => {
       if(res.data.success){
         setAlertData({
@@ -194,7 +195,7 @@ function Volunteer() {
         description: state.description,
     }
 
-    axios.put(`${BACKEND_URL}/jobseeker/addVolunteering/60c5f2e555244d11c8012480`,newVolunteering)
+    axios.put(`${BACKEND_URL}/jobseeker/addVolunteering/${loginId}`,newVolunteering)
     .then(res => {
       if(res.data.success){
         setAlertData({

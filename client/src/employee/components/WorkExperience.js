@@ -87,9 +87,10 @@ function WorkExperience() {
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
   let i=0;
+  let loginId=sessionStorage.getItem("loginId");
 
   function fetchData(){
-    axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
+    axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
     .then(res => {
       if(res.data.success){
         if(res.data.jobseeker.work.length > 0){
@@ -97,8 +98,9 @@ function WorkExperience() {
             res.data.jobseeker.work.splice(0,1)
             i++;
           }
+          //setWork(res.data.jobseeker.work)
         }
-        setWork(res.data.jobseeker.work)
+        
       }
     })
     setFetchedData(0)
@@ -106,7 +108,7 @@ function WorkExperience() {
 
   function deleteData(index){
     work.splice(index,1)
-    axios.put(`${BACKEND_URL}/jobseeker/removeWork/60c5f2e555244d11c8012480`,work)
+    axios.put(`${BACKEND_URL}/jobseeker/removeWork/${loginId}`,work)
     .then(res => {
       if(res.data.success){
         setAlertData({
@@ -223,7 +225,7 @@ function WorkExperience() {
         taskAndResponsibility: state.taskAndResponsibility,
     }
 
-    axios.put(`${BACKEND_URL}/jobseeker/addWork/60c5f2e555244d11c8012480`,newWork)
+    axios.put(`${BACKEND_URL}/jobseeker/addWork/${loginId}`,newWork)
     .then(res => {
       if(res.data.success){
         setAlertData({

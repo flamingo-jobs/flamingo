@@ -77,18 +77,24 @@ function Course() {
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
   let i=0;
+  let loginId=sessionStorage.getItem("loginId");
 
   function fetchData(){
-    axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
+    let courseData;
+    axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
     .then(res => {
       if(res.data.success){
         if(res.data.jobseeker.course.length > 0){
+          courseData = res.data.jobseeker.course;
           if(Object.keys(res.data.jobseeker.course[0]).length === 0){
+            res.data.jobseeker.course.splice(0,1)
+            i++;
+          }else if(courseData[0].name =="" && courseData[0].institute =="" && courseData[0].from =="" && courseData[0].to =="" && courseData[0].description ==""){
             res.data.jobseeker.course.splice(0,1)
             i++;
           }
         }
-        setCourse(res.data.jobseeker.course)
+        setCourse(res.data.jobseeker.courseData)
       }
     })
     setFetchedData(0)
@@ -96,7 +102,7 @@ function Course() {
 
   function deleteData(index){
     course.splice(index,1)
-    axios.put(`${BACKEND_URL}/jobseeker/removeCourse/60c5f2e555244d11c8012480`,course)
+    axios.put(`${BACKEND_URL}/jobseeker/removeCourse/${loginId}`,course)
     .then(res => {
       if(res.data.success){
         setAlertData({
@@ -195,7 +201,7 @@ function Course() {
         description: state.description,
     }
 
-    axios.put(`${BACKEND_URL}/jobseeker/addCourse/60c5f2e555244d11c8012480`,newCourse)
+    axios.put(`${BACKEND_URL}/jobseeker/addCourse/${loginId}`,newCourse)
     .then(res => {
       if(res.data.success){
         setAlertData({

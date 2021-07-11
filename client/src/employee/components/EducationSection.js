@@ -122,6 +122,7 @@ function EducationSection() {
   let i=0;
   let j=0;
   let eduCount=0;
+  let loginId=sessionStorage.getItem("loginId");
 
   function getYearsFrom(){
     let minOffset = 0, maxOffset = 25;
@@ -242,23 +243,32 @@ function EducationSection() {
   }
 
   function fetchData(){
-    axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
+    let uniData,schoolData;
+    axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
     .then(res => {
       if(res.data.success){
         if(res.data.jobseeker.university.length > 0){
-          if(Object.keys(res.data.jobseeker.university[0]).length === 0){
-            res.data.jobseeker.university.splice(0,1)
+          uniData = res.data.jobseeker.university;
+          if(Object.keys(uniData[0]).length === 0){
+            uniData.splice(0,1)
+            i++;
+          }else if(uniData[0].university == "" && uniData[0].degree == "" && uniData[0].fieldOfStudy == "" && uniData[0].startDate == "" && uniData[0].endDate == ""){
+            uniData.splice(0,1)
             i++;
           }
         }
         if(res.data.jobseeker.school.length > 0){
-          if(Object.keys(res.data.jobseeker.school[0]).length === 0){
-            res.data.jobseeker.school.splice(0,1)
+          schoolData = res.data.jobseeker.school;
+          if(Object.keys(schoolData[0]).length === 0){
+            schoolData.splice(0,1)
             j++;
+          }else if(schoolData[0].school == ""){
+            schoolData.splice(0,1)
+            i++;
           }
         }
-        setUniversityFields(res.data.jobseeker.university)
-        setSchoolFields(res.data.jobseeker.school)
+        setUniversityFields(uniData)
+        setSchoolFields(schoolData)
         console.log("data fetched");
       }
     })
@@ -277,7 +287,7 @@ function EducationSection() {
       societiesAndActivities: university.societiesAndActivities
     }
 
-    axios.put(`${BACKEND_URL}/jobseeker/addUniversity/60c5f2e555244d11c8012480`,uni)
+    axios.put(`${BACKEND_URL}/jobseeker/addUniversity/${loginId}`,uni)
     .then(res => {
       if(res.data.success){
         setAlertData({
@@ -306,7 +316,7 @@ function EducationSection() {
       description: school.description
     }
 
-    axios.put(`${BACKEND_URL}/jobseeker/addSchool/60c5f2e555244d11c8012480`,sch)
+    axios.put(`${BACKEND_URL}/jobseeker/addSchool/${loginId}`,sch)
     .then(res => {
       if(res.data.success){
         setAlertData({
@@ -350,7 +360,7 @@ function EducationSection() {
   function deleteUniversity(index){
     universityFields.splice(index,1);
     console.log(universityFields)
-    axios.put(`${BACKEND_URL}/jobseeker/removeUniversity/60c5f2e555244d11c8012480`,universityFields)
+    axios.put(`${BACKEND_URL}/jobseeker/removeUniversity/${loginId}`,universityFields)
     .then(res => {
       if(res.data.success){
         setAlertData({
@@ -373,7 +383,7 @@ function EducationSection() {
   function deleteSchool(index){
     schoolFields.splice(index,1);
     console.log(schoolFields)
-    axios.put(`${BACKEND_URL}/jobseeker/removeSchool/60c5f2e555244d11c8012480`,schoolFields)
+    axios.put(`${BACKEND_URL}/jobseeker/removeSchool/${loginId}`,schoolFields)
     .then(res => {
       if(res.data.success){
         setAlertData({

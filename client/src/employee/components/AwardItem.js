@@ -96,6 +96,7 @@ function AchievementItem(props) {
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
   const index = props.index;
+  let loginId=sessionStorage.getItem("loginId");
   
   useEffect(() => {
     if (deleteSuccess == true) {
@@ -184,7 +185,7 @@ function AchievementItem(props) {
         description: state.description,
     }
 
-    axios.put(`${BACKEND_URL}/jobseeker/updateAward/60c5f2e555244d11c8012480`,{index:props.index,award:award})
+    axios.put(`${BACKEND_URL}/jobseeker/updateAward/${loginId}`,{index:props.index,award:award})
     .then(res => {
       if(res.data.success){
         setAlertData({

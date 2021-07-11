@@ -113,6 +113,7 @@ function EduItem(props) {
   const [alertShow, setAlertShow] = React.useState(false);
   
   const [form, setForm] = useState(null);
+  let loginId=sessionStorage.getItem("loginId");
 
   useEffect(() => {
     if (deleteSuccess == true) {
@@ -248,7 +249,7 @@ function EduItem(props) {
         societiesAndActivities: university.societiesAndActivities
     }
 
-    axios.put(`${BACKEND_URL}/jobseeker/updateUniversity/60c5f2e555244d11c8012480`,{index:props.index,university:uni})
+    axios.put(`${BACKEND_URL}/jobseeker/updateUniversity/${loginId}`,{index:props.index,university:uni})
     .then(res => {
       if(res.data.success){
         setAlertData({
@@ -276,7 +277,7 @@ function EduItem(props) {
         description: school.description
     }
 
-    axios.put(`${BACKEND_URL}/jobseeker/updateSchool/60c5f2e555244d11c8012480`,{index:props.index,school:sch})
+    axios.put(`${BACKEND_URL}/jobseeker/updateSchool/${loginId}`,{index:props.index,school:sch})
     .then(res => {
       if(res.data.success){
         setAlertData({
