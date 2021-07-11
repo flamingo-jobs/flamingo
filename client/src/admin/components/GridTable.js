@@ -48,6 +48,21 @@ const useStyles = makeStyles((theme) => ({
             backgroundColor: theme.palette.lightyPink,
         }
     },
+    paperRoot: {
+        padding: 20,
+    },
+    confrimDelete: {
+        boxShadow: "none",
+        color: theme.palette.red,
+        backgroundColor: theme.palette.lightyPink,
+        borderRadius: 12,
+        marginLeft: "16px !important",
+        padding: "10px",
+        "&:hover": {
+            backgroundColor: theme.palette.lightyPinkHover,
+            boxShadow: "none",
+        },
+    },
 
 }))
 
@@ -293,18 +308,19 @@ function GridTable(props) {
                 onClose={handleClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
+                classes={{paper: classes.paperRoot}}
             >
                 <DialogTitle id="alert-dialog-title">{"Confirm Delete?"}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Are you sure that you want to delete the selected item? This cannot be undone.
+                        Are you sure that you want to delete the selected item? <b>This cannot be undone.</b>
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">
                         No
                     </Button>
-                    <Button onClick={deleteRow} color="primary" autoFocus>
+                    <Button onClick={deleteRow} color="primary" className={classes.confrimDelete} autoFocus>
                         Yes
                     </Button>
                 </DialogActions>

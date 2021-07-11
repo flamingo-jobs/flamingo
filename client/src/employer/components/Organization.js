@@ -88,7 +88,7 @@ function Organization(props) {
                         <Avatar className={classes.logo} src={require(`../images/${props.info.logo}`).default} variant="square" />
                         <div className={classes.info}>
                             <Typography variant="h6" className={classes.company}>{props.info.name}</Typography>
-                            <Typography>{props.info.openings} openings</Typography>
+                            <Typography>{props.info.openings}5 openings</Typography>
                         </div>
                     </div>
                     <div className={classes.headerRight} >
