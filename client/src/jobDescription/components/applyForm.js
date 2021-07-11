@@ -15,6 +15,8 @@ import axios from "axios";
 import DescriptionIcon from "@material-ui/icons/Description";
 import SnackBarAlert from "../../components/SnackBarAlert";
 import { StateBlueTextField } from "../components/customTextField";
+import Lottie from "react-lottie";
+import ItPerson from "../lotties/itPerson.json";
 
 const useStyles = makeStyles((theme) => ({
   applyFormWrapper: {
@@ -24,20 +26,21 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(3),
   },
-  formTitle: {
+  formInfo: {
     marginBottom: theme.spacing(3),
-    textAlign: "left",
+    textAlign: "center",
     color: theme.palette.black,
+    fontWeight: 500,
   },
   textField: {
     marginBottom: theme.spacing(3),
   },
   uploadButton: {
     width: "250px",
-    color: theme.palette.stateBlue,
-    borderColor: theme.palette.stateBlue,
+    color: theme.palette.tuftsBlue,
+    borderColor: theme.palette.tuftsBlue,
     "&:hover": {
-      borderColor: theme.palette.stateBlue,
+      borderColor: theme.palette.tuftsBlueHover,
     },
   },
   input: {
@@ -49,10 +52,11 @@ const useStyles = makeStyles((theme) => ({
   submitButton: {
     width: "250px",
     marginTop: theme.spacing(2),
-    background: theme.palette.stateBlue,
+    background: theme.palette.tuftsBlue,
+    // background: "#E94B4C",
     transition: "0.3s",
     "&:hover": {
-      background: theme.palette.stateBlueHover,
+      background: theme.palette.tuftsBlueHover,
       transition: "0.3s",
     },
   },
@@ -62,12 +66,12 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
   },
   fileIcon: {
-    color: theme.palette.stateBlue,
+    color: theme.palette.tuftsBlue,
     marginRight: "7px",
   },
   fileName: {
     paddingTop: "2px",
-    color: theme.palette.stateBlue,
+    color: theme.palette.tuftsBlue,
     marginRight: "7px",
   },
   removeBtn: {
@@ -79,6 +83,13 @@ const useStyles = makeStyles((theme) => ({
   removeIcon: {
     height: "18px",
     color: theme.palette.stateBlue,
+  },
+  titleWrapper: {
+    marginBottom: theme.spacing(2),
+  },
+  title: {
+    fontWeight: 600,
+    color: theme.palette.black,
   },
 }));
 
@@ -99,15 +110,6 @@ const ApplyForm = (props) => {
   const [alertShow, setAlertShow] = useState(false);
   const [alertData, setAlertData] = useState({ severity: "", msg: "" });
 
-  const handleNameChange = (e) => {
-    setName(e.target.value);
-  };
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-  const handlePhoneNumberChange = (e) => {
-    setPhoneNumber(e.target.value);
-  };
   const handleFileChange = (e) => {
     setFileData(e.target.files[0]);
   };
@@ -246,44 +248,41 @@ const ApplyForm = (props) => {
     }
   };
 
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: ItPerson,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+
   return (
     <div className={classes.applyFormWrapper}>
       {displayAlert()}
-      <FloatCard>
-        <Container className={classes.res}>
-          <Typography variant="h6" className={classes.formTitle} id="applyForm">
+      <div className={classes.titleWrapper}>
+        <FloatCard>
+          <Typography variant="h5" className={classes.title}>
             Apply for this job
           </Typography>
+        </FloatCard>
+      </div>
+      <FloatCard>
+        <Container className={classes.res}>
+          <Typography className={classes.formInfo} id="applyForm">
+            Upload your resume using below link.<br/>
+            You can view the status of the application shortlisting process<br/>
+            in the Applied Jobs page.
+          </Typography>
+          <div className={classes.animation}>
+            <Lottie
+              className={classes.lottie}
+              options={defaultOptions}
+              height="300px"
+              width="300px"
+            />
+          </div>
           <form onSubmit={handleFormSubmit} encType="multipart/form-data">
-            <StateBlueTextField
-              id="name"
-              name="name"
-              label="Name with initials"
-              variant="outlined"
-              fullWidth
-              className={classes.textField}
-              onChange={handleNameChange}
-            />
-
-            <StateBlueTextField
-              id="email"
-              name="email"
-              label="Email"
-              variant="outlined"
-              fullWidth
-              className={classes.textField}
-              onChange={handleEmailChange}
-            />
-            <StateBlueTextField
-              id="phonenumber"
-              name="phoneNumber"
-              label="Phone number"
-              variant="outlined"
-              fullWidth
-              className={classes.textField}
-              onChange={handlePhoneNumberChange}
-            />
-
             <div style={{ color: "#fff" }}>
               <input
                 accept="image/*"
@@ -312,9 +311,6 @@ const ApplyForm = (props) => {
               className={classes.submitButton}
               type="submit"
               // disabled={
-              //   name === "" ||
-              //   email === "" ||
-              //   phoneNumber === "" ||
               //   fileData === "empty"
               // }
             >
