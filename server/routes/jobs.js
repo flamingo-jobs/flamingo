@@ -28,6 +28,7 @@ router.post('/jobs/getJobCount', jobsController.getJobCount);
 
 router.get('/jobs/:id', jobsController.getById);
 router.patch('/jobs/updateResumeDetails/:id', jobsController.updateResumeDetails);
+router.patch("/jobs/resetApplicationDetails", jobsController.resetAll);
 
 // update job
 

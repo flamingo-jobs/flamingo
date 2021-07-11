@@ -11,7 +11,7 @@ const fileStorageEngine = multer.diskStorage({
     cb(null, path.join(__dirname, "../resumes/"));
   },
   filename: (req, file, cb) => {
-    fileName = req.body.jobId + "--" + req.body.id + path.extname(file.originalname);
+    fileName = req.body.jobId + "--" + req.body.userId + path.extname(file.originalname);
     fileName.replace(/:/g, "-");
     cb(null, fileName);
   },
