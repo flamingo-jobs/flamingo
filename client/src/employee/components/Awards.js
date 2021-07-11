@@ -77,9 +77,10 @@ function Achievements() {
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
   let i=0;
+  let loginId=sessionStorage.getItem("loginId");
 
   function fetchData(){
-    axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
+    axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
     .then(res => {
       if(res.data.success){
         if(res.data.jobseeker.award.length > 0){
@@ -96,7 +97,7 @@ function Achievements() {
 
   function deleteData(index){
     award.splice(index,1)
-    axios.put(`${BACKEND_URL}/jobseeker/removeAward/60c5f2e555244d11c8012480`,award)
+    axios.put(`${BACKEND_URL}/jobseeker/removeAward/${loginId}`,award)
     .then(res => {
       if(res.data.success){
         setAlertData({
@@ -188,7 +189,7 @@ function Achievements() {
         description: state.description,
     }
 
-    axios.put(`${BACKEND_URL}/jobseeker/addAward/60c5f2e555244d11c8012480`,newAward)
+    axios.put(`${BACKEND_URL}/jobseeker/addAward/${loginId}`,newAward)
     .then(res => {
       if(res.data.success){
         setAlertData({

@@ -97,6 +97,7 @@ function CourseItem(props) {
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
   const index = props.index;
+  let loginId=sessionStorage.getItem("loginId");
   
   useEffect(() => {
     if (deleteSuccess == true) {
@@ -192,7 +193,7 @@ function CourseItem(props) {
         description: state.description,
     }
 
-    axios.put(`${BACKEND_URL}/jobseeker/updateCourse/60c5f2e555244d11c8012480`,{index:props.index,course:course})
+    axios.put(`${BACKEND_URL}/jobseeker/updateCourse/${loginId}`,{index:props.index,course:course})
     .then(res => {
       if(res.data.success){
         setAlertData({

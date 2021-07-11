@@ -126,10 +126,11 @@ function IntroSection() {
     landLine: "",
     email: ""
   });
+  let loginId=sessionStorage.getItem("loginId");
 
 
   useEffect(()=>{
-    axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
+    axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
     .then(res => {
       if(res.data.success){
         setState({
@@ -229,7 +230,7 @@ function IntroSection() {
       },
     }
 
-    axios.put(`${BACKEND_URL}/jobseeker/update/60c5f2e555244d11c8012480`,jobseeker)
+    axios.put(`${BACKEND_URL}/jobseeker/update/${loginId}`,jobseeker)
     .then(res => console.log(jobseeker));
     handleClose();
   }

@@ -100,6 +100,7 @@ function ProjectItem(props) {
   const [loading, setLoading] = useState(true);
   const [alertShow, setAlertShow] = React.useState(false);
   const index = props.index;
+  let loginId=sessionStorage.getItem("loginId");
   
   useEffect(() => {
     if (deleteSuccess == true) {
@@ -203,7 +204,7 @@ const handleDelete = () => {
         usedTech: state.usedTech
   }
 
-    axios.delete(`${BACKEND_URL}/jobseeker/updateProject/60c5f2e555244d11c8012480`,{index:props.index,project:project})
+    axios.delete(`${BACKEND_URL}/jobseeker/updateProject/${loginId}`,{index:props.index,project:project})
     .then(res => {
       if(res.data.success){
         setAlertData({

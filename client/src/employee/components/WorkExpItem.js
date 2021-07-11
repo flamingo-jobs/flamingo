@@ -95,6 +95,7 @@ function WorkExpItem(props) {
   const [loading, setLoading] = useState(true);
   const [alertShow, setAlertShow] = React.useState(false);
   const index = props.index;
+  let loginId=sessionStorage.getItem("loginId");
   
   useEffect(() => {
     if (deleteSuccess == true) {
@@ -198,7 +199,7 @@ function WorkExpItem(props) {
       taskAndResponsibility: state.taskAndResponsibility,
   }
 
-    axios.put(`${BACKEND_URL}/jobseeker/updateWork/60c5f2e555244d11c8012480`,{index:props.index,work:work})
+    axios.put(`${BACKEND_URL}/jobseeker/updateWork/${loginId}`,{index:props.index,work:work})
     .then(res => {
       if(res.data.success){
         setAlertData({
