@@ -200,7 +200,12 @@ const ApplyForm = (props) => {
           // Add resume to the server
           const resumeResponse = await axios.post(
             `${BACKEND_URL}/resume`,
-            data
+            data,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
           );
           if (resumeResponse.data.success) {
             setAlertData({
