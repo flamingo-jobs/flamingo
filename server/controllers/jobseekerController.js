@@ -249,6 +249,18 @@ const updateResumeDetails =  async (req, res) => {
     }
 }
 
+const downloadResume = async (req, res) => {
+  try {
+    const file = await File.findById(req.params.id);
+    res.set({
+      'Content-Type': "application/pdf"
+    });
+    res.sendFile(path.join(__dirname, '..', file.file_path));
+  } catch (error) {
+    res.status(400).send('Error while downloading file. Try again later.');
+  }
+}
+
 //--------------- add --------------------------------------------
 const addUniversity = (req, res) => {
   Jobseeker.findOneAndUpdate(
@@ -551,6 +563,7 @@ module.exports = {
   updateWork,
   updateProject,
   updateResumeDetails,
+  downloadResume,
   remove,
   removeUniversity,
   removeSchool,
