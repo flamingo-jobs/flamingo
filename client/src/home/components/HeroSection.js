@@ -79,7 +79,12 @@ function HeroSection() {
               Find the Career You Deserve !
             </Typography>
             <Typography variant="h6" className={classes.h4}>
-            Flamingo goes few steps further from a typical job portal and brings a novel recruitment experience for the Sri Lankan IT industry by making use of cutting edge technology. Create your flamingo account today and apply for job opportunities from the top employers in the field!
+            Flamingo goes few steps further from a typical job portal 
+            and brings a novel recruitment experience for the Sri Lankan IT 
+            industry by making use of cutting edge technology. 
+
+            Create your flamingo account today and apply for job opportunities 
+            from the top employers in the field!
             </Typography>
             <Button
               onClick={() => {

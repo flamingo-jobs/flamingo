@@ -45,7 +45,7 @@ function JobDescription() {
   const [job, setJob] = useState("empty");
   const [moreFromJobs, setMoreFromJobs] = useState(null);
   const isSignedIn = true;
-  const userId = "60c307a5e6fc9d330c02c2d2";
+  const userId = "60e88763e523bf3354852516";
 
   let { id } = useParams();
   const [jobId, setJobId] = useState(window.location.pathname.split("/")[2]);

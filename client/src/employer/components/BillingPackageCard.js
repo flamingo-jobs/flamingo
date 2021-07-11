@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 275,
     border: `1px solid #5E60CE`,
     borderRadius: 10,
+    margin: '30px 10px 30px 10px',
     // background: "linear-gradient(45deg, #64DFDF 30%, #FFFFFF 90%)",
   },
   title: {

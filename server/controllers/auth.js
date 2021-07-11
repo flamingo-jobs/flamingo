@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { createJWT } = require("../utils/auth");
 const User = require("../models/users");
+const FRONTEND_URL = require("../Config").FRONTEND_URL;
 
 // Regex for validation of email address
 const emailRegexp =
@@ -205,7 +206,7 @@ exports.forgotPassword = async (req, res) => {
         text: `
       Hi, We're sending you this email because you requested
       a password reset. Click on this link to create a new password:
-      http://localhost:3000/reset-password/${passwordResetCode}
+      http://${FRONTEND_URL}/reset-password/${passwordResetCode}
       If you didn't request a password reset, you can
       ignore this email. Your password will not be changed.
       `,

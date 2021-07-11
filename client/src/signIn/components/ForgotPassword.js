@@ -9,11 +9,13 @@ import {
   CardMedia,
   Link,
   Chip,
+  Box,
 } from "@material-ui/core";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import FloatCard from "../../components/FloatCard";
 import cardImage from "../../signIn/images/flamingo.gif";
+import ArrowBackRoundedIcon from "@material-ui/icons/ArrowBackRounded";
 import theme from "../../Theme";
 import axios from "axios";
 import BACKEND_URL from "../../Config";
@@ -106,6 +108,7 @@ const useStyles = makeStyles((theme) => ({
   link: {
     cursor: "pointer",
   },
+  error: { color: theme.palette.red },
   animation: {
     [theme.breakpoints.down("xs")]: {
       display: "none",
@@ -136,7 +139,8 @@ export const ForgotPassword = () => {
   const [errorMessage, setErrorMesssage] = useState("");
   const [success, setSuccess] = useState(false);
   const history = useHistory();
-  const onSubmitClicked = async () => {
+  const onSubmitClicked = async (e) => {
+    e.preventDefault();
     try {
       await axios.put(`${BACKEND_URL}/api/forgot-password/${emailValue}`);
       setSuccess(true);
@@ -144,15 +148,12 @@ export const ForgotPassword = () => {
         history.push("/signin");
       }, 3000);
     } catch (e) {
-      setErrorMesssage(e.message);
+      if (e.message.includes("502")) setErrorMesssage("Unregistered User");
+      else if (e.message.includes("500")) setErrorMesssage("Email send failed");
+      else setErrorMesssage("Server Eror");
     }
   };
-  return success ? (
-    <div>
-      <h1>Success</h1>
-      <p>Check email for reset link</p>
-    </div>
-  ) : (
+  return (
     <div className={classes.root}>
       <Container maxWidth={false} className={classes.container}>
         <Grid
@@ -179,9 +180,10 @@ export const ForgotPassword = () => {
               <div className={classes.paper}>
                 {/* Return Back */}
 
-                <Link to="/" className={classes.return}>
+                <Link to="/signin" className={classes.return}>
                   <Chip
                     clickable
+                    icon={<ArrowBackRoundedIcon />}
                     label="Return"
                     style={{ backgroundColor: theme.palette.lightSkyBlue }}
                   />
@@ -193,23 +195,42 @@ export const ForgotPassword = () => {
                   variant="h5"
                   className={classes.title}
                 >
-                  Sign In
+                  Forgot Password
                 </Typography>
 
-                {/* Login Form */}
-                <div>
-                  <h1>Forgot Password</h1>
-                  <p>Enter your email and we'll send you an email</p>
-                  {errorMessage && <div>{errorMessage}</div>}
-                  <input
-                    value={emailValue}
-                    onChange={(e) => setEmailValue(e.target.value)}
-                    placeholder="s@g.c"
-                  />
-                  <button disabled={!emailValue} onClick={onSubmitClicked}>
-                    Send Reset Link
-                  </button>
-                </div>
+                {!success ? (
+                  <div>
+                    <Typography>
+                      Enter your email and we'll send you an email
+                    </Typography>
+                    {errorMessage && (
+                      <div className={classes.error}>{errorMessage}</div>
+                    )}
+                    <form className={classes.form} onSubmit={onSubmitClicked}>
+                      <TextField
+                        required
+                        name="email"
+                        onChange={(e) => setEmailValue(e.target.value)}
+                        value={emailValue}
+                        id="outlined-required"
+                        label="Email Address"
+                        type="email"
+                        variant="outlined"
+                        fullWidth
+                        className={classes.textField}
+                      />
+                      <Button disabled={!emailValue} type="submit">
+                        Send Reset Link
+                      </Button>
+                      <Box mt={5} />
+                    </form>
+                  </div>
+                ) : (
+                  <div>
+                    <h2>Success</h2>
+                    <p>Check email for reset link. Redirecting you to login</p>
+                  </div>
+                )}
               </div>
             </FloatCard>
           </Grid>
