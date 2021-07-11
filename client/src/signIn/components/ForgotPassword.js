@@ -153,12 +153,7 @@ export const ForgotPassword = () => {
       else setErrorMesssage("Server Eror");
     }
   };
-  return success ? (
-    <div>
-      <h1>Success</h1>
-      <p>Check email for reset link</p>
-    </div>
-  ) : (
+  return (
     <div className={classes.root}>
       <Container maxWidth={false} className={classes.container}>
         <Grid
@@ -203,31 +198,39 @@ export const ForgotPassword = () => {
                   Forgot Password
                 </Typography>
 
-                {/* Login Form */}
-                <div>
-                  <p>Enter your email and we'll send you an email</p>
-                  {errorMessage && (
-                    <div className={classes.error}>{errorMessage}</div>
-                  )}
-                  <form className={classes.form} onSubmit={onSubmitClicked}>
-                    <TextField
-                      required
-                      name="email"
-                      onChange={(e) => setEmailValue(e.target.value)}
-                      value={emailValue}
-                      id="outlined-required"
-                      label="Email Address"
-                      type="email"
-                      variant="outlined"
-                      fullWidth
-                      className={classes.textField}
-                    />
-                    <Button disabled={!emailValue} type="submit">
-                      Send Reset Link
-                    </Button>
-                    <Box mt={5} />
-                  </form>
-                </div>
+                {!success ? (
+                  <div>
+                    <Typography>
+                      Enter your email and we'll send you an email
+                    </Typography>
+                    {errorMessage && (
+                      <div className={classes.error}>{errorMessage}</div>
+                    )}
+                    <form className={classes.form} onSubmit={onSubmitClicked}>
+                      <TextField
+                        required
+                        name="email"
+                        onChange={(e) => setEmailValue(e.target.value)}
+                        value={emailValue}
+                        id="outlined-required"
+                        label="Email Address"
+                        type="email"
+                        variant="outlined"
+                        fullWidth
+                        className={classes.textField}
+                      />
+                      <Button disabled={!emailValue} type="submit">
+                        Send Reset Link
+                      </Button>
+                      <Box mt={5} />
+                    </form>
+                  </div>
+                ) : (
+                  <div>
+                    <h2>Success</h2>
+                    <p>Check email for reset link. Redirecting you to login</p>
+                  </div>
+                )}
               </div>
             </FloatCard>
           </Grid>

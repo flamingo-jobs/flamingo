@@ -160,7 +160,7 @@ export const ResetPassword = () => {
 
   const { passwordResetCode } = useParams();
   const onResetClicked = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
       await axios.put(
         `${BACKEND_URL}/api/reset-password/${passwordResetCode}`,
@@ -210,14 +210,39 @@ export const ResetPassword = () => {
                 >
                   Reset Password
                 </Typography>
-
+                <Grid
+                  container
+                  direction="row"
+                  justify="left"
+                  alignItems="left"
+                >
+                  <Grid item sm={12}>
+                    <span>
+                      In order to <b>protect your account,</b> make sure your
+                      password:
+                      <br />
+                      <br />
+                      Is longer than 8 characters
+                      <br />
+                      <br />
+                      Does not match or significantly contain your username,
+                      <br />
+                      (e.g. do not use "username123")
+                      <br />
+                      <br />
+                      Contains special characters such as "&, #, $, @, %, ..."
+                      <br />
+                    </span>
+                  </Grid>
+                </Grid>
+                <Box mt={3} />
                 {/* Login Form */}
                 <form className={classes.form} onSubmit={onResetClicked}>
                   <TextField
                     required
                     name="password"
                     id="outlined-password-input"
-                    label="Password"
+                    label="New Password"
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
@@ -229,7 +254,7 @@ export const ResetPassword = () => {
                     required
                     name="confirmPassword"
                     id="outlined-password-input"
-                    label="Confirm Password"
+                    label="Re-enter Your New Password"
                     variant="outlined"
                     fullWidth
                     className={classes.textField}
