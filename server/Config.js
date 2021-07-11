@@ -1,0 +1,1 @@
+exports.FRONTEND_URL = "localhost:3000"
