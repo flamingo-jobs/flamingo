@@ -23,7 +23,8 @@ import CategoryRoundedIcon from '@material-ui/icons/CategoryRounded';
 import CodeRoundedIcon from '@material-ui/icons/CodeRounded';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import LoyaltyIcon from '@material-ui/icons/Loyalty';
+import DescriptionIcon from '@material-ui/icons/Description';
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -161,15 +162,24 @@ function NavMenu(props) {
                             <ListItemText className={classes.linkText} primary="Jobs" />
                         </ListItem>
                     </Link>
+
+                    <Link to="/employer/resumes">
+                        <ListItem button key="jobs" selected={selectedIndex === "resumes"} onClick={(event) => handleListItemClick(event, "resumes")} classes={{ selected: classes.active }} className={classes.listItem}>
+                            <ListItemIcon className={classes.linkIcon}><DescriptionIcon /></ListItemIcon>
+                            <ListItemText className={classes.linkText} primary="Resumes" />
+                        </ListItem>
+                    </Link>
+
                     <Link to="/employer/analytics">
                         <ListItem button key="analytics" selected={selectedIndex === "analytics"} onClick={(event) => handleListItemClick(event, "analytics")} classes={{ selected: classes.active }} className={classes.listItem}>
                             <ListItemIcon className={classes.linkIcon}><AssessmentIcon /></ListItemIcon>
                             <ListItemText className={classes.linkText} primary="Analytics" />
                         </ListItem>
                     </Link>
+
                     <Link to="/employer/billing">
                         <ListItem button key="billing" selected={selectedIndex === "billing"} onClick={(event) => handleListItemClick(event, "billing")} classes={{ selected: classes.active }} className={classes.listItem}>
-                            <ListItemIcon className={classes.linkIcon}><LoyaltyIcon /></ListItemIcon>
+                            <ListItemIcon className={classes.linkIcon}><MonetizationOnIcon /></ListItemIcon>
                             <ListItemText className={classes.linkText} primary="Billing" />
                         </ListItem>
                     </Link>

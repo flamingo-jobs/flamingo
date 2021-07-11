@@ -79,10 +79,12 @@ function HeroSection() {
               Find the Career You Deserve !
             </Typography>
             <Typography variant="h6" className={classes.h4}>
-              img elements must have an alt prop, either with meaningful text, or
-              an empty string for decorative images jsx-a11y/alt-text Search for
-              the keywords to learn more about each warning. To ignore, add //
-              eslint-disable-next-line to the line before.
+            Flamingo goes few steps further from a typical job portal 
+            and brings a novel recruitment experience for the Sri Lankan IT 
+            industry by making use of cutting edge technology. 
+
+            Create your flamingo account today and apply for job opportunities 
+            from the top employers in the field!
             </Typography>
             <Button
               onClick={() => {
