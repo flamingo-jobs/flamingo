@@ -7,22 +7,17 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Chip from "@material-ui/core/Chip";
 import Grid from "@material-ui/core/Grid";
-import AddIcon from "@material-ui/icons/Add";
 import IconButton from "@material-ui/core/IconButton";
-import RemoveIcon from "@material-ui/icons/Remove";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import TextField from "@material-ui/core/TextField";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
-import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import { purple } from "@material-ui/core/colors";
-import Box from "@material-ui/core/Box";
+import EditIcon from '@material-ui/icons/Edit';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,18 +28,18 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 14,
   },
   chip: {
-    backgroundColor: theme.palette.turquoise,
+    backgroundColor: theme.palette.blueJeans,
+    color: theme.palette.white,
     marginRight: 5,
     marginBottom: 5,
   },
   addButton: {
     marginTop: -5,
-    marginLeft: -5,
-    backgroundColor: theme.palette.turquoise,
-  },
-  removeButton: {
-    marginTop: -5,
-    backgroundColor: theme.palette.turquoise,
+    marginLeft: 40,
+    color: theme.palette.blueJeans,
+    "&:hover": {
+      color: theme.palette.blueJeansHover,
+    },
   },
   dialogbuttons: {
     color: theme.palette.purple,
@@ -129,7 +124,7 @@ export default function TechCard(props) {
                 className={classes.addButton}
                 onClick={handleClickOpen}
               >
-                <AddIcon />
+                <EditIcon />
               </IconButton>
 
               {/* DIALOG BOX TO ADD TECHNOLOGIES */}
@@ -162,62 +157,6 @@ export default function TechCard(props) {
                         label={i}
                       />
                     ))}
-                    {/* <FormControlLabel
-                      control={
-                        <PurpleCheckbox
-                          checked={state.React}
-                          onChange={handleChange}
-                          name="React"
-                          className={classes.checkbox}
-                        />
-                      }
-                      label="React"
-                    /> */}
-                    {/* <FormControlLabel
-                      control={
-                        <PurpleCheckbox
-                          checked={state.jQuery}
-                          onChange={handleChange}
-                          name="jQuery"
-                          className={classes.checkbox}
-                        />
-                      }
-                      label="jQuery"
-                    />
-                    <FormControlLabel
-                      control={
-                        <PurpleCheckbox
-                          checked={state.Angular}
-                          onChange={handleChange}
-                          name="Angular"
-                          className={classes.checkbox}
-                        />
-                      }
-                      label="Angular"
-                    />
-                    <FormControlLabel
-                      control={
-                        <PurpleCheckbox
-                          checked={state.Springboot}
-                          onChange={handleChange}
-                          name="Springboot"
-                          className={classes.checkbox}
-                        />
-                      }
-                      label="Springboot"
-                    />
-
-                    <FormControlLabel
-                      control={
-                        <PurpleCheckbox
-                          checked={state.checkedA}
-                          onChange={handleChange}
-                          name="Express"
-                          className={classes.checkbox}
-                        />
-                      }
-                      label="Express"
-                    /> */}
                   </FormGroup>
                 </DialogContent>
 
@@ -238,67 +177,6 @@ export default function TechCard(props) {
               </Dialog>
             </Grid>
 
-            <Grid item sm={1}>
-              {/* MINUS ICON TO REMOVE EXISTING TECHNOLOGIES */}
-
-              <IconButton
-                variant="outlined"
-                size="small"
-                aria-label="remove"
-                className={classes.removeButton}
-              >
-                <RemoveIcon />
-              </IconButton>
-
-              {/* DIALOG BOX TO REMOVE EXISTING TECHNOLOGIES */}
-
-              {/* <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-
-                            <DialogTitle id="form-dialog-title">Remove Existing Technologies</DialogTitle>
-
-                            <DialogContent>
-                                <DialogContentText>
-                                    <Typography> Software Development </Typography>
-                                </DialogContentText>
-
-                                <FormGroup row>
-
-                                    <FormControlLabel
-                                        control={<PurpleCheckbox checked={state.React} onChange={handleChange} name="React" className={classes.checkbox} />}
-                                        label="React"
-                                    />
-                                    <FormControlLabel
-                                        control={<PurpleCheckbox checked={state.jQuery} onChange={handleChange} name="jQuery" className={classes.checkbox} />}
-                                        label="jQuery"
-                                    />
-                                    <FormControlLabel
-                                        control={<PurpleCheckbox checked={state.Angular} onChange={handleChange} name="Angular" className={classes.checkbox} />}
-                                        label="Angular"
-                                    />
-                                    <FormControlLabel
-                                        control={<PurpleCheckbox checked={state.Springboot} onChange={handleChange} name="Springboot" className={classes.checkbox} />}
-                                        label="Springboot"
-                                    />
-
-                                    <FormControlLabel
-                                        control={<PurpleCheckbox checked={state.checkedA} onChange={handleChange} name="Express" className={classes.checkbox} />}
-                                        label="Express"
-                                    />
-                                </FormGroup>
-
-                            </DialogContent>
-
-                            <DialogActions>
-                                <Button onClick={handleClose} className={classes.dialogbuttons}>
-                                    Cancel
-                                </Button>
-                                <Button onClick={handleClose} className={classes.dialogbuttons}>
-                                    Remove
-                                </Button>
-                            </DialogActions>
-
-                        </Dialog> */}
-            </Grid>
           </Grid>
 
           <Grid item sm={12}>
@@ -309,18 +187,7 @@ export default function TechCard(props) {
                 className={classes.chip}
               />
             ))}
-            {/* <Chip label="React" variant="outlined" className={classes.chip} />
-            <Chip label="Express" variant="outlined" className={classes.chip} />
-            <Chip label="Angular" variant="outlined" className={classes.chip} />
-            <Chip label="Vue.js" variant="outlined" className={classes.chip} />
-            <Chip label="jQuery" variant="outlined" className={classes.chip} />
-            <Chip
-              label="Springboot"
-              variant="outlined"
-              className={classes.chip}
-            />
-            <Chip label="Java" variant="outlined" className={classes.chip} />
-            <Chip label="Basic" variant="outlined" className={classes.chip} /> */}
+            
           </Grid>
         </Grid>
       </CardContent>

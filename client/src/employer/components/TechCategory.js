@@ -1,31 +1,22 @@
 import React, { useEffect } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import Chip from "@material-ui/core/Chip";
 import Grid from "@material-ui/core/Grid";
 import AddIcon from "@material-ui/icons/Add";
 import IconButton from "@material-ui/core/IconButton";
-import RemoveIcon from "@material-ui/icons/Remove";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import TextField from "@material-ui/core/TextField";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
-import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import { purple } from "@material-ui/core/colors";
-import Box from "@material-ui/core/Box";
 import FloatCard from "./FloatCard";
 import TechCard from "./TechCard";
 import differenceBy from "lodash/differenceBy";
+import EditIcon from '@material-ui/icons/Edit';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,10 +27,12 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 10,
   },
   addButton: {
-    marginLeft: -20,
-  },
-  removeButton: {
-    marginLeft: -20,
+    marginTop: -5,
+    marginLeft: 30,
+    color: theme.palette.grey,
+    "&:hover": {
+      color: theme.palette.greyHover,
+    },
   },
   dialogbuttons: {
     color: theme.palette.purple,
@@ -133,7 +126,7 @@ function TechCategory(props) {
               className={classes.addButton}
               onClick={handleClickOpen}
             >
-              <AddIcon />
+              <EditIcon />
             </IconButton>
 
             {/* dialog box to add new tech categories */}
@@ -167,41 +160,6 @@ function TechCategory(props) {
                     />
                   ))}
 
-                  {/* <FormControlLabel
-                    control={
-                      <PurpleCheckbox
-                        checked={state.backend}
-                        onChange={handleChange}
-                        name="backend"
-                        className={classes.checkbox}
-                      />
-                    }
-                    label="Backend Development"
-                  /> */}
-
-                  {/* <FormControlLabel
-                    control={
-                      <PurpleCheckbox
-                        checked={state.mobile}
-                        onChange={handleChange}
-                        name="mobile"
-                        className={classes.checkbox}
-                      />
-                    }
-                    label="Mobile Development"
-                  />
-
-                  <FormControlLabel
-                    control={
-                      <PurpleCheckbox
-                        checked={state.middleware}
-                        onChange={handleChange}
-                        name="middleware"
-                        className={classes.checkbox}
-                      />
-                    }
-                    label="Middleware Development"
-                  /> */}
                 </FormGroup>
               </DialogContent>
 
@@ -217,21 +175,6 @@ function TechCategory(props) {
                 </Button>
               </DialogActions>
             </Dialog>
-          </Grid>
-
-          {/* Remove existing technology category */}
-
-          <Grid item sm={1}>
-            {/* button to open the dialog box to remove categories */}
-
-            <IconButton
-              variant="outlined"
-              size="small"
-              aria-label="remove"
-              className={classes.removeButton}
-            >
-              <RemoveIcon />
-            </IconButton>
           </Grid>
         </Grid>
 

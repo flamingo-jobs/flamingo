@@ -27,6 +27,7 @@ import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import { purple } from "@material-ui/core/colors";
 import Box from "@material-ui/core/Box";
+import EditIcon from '@material-ui/icons/Edit';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,10 +38,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 10,
   },
   addButton: {
-    marginLeft: -20,
-  },
-  removeButton: {
-    marginLeft: -20,
+    marginLeft: 2,
   },
   dialogbuttons: {
     color: theme.palette.purple,
@@ -158,7 +156,7 @@ function TechStack() {
                   className={classes.addButton}
                   onClick={handleClickOpen}
                 >
-                  <AddIcon />
+                  <EditIcon />
                 </IconButton>
 
                 {/* dialog box to add new tech categories */}
@@ -192,51 +190,7 @@ function TechStack() {
                         />
                       ))}
 
-                      {/* <FormControlLabel
-                        control={
-                          <PurpleCheckbox
-                            checked={state.qualityAssurance}
-                            onChange={handleChange}
-                            name="qualityAssurance"
-                            className={classes.checkbox}
-                          />
-                        }
-                        label="Quality Assurance"
-                      />
-                      <FormControlLabel
-                        control={
-                          <PurpleCheckbox
-                            checked={state.devOps}
-                            onChange={handleChange}
-                            name="devOps"
-                            className={classes.checkbox}
-                          />
-                        }
-                        label="DevOps"
-                      />
-                      <FormControlLabel
-                        control={
-                          <PurpleCheckbox
-                            checked={state.uiUx}
-                            onChange={handleChange}
-                            name="uiUx"
-                            className={classes.checkbox}
-                          />
-                        }
-                        label="UI/UX"
-                      />
-
-                      <FormControlLabel
-                        control={
-                          <PurpleCheckbox
-                            checked={state.dataScience}
-                            onChange={handleChange}
-                            name="dataScience"
-                            className={classes.checkbox}
-                          />
-                        }
-                        label="Data Science"
-                      /> */}
+                     
                     </FormGroup>
                   </DialogContent>
 
@@ -257,20 +211,6 @@ function TechStack() {
                 </Dialog>
               </Grid>
 
-              {/* Remove existing technology category */}
-
-              <Grid item sm={1}>
-                {/* button to open the dialog box to remove categories */}
-
-                <IconButton
-                  variant="outlined"
-                  size="small"
-                  aria-label="remove"
-                  className={classes.removeButton}
-                >
-                  <RemoveIcon />
-                </IconButton>
-              </Grid>
             </Grid>
           </FloatCard>
         </Grid>
