@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
         display: "grid"
     }
 }))
-function NearJobs(props) {
+function RecommendedJobs(props) {
     const classes = useStyles();
 
     const [featuredJobs, setFeaturedJobs] = useState([]);
@@ -106,7 +106,7 @@ function NearJobs(props) {
             <Grid container direction="column" spacing={2} className={classes.container}>
                 <Grid item sm={12} >
                     <FloatCard>
-                        <Typography variant="h5" className={classes.title}>Hot Jobs Near You</Typography>
+                        <Typography variant="h5" className={classes.title}>Recommended Jobs</Typography>
                     </FloatCard>
                 </Grid>
                 {displayFeaturedJobs()}
@@ -137,4 +137,4 @@ function NearJobs(props) {
     )
 }
 
-export default NearJobs
+export default RecommendedJobs
