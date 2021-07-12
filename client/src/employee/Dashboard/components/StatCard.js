@@ -34,9 +34,9 @@ const useStyles = makeStyles((theme) => ({
         color: "#7986cb",
     },
     paperCont: {
-        backgroundColor: indigo[50],
+        backgroundColor: "#e3f2fd",
         color: indigo[600],
-        padding: "15px 0px 15px 15px",
+        padding: "5px 10px 5px 5px",
         borderRadius: 10,
         "&:hover": {
             defaultButton: {
@@ -54,22 +54,22 @@ function StatCard() {
         <FloatCard>
             <Grid container spacing={3} style={{padding: "25px"}}>
                 <Grid item xs={12}>
-                    <Typography variant="h4" align="left" width="100%">Hi, Welcome back</Typography>
+                    <Typography variant="h4" align="left" width="100%" style={{fontWeight:"bold",color: "#8e24aa"}}>Welcome home !</Typography>
                 </Grid>
                 <Grid item xs={6}>
                     <Paper elevation={0} className={classes.paperCont}>  
                         <Grid container xs={12}>
-                            <Grid item sm={12} md={5}>
+                            <Grid item sm={12} md={6}>
                                 <CardMedia
                                 image={statImage2}
                                 title="Contemplative Reptile"
-                                style={{height:"150px",width:"150px",borderRadius: 10}}
+                                style={{height:"200px",width:"200px",borderRadius: 10}}
                                 zIndex="background"
                                 /> 
                             </Grid>
-                            <Grid item sm={12} md={5} style={{alignItems:"center",display: "flex"}}>
+                            <Grid item sm={12} md={6} style={{alignItems:"center",display: "flex"}}>
                                 <div style={{width:"100%"}}>
-                                    <Typography sx={{ opacity: 0.72 }} style={{fontSize:"17px"}}>
+                                    <Typography sx={{ opacity: 0.72 }} style={{fontSize:"25px"}}>
                                         Careers for Me
                                     </Typography>
                                     <Typography variant="h3">15</Typography>
@@ -81,17 +81,17 @@ function StatCard() {
                 <Grid item xs={6}>
                     <Paper elevation={0} className={classes.paperCont}>  
                         <Grid container xs={12}>
-                            <Grid item sm={12} md={5}>
+                            <Grid item sm={12} md={6}>
                                 <CardMedia
                                 image={statImage1}
                                 title="Contemplative Reptile"
-                                style={{height:"150px",width:"150px",borderRadius: 10}}
+                                style={{height:"200px",width:"200px",borderRadius: 10}}
                                 zIndex="background"
                                 /> 
                             </Grid>
-                            <Grid item sm={12} md={5} style={{alignItems:"center",display: "flex"}}>
+                            <Grid item sm={12} md={6} style={{alignItems:"center",display: "flex"}}>
                                 <div style={{width:"100%"}}>
-                                    <Typography sx={{ opacity: 0.72 }} style={{fontSize:"17px"}}>
+                                    <Typography sx={{ opacity: 0.72 }} style={{fontSize:"25px"}}>
                                         Applied Jobs
                                     </Typography>
                                     <Typography variant="h3">15</Typography>
