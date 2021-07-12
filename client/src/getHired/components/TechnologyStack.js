@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid, Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import backgroundImage from "../images/background.jfif";
+import backgroundImage from "../images/background.jpg";
 import Technologies from "./Technologies";
 
 const useStyles = makeStyles((theme) => ({

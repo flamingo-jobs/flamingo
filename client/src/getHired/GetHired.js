@@ -17,7 +17,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import FloatCard from "../components/FloatCard";
-import backgroundImage from "./images/background.jfif";
+import backgroundImage from "./images/background.jpg";
 import SnackBarAlert from "../components/SnackBarAlert";
 import axios from "axios";
 import BACKEND_URL from "../Config";
@@ -129,7 +129,7 @@ const useStyles = makeStyles((theme) => ({
   },
   signIn: {
     justifyContent: "flex-start",
-    marginRight: 10,
+    marginRight: 24,
     [theme.breakpoints.down("sm")]: {
       justifyContent: "center",
     },
@@ -628,6 +628,7 @@ export default function GetHired() {
                             container
                             md={6}
                             className={classes.actions}
+                            spacing={2}
                           >
                             <Grid item>
                               <Button

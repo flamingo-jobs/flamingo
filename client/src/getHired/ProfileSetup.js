@@ -10,7 +10,7 @@ import Typography from "@material-ui/core/Typography";
 import { Container, Grid } from "@material-ui/core";
 import FloatCard from "../components/FloatCard";
 import SnackBarAlert from "../components/SnackBarAlert";
-import backgroundImage from "./images/background.jfif";
+import backgroundImage from "./images/background.jpg";
 import { Experience } from "./components/Experience";
 import { Education } from "./components/Education";
 import { Volunteering } from "./components/Volunteering";

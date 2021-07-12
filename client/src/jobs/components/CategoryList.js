@@ -132,11 +132,11 @@ export default function CategoryList(props) {
                             />
                         </ListItemIcon>
                         <ListItemText id={labelId} primary={category.name} />
-                        <ListItemSecondaryAction>
+                        {/* <ListItemSecondaryAction>
                             <Avatar className={classes.count} variant="square" >
                                 <Typography className={classes.countText}>{category.count}</Typography>
                             </Avatar>
-                        </ListItemSecondaryAction>
+                        </ListItemSecondaryAction> */}
                     </ListItem>
                 )
             })

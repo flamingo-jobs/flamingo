@@ -145,11 +145,11 @@ export default function StackList(props) {
                             />
                         </ListItemIcon>
                         <ListItemText id={labelId} primary={item} />
-                        <ListItemSecondaryAction>
+                        {/* <ListItemSecondaryAction>
                             <Avatar className={classes.count} variant="square" >
                                 <Typography className={classes.countText}>5</Typography>
                             </Avatar>
-                        </ListItemSecondaryAction>
+                        </ListItemSecondaryAction> */}
                     </ListItem>
                 )
             })
