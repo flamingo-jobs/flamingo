@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Grid
-} from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import BACKEND_URL from "../../Config";
@@ -46,14 +44,28 @@ function AppliedJobs() {
   const displayAppliedJobs = () => {
     if (jobseeker !== "empty") {
       if (jobseeker.applicationDetails.length > 0) {
-        return jobseeker.applicationDetails.map((item) => (
-          <Job key={item.jobId} jobId={item.jobId}></Job>
+        return jobseeker.applicationDetails.map((item, index) => (
+          <Job
+            key={item.jobId}
+            jobId={item.jobId}
+            applicationDetails={jobseeker.applicationDetails[index]}
+          ></Job>
         ));
       } else {
-        <FloatCard>You haven't applied for any jobs</FloatCard>;
+        return (
+          <FloatCard>
+            <Typography variant="h6">
+              You haven't applied for any jobs
+            </Typography>
+          </FloatCard>
+        );
       }
     } else {
-      <FloatCard>No information to display</FloatCard>;
+      return (
+        <FloatCard>
+          <Typography variant="h6">You must log in first</Typography>
+        </FloatCard>
+      );
     }
   };
 

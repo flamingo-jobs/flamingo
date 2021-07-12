@@ -14,7 +14,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import FloatCard from "./../components/FloatCard";
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
-import backgroundImage from "./images/background.jfif";
+import backgroundImage from "./images/background.jpg";
 import axios from "axios";
 import BACKEND_URL from "../Config";
 import { Avatar, Badge } from "@material-ui/core";
@@ -700,6 +700,8 @@ export default function StartHiring() {
                             container
                             md={6}
                             className={classes.actions}
+                            spacing={2}
+
                           >
                             <Grid item>
                               <Button

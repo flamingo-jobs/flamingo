@@ -9,7 +9,7 @@ import {
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import { makeStyles } from "@material-ui/core/styles";
-import backgroundImage from "../images/background.jfif";
+import backgroundImage from "../images/background.jpg";
 
 const useStyles = makeStyles((theme) => ({
   root: {

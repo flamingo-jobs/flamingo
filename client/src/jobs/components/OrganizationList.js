@@ -135,11 +135,11 @@ export default function OrganizationList(props) {
                             />
                         </ListItemIcon>
                         <ListItemText id={labelId} primary={org.name} />
-                        <ListItemSecondaryAction>
+                        {/* <ListItemSecondaryAction>
                             <Avatar className={classes.count} variant="square" >
                                 <Typography className={classes.countText}>{5}</Typography>
                             </Avatar>
-                        </ListItemSecondaryAction>
+                        </ListItemSecondaryAction> */}
                     </ListItem>
                 )
             })

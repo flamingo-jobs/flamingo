@@ -13,9 +13,6 @@ import TimelineContent from '@material-ui/lab/TimelineContent';
 import TimelineDot from '@material-ui/lab/TimelineDot';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import Box from "@material-ui/core/Box";
-
-
-
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CachedIcon from '@material-ui/icons/Cached';
 import DescriptionIcon from '@material-ui/icons/Description';

@@ -249,6 +249,23 @@ const updateResumeDetails =  async (req, res) => {
     }
 }
 
+const resetAll = (req, res) => { // To clear the test resume details
+  Jobseeker.updateMany(
+      {},
+      { $set: { applicationDetails: [] }},
+      (err, job) => {
+          if (err) {
+              return res.status(400).json({
+                  error: err
+              })
+          }
+          return res.status(200).json({
+              sucess: "Updated successfully"
+          });
+      }
+  );
+}
+
 const downloadResume = async (req, res) => {
   try {
     const file = await File.findById(req.params.id);
@@ -563,6 +580,7 @@ module.exports = {
   updateWork,
   updateProject,
   updateResumeDetails,
+  resetAll,
   downloadResume,
   remove,
   removeUniversity,

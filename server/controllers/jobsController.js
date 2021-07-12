@@ -117,10 +117,24 @@ const update = (req, res) => {
     );
 }
 
-const updateResumeDetails =  async (req, res) => {
-    console.log("req.params.id", req.params.id)
-    console.log("req.body", req.body)
+const resetAll = (req, res) => { // To clear the test resume details
+    Jobs.updateMany(
+        {},
+        { $set: { applicationDetails: [] }},
+        (err, job) => {
+            if (err) {
+                return res.status(400).json({
+                    error: err
+                })
+            }
+            return res.status(200).json({
+                sucess: "Updated successfully"
+            });
+        }
+    );
+}
 
+const updateResumeDetails =   (req, res) => {
     Jobs.findByIdAndUpdate(
         req.params.id,
         {
@@ -180,6 +194,7 @@ module.exports = {
     getFeaturedJobs,
     getJobCount,
     getJobsFromEmployer,
-    getAllJobsFromEmployer
+    getAllJobsFromEmployer,
+    resetAll,
 
 }

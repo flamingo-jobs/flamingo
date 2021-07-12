@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Typography,
@@ -17,6 +17,7 @@ import SnackBarAlert from "../../components/SnackBarAlert";
 import { StateBlueTextField } from "../components/customTextField";
 import Lottie from "react-lottie";
 import ItPerson from "../lotties/itPerson.json";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles((theme) => ({
   applyFormWrapper: {
@@ -51,7 +52,6 @@ const useStyles = makeStyles((theme) => ({
   },
   submitButton: {
     width: "250px",
-    marginTop: theme.spacing(2),
     background: theme.palette.tuftsBlue,
     // background: "#E94B4C",
     transition: "0.3s",
@@ -91,6 +91,16 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 600,
     color: theme.palette.black,
   },
+  submitBtnWrapper:{
+    marginTop: theme.spacing(2),
+    position: "relative",
+  },
+  buttonProgress: {
+    color: theme.palette.stateBlue,
+    marginLeft:"10px",
+    position: "absolute",
+    top: "20%",
+  },
 }));
 
 // Validation schema
@@ -102,16 +112,44 @@ const ApplyForm = (props) => {
   const [userId, setUserId] = useState(props.userId);
   const [jobId, setJobId] = useState(props.jobId);
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
   const [fileData, setFileData] = useState("empty");
 
   const [alertShow, setAlertShow] = useState(false);
   const [alertData, setAlertData] = useState({ severity: "", msg: "" });
 
+  const [loading, setLoading] = React.useState(false);
+  const [success, setSuccess] = React.useState(false);
+
+  const timer = useRef();
+  useEffect(() => {
+    return () => {
+      clearTimeout(timer.current);
+    };
+  }, []);
+
+  const handleButtonClick = () => {
+    if (!loading) {
+      setSuccess(false);
+      setLoading(true);
+      timer.current = window.setTimeout(() => {
+        setSuccess(true);
+        setLoading(false);
+      }, 1000);
+    }
+  };
+
   const handleFileChange = (e) => {
-    setFileData(e.target.files[0]);
+    let nameSplit = e.target.files[0].name.split(".");
+    console.log("file extention", nameSplit[nameSplit.length - 1]);
+    if (nameSplit[nameSplit.length - 1] !== "pdf") {
+      setAlertData({
+        severity: "error",
+        msg: "Invalid file type, only PDF file type is allowed",
+      });
+      handleAlert();
+    } else {
+      setFileData(e.target.files[0]);
+    }
   };
   const handleFileRemove = () => {
     setFileData("empty");
@@ -157,10 +195,27 @@ const ApplyForm = (props) => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    if(fileData === "empty"){
+      setAlertData({
+        severity: "error",
+        msg: "You should upload your resume first",
+      });
+      handleAlert();
+      return;
+    }
+
+    if (!loading) {
+      setSuccess(false);
+      setLoading(true);
+      timer.current = window.setTimeout(() => {
+        setSuccess(true);
+        setLoading(false);
+      }, 700);
+    }
 
     // Data to rename the pdf
     const data = new FormData();
-    data.append("id", userId);
+    data.append("userId", userId);
     data.append("jobId", jobId);
     data.append("resume", fileData);
 
@@ -169,17 +224,15 @@ const ApplyForm = (props) => {
       "." + fileData.name.split(".")[fileData.name.split(".").length - 1];
 
     const resumeDetailsJobSeeker = {
-      name: name,
-      email: email,
-      phoneNumber: phoneNumber,
+      status: "pending",
+      appliedDate: new Date(),
       jobId: jobId,
       resumeName: jobId + "--" + userId + resumeExt,
     };
 
     const resumeDetailsJob = {
-      name: name,
-      email: email,
-      phoneNumber: phoneNumber,
+      status: "pending",
+      appliedDate: new Date(),
       userId: userId,
       resumeName: jobId + "--" + userId + resumeExt,
     };
@@ -218,14 +271,14 @@ const ApplyForm = (props) => {
           } else {
             setAlertData({
               severity: "error",
-              msg: "Application could not be sent !",
+              msg: "Application could not be sent!",
             });
             handleAlert();
           }
         } else {
           setAlertData({
             severity: "error",
-            msg: "Job collection!",
+            msg: "Something's not quite right! Please try again later",
           });
           handleAlert();
         }
@@ -234,7 +287,7 @@ const ApplyForm = (props) => {
         if (resumeDetailsResponseJobSeeker.data.error) {
           setAlertData({
             severity: "error",
-            msg: "Job seeker collection",
+            msg: "Something's not quite right! Please try again later",
           });
           handleAlert();
         }
@@ -242,7 +295,7 @@ const ApplyForm = (props) => {
     } catch {
       setAlertData({
         severity: "error",
-        msg: "Something went wrong!",
+        msg: "Something went wrong! Please try again later",
       });
       handleAlert();
     }
@@ -270,8 +323,10 @@ const ApplyForm = (props) => {
       <FloatCard>
         <Container className={classes.res}>
           <Typography className={classes.formInfo} id="applyForm">
-            Upload your resume using below link.<br/>
-            You can view the status of the application shortlisting process<br/>
+            Upload your resume using the link given below.
+            <br />
+            You can view the status of the application shortlisting process
+            <br />
             in the Applied Jobs page.
           </Typography>
           <div className={classes.animation}>
@@ -305,17 +360,23 @@ const ApplyForm = (props) => {
               </label>
             </div>
             {displayFileName()}
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.submitButton}
-              type="submit"
-              // disabled={
-              //   fileData === "empty"
-              // }
-            >
-              Submit Application
-            </Button>
+            <div className={classes.submitBtnWrapper}>
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.submitButton}
+                type="submit"
+                disabled={loading}
+              >
+                Submit Application
+              </Button>
+              {loading && (
+                <CircularProgress
+                  size={24}
+                  className={classes.buttonProgress}
+                />
+              )}
+            </div>
           </form>
         </Container>
       </FloatCard>

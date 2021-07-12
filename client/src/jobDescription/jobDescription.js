@@ -46,7 +46,7 @@ function JobDescription() {
   const [moreFromJobs, setMoreFromJobs] = useState(null);
 
   let isSignedIn = false;
-  if(sessionStorage.getItem("loginId") !== null){
+  if (sessionStorage.getItem("loginId") !== null) {
     isSignedIn = true;
   }
 
@@ -187,12 +187,13 @@ function JobDescription() {
               {displayApplyForm()}
             </Grid>
           </Grid>
-          {displayRelatedJobs()}
+
         </Grid>
 
         <Grid item md={12} lg={5}>
           {displayCompanySummary()}
           {displayMoreFromJobs()}
+          {displayRelatedJobs()}
         </Grid>
       </Grid>
     </>

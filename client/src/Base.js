@@ -26,6 +26,7 @@ import JobSeekers from "./admin/JobSeekers";
 import Employers from "./admin/Employers";
 import AppliedJobs from "./employee/appliedJobs/appliedJobs";
 import JobseekerDashboard from "./employee/Dashboard/JobseekerDashboard";
+import Dashboard from "./admin/Dashboard";
 
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -174,6 +175,9 @@ function Base() {
     if (role === "admin") {
       return (
         <>
+         <Route path="/admin" exact>
+            <Dashboard/>
+          </Route>
           <Route path="/admin/categories">
             <Categories />
           </Route>

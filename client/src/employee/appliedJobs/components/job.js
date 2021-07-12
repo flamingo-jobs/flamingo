@@ -17,8 +17,7 @@ import LocalOfferRoundedIcon from "@material-ui/icons/LocalOfferRounded";
 import WorkRoundedIcon from "@material-ui/icons/WorkRounded";
 import ReactTimeAgo from "react-time-ago";
 import GetAppIcon from "@material-ui/icons/GetApp";
-import Lottie from "react-lottie";
-import Hourglass from "../lotties/hourglass.json";
+import Pending from "./pendingStatus";
 
 const useStyles = makeStyles((theme) => ({
   border: {
@@ -67,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
   },
   body: {
     margin: 10,
-    marginTop:0,
+    marginTop: 0,
     marginLeft: 0,
   },
   title: {
@@ -93,35 +92,7 @@ const useStyles = makeStyles((theme) => ({
     width: 60,
     height: 60,
   },
-  resumeStatus: {
-    width: "75%",
-    borderRadius: 12,
-    padding: 10,
-    background: theme.palette.tagYellow,
-    // background: "#fae588",
-    display: "flex",
-    justifyContent: "center",
-  },
-  animation: {
-    display: "flex",
-    justifyContent: "center",
-    alignContent: "center",
-    flexDirection: "column",
-  },
-  statusText: {
-    marginLeft: "10px",
-    display: "flex",
-    justifyContent: "center",
-    alignContent: "center",
-    flexDirection: "column",
-    color: theme.palette.black,
-  },
-  lottie: {
-    height: "7px",
-    [theme.breakpoints.down("xs")]: {
-      width: "7px",
-    },
-  },
+
   shortlisted: {
     fontSize: "30px",
     display: "flex",
@@ -138,6 +109,11 @@ const useStyles = makeStyles((theme) => ({
       justifyContent: "center",
     },
   },
+  appliedOn:{
+    fontSize: "16px",
+    fontWeight: 500,
+    marginRight: "10px",
+  },
   appliedDate: {
     color: theme.palette.black,
   },
@@ -150,10 +126,10 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   downloadBtn: {
-    background: theme.palette.stateBlue,
+    background: theme.palette.tuftsBlue,
     color: theme.palette.white,
     "&:hover": {
-      background: theme.palette.stateBlue,
+      background: theme.palette.tuftsBlueHover,
     },
   },
 }));
@@ -161,6 +137,9 @@ const useStyles = makeStyles((theme) => ({
 const Job = (props) => {
   const classes = useStyles();
   const [job, setJob] = useState("empty");
+  const [applicationDetails, setApplicationDetails] = useState(
+    props.applicationDetails
+  );
 
   useEffect(() => {
     retrieveJob();
@@ -180,20 +159,11 @@ const Job = (props) => {
     }
   };
 
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: Hourglass,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
-  const handleTitleClick = () => {
-    
-  }
+  const handleTitleClick = () => {};
 
-// style={{border: "1px solid red"}}
+  // style={{border: "1px solid red"}}
   const displayJob = () => {
+
     if (job !== "empty") {
       return (
         <FloatCard>
@@ -212,7 +182,11 @@ const Job = (props) => {
                         variant="square"
                       />
                       <div className={classes.headerInfo}>
-                        <Typography variant="h5" className={classes.title} onClick={handleTitleClick}>
+                        <Typography
+                          variant="h5"
+                          className={classes.title}
+                          onClick={handleTitleClick}
+                        >
                           {job.title}
                         </Typography>
                         <Typography
@@ -237,36 +211,30 @@ const Job = (props) => {
                         className={classes.tag}
                       />
                     </div>
-                    
                   </div>
                 </Grid>
                 <Grid item xs={12} md={4} align="center">
-                  <div className={classes.resumeStatus} >
-                    <div className={classes.animation} >
-                      <Lottie
-                        className={classes.lottie}
-                        options={defaultOptions}
-                        height="20px"
-                        width="20px"
-                      />
-                    </div>
-                    {/* <div>
-                      <PlaylistAddCheckIcon className={classes.shortlisted} />
-                    </div> */}
-                    <div className={classes.statusText} >
-                      <Typography>Pending ...</Typography>
-                    </div>
-                  </div>
-                  
+                  {applicationDetails.status === "pending" && (
+                    <Pending
+                      applicationDetails={applicationDetails.status}
+                    ></Pending>
+                  )}
                 </Grid>
+                {/* <div>
+                  <PlaylistAddCheckIcon className={classes.shortlisted} />
+                </div> */}
               </Grid>
             </Container>
             <Container className={classes.jobDetailsContainer}>
-                {job.description.length >= 450 && <Typography>{job.description.slice(0,450)}.....</Typography>}
-                {job.description.length < 450 && <Typography>{job.description}</Typography>}
-              <div className={classes.appliedContainer} >
+              {job.description.length >= 450 && (
+                <Typography>{job.description.slice(0, 450)}.....</Typography>
+              )}
+              {job.description.length < 450 && (
+                <Typography>{job.description}</Typography>
+              )}
+              <div className={classes.appliedContainer}>
                 <Typography className={classes.appliedDate}>
-                  Applied on: 2012/12/12
+                  <span className={classes.appliedOn}>Applied on:</span> {props.applicationDetails.appliedDate.slice(0,10)}
                 </Typography>
               </div>
               <div className={classes.downloadContainer}>
