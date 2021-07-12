@@ -1,15 +1,9 @@
 import React from "react";
-import {
-  makeStyles,
-} from "@material-ui/core/styles";
-import {
-  Grid,
-  Container,
-  Typography,
-} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import { Grid, Container, Typography } from "@material-ui/core";
 import Chip from "@material-ui/core/Chip";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import CancelIcon from '@material-ui/icons/Cancel';
+import CancelIcon from "@material-ui/icons/Cancel";
 
 // Custom components
 import FloatCard from "../../../components/FloatCard";
@@ -37,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TechStack = ({ technologies, techStack, handleTechStack }) => {
+const TechStack = ({ technologies, handleTechStack }) => {
   const classes = useStyles();
 
   const options = technologies

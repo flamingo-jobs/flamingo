@@ -7,6 +7,7 @@ import {
   makeStyles,
   useTheme,
 } from "@material-ui/core";
+import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import Grid from "@material-ui/core/Grid";
 import JobTable from "./components/JobTable";
@@ -69,14 +70,16 @@ const EmployerJobList = () => {
       alignItems="flex-start"
     >
       <Grid item container xs={12} spacing={3}>
-        <Button
-            variant="contained"
-            className={classes.button}
-            startIcon={<AddIcon />}
-            onClick={handleClick}
-        >
-            Add new job 
-        </Button>
+        <Link to="/employer/jobs/create">
+          <Button
+              variant="contained"
+              className={classes.button}
+              startIcon={<AddIcon />}
+              // onClick={handleClick}
+          >
+              Add new job 
+          </Button>
+        </Link>
       </Grid>
       <Grid item container xs={12} spacing={3} className={classes.Table}>
         <JobTable />

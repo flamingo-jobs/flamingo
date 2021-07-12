@@ -293,7 +293,7 @@ const CreateJobForm = () => {
   };
 
   const displayKeywords = () => {
-    if (technologies === "empty") {
+    if (technologies === "empty" || technologies === undefined) {
       return null;
     } else {
       return (
@@ -347,7 +347,7 @@ const CreateJobForm = () => {
     try {
       const response = await axios.get(`${BACKEND_URL}/technologies`);
       if (response.data.success) {
-        setTechnologies(response.data.existingTechnologies);
+        setTechnologies(response.data.existingData);
       }
     } catch (err) {
       console.error(err);

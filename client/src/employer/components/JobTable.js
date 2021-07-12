@@ -17,6 +17,7 @@ import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
 import axios from "axios";
 import BACKEND_URL from "../../Config";
 import { useState, useEffect } from "react";
+import { Link } from 'react-router-dom';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -158,13 +159,16 @@ export default function CustomizedTables() {
                 {row.noOfResumes}
               </StyledTableCell>
               <StyledTableCell align="right">
-                <Button
-                  size="small"
-                  className={classes.button}
-                  endIcon={<NavigateNextIcon />}
-                >
-                  View
-                </Button>
+                <Link to={`/employer/jobs/update/${row._id}`}>
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      className={classes.button}
+                      endIcon={<NavigateNextIcon />}
+                    >
+                      View
+                    </Button>
+                  </Link>
               </StyledTableCell>
             </StyledTableRow>
           ))}

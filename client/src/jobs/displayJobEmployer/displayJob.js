@@ -56,8 +56,10 @@ const DisplayJob = () => {
   const [types, setTypes] = useState("empty");
   const [employer, setEmployer] = useState("empty");
   const [technologies, setTechnologies] = useState("empty");
-  const jobId = "60c184a2c76c4d325461e7f0";
-  const empId = "60c246913542f942e4c84454";
+  // const jobId = "60c184a2c76c4d325461e7f0";
+  // const empId = "60c246913542f942e4c84454";
+  const [jobId, setJobId] = useState(window.location.pathname.split("/")[4]);
+  const [empId, setEmpId] = useState(sessionStorage.getItem("loginId"));
 
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });

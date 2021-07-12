@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Typography,
@@ -8,7 +8,7 @@ import {
   IconButton,
 } from "@material-ui/core";
 import FloatCard from "../../../components/FloatCard";
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import KeywordsModal from "./keywordsModal";
 import axios from "axios";
 import BACKEND_URL from "../../../Config";
@@ -35,10 +35,10 @@ const useStyles = makeStyles((theme) => ({
   chip: {
     color: theme.palette.white,
     background: "#6c757d",
-    "&:hover":{
+    "&:hover": {
       background: theme.palette.black,
       cursor: "pointer",
-    }
+    },
   },
   iconButton: {
     "&:hover": {
@@ -48,16 +48,19 @@ const useStyles = makeStyles((theme) => ({
   addIcon: {
     color: theme.palette.tagIcon,
     transition: "0.3s",
-    "&:hover":{
+    "&:hover": {
       transition: "0.3s",
       color: theme.palette.black,
-    }
+    },
   },
   iconGridItem: {
     display: "flex",
     flexDirection: "column",
   },
-  
+  keywordsEmpty:{
+    color: "#888",
+    fontSize: "15px",
+  },
 }));
 
 // style={{ border: "1px solid red" }}
@@ -75,7 +78,7 @@ const Keywords = (props) => {
   };
 
   const handleKeywordsChange = (values) => {
-    const newJob = {...props.job};
+    const newJob = { ...props.job };
     newJob.keywords = values;
     props.setJob(newJob);
   };
@@ -94,11 +97,17 @@ const Keywords = (props) => {
       );
       // console.log(response);
       handleClose();
-      props.setAlertData({ severity: "success", msg: "Changes saved successfully!" });
+      props.setAlertData({
+        severity: "success",
+        msg: "Changes saved successfully!",
+      });
       props.handleAlert();
     } catch (err) {
       handleClose();
-      props.setAlertData({ severity: "error", msg: "Changes could not be applied" });
+      props.setAlertData({
+        severity: "error",
+        msg: "Changes could not be applied",
+      });
       props.handleAlert();
       console.log("Error: ", err);
     }
@@ -129,6 +138,11 @@ const Keywords = (props) => {
             </Grid>
           </Grid>
           <Container className={classes.chipContainer}>
+            {props.job.keywords.length === 0 && (
+              <Typography className={classes.keywordsEmpty}>
+                There are no keywords
+              </Typography>
+            )}
             {props.job.keywords.map((item) => (
               <Chip
                 key={item}

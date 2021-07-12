@@ -104,9 +104,6 @@ function Base() {
         <Route path="/jobs">
           <Jobs />
         </Route>
-        <Route path="/job" exact>
-          <DisplayJob />
-        </Route>
         <Route path="/jobseeker" exact>
           <Profile />
         </Route>
@@ -154,7 +151,13 @@ function Base() {
           <Route path="/employer/home">
             <EmployerDashboard/>
           </Route>
-          <Route path="/employer/jobs">
+          <Route path="/employer/jobs/create">
+            <CreateJobForm />
+          </Route>
+          <Route path="/employer/jobs/update">
+            <DisplayJob />
+          </Route>
+          <Route exact path="/employer/jobs">
             <EmployerJobList/>
           </Route>
           <Route path="/employer/company">
@@ -189,9 +192,6 @@ function Base() {
           </Route>
           <Route path="/admin/employers">
             <Employers />
-          </Route>
-          <Route path="/createJob">
-            <CreateJobForm />
           </Route>
         </>
       )
