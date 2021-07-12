@@ -34,6 +34,24 @@ const uploadResumeToServer = (req, res) => {
   // console.log(req.file);
 };
 
+const downloadResume = async (req, res) => {
+  try {
+    res.set({
+      'Content-Type': "application/pdf"
+    });
+    const resumeName = req.params.jobId + "--" + req.params.userId + ".pdf";
+    const resumePath = path.join(__dirname, '..', "resumes" , resumeName);
+    res.sendFile(resumePath);
+
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      error: "Error while downloading file. Please try again later."
+    });
+  }
+}
+
 module.exports = {
   uploadResumeToServer,
+  downloadResume,
 };

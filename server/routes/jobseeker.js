@@ -18,7 +18,6 @@ router.post('/jobseekers/delete', jobseekerController.block);
 // get specific
 
 router.get('/jobseeker/:id', jobseekerController.getById);
-router.get('/jobseeker/download/:id', jobseekerController.downloadResume);
 
 // update jobseeker
 
