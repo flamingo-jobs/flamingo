@@ -47,6 +47,7 @@ function AppliedJobs() {
         return jobseeker.applicationDetails.map((item, index) => (
           <Job
             key={item.jobId}
+            userId={userId}
             jobId={item.jobId}
             applicationDetails={jobseeker.applicationDetails[index]}
           ></Job>

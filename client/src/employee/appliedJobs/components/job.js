@@ -18,6 +18,7 @@ import WorkRoundedIcon from "@material-ui/icons/WorkRounded";
 import ReactTimeAgo from "react-time-ago";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import Pending from "./pendingStatus";
+import download from 'downloadjs';
 
 const useStyles = makeStyles((theme) => ({
   border: {
@@ -161,9 +162,21 @@ const Job = (props) => {
 
   const handleTitleClick = () => {};
 
+  const handleResumeDownload = async () => {
+    const resumeName = props.applicationDetails.resumeName;
+    try {
+      const response = await axios.get(`${BACKEND_URL}/resume/${props.jobId}/${props.userId}`,{
+        responseType: 'blob'
+      });
+      console.log(response);
+      return download(response.data, "Flamingo_Resume", "application/pdf");
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   // style={{border: "1px solid red"}}
   const displayJob = () => {
-
     if (job !== "empty") {
       return (
         <FloatCard>
@@ -242,6 +255,7 @@ const Job = (props) => {
                   variant="contained"
                   className={classes.downloadBtn}
                   startIcon={<GetAppIcon />}
+                  onClick={handleResumeDownload}
                 >
                   Download Resume
                 </Button>

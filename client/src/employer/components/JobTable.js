@@ -46,7 +46,16 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.black,
   },
   button: {
-    color: theme.palette.blueJeans,
+    backgroundColor: theme.palette.blueJeans,
+    color: "white",
+    margin: 10,
+    borderRadius: 25,
+    paddingLeft: 10,
+    paddingRight: 10,
+    "&:hover": {
+      backgroundColor: theme.palette.blueJeansHover,
+      color: "white",
+    },
   },
   category: {
     alignSelf: "left",
@@ -150,7 +159,6 @@ export default function CustomizedTables() {
               </StyledTableCell>
               <StyledTableCell align="right">
                 <Button
-                  variant="outlined"
                   size="small"
                   className={classes.button}
                   endIcon={<NavigateNextIcon />}
