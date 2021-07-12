@@ -54,7 +54,7 @@ function StatCard() {
         <FloatCard>
             <Grid container spacing={3} style={{padding: "25px"}}>
                 <Grid item xs={12}>
-                    <Typography variant="h4" align="left" width="100%" style={{fontWeight:"bold",color: "#8e24aa"}}>Welcome home !</Typography>
+                    <Typography variant="h4" align="left" width="100%" style={{fontWeight:"bold",color: "#b31aff"}}>Welcome home !</Typography>
                 </Grid>
                 <Grid item xs={6}>
                     <Paper elevation={0} className={classes.paperCont}>  

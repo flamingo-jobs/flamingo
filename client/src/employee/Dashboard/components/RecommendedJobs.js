@@ -12,7 +12,9 @@ import BACKEND_URL from '../../../Config';
 const useStyles = makeStyles((theme) => ({
     title: {
         fontWeight: 600,
-        color: theme.palette.black
+        color: "#8e24aa",
+        paddingTop: "17px",
+        fontSize: "28px"
     },
     container: {
         maxWidth: 'unset'
@@ -41,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     },
     link: {
         backgroundColor: theme.palette.white,
-        color: theme.palette.tuftsBlue,
+        color: "#8e24aa",
         fontWeight: 800,
         borderRadius: 25,
         paddingLeft: 20,
@@ -102,12 +104,10 @@ function RecommendedJobs(props) {
     }
 
     return (
-        <div>
+        <FloatCard backColor="#f7e6ff">
             <Grid container direction="column" spacing={2} className={classes.container}>
                 <Grid item sm={12} >
-                    <FloatCard>
-                        <Typography variant="h5" className={classes.title}>Recommended Jobs</Typography>
-                    </FloatCard>
+                    <Typography className={classes.title}>Recommended Jobs</Typography>
                 </Grid>
                 {displayFeaturedJobs()}
                 <Grid item sm={12}>
@@ -120,20 +120,8 @@ function RecommendedJobs(props) {
                         </Button>
                     </FloatCard>
                 </Grid>
-                <Grid item sm={12}>
-                    <FloatCard backColor={theme.palette.tuftsBlue}>
-                        <Grid item container direction="row" sm={12} className={classes.allJobs}>
-                            <Grid item xs={12} lg={6}>
-                                <Typography variant="h6" className={classes.text}>Want to dive into?</Typography>
-                            </Grid>
-                            <Grid item xs={12} lg={6}>
-                                <Button className={classes.button} endIcon={<ArrowForwardRoundedIcon />}> Browse All Jobs </Button>
-                            </Grid>
-                        </Grid>
-                    </FloatCard>
-                </Grid>
             </Grid>
-        </div>
+        </FloatCard>
     )
 }
 
