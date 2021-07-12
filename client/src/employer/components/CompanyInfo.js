@@ -36,9 +36,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import differenceBy from 'lodash/differenceBy';
-import Snackbar from '@material-ui/core/Snackbar';
-import Alert from '@material-ui/lab/Alert';
+import differenceBy from 'lodash/differenceBy'
 
 
 
@@ -206,9 +204,6 @@ function CompanyInfo() {
     setOpen(false);
   };
 
-  
-  
-
   //for the company details update form
 
   function onChangeName(e) {
@@ -280,39 +275,8 @@ function CompanyInfo() {
 
     axios
       .put(`${BACKEND_URL}/employers/update/60c246913542f942e4c84454`, employer)
-      .then((res) => {
-        if (res.data.success) {
-          console.log("success")
-          // handleSuccess();
-        } else {
-          console.log("error")
-          // handleUpdateError();
-        }
-      })
+      .then((res) => console.log(employer));
     handleClose();
-  }
-
-  //snackbar for error and success messages
-  const [successSnack, setSuccess] = useState(false);
-  const [updateErrorSnack, setUpdateError] = useState(false);
-
-  const handleSuccess = () => {
-    setSuccess(true);
-  };
-  const handleUpdateError = () => {
-    setUpdateError(true);
-  };
-  const handleCloseSnackBar = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setSuccess(false);
-    setUpdateError(false);
-  };
-
-
-  function Alert(props) {
-    return <Alert elevation={6} variant="filled" {...props} />;
   }
 
   return (
@@ -574,30 +538,6 @@ function CompanyInfo() {
                   </form>
                 </div>
               </Grid>
-              
-              {/* Success message for dialog box close */}
-
-              <Snackbar
-                open={successSnack}
-                autoHideDuration={6000}
-                onClose={handleCloseSnackBar}
-              >
-                <Alert onClose={handleCloseSnackBar} severity="success">
-                  Profile Update Successful
-                </Alert>
-              </Snackbar>
-
-              {/* Error messages for dialog box close  */}
-
-              <Snackbar
-                  open={updateErrorSnack}
-                  autoHideDuration={6000}
-                  onClose={handleCloseSnackBar}
-                >
-                  <Alert onClose={handleCloseSnackBar} severity="error">
-                    Error in Profile Update
-                  </Alert>
-              </Snackbar>
 
               {/* PANEL 02 FOR LOCATION AND JOB TYPE */}
 
