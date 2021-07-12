@@ -281,15 +281,16 @@ function CompanyInfo() {
     axios
       .put(`${BACKEND_URL}/employers/update/60c246913542f942e4c84454`, employer)
       .then((res) => {
+        handleClose();
         if (res.data.success) {
           console.log("success")
-          // handleSuccess();
+          handleSuccess();
         } else {
           console.log("error")
-          // handleUpdateError();
+          handleUpdateError();
         }
       })
-    handleClose();
+    
   }
 
   //snackbar for error and success messages

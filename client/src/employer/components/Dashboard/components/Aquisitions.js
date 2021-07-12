@@ -71,18 +71,20 @@ const Aquisitions = () => {
         <AssignmentIcon className={classes.notificationsIcon}/>
 
 
-        <Chart
-          data={data}
-          className={classes.chart}
-        >
-          <PieSeries
-            valueField="percentage"
-            argumentField="category"
-          />
-          
-          <Legend position="bottom"  className={classes.legend}/>
-          <Animation />
-        </Chart>
+        <div>
+          <Chart
+            data={data}
+            style={{marginTop: "-100px", width:150, height:150}}
+          >
+            <PieSeries
+              valueField="percentage"
+              argumentField="category"
+            />
+            
+            <Legend position="bottom"  className={classes.legend}/>
+            <Animation />
+          </Chart>
+        </div>
 
 
       </FloatCard>
