@@ -11,15 +11,17 @@ import BACKEND_URL from '../../../Config';
 
 const useStyles = makeStyles((theme) => ({
     title: {
-        fontWeight: 700,
-        color: theme.palette.black
+        fontWeight: 600,
+        color: "#8e24aa",
+        paddingTop: "17px",
+        fontSize: "28px"
     },
     container: {
         maxWidth: 'unset'
     },
     link: {
         backgroundColor: theme.palette.white,
-        color: theme.palette.tuftsBlue,
+        color: "#8e24aa",
         fontWeight: 800,
         borderRadius: 25,
         paddingLeft: 20,
@@ -67,12 +69,10 @@ function RecommendedOrganizations() {
     }
 
     return (
-        <div>
+        <FloatCard backColor="#f7e6ff">
             <Grid container direction="column" spacing={2} className={classes.container}>
                 <Grid item sm={12} >
-                    <FloatCard>
-                        <Typography variant="h5" className={classes.title}>Recommended Organizations</Typography>
-                    </FloatCard>
+                    <Typography variant="h5" className={classes.title}>Recommended Organizations</Typography>
                 </Grid>
                 <Grid item container direction="row" spacing={2}>
                     {displayFeaturedOrgs()}
@@ -88,7 +88,7 @@ function RecommendedOrganizations() {
                     </FloatCard>
                 </Grid>
             </Grid>
-        </div>
+        </FloatCard>
     )
 }
 

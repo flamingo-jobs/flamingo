@@ -6,6 +6,7 @@ import ProfileStatus from './components/ProfileStatus';
 import Space from '../components/Space';
 import RecommendedJobs from './components/RecommendedJobs';
 import RecommendedOrganizations from './components/RecommendedOrganizations';
+import SideMenu from './components/SideMenu';
 
 
 
@@ -23,7 +24,7 @@ function JobseekerDashboard() {
             <Grid item md={12} lg={4} spacing={3}>
                 <ProfileStatus />
                 <Space />
-                
+                <SideMenu />
             </Grid>                                          
         </Grid>
     )
