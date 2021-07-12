@@ -127,6 +127,10 @@ const useStyles = makeStyles((theme) => ({
       height: 300,
       width: 450,
       marginLeft: -480,
+      marginTop: -20,
+  },
+  legend:{
+      marginBottom: -20,
   }
 }));
 
@@ -156,7 +160,7 @@ const LineGraph = () => {
 
         <br />
 
-        <div  style={{marginLeft: "500px"}}>
+        <div  style={{marginLeft: "500px", marginTop: "-20px"}}>
         <Chart
           data={data}
           className={classes.chart}
@@ -190,7 +194,7 @@ const LineGraph = () => {
             argumentField="country"
             seriesComponent={Line}
           />
-          <Legend position="top" 
+          <Legend position="bottom" className={classes.legend}
           rootComponent={Root} itemComponent={Item} labelComponent={Label} />
           <Animation />
         </Chart>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     // minWidth: 275,
     backgroundColor: theme.palette.greenyLightSky,
   },
-  title: { 
+  title: {
     fontSize: 14,
   },
   chip: {
@@ -61,7 +61,7 @@ const PurpleCheckbox = withStyles({
   checked: {},
 })((props) => <Checkbox color="default" {...props} />);
 
-export default function TechCard() {
+export default function TechCard(props) {
   const classes = useStyles();
   const bull = <span className={classes.bullet}>•</span>;
   const [open, setOpen] = React.useState(false);
@@ -76,16 +76,32 @@ export default function TechCard() {
     setOpen(false);
   };
 
-  const [state, setState] = React.useState({
-    React: false,
-    jQuery: false,
-    Angular: false,
-    Springboot: false,
-    Express: false,
-  });
+  // const [state, setState] = React.useState({
+  //   React: false,
+  //   jQuery: false,
+  //   Angular: false,
+  //   Springboot: false,
+  //   Express: false,
+  // });
+  const [subSubArray, update] = React.useState(new Set());
+  const addSubTechnologyStack = () => {
+    console.log(subSubArray);
 
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    console.log(props.name)
+    console.log(props.list);
+  }, []);
   const handleChange = (event) => {
-    setState({ ...state, [event.target.name]: event.target.checked });
+    if (!event.target.checked)
+      update(
+        (oldArray) =>
+          new Set([...oldArray].filter((x) => x !== event.target.name))
+      );
+    else update((oldArray) => new Set([...subSubArray, event.target.name]));
+    // setState({ ...state, [event.target.name]: event.target.checked });
   };
 
   return (
@@ -97,7 +113,7 @@ export default function TechCard() {
 
             <Grid item sm={10}>
               <Typography className={classes.title} gutterBottom>
-                Frontend Development
+                {props.name}
               </Typography>
             </Grid>
 
@@ -133,7 +149,20 @@ export default function TechCard() {
                   </DialogContentText>
 
                   <FormGroup row>
-                    <FormControlLabel
+                    {Object.entries(props.list[props.name]).map(([object, i]) => (
+                      <FormControlLabel
+                        control={
+                          <PurpleCheckbox
+                            // checked={state.frontend}
+                            onChange={handleChange}
+                            name={i}
+                            className={classes.checkbox}
+                          />
+                        }
+                        label={i}
+                      />
+                    ))}
+                    {/* <FormControlLabel
                       control={
                         <PurpleCheckbox
                           checked={state.React}
@@ -143,8 +172,8 @@ export default function TechCard() {
                         />
                       }
                       label="React"
-                    />
-                    <FormControlLabel
+                    /> */}
+                    {/* <FormControlLabel
                       control={
                         <PurpleCheckbox
                           checked={state.jQuery}
@@ -188,7 +217,7 @@ export default function TechCard() {
                         />
                       }
                       label="Express"
-                    />
+                    /> */}
                   </FormGroup>
                 </DialogContent>
 
@@ -200,7 +229,7 @@ export default function TechCard() {
                     Cancel
                   </Button>
                   <Button
-                    onClick={handleClose}
+                    onClick={addSubTechnologyStack}
                     className={classes.dialogbuttons}
                   >
                     Add
@@ -273,7 +302,14 @@ export default function TechCard() {
           </Grid>
 
           <Grid item sm={12}>
-            <Chip label="React" variant="outlined" className={classes.chip} />
+            {Array.from(subSubArray).map((object, i) => (
+              <Chip
+                label={object}
+                variant="outlined"
+                className={classes.chip}
+              />
+            ))}
+            {/* <Chip label="React" variant="outlined" className={classes.chip} />
             <Chip label="Express" variant="outlined" className={classes.chip} />
             <Chip label="Angular" variant="outlined" className={classes.chip} />
             <Chip label="Vue.js" variant="outlined" className={classes.chip} />
@@ -284,7 +320,7 @@ export default function TechCard() {
               className={classes.chip}
             />
             <Chip label="Java" variant="outlined" className={classes.chip} />
-            <Chip label="Basic" variant="outlined" className={classes.chip} />
+            <Chip label="Basic" variant="outlined" className={classes.chip} /> */}
           </Grid>
         </Grid>
       </CardContent>
