@@ -4,7 +4,8 @@ import { Box, Grid, Container, Typography } from '@material-ui/core';
 import StatCard from './components/StatCard';
 import ProfileStatus from './components/ProfileStatus';
 import Space from '../components/Space';
-import NearJobs from './components/NearJobs';
+import RecommendedJobs from './components/RecommendedJobs';
+import RecommendedOrganizations from './components/RecommendedOrganizations';
 
 
 
@@ -14,11 +15,15 @@ function JobseekerDashboard() {
         <Grid item container sm={12} spacing={3} direction="row" justify="space-between" alignItems="flex-start">
             <Grid item md={12} lg={8} spacing={3}>
                 <StatCard />
+                <Space />
+                <RecommendedJobs />
+                <Space />
+                <RecommendedOrganizations />
             </Grid>
             <Grid item md={12} lg={4} spacing={3}>
                 <ProfileStatus />
                 <Space />
-                <NearJobs />
+                
             </Grid>                                          
         </Grid>
     )
