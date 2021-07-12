@@ -10,6 +10,7 @@ import {
 import Grid from "@material-ui/core/Grid";
 import CompanySummaryCard from "./components/Dashboard/components/CompanySummaryCard";
 import DashboardNotifications from "./components/Dashboard/components/DashboardNotifications";
+import TopCards from "./components/Dashboard/components/TopCards";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,7 +34,7 @@ const Dashboard = () => {
     >
       {/* Dashboard Left section */}
       <Grid item containerxs={12} sm={9} spacing={3}>
-        
+        <TopCards/>
       </Grid>
 
       {/* Dashboard Right Section */}

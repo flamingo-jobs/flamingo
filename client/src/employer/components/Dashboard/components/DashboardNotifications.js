@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const CompanySummaryCard = () => {
+const DashboardNotifications = () => {
   const classes = useStyles();
 
   return (
@@ -135,4 +135,4 @@ const CompanySummaryCard = () => {
   );
 };
 
-export default CompanySummaryCard;
+export default DashboardNotifications;
