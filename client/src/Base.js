@@ -25,6 +25,7 @@ import DisplayJob from './jobs/displayJobEmployer/displayJob';
 import JobSeekers from "./admin/JobSeekers";
 import Employers from "./admin/Employers";
 import AppliedJobs from "./employee/appliedJobs/appliedJobs";
+import JobseekerDashboard from "./employee/Dashboard/JobseekerDashboard";
 import Dashboard from "./admin/Dashboard";
 
 const jwt = require("jsonwebtoken");
@@ -135,6 +136,12 @@ function Base() {
           <Route path="/jobseeker/appliedJobs">
             <AppliedJobs />
           </Route>
+          <Route path="/jobseeker" exact>
+            <Profile />
+          </Route>
+          <Route path="/jobseekerDashboard" exact>
+          <JobseekerDashboard />
+        </Route>
         </>
       )
     }
