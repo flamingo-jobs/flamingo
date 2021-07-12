@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
   notificationsIcon:{
     color: theme.palette.stateBlue,
     marginTop: 5,
+    marginLeft: 50,
   },
   notificationsIconSmall:{
     width: 20,

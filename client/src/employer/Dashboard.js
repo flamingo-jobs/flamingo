@@ -11,11 +11,21 @@ import Grid from "@material-ui/core/Grid";
 import CompanySummaryCard from "./components/Dashboard/components/CompanySummaryCard";
 import DashboardNotifications from "./components/Dashboard/components/DashboardNotifications";
 import TopCards from "./components/Dashboard/components/TopCards";
+import Aquisitions from "./components/Dashboard/components/Aquisitions";
+import LineGraph from "./components/Dashboard/components/LineGraph";
+import NewApplicants from "./components/Dashboard/components/NewApplicants";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundSize: "cover",
     minHeight: "100vh",
+  },
+  aquisitions:{
+    marginTop: 5,
+  },
+  lineGraph:{
+    marginTop: 5,
   },
 
 }));
@@ -27,14 +37,35 @@ const Dashboard = () => {
     <Grid
       container
       xs={12}
-      spacing={3}
+      spacing={1}
       direction="row"
       justify="space-between"
       alignItems="flex-start"
     >
       {/* Dashboard Left section */}
-      <Grid item containerxs={12} sm={9} spacing={3}>
-        <TopCards/>
+      <Grid item containerxs={12} sm={9} spacing={1}>
+        <Grid item>
+          <TopCards/>
+        </Grid>
+
+        <Grid item container spacing={3}>
+          <Grid item xs={8}>
+            <LineGraph  className={classes.lineGraph}/>
+          </Grid>
+
+          <Grid container direction="column" item xs={4} spacing={1} className={classes.aquisitions}>
+            {/* Aquisitions */}
+            <Grid item>
+              <Aquisitions/>
+            </Grid>
+
+            {/* Notifications */}
+            <Grid item>
+              <NewApplicants/>
+            </Grid>
+          </Grid>
+        </Grid>
+        
       </Grid>
 
       {/* Dashboard Right Section */}
