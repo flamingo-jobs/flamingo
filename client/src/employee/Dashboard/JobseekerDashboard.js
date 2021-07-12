@@ -3,6 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Box, Grid, Container, Typography } from '@material-ui/core';
 import StatCard from './components/StatCard';
 import ProfileStatus from './components/ProfileStatus';
+import Space from '../components/Space';
+import NearJobs from './components/NearJobs';
 
 
 
@@ -15,6 +17,8 @@ function JobseekerDashboard() {
             </Grid>
             <Grid item md={12} lg={4} spacing={3}>
                 <ProfileStatus />
+                <Space />
+                <NearJobs />
             </Grid>                                          
         </Grid>
     )
