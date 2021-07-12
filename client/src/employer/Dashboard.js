@@ -8,35 +8,16 @@ import {
   useTheme,
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
-import ProfileStatCard from "./components/ProfileStatCard";
-import FeaturedJobs from "./components/FeaturedJobs";
-import Reviews from "./components/Reviews";
+import CompanySummaryCard from "./components/Dashboard/components/CompanySummaryCard";
+import DashboardNotifications from "./components/Dashboard/components/DashboardNotifications";
+import TopCards from "./components/Dashboard/components/TopCards";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundSize: "cover",
     minHeight: "100vh",
   },
-  container: {
-    paddingTop: 20,
-    [theme.breakpoints.down("xs")]: {
-      paddingTop: 0,
-    },
-  },
-  FeaturedOrganizations: {
-    paddingTop: 25,
-  },
-  topBarGrid: {
-    [theme.breakpoints.down("xs")]: {
-      display: "block",
-      maxWidth: "unset",
-    },
-  },
-  sideDrawerGrid: {
-    [theme.breakpoints.down("xs")]: {
-      display: "none",
-    },
-  },
+
 }));
 
 const Dashboard = () => {
@@ -51,15 +32,26 @@ const Dashboard = () => {
       justify="space-between"
       alignItems="flex-start"
     >
-      <Grid item containerxs={7} sm={7} spacing={3}>
-        <FeaturedJobs />
+      {/* Dashboard Left section */}
+      <Grid item containerxs={12} sm={9} spacing={3}>
+        <TopCards/>
       </Grid>
 
-      <Grid item xs={5} sm={5} spacing={3}>
-        <ProfileStatCard />
-        <br></br>
-        <Reviews/>
+      {/* Dashboard Right Section */}
+      <Grid container direction="column" item xs={12} sm={3} spacing={1}>
+
+        {/* Company Profile and stars */}
+        <Grid item>
+          <CompanySummaryCard/>
+        </Grid>
+
+        {/* Notifications */}
+        <Grid item>
+          <DashboardNotifications/>
+        </Grid>
+      
       </Grid>
+
     </Grid>
   );
 };

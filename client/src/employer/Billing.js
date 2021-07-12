@@ -45,13 +45,13 @@ const Billing = () => {
 
   return (
     <div className={classes.root}>
-      <FloatCard>
+      {/* <FloatCard> */}
         {/* <Grid container xs={12} direction="row" spacing={1}>
           <Grid item xs={12}> */}
             <BillingPackageCard></BillingPackageCard>
           {/* </Grid>
         </Grid> */}
-      </FloatCard>
+      {/* </FloatCard> */}
 
     </div>
   );
