@@ -29,6 +29,7 @@ import { Animation } from '@devexpress/dx-react-chart';
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundSize: "cover",
+    marginRight: -10,
   },
   title: {
     fontWeight: "bolder",
@@ -44,13 +45,9 @@ const useStyles = makeStyles((theme) => ({
   chart:{
       width: 150,
       height: 150,
-      marginTop: -100,
-      marginLeft: 40,
-    //   marginBottom: -130, 
+      marginTop: -75,
+      float: "center",
   },
-  legend:{
-      marginTop: 100,
-  }
 }));
 
 const Aquisitions = () => {

@@ -12,6 +12,8 @@ import CompanySummaryCard from "./components/Dashboard/components/CompanySummary
 import DashboardNotifications from "./components/Dashboard/components/DashboardNotifications";
 import TopCards from "./components/Dashboard/components/TopCards";
 import Aquisitions from "./components/Dashboard/components/Aquisitions";
+import LineGraph from "./components/Dashboard/components/LineGraph";
+import NewApplicants from "./components/Dashboard/components/NewApplicants";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -21,7 +23,9 @@ const useStyles = makeStyles((theme) => ({
   },
   aquisitions:{
     marginTop: 5,
-    // marginRight: 30,
+  },
+  lineGraph:{
+    marginTop: 5,
   },
 
 }));
@@ -46,11 +50,19 @@ const Dashboard = () => {
 
         <Grid item container spacing={3}>
           <Grid item xs={8}>
-
+            <LineGraph  className={classes.lineGraph}/>
           </Grid>
 
-          <Grid item xs={4} className={classes.aquisitions}>
-            <Aquisitions/>
+          <Grid container direction="column" item xs={4} spacing={1} className={classes.aquisitions}>
+            {/* Aquisitions */}
+            <Grid item>
+              <Aquisitions/>
+            </Grid>
+
+            {/* Notifications */}
+            <Grid item>
+              <NewApplicants/>
+            </Grid>
           </Grid>
         </Grid>
         
