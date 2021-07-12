@@ -8,60 +8,88 @@ import {
   useTheme,
   Avatar,
   Typography,
+  Button,
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import FloatCard from "../../FloatCard";
 import Box from "@material-ui/core/Box";
-
+import AssignmentIcon from '@material-ui/icons/Assignment';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import Paper from '@material-ui/core/Paper';
+import {
+  Chart,
+  PieSeries,
+  Title,
+  Legend,
+} from '@devexpress/dx-react-chart-material-ui';
+import { Animation } from '@devexpress/dx-react-chart';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundSize: "cover",
-    marginLeft: 10,
-    marginRight: 10,
   },
-  cardTitle:{
+  title: {
     fontWeight: "bolder",
     color: theme.palette.stateBlue,
-    marginBottom: 20,
-    float: "center",
+    float: "left",
+    marginLeft: 10,
+  },
+  notificationsIcon:{
+    color: theme.palette.stateBlue,
+    marginTop: 5,
+    marginLeft: 70,
+  },
+  chart:{
+      width: 150,
+      height: 150,
+      marginTop: -100,
+      marginLeft: 40,
+    //   marginBottom: -130, 
+  },
+  legend:{
+      marginTop: 100,
   }
-
 }));
 
 const Aquisitions = () => {
-    const classes = useStyles();
-  
-    return (
-    <Grid container direction="row" xs={12} spacing={3} className={classes.root}>
 
-        <Grid item xs={4}>
-            <FloatCard>
-                <Typography variant="h6" className={classes.cardTitle}>
-                    APPLICATIONS
-                </Typography>
-            </FloatCard>
-        </Grid>
+  const classes = useStyles();
 
-        <Grid item xs={4}>
-            <FloatCard>
-                <Typography variant="h6" className={classes.cardTitle}>
-                    SHORTLISTED
-                </Typography>
-            </FloatCard>
-        </Grid>
+  const [data, setData] = React.useState([
+    { category: 'Applications', percentage: 12 },
+    { category: 'Shortlisted', percentage: 7 },
+    { category: 'On-Hold', percentage: 7 },
+    { category: 'Rejected', percentage: 7 },
+    ]);
 
-        <Grid item xs={4}>
-            <FloatCard>
-                <Typography variant="h6" className={classes.cardTitle}>
-                    ON-HOLD
-                </Typography>
-  
-            </FloatCard>
-        </Grid>
-     
-      
-    </Grid>
+
+  return (
+    <div className={classes.root}>
+      <FloatCard>
+        <Typography variant="h6" className={classes.title}>
+          Aquisitions
+        </Typography>
+        <AssignmentIcon className={classes.notificationsIcon}/>
+
+
+        <Chart
+          data={data}
+          className={classes.chart}
+        >
+          <PieSeries
+            valueField="percentage"
+            argumentField="category"
+          />
+          
+          <Legend position="bottom"  className={classes.legend}/>
+          <Animation />
+        </Chart>
+
+
+      </FloatCard>
+    </div>
   );
 };
 
