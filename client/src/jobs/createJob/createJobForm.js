@@ -55,8 +55,7 @@ const getFormattedDate = (date) => {
 
 const CreateJobForm = () => {
   const classes = useStyles();
-  const empId = "60c246913542f942e4c84454";
-
+  const empId = sessionStorage.getItem("loginId");
   // Data retrieved from DB
   const [categories, setCategories] = useState("empty");
   const [types, setTypes] = useState("empty");

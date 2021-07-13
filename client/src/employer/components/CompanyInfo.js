@@ -7,10 +7,8 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core";
-import { FavoriteRounded } from "@material-ui/icons";
 import Rating from "@material-ui/lab/Rating";
 import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
-import WorkRoundedIcon from "@material-ui/icons/WorkRounded";
 import wso2 from "../images/wso2.png";
 import FloatCard from "./FloatCard";
 import EditIcon from "@material-ui/icons/Edit";
@@ -36,8 +34,8 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import differenceBy from 'lodash/differenceBy'
-
+import swal from 'sweetalert';
+import { Alert, AlertTitle } from '@material-ui/lab';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -146,13 +144,16 @@ const useStyles = makeStyles((theme) => ({
 function CompanyInfo() {
   const classes = useStyles();
 
-  const [value, setValue] = React.useState(2);
+  const fixedOptions = [];
+  const [location, setLocation] = React.useState([
+    ...fixedOptions,
+  ]);
 
   const [state, setState] = useState({
     name: " ",
     description: " ",
     technologyStack: Object,
-    locations: [],
+
     subscription: " ",
     website: " ",
     facebook: " ",
@@ -164,25 +165,25 @@ function CompanyInfo() {
   const description = state.description;
   const technologyStack = state.technologyStack;
   const links = state.links;
-  const locations = state.locations;
   const subscription = state.subscription;
   const website = state.website;
   const facebook = state.facebook;
   const linkedIn = state.linkedIn;
   const twitter = state.twitter;
 
+  var successAlert = false;
+
   useEffect(() => {
     axios
       .get(`${BACKEND_URL}/employers/` + "60c246913542f942e4c84454")
       .then((res) => {
-        console.log(res.data.employer.links);
+        console.log(res.data.employer);
         if (res.data.success) {
           setState({
             name: res.data.employer.name,
             description: res.data.employer.description,
             technologyStack: res.data.employer.technologyStack,
             links: res.data.employer.links,
-            locations: res.data.employer.locations,
             subscription: res.data.employer.subscription,
             website: res.data.employer.links.website,
             facebook: res.data.employer.links.facebook,
@@ -190,6 +191,11 @@ function CompanyInfo() {
             twitter: res.data.employer.links.twitter,
           });
         }
+        res.data.employer.locations.forEach(element => {
+          console.log(element)
+          setLocation(location => [...location, {city:element}])  
+        });
+
       });
   }, []);
 
@@ -242,21 +248,12 @@ function CompanyInfo() {
     });
   }
 
-  // function onChangeLocations(e) {
-  //   locations=e;
-  //   state.locations=e;
-
-  //   setState((prevState) => {
-  //     return { ...prevState, locations: e};
-  //   });
-  //   console.log(e);
-  //   console.log(state.locations)
-  // }
-
-  
-
   function onSubmit(e) {
     e.preventDefault();
+    var temp = [];
+    location.forEach((element) => {
+      temp.push(element.city);
+    });
     const employer = {
       name: name,
       description: description,
@@ -268,14 +265,26 @@ function CompanyInfo() {
         linkedIn: linkedIn,
         twitter: twitter,
       },
+      locations: temp,
     };
-
-    console.log('test');
-    console.log(employer)
 
     axios
       .put(`${BACKEND_URL}/employers/update/60c246913542f942e4c84454`, employer)
-      .then((res) => console.log(employer));
+      .then((res) => 
+      {
+        if(res.status==200){
+          successAlert=true
+          alert(successAlert)
+          
+        }
+        else{
+          successAlert=false
+          alert(successAlert)
+ 
+        }
+      }
+      );
+
     handleClose();
   }
 
@@ -379,21 +388,26 @@ function CompanyInfo() {
                             <Grid item sm={12}>
                               <Autocomplete
                                 multiple
-                                id="locations"
-                                // options={ differenceBy(cities, mycities, 'city')}
+                                id="fixed-tags-demo"
+                                value={location}
+                                onChange={(event, newValue) => {
+                                  setLocation([
+                                    ...fixedOptions,
+                                    ...newValue.filter(
+                                      (option) =>
+                                        fixedOptions.indexOf(option) === -1
+                                    ),
+                                  ]);
+                                }}
                                 options={cities}
                                 getOptionLabel={(option) => option.city}
-                                defaultValue={[cities[1],cities[2],cities[5]]}
                                 renderInput={(params) => (
                                   <TextField
                                     {...params}
+                                    label="Location"
                                     variant="outlined"
-                                    label="Locations"
                                   />
                                 )}
-                                // onClick={onChangeLocations}
-                                // onChange={(event, value) => onChangeLocations(value)} 
-
                               />
                             </Grid>
 
@@ -543,10 +557,10 @@ function CompanyInfo() {
 
               <Grid item xs={9}>
                 <div className={classes.locationTags}>
-                  {locations.map((item, i) => (
+                  {Array.from(location).map((item, i) => (
                     <Chip
                       icon={<LocationOnRoundedIcon />}
-                      label={item}
+                      label={item.city}
                       className={classes.tag}
                     />
                   ))}
@@ -624,6 +638,7 @@ function CompanyInfo() {
             </Grid>
           </Grid>
 
+
           {/* Edit Company Logo */}
 
           <Grid item container alignItems="center" direction="row" xs={12}>
@@ -648,25 +663,32 @@ function CompanyInfo() {
             </Grid>
           </Grid>
         </Grid>
-      </FloatCard>
 
+        {/* {successAlert ? (
+            <Alert severity="success">
+            <AlertTitle>Success</AlertTitle>
+            This is a success alert — <strong>check it out!</strong>
+          </Alert>
+        ) : (
+          <Alert severity="error">
+          <AlertTitle>Error</AlertTitle>
+          This is an error alert — <strong>check it out!</strong>
+        </Alert>
+        )} */}
+    
 
       <br />
 
-
-      <FloatCard>
         <Grid container xs={12} direction="row" spacing={3}>
           {/* BODY PART OF THE COMPANY INFO CARD */}
 
           <Grid item xs={12}>
             {/* <div className={classes.infoTags}> */}
 
-            {console.log(technologyStack)}
-
             {Object.keys(technologyStack).map((item, i) => (
               <Chip
                 icon={<LocalOfferRoundedIcon className={classes.tagIcon} />}
-                label={item}
+                label={technologyStack[i].name}
                 className={classes.label}
               />
             ))}
@@ -674,12 +696,11 @@ function CompanyInfo() {
 
           <Grid item xs={12} className={classes.body}>
             <div className={classes.companyDescription}>
-              <Typography variant="body2" align="justify">
+              <Typography style={{whiteSpace:"pre-line"}} variant="body2" align="justify">
                 {description}
               </Typography>
             </div>
           </Grid>
-
         </Grid>
       </FloatCard>
     </div>
@@ -688,12 +709,7 @@ function CompanyInfo() {
 
 // list of locations
 
-const mycities = [
-  { city: "A" },
-  { city: "B" },
-  { city: "C" },
-  
-];
+const mycities = [{ city: "A" }, { city: "B" }, { city: "C" }];
 
 const cities = [
   { city: "Colombo" },

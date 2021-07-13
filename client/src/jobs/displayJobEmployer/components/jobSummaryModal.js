@@ -12,7 +12,6 @@ import {
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import { StateBlueTextField } from "../styles/customTextField";
-import FloatCard from "../../../components/FloatCard";
 import { createMuiTheme } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/styles";
 import DateFnsUtils from "@date-io/date-fns";

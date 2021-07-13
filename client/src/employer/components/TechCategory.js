@@ -15,7 +15,6 @@ import Checkbox from "@material-ui/core/Checkbox";
 import { purple } from "@material-ui/core/colors";
 import FloatCard from "./FloatCard";
 import TechCard from "./TechCard";
-import differenceBy from "lodash/differenceBy";
 import EditIcon from '@material-ui/icons/Edit';
 
 const useStyles = makeStyles((theme) => ({
@@ -43,6 +42,9 @@ const useStyles = makeStyles((theme) => ({
   title: {
     marginLeft: 5,
   },
+  techCard:{
+    marginBottom: -30,
+  }
 }));
 
 const PurpleCheckbox = withStyles({
@@ -181,7 +183,7 @@ function TechCategory(props) {
         <Grid container xs={12} direction="column" spacing={1}>
           {Array.from(subArray).map((object, i) => (
             <Grid item sm={12}>
-              <TechCard name={object} list={props.list}  />
+              <TechCard name={object} list={props.list} className={classes.techCard}/>
             </Grid>
           ))}
         </Grid>

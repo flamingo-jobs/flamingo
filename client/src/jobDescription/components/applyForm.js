@@ -311,7 +311,7 @@ const ApplyForm = (props) => {
   };
 
   return (
-    <div className={classes.applyFormWrapper}>
+    <div className={classes.applyFormWrapper} id="applyForm">
       {displayAlert()}
       <div className={classes.titleWrapper}>
         <FloatCard>
