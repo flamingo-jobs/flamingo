@@ -34,6 +34,7 @@
     "react-time-ago": "^6.2.2",
     "react-vertical-timeline-component": "^3.3.3",
     "react-year-month-selector": "0.0.8",
+    "sweetalert": "^2.1.2",
     "web-vitals": "^1.1.2"
   },
   "scripts": {
