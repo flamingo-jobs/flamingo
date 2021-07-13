@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Grid, Container, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
@@ -50,7 +50,6 @@ function JobDescription() {
     isSignedIn = true;
   }
 
-  // const userId = "60e88763e523bf3354852516";
   const userId = sessionStorage.getItem("loginId");
 
   let { id } = useParams();
@@ -86,7 +85,9 @@ function JobDescription() {
     } else {
       return (
         <Grid item sm={12} className={classes.container}>
-          <JobSummary job={job}></JobSummary>
+          <JobSummary job={job} 
+            isSignedIn={isSignedIn}
+          ></JobSummary>
         </Grid>
       );
     }

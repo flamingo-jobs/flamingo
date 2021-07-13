@@ -1,20 +1,17 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import WorkOutlineIcon from "@material-ui/icons/WorkOutline";
 import LocalOfferRoundedIcon from '@material-ui/icons/LocalOfferRounded';
 import { Avatar, Button, Chip, Typography } from '@material-ui/core';
-import { FavoriteRounded } from '@material-ui/icons';
 import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
-import FloatCard from '../../components/FloatCard';
-import { Link } from 'react-router-dom';
 import ReactTimeAgo from 'react-time-ago'
 import BookmarkBorderRoundedIcon from '@material-ui/icons/BookmarkBorderRounded';
 import {
   Grid,
   Container,
 } from "@material-ui/core";
-import ninix from "../images/99x.png";
+import {Link as ScrollLink} from "react-scroll";
+import LoginModal from "./loginModal";
 
 const useStyles = makeStyles((theme) => ({
   border: {
@@ -138,8 +135,28 @@ const useStyles = makeStyles((theme) => ({
 function JobSummary(props) {
   const classes = useStyles();
 
+  // Login modal 
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  
+  const handleApplyBtnClick= () => {
+    handleOpen();
+  }
+
   return (
     <Container>
+
+      <LoginModal 
+        open={open}
+        handleClose={handleClose}
+      ></LoginModal>
+
       <Container className={classes.summaryContainer}>
         <Grid container alignItems="center" spacing={2}>
           <Grid item xs={12} md={8}>
@@ -172,12 +189,19 @@ function JobSummary(props) {
             >
               <BookmarkBorderRoundedIcon />Save for later
             </Button>
-            <Button
-              href="#applyForm"
-              className={classes.applyBtn}
-            >
-              Apply For This Job
-            </Button>
+            {props.isSignedIn && (
+              <ScrollLink to="applyForm" smooth={true} duration={1000}>
+                <Button className={classes.applyBtn}>
+                  Apply For This Job
+                </Button>
+              </ScrollLink>
+            )}
+            {!props.isSignedIn && (
+                <Button className={classes.applyBtn} onClick={handleApplyBtnClick}>
+                  Apply For This Job
+                </Button>
+            )}
+            
           </Grid>
         </Grid>
       </Container>
