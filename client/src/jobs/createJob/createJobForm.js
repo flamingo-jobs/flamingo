@@ -236,6 +236,7 @@ const CreateJobForm = () => {
           msg: "Job created successfully!",
         });
         handleAlert();
+        window.location = "/employer/jobs";
       } else {
         setAlertData({
           severity: "error",

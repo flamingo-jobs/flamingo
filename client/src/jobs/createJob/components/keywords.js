@@ -38,6 +38,9 @@ const useStyles = makeStyles((theme) => ({
   },
   submitButton: {
     background: theme.palette.stateBlue,
+    "&:hover": {
+      background: theme.palette.stateBlueHover,
+    },
   },
 }));
 
