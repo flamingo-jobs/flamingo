@@ -28,7 +28,7 @@ import ExitToAppRoundedIcon from '@material-ui/icons/ExitToAppRounded';
 import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
 import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
-
+import NotificationsPopover from "./NotificationPopover";
 const jwt = require("jsonwebtoken");
 const token = sessionStorage.getItem("userToken");
 const header = jwt.decode(token, { complete: true });
@@ -242,9 +242,19 @@ export default function Topbar(props) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [notificationAnchorEl, setNotificationAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const isNotificationMenuOpen = Boolean(notificationAnchorEl);
+
+  const handleNotificationClose = () => {
+    setNotificationAnchorEl(null);
+  };
+
+  const handleNotificationOpen = (event) => {
+    setNotificationAnchorEl(event.currentTarget);
+  };
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -285,6 +295,25 @@ export default function Topbar(props) {
   const profileLink = () => {
 
   }
+
+  const notificationId = "primary-notification-menu";
+  const renderNotification = (
+    <Backdrop className={classes.backdrop} open={isNotificationMenuOpen} onClick={handleNotificationClose}>
+      <Menu
+        anchorEl={notificationAnchorEl}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        id={notificationId}
+        keepMounted
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
+        open={isNotificationMenuOpen}
+        onClose={handleNotificationClose}
+        className={classes.profileMenu}
+
+      >
+        <NotificationsPopover />
+      </Menu>
+    </Backdrop>
+  );
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -425,6 +454,7 @@ export default function Topbar(props) {
                     <IconButton
                       aria-label="show 17 new notifications"
                       color="primary"
+                      onClick={handleNotificationOpen}
                     >
                       <Badge badgeContent={17} color="secondary" >
                         <NotificationsIcon />
@@ -479,6 +509,7 @@ export default function Topbar(props) {
           </AppBar>
           {renderMobileMenu}
           {renderMenu}
+          {renderNotification}
         </div>
       </CardContent>
     </Card>
