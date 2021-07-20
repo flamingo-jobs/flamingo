@@ -190,7 +190,14 @@ export default function SignInSide() {
           }
           sessionStorage.setItem("userToken", res.data.token);
           sessionStorage.setItem("loginId", res.data.loginId);
-          window.location = "/";
+          const jwt = require("jsonwebtoken");
+          const token = sessionStorage.getItem("userToken");
+          const header = jwt.decode(token, { complete: true });
+          if (header.payload.userRole == "jobseeker") {
+            window.location = "/jobseekerDashboard";
+          }else{
+            window.location = "/";
+          }
         } else {
           handleCredentialError();
         }

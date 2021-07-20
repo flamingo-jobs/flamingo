@@ -90,7 +90,7 @@ function WorkExperience() {
   let loginId=sessionStorage.getItem("loginId");
 
   function fetchData(){
-    axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
+    axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
     .then(res => {
       if(res.data.success){
         if(res.data.jobseeker.work.length > 0){
@@ -98,7 +98,7 @@ function WorkExperience() {
             res.data.jobseeker.work.splice(0,1)
             i++;
           }
-          //setWork(res.data.jobseeker.work)
+          setWork(res.data.jobseeker.work)
         }
         
       }

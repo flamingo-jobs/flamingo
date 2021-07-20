@@ -97,7 +97,7 @@ function SideMenu() {
                                             <WorkTwoToneIcon style={{marginTop:"5px"}} />
                                         </Grid>
                                         <Grid item xs={9} style={{marginTop:"4px"}}>
-                                            <span>Hot jobs near you</span>
+                                            <span>Hot jobs near me</span>
                                         </Grid>
                                         <Grid item xs={1}>
                                             <NavigateNextTwoToneIcon style={{marginTop:"5px"}} />
