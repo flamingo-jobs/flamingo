@@ -279,7 +279,6 @@ export default function Topbar(props) {
 
   const loadProfilePic = () => {
     try {
-      console.log(header.payload.userRole)
       if (header.payload.userRole == "employer") {
         return require(`../employer/images/${header.payload.userId}`).default
       } else if (header.payload.userRole == "jobseeker") {
@@ -310,7 +309,7 @@ export default function Topbar(props) {
         className={classes.profileMenu}
 
       >
-        <NotificationsPopover />
+        <NotificationsPopover userId={token ? header.payload.userId : null} userRole={token ? header.payload.userRole : null}/>
       </Menu>
     </Backdrop>
   );

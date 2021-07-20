@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import { useEffect, useRef, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import ClearAllRoundedIcon from '@material-ui/icons/ClearAllRounded';
+import axios from 'axios';
+import BACKEND_URL from '../Config'
 // material
 import {
     Box,
@@ -145,7 +147,7 @@ function NotificationItem({ notification }) {
                             color: '#6D6D6D'
                         }}
                     >
-                        <WatchLaterRoundedIcon style={{width: 18, marginRight: 5}}/>
+                        <WatchLaterRoundedIcon style={{ width: 18, marginRight: 5 }} />
                         30 mins ago
                     </Typography>
                 }
@@ -159,6 +161,9 @@ export default function NotificationsPopover(props) {
     const totalUnRead = notifications.filter((item) => item.isUnRead === true).length;
     const classes = useStyles();
 
+    useEffect(() => {
+        retrieveNotifications();
+    }, [])
     // useEffect(() => {
     //     if (props.open == true) {
     //         handleOpen();
@@ -181,6 +186,18 @@ export default function NotificationsPopover(props) {
             }))
         );
     };
+
+    const retrieveNotifications = () => {
+        if(props.userRole && props.userId){
+            axios.get(`${BACKEND_URL}/${props.userRole}/${props.userId}`).then((res) => {
+                if (res.data.success) {
+                    setNotifications(res.data.existingData);
+                } else {
+                    setNotifications(null);
+                }
+            });
+        }
+    }
 
     return (
         <>
@@ -215,8 +232,8 @@ export default function NotificationsPopover(props) {
             <Divider />
 
             <Grid container spacing={3} style={{ marginTop: 8 }} direction="column"
-  justify="center"
-  alignItems="center">
+                justify="center"
+                alignItems="center">
                 <Grid item xs={12}>
                     <Button disableRipple component={RouterLink} to="#">
                         View All

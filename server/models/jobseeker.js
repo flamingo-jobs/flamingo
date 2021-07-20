@@ -49,6 +49,9 @@ const jobseekerSchema = new mongoose.Schema({
   },
   applicationDetails:{
     type: Array,
+  },
+  notifications:{
+    type: Array
   }
 });
 

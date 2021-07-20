@@ -548,6 +548,20 @@ const removeVolunteer = (req, res) => {
   );
 };
 
+const getNotifications = (req, res) => {
+  Jobseeker.findById(req.params.id, 'notifications').exec((err, notifications) => {
+    if (err) {
+      return res.status(400).json({
+        error: err,
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      existingData: notifications,
+    });
+  });
+};
+
 module.exports = {
   create,
   getAll,
@@ -580,4 +594,5 @@ module.exports = {
   getFiltered,
   getCount,
   block,
+  getNotifications
 };

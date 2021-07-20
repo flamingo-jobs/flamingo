@@ -18,7 +18,7 @@ router.post('/jobseekers/delete', jobseekerController.block);
 // get specific
 
 router.get('/jobseeker/:id', jobseekerController.getById);
-
+router.get('/jobseeker/getNotifications/:id', jobseekerController.getNotifications);
 // update jobseeker
 
 router.put('/jobseeker/update/:id', jobseekerController.update);
