@@ -157,26 +157,19 @@ function NotificationItem({ notification }) {
 }
 
 export default function NotificationsPopover(props) {
-    const [notifications, setNotifications] = useState(NOTIFICATIONS);
-    const totalUnRead = notifications.filter((item) => item.isUnRead === true).length;
+    const [notifications, setNotifications] = useState([]);
+    const [totalUnRead, setTotalUnRead] = useState(0);
+
     const classes = useStyles();
 
     useEffect(() => {
         retrieveNotifications();
-    }, [])
-    // useEffect(() => {
-    //     if (props.open == true) {
-    //         handleOpen();
-    //     }
-    // }, [props])
+    }, []);
 
-    // const handleOpen = () => {
-    //     setOpen(true);
-    // };
+    useEffect(() => {
+        displayNotifications();
+    }, [notifications]);
 
-    // const handleClose = () => {
-    //     setOpen(false);
-    // };
 
     const handleMarkAllAsRead = () => {
         setNotifications(
@@ -188,14 +181,28 @@ export default function NotificationsPopover(props) {
     };
 
     const retrieveNotifications = () => {
-        if(props.userRole && props.userId){
-            axios.get(`${BACKEND_URL}/${props.userRole}/${props.userId}`).then((res) => {
+        console.log(props.loginId);
+        if (props.userRole) {
+            axios.get(`${BACKEND_URL}/${props.userRole}/getNotifications/60f6fb850479410654e83dc3`).then((res) => {
+                
                 if (res.data.success) {
                     setNotifications(res.data.existingData);
+                    
+                    if (res.data.existingData && res.data.existingData.length > 0) {
+                        setTotalUnRead(res.data.existingData.filter((item) => item.isUnRead === true).length);
+                    }
                 } else {
                     setNotifications(null);
                 }
             });
+        }
+    }
+
+    const displayNotifications = () => {
+        if (notifications && notifications.length > 0) {
+            return notifications.map((notification, index) => (
+                <NotificationItem key={index} notification={notification} />
+            ))
         }
     }
 
@@ -205,41 +212,47 @@ export default function NotificationsPopover(props) {
                 <Grid item xs={10}>
                     <Typography variant="h6">Notifications</Typography>
                     <Typography variant="body2" style={{ color: '#6D6D6D' }}>
-                        You have {totalUnRead} unread messages
+                        You have {totalUnRead} unread notifications
                     </Typography>
                 </Grid>
                 <Grid item xs={2}>
-                    <Tooltip title=" Mark all as read">
-                        <IconButton color="primary" onClick={handleMarkAllAsRead}>
-                            <ClearAllRoundedIcon />
-                        </IconButton>
-                    </Tooltip>
+                    {notifications && notifications.length > 0 ?
+                        <Tooltip title=" Mark all as read">
+                            <IconButton color="primary" onClick={handleMarkAllAsRead}>
+                                <ClearAllRoundedIcon />
+                            </IconButton>
+                        </Tooltip>
+                        : null}
                 </Grid>
             </Grid>
+            {notifications && notifications.length > 0 ?
+                <>
+                    <Divider />
 
 
-            <Divider />
+                    <List
+                        disablePadding
+                    >
+                        {displayNotifications()}
+                    </List>
+                </>
+                : null}
+            {notifications && notifications.length > 4 ?
+                <>
+                    <Divider />
 
+                    <Grid container spacing={3} style={{ marginTop: 8 }} direction="column"
+                        justify="center"
+                        alignItems="center">
+                        <Grid item xs={12}>
 
-            <List
-                disablePadding
-            >
-                {notifications.map((notification) => (
-                    <NotificationItem key={notification.id} notification={notification} />
-                ))}
-            </List>
-
-            <Divider />
-
-            <Grid container spacing={3} style={{ marginTop: 8 }} direction="column"
-                justify="center"
-                alignItems="center">
-                <Grid item xs={12}>
-                    <Button disableRipple component={RouterLink} to="#">
-                        View All
-                    </Button>
-                </Grid>
-            </Grid>
+                            <Button disableRipple component={RouterLink} to="#">
+                                View All
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </>
+                : null}
         </>
     );
 }

@@ -557,7 +557,7 @@ const getNotifications = (req, res) => {
     }
     return res.status(200).json({
       success: true,
-      existingData: notifications,
+      existingData: notifications.notifications,
     });
   });
 };

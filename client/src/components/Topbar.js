@@ -204,6 +204,16 @@ const useStyles = makeStyles((theme) => ({
 
     }
   },
+  notificationMenu: {
+    marginTop: 60,
+    '& .MuiMenu-paper': {
+      minWidth: 300,
+      padding: 16,
+      borderRadius: 12,
+      boxShadow: 'rgba(83, 144, 217, 0.6) 0px 4px 12px',
+
+    }
+  },
   logOut: {
     backgroundColor: theme.palette.tuftsBlue,
     color: theme.palette.white,
@@ -306,10 +316,10 @@ export default function Topbar(props) {
         transformOrigin={{ vertical: "top", horizontal: "right" }}
         open={isNotificationMenuOpen}
         onClose={handleNotificationClose}
-        className={classes.profileMenu}
+        className={classes.notificationMenu}
 
       >
-        <NotificationsPopover userId={token ? header.payload.userId : null} userRole={token ? header.payload.userRole : null}/>
+        <NotificationsPopover loginId={token ? header.payload.loginId : null} userRole={token ? header.payload.userRole : null}/>
       </Menu>
     </Backdrop>
   );
