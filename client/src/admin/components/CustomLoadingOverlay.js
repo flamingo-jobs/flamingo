@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { GridOverlay } from '@material-ui/data-grid';
 import LinearProgress from '@material-ui/core/LinearProgress';
 

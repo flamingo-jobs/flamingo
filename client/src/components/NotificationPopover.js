@@ -1,15 +1,12 @@
 import PropTypes from 'prop-types';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import ClearAllRoundedIcon from '@material-ui/icons/ClearAllRounded';
 import axios from 'axios';
 import BACKEND_URL from '../Config'
 // material
 import {
-    Box,
     List,
-    Menu,
-    Badge,
     Button,
     Avatar,
     Tooltip,
@@ -18,9 +15,7 @@ import {
     IconButton,
     Typography,
     ListItemText,
-    ListSubheader,
     ListItemAvatar,
-    Backdrop,
     makeStyles,
     Grid
 } from '@material-ui/core';

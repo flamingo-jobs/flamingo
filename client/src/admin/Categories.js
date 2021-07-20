@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createRef } from 'react'
+import React from 'react'
 import GridTable from './components/GridTable';
 
 function Categories() {

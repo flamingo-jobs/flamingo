@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import Grid from '@material-ui/core/Grid';
 import DashboardRoundedIcon from '@material-ui/icons/DashboardRounded';
 import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
@@ -13,19 +11,13 @@ import BusinessRoundedIcon from '@material-ui/icons/BusinessRounded';
 import PeopleAltRoundedIcon from '@material-ui/icons/PeopleAltRounded';
 import PhoneRoundedIcon from '@material-ui/icons/PhoneRounded';
 import ThumbsUpDownRoundedIcon from '@material-ui/icons/ThumbsUpDownRounded';
-import Lottie from 'react-lottie';
-import Flamingo from './lotties/flamingo.json';
-import FloatCard from './FloatCard';
 import { Link } from 'react-router-dom'
-import { Route, BrowserRouter } from "react-router-dom";
 import OfflineBoltRoundedIcon from '@material-ui/icons/OfflineBoltRounded';
 import CategoryRoundedIcon from '@material-ui/icons/CategoryRounded';
 import CodeRoundedIcon from '@material-ui/icons/CodeRounded';
-import AssessmentIcon from '@material-ui/icons/Assessment';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import DescriptionIcon from '@material-ui/icons/Description';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
-import OfflineBoltRounded from '@material-ui/icons/OfflineBoltRounded';
 
 const useStyles = makeStyles((theme) => ({
     root: {
