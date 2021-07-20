@@ -94,7 +94,7 @@ function Course() {
             i++;
           }
         }
-        setCourse(res.data.jobseeker.courseData)
+        setCourse(courseData)
       }
     })
     setFetchedData(0)
