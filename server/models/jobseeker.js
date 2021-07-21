@@ -52,7 +52,10 @@ const jobseekerSchema = new mongoose.Schema({
   },
   notifications:{
     type: Array
-  }
+  },
+  savedJobs:{
+    type: Array,
+  },
 });
 
 module.exports = mongoose.model("Jobseeker", jobseekerSchema);
