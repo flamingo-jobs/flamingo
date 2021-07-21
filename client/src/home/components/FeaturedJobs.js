@@ -127,7 +127,9 @@ function FeaturedJobs(props) {
                                 <Typography variant="h6" className={classes.text}>Want to dive into?</Typography>
                             </Grid>
                             <Grid item xs={12} lg={6}>
-                                <Button className={classes.button} endIcon={<ArrowForwardRoundedIcon />}> Browse All Jobs </Button>
+                                <Link to="/jobs">
+                                    <Button className={classes.button} endIcon={<ArrowForwardRoundedIcon />}> Browse All Jobs </Button>
+                                </Link>
                             </Grid>
                         </Grid>
                     </FloatCard>
