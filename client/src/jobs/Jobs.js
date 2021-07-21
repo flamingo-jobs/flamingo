@@ -84,7 +84,7 @@ function Jobs(props) {
     };
 
     useEffect(() => {
-        console.log(jobs.length)
+        // console.log(jobs.length)
         displayJobs();
     }, [jobs]);
 
@@ -168,7 +168,14 @@ function Jobs(props) {
         if (jobs) {
             return jobs.map(job => (
                 <Grid item key={job._id} xs={12} className={classes.gridCard}>
-                    <JobCard info={job} userRole={props.userRole} savedJobIds={savedJobIds} handleOpen={handleOpen} />
+                    <JobCard 
+                        userId={userId}
+                        info={job} 
+                        userRole={props.userRole} 
+                        savedJobIds={savedJobIds} 
+                        setSavedJobIds={setSavedJobIds}
+                        handleOpen={handleOpen} 
+                    />
                 </Grid>
             ))
         } else {
@@ -186,7 +193,7 @@ function Jobs(props) {
                 open={open}
                 handleClose={handleClose}
             ></LoginModal>
-            
+
             <Grid item container sm={12} spacing={3} direction="row" justify="space-between" className={classes.mainGrid} alignItems="flex-start">
                 <Grid item sm={12} className={classes.searchGrid}>
                     <JobSearchBar onChange={updateSearch} />
