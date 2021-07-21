@@ -336,6 +336,7 @@ export default function Topbar(props) {
           <Typography className={classes.menuText} >Profile</Typography>
         </MenuItem>
 
+        { props.user === "jobseeker" &&
           <Link to="/jobseeker/savedJobs">
             <MenuItem className={classes.menuItem} >
             <div className={classes.menuIcon}>
@@ -344,6 +345,7 @@ export default function Topbar(props) {
                 <Typography className={classes.menuText} >Saved Jobs</Typography>
             </MenuItem>
           </Link>
+        }
         
         <MenuItem className={classes.menuItem} >
           <div className={classes.menuIcon}>
