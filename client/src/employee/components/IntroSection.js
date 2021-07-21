@@ -131,9 +131,10 @@ function IntroSection() {
     axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
     .then(res => {
       if(res.data.success){
+        let nameArr = res.data.jobseeker.name.split(" ")
         setState({
-          firstName: res.data.jobseeker.firstName,
-          lastName: res.data.jobseeker.lastName,
+          firstName: nameArr[0],
+          lastName: nameArr[1],
           tagline: res.data.jobseeker.lagline,
           intro: res.data.jobseeker.intro,
           street: res.data.jobseeker.address.street,

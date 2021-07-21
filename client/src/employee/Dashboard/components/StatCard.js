@@ -1,8 +1,7 @@
 import React from 'react'
 import {  makeStyles } from '@material-ui/core'
 import FloatCard from '../../../components/FloatCard';
-import { Box, Grid, Container, Typography, Card, Paper } from '@material-ui/core';
-import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
+import { Grid, Typography, Paper } from '@material-ui/core';
 import { indigo } from '@material-ui/core/colors';
 import CardMedia from '@material-ui/core/CardMedia';
 import statImage1 from '../images/statImage1.jpg';
