@@ -53,7 +53,7 @@ function JobFilters(props) {
     const [type, setType] = useState(0);
     // const [title, setTitle] = useState(0);
     const [category, setCategory] = useState(0);
-    const [organization, setOrganization] = useState(org ? [org] : 0);
+    const [organization, setOrganization] = useState(org ? { $in: [org] } : 0);
     const [technologyStack, setTechnologyStack] = useState(0);
 
     const [isFeatured, setIsFeatured] = React.useState(featured ? true : false);

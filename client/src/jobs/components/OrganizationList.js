@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -56,7 +56,10 @@ const useStyles = makeStyles((theme) => ({
 export default function OrganizationList(props) {
     const classes = useStyles();
 
-    const [openOrganizations, setOpenOrganizations] = useState(false);
+    const queryParams = new URLSearchParams(window.location.search);
+    const org = queryParams.get('org');
+
+    const [openOrganizations, setOpenOrganizations] = useState(org ? true : false);
     const [organizations, setOrganizations] = useState([]);
 
     const handleOrgClick = () => {
@@ -74,6 +77,16 @@ export default function OrganizationList(props) {
         retrieveOrganizations();
     }, [])
 
+    useEffect(() => {
+        if (org && organizations.length > 0) {
+            const newChecked = [...checked];
+            let itemId = organizations[organizations.findIndex(x => x.name === org)]._id;
+            const itemObj = { index: itemId, name: org };
+            newChecked.push(itemObj);
+            setChecked(newChecked);
+        }
+    }, [organizations]);
+
     const handleToggle = (value, itemId) => () => {
 
         const newChecked = [...checked];
@@ -84,6 +97,11 @@ export default function OrganizationList(props) {
             newChecked.push(itemObj);
         } else {
             newChecked.splice(currentIndex, 1);
+            if(itemObj.name === org){
+                let stateObj = { id: "100" };
+            window.history.replaceState(stateObj,
+                "Page 3", "/jobs");
+            }
         }
 
         setChecked(newChecked);
@@ -129,9 +147,9 @@ export default function OrganizationList(props) {
                                 disableRipple
                                 inputProps={{ 'aria-labelledby': labelId }}
                                 className={classes.checkBox}
-                                style ={{
+                                style={{
                                     color: theme.palette.vividSkyBlue,
-                                  }}
+                                }}
                             />
                         </ListItemIcon>
                         <ListItemText id={labelId} primary={org.name} />

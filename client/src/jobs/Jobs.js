@@ -109,7 +109,7 @@ function Jobs() {
     const delay = ms => new Promise(res => setTimeout(res, ms));
 
     const retrieveJobs = async () => {
-        if (featured && JSON.stringify(queryParams) == "{}") {
+        if ((featured && JSON.stringify(queryParams) == "{}") || (org && JSON.stringify(queryParams) == "{}")) {
             return;
         }
         axios.post(`${BACKEND_URL}/jobs/getJobCount`, queryParams).then(res => {
