@@ -103,7 +103,7 @@ function Base() {
     return (
       <>
         <Route path="/jobs">
-          <Jobs />
+          <Jobs userRole={role} />
         </Route>
         {/* <Route path="/jobseeker" exact>
           <Profile />
