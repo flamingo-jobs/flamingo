@@ -10,12 +10,9 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import BACKEND_URL from "../../../Config";
-import { useParams } from "react-router";
 import FloatCard from "../../../components/FloatCard";
 import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
-import LocalOfferRoundedIcon from "@material-ui/icons/LocalOfferRounded";
 import WorkRoundedIcon from "@material-ui/icons/WorkRounded";
-import ReactTimeAgo from "react-time-ago";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import Pending from "./pendingStatus";
 import download from 'downloadjs';

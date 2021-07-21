@@ -249,6 +249,18 @@ const updateResumeDetails =  async (req, res) => {
     }
 }
 
+const updateSavedJobs = async (req, res) => {
+  try{
+    const updatedSavedJobs = await Jobseeker.findByIdAndUpdate(
+        req.params.id,
+        { $set: { savedJobs: req.body  } },
+    );
+    res.status(200).json({ success: true});
+  } catch(err){
+      res.status(400).json({ success: false, error: err});
+  }
+}
+  
 const resetAll = (req, res) => { // To clear the test resume details
   Jobseeker.updateMany(
       {},
@@ -548,6 +560,20 @@ const removeVolunteer = (req, res) => {
   );
 };
 
+const getNotifications = (req, res) => {
+  Jobseeker.findById(req.params.id, 'notifications').exec((err, notifications) => {
+    if (err) {
+      return res.status(400).json({
+        error: err,
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      existingData: notifications.notifications,
+    });
+  });
+};
+
 module.exports = {
   create,
   getAll,
@@ -568,6 +594,7 @@ module.exports = {
   updateWork,
   updateProject,
   updateResumeDetails,
+  updateSavedJobs,
   resetAll,
   remove,
   removeUniversity,
@@ -580,4 +607,5 @@ module.exports = {
   getFiltered,
   getCount,
   block,
+  getNotifications
 };

@@ -10,6 +10,8 @@ import ListDownPopup from './ListDownPopup';
 import Chip from '@material-ui/core/Chip';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
+import axios from 'axios';
+import BACKEND_URL from '../../Config';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -93,16 +95,12 @@ function JobSearchBar(props) {
 
     const classes = useStyles();
 
-    const commonKeywords = [
-        { title: 'The Shawshank Redemption', year: 1994 },
-        { title: 'The Godfather', year: 1972 },
-        { title: 'The Godfather: Part II', year: 1974 },
-        { title: 'The Dark Knight', year: 2008 },
-        { title: '12 Angry Men', year: 1957 },
-        { title: "Schindler's List", year: 1993 },
-        { title: 'Pulp Fiction', year: 1994 },
+    const [commonKeywords, setCommonKeywords] = useState([]);
 
-    ];
+    useEffect(() => {
+        retrieveOrganizations();
+
+    }, [])
 
     const [keywords, setKeyword] = useState([]);
     const [locations, setLocations] = useState([]);
@@ -117,20 +115,30 @@ function JobSearchBar(props) {
 
     useEffect(() => {
         passFilters();
-        
+
     }, [keywords, locations]);
 
     const passFilters = () => {
         let filterObjects = {};
         if (keywords.length != 0) {
             let regexExp = keywords.join('|');
-            filterObjects = { ...filterObjects, $or : [ {title: { $regex : regexExp, $options : "i"}}, {description: { $regex : regexExp, $options : "i"}}]};
+            filterObjects = { ...filterObjects, $or: [{ title: { $regex: regexExp, $options: "i" } }, { description: { $regex: regexExp, $options: "i" } }] };
         }
 
         if (locations.length != 0) {
-            filterObjects = { ...filterObjects, location : locations };
+            filterObjects = { ...filterObjects, location: locations };
         }
         props.onChange(filterObjects);
+    }
+
+    const retrieveOrganizations = () => {
+        axios.get(`${BACKEND_URL}/employers`).then(res => {
+            if (res.data.success) {
+                setCommonKeywords(res.data.existingData)
+            } else {
+                setCommonKeywords([])
+            }
+        })
     }
 
     return (
@@ -148,7 +156,7 @@ function JobSearchBar(props) {
                                 multiple
                                 limitTags={2}
                                 id="tags-filled"
-                                options={commonKeywords.map((option) => option.title)}
+                                options={commonKeywords.map((option) => option.name)}
                                 defaultValue={undefined}
                                 freeSolo
                                 renderTags={(value, getTagProps) =>
@@ -177,7 +185,7 @@ function JobSearchBar(props) {
                                 multiple
                                 limitTags={1}
                                 id="locationFilter"
-                                options={commonKeywords.map((option) => option.title)}
+                                options={commonKeywords.map((option) => option.locations).flat(1).filter((value, index, self) => { return self.indexOf(value) === index})}
                                 defaultValue={undefined}
                                 freeSolo
                                 renderTags={(value, getTagProps) =>

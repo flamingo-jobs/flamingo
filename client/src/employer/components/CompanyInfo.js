@@ -36,6 +36,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import swal from 'sweetalert';
 import { Alert, AlertTitle } from '@material-ui/lab';
+import { Link } from "react-router-dom";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -193,7 +194,7 @@ function CompanyInfo() {
         }
         res.data.employer.locations.forEach(element => {
           console.log(element)
-          setLocation(location => [...location, {city:element}])  
+          setLocation(location => [...location, { city: element }])
         });
 
       });
@@ -270,17 +271,16 @@ function CompanyInfo() {
 
     axios
       .put(`${BACKEND_URL}/employers/update/60c246913542f942e4c84454`, employer)
-      .then((res) => 
-      {
-        if(res.status==200){
-          successAlert=true
+      .then((res) => {
+        if (res.status == 200) {
+          successAlert = true
           alert(successAlert)
-          
+
         }
-        else{
-          successAlert=false
+        else {
+          successAlert = false
           alert(successAlert)
- 
+
         }
       }
       );
@@ -598,41 +598,45 @@ function CompanyInfo() {
                 spacing={5}
               >
                 <Grid item xs={1}>
-                  <IconButton
-                    onClick={() => window.open("https://" + website)}
-                    variant="outlined"
-                    aria-label="website"
-                  >
-                    <LanguageIcon />
-                  </IconButton>
+                  <Link to={"https://" + website}>
+                    <IconButton
+                      variant="outlined"
+                      aria-label="website"
+                    >
+                      <LanguageIcon />
+                    </IconButton>
+                  </Link>
                 </Grid>
 
                 <Grid item xs={1}>
-                  <IconButton
-                    onClick={() => window.open("https://" + linkedIn)}
-                    variant="outlined"
-                    aria-label="website"
-                  >
-                    <LinkedInIcon />
-                  </IconButton>
+                  <Link to={"https://" + linkedIn}>
+                    <IconButton
+                      variant="outlined"
+                      aria-label="website"
+                    >
+                      <LinkedInIcon />
+                    </IconButton>
+                  </Link>
                 </Grid>
                 <Grid item xs={1}>
-                  <IconButton
-                    onClick={() => window.open("https://" + twitter)}
-                    variant="outlined"
-                    aria-label="website"
-                  >
-                    <TwitterIcon />
-                  </IconButton>
+                  <Link to={"https://" + twitter}>
+                    <IconButton
+                      variant="outlined"
+                      aria-label="website"
+                    >
+                      <TwitterIcon />
+                    </IconButton>
+                  </Link>
                 </Grid>
                 <Grid item xs={1}>
-                  <IconButton
-                    onClick={() => window.open("https://" + facebook)}
-                    variant="outlined"
-                    aria-label="website"
-                  >
-                    <FacebookIcon />
-                  </IconButton>
+                  <Link to={"https://" + facebook}>
+                    <IconButton
+                      variant="outlined"
+                      aria-label="website"
+                    >
+                      <FacebookIcon />
+                    </IconButton>
+                  </Link>
                 </Grid>
               </Grid>
             </Grid>
@@ -675,9 +679,9 @@ function CompanyInfo() {
           This is an error alert — <strong>check it out!</strong>
         </Alert>
         )} */}
-    
 
-      <br />
+
+        <br />
 
         <Grid container xs={12} direction="row" spacing={3}>
           {/* BODY PART OF THE COMPANY INFO CARD */}
@@ -696,7 +700,7 @@ function CompanyInfo() {
 
           <Grid item xs={12} className={classes.body}>
             <div className={classes.companyDescription}>
-              <Typography style={{whiteSpace:"pre-line"}} variant="body2" align="justify">
+              <Typography style={{ whiteSpace: "pre-line" }} variant="body2" align="justify">
                 {description}
               </Typography>
             </div>

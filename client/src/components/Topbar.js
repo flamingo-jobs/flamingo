@@ -8,8 +8,6 @@ import Badge from "@material-ui/core/Badge";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import SearchIcon from "@material-ui/icons/Search";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MenuRoundedIcon from "@material-ui/icons/MenuRounded";
 import "./styles/Custom.css";
@@ -17,11 +15,6 @@ import logo from "./images/logo.jpg";
 import { Button, Avatar, Typography } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import HomeRoundedIcon from "@material-ui/icons/HomeRounded";
-import BusinessRoundedIcon from "@material-ui/icons/BusinessRounded";
-import PeopleAltRoundedIcon from "@material-ui/icons/PeopleAltRounded";
-import PhoneRoundedIcon from "@material-ui/icons/PhoneRounded";
-import ThumbsUpDownRoundedIcon from "@material-ui/icons/ThumbsUpDownRounded";
 import NavMenu from "./NavMenu";
 import Backdrop from '@material-ui/core/Backdrop';
 import ExitToAppRoundedIcon from '@material-ui/icons/ExitToAppRounded';
@@ -29,6 +22,8 @@ import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
 import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 import NotificationsPopover from "./NotificationPopover";
+import BookmarksIcon from '@material-ui/icons/Bookmarks';
+import { Link } from 'react-router-dom';
 const jwt = require("jsonwebtoken");
 const token = sessionStorage.getItem("userToken");
 const header = jwt.decode(token, { complete: true });
@@ -204,6 +199,16 @@ const useStyles = makeStyles((theme) => ({
 
     }
   },
+  notificationMenu: {
+    marginTop: 60,
+    '& .MuiMenu-paper': {
+      minWidth: 300,
+      padding: 16,
+      borderRadius: 12,
+      boxShadow: 'rgba(83, 144, 217, 0.6) 0px 4px 12px',
+
+    }
+  },
   logOut: {
     backgroundColor: theme.palette.tuftsBlue,
     color: theme.palette.white,
@@ -273,13 +278,8 @@ export default function Topbar(props) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const loadMyAccount = () => {
-    window.location = "/account/" + header.payload.userId;
-  };
-
   const loadProfilePic = () => {
     try {
-      console.log(header.payload.userRole)
       if (header.payload.userRole == "employer") {
         return require(`../employer/images/${header.payload.userId}`).default
       } else if (header.payload.userRole == "jobseeker") {
@@ -307,10 +307,10 @@ export default function Topbar(props) {
         transformOrigin={{ vertical: "top", horizontal: "right" }}
         open={isNotificationMenuOpen}
         onClose={handleNotificationClose}
-        className={classes.profileMenu}
+        className={classes.notificationMenu}
 
       >
-        <NotificationsPopover />
+        <NotificationsPopover loginId={token ? header.payload.loginId : null} userRole={token ? header.payload.userRole : null} />
       </Menu>
     </Backdrop>
   );
@@ -335,6 +335,18 @@ export default function Topbar(props) {
           </div>
           <Typography className={classes.menuText} >Profile</Typography>
         </MenuItem>
+
+        { props.user === "jobseeker" &&
+          <Link to="/jobseeker/savedJobs">
+            <MenuItem className={classes.menuItem} >
+            <div className={classes.menuIcon}>
+                <BookmarksIcon />
+            </div>
+                <Typography className={classes.menuText} >Saved Jobs</Typography>
+            </MenuItem>
+          </Link>
+        }
+        
         <MenuItem className={classes.menuItem} >
           <div className={classes.menuIcon}>
             <SettingsRoundedIcon />
@@ -371,22 +383,20 @@ export default function Topbar(props) {
       >
         {!token && (
           <div>
-            <Button
-              onClick={() => {
-                window.location = "/startHiring";
-              }}
-              className={classes.startHiring}
-            >
-              Start Hiring
-            </Button>
-            <Button
-              onClick={() => {
-                window.location = "/signin";
-              }}
-              className={classes.signInMobile}
-            >
-              Sign In
-            </Button>
+            <Link to="/startHiring">
+              <Button
+                className={classes.startHiring}
+              >
+                Start Hiring
+              </Button>
+            </Link>
+            <Link to="/signin">
+              <Button
+                className={classes.signInMobile}
+              >
+                Sign In
+              </Button>
+            </Link>
           </div>
         )}
         {token && (
@@ -475,22 +485,20 @@ export default function Topbar(props) {
                 )}
                 {!token && (
                   <div>
-                    <Button
-                      onClick={() => {
-                        window.location = "/startHiring";
-                      }}
-                      className={classes.startHiring}
-                    >
-                      Start Hiring
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        window.location = "/signin";
-                      }}
-                      className={classes.signIn}
-                    >
-                      Sign In
-                    </Button>
+                    <Link to="/startHiring">
+                      <Button
+                        className={classes.startHiring}
+                      >
+                        Start Hiring
+                      </Button>
+                    </Link>
+                    <Link to="/signin">
+                      <Button
+                        className={classes.signIn}
+                      >
+                        Sign In
+                      </Button>
+                    </Link>
                   </div>
                 )}
               </div>

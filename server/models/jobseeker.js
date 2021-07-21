@@ -49,7 +49,13 @@ const jobseekerSchema = new mongoose.Schema({
   },
   applicationDetails:{
     type: Array,
-  }
+  },
+  notifications:{
+    type: Array
+  },
+  savedJobs:{
+    type: Array,
+  },
 });
 
 module.exports = mongoose.model("Jobseeker", jobseekerSchema);

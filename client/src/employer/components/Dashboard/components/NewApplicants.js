@@ -11,6 +11,7 @@ import FloatCard from "../../FloatCard";
 import Box from "@material-ui/core/Box";
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import ApplicantImage from "../images/1.jpg";
+import { Link } from "react-router-dom";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -168,14 +169,13 @@ const NewApplicants = () => {
                 </Grid>
             </Grid>  
 
+            <Link to="#">
             <Button
-              onClick={() => {
-                window.location = "";
-              }}
               className={classes.button}
             >
               View All
             </Button>
+            </Link>
             
 
       </FloatCard>

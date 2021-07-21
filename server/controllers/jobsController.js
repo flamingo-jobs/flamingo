@@ -12,7 +12,8 @@ const create = async (req, res) => {
 
 }
 
-const getAll = (req, res) => {
+const getAll = async (req, res) => {
+    console.log(JSON.stringify(req.body.queryParams));
     Jobs.find(req.body.queryParams, null, req.body.options).exec((err, jobs) => {
         if (err) {
             return res.status(400).json({

@@ -7,7 +7,7 @@ import JobCard from '../../jobs/components/JobCard';
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
 import theme from '../../Theme';
 import BACKEND_URL from '../../Config';
-
+import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -60,8 +60,6 @@ function FeaturedJobs(props) {
 
     const [featuredJobs, setFeaturedJobs] = useState([]);
 
-
-
     const retrieveFeaturedJobs = () => {
         axios.get(`${BACKEND_URL}/jobs/featuredJobs`).then(res => {
             if (res.data.success) {
@@ -112,12 +110,14 @@ function FeaturedJobs(props) {
                 {displayFeaturedJobs()}
                 <Grid item sm={12}>
                     <FloatCard>
-                        <Button
-                            className={classes.link}
-                            endIcon={<ArrowForwardRoundedIcon />}
-                        >
-                            See All Featured Jobs
-                        </Button>
+                        <Link to="/jobs?featured=true">
+                            <Button
+                                className={classes.link}
+                                endIcon={<ArrowForwardRoundedIcon />}
+                            >
+                                See All Featured Jobs
+                            </Button>
+                        </Link>
                     </FloatCard>
                 </Grid>
                 <Grid item sm={12}>
@@ -127,7 +127,9 @@ function FeaturedJobs(props) {
                                 <Typography variant="h6" className={classes.text}>Want to dive into?</Typography>
                             </Grid>
                             <Grid item xs={12} lg={6}>
-                                <Button className={classes.button} endIcon={<ArrowForwardRoundedIcon />}> Browse All Jobs </Button>
+                                <Link to="/jobs">
+                                    <Button className={classes.button} endIcon={<ArrowForwardRoundedIcon />}> Browse All Jobs </Button>
+                                </Link>
                             </Grid>
                         </Grid>
                     </FloatCard>

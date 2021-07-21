@@ -17,6 +17,7 @@ import { Volunteering } from "./components/Volunteering";
 import { TechnologyStack } from "./components/TechnologyStack";
 import BACKEND_URL from "../Config";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -496,14 +497,13 @@ export default function ProfileSetup() {
                           </Typography>
                         </Grid>
                         <Grid item xs={6} align="right">
-                          <Button
-                            onClick={() => {
-                              window.location = "/";
-                            }}
-                            className={classes.skip}
-                          >
-                            Skip and do this later
-                          </Button>
+                          <Link to="/">
+                            <Button
+                              className={classes.skip}
+                            >
+                              Skip and do this later
+                            </Button>
+                          </Link>
                         </Grid>
                       </Grid>
                       <Stepper
@@ -527,14 +527,13 @@ export default function ProfileSetup() {
                               <div className={classes.actionsContainer}>
                                 <div>
                                   {activeStep === 0 ? (
-                                    <Button
-                                      className={classes.previous}
-                                      onClick={() =>
-                                        (window.location = "/jobs")
-                                      }
-                                    >
-                                      Cancel
-                                    </Button>
+                                    <Link to="/jobs">
+                                      <Button
+                                        className={classes.previous}
+                                      >
+                                        Cancel
+                                      </Button>
+                                    </Link>
                                   ) : (
                                     <Button
                                       disabled={activeStep === 0}

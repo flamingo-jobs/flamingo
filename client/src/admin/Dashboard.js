@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Grid, Container, Typography } from '@material-ui/core';
+import {Grid} from '@material-ui/core';
 import WeeklyApplications from './components/WeeklyApplications';
 import NewJobSeekers from './components/NewJobSeekers';
 import NewEmployers from './components/NewEmployers';

@@ -7,7 +7,9 @@ import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 import FloatCard from '../../components/FloatCard';
 import { Link } from 'react-router-dom';
 import ReactTimeAgo from 'react-time-ago'
+import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarkBorderRoundedIcon from '@material-ui/icons/BookmarkBorderRounded';
+import BookmarksIcon from '@material-ui/icons/Bookmarks';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -33,7 +35,10 @@ const useStyles = makeStyles((theme) => ({
     },
     favorite: {
         display: 'block',
-        color: theme.palette.pinkyRed
+        color: theme.palette.pinkyRed,
+        "&:hover":{
+            cursor: "pointer",
+        },
     },
     body: {
         margin: 10
@@ -98,6 +103,22 @@ function JobCard(props) {
         }
     }
 
+    const handleLoginModal = () => {
+        props.handleOpen();
+    }
+
+    const displaySaveIcon = () => {
+        if(!props.userRole){
+            return <BookmarkBorderRoundedIcon className={classes.favorite} onClick={handleLoginModal} />;
+        } else {
+            if(props.savedJobIds.includes(props.info._id)){
+                return <BookmarkIcon className={classes.favorite} />;
+            } else {
+                return <BookmarkBorderRoundedIcon className={classes.favorite} />;
+            }
+        }
+    }
+
     return (
         <FloatCard >
         <div className={classes.root}>
@@ -107,7 +128,7 @@ function JobCard(props) {
                     <Typography className={classes.time}><ReactTimeAgo date={props.info.postedDate} locale="en-US"/></Typography>
                 </div>
                 <div className={classes.headerRight}>
-                    <BookmarkBorderRoundedIcon className={classes.favorite} />
+                    {displaySaveIcon()}
                 </div>
 
             </div>

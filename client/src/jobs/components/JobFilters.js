@@ -1,4 +1,4 @@
-import { makeStyles, Typography } from '@material-ui/core'
+import { makeStyles, Typography, FormControlLabel, Switch } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import FloatCard from '../../components/FloatCard'
 import theme from '../../Theme'
@@ -26,10 +26,26 @@ const useStyles = makeStyles(() => ({
     },
     icon: {
         marginRight: 8
+    },
+    featuredCheck: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingLeft: 8,
+        paddingRight: 8
+    },
+    featuredJobs: {
+        color: theme.palette.stateBlue,
+        fontWeight: 600
     }
 }))
 
 function JobFilters(props) {
+
+    const queryParams = new URLSearchParams(window.location.search);
+    const featured = queryParams.get('featured');
+    const org = queryParams.get('org');
+
 
     const classes = useStyles();
 
@@ -37,12 +53,23 @@ function JobFilters(props) {
     const [type, setType] = useState(0);
     // const [title, setTitle] = useState(0);
     const [category, setCategory] = useState(0);
-    const [organization, setOrganization] = useState(0);
+    const [organization, setOrganization] = useState(org ? { $in: [org] } : 0);
     const [technologyStack, setTechnologyStack] = useState(0);
+
+    const [isFeatured, setIsFeatured] = React.useState(featured ? true : false);
+
+    const handleFeaturedChange = (event) => {
+        if (featured && !event.target.checked) {
+            let stateObj = { id: "100" };
+            window.history.replaceState(stateObj,
+                "Page 3", "/jobs");
+        }
+        setIsFeatured(event.target.checked);
+    };
 
     useEffect(() => {
         combineFilters();
-    }, [type, category, organization, technologyStack]);
+    }, [type, category, organization, technologyStack, isFeatured]);
 
     const updateType = (filterData) => {
         setType(filterData);
@@ -72,7 +99,7 @@ function JobFilters(props) {
         }
 
         if (technologyStack != 0) {
-            filterObjects = { ...filterObjects, $and : technologyStack };
+            filterObjects = { ...filterObjects, $and: technologyStack };
         }
 
         if (category != 0) {
@@ -82,29 +109,48 @@ function JobFilters(props) {
         if (organization != 0) {
             filterObjects = { ...filterObjects, "organization.name": organization };
         }
+
+        if (isFeatured == true) {
+            filterObjects = { ...filterObjects, isFeatured };
+        }
         props.onChange(filterObjects);
     }
 
 
     return (
-        <FloatCard >
-            <div className={classes.titleDiv} >
-                <Typography className={classes.title}><FilterListRoundedIcon className={classes.icon}/> Filter by</Typography>
+        <>
+            <div style={{ marginBottom: 16 }}>
+                <FloatCard >
+                    <div className={classes.featuredCheck}>
+                        <Typography className={classes.featuredJobs}>Featured Jobs</Typography>
+                        <Switch
+                            checked={isFeatured}
+                            onChange={handleFeaturedChange}
+                            name="featuredCheck"
+                            color="primary"
+                        />
+                    </div>
+                </FloatCard>
             </div>
-            <div className={classes.types}>
-                <TypeList onChange={updateType} />
-            </div>
-            <div className={classes.categories}>
-                <CategoryList onChange={updateCategory} />
-            </div>
-            <div className={classes.titles}>
-                <TechnologyList onChange={updateTechnologyStack} />
-            </div>
-            <div className={classes.organizations}>
-                <OrganizationList onChange={updateOrganization} />
-            </div>
+            <FloatCard >
+                <div className={classes.titleDiv} >
+                    <Typography className={classes.title}><FilterListRoundedIcon className={classes.icon} /> Filter by</Typography>
+                </div>
+                <div className={classes.types}>
+                    <TypeList onChange={updateType} />
+                </div>
+                <div className={classes.categories}>
+                    <CategoryList onChange={updateCategory} />
+                </div>
+                <div className={classes.titles}>
+                    <TechnologyList onChange={updateTechnologyStack} />
+                </div>
+                <div className={classes.organizations}>
+                    <OrganizationList onChange={updateOrganization} />
+                </div>
 
-        </FloatCard>
+            </FloatCard>
+        </>
     )
 }
 

@@ -642,17 +642,16 @@ export default function GetHired() {
                               </Button>
                             </Grid>
                             <Grid item>
-                              <Button
-                                fullWidth
-                                onClick={() => {
-                                  window.location = "/";
-                                }}
-                                variant="contained"
-                                className={classes.cancel}
-                                disabled={progress !== 0}
-                              >
-                                Cancel
-                              </Button>
+                              <Link to="/">
+                                <Button
+                                  fullWidth
+                                  variant="contained"
+                                  className={classes.cancel}
+                                  disabled={progress !== 0}
+                                >
+                                  Cancel
+                                </Button>
+                              </Link>
                             </Grid>
                           </Grid>
                         </Grid>

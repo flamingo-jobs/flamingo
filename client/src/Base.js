@@ -27,6 +27,7 @@ import Employers from "./admin/Employers";
 import AppliedJobs from "./employee/appliedJobs/appliedJobs";
 import JobseekerDashboard from "./employee/Dashboard/JobseekerDashboard";
 import Dashboard from "./admin/Dashboard";
+import SavedJobs from "./employee/savedJobs/savedJobs";
 
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -102,7 +103,7 @@ function Base() {
     return (
       <>
         <Route path="/jobs">
-          <Jobs />
+          <Jobs userRole={role} />
         </Route>
         {/* <Route path="/jobseeker" exact>
           <Profile />
@@ -132,6 +133,9 @@ function Base() {
         <>
           <Route path="/jobseeker/appliedJobs">
             <AppliedJobs />
+          </Route>
+          <Route path="/jobseeker/savedJobs">
+            <SavedJobs />
           </Route>
           <Route path="/jobseeker" exact>
             <Profile />
