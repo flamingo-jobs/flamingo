@@ -714,16 +714,15 @@ export default function StartHiring() {
                               </Button>
                             </Grid>
                             <Grid item>
-                              <Button
-                                fullWidth
-                                onClick={() => {
-                                  window.location = "/";
-                                }}
-                                variant="contained"
-                                className={classes.cancel}
-                              >
-                                Cancel
-                              </Button>
+                              <Link to="/">
+                                <Button
+                                  fullWidth
+                                  variant="contained"
+                                  className={classes.cancel}
+                                >
+                                  Cancel
+                                </Button>
+                              </Link>
                             </Grid>
                           </Grid>
                         </Grid>

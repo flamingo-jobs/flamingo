@@ -22,6 +22,7 @@ import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
 import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 import NotificationsPopover from "./NotificationPopover";
+import { Link } from "react-router-dom";
 const jwt = require("jsonwebtoken");
 const token = sessionStorage.getItem("userToken");
 const header = jwt.decode(token, { complete: true });
@@ -276,10 +277,6 @@ export default function Topbar(props) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const loadMyAccount = () => {
-    window.location = "/account/" + header.payload.userId;
-  };
-
   const loadProfilePic = () => {
     try {
       if (header.payload.userRole == "employer") {
@@ -312,7 +309,7 @@ export default function Topbar(props) {
         className={classes.notificationMenu}
 
       >
-        <NotificationsPopover loginId={token ? header.payload.loginId : null} userRole={token ? header.payload.userRole : null}/>
+        <NotificationsPopover loginId={token ? header.payload.loginId : null} userRole={token ? header.payload.userRole : null} />
       </Menu>
     </Backdrop>
   );
@@ -373,22 +370,20 @@ export default function Topbar(props) {
       >
         {!token && (
           <div>
-            <Button
-              onClick={() => {
-                window.location = "/startHiring";
-              }}
-              className={classes.startHiring}
-            >
-              Start Hiring
-            </Button>
-            <Button
-              onClick={() => {
-                window.location = "/signin";
-              }}
-              className={classes.signInMobile}
-            >
-              Sign In
-            </Button>
+            <Link to="/startHiring">
+              <Button
+                className={classes.startHiring}
+              >
+                Start Hiring
+              </Button>
+            </Link>
+            <Link to="/signin">
+              <Button
+                className={classes.signInMobile}
+              >
+                Sign In
+              </Button>
+            </Link>
           </div>
         )}
         {token && (
@@ -477,22 +472,20 @@ export default function Topbar(props) {
                 )}
                 {!token && (
                   <div>
-                    <Button
-                      onClick={() => {
-                        window.location = "/startHiring";
-                      }}
-                      className={classes.startHiring}
-                    >
-                      Start Hiring
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        window.location = "/signin";
-                      }}
-                      className={classes.signIn}
-                    >
-                      Sign In
-                    </Button>
+                    <Link to="/startHiring">
+                      <Button
+                        className={classes.startHiring}
+                      >
+                        Start Hiring
+                      </Button>
+                    </Link>
+                    <Link to="/signin">
+                      <Button
+                        className={classes.signIn}
+                      >
+                        Sign In
+                      </Button>
+                    </Link>
                   </div>
                 )}
               </div>

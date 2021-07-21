@@ -12,6 +12,7 @@ import {
 import CloseIcon from "@material-ui/icons/Close";
 import Flamingo from "../lotties/flamingo.json";
 import Lottie from "react-lottie";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -139,14 +140,13 @@ const LoginModal = (props) => {
                       You must sign in first.
                     </Typography>
                     <div className={classes.signInBtnContainer}>
-                      <Button
-                        onClick={() => {
-                          window.location = "/signin";
-                        }}
-                        className={classes.signIn}
-                      >
-                        Sign In
-                      </Button>
+                      <Link to="/signin">
+                        <Button
+                          className={classes.signIn}
+                        >
+                          Sign In
+                        </Button>
+                      </Link>
                     </div>
                   </div>
                 </Grid>

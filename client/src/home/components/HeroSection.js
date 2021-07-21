@@ -5,6 +5,7 @@ import FloatCard from "../../components/FloatCard";
 import HeroImage from "../lotties/heroimage";
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import { Link } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: '100%',
@@ -79,21 +80,20 @@ function HeroSection() {
               Find the Career You Deserve !
             </Typography>
             <Typography variant="h6" className={classes.h4}>
-            Flamingo goes few steps further from a typical job portal 
-            and brings a novel recruitment experience for the Sri Lankan IT 
-            industry by making use of cutting edge technology. 
+              Flamingo goes few steps further from a typical job portal
+              and brings a novel recruitment experience for the Sri Lankan IT
+              industry by making use of cutting edge technology.
 
-            Create your flamingo account today and apply for job opportunities 
-            from the top employers in the field!
+              Create your flamingo account today and apply for job opportunities
+              from the top employers in the field!
             </Typography>
-            <Button
-              onClick={() => {
-                window.location = "/gethired";
-              }}
-              className={classes.button}
-            >
-              GET HIRED
-            </Button>
+            <Link to="/getHired">
+              <Button
+                className={classes.button}
+              >
+                GET HIRED
+              </Button>
+            </Link>
           </Grid>
           <Grid item xs={12} md={6}>
             <Lottie

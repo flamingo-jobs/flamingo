@@ -195,7 +195,7 @@ export default function SignInSide() {
           const header = jwt.decode(token, { complete: true });
           if (header.payload.userRole == "jobseeker") {
             window.location = "/jobseekerDashboard";
-          }else{
+          } else {
             window.location = "/";
           }
         } else {
@@ -438,16 +438,15 @@ export default function SignInSide() {
             <DialogContent dividers>
               <Grid container direction="row">
                 <Grid item xs={12} md={6}>
-                  <ListItem
-                    button
-                    onClick={() => {
-                      window.location = "/getHired";
-                    }}
-                  >
-                    <Box mt={5} mb={5} ml={10} mr={10}>
-                      <Typography>JobSeeker</Typography>
-                    </Box>
-                  </ListItem>
+                  <Link to="/getHired">
+                    <ListItem
+                      button
+                    >
+                      <Box mt={5} mb={5} ml={10} mr={10}>
+                        <Typography>JobSeeker</Typography>
+                      </Box>
+                    </ListItem>
+                  </Link>
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <ListItem
