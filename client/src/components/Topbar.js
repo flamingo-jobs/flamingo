@@ -339,14 +339,18 @@ export default function Topbar(props) {
           </div>
           <Typography className={classes.menuText} >Profile</Typography>
         </MenuItem>
-        <Link to="/jobseeker/savedJobs">
-          <MenuItem className={classes.menuItem} >
-          <div className={classes.menuIcon}>
-              <BookmarksIcon />
-          </div>
-              <Typography className={classes.menuText} >Saved Jobs</Typography>
-          </MenuItem>
-        </Link>
+
+        {header.payload.userRole === "jobseeker" && 
+          <Link to="/jobseeker/savedJobs">
+            <MenuItem className={classes.menuItem} >
+            <div className={classes.menuIcon}>
+                <BookmarksIcon />
+            </div>
+                <Typography className={classes.menuText} >Saved Jobs</Typography>
+            </MenuItem>
+          </Link>
+        }
+        
         <MenuItem className={classes.menuItem} >
           <div className={classes.menuIcon}>
             <SettingsRoundedIcon />
