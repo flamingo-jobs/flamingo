@@ -81,7 +81,7 @@ function WorkExperience() {
   const classes = useStyles();
   const [fetchedData, setFetchedData] = useState('');
   const [open, setOpen] = useState(false);
-  const [work, setWork] = useState(null);
+  const [work, setWork] = useState([]);
   const [state, setState] = useState({place: null, description: null, position: null, from: null, to: null, taskAndResponsibility: null});
 
   const [alertShow, setAlertShow] = React.useState(false);
@@ -90,17 +90,22 @@ function WorkExperience() {
   let loginId=sessionStorage.getItem("loginId");
 
   function fetchData(){
-    axios.get(`${BACKEND_URL}/jobseeker/60c5f2e555244d11c8012480`)
+    let workData;
+    axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
     .then(res => {
       if(res.data.success){
         if(res.data.jobseeker.work.length > 0){
-          if(Object.keys(res.data.jobseeker.work[0]).length === 0){
-            res.data.jobseeker.work.splice(0,1)
+          workData = res.data.jobseeker.work;
+          if(Object.keys(workData[0]).length === 0){
+            workData.splice(0,1)
+            i++;
+          }else if(workData[0].place == "" && workData[0].description == "" && workData[0].position == "" && workData[0].from == "" && workData[0].to == "" && workData[0].taskAndResponsibility == ""){
+            workData.splice(0,1)
             i++;
           }
-          setWork(res.data.jobseeker.work)
         }
-        
+        setWork(workData)
+        console.log(work);
       }
     })
     setFetchedData(0)

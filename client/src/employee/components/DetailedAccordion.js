@@ -13,7 +13,6 @@ import Divider from '@material-ui/core/Divider';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid'
-import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import BACKEND_URL from '../../Config';
 import axios from 'axios';
 

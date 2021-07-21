@@ -5,7 +5,6 @@ import axios from 'axios';
 import FloatCard from '../../../components/FloatCard';
 import JobCard from '../../../jobs/components/JobCard';
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
-import theme from '../../../Theme';
 import BACKEND_URL from '../../../Config';
 
 

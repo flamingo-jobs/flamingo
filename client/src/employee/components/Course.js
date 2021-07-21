@@ -5,7 +5,6 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import FloatCard from '../../components/FloatCard';
 import theme from '../../Theme';
-import EditIcon from '@material-ui/icons/Edit';
 import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
 import Grid from '@material-ui/core/Grid';
 import CourseItem from './CourseItem';
