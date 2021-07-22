@@ -21,9 +21,10 @@ router.post('/employers/filter', employersController.getFiltered);
 // get specific
 
 router.get('/employers/:id', employersController.getById);
+router.get("/employers/favorites/:empIds", employersController.getByIds);
+
 
 // update employer
-
 router.put('/employers/update/:id', employersController.update);
 
 // delete employer

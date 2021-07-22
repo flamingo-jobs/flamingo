@@ -56,6 +56,9 @@ const jobseekerSchema = new mongoose.Schema({
   savedJobs:{
     type: Array,
   },
+  favoriteOrganizations:{
+    type: Array,
+  },
 });
 
 module.exports = mongoose.model("Jobseeker", jobseekerSchema);

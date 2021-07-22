@@ -46,7 +46,7 @@ const SavedJobs = () => {
       return (
         <Grid item xs={12}>
           <FloatCard>
-            <Typography>You don't have any favorite jobs yet.</Typography>
+            <Typography>You don't have any saved jobs yet.</Typography>
           </FloatCard>
         </Grid>
       );

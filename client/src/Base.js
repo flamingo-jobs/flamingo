@@ -28,6 +28,7 @@ import AppliedJobs from "./employee/appliedJobs/appliedJobs";
 import JobseekerDashboard from "./employee/Dashboard/JobseekerDashboard";
 import Dashboard from "./admin/Dashboard";
 import SavedJobs from "./employee/savedJobs/savedJobs";
+import FavoriteOrganizations from "./employee/favoriteOrganizations/favoriteOrganizations";
 
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -136,6 +137,9 @@ function Base() {
           </Route>
           <Route path="/jobseeker/savedJobs">
             <SavedJobs />
+          </Route>
+          <Route path="/jobseeker/favoriteOrganizations">
+            <FavoriteOrganizations />
           </Route>
           <Route path="/jobseeker" exact>
             <Profile />

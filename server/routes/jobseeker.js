@@ -31,6 +31,7 @@ router.put('/jobseeker/updateWork/:id', jobseekerController.updateWork);
 router.put('/jobseeker/updateProject/:id', jobseekerController.updateProject);
 router.patch('/jobseeker/updateResumeDetails/:id', jobseekerController.updateResumeDetails);
 router.patch("/jobseeker/updateSavedJobs/:id", jobseekerController.updateSavedJobs);
+router.patch("/jobseeker/updateFavoriteOrgs/:id", jobseekerController.updateFavoriteOrgs);
 router.patch("/jobseeker/resetApplicationDetails", jobseekerController.resetAll);
 
 // add new fields

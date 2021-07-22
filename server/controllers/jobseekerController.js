@@ -260,6 +260,18 @@ const updateSavedJobs = async (req, res) => {
       res.status(400).json({ success: false, error: err});
   }
 }
+
+const updateFavoriteOrgs = async (req, res) => {
+  try{
+    const updatedFavoriteOrgs = await Jobseeker.findByIdAndUpdate(
+        req.params.id,
+        { $set: { favoriteOrganizations: req.body  } },
+    );
+    res.status(200).json({ success: true});
+  } catch(err){
+      res.status(400).json({ success: false, error: err});
+  }
+}
   
 const resetAll = (req, res) => { // To clear the test resume details
   Jobseeker.updateMany(
@@ -595,6 +607,7 @@ module.exports = {
   updateProject,
   updateResumeDetails,
   updateSavedJobs,
+  updateFavoriteOrgs,
   resetAll,
   remove,
   removeUniversity,
