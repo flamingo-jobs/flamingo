@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import LocalOfferRoundedIcon from '@material-ui/icons/LocalOfferRounded';
 import { Avatar, Button, Chip, makeStyles, Typography } from '@material-ui/core';
 import { FavoriteRounded } from '@material-ui/icons';
@@ -89,7 +89,15 @@ function JobCard(props) {
 
     const classes = useStyles();
     const { loading = false } = props;
-    const [isSaved, setIsSaved] = useState(props.savedJobIds.includes(props.info._id));
+    const [isSaved, setIsSaved] = useState(false);
+
+    useEffect(() => {
+        if(!props.userRole){
+            setIsSaved(false);
+        } else{
+            setIsSaved(props.savedJobIds.includes(props.info._id));
+        }
+    }, []);
 
     const loadLogo = () => {
         try {
