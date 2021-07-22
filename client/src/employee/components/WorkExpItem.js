@@ -237,13 +237,13 @@ function WorkExpItem(props) {
                 {state.place}
             </Typography>
             <Typography variant="body2" component="p" style={{textAlign:'justify',color:theme.palette.stateBlue}}>
-                {state.from} - {state.to}
+                {state.from ? state.from+" - "+state.to : ""}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',paddingTop:'10px',marginRight:"-60px"}}>
                 {state.description}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',paddingTop:'10px',marginRight:"-60px"}}>
-              <b> Tasks & Responsibilities : </b>{state.taskAndResponsibility}
+              {state.taskAndResponsibility ? <b> Tasks & Responsibilities : </b> + state.taskAndResponsibility : ""}
             </Typography>
           </Grid>
           <Grid item xs={2} spacing={2} style={{marginTop:"-5px",padding:"20px 0px 0px 0px"}}>

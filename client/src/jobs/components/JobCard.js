@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import LocalOfferRoundedIcon from '@material-ui/icons/LocalOfferRounded';
 import { Avatar, Button, Chip, makeStyles, Typography } from '@material-ui/core';
 import { FavoriteRounded } from '@material-ui/icons';
@@ -10,6 +10,8 @@ import ReactTimeAgo from 'react-time-ago'
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarkBorderRoundedIcon from '@material-ui/icons/BookmarkBorderRounded';
 import BookmarksIcon from '@material-ui/icons/Bookmarks';
+import BACKEND_URL from "../../Config";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -82,10 +84,20 @@ const useStyles = makeStyles((theme) => ({
         }
     },
 }))
+
 function JobCard(props) {
 
     const classes = useStyles();
     const { loading = false } = props;
+    const [isSaved, setIsSaved] = useState(false);
+
+    useEffect(() => {
+        if(!props.userRole){
+            setIsSaved(false);
+        } else{
+            setIsSaved(props.savedJobIds.includes(props.info._id));
+        }
+    }, []);
 
     const loadLogo = () => {
         try {
@@ -107,14 +119,48 @@ function JobCard(props) {
         props.handleOpen();
     }
 
+    const handleSavingJob = async () => {
+        if(isSaved){ // Unsave
+            setIsSaved(!isSaved);
+            const newSavedJobIds = props.savedJobIds.filter((id) => id !== props.info._id);
+            props.setSavedJobIds(newSavedJobIds);
+
+            try {
+                const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateSavedJobs/${props.userId}`, newSavedJobIds);
+                if (response.data.success) {
+                // console.log('success');
+                }
+            } catch (err) {
+                console.log(err);
+            }
+
+        } else{ // Save
+            setIsSaved(!isSaved);
+            const newSavedJobIds = [...props.savedJobIds, props.info._id];
+            props.setSavedJobIds(newSavedJobIds);
+      
+            try {
+              const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateSavedJobs/${props.userId}`, newSavedJobIds);
+              if (response.data.success) {
+                // console.log('success');
+              }
+            } catch (err) {
+              console.log(err);
+            }
+        }
+    }
+
     const displaySaveIcon = () => {
         if(!props.userRole){
+            // When user is not signed in
             return <BookmarkBorderRoundedIcon className={classes.favorite} onClick={handleLoginModal} />;
         } else {
-            if(props.savedJobIds.includes(props.info._id)){
-                return <BookmarkIcon className={classes.favorite} />;
+            if(isSaved){
+                // When user is signed in && Job is in savedjobs 
+                return <BookmarkIcon className={classes.favorite} onClick={handleSavingJob} />;
             } else {
-                return <BookmarkBorderRoundedIcon className={classes.favorite} />;
+                // When user is signed in but Job is not in savedJobs
+                return <BookmarkBorderRoundedIcon className={classes.favorite} onClick={handleSavingJob}/>;
             }
         }
     }

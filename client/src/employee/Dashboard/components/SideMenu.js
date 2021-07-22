@@ -3,7 +3,6 @@ import { Link, makeStyles } from '@material-ui/core'
 import FloatCard from '../../../components/FloatCard';
 import { Grid, Typography, Paper} from '@material-ui/core';
 import { indigo } from '@material-ui/core/colors';
-import theme from '../../../Theme';
 import WorkTwoToneIcon from '@material-ui/icons/WorkTwoTone';
 import BookmarkTwoToneIcon from '@material-ui/icons/BookmarkTwoTone';
 import NavigateNextTwoToneIcon from '@material-ui/icons/NavigateNextTwoTone';
