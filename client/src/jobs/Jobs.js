@@ -90,7 +90,7 @@ function Jobs(props) {
 
     useEffect(() => {
         retrieveJobs();
-    }, [queryParams]);
+    }, [queryParams, page]);
 
     useEffect(() => {
         updateQuery();
