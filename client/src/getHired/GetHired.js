@@ -24,6 +24,8 @@ import BACKEND_URL from "../Config";
 import { Link } from "react-router-dom";
 
 const jwt = require("jsonwebtoken");
+const passwordRegexp =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -239,6 +241,12 @@ export default function GetHired() {
     setGender(e.target.value);
   };
 
+  const badPassword = (password) => {
+    if (!passwordRegexp.test(password)) {
+      return true;
+    }
+  };
+
   const createJobSeeker = (e) => {
     setProgress(20);
     e.preventDefault();
@@ -249,31 +257,39 @@ export default function GetHired() {
       password_confirmation: formData.confirmPassword,
       role: "jobseeker",
     };
-    if (formData.password === formData.confirmPassword) {
-      axios.post(`${BACKEND_URL}/api/signup`, signupData).then((res) => {
-        if (res.data.success) {
-          setProgress(30);
-          sessionStorage.setItem("userToken", res.data.token);
-          const userId = jwt.decode(res.data.token, { complete: true }).payload
-            .userId;
-          setProgress(40);
-          sendData(userId);
-        } else {
-          setProgress(0);
-          setAlertData({
-            severity: "error",
-            msg: "Failed to create user account!",
-          });
-          handleAlert();
-        }
-      });
-    } else {
-      setProgress(0);
+    if (badPassword(formData.password)) {
       setAlertData({
         severity: "error",
-        msg: "Please check whether your passwords are matching",
+        msg: "Please make an stronger password! Your password must contain minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character",
       });
       handleAlert();
+    } else {
+      if (formData.password === formData.confirmPassword) {
+        axios.post(`${BACKEND_URL}/api/signup`, signupData).then((res) => {
+          if (res.data.success) {
+            setProgress(30);
+            sessionStorage.setItem("userToken", res.data.token);
+            const userId = jwt.decode(res.data.token, { complete: true })
+              .payload.userId;
+            setProgress(40);
+            sendData(userId);
+          } else {
+            setProgress(0);
+            setAlertData({
+              severity: "error",
+              msg: "Failed to create user account!",
+            });
+            handleAlert();
+          }
+        });
+      } else {
+        setProgress(0);
+        setAlertData({
+          severity: "error",
+          msg: "Please check whether your passwords are matching",
+        });
+        handleAlert();
+      }
     }
   };
   const sendData = (userId) => {
