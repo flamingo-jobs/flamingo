@@ -14,7 +14,6 @@ import BACKEND_URL from "../../Config";
 import axios from "axios";
 import DescriptionIcon from "@material-ui/icons/Description";
 import SnackBarAlert from "../../components/SnackBarAlert";
-import { StateBlueTextField } from "../components/customTextField";
 import Lottie from "react-lottie";
 import ItPerson from "../lotties/itPerson.json";
 import CircularProgress from "@material-ui/core/CircularProgress";
