@@ -1,20 +1,15 @@
 import React from "react";
 import {
-  Button,
   TextField,
-  Box,
   Grid,
   Typography,
   Container,
   IconButton,
-  InputAdornment,
 } from "@material-ui/core";
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import FloatCard from "../../components/FloatCard";
+import { makeStyles } from "@material-ui/core/styles";
 import backgroundImage from "../images/background.jpg";
-import SideDrawer from "../../components/SideDrawer";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
 const useStyles = makeStyles((theme) => ({
@@ -159,54 +154,10 @@ export const Volunteering = ({
   handleAchievementInputChange,
   handleAchievementAddClick,
   handleAchievementRemoveClick,
-  navigation,
 }) => {
   const classes = useStyles();
 
   return (
-    // <div className={classes.background}>
-    //   <div className={classes.overlay}>
-    //     <Container className={classes.container}>
-    // <Grid
-    //   container
-    //   direction="row"
-    //   spacing={3}
-    //   className={classes.mainGrid}
-    //   justify="space-between"
-    //   alignItems="flex-start"
-    // >
-    //   <Grid
-    //     item
-    //     xs={false}
-    //     sm={4}
-    //     md={3}
-    //     lg={2}
-    //     className={classes.sideDrawer}
-    //   >
-    //     <SideDrawer />
-    //   </Grid>
-    //   <Grid
-    //     item
-    //     xs={false}
-    //     sm={4}
-    //     md={3}
-    //     lg={2}
-    //     className={classes.sideDrawerGrid}
-    //   ></Grid>
-    //   <Grid
-    //     item
-    //     container
-    //     xs={12}
-    //     sm={8}
-    //     md={9}
-    //     lg={10}
-    //     spacing={3}
-    //     className={classes.topBarGrid}
-    //     direction="column"
-    //     justify="space-between"
-    //   >
-    //     <Container className={classes.container}>
-    //       <FloatCard>
     <Container>
       <Grid
         container
@@ -422,7 +373,7 @@ export const Volunteering = ({
         <Grid item xs={12} lg={4}>
           <Grid container alignItems="center" spacing={3}>
             <Grid item xs={12} align="left">
-              <Typography component={'span'} className={classes.title}>
+              <Typography component={"span"} className={classes.title}>
                 <h4>Achievement Details</h4>
               </Typography>
             </Grid>

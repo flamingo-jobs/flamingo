@@ -30,16 +30,23 @@ const acceptPayment = async (req, res) => {
     );
     if (local_md5sig === md5sig && status_code == 2) {
       const savedPayment = await newPayment.save();
+      if (savedPayment) {
+          
+        /*
+        ......................................................
+        >> Update employer document with subscribed package <<
+        ......................................................
+        */
 
-      /*
-        ...
-        Update employer with subscribed package
-        ...
-      */
-
-      res.status(200).json({
-        success: true,
-      });
+        res.status(200).json({
+          success: true,
+        });
+      } else {
+        res.status(400).json({
+          success: false,
+          error: "payment_save_failed (check model format)",
+        });
+      }
     } else {
       res.status(400).json({
         success: false,
