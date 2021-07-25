@@ -110,7 +110,7 @@ function Base() {
           <Profile />
         </Route> */}
         <Route path="/organizations">
-          <Organizations />
+          <Organizations userRole={role}/>
         </Route>
         <Route path="/jobDescription" >
           <JobDescription />

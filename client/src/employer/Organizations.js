@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import Pagination from '@material-ui/lab/Pagination';
 import PaginationItem from '@material-ui/lab/PaginationItem';
 import OrgSearchBar from './components/OrgSearchBar';
+import LoginModal from './components/loginModal';
 
 const useStyles = makeStyles((theme) => ({
     organizationsGrid: {
@@ -51,8 +52,11 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-function Organizations() {
+function Organizations(props) {
     const classes = useStyles();
+
+    const userId = sessionStorage.getItem("loginId");
+    const [favoriteOrgs, setFavoriteOrgs] = useState("empty");
 
     const [organizations, setOrganizations] = useState([]);
     const [count, setCount] = useState(0);
@@ -61,6 +65,16 @@ function Organizations() {
     const [queryParams, setQueryParams] = useState({});
 
     const [page, setPage] = React.useState(1);
+
+    // Login modal 
+    const [open, setOpen] = useState(false);
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     const changePage = (event, value) => {
         setPage(value);
@@ -73,6 +87,10 @@ function Organizations() {
     useEffect(() => {
         updateQuery();
     }, [filters, search])
+
+    useEffect(() => {
+        retrieveJobseeker();
+    }, []);
 
     const updateFilters = (filterData) => {
         setFilters(filterData);
@@ -116,11 +134,31 @@ function Organizations() {
         })
     }
 
+    const retrieveJobseeker = async () => {
+        if(userId){
+            try {
+              const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
+              if (response.data.success) {
+                setFavoriteOrgs(response.data.jobseeker.favoriteOrganizations);
+              }
+            } catch (err) {
+              console.log(err);
+            }
+        }
+    };
+
     const displayOrganizations = () => {
         if (organizations) {
             return organizations.map(org => (
                 <Grid item xs={12} md={12} key={org._id} className={classes.gridCard}>
-                    <OrganizationCard info={org} />
+                    <OrganizationCard 
+                        userId={userId}
+                        info={org}
+                        userRole={props.userRole}
+                        favoriteOrgs={favoriteOrgs}
+                        setFavoriteOrgs={setFavoriteOrgs}
+                        handleOpen={handleOpen}
+                    />
                 </Grid>
             ))
         } else {
@@ -133,6 +171,12 @@ function Organizations() {
 
     return (
         <>
+            {/* Works only when user is not signed in */}
+            <LoginModal 
+                open={open}
+                handleClose={handleClose}
+            ></LoginModal>
+
             <Grid item container sm={12} spacing={3} direction="row" justify="space-between" className={classes.mainGrid} alignItems="flex-start">
                 <Grid item sm={12} className={classes.searchGrid}>
                     <OrgSearchBar onChange={updateSearch} />
