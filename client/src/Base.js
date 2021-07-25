@@ -118,9 +118,9 @@ function Base() {
         <Route path="/people">
           <People />
         </Route>
-        {/* <Route path="/employer">
-          <Employer />
-        </Route> */}
+        <Route path="/employer/company">
+          <Employer userRole={role} />
+        </Route>
         <Route path="/" exact>
           <Home />
         </Route>
@@ -145,8 +145,8 @@ function Base() {
             <Profile />
           </Route>
           <Route path="/jobseekerDashboard" exact>
-          <JobseekerDashboard />
-        </Route>
+            <JobseekerDashboard />
+          </Route>
         </>
       )
     }
@@ -168,9 +168,9 @@ function Base() {
           <Route exact path="/employer/jobs">
             <EmployerJobList/>
           </Route>
-          <Route path="/employer/company">
-            <Employer />
-          </Route>
+          {/* <Route path="/employer/company">
+            <Employer userRole={role} />
+          </Route> */}
           <Route path="/employer/analytics">
             Analytics
           </Route>

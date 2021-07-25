@@ -9,6 +9,7 @@ import Rating from '@material-ui/lab/Rating';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import BACKEND_URL from "../../Config";
 import axios from "axios";
+import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -191,7 +192,9 @@ function OrganizationCard(props) {
                         <Rating name="read-only" value={getAvgRating(props.info.reviews)} readOnly />
                     </div>
                     <div className={classes.footerRight} >
-                        <Button className={classes.applyButton}>View Organization</Button>
+                        <Link to="/employer/company">
+                            <Button className={classes.applyButton}>View Organization</Button>
+                        </Link>
                     </div>
                 </div>
             </div>

@@ -63,7 +63,7 @@ const PurpleCheckbox = withStyles({
   checked: {},
 })((props) => <Checkbox color="default" {...props} />);
 
-function TechStack() {
+function TechStack(props) {
   const classes = useStyles();
 
   const bull = <span className={classes.bullet}>•</span>;
@@ -149,15 +149,17 @@ function TechStack() {
               <Grid item sm={1}>
                 {/* button to open the dialog box to add new tech categories */}
 
-                <IconButton
-                  variant="outlined"
-                  size="small"
-                  aria-label="add"
-                  className={classes.addButton}
-                  onClick={handleClickOpen}
-                >
-                  <EditIcon />
-                </IconButton>
+                {props.userRole === "employer" && 
+                  <IconButton
+                    variant="outlined"
+                    size="small"
+                    aria-label="add"
+                    className={classes.addButton}
+                    onClick={handleClickOpen}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                }
 
                 {/* dialog box to add new tech categories */}
 
@@ -221,7 +223,11 @@ function TechStack() {
             {Array.from(theArray).map((object, i) => (
               
               <Grid item sm={12}>
-                <TechCategory name={object} list={getStack(object)} />
+                <TechCategory 
+                  name={object} 
+                  list={getStack(object)} 
+                  userRole={props.userRole}
+                />
               </Grid>
             ))}
           </Grid>

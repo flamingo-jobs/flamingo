@@ -67,10 +67,14 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 200,
     marginBottom: 15,
   },
+  infoTagsContainer:{
+    marginLeft: theme.spacing(2),
+  },
   companyDescription: {
     paddingTop: -25,
     paddingLeft: 20,
     paddingRight: 20,
+    paddingBottom: 20,
   },
   companyName: {
     fontWeight: 500,
@@ -91,7 +95,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
   },
   locationTags: {
-    marginTop: -50,
+    marginTop: -10,
     marginBottom: 10,
     marginLeft: -14,
     marginRight: -20,
@@ -142,7 +146,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function CompanyInfo() {
+function CompanyInfo(props) {
   const classes = useStyles();
 
   const fixedOptions = [];
@@ -332,15 +336,17 @@ function CompanyInfo() {
                     label={subscription}
                     className={classes.membershipType}
                   />
-
-                  <IconButton
-                    variant="outlined"
-                    aria-label="edit"
-                    className={classes.editButton}
-                    onClick={handleClickOpen}
-                  >
-                    <EditIcon />
-                  </IconButton>
+                  {props.userRole === "employer" && 
+                    <IconButton
+                      variant="outlined"
+                      aria-label="edit"
+                      className={classes.editButton}
+                      onClick={handleClickOpen}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                  }
+                  
 
                   {/* <form onSubmit={onSubmit}> */}
                   <form>
@@ -425,7 +431,7 @@ function CompanyInfo() {
                                     input: classes.textField,
                                   },
                                 }}
-                                onChange={onChangeDescription}
+                                onChange={onChangeDescription} 
                               />
                             </Grid>
 
@@ -645,7 +651,7 @@ function CompanyInfo() {
 
           {/* Edit Company Logo */}
 
-          <Grid item container alignItems="center" direction="row" xs={12}>
+          <Grid item container alignItems="center" direction="row" xs={12} >
             <Grid item sm={3} className={classes.editPhoto}>
               <input
                 accept="image/*"
@@ -655,14 +661,16 @@ function CompanyInfo() {
               />
 
               <label htmlFor="raised-button-file">
-                <IconButton
-                  variant="outlined"
-                  component="span"
-                  aria-label="edit"
-                  className={classes.editPhotoButton}
-                >
-                  <PhotoCameraIcon />
-                </IconButton>
+                {props.userRole === "employer" && 
+                  <IconButton
+                    variant="outlined"
+                    component="span"
+                    aria-label="edit"
+                    className={classes.editPhotoButton}
+                  >
+                    <PhotoCameraIcon />
+                  </IconButton>
+                }
               </label>
             </Grid>
           </Grid>
@@ -688,18 +696,19 @@ function CompanyInfo() {
 
           <Grid item xs={12}>
             {/* <div className={classes.infoTags}> */}
-
-            {Object.keys(technologyStack).map((item, i) => (
-              <Chip
-                icon={<LocalOfferRoundedIcon className={classes.tagIcon} />}
-                label={technologyStack[i].name}
-                className={classes.label}
-              />
-            ))}
+            <div className={classes.infoTagsContainer}>
+              {Object.keys(technologyStack).map((item, i) => (
+                <Chip
+                  icon={<LocalOfferRoundedIcon className={classes.tagIcon} />}
+                  label={technologyStack[i].name}
+                  className={classes.label}
+                />
+              ))}
+            </div>
           </Grid>
 
           <Grid item xs={12} className={classes.body}>
-            <div className={classes.companyDescription}>
+            <div className={classes.companyDescription} >
               <Typography style={{ whiteSpace: "pre-line" }} variant="body2" align="justify">
                 {description}
               </Typography>
