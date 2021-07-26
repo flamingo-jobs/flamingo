@@ -60,6 +60,23 @@ const getById = (req, res) => {
   });
 };
 
+const getByIds = async (req, res) => {
+  const employerIds = req.params.empIds.split("$$");
+  
+  try{
+    const response = await Employers.find({'_id':{$in: employerIds}});
+    res.status(200).json({
+      success: true,
+      employers: response
+    });
+  }catch(err){
+    res.status(400).json({
+      success: false,
+      error: err,
+    });
+  }
+};
+
 const getEmployerCount = (req, res) => {
   Employers.countDocuments(req.body).exec((err, employerCount) => {
     if (err) {
@@ -125,6 +142,7 @@ module.exports = {
   create,
   getAll,
   getById,
+  getByIds,
   update,
   remove,
   getFeaturedEmployers,

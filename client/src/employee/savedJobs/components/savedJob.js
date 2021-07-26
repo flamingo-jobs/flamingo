@@ -16,6 +16,7 @@ import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarkBorderRoundedIcon from "@material-ui/icons/BookmarkBorderRounded";
 import BACKEND_URL from "../../../Config";
 import axios from "axios";
+import SnackBarAlert from "../../../components/SnackBarAlert";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -97,9 +98,36 @@ const SavedJob = (props) => {
   const [job, setJob] = useState("empty");
   const [isSaved, setIsSaved] = useState(true);
 
+  // Alert related states
+  const [alertShow, setAlertShow] = useState(false);
+  const [alertData, setAlertData] = useState({ severity: "", msg: "" });
+
   useEffect(() => {
     retrieveJob();
   }, []);
+
+  // Error related stuff
+  const displayAlert = () => {
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
+
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertShow(false);
+  };
 
   const retrieveJob = async () => {
     try {
@@ -131,7 +159,8 @@ const SavedJob = (props) => {
   };
 
   const handleSavingJob = async (jobId) => {
-    if(isSaved){
+    const saveState = isSaved;
+    if(isSaved){ // Unsave
       setIsSaved(!isSaved);
       const newSavedJobIds = props.savedJobIdsForDB.filter((id) => id !== jobId);
       props.setSavedJobIdsForDB(newSavedJobIds);
@@ -141,7 +170,13 @@ const SavedJob = (props) => {
           // console.log('success');
         }
       } catch (err) {
-        console.log(err);
+        // console.log(err);
+        setIsSaved(saveState);
+        setAlertData({
+          severity: "error",
+          msg: "Sorry, Something went wrong. Please try again later.",
+        });
+        handleAlert();
       }
 
     } else {
@@ -155,7 +190,13 @@ const SavedJob = (props) => {
           // console.log('success');
         }
       } catch (err) {
-        console.log(err);
+        // console.log(err);
+        setIsSaved(saveState);
+        setAlertData({
+          severity: "error",
+          msg: "Sorry, Job could not be saved. Please try again later.",
+        });
+        handleAlert();
       }
     }
   }
@@ -226,7 +267,12 @@ const SavedJob = (props) => {
     );
   };
 
-  return <>{displayJob()}</>;
+  return (
+    <>
+      {displayAlert()}
+      {displayJob()}
+    </>
+  )
 };
 
 export default SavedJob;

@@ -23,6 +23,7 @@ import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 import NotificationsPopover from "./NotificationPopover";
 import BookmarksIcon from '@material-ui/icons/Bookmarks';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import { Link } from 'react-router-dom';
 const jwt = require("jsonwebtoken");
 const token = sessionStorage.getItem("userToken");
@@ -343,6 +344,17 @@ export default function Topbar(props) {
                 <BookmarksIcon />
             </div>
                 <Typography className={classes.menuText} >Saved Jobs</Typography>
+            </MenuItem>
+          </Link>
+        }
+
+        { props.user === "jobseeker" &&
+          <Link to="/jobseeker/favoriteOrganizations">
+            <MenuItem className={classes.menuItem} >
+            <div className={classes.menuIcon}>
+                <FavoriteIcon />
+            </div>
+                <Typography className={classes.menuText} >Favorites</Typography>
             </MenuItem>
           </Link>
         }

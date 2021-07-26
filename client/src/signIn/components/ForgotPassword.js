@@ -11,7 +11,7 @@ import {
   Chip,
   Box,
 } from "@material-ui/core";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import FloatCard from "../../components/FloatCard";
 import cardImage from "../../signIn/images/flamingo.gif";

@@ -4,7 +4,7 @@ import LocalOfferRoundedIcon from '@material-ui/icons/LocalOfferRounded';
 import { Avatar, Button, Chip, Typography } from '@material-ui/core';
 import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
-import ReactTimeAgo from 'react-time-ago'
+import ReactTimeAgo from 'react-time-ago';
 import BookmarkBorderRoundedIcon from '@material-ui/icons/BookmarkBorderRounded';
 import {
   Grid,
@@ -12,6 +12,10 @@ import {
 } from "@material-ui/core";
 import {Link as ScrollLink} from "react-scroll";
 import LoginModal from "./loginModal";
+import BookmarkIcon from '@material-ui/icons/Bookmark';
+import BACKEND_URL from "../../Config";
+import axios from "axios";
+import SnackBarAlert from "../../components/SnackBarAlert";
 
 const useStyles = makeStyles((theme) => ({
   border: {
@@ -138,6 +142,10 @@ function JobSummary(props) {
   // Login modal 
   const [open, setOpen] = useState(false);
 
+  // Alert related states
+  const [alertShow, setAlertShow] = useState(false);
+  const [alertData, setAlertData] = useState({ severity: "", msg: "" });
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -145,12 +153,99 @@ function JobSummary(props) {
     setOpen(false);
   };
   
-  const handleApplyBtnClick= () => {
+  const handleLoginModal= () => {
     handleOpen();
+  }
+
+  // Error related stuff
+  const displayAlert = () => {
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
+
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertShow(false);
+  };
+
+  const handleSavingJob = async () => {
+    let newSavedJobIds = [];
+    const isSaved = props.isSaved;
+    
+    props.setIsSaved(!props.isSaved);
+
+    if(props.isSaved){ // Unsave
+      newSavedJobIds = props.savedJobIds.filter((id) => id !== props.job._id);
+    } else { // Save
+      newSavedJobIds = [...props.savedJobIds, props.job._id];
+    }
+    
+    props.setSavedJobIds(newSavedJobIds);
+    try {
+      const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateSavedJobs/${props.userId}`, newSavedJobIds);
+      if (response.data.success) {
+        // console.log('success');
+      }
+    } catch (err) {
+      // console.log(err);
+      props.setIsSaved(isSaved);
+
+      setAlertData({
+        severity: "error",
+        msg: "Sorry, Job could not be saved. Please try again later.",
+      });
+      handleAlert();
+    }
+  }
+
+  const displaySaveForLater = () => {
+    if(props.userRole === "jobseeker"){
+      if(props.isSaved){
+        return (
+          <Button
+            className={classes.savBtn}
+            onClick={handleSavingJob}
+          >
+            <BookmarkIcon />Saved
+          </Button>
+        );
+      } else {
+        return (
+          <Button
+            className={classes.savBtn}
+            onClick={handleSavingJob}
+          >
+            <BookmarkBorderRoundedIcon />Save for later
+          </Button>
+        );
+      }
+    } else {
+      return (
+        <Button
+          className={classes.savBtn}
+          onClick={handleLoginModal}
+        >
+          <BookmarkBorderRoundedIcon />Save for later
+        </Button>
+      );
+    }
   }
 
   return (
     <Container>
+      {displayAlert()}
 
       <LoginModal 
         open={open}
@@ -183,12 +278,7 @@ function JobSummary(props) {
             </div>
           </Grid>
           <Grid item xs={12} md={4} align="center">
-            <Button
-              href="#applyForm"
-              className={classes.savBtn}
-            >
-              <BookmarkBorderRoundedIcon />Save for later
-            </Button>
+            {displaySaveForLater()}
             {props.isSignedIn && (
               <ScrollLink to="applyForm" smooth={true} duration={1000}>
                 <Button className={classes.applyBtn}>
@@ -197,7 +287,7 @@ function JobSummary(props) {
               </ScrollLink>
             )}
             {!props.isSignedIn && (
-                <Button className={classes.applyBtn} onClick={handleApplyBtnClick}>
+                <Button className={classes.applyBtn} onClick={handleLoginModal}>
                   Apply For This Job
                 </Button>
             )}

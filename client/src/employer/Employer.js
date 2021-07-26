@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Employer = () => {
+const Employer = (props) => {
   const classes = useStyles();
 
   return (
@@ -53,11 +53,11 @@ const Employer = () => {
       alignItems="flex-start"
     >
       <Grid item containerxs={7} sm={7} spacing={3}>
-        <CompanyInfo></CompanyInfo>
+        <CompanyInfo userRole={props.userRole}></CompanyInfo>
       </Grid>
 
       <Grid item xs={5} sm={5} spacing={3}>
-        <TechStack></TechStack>
+        <TechStack userRole={props.userRole}></TechStack>
       </Grid>
     </Grid>
   );

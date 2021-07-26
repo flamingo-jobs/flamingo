@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import {
-  Button,
   TextField,
   Grid,
   Typography,
@@ -189,12 +188,6 @@ export const Experience = ({
   handleProjectRemoveClick,
   handleProjectTechInputChange,
 }) => {
-  const [techStack, setTechStack] = useState([]);
-
-  const handleTechStackChange = (event, value) => {
-    setTechStack(value);
-  };
-
   const classes = useStyles();
 
   return (
@@ -467,7 +460,9 @@ export const Experience = ({
                               />
                             )}
                             value={x.techStack}
-                            onChange={(e,v)=>handleProjectTechInputChange(e,v,i)}
+                            onChange={(e, v) =>
+                              handleProjectTechInputChange(e, v, i)
+                            }
                             classes={{
                               inputRoot: classes.inputRoot,
                               input: classes.inputInput,

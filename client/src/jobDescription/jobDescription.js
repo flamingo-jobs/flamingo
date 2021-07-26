@@ -39,11 +39,13 @@ const useStyles = makeStyles((theme) => ({
 
 // style={{border: "1px solid red"}}
 
-function JobDescription() {
+function JobDescription(props) {
   const classes = useStyles();
 
   const [job, setJob] = useState("empty");
   const [moreFromJobs, setMoreFromJobs] = useState(null);
+  const [savedJobIds, setSavedJobIds] = useState([]);
+  const [isSaved, setIsSaved] = useState(false);
 
   let isSignedIn = false;
   if (sessionStorage.getItem("loginId") !== null) {
@@ -61,6 +63,7 @@ function JobDescription() {
 
   useEffect(() => {
     retrieveJob();
+    retrieveJobseeker();
     displayMoreFromJobs();
     displayRelatedJobs();
   }, [jobId]);
@@ -75,6 +78,20 @@ function JobDescription() {
     });
   };
 
+  const retrieveJobseeker = async () => {
+    try {
+      const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
+      if (response.data.success) {
+        setSavedJobIds(response.data.jobseeker.savedJobs);
+        if(response.data.jobseeker.savedJobs.includes(jobId)){
+          setIsSaved(true);
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const displaySummary = () => {
     if (job == "empty") {
       return (
@@ -85,8 +102,15 @@ function JobDescription() {
     } else {
       return (
         <Grid item sm={12} className={classes.container}>
-          <JobSummary job={job} 
+          <JobSummary 
+            userId={userId}
+            job={job} 
             isSignedIn={isSignedIn}
+            userRole={props.userRole}
+            isSaved={isSaved}
+            setIsSaved={setIsSaved}
+            savedJobIds={savedJobIds}
+            setSavedJobIds={setSavedJobIds}
           ></JobSummary>
         </Grid>
       );

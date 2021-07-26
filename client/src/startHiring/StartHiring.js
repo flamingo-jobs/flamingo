@@ -23,6 +23,8 @@ import RemoveCircleRoundedIcon from "@material-ui/icons/RemoveCircleRounded";
 import { Link } from "react-router-dom";
 
 const jwt = require("jsonwebtoken");
+const passwordRegexp =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -201,6 +203,12 @@ export default function StartHiring() {
   };
   const [formData, setForm] = useForm(defaultData);
 
+  const badPassword = (password) => {
+    if (!passwordRegexp.test(password)) {
+      return true;
+    }
+  };
+
   const createAccount = (e) => {
     e.preventDefault();
     const signupData = {
@@ -210,27 +218,35 @@ export default function StartHiring() {
       password_confirmation: formData.confirmPassword,
       role: "employer",
     };
-    if (formData.password === formData.confirmPassword) {
-      axios.post(`${BACKEND_URL}/api/signup`, signupData).then((res) => {
-        if (res.data.success) {
-          sessionStorage.setItem("userToken", res.data.token);
-          const userId = jwt.decode(res.data.token, { complete: true }).payload
-            .userId;
-          sendData(userId);
-        } else {
-          setAlertData({
-            severity: "error",
-            msg: "User account creation failed!",
-          });
-          handleAlert();
-        }
-      });
-    } else {
+    if (badPassword(formData.password)) {
       setAlertData({
         severity: "error",
-        msg: "Please check whether your passwords are matching!",
+        msg: "Please make an stronger password! Your password must contain minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character",
       });
       handleAlert();
+    } else {
+      if (formData.password === formData.confirmPassword) {
+        axios.post(`${BACKEND_URL}/api/signup`, signupData).then((res) => {
+          if (res.data.success) {
+            sessionStorage.setItem("userToken", res.data.token);
+            const userId = jwt.decode(res.data.token, { complete: true })
+              .payload.userId;
+            sendData(userId);
+          } else {
+            setAlertData({
+              severity: "error",
+              msg: "User account creation failed!",
+            });
+            handleAlert();
+          }
+        });
+      } else {
+        setAlertData({
+          severity: "error",
+          msg: "Please check whether your passwords are matching!",
+        });
+        handleAlert();
+      }
     }
   };
 
