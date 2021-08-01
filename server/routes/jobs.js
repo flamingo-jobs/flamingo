@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const jobsController = require('../controllers/jobsController');
-
+const recommendationController = require('../controllers/recommendationController');
 // create jobs
 
 router.post('/jobs/create', jobsController.create);
@@ -10,6 +10,7 @@ router.post('/jobs/create', jobsController.create);
 
 router.post('/jobs', jobsController.getAll);
 
+router.get('/jobs/generateRecommendations/:id', recommendationController.generateRecommendations);
 
 // get specific
 
