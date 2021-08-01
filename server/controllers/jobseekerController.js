@@ -74,6 +74,23 @@ const getById = (req, res) => {
   });
 };
 
+const getByIds = async (req, res) => {
+  const jobseekers = req.params.ids.split("$$");
+  
+  try{
+    const response = await Jobseeker.find({'_id':{$in: jobseekers}});
+    res.status(200).json({
+      success: true,
+      jobseekers: response
+    });
+  }catch(err){
+    res.status(400).json({
+      success: false,
+      error: err,
+    });
+  }
+};
+
 // ------update ----------------------------------------
 const update = (req, res) => {
   Jobseeker.findByIdAndUpdate(
@@ -227,6 +244,23 @@ const updateProject = (req, res) => {
   );
 };
 
+const updateResumeStatus = async (req, res) => {
+  // console.log("userid", req.params.id);
+  // console.log("jobid", req.body.jobId);
+  // console.log("status", req.body.status);
+  try{
+    const updatedJobseeker = await Jobseeker.updateOne(
+        {_id: req.params.id, "applicationDetails.jobId": req.body.jobId},
+        {
+          $set:{ [`applicationDetails.$.status`]: req.body.status }
+        },
+    );
+    res.status(200).json({ success: true });
+  }catch(err){
+      res.status(400).json({ success: false, error: err});
+  }
+}
+
 const updateResumeDetails =  async (req, res) => {
     try{
         const removedArrayElement = await Jobseeker.findByIdAndUpdate(
@@ -234,7 +268,7 @@ const updateResumeDetails =  async (req, res) => {
             {$pull:{applicationDetails:{resumeName: req.body.resumeName}}},
             { safe: true, multi:true }
         );
-    }catch{
+    }catch(err){
         res.status(400).json({ success: false, error: err});
     }
 
@@ -590,6 +624,7 @@ module.exports = {
   create,
   getAll,
   getById,
+  getByIds,
   update,
   addUniversity,
   addSchool,
@@ -605,6 +640,7 @@ module.exports = {
   updateAward,
   updateWork,
   updateProject,
+  updateResumeStatus,
   updateResumeDetails,
   updateSavedJobs,
   updateFavoriteOrgs,

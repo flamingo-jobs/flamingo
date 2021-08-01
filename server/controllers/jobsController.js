@@ -132,7 +132,21 @@ const resetAll = (req, res) => { // To clear the test resume details
                 sucess: "Updated successfully"
             });
         }
-    );
+        );
+    }
+
+const updateResumeStatus = async (req, res) => {
+    try{
+        const updatedJobs = await Jobs.updateOne(
+            {_id: req.params.id, "applicationDetails.userId": req.body.userId},
+            {
+                $set:{ [`applicationDetails.$.status`]: req.body.status }
+            },
+        );
+        res.status(200).json({ success: true });
+    }catch(err){
+        res.status(400).json({ success: false, error: err});
+    }
 }
 
 const updateResumeDetails =   (req, res) => {
@@ -190,6 +204,7 @@ module.exports = {
     getAll,
     getById,
     update,
+    updateResumeStatus,
     updateResumeDetails,
     remove,
     getFeaturedJobs,

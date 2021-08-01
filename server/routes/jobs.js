@@ -33,6 +33,7 @@ router.patch("/jobs/resetApplicationDetails", jobsController.resetAll);
 // update job
 
 router.put('/jobs/update/:id', jobsController.update);
+router.patch('/jobs/updateResumeStatus/:id', jobsController.updateResumeStatus);
 
 // delete job
 

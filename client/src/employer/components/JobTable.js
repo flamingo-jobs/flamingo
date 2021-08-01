@@ -109,10 +109,11 @@ export default function CustomizedTables() {
             <StyledTableCell align="center">Job Title</StyledTableCell>
             <StyledTableCell align="center">Category</StyledTableCell>
             <StyledTableCell align="center">Location</StyledTableCell>
-            <StyledTableCell align="center">Posted Date</StyledTableCell>
+            {/* <StyledTableCell align="center">Posted Date</StyledTableCell> */}
             <StyledTableCell align="center">Due Date</StyledTableCell>
             <StyledTableCell align="center">Active</StyledTableCell>
             <StyledTableCell align="center">No of Resumes</StyledTableCell>
+            <StyledTableCell align="center"></StyledTableCell>
             <StyledTableCell align="right"></StyledTableCell>
           </TableRow>
         </TableHead>
@@ -138,7 +139,7 @@ export default function CustomizedTables() {
                 />
               </StyledTableCell>
 
-              <StyledTableCell align="center">{row.postedDate.slice(0, 10)}</StyledTableCell>
+              {/* <StyledTableCell align="center">{row.postedDate.slice(0, 10)}</StyledTableCell> */}
               <StyledTableCell align="center">{row.dueDate.slice(0, 10)}</StyledTableCell>
               <StyledTableCell align="center">
                 {row.isPublished ? (
@@ -156,8 +157,22 @@ export default function CustomizedTables() {
                 )}
               </StyledTableCell>
               <StyledTableCell align="center">
-                {row.noOfResumes}
+                {row.applicationDetails.length}
               </StyledTableCell>
+
+              <StyledTableCell align="right">
+                <Link to={`/employer/resumes/${row._id}`}>
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      className={classes.button}
+                      endIcon={<NavigateNextIcon />}
+                    >
+                      Resumes
+                    </Button>
+                  </Link>
+              </StyledTableCell>
+
               <StyledTableCell align="right">
                 <Link to={`/employer/jobs/update/${row._id}`}>
                     <Button

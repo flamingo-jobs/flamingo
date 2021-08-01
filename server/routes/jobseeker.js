@@ -15,10 +15,13 @@ router.get('/jobseekers', jobseekerController.getAll);
 router.post('/jobseekers/filter', jobseekerController.getFiltered);
 router.post('/jobseekers/getJobseekerCount', jobseekerController.getCount);
 router.post('/jobseekers/delete', jobseekerController.block);
+
 // get specific
 
 router.get('/jobseeker/:id', jobseekerController.getById);
+router.get("/jobseeker/applicants/:ids", jobseekerController.getByIds);
 router.get('/jobseeker/getNotifications/:id', jobseekerController.getNotifications);
+
 // update jobseeker
 
 router.put('/jobseeker/update/:id', jobseekerController.update);
@@ -29,6 +32,7 @@ router.put('/jobseeker/updateVolunteer/:id', jobseekerController.updateVolunteer
 router.put('/jobseeker/updateAward/:id', jobseekerController.updateAward);
 router.put('/jobseeker/updateWork/:id', jobseekerController.updateWork);
 router.put('/jobseeker/updateProject/:id', jobseekerController.updateProject);
+router.patch('/jobseeker/updateResumeStatus/:id', jobseekerController.updateResumeStatus);
 router.patch('/jobseeker/updateResumeDetails/:id', jobseekerController.updateResumeDetails);
 router.patch("/jobseeker/updateSavedJobs/:id", jobseekerController.updateSavedJobs);
 router.patch("/jobseeker/updateFavoriteOrgs/:id", jobseekerController.updateFavoriteOrgs);
