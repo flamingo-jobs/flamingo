@@ -301,7 +301,7 @@ function CourseItem(props) {
         <ImportContactsIcon style={{color: "#cc99ff",}} />
         </Grid>
         <Grid item xs={9}>
-            <Typography gutterBottom style={{textAlign:'justify',fontSize:'16px',fontWeight:'bold',color:'#666'}}>
+            <Typography gutterBottom style={{textAlign:'left',fontSize:'16px',fontWeight:'bold',color:'#666'}}>
                 {state.course}
             </Typography>
             <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'14px',fontWeight:'bold',}}>
