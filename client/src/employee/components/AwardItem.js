@@ -16,6 +16,9 @@ import CloseIcon from '@material-ui/icons/Close';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import TextField from '@material-ui/core/TextField';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -81,6 +84,42 @@ const useStyles = makeStyles((theme) => ({
       color: "#777",
       fontSize: '16px',
     }
+  },
+  select: {
+    minWidth: "200px",
+    fontSize: "16px",
+    display: "flex",
+    "& .MuiSelect-outlined": {
+      padding: "10px 10px 10px 10px"
+    }
+  },
+  selectYear: {
+    margin: "20px 10px 0px 0px",
+    minWidth: "90px",
+    fontSize: "16px",
+    display: "flex",
+    "& .MuiSelect-outlined": {
+      padding: "10px 10px 10px 10px"
+    }
+  },
+  selectMonth: {
+    margin: "20px 10px 0px 0px",
+    minWidth: "80px",
+    fontSize: "16px",
+    display: "flex",
+    "& .MuiSelect-outlined": {
+      padding: "10px 10px 10px 10px"
+    }
+  },
+  placeholder: {
+    color: "#777",
+    fontSize: '16px',
+    marginTop:"-8px",
+  },
+  placeholderDate: {
+    color: "#777",
+    fontSize: '14px',
+    marginTop:"12px",
   }
 }));
 
@@ -88,7 +127,8 @@ function AchievementItem(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [styleEdit, setStyleEdit] = useState({display: 'none'});
-  const [state, setState] = useState({title: props.title, issuedBy: props.issuedBy, date: props.date, description: props.description});
+  const awardDate = props.date.split("/");
+  const [state, setState] = useState({title: props.title, issuedBy: props.issuedBy, year: awardDate[1], month: awardDate[0], description: props.description});
 
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
@@ -97,6 +137,33 @@ function AchievementItem(props) {
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
   const index = props.index;
   let loginId=sessionStorage.getItem("loginId");
+
+  //generate year list
+  function getYearsFrom(){
+    let maxOffset = 25;
+    let thisYear = (new Date()).getFullYear();
+    let allYears = [];
+    for(let x = 0; x <= maxOffset; x++) {
+        allYears.push(thisYear - x)
+    }
+
+    return allYears.map((x) => (<option value={x}>{x}</option>));
+  }
+
+  //generate month list
+  function getMonthsFrom(){
+    let maxOffset = 12;
+    let allMonths = [];
+    for(let x = 1; x <= maxOffset; x++) {
+      if(x<10){
+        allMonths.push("0"+x);
+      }else{
+        allMonths.push(x);
+      }        
+    }
+
+    return allMonths.map((x) => (<option value={x}>{x}</option>));
+  }
   
   useEffect(() => {
     if (deleteSuccess == true) {
@@ -164,9 +231,15 @@ function AchievementItem(props) {
     })
   }
 
-  function onChangeDate(e){
+  function onChangeYear(e){
     setState(prevState => {
-      return {...prevState, date: e.target.value}
+      return {...prevState, year: e.target.value}
+    })
+  }
+
+  function onChangeMonth(e){
+    setState(prevState => {
+      return {...prevState, year: e.target.value}
     })
   }
 
@@ -181,7 +254,7 @@ function AchievementItem(props) {
     const award = {
         title: state.title,
         issuedBy: state.issuedBy,
-        date: state.date,
+        date: state.year+"/"+state.month,
         description: state.description,
     }
 
@@ -230,7 +303,7 @@ function AchievementItem(props) {
                 Issued by : {state.issuedBy}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',paddingTop:'5px'}}>
-                Issued date : {state.date}
+                Issued date : {state.month+"/"+state.year}
             </Typography>
         </Grid>
         <Grid item xs={2} spacing={2} style={{marginTop:"-5px",padding:"20px 0px 0px 0px"}}>
@@ -314,17 +387,43 @@ function AchievementItem(props) {
                     value={state.issuedBy}
                     onChange={onChangeIssuedBy}
                   />
-                  <TextField
-                  className={classes.field}
-                    id="outlined-basic"
-                    label="Date"
-                    type="number"
-                    variant="outlined"
-                    size="small"
-                    value={state.date}
-                    onChange={onChangeDate}
-                    style={{width:'30%'}}
-                  />
+                  <Grid container direction="row">
+                    <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
+                      <Grid item xs={12}>
+                        <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px"}}>Issued Date</Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <FormControl variant="outlined" className={classes.formControl}>
+                          <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
+                          <Select
+                            native
+                            onChange={onChangeYear}
+                            label="Start Date"
+                            value={state.year}
+                            className={classes.selectYear}
+                          >
+                            <option aria-label="None" value="" />
+                            {getYearsFrom()}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <FormControl variant="outlined" className={classes.formControl}>
+                          <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
+                          <Select
+                            native
+                            onChange={onChangeMonth}
+                            label="Start Date"
+                            value={state.month}
+                            className={classes.selectMonth}
+                          >
+                            <option aria-label="None" value="" />
+                            {getMonthsFrom()}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                    </Grid>
+                  </Grid>
                   <TextField
                     className={classes.field}
                     id="outlined-multiline-static"
