@@ -15,6 +15,9 @@ import CloseIcon from '@material-ui/icons/Close';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import TextField from '@material-ui/core/TextField';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -80,6 +83,42 @@ const useStyles = makeStyles((theme) => ({
           color: "#777",
           fontSize: '16px',
         }
+      },
+      select: {
+        minWidth: "200px",
+        fontSize: "16px",
+        display: "flex",
+        "& .MuiSelect-outlined": {
+          padding: "10px 10px 10px 10px"
+        }
+      },
+      selectYear: {
+        margin: "20px 10px 0px 0px",
+        minWidth: "90px",
+        fontSize: "16px",
+        display: "flex",
+        "& .MuiSelect-outlined": {
+          padding: "10px 10px 10px 10px"
+        }
+      },
+      selectMonth: {
+        margin: "20px 10px 0px 0px",
+        minWidth: "80px",
+        fontSize: "16px",
+        display: "flex",
+        "& .MuiSelect-outlined": {
+          padding: "10px 10px 10px 10px"
+        }
+      },
+      placeholder: {
+        color: "#777",
+        fontSize: '16px',
+        marginTop:"-8px",
+      },
+      placeholderDate: {
+        color: "#777",
+        fontSize: '14px',
+        marginTop:"12px",
       }
 }));
 
@@ -87,7 +126,9 @@ function VolunteerItem(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [styleEdit, setStyleEdit] = useState({display: 'none'});
-  const [state, setState] = useState({title: props.title, organization: props.organization, from: props.from, to: props.to, description: props.description});
+  const volunteerStartDate = props.from.split("/");
+  const volunteerEndDate = props.to.split("/");
+  const [state, setState] = useState({title: props.title, organization: props.organization, startYear: volunteerStartDate[1], startMonth: volunteerStartDate[0], endYear: volunteerEndDate[1], endMonth: volunteerEndDate[0], description: props.description});
 
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
@@ -96,6 +137,33 @@ function VolunteerItem(props) {
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
   const index = props.index;
   let loginId=sessionStorage.getItem("loginId");
+
+  //generate year list
+  function getYearsFrom(){
+    let maxOffset = 25;
+    let thisYear = (new Date()).getFullYear();
+    let allYears = [];
+    for(let x = 0; x <= maxOffset; x++) {
+        allYears.push(thisYear - x)
+    }
+
+    return allYears.map((x) => (<option value={x}>{x}</option>));
+  }
+
+  //generate month list
+  function getMonthsFrom(){
+    let maxOffset = 12;
+    let allMonths = [];
+    for(let x = 1; x <= maxOffset; x++) {
+      if(x<10){
+        allMonths.push("0"+x);
+      }else{
+        allMonths.push(x);
+      }        
+    }
+
+    return allMonths.map((x) => (<option value={x}>{x}</option>));
+  }
   
   useEffect(() => {
     if (deleteSuccess == true) {
@@ -163,15 +231,27 @@ function VolunteerItem(props) {
     })
   }
 
-  function onChangeFrom(e){
+  function onChangestartYear(e){
     setState(prevState => {
-      return {...prevState, from: e.target.value}
+      return {...prevState, startYear: e.target.value}
     })
   }
 
-  function onChangeTo(e){
+  function onChangestartMonth(e){
     setState(prevState => {
-      return {...prevState, to: e.target.value}
+      return {...prevState, startMonth: e.target.value}
+    })
+  }
+
+  function onChangeEndYear(e){
+    setState(prevState => {
+      return {...prevState, endYear: e.target.value}
+    })
+  }
+
+  function onChangeEndMonth(e){
+    setState(prevState => {
+      return {...prevState, endMonth: e.target.value}
     })
   }
 
@@ -186,8 +266,8 @@ function VolunteerItem(props) {
     const volunteer = {
       title: state.title,
       organization: state.organization,
-      from: state.from,
-      to: state.to,
+      from: state.startMonth+"/"+state.startYear,
+      to: state.endMonth+"/"+state.endYear,
       description: state.description,
     }
 
@@ -222,9 +302,18 @@ function VolunteerItem(props) {
       }}>
        <Grid container spacing={3}>
         <Grid item xs={3}>
-            <Typography variant="body2" color="textSecondary" component="p">
-                {state.from} - {state.to}
-            </Typography>
+          <Typography variant="body2" color="textSecondary" component="p">
+              {state.endMonth+"/"+state.endYear}
+          </Typography>
+          <Typography variant="body2" color="textSecondary" component="p">
+              |
+          </Typography>
+          <Typography variant="body2" color="textSecondary" component="p">
+              {state.startMonth+"/"+state.startYear}
+          </Typography>
+          <Typography variant="body2" color="textSecondary" component="p" style={{fontStyle:"italic",fontWeight:"bolder"}}>
+              {props.level}
+          </Typography>
         </Grid>
 
         <Grid item xs={7} spacing={2} style={{marginTop:"-5px"}}>
@@ -320,29 +409,77 @@ function VolunteerItem(props) {
                     value={state.organization}
                     onChange={onChangeOrganization}
                   />
-                  <Grid container direction="row" style={{marginTop:'-18px'}}>
-                    <TextField
-                    className={classes.field}
-                    id="outlined-basic"
-                    label="From"
-                    type="number"
-                    variant="outlined"
-                    size="small"
-                    onChange={onChangeFrom}
-                    value={state.from}
-                    style={{width:'30%',marginRight:'10%'}}
-                    />
-                    <TextField
-                    className={classes.field}
-                    id="outlined-basic"
-                    label="To"
-                    type="number"
-                    variant="outlined"
-                    size="small"
-                    onChange={onChangeTo}
-                    value={state.to}
-                    style={{width:'30%'}}
-                    />
+                  <Grid container direction="row">
+                    <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
+                      <Grid item xs={12}>
+                        <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px"}}>Start Date</Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <FormControl variant="outlined" className={classes.formControl}>
+                          <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
+                          <Select
+                            native
+                            onChange={onChangestartYear}
+                            label="Start Date"
+                            value={state.startYear}
+                            className={classes.selectYear}
+                          >
+                            <option aria-label="None" value="" />
+                            {getYearsFrom()}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <FormControl variant="outlined" className={classes.formControl}>
+                          <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
+                          <Select
+                            native
+                            onChange={onChangestartMonth}
+                            label="Start Date"
+                            value={state.startMonth}
+                            className={classes.selectMonth}
+                          >
+                            <option aria-label="None" value="" />
+                            {getMonthsFrom()}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                    </Grid>
+                    <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
+                      <Grid item xs={12}>
+                        <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px"}}>End Date</Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <FormControl variant="outlined" className={classes.formControl}>
+                          <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
+                          <Select
+                            native
+                            onChange={onChangeEndYear}
+                            label="End Date"
+                            value={state.endYear}
+                            className={classes.selectYear}
+                          >
+                            <option aria-label="None" value="" />
+                            {getYearsFrom()}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <FormControl variant="outlined" className={classes.formControl}>
+                          <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
+                          <Select
+                            native
+                            onChange={onChangeEndMonth}
+                            label="Start Date"
+                            value={state.endMonth}
+                            className={classes.selectMonth}
+                          >
+                            <option aria-label="None" value="" />
+                            {getMonthsFrom()}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                    </Grid>
                   </Grid>
                   <TextField
                     className={classes.field}
