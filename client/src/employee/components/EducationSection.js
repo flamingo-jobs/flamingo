@@ -85,9 +85,18 @@ const useStyles = makeStyles({
       padding: "10px 10px 10px 10px"
     }
   },
-  selectDate: {
+  selectYear: {
     margin: "20px 10px 0px 0px",
-    minWidth: "150px",
+    minWidth: "90px",
+    fontSize: "16px",
+    display: "flex",
+    "& .MuiSelect-outlined": {
+      padding: "10px 10px 10px 10px"
+    }
+  },
+  selectMonth: {
+    margin: "20px 10px 0px 0px",
+    minWidth: "80px",
     fontSize: "16px",
     display: "flex",
     "& .MuiSelect-outlined": {
@@ -101,7 +110,7 @@ const useStyles = makeStyles({
   },
   placeholderDate: {
     color: "#777",
-      fontSize: '16px',
+      fontSize: '14px',
       marginTop:"12px",
   }
 });
@@ -111,7 +120,7 @@ function EducationSection() {
   const [fetchedData, setFetchedData] = useState('');
   const [universityFields, setUniversityFields] = useState(null);
   const [schoolFields, setSchoolFields] = useState(null);
-  const [university, setUniversity] = useState({university: null, degree: null,fieldOfStudy: null, GPA: null, startDate: null, endDate: null, societiesAndActivities: null});
+  const [university, setUniversity] = useState({university: null, degree: null,fieldOfStudy: null, GPA: null, startYear: null, startMonth: null, endYear: null, endMonth: null, societiesAndActivities: null});
   const [school, setSchool] = useState({school: null, startDate: null, endDate: null, description: null});
   const [level, setLevel] = useState(null);
   const [open, setOpen] = useState(false);
@@ -124,8 +133,9 @@ function EducationSection() {
   let eduCount=0;
   let loginId=sessionStorage.getItem("loginId");
 
+  //generate year list
   function getYearsFrom(){
-    let minOffset = 0, maxOffset = 25;
+    let maxOffset = 25;
     let thisYear = (new Date()).getFullYear();
     let allYears = [];
     for(let x = 0; x <= maxOffset; x++) {
@@ -133,6 +143,21 @@ function EducationSection() {
     }
 
     return allYears.map((x) => (<option value={x}>{x}</option>));
+  }
+
+  //generate month list
+  function getMonthsFrom(){
+    let maxOffset = 12;
+    let allMonths = [];
+    for(let x = 1; x <= maxOffset; x++) {
+      if(x<10){
+        allMonths.push("0"+x);
+      }else{
+        allMonths.push(x);
+      }        
+    }
+
+    return allMonths.map((x) => (<option value={x}>{x}</option>));
   }
 
   const handleClick = (event) => {
@@ -199,15 +224,27 @@ function EducationSection() {
     })
   }
 
-  function onChangestartDate(e){
+  function onChangestartYear(e){
     setUniversity(prevState => {
-      return {...prevState, startDate: e.target.value}
+      return {...prevState, startYear: e.target.value}
     })
   }
 
-  function onChangeEndDate(e){
+  function onChangestartMonth(e){
     setUniversity(prevState => {
-      return {...prevState, endDate: e.target.value}
+      return {...prevState, startMonth: e.target.value}
+    })
+  }
+
+  function onChangeEndYear(e){
+    setUniversity(prevState => {
+      return {...prevState, endYear: e.target.value}
+    })
+  }
+
+  function onChangeEndMonth(e){
+    setUniversity(prevState => {
+      return {...prevState, endMonth: e.target.value}
     })
   }
 
@@ -282,8 +319,8 @@ function EducationSection() {
       degree: university.degree,
       fieldOfStudy: university.fieldOfStudy,
       GPA: university.GPA,
-      startDate: university.startDate,
-      endDate: university.endDate,
+      startDate: university.startMonth+"/"+university.startYear,
+      endDate: university.endMonth+"/"+university.endYear,
       societiesAndActivities: university.societiesAndActivities
     }
 
@@ -342,8 +379,10 @@ function EducationSection() {
       degree: null,
       fieldOfStudy: null,
       GPA: null,
-      startDate: null,
-      endDate: null,
+      startYear: null,
+      startMonth: null,
+      endYear: null,
+      endMonth: null,
       societiesAndActivities: null
     })
     setSchool({
@@ -477,31 +516,73 @@ function EducationSection() {
           onChange={onChangeGPA}
           style={{width:'30%'}}
         />
-        <Grid container direction="row" style={{marginTop:'-18px'}}>
-        <FormControl variant="outlined" className={classes.formControl}>
-          <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">Start Date</InputLabel>
-          <Select
-            native
-            onChange={onChangestartDate}
-            label="Start Date"
-            className={classes.selectDate}
-          >
-            <option aria-label="None" value="" />
-            {getYearsFrom()}
-          </Select>
-        </FormControl>
-        <FormControl variant="outlined" className={classes.formControl}>
-          <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">End Date</InputLabel>
-          <Select
-            native
-            onChange={onChangeEndDate}
-            label="End Date"
-            className={classes.selectDate}
-          >
-            <option aria-label="None" value="" />
-            {getYearsFrom()}
-          </Select>
-        </FormControl>
+        <Grid container direction="row">
+          <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
+            <Grid item xs={12}>
+              <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-15px"}}>Start Date</Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
+                <Select
+                  native
+                  onChange={onChangestartYear}
+                  label="Start Date"
+                  className={classes.selectYear}
+                >
+                  <option aria-label="None" value="" />
+                  {getYearsFrom()}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={6}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
+                <Select
+                  native
+                  onChange={onChangestartMonth}
+                  label="Start Date"
+                  className={classes.selectMonth}
+                >
+                  <option aria-label="None" value="" />
+                  {getMonthsFrom()}
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
+          <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
+            <Grid item xs={12}>
+              <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-15px"}}>End Date</Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
+                <Select
+                  native
+                  onChange={onChangeEndYear}
+                  label="End Date"
+                  className={classes.selectYear}
+                >
+                  <option aria-label="None" value="" />
+                  {getYearsFrom()}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={6}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
+                <Select
+                  native
+                  onChange={onChangeEndMonth}
+                  label="Start Date"
+                  className={classes.selectMonth}
+                >
+                  <option aria-label="None" value="" />
+                  {getMonthsFrom()}
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
         </Grid>
         <TextField
         className={classes.field}
