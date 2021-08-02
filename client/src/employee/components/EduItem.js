@@ -449,9 +449,15 @@ function EduItem(props) {
             <React.Fragment>
                 <Grid item xs={3} style={{marginLeft:"-10px"}}>
                     <Typography variant="body2" color="textSecondary" component="p">
-                        {university.startDate} - {university.endDate}
+                        {university.endDate}
                     </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p" style={{fontStyle:"italic"}}>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                        |
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                        {university.startDate}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p" style={{fontStyle:"italic",fontWeight:"bolder"}}>
                         {props.level}
                     </Typography>
                 </Grid>
