@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles, Typography, Grid, Box } from "@material-ui/core";
+import { makeStyles, Typography, Grid, Box, withStyles } from "@material-ui/core";
 import FloatCard from "../components/FloatCard";
 import { useLocation } from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
@@ -24,7 +24,23 @@ const useStyles = makeStyles((theme) => ({
   cardWrapper: {
     marginBottom: theme.spacing(2),
   },
+  tabIcon:{
+    color: theme.palette.stateBlue,
+  },
 }));
+
+const StyledTabs = withStyles((theme) => ({
+  indicator: {
+    display: 'flex',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    '& > span': {
+      width: '90%',
+      backgroundColor: theme.palette.stateBlue,
+    },
+   
+  },
+}))((props) => <Tabs {...props} textColor="primary" TabIndicatorProps={{ children: <span /> }} />);
 
 // style={{border: "1px solid red"}}
 const SearchResult = (props) => {
@@ -51,32 +67,33 @@ const SearchResult = (props) => {
     if (tab === "jobs") {
       return (
         <Badge badgeContent={jobMatches} color="primary">
-          <WorkIcon />
+          <WorkIcon className={classes.tabIcon}/>
         </Badge>
       );
     }
     else if (tab === "orgs") {
       return (
         <Badge badgeContent={orgMatches} color="primary">
-          <BusinessIcon />
+          <BusinessIcon className={classes.tabIcon}/>
         </Badge>
       );
     }
     else if (tab === "users") {
       return (
         <Badge badgeContent={userMatches} color="primary">
-          <PeopleIcon />
+          <PeopleIcon className={classes.tabIcon}/>
         </Badge>
       );
     }
   };
+
   // style={{border: "1px solid red"}}
   return (
     <div className={classes.root}>
       <Grid container justify="center">
         <Grid item xs={9}>
           <AppBar position="static" className={classes.appBar}>
-            <Tabs
+            <StyledTabs
               value={tabIndex}
               onChange={handleTabChange}
               variant="fullWidth"
@@ -89,7 +106,7 @@ const SearchResult = (props) => {
                 aria-label="organizations"
               />
               <Tab icon={SearchResultBadge("users")} aria-label="users" />
-            </Tabs>
+            </StyledTabs>
           </AppBar>
         </Grid>
 
