@@ -122,6 +122,25 @@ const update = (req, res) => {
   );
 };
 
+const updateSkills = (req, res) => {
+  Jobseeker.findByIdAndUpdate(
+    req.params.id,
+    {
+      $set: req.body,
+    },
+    (err, jobseeker) => {
+      if (err) {
+        return res.status(400).json({
+          error: err,
+        });
+      }
+      return res.status(200).json({
+        success: true,
+      });
+    }
+  );
+};
+
 const updateVolunteer = (req, res) => {
   Jobseeker.updateOne(
     { _id: req.params.id },
@@ -645,6 +664,7 @@ module.exports = {
   updateUniversity,
   updateSchool,
   updateCourse,
+  updateSkills,
   updateVolunteer,
   updateAward,
   updateWork,
