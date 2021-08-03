@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import {  Link, makeStyles, withStyles } from '@material-ui/core'
 import FloatCard from '../../../components/FloatCard';
 import { Grid, Typography, Button } from '@material-ui/core';
@@ -8,6 +8,8 @@ import cardImage from '../images/profilePic.jpg';
 import theme from '../../../Theme';
 import ChevronRightTwoToneIcon from '@material-ui/icons/ChevronRightTwoTone';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import BACKEND_URL from '../../../Config';
+import axios from 'axios';
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -74,8 +76,56 @@ const BorderLinearProgress = withStyles((theme) => ({
     },
   }))(LinearProgress);
 
-function ProfileStatus() {
+function ProfileStatus(props) {
     const classes = useStyles();
+    const courses=0;
+
+    let loginId;
+    const jwt = require("jsonwebtoken");
+    const token = sessionStorage.getItem("userToken");
+    const header = jwt.decode(token, { complete: true });
+    if (header.payload.userRole === "jobseeker") {
+        loginId=sessionStorage.getItem("loginId");
+    } else {
+        loginId=props.jobseekerID;
+    }
+
+    
+    useEffect(()=>{
+        let universities=0;
+        let schools=0;
+        let courses=0;
+        let awards=0;
+        let volunteerings=0;
+        let works=0;
+        let projects=0;
+        let interests=0;
+        axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
+        .then(res => {
+          if(res.data.success){
+            if(res.data.jobseeker.university.length > 0){
+                if(Object.keys(res.data.jobseeker.university[0]).length === 0){
+                    res.data.jobseeker.university.splice(0,1)
+                }else if(res.data.jobseeker.university[0].university == "" && res.data.jobseeker.university[0].degree == "" && res.data.jobseeker.university[0].fieldOfStudy == "" && res.data.jobseeker.university[0].startDate == "" && res.data.jobseeker.university[0].endDate == ""){
+                    res.data.jobseeker.university.splice(0,1)
+                }
+                if(res.data.jobseeker.university.length > 0){
+                    universities=1;
+                }                    
+            }
+            if(res.data.jobseeker.course.length > 0){
+                if(Object.keys(res.data.jobseeker.course[0]).length === 0){
+                    res.data.jobseeker.course.splice(0,1)
+                }else if(res.data.jobseeker.course[0].course == "" && res.data.jobseeker.course[0].institute == "" && res.data.jobseeker.course[0].from == "" && res.data.jobseeker.course[0].to == ""){
+                    res.data.jobseeker.course.splice(0,1)
+                }
+                if(res.data.jobseeker.course.length > 0){
+                    courses=1;
+                }           
+            }      
+          }
+        })
+    },[])
 
     return (
         <FloatCard>

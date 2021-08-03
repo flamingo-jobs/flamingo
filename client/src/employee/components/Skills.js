@@ -104,8 +104,16 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     flexWrap: 'wrap',
     listStyle: 'none',
-    padding: theme.spacing(0.5),
-    margin: 0,
+    backgroundColor: 'MintCream',
+    padding: "20px 10px 20px 10px",
+    marginBottom: 25,
+    borderRadius: 10,
+    marginTop: 0,
+    "&:hover": {
+        defaultButton: {
+            display: 'block'
+        }
+      }
   },
   chip: {
     margin: theme.spacing(0.5),
@@ -143,16 +151,30 @@ function Skills(props) {
     .then(res => {
       if(res.data.success){
         if(res.data.jobseeker.skills.length > 0){
-          setSkills(res.data.jobseeker.skills);
-        }        
+          setSkills(res.data.jobseeker.skills)
+          removeDuplicates()
+          showCombo()
+        }       
       }
     })
-    setFetchedData(0)
+    setFetchedData(0);
+  }
+
+  function removeDuplicates(){
+    for (let index = 0; index < skills.length; index++) {
+      for (let j = 0; j < chipData.length; j++) {
+        if(chipData[j] === skills[index]){
+          chipData.splice(j, 1);
+          break;
+        }
+        
+      }
+      
+    }
   }
 
 
   useEffect(()=>{
-    setState({course: null, institute: null, startYear: null, startMonth: null, endYear: null, endMonth: null});
     fetchData();
   },[fetchedData])
 
@@ -275,17 +297,24 @@ function Skills(props) {
             id="tags-standard"
             options={chipData}
             getOptionLabel={(option) => option}
-            onChange={(event, value) => setNewData(value)}
+            onChange={(event, value) => {
+              removeDuplicates();
+              setNewData(value);
+            }}
             renderInput={(params) => (
               <TextField
                 {...params}
                 variant="standard"
-                label="Multiple values"
-                placeholder="Favorites"
+                label="Select new skills"
+                placeholder="+ new"
               />
             )}
           />
-          <Button onClick={onSubmit}>Save</Button>
+          <Grid item xs={12}>
+            <Button className={classes.defaultButton} onClick={onSubmit} style={{float:"right",marginRight:"115px"}}>Save</Button>
+            <Button onClick={showClose} style={{float:"right",marginRight:"15px"}}>Cancel</Button>
+            
+          </Grid>
           </React.Fragment>
         );
       }
@@ -311,8 +340,9 @@ function Skills(props) {
       </Grid>
       <Grid container spacing={3}>
       {showCombo()}
+      
         <Grid item xs={12} alignItems="center" justify="center">
-            <Paper component="ul" className={classes.paperChips}>
+            <Paper elevation={0} component="ul" className={classes.paperChips}>
                 {
                 skills.map((data) => {
                     let icon;
