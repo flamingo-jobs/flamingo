@@ -258,6 +258,7 @@ export default function GetHired() {
       role: "jobseeker",
     };
     if (badPassword(formData.password)) {
+      setProgress(0);
       setAlertData({
         severity: "error",
         msg: "Please make an stronger password! Your password must contain minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character",
@@ -612,6 +613,17 @@ export default function GetHired() {
                               fullWidth
                               required
                             />
+                          </Grid>
+                          <Grid item xs={12} align="left">
+                            <Typography variant="caption" display="block">
+                              Please make sure that your password contains at least,
+                              <ul>
+                                <li>8 characters</li>
+                                <li>1 uppercase letter</li>
+                                <li>1 lowercase letter</li>
+                                <li>1 number and 1 special character</li>
+                              </ul>
+                            </Typography>
                           </Grid>
                         </Grid>
                       </Grid>

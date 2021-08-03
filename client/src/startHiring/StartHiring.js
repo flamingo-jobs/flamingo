@@ -221,7 +221,10 @@ export default function StartHiring() {
     if (badPassword(formData.password)) {
       setAlertData({
         severity: "error",
-        msg: "Please make an stronger password! Your password must contain minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character",
+        msg: `Please make an stronger password!
+        Your password must contain minimum 8 characters, 
+        at least 1 uppercase letter, 1 lowercase letter, 
+        1 number and 1 special character`,
       });
       handleAlert();
     } else {
@@ -386,7 +389,7 @@ export default function StartHiring() {
                         </Typography>
                       </Grid>
 
-                      <Grid item xs={12} md={5} lg={4}>
+                      <Grid item xs={12} md={5} lg={5}>
                         <Grid container alignItems="center" spacing={3}>
                           {/* Basic Details */}
                           <Grid item xs={12} align="left">
@@ -565,11 +568,6 @@ export default function StartHiring() {
                               </Grid>
                             );
                           })}
-                        </Grid>
-                      </Grid>
-
-                      <Grid item xs={12} md={6} lg={5}>
-                        <Grid container alignItems="center" spacing={3}>
                           {/* Social Media Links */}
                           <Grid item xs={12} align="left">
                             <Typography className={classes.title}>
@@ -642,13 +640,31 @@ export default function StartHiring() {
                               </Grid>
                             );
                           })}
+                        </Grid>
+                      </Grid>
 
+                      <Grid item xs={12} md={6} lg={5}>
+                        <Grid container alignItems="center" spacing={3}>
                           {/* Login Credentials */}
                           <Grid item xs={11} align="left">
-                            <Typography className={classes.title}>
-                              Login Credentials
+                            <Grid item xs={11} align="left">
+                              <Typography className={classes.title}>
+                                Login Credentials
+                              </Typography>
+                            </Grid>
+                            <Typography variant="caption">
+                              After the signing up process completes, an admin
+                              account will be created with full access. You can
+                              create accounts for your employers with
+                              restricting access to specific parts by using
+                              pre-defined roles under{" "}
+                              <i>
+                                {" "}
+                                Account {">"} Settings {">"} Add Role{" "}
+                              </i>
                             </Typography>
                           </Grid>
+
                           <Grid item container alignItems="center" spacing={3}>
                             <Grid item xs={12} md={11} align="left">
                               <TextField
@@ -689,6 +705,27 @@ export default function StartHiring() {
                                 size="small"
                               />
                             </Grid>
+                            <Grid item xs={12} align="left">
+                              <Typography variant="caption" display="block">
+                                Please make sure that your password contains at
+                                least,
+                                <ul>
+                                  <li>8 characters</li>
+                                  <li>1 uppercase letter</li>
+                                  <li>1 lowercase letter</li>
+                                  <li>1 number and 1 special character</li>
+                                </ul>
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={12} align="left">
+                              <Typography variant="caption" display="block">
+                                By clicking sign up, you are agreeing with our{" "}
+                                <a href="/terms-and-conditions" target="_blank">
+                                  Terms {"&"} Conditions
+                                </a>
+                                .
+                              </Typography>
+                            </Grid>
                           </Grid>
                         </Grid>
                       </Grid>
@@ -717,7 +754,6 @@ export default function StartHiring() {
                             md={6}
                             className={classes.actions}
                             spacing={2}
-
                           >
                             <Grid item>
                               <Button
