@@ -30,6 +30,8 @@ import Dashboard from "./admin/Dashboard";
 import SavedJobs from "./employee/savedJobs/savedJobs";
 import FavoriteOrganizations from "./employee/favoriteOrganizations/favoriteOrganizations";
 import Applications from "./employer/applications/applications";
+import SearchResult from "./searchResults/searchResult";
+
 
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -104,6 +106,9 @@ function Base() {
   const loadDefault = () => {
     return (
       <>
+        <Route path="/searchResults">
+          <SearchResult/>
+        </Route>
         <Route path="/jobs">
           <Jobs userRole={role} />
         </Route>
