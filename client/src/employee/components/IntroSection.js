@@ -107,7 +107,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-function IntroSection() {
+function IntroSection(props) {
 
   const classes = useStyles();
   const [open, setOpen] = useState(false);
@@ -124,7 +124,15 @@ function IntroSection() {
     landLine: "",
     email: ""
   });
-  let loginId=sessionStorage.getItem("loginId");
+  let loginId;
+  const jwt = require("jsonwebtoken");
+  const token = sessionStorage.getItem("userToken");
+  const header = jwt.decode(token, { complete: true });
+  if (header.payload.userRole === "jobseeker") {
+    loginId=sessionStorage.getItem("loginId");
+  } else {
+    loginId=props.jobseekerID;
+  }
 
 
   useEffect(()=>{

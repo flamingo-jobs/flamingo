@@ -140,7 +140,15 @@ function EduItem(props) {
   const [alertShow, setAlertShow] = React.useState(false);
   
   const [form, setForm] = useState(null);
-  let loginId=sessionStorage.getItem("loginId");
+  let loginId;
+  const jwt = require("jsonwebtoken");
+  const token = sessionStorage.getItem("userToken");
+  const header = jwt.decode(token, { complete: true });
+  if (header.payload.userRole === "jobseeker") {
+    loginId=sessionStorage.getItem("loginId");
+  } else {
+    loginId=props.jobseekerID;
+  }
 
   //generate year list
   function getYearsFrom(){

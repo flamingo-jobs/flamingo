@@ -36,22 +36,22 @@ function Profile() {
     return (
         <Grid item container sm={12} spacing={3} direction="row" justify="space-between" alignItems="flex-start">
             <Grid item md={12} lg={4} spacing={3}>
-                <IntroSection />
+                <IntroSection jobseekerID="" />
                 <Space />
-                <EducationSection />
+                <EducationSection jobseekerID="" />
                 <Space />
-                <Course />
+                <Course jobseekerID="" />
                 <Space />
-                <Achievements />
+                <Achievements jobseekerID="" />
                 <Space />
-                <Volunteer />
+                <Volunteer jobseekerID="" />
             </Grid>
             <Grid item md={12} lg={8} spacing={3}>
-                <WorkExperience />
+                <WorkExperience jobseekerID="" />
                 <Space />
-                <ProjectsSection />
+                <ProjectsSection jobseekerID="" />
                 <Space />
-                <TechnologySection />
+                <TechnologySection jobseekerID="" />
             </Grid>                                            
         </Grid>
     )
