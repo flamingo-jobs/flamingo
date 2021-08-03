@@ -11,6 +11,7 @@ import WorkExperience from './WorkExperience';
 import Volunteer from './Volunteer';
 import Course from './Course';
 import TechnologySection from './TechnologySection';
+import Skills from './Skills';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -52,6 +53,8 @@ function Profile() {
                 <ProjectsSection jobseekerID="" />
                 <Space />
                 <TechnologySection jobseekerID="" />
+                <Space />
+                <Skills jobseekerID="" />
             </Grid>                                            
         </Grid>
     )
