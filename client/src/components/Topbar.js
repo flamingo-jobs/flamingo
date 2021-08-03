@@ -25,7 +25,7 @@ import NotificationsPopover from "./NotificationPopover";
 import BookmarksIcon from '@material-ui/icons/Bookmarks';
 import WorkIcon from '@material-ui/icons/Work';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 const jwt = require("jsonwebtoken");
 const token = sessionStorage.getItem("userToken");
 const header = jwt.decode(token, { complete: true });
@@ -247,9 +247,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Topbar(props) {
   const classes = useStyles();
+  const history = useHistory();
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [notificationAnchorEl, setNotificationAnchorEl] = React.useState(null);
+
+  const [searchString, setSearchString] = React.useState("");
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -455,6 +459,21 @@ export default function Topbar(props) {
     </Backdrop>
   );
   const preventDefault = (event) => event.preventDefault();
+
+  const handleSearchChange = (e) => {
+    setSearchString(e.target.value);
+  }
+
+  const handleSearchSubmit = (e) => {
+    if (e.key === 'Enter' && searchString.length !== 0) {
+      // console.log("enter pressed", searchString);
+      history.push({
+        pathname: '/searchResults',
+        searchString: searchString,
+      });
+    }
+  }
+
   return (
     <Card className={classes.root}>
       <CardContent className={classes.content}>
@@ -474,6 +493,8 @@ export default function Topbar(props) {
                     input: classes.inputInput,
                   }}
                   inputProps={{ "aria-label": "search" }}
+                  onChange={handleSearchChange}
+                  onKeyPress={(e) => handleSearchSubmit(e)}
                 />
               </div>
               <div className={classes.grow} />

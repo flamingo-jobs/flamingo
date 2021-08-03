@@ -11,6 +11,7 @@ router.post('/employers/create', employersController.create);
 router.get('/employers', employersController.getAll);
 
 // get specific
+router.get('/employers/search/:string', employersController.getSearched);
 
 router.get('/employers/featuredEmployers', employersController.getFeaturedEmployers);
 

@@ -27,6 +27,29 @@ const getAll = async (req, res) => {
     });
 }
 
+const getSearched = async (req, res) => {
+    try {
+        const result = await Jobs.find({
+            title: { $regex: '.*' + req.params.searchString + '.*', $options: "i" },
+        });
+        res.status(200).json({ success: true, jobs: result });
+    } catch (err) {
+        res.status(400).json({ success: false, error: err });
+    }
+
+    // Jobs.find({title: { $regex: '.*' + req.params.searchString + '.*', $options: "i" }}).exec((err, jobs) => {
+    //     if (err) {
+    //         return res.status(400).json({
+    //             error: err
+    //         })
+    //     }
+    //     return res.status(200).json({
+    //         success: true,
+    //         jobs: jobs
+    //     });
+    // });
+};
+
 const getById = (req, res) => {
     Jobs.findById(req.params.id).exec((err, job) => {
         if (err) {
@@ -202,6 +225,7 @@ const remove = (req, res) => {
 module.exports = {
     create,
     getAll,
+    getSearched,
     getById,
     update,
     updateResumeStatus,

@@ -30,6 +30,17 @@ const getAll = (req, res) => {
   });
 };
 
+const getSearched = async (req, res) => {
+  try {
+    const result = await Jobseeker.find({
+      name: { $regex: req.params.string, $options: "i" },
+    });
+    res.status(200).json({ success: true, jobseekers: result });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err });
+  }
+};
+
 const getFiltered = (req, res) => {
   Jobseeker.find(req.body.queryParams, null, req.body.options).exec(
     (err, jobSeekers) => {
@@ -245,9 +256,6 @@ const updateProject = (req, res) => {
 };
 
 const updateResumeStatus = async (req, res) => {
-  // console.log("userid", req.params.id);
-  // console.log("jobid", req.body.jobId);
-  // console.log("status", req.body.status);
   try{
     const updatedJobseeker = await Jobseeker.updateOne(
         {_id: req.params.id, "applicationDetails.jobId": req.body.jobId},
@@ -623,6 +631,7 @@ const getNotifications = (req, res) => {
 module.exports = {
   create,
   getAll,
+  getSearched,
   getById,
   getByIds,
   update,
