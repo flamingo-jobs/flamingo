@@ -11,7 +11,7 @@ import {
   Chip,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
-import { StateBlueTextField } from "../styles/customTextField";
+import { StateBlueTextField } from "./customTextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import CancelIcon from "@material-ui/icons/Cancel";
 
