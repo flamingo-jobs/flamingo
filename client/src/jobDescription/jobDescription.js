@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Grid, Container, Typography } from "@material-ui/core";
+import { Grid, Container, Typography, CircularProgress } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import BACKEND_URL from "../Config";
@@ -83,7 +83,7 @@ function JobDescription(props) {
       const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
       if (response.data.success) {
         setSavedJobIds(response.data.jobseeker.savedJobs);
-        if(response.data.jobseeker.savedJobs.includes(jobId)){
+        if (response.data.jobseeker.savedJobs.includes(jobId)) {
           setIsSaved(true);
         }
       }
@@ -96,15 +96,15 @@ function JobDescription(props) {
     if (job == "empty") {
       return (
         <Grid item sm={12}>
-          <Typography>No infromation to display</Typography>
+          <CircularProgress />
         </Grid>
       );
     } else {
       return (
         <Grid item sm={12} className={classes.container}>
-          <JobSummary 
+          <JobSummary
             userId={userId}
-            job={job} 
+            job={job}
             isSignedIn={isSignedIn}
             userRole={props.userRole}
             isSaved={isSaved}
@@ -118,13 +118,8 @@ function JobDescription(props) {
   };
 
   const displayResponsibilities = () => {
-    if (job == "empty") {
-      return (
-        <Grid item sm={12}>
-          <Typography>No infromation to display</Typography>
-        </Grid>
-      );
-    } else {
+    if (job != "empty") {
+
       return (
         <Grid item xs={12} lg={12} className={classes.container}>
           <Responsibilities
@@ -137,13 +132,8 @@ function JobDescription(props) {
 
   // **** add margin bottom to the last component when signed in ***
   const displayRequirements = () => {
-    if (job == "empty") {
-      return (
-        <Grid item sm={12}>
-          <Typography>No infromation to display</Typography>
-        </Grid>
-      );
-    } else {
+    if (job != "empty") {
+
       return (
         <Grid
           item
@@ -158,30 +148,69 @@ function JobDescription(props) {
   };
 
   const displayApplyForm = () => {
-    if (isSignedIn === true && userId !== "empty" && job !== "empty") {
-
-      return (
-        <Grid item sm={12}>
-          <ApplyForm userId={userId} jobId={jobId}></ApplyForm>
-        </Grid>
-      );
+    if (isSignedIn === true && userId !== "empty") {
+      if (job == "empty") {
+        return (
+          <Grid item sm={12} className={classes.container} style={{marginTop: 16}}>
+            <FloatCard >
+              <CircularProgress />
+            </FloatCard>
+          </Grid>
+        );
+      } else {
+        return (
+          <Grid item sm={12}>
+            <ApplyForm userId={userId} jobId={jobId}></ApplyForm>
+          </Grid>
+        );
+      }
     }
   };
 
   const displayCompanySummary = () => {
-    if (job != "empty") {
+    if (job == "empty") {
+      return (
+        <Grid item container spacing={3} sm={12}>
+          <Grid item xs={12}>
+            <FloatCard>
+              <CircularProgress />
+            </FloatCard>
+          </Grid>
+        </Grid>
+      );
+    } else {
       return <CompanySummary job={job} />;
     }
   };
 
   const displayMoreFromJobs = () => {
-    if (job != "empty") {
+    if (job == "empty") {
+      return (
+        <Grid item container spacing={3} sm={12}>
+          <Grid item xs={12}>
+            <FloatCard>
+              <CircularProgress />
+            </FloatCard>
+          </Grid>
+        </Grid>
+      );
+    } else {
       return <MoreFromJobs job={job} />;
     }
   };
 
   const displayRelatedJobs = () => {
-    if (job != "empty") {
+    if (job == "empty") {
+      return (
+        <Grid item container spacing={3} sm={12}>
+          <Grid item xs={12}>
+            <FloatCard>
+              <CircularProgress />
+            </FloatCard>
+          </Grid>
+        </Grid>
+      );
+    } else {
       return <RelatedJobs job={job} />;
     }
   };

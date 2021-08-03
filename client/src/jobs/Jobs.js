@@ -1,5 +1,5 @@
 import React from 'react'
-import { colors, makeStyles, Typography } from '@material-ui/core'
+import { colors, makeStyles, CircularProgress } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid';
 import JobSearchBar from './components/JobSearchBar';
 import JobCard from './components/JobCard';
@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import Pagination from '@material-ui/lab/Pagination';
 import PaginationItem from '@material-ui/lab/PaginationItem';
 import LoginModal from './components/loginModal';
+import FloatCard from '../components/FloatCard';
 
 const useStyles = makeStyles((theme) => ({
     jobsGrid: {
@@ -60,15 +61,15 @@ function Jobs(props) {
 
     const userId = sessionStorage.getItem("loginId");
     const [savedJobIds, setSavedJobIds] = useState("empty");
-    
+
     const [jobs, setJobs] = useState([]);
     const [count, setCount] = useState(0);
     const [filters, setFilters] = useState({});
     const [search, setSearch] = useState({});
     const [queryParams, setQueryParams] = useState({});
-    
+
     const [page, setPage] = React.useState(1);
-    
+
     // Login modal 
     const [open, setOpen] = useState(false);
 
@@ -117,9 +118,9 @@ function Jobs(props) {
             setQueryParams(search);
         } else if (Object.keys(search).length == 0) {
             setQueryParams(filters);
-        } else if (featured){
-            setQueryParams({isFeatured: true});
-        } else{
+        } else if (featured) {
+            setQueryParams({ isFeatured: true });
+        } else {
             setQueryParams({});
         }
     }
@@ -150,14 +151,14 @@ function Jobs(props) {
     }
 
     const retrieveJobseeker = async () => {
-        if(userId){
+        if (userId) {
             try {
-              const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
-              if (response.data.success) {
-                setSavedJobIds(response.data.jobseeker.savedJobs);
-              }
+                const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
+                if (response.data.success) {
+                    setSavedJobIds(response.data.jobseeker.savedJobs);
+                }
             } catch (err) {
-              console.log(err);
+                console.log(err);
             }
         }
     };
@@ -165,31 +166,33 @@ function Jobs(props) {
 
     const displayJobs = () => {
         // await delay(3000);
-        if (jobs) {
+        if (jobs.length === 0) {
+            return (
+                <Grid item sm={12}>
+                    <FloatCard>
+                        <CircularProgress />
+                    </FloatCard>
+                </Grid>)
+        } else {
             return jobs.map(job => (
                 <Grid item key={job._id} xs={12} className={classes.gridCard}>
-                    <JobCard 
+                    <JobCard
                         userId={userId}
-                        info={job} 
-                        userRole={props.userRole} 
-                        savedJobIds={savedJobIds} 
+                        info={job}
+                        userRole={props.userRole}
+                        savedJobIds={savedJobIds}
                         setSavedJobIds={setSavedJobIds}
-                        handleOpen={handleOpen} 
+                        handleOpen={handleOpen}
                     />
                 </Grid>
             ))
-        } else {
-            return (
-                <Grid item sm={12}>
-                    <Typography>No featured Jobs</Typography>
-                </Grid>)
         }
     }
 
     return (
         <>
             {/* Works only when user is not signed in */}
-            <LoginModal 
+            <LoginModal
                 open={open}
                 handleClose={handleClose}
             ></LoginModal>
