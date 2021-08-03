@@ -12,7 +12,7 @@ function NewJobSeekers() {
                 </Grid>
                 <Grid item xs={12}>
                     <Typography variant="h3">130</Typography>
-                    <Typography>Weekly Applications</Typography>
+                    <Typography>New Job Seekers</Typography>
                 </Grid>
                 <Grid item xs={12}>
                     
