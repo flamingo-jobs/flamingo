@@ -26,6 +26,7 @@ router.get('/jobseeker/getNotifications/:id', jobseekerController.getNotificatio
 // update jobseeker
 
 router.put('/jobseeker/update/:id', jobseekerController.update);
+router.put('/jobseeker/updateSkills/:id', jobseekerController.updateSkills);
 router.put('/jobseeker/updateUniversity/:id', jobseekerController.updateUniversity);
 router.put('/jobseeker/updateSchool/:id', jobseekerController.updateSchool);
 router.put('/jobseeker/updateCourse/:id', jobseekerController.updateCourse);

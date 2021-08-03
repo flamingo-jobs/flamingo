@@ -116,15 +116,11 @@ function Skills(props) {
   const classes = useStyles();
   const [fetchedData, setFetchedData] = useState('');
   const [open, setOpen] = useState(false);
-  const [course, setCourse] = useState(null);
+  const [skills, setSkills] = useState([]);
   const [state, setState] = useState({course: null, institute: null, startYear: null, startMonth: null, endYear: null, endMonth: null});
-  const [chipData, setChipData] = React.useState([
-    { key: 0, label: 'Angular' },
-    { key: 1, label: 'jQuery' },
-    { key: 2, label: 'Polymer' },
-    { key: 3, label: 'React' },
-    { key: 4, label: 'Vue.js' },
-  ]);
+  const names =["Angular","jQuery","Java","React",'Vue.js','Strategic Planning','Public Speaking','Analytical Thinking','Object Oriented Programming','Leadership','Web Development','Cloud Computing'];
+  const [chipData, setChipData] = useState(names);
+  const [newData, setNewData] = useState(null);
   const [show, setShow] = useState(false);
 
   const [alertShow, setAlertShow] = React.useState(false);
@@ -143,21 +139,12 @@ function Skills(props) {
 
 
   function fetchData(){
-    let courseData;
     axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
     .then(res => {
       if(res.data.success){
-        if(res.data.jobseeker.course.length > 0){
-          courseData = res.data.jobseeker.course;
-          if(Object.keys(res.data.jobseeker.course[0]).length === 0){
-            res.data.jobseeker.course.splice(0,1)
-            i++;
-          }else if(courseData[0].course == "" && courseData[0].institute == "" && courseData[0].from == "" && courseData[0].to == ""){
-            res.data.jobseeker.course.splice(0,1)
-            i++;
-          }
-        }
-        setCourse(courseData)
+        if(res.data.jobseeker.skills.length > 0){
+          setSkills(res.data.jobseeker.skills);
+        }        
       }
     })
     setFetchedData(0)
@@ -166,7 +153,6 @@ function Skills(props) {
 
   useEffect(()=>{
     setState({course: null, institute: null, startYear: null, startMonth: null, endYear: null, endMonth: null});
-    setCourse(null);
     fetchData();
   },[fetchedData])
 
@@ -241,34 +227,32 @@ function Skills(props) {
     })
   }
 
-  function onChangeEndMonth(e){
-    setState(prevState => {
-      return {...prevState, endMonth: e.target.value}
-    })
-  }
-
 
   function onSubmit(e){
     e.preventDefault();
-    const newCourse = {
-        course: state.course,
-        institute: state.institute,
-        from: state.startMonth+"/"+state.startYear,
-        to: state.endMonth+"/"+state.endYear,
+
+    var l = skills.length;
+    for (let index = 0; index < newData.length; index++) {
+      skills[l++]=newData[index];   
     }
 
-    axios.put(`${BACKEND_URL}/jobseeker/addCourse/${loginId}`,newCourse)
+    const skillset = {
+      skills: skills,
+    }
+
+
+    axios.put(`${BACKEND_URL}/jobseeker/updateSkills/${loginId}`,skillset)
     .then(res => {
       if(res.data.success){
         setAlertData({
           severity: "success",
-          msg: "Course added successfully!",
+          msg: "Skills added successfully!",
         });
         handleAlert();
       } else {
         setAlertData({
           severity: "error",
-          msg: "Course could not be added!",
+          msg: "Skills could not be added!",
         });
         handleAlert();
       }
@@ -284,12 +268,14 @@ function Skills(props) {
   const showCombo = () => {
       if(show){
         return (
+          <React.Fragment>
           <Autocomplete
           style={{width:"100%",margin:"10px 120px 20px 120px"}}
             multiple
             id="tags-standard"
             options={chipData}
-            getOptionLabel={(option) => option.label}
+            getOptionLabel={(option) => option}
+            onChange={(event, value) => setNewData(value)}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -299,6 +285,8 @@ function Skills(props) {
               />
             )}
           />
+          <Button onClick={onSubmit}>Save</Button>
+          </React.Fragment>
         );
       }
     
@@ -325,14 +313,14 @@ function Skills(props) {
       {showCombo()}
         <Grid item xs={12} alignItems="center" justify="center">
             <Paper component="ul" className={classes.paperChips}>
-                {chipData.map((data) => {
+                {
+                skills.map((data) => {
                     let icon;
-
                     return (
-                    <li key={data.key}>
+                    <li key={i++}>
                         <Chip
                         icon={icon}
-                        label={data.label}
+                        label={data}
                         onDelete={handleDelete(data)}
                         className={classes.chip}
                         />
