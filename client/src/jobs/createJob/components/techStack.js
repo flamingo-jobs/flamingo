@@ -4,10 +4,8 @@ import { Grid, Container, Typography } from "@material-ui/core";
 import Chip from "@material-ui/core/Chip";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import CancelIcon from "@material-ui/icons/Cancel";
-
-// Custom components
 import FloatCard from "../../../components/FloatCard";
-import { StateBlueTextField } from "../styles/customTextField";
+import { StateBlueTextField } from "./customTextField";
 
 const useStyles = makeStyles((theme) => ({
   card: {

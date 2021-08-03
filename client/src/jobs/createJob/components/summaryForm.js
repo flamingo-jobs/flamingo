@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, MenuItem, Typography, Container } from "@material-ui/core";
-import { StateBlueTextField } from "../styles/customTextField";
+import { StateBlueTextField } from "./customTextField";
 import FloatCard from "../../../components/FloatCard";
 import {
   MuiPickersUtilsProvider,
@@ -63,12 +63,12 @@ const useStyles = makeStyles((theme) => ({
   textField: {
     marginBottom: theme.spacing(3),
   },
-  dateWrapper:{
+  dateWrapper: {
     marginLeft: theme.spacing(2),
     width: "50%",
     display: "flex",
     flexDirection: "column",
-    justify: "flex-end"
+    justify: "flex-end",
   },
 }));
 
@@ -80,6 +80,10 @@ const SummaryForm = ({
   category,
   categories,
   dueDate,
+  minEducation,
+  minExperience,
+  minEducationList,
+  minExperienceList,
   handleTitleChange,
   handleCategoryChange,
   handleJobTypeChange,
@@ -88,8 +92,12 @@ const SummaryForm = ({
   handleDateChange,
   handleMinSalaryChange,
   handleMaxSalaryChange,
+  handleMinEducationChange,
+  handleMinExperienceChange,
 }) => {
   const classes = useStyles();
+
+  // style={{border: "1px solid red"}}
   return (
     <Grid item xs={12} className={classes.card}>
       <FloatCard>
@@ -179,25 +187,64 @@ const SummaryForm = ({
                 ))}
               </StateBlueTextField>
             </Grid>
-            
+
             <Grid item xs={6} className={classes.textField}>
-                  <div className={classes.dateWrapper}>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <ThemeProvider theme={materialTheme}>
-                      <KeyboardDatePicker
-                        format="dd/MM/yyyy"
-                        placeholder="DD/MM/YYYY"
-                        id="dueDate"
-                        label="Due Date"
-                        value={dueDate}
-                        onChange={handleDateChange}
-                        KeyboardButtonProps={{
-                          "aria-label": "Change date",
-                        }}
-                      />
-                      </ThemeProvider>
-                    </MuiPickersUtilsProvider>
-                  </div>
+              <div className={classes.dateWrapper}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <ThemeProvider theme={materialTheme}>
+                    <KeyboardDatePicker
+                      format="dd/MM/yyyy"
+                      placeholder="DD/MM/YYYY"
+                      id="dueDate"
+                      label="Due Date"
+                      value={dueDate}
+                      onChange={handleDateChange}
+                      KeyboardButtonProps={{
+                        "aria-label": "Change date",
+                      }}
+                    />
+                  </ThemeProvider>
+                </MuiPickersUtilsProvider>
+              </div>
+            </Grid>
+          </Grid>
+
+          {/* Requried Degrees & Experience */}
+          <Grid container spacing={1} className={classes.textField}>
+            <Grid item xs={6}>
+              <StateBlueTextField
+                id="minEducation"
+                select
+                label="Minimum Education Requirement"
+                value={minEducation}
+                onChange={handleMinEducationChange}
+                variant="outlined"
+                fullWidth
+              >
+                {minEducationList.map((edu) => (
+                  <MenuItem key={edu} value={edu}>
+                    {edu}
+                  </MenuItem>
+                ))}
+              </StateBlueTextField>
+            </Grid>
+
+            <Grid item xs={6}>
+              <StateBlueTextField
+                id="minExperience"
+                select
+                label="Minimum Experience Required"
+                value={minExperience}
+                onChange={handleMinExperienceChange}
+                variant="outlined"
+                fullWidth
+              >
+                {minExperienceList.map((exp) => (
+                  <MenuItem key={exp} value={exp}>
+                    {exp + " years"}
+                  </MenuItem>
+                ))}
+              </StateBlueTextField>
             </Grid>
           </Grid>
 
