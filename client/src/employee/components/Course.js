@@ -371,6 +371,7 @@ function Course(props) {
                     variant="outlined"
                     size="small"
                     onChange={onChangeCourse}
+                    required
                   />
                   <TextField
                   className={classes.field}
@@ -380,6 +381,7 @@ function Course(props) {
                     variant="outlined"
                     size="small"
                     onChange={onChangeInstitute}
+                    required
                   />
                   <Grid container direction="row">
                     <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>

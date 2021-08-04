@@ -533,11 +533,9 @@ function EducationSection(props) {
         className={classes.field}
           type="number"
           id="outlined-basic"
-          pattern="^\d+(?:\.\d{1,2})?$"
-          label="GPA"
-          min="0.00"
-          step="0.01"
-          presicion={2}  
+          pattern="^(\d+)(,\d{1,2}|.\d{1,2})?$"
+          onKeyDown={(event) => event.keyCode === 69 ? event.preventDefault() : true}
+          label="GPA" 
           variant="outlined"
           size="small"
           onChange={onChangeGPA}
