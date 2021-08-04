@@ -112,11 +112,11 @@ function Jobs(props) {
 
     const updateQuery = () => {
 
-        if (Object.keys(filters).length != 0 && Object.keys(search).length != 0) {
+        if (Object.keys(filters).length !== 0 && Object.keys(search).length !== 0) {
             setQueryParams({ $and: [filters, search] });
-        } else if (Object.keys(filters).length == 0) {
+        } else if (Object.keys(filters).length === 0) {
             setQueryParams(search);
-        } else if (Object.keys(search).length == 0) {
+        } else if (Object.keys(search).length === 0) {
             setQueryParams(filters);
         } else if (featured) {
             setQueryParams({ isFeatured: true });
@@ -128,7 +128,7 @@ function Jobs(props) {
     const delay = ms => new Promise(res => setTimeout(res, ms));
 
     const retrieveJobs = async () => {
-        if ((featured && JSON.stringify(queryParams) == "{}") || (org && JSON.stringify(queryParams) == "{}")) {
+        if ((featured && JSON.stringify(queryParams) === "{}") || (org && JSON.stringify(queryParams) === "{}")) {
             return;
         }
         axios.post(`${BACKEND_URL}/jobs/getJobCount`, queryParams).then(res => {

@@ -28,7 +28,7 @@ const acceptPayment = async (req, res) => {
         ].join("")
       )
     );
-    if (local_md5sig === md5sig && status_code == 2) {
+    if (local_md5sig === md5sig && status_code === 2) {
       const savedPayment = await newPayment.save();
       if (savedPayment) {
           

@@ -128,10 +128,10 @@ function VolunteerItem(props) {
   const [styleEdit, setStyleEdit] = useState({display: 'none'});
   let volunteerStartDate=[0,0];
   let volunteerEndDate=[0,0];
-  if(props.from != 'null/null'){
+  if(props.from !== 'null/null'){
     volunteerStartDate = props.from.split("/");
   }
-  if(props.to != 'null/null'){
+  if(props.to !== 'null/null'){
     volunteerEndDate = props.to.split("/");
   }
   const [state, setState] = useState({title: props.title, organization: props.organization, startYear: volunteerStartDate[1], startMonth: volunteerStartDate[0], endYear: volunteerEndDate[1], endMonth: volunteerEndDate[0], description: props.description});
@@ -180,7 +180,7 @@ function VolunteerItem(props) {
   }
   
   useEffect(() => {
-    if (deleteSuccess == true) {
+    if (deleteSuccess === true) {
         setAlertData({severity: "success", msg: "Item deleted successfully!"});
         handleAlert();
     }
@@ -317,13 +317,13 @@ function VolunteerItem(props) {
        <Grid container spacing={3}>
         <Grid item xs={3}>
           <Typography variant="body2" color="textSecondary" component="p">
-              {state.endMonth == 0 ? "" : (state.endMonth+"/"+state.endYear)}
+              {state.endMonth === 0 ? "" : (state.endMonth+"/"+state.endYear)}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-              {state.endMonth == 0 ? "" : "|" }
+              {state.endMonth === 0 ? "" : "|" }
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-              {state.startMonth == 0 ? "" : (state.startMonth+"/"+state.startYear)}
+              {state.startMonth === 0 ? "" : (state.startMonth+"/"+state.startYear)}
           </Typography>
         </Grid>
 

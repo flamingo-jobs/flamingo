@@ -162,7 +162,7 @@ function Achievements(props) {
           if(Object.keys(res.data.jobseeker.award[0]).length === 0){
             res.data.jobseeker.award.splice(0,1)
             i++;
-          }else if(awardData[0].title == "" && awardData[0].issuedBy == "" && awardData[0].date == "" && awardData[0].description == ""){
+          }else if(awardData[0].title === "" && awardData[0].issuedBy === "" && awardData[0].date === "" && awardData[0].description === ""){
             res.data.jobseeker.award.splice(0,1)
             i++;
           }

@@ -111,7 +111,7 @@ export default function OrganizationList(props) {
 
     const passFilters = () => {
         let values = [];
-        if (checked.length == 0) {
+        if (checked.length === 0) {
             props.onChange(0);
         } else {
             checked.map((value) => values.push(value.name));

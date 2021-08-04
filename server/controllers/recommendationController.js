@@ -90,7 +90,7 @@ const similarity = (a, b) => {
     var minLength = (a.length > b.length) ? b.length : a.length;
     var maxLength = (a.length < b.length) ? b.length : a.length;
     for (var i = 0; i < minLength; i++) {
-        if (a[i] == b[i]) {
+        if (a[i] === b[i]) {
             equivalency++;
         }
     }

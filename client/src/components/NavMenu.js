@@ -72,9 +72,9 @@ function NavMenu(props) {
     const path = window.location.pathname.split("/");
     if (path.length === 1) {
         defaultPage = "home";
-    } else if (path.length === 2 && path[1] == "admin") {
+    } else if (path.length === 2 && path[1] === "admin") {
         defaultPage = "dashboard";
-    } else if (path.length > 2 && path[1] == "admin") {
+    } else if (path.length > 2 && path[1] === "admin") {
         defaultPage = path[2];
     } else {
         defaultPage = path[1];
@@ -117,13 +117,13 @@ function NavMenu(props) {
                         </ListItem>
                     </Link>
                     <Link to="/admin/categories">
-                        <ListItem button key="categories" selected={selectedIndex == "categories"} onClick={(event) => handleListItemClick(event, "categories")} classes={{ selected: classes.active }} className={classes.listItem}>
+                        <ListItem button key="categories" selected={selectedIndex === "categories"} onClick={(event) => handleListItemClick(event, "categories")} classes={{ selected: classes.active }} className={classes.listItem}>
                             <ListItemIcon className={classes.linkIcon}><CategoryRoundedIcon /></ListItemIcon>
                             <ListItemText className={classes.linkText} primary="Categories" />
                         </ListItem>
                     </Link>
                     <Link to="/admin/technologies">
-                        <ListItem button key="technologies" selected={selectedIndex == "technologies"} onClick={(event) => handleListItemClick(event, "technologies")} classes={{ selected: classes.active }} className={classes.listItem}>
+                        <ListItem button key="technologies" selected={selectedIndex === "technologies"} onClick={(event) => handleListItemClick(event, "technologies")} classes={{ selected: classes.active }} className={classes.listItem}>
                             <ListItemIcon className={classes.linkIcon}><CodeRoundedIcon /></ListItemIcon>
                             <ListItemText className={classes.linkText} primary="Technologies" />
                         </ListItem>
@@ -134,7 +134,7 @@ function NavMenu(props) {
     }
 
     const displayEmployerLinks = () => {
-        if (props.user == "employer") {
+        if (props.user === "employer") {
             return (
                 <>
                     <Link to="/employer/home">
@@ -187,7 +187,7 @@ function NavMenu(props) {
     }
 
     const displayJobSeekerLinks = () => {
-        if (props.user == "jobseeker") {
+        if (props.user === "jobseeker") {
             return (
                 <>
                     <Link to="/jobseekerDashboard">
@@ -234,7 +234,7 @@ function NavMenu(props) {
     }
 
     const displayDefaultLinks = () => {
-        if (props.user == null) {
+        if (props.user === null) {
             return (
                 <>
                     <Link to="/">

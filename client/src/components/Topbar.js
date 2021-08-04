@@ -323,11 +323,11 @@ export default function Topbar(props) {
 
   const loadProfilePic = () => {
     try {
-      if (header.payload.userRole == "employer") {
+      if (header.payload.userRole === "employer") {
         return require(`../employer/images/${header.payload.userId}`).default
-      } else if (header.payload.userRole == "jobseeker") {
+      } else if (header.payload.userRole === "jobseeker") {
         return require(`../employee/images/${header.payload.userId}`).default
-      } else if (header.payload.userRole == "admin") {
+      } else if (header.payload.userRole === "admin") {
         return require(`../admin/images/profilepic.jpg`).default
       }
     } catch (err) {

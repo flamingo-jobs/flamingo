@@ -68,15 +68,15 @@ function JobFilters(props) {
     const combineFilters = () => {
         let filterObjects = {};
 
-        if (technologyStack != 0) {
+        if (technologyStack !== 0) {
             filterObjects = { ...filterObjects, $and: technologyStack };
         }
 
-        if (interests != 0) {
+        if (interests !== 0) {
             filterObjects = { ...filterObjects, interests };
         }
 
-        if (organization != 0) {
+        if (organization !== 0) {
             filterObjects = { ...filterObjects, "work.place": organization };
         }
         props.onChange(filterObjects);

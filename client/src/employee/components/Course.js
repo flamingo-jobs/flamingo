@@ -162,7 +162,7 @@ function Course(props) {
           if(Object.keys(res.data.jobseeker.course[0]).length === 0){
             res.data.jobseeker.course.splice(0,1)
             i++;
-          }else if(courseData[0].course == "" && courseData[0].institute == "" && courseData[0].from == "" && courseData[0].to == ""){
+          }else if(courseData[0].course === "" && courseData[0].institute === "" && courseData[0].from === "" && courseData[0].to === ""){
             res.data.jobseeker.course.splice(0,1)
             i++;
           }

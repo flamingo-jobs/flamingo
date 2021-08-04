@@ -121,12 +121,12 @@ function JobSearchBar(props) {
 
     const passFilters = () => {
         let filterObjects = {};
-        if (keywords.length != 0) {
+        if (keywords.length !== 0) {
             let regexExp = keywords.join('|');
             filterObjects = { ...filterObjects, $or : [ {name: { $regex : regexExp, $options : "i"}}, {description: { $regex : regexExp, $options : "i"}}]};
         }
 
-        if (locations.length != 0) {
+        if (locations.length !== 0) {
             let locationRegex = locations.join("|");
             filterObjects = { ...filterObjects, locations : {$elemMatch: {$regex : locationRegex, $options : "i"}}};
         }

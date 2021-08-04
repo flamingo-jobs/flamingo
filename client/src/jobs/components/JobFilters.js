@@ -94,23 +94,23 @@ function JobFilters(props) {
     const combineFilters = () => {
         let filterObjects = {};
 
-        if (type != 0) {
+        if (type !== 0) {
             filterObjects = { ...filterObjects, type };
         }
 
-        if (technologyStack != 0) {
+        if (technologyStack !== 0) {
             filterObjects = { ...filterObjects, $and: technologyStack };
         }
 
-        if (category != 0) {
+        if (category !== 0) {
             filterObjects = { ...filterObjects, category };
         }
 
-        if (organization != 0) {
+        if (organization !== 0) {
             filterObjects = { ...filterObjects, "organization.name": organization };
         }
 
-        if (isFeatured == true) {
+        if (isFeatured === true) {
             filterObjects = { ...filterObjects, isFeatured };
         }
         props.onChange(filterObjects);

@@ -128,7 +128,7 @@ function AchievementItem(props) {
   const [open, setOpen] = useState(false);
   const [styleEdit, setStyleEdit] = useState({display: 'none'});
   let awardDate=[0,0];
-  if(props.date != 'null/null'){
+  if(props.date !== 'null/null'){
     awardDate = props.date.split("/");
   }
   const [state, setState] = useState({title: props.title, issuedBy: props.issuedBy, year: awardDate[1], month: awardDate[0], description: props.description});
@@ -177,7 +177,7 @@ function AchievementItem(props) {
   }
   
   useEffect(() => {
-    if (deleteSuccess == true) {
+    if (deleteSuccess === true) {
         setAlertData({severity: "success", msg: "Item deleted successfully!"});
         handleAlert();
     }

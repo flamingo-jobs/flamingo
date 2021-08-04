@@ -48,7 +48,7 @@ function Technologies() {
     }
 
     useEffect(() => {
-        if (updateSuccess == true) {
+        if (updateSuccess === true) {
             setAlertData({severity: "success", msg: "Changes saved successfully!"});
             handleAlert();
         }
@@ -56,7 +56,7 @@ function Technologies() {
     }, [updateSuccess]);
 
     useEffect(() => {
-        if (updateFailed == true) {
+        if (updateFailed === true) {
             setAlertData({severity: "error", msg: "Failed to save changes!"});
             handleAlert();
         }

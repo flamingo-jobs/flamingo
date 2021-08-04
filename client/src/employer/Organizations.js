@@ -103,11 +103,11 @@ function Organizations(props) {
 
     const updateQuery = () => {
 
-        if (Object.keys(filters).length != 0 && Object.keys(search).length != 0) {
+        if (Object.keys(filters).length !== 0 && Object.keys(search).length !== 0) {
             setQueryParams({ $and: [filters, search] });
-        } else if (Object.keys(filters).length == 0) {
+        } else if (Object.keys(filters).length === 0) {
             setQueryParams(search);
-        } else if (Object.keys(search).length == 0) {
+        } else if (Object.keys(search).length === 0) {
             setQueryParams(filters);
         } else {
             setQueryParams({});

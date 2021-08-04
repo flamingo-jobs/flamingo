@@ -106,7 +106,7 @@ function GridTable(props) {
     }, []);
 
     useEffect(() => {
-        if (JSON.stringify(editRowsModel) != "{}") {
+        if (JSON.stringify(editRowsModel) !== "{}") {
             let newRows = updatedRows;
             let i = updatedRows.findIndex(x => x.id === editRowsModel.id);
             if (i >= 0) {
@@ -188,7 +188,7 @@ function GridTable(props) {
 
     const retrieveCategories = () => {
         axios.get(`${BACKEND_URL}/${props.type}`).then(res => {
-            if (res.data.success && res.data.existingData != 0) {
+            if (res.data.success && res.data.existingData !== 0) {
                 for (var p in res.data.existingData) {
                     res.data.existingData[p].id = res.data.existingData[p]._id;
                 }
@@ -331,7 +331,7 @@ function GridTable(props) {
                 <FloatCard >
                     <div style={{ height: 550, width: '100%', textAlign: 'right' }}>
                         {showDeleteButton()}
-                        {props.addable != false ? <Button className={classes.addBtn} onClick={handleAddNewPopup}>
+                        {props.addable !== false ? <Button className={classes.addBtn} onClick={handleAddNewPopup}>
                             <AddIcon /> Add New {props.label}
                         </Button> : null}
                         <Button className={classes.addBtn} onClick={handleRefresh}>

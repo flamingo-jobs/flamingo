@@ -170,7 +170,7 @@ function WorkExperience(props) {
           if(Object.keys(workData[0]).length === 0){
             workData.splice(0,1)
             i++;
-          }else if(workData[0].place == "" && workData[0].description == "" && workData[0].position == "" && workData[0].from == "" && workData[0].to == "" && workData[0].taskAndResponsibility == ""){
+          }else if(workData[0].place === "" && workData[0].description === "" && workData[0].position === "" && workData[0].from === "" && workData[0].to === "" && workData[0].taskAndResponsibility === ""){
             workData.splice(0,1)
             i++;
           }

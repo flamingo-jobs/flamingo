@@ -93,7 +93,7 @@ function JobDescription(props) {
   };
 
   const displaySummary = () => {
-    if (job == "empty") {
+    if (job === "empty") {
       return (
         <Grid item sm={12}>
           <CircularProgress />
@@ -118,7 +118,7 @@ function JobDescription(props) {
   };
 
   const displayResponsibilities = () => {
-    if (job != "empty") {
+    if (job !== "empty") {
 
       return (
         <Grid item xs={12} lg={12} className={classes.container}>
@@ -132,7 +132,7 @@ function JobDescription(props) {
 
   // **** add margin bottom to the last component when signed in ***
   const displayRequirements = () => {
-    if (job != "empty") {
+    if (job !== "empty") {
 
       return (
         <Grid
@@ -149,7 +149,7 @@ function JobDescription(props) {
 
   const displayApplyForm = () => {
     if (isSignedIn === true && userId !== "empty") {
-      if (job == "empty") {
+      if (job === "empty") {
         return (
           <Grid item sm={12} className={classes.container} style={{marginTop: 16}}>
             <FloatCard >
@@ -168,7 +168,7 @@ function JobDescription(props) {
   };
 
   const displayCompanySummary = () => {
-    if (job == "empty") {
+    if (job === "empty") {
       return (
         <Grid item container spacing={3} sm={12}>
           <Grid item xs={12}>
@@ -184,7 +184,7 @@ function JobDescription(props) {
   };
 
   const displayMoreFromJobs = () => {
-    if (job == "empty") {
+    if (job === "empty") {
       return (
         <Grid item container spacing={3} sm={12}>
           <Grid item xs={12}>
@@ -200,7 +200,7 @@ function JobDescription(props) {
   };
 
   const displayRelatedJobs = () => {
-    if (job == "empty") {
+    if (job === "empty") {
       return (
         <Grid item container spacing={3} sm={12}>
           <Grid item xs={12}>
