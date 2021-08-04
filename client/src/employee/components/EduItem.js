@@ -136,7 +136,7 @@ function EduItem(props) {
   }
   if(props.endDate != 'null/null'){
     uniEndDate = props.endDate.split("/");
-    schoolStartDate = props.startDate.split("/");
+    schoolEndDate = props.endDate.split("/");
   }
   const [university, setUniversity] = useState({university: props.university, degree: props.degree, fieldOfStudy: props.fieldOfStudy, GPA: props.gpa, startYear: uniStartDate[1], startMonth: uniStartDate[0], endYear: uniEndDate[1], endMonth: uniEndDate[0], societiesAndActivities: props.societiesAndActivities});
   const [school, setSchool] = useState({school: props.school, startYear: schoolStartDate[1], startMonth: schoolStartDate[0], endYear: schoolEndDate[1], endMonth: schoolEndDate[0], description: props.description});
@@ -406,6 +406,7 @@ function EduItem(props) {
           size="small"
           value={university.university}
           onChange={onChangeUniversity}
+          required
           style={{marginBottom: "32px"}}
         />
         <FormControl variant="outlined" className={classes.formControl}>
@@ -416,6 +417,7 @@ function EduItem(props) {
           label="Select Degree"
           className={classes.select}
           value={university.degree}
+          required
         >
           <option aria-label="None" value="" />
           <option value="Bachelor's">Bachelor's</option>
@@ -431,6 +433,7 @@ function EduItem(props) {
           size="small"
           value={university.fieldOfStudy}
           onChange={onChangeFieldOfStudy}
+          required
         />
         <TextField
         className={classes.field}
@@ -544,6 +547,7 @@ function EduItem(props) {
           size="small"
           value={school.school}
           onChange={onChangeSchool}
+          required
         />
         <Grid container direction="row">
           <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
