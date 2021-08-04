@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {  Link, makeStyles, withStyles } from '@material-ui/core'
+import { makeStyles, withStyles } from '@material-ui/core'
 import FloatCard from '../../../components/FloatCard';
 import { Grid, Typography, Button } from '@material-ui/core';
 import { indigo } from '@material-ui/core/colors';
@@ -10,6 +10,7 @@ import ChevronRightTwoToneIcon from '@material-ui/icons/ChevronRightTwoTone';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import BACKEND_URL from '../../../Config';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -211,7 +212,9 @@ function ProfileStatus(props) {
                     </Typography>
                 </div>
                 <div style={{width:"40%"}}>
-                    <Button className={classes.defaultButton} style={{padding:"10px 15px 10px 15px",textTransform: 'none',backgroundColor:theme.palette.tuftsBlue}}>Finish Your Profile</Button>
+                    <Link to="/jobseeker">
+                        <Button className={classes.defaultButton} style={{padding:"10px 15px 10px 15px",textTransform: 'none',backgroundColor:theme.palette.tuftsBlue}}>Finish Your Profile</Button>
+                    </Link>
                 </div>
             </Grid>
           );
@@ -238,8 +241,8 @@ function ProfileStatus(props) {
                             Anne Shirley
                         </Typography>
                         <Typography variant="body2" component="p" sx={{ opacity: 0.72 }} style={{fontSize:"16px",textAlign:"left",}}>
-                            <Link style={{display: 'flex',alignItems: 'center',flexWrap: 'wrap',color: theme.palette.tuftsBlue}}>
-                            <span>View Profile</span><ChevronRightTwoToneIcon style={{marginTop:"-1px"}} />
+                            <Link to="/jobseeker" style={{display: 'flex',alignItems: 'center',flexWrap: 'wrap',color: theme.palette.tuftsBlue}}>
+                                <span>View Profile</span><ChevronRightTwoToneIcon style={{marginTop:"-1px"}} />
                             </Link>
                         </Typography>
                     </div>
