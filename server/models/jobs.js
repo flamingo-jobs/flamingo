@@ -32,6 +32,14 @@ const jobSchema = new mongoose.Schema({
     technologyStack: {
         type: Array,
     },
+    minimumEducation:{
+        type: String,
+        required: true
+    },
+    minimumExperience:{
+        type: String,
+        required: true
+    },
     salaryRange: {
         min: {
             type: Number,
