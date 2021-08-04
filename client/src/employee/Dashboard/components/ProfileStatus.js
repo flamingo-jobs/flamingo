@@ -78,7 +78,11 @@ const BorderLinearProgress = withStyles((theme) => ({
 
 function ProfileStatus(props) {
     const classes = useStyles();
-    const courses=0;
+    let complete = 0;
+    let nextComplete = "";
+    const [percentage, setPercentage] = useState(0);
+    const [state, setState] = useState({universities: 0, schools: 0,courses: 0, awards: 0, volunteerings:0, works:0, projects:0, skills: 0});
+
 
     let loginId;
     const jwt = require("jsonwebtoken");
@@ -92,14 +96,6 @@ function ProfileStatus(props) {
 
     
     useEffect(()=>{
-        let universities=0;
-        let schools=0;
-        let courses=0;
-        let awards=0;
-        let volunteerings=0;
-        let works=0;
-        let projects=0;
-        let interests=0;
         axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
         .then(res => {
           if(res.data.success){
@@ -110,7 +106,21 @@ function ProfileStatus(props) {
                     res.data.jobseeker.university.splice(0,1)
                 }
                 if(res.data.jobseeker.university.length > 0){
-                    universities=1;
+                    setState(prevState => {
+                        return {...prevState, universities: 1}
+                    })
+                }                    
+            }
+            if(res.data.jobseeker.school.length > 0){
+                if(Object.keys(res.data.jobseeker.school[0]).length === 0){
+                    res.data.jobseeker.school.splice(0,1)
+                }else if(res.data.jobseeker.school[0].school == ""){
+                    res.data.jobseeker.school.splice(0,1)
+                }
+                if(res.data.jobseeker.school.length > 0){
+                    setState(prevState => {
+                        return {...prevState, schools: 1}
+                    })
                 }                    
             }
             if(res.data.jobseeker.course.length > 0){
@@ -120,12 +130,94 @@ function ProfileStatus(props) {
                     res.data.jobseeker.course.splice(0,1)
                 }
                 if(res.data.jobseeker.course.length > 0){
-                    courses=1;
+                    setState(prevState => {
+                        return {...prevState, courses: 1}
+                    })
                 }           
-            }      
+            }
+            if(res.data.jobseeker.award.length > 0){
+                if(Object.keys(res.data.jobseeker.award[0]).length === 0){
+                    res.data.jobseeker.award.splice(0,1)
+                }else if(res.data.jobseeker.award[0].title == "" && res.data.jobseeker.award[0].issuedBy == "" && res.data.jobseeker.award[0].date == "" && res.data.jobseeker.award[0].description == ""){
+                    res.data.jobseeker.award.splice(0,1)
+                }
+                if(res.data.jobseeker.award.length > 0){
+                    setState(prevState => {
+                        return {...prevState, awards: 1}
+                    })
+                }                    
+            }
+            if(res.data.jobseeker.volunteer.length > 0){
+                if(Object.keys(res.data.jobseeker.volunteer[0]).length === 0){
+                    res.data.jobseeker.volunteer.splice(0,1)
+                }else if(res.data.jobseeker.volunteer[0].title == "" && res.data.jobseeker.volunteer[0].organization == "" && res.data.jobseeker.volunteer[0].from == "" && res.data.jobseeker.volunteer[0].to == ""){
+                    res.data.jobseeker.volunteer.splice(0,1)
+                }
+                if(res.data.jobseeker.volunteer.length > 0){
+                    setState(prevState => {
+                        return {...prevState, volunteerings: 1}
+                    })
+                }                    
+            }
+            if(res.data.jobseeker.work.length > 0){
+                if(Object.keys(res.data.jobseeker.work[0]).length === 0){
+                    res.data.jobseeker.work.splice(0,1)
+                }else if(res.data.jobseeker.work[0].place == "" && res.data.jobseeker.work[0].description == "" && res.data.jobseeker.work[0].position == "" && res.data.jobseeker.work[0].from == "" && res.data.jobseeker.work[0].to == "" && res.data.jobseeker.work[0].taskAndResponsibility == ""){
+                    res.data.jobseeker.work.splice(0,1)
+                }
+                if(res.data.jobseeker.work.length > 0){
+                    setState(prevState => {
+                        return {...prevState, works: 1}
+                    })
+                }                    
+            }
+            if(res.data.jobseeker.project.length > 0){
+                if(Object.keys(res.data.jobseeker.project[0]).length === 0){
+                    res.data.jobseeker.project.splice(0,1)
+                }else if(res.data.jobseeker.project[0].name == "" && res.data.jobseeker.project[0].link == "" && res.data.jobseeker.project[0].description == "" && res.data.jobseeker.project[0].from == "" && res.data.jobseeker.project[0].to == ""){
+                    res.data.jobseeker.project.splice(0,1)
+                }
+                if(res.data.jobseeker.project.length > 0){
+                    setState(prevState => {
+                        return {...prevState, projects: 1}
+                    })
+                }                    
+            }
+            if(res.data.jobseeker.skills.length > 0){
+                if(Object.keys(res.data.jobseeker.skills[0]).length === 0){
+                    res.data.jobseeker.skills.splice(0,1)
+                }else if(res.data.jobseeker.skills[0] == ""){
+                    res.data.jobseeker.skills.splice(0,1)
+                }
+                if(res.data.jobseeker.skills.length > 0){
+                    setState(prevState => {
+                        return {...prevState, skills: 1}
+                    })
+                }                    
+            }
           }
         })
     },[])
+
+    const displayStatus = () => {
+        let temp = state.universities + state.schools + state.courses + state.awards + state.volunteerings + state.works + state.projects + state.skills;
+        temp = temp/8*100; 
+        if(temp < 100){
+          return (
+            <Grid item sm={12} style={{alignItems:"center",display: "flex"}}>
+                <div style={{width:"60%"}}>
+                    <Typography  variant="body2" component="p" sx={{ opacity: 0.72 }} style={{fontSize:"16px",textAlign:"left", fontWeight:"bold",color:"#1976d2"}}>
+                        Next : Add {state.works===0 ? "Work Experience" : state.universities===0 ? "University" : state.schools===0 ? "School" : state.projects===0 ? "Projects" : state.courses===0 ? "Courses" : state.awards===0 ? "Awards" : state.volunteerings===0 ? "Volunteering" : state.skills===0 ? "Skills" : ""}
+                    </Typography>
+                </div>
+                <div style={{width:"40%"}}>
+                    <Button className={classes.defaultButton} style={{padding:"10px 15px 10px 15px",textTransform: 'none',backgroundColor:theme.palette.tuftsBlue}}>Finish Your Profile</Button>
+                </div>
+            </Grid>
+          );
+        }
+      
+    }
 
     return (
         <FloatCard>
@@ -158,21 +250,22 @@ function ProfileStatus(props) {
                 <Grid item sm={12} style={{alignItems:"center",display: "flex"}}>
                     <div style={{width:"100%"}}>
                         <Typography  variant="body2" component="p" sx={{ opacity: 0.72 }} style={{fontSize:"16px",textAlign:"left", fontWeight:"bold", paddingBottom:"5px",color:"#666"}}>
-                            Your profile is 40% complete
+                            Your profile is {(state.universities + state.schools + state.courses + state.awards + state.volunteerings + state.works + state.projects + state.skills)/8*100}% complete
                         </Typography>
                         <BorderLinearProgress variant="determinate" value={40} />
                     </div>
                 </Grid>
-                <Grid item sm={12} style={{alignItems:"center",display: "flex"}}>
+                {displayStatus()}
+                {/* <Grid item sm={12} style={{alignItems:"center",display: "flex"}}>
                     <div style={{width:"60%"}}>
-                        <Typography  variant="body2" component="p" sx={{ opacity: 0.72 }} style={{fontSize:"15px",textAlign:"left", fontWeight:"bold",color:"#1976d2"}}>
-                            Next : Add your experience
+                        <Typography  variant="body2" component="p" sx={{ opacity: 0.72 }} style={{fontSize:"16px",textAlign:"left", fontWeight:"bold",color:"#1976d2"}}>
+                            Next : Add {state.works===0 ? "Work Experience" : state.universities===0 ? "University" : state.schools===0 ? "School" : state.projects===0 ? "Projects" : state.courses===0 ? "Courses" : state.awards===0 ? "Awards" : state.volunteerings===0 ? "Volunteering" : state.skills===0 ? "Skills" : ""}
                         </Typography>
                     </div>
                     <div style={{width:"40%"}}>
                         <Button className={classes.defaultButton} style={{padding:"10px 15px 10px 15px",textTransform: 'none',backgroundColor:theme.palette.tuftsBlue}}>Finish Your Profile</Button>
                     </div>
-                </Grid>
+                </Grid> */}
             </Grid>
         </FloatCard>
     )
