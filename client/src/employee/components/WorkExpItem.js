@@ -126,8 +126,14 @@ function WorkExpItem(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [styleEdit, setStyleEdit] = useState({display: 'none'});
-  const workStartDate = props.from.split("/");
-  const workEndDate = props.to.split("/");
+  let workStartDate=[0,0];
+  let workEndDate=[0,0];
+  if(props.from != 'null/null'){
+    workStartDate = props.from.split("/");
+  }
+  if(props.to != 'null/null'){
+    workEndDate = props.to.split("/");
+  }
   const [state, setState] = useState({place: props.place, description: props.description, position: props.position, startYear: workStartDate[1], startMonth: workStartDate[0], endYear: workEndDate[1], endMonth: workEndDate[0], taskAndResponsibility: props.task});
 
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -317,15 +323,17 @@ function WorkExpItem(props) {
           setStyleEdit({display: 'none'});
     }}>
         <Grid container spacing={3}>
-          <Grid item xs={10} spacing={2} style={{marginTop:"-5px"}}>
+        <Grid item xs={2} spacing={2} style={{marginTop:"-2px"}}>
+            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',marginLeft: "5px"}}>
+                {state.startYear ? state.startMonth+"/"+state.startYear+ " - " +state.endMonth+"/"+state.endYear : ""}
+            </Typography>
+          </Grid>
+          <Grid item xs={8} spacing={2} style={{marginTop:"-5px"}}>
             <Typography gutterBottom style={{textAlign:'justify',fontSize:'16px',fontWeight:'bold',color:'#666'}}>
                 {state.position}
             </Typography>
             <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'14px',fontWeight:'bold',}}>
                 {state.place}
-            </Typography>
-            <Typography variant="body2" component="p" style={{textAlign:'justify',color:theme.palette.stateBlue}}>
-                {state.startYear ? state.startMonth+"/"+state.startYear+ " - " +state.endMonth+"/"+state.endYear : ""}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',paddingTop:'10px',marginRight:"-60px"}}>
                 {state.description}
@@ -404,6 +412,7 @@ function WorkExpItem(props) {
                         size="small"
                         value={state.position}
                         onChange={onChangePosition}
+                        required
                       />
                       <TextField
                         className={classes.field}
@@ -414,6 +423,7 @@ function WorkExpItem(props) {
                         size="small"
                         value={state.place}
                         onChange={onChangePlace}
+                        required
                       />
                       <Grid container direction="row">
                         <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>

@@ -395,6 +395,7 @@ function WorkExperience(props) {
                     variant="outlined"
                     size="small"
                     onChange={onChangePosition}
+                    required
                   />
                   <TextField
                   className={classes.field}
@@ -404,6 +405,7 @@ function WorkExperience(props) {
                     variant="outlined"
                     size="small"
                     onChange={onChangePlace}
+                    required
                   />
                   <Grid container direction="row">
                     <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
