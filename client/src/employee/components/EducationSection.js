@@ -227,6 +227,7 @@ function EducationSection(props) {
   }
 
   function onChangeGPA(e){
+    e.preventDefault();
     setUniversity(prevState => {
       return {...prevState, GPA: e.target.value}
     })
@@ -502,6 +503,7 @@ function EducationSection(props) {
           variant="outlined"
           size="small"
           onChange={onChangeUniversity}
+          required
         />
         <FormControl variant="outlined" className={classes.formControl}>
         <InputLabel className={classes.placeholder} htmlFor="outlined-age-native-simple">Select Degree</InputLabel>
@@ -510,6 +512,7 @@ function EducationSection(props) {
           onChange={onChangeDegree}
           label="Select Degree"
           className={classes.select}
+          required
         >
           <option aria-label="None" value="" />
           <option value="Bachelor's">Bachelor's</option>
@@ -524,14 +527,16 @@ function EducationSection(props) {
           variant="outlined"
           size="small"
           onChange={onChangeFieldOfStudy}
+          required
         />
         <TextField
         className={classes.field}
+          type="number"
           id="outlined-basic"
+          pattern="^\d+(?:\.\d{1,2})?$"
           label="GPA"
           min="0.00"
           step="0.01"
-          max="4.25"
           presicion={2}  
           variant="outlined"
           size="small"
@@ -630,6 +635,7 @@ function EducationSection(props) {
           variant="outlined"
           size="small"
           onChange={onChangeSchool}
+          required
         />
         <Grid container direction="row">
           <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
