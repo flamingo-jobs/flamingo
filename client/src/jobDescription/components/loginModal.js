@@ -140,7 +140,7 @@ const LoginModal = (props) => {
                       You must sign in first.
                     </Typography>
                     <div className={classes.signInBtnContainer}>
-                      <Link to="/signin">
+                      <Link to={`/signin?redirectTo=${props.jobId}`}>
                         <Button
                           className={classes.signIn}
                         >

@@ -250,6 +250,7 @@ function JobSummary(props) {
       <LoginModal 
         open={open}
         handleClose={handleClose}
+        jobId={props.job._id}
       ></LoginModal>
 
       <Container className={classes.summaryContainer}>
