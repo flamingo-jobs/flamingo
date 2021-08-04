@@ -70,9 +70,9 @@ function NavMenu(props) {
     const theme = useTheme();
     var defaultPage;
     const path = window.location.pathname.split("/");
-    if (path.length == 1) {
+    if (path.length === 1) {
         defaultPage = "home";
-    } else if (path.length == 2 && path[1] == "admin") {
+    } else if (path.length === 2 && path[1] == "admin") {
         defaultPage = "dashboard";
     } else if (path.length > 2 && path[1] == "admin") {
         defaultPage = path[2];
@@ -95,7 +95,7 @@ function NavMenu(props) {
     
 
     const displayAdminLinks = () => {
-        if (props.user == "admin") {
+        if (props.user === "admin") {
             return (
                 <>
                     <Link to="/admin">

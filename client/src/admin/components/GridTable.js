@@ -108,7 +108,7 @@ function GridTable(props) {
     useEffect(() => {
         if (JSON.stringify(editRowsModel) != "{}") {
             let newRows = updatedRows;
-            let i = updatedRows.findIndex(x => x.id == editRowsModel.id);
+            let i = updatedRows.findIndex(x => x.id === editRowsModel.id);
             if (i >= 0) {
                 newRows[i] = editRowsModel;
             } else {
@@ -116,7 +116,7 @@ function GridTable(props) {
             }
             setUpdatedRows(newRows);
             setPendingChanges(true);
-        } else if (updatedRows.length == 0) {
+        } else if (updatedRows.length === 0) {
             setUpdatedRows([]);
         }
     }, [editRowsModel])
@@ -128,7 +128,7 @@ function GridTable(props) {
     };
 
     useEffect(() => {
-        if (deleteSuccess == true) {
+        if (deleteSuccess === true) {
             setAlertData({ severity: "success", msg: "Item deleted successfully!" });
             handleAlert();
         }
@@ -138,7 +138,7 @@ function GridTable(props) {
     }, [deleteSuccess]);
 
     useEffect(() => {
-        if (updateSuccess == true) {
+        if (updateSuccess === true) {
             setAlertData({ severity: "success", msg: "Changes saved successfully!" });
             handleAlert();
         }
@@ -148,7 +148,7 @@ function GridTable(props) {
     }, [updateSuccess]);
 
     useEffect(() => {
-        if (createSuccess == true) {
+        if (createSuccess === true) {
             setAlertData({ severity: "success", msg: "Item added successfully!" });
             handleAlert();
         }
@@ -158,7 +158,7 @@ function GridTable(props) {
     }, [createSuccess]);
 
     useEffect(() => {
-        if (createFailed == true) {
+        if (createFailed === true) {
             setAlertData({ severity: "error", msg: "Failed to add item!" });
             handleAlert();
         }
@@ -169,7 +169,7 @@ function GridTable(props) {
 
 
     useEffect(() => {
-        if (updateFailed == true) {
+        if (updateFailed === true) {
             setAlertData({ severity: "error", msg: "Failed to save changes!" });
             handleAlert();
         }

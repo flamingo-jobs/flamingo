@@ -168,7 +168,7 @@ function Jobs(props) {
         // await delay(3000);
         if (jobs.length === 0) {
             return (
-                <Grid item sm={12}>
+                <Grid item sm={12} style={{marginBottom: 16}}>
                     <FloatCard>
                         <CircularProgress />
                     </FloatCard>
