@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function Profile() {
+function Profile(match) {
     const classes = useStyles();
 
     return (
