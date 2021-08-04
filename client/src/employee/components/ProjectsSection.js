@@ -414,6 +414,7 @@ function ProjectsSection(props) {
                     variant="outlined"
                     size="small"
                     onChange={onChangeName}
+                    required
                   />
                   <TextField
                   className={classes.field}
@@ -432,6 +433,7 @@ function ProjectsSection(props) {
                     rows={5}
                     variant="outlined"
                     onChange= {onChangeDescription}
+                    required
                   />
                   <Grid container direction="row">
                     <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
@@ -509,6 +511,7 @@ function ProjectsSection(props) {
                     variant="outlined"
                     size="small"
                     onChange={onChangeUsedTech}
+                    required
                   />
                   </div>
                   <Button type="submit" className={classes.defaultButton} style={{ width:'100%',marginTop:'5%'}}>Apply Changes</Button>
