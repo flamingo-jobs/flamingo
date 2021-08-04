@@ -131,8 +131,14 @@ function ProjectItem(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [styleEdit, setStyleEdit] = useState({display: 'none'});
-  const projectStartDate = props.from.split("/");
-  const projectEndDate = props.to.split("/");
+  let projectStartDate=[0,0];
+  let projectEndDate=[0,0];
+  if(props.from != 'null/null'){
+    projectStartDate = props.from.split("/");
+  }
+  if(props.to != 'null/null'){
+    projectEndDate = props.to.split("/");
+  }
   const [state, setState] = useState({name: props.name, link: props.link, description: props.description, startYear: projectStartDate[1], startMonth: projectStartDate[0], endYear: projectEndDate[1], endMonth: projectEndDate[0], usedTech: props.usedTech});
 
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -317,7 +323,7 @@ const handleDelete = () => {
     <TimelineItem>
         <TimelineOppositeContent style={{flex:'0.2'}}>
             <Typography variant="body2" color="textSecondary">
-              {state.startMonth+"/"+state.startYear+ " - " +state.endMonth+"/"+state.endYear}
+              {state.startMonth===0 ? "" : state.startMonth+"/"+state.startYear+ " - " +state.endMonth+"/"+state.endYear}
             </Typography>
         </TimelineOppositeContent>
         <TimelineSeparator>
@@ -343,7 +349,7 @@ const handleDelete = () => {
                     {state.description}
                 </Typography>
                 <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'14px',fontWeight:'bold',paddingTop:'5px'}}>
-                    {state.usedTech}
+                    {state.usedTech ? "Tech Stack : " + state.usedTech : ""}
                 </Typography>
                 <Typography variant="body2" color="textSecondary" style={{textAlign:'left',paddingTop:'10px'}}>
                     {state.link == null ? "" : "Link : "+state.link}
@@ -419,6 +425,7 @@ const handleDelete = () => {
                                 size="small"
                                 value={state.name}
                                 onChange={onChangeName}
+                                required
                             />
                             <TextField
                                 className={classes.field}
@@ -439,6 +446,7 @@ const handleDelete = () => {
                                 variant="outlined"
                                 value={state.description}
                                 onChange= {onChangeDescription}
+                                required
                             />
                             <Grid container direction="row">
                               <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
@@ -521,6 +529,7 @@ const handleDelete = () => {
                             size="small"
                             value={state.usedTech}
                             onChange={onChangeUsedTech}
+                            required
                             />
                             </div>
                             <Button type="submit" className={classes.defaultButton} style={{ width:'100%',marginTop:'5%'}}>Apply Changes</Button>

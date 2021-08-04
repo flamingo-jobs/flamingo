@@ -127,8 +127,14 @@ function CourseItem(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [styleEdit, setStyleEdit] = useState({display: 'none'});
-  const courseStartDate = props.startDate.split("/");
-  const courseEndDate = props.endDate.split("/");
+  let courseStartDate=[0,0];
+  let courseEndDate=[0,0];
+  if(props.startDate != 'null/null'){
+    courseStartDate = props.startDate.split("/");
+  }
+  if(props.endDate != 'null/null'){
+    courseEndDate = props.endDate.split("/");
+  }
   const [state, setState] = useState({course: props.course, institute: props.institute, startYear: courseStartDate[1], startMonth: courseStartDate[0], endYear: courseEndDate[1], endMonth: courseEndDate[0]});
 
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -319,7 +325,7 @@ function CourseItem(props) {
                 {state.description}
             </Typography>
             <Typography variant="body2" color="textSecondary" style={{textAlign:'left'}}>
-                {state.startMonth+"/"+state.startYear+ " - " +state.endMonth+"/"+state.endYear}
+                {state.startMonth===0 ? "" : state.startMonth+"/"+state.startYear+ " - " +state.endMonth+"/"+state.endYear}
             </Typography>
         </Grid>
         <Grid item xs={2} spacing={2} style={{marginTop:"-5px",padding:"20px 0px 0px 0px"}}>
@@ -392,6 +398,7 @@ function CourseItem(props) {
                     size="small"
                     value={state.course}
                     onChange={onChangeCourse}
+                    required
                   />
                   <TextField
                   className={classes.field}
@@ -402,6 +409,7 @@ function CourseItem(props) {
                     size="small"
                     value={state.institute}
                     onChange={onChangeInstitute}
+                    required
                   />
                   <Grid container direction="row">
                     <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>

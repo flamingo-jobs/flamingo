@@ -377,6 +377,7 @@ function Volunteer(props) {
                     variant="outlined"
                     size="small"
                     onChange={onChangeTitle}
+                    required
                   />
                   <TextField
                   className={classes.field}
