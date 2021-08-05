@@ -11,7 +11,6 @@ import { MemoryRouter, Route } from 'react-router';
 import { Link } from 'react-router-dom';
 import Pagination from '@material-ui/lab/Pagination';
 import PaginationItem from '@material-ui/lab/PaginationItem';
-import LoginModal from './components/loginModal';
 
 const useStyles = makeStyles((theme) => ({
     jobsGrid: {
@@ -68,16 +67,6 @@ function Jobs(props) {
     const [queryParams, setQueryParams] = useState({});
     
     const [page, setPage] = React.useState(1);
-    
-    // Login modal 
-    const [open, setOpen] = useState(false);
-
-    const handleOpen = () => {
-        setOpen(true);
-    };
-    const handleClose = () => {
-        setOpen(false);
-    };
 
     const changePage = (event, value) => {
         setPage(value);
@@ -174,7 +163,6 @@ function Jobs(props) {
                         userRole={props.userRole} 
                         savedJobIds={savedJobIds} 
                         setSavedJobIds={setSavedJobIds}
-                        handleOpen={handleOpen} 
                     />
                 </Grid>
             ))
@@ -188,12 +176,6 @@ function Jobs(props) {
 
     return (
         <>
-            {/* Works only when user is not signed in */}
-            <LoginModal 
-                open={open}
-                handleClose={handleClose}
-            ></LoginModal>
-
             <Grid item container sm={12} spacing={3} direction="row" justify="space-between" className={classes.mainGrid} alignItems="flex-start">
                 <Grid item sm={12} className={classes.searchGrid}>
                     <JobSearchBar onChange={updateSearch} />

@@ -107,7 +107,7 @@ function Base() {
     return (
       <>
         <Route path="/searchResults">
-          <SearchResult/>
+          <SearchResult userRole={role}/>
         </Route>
         <Route path="/jobs">
           <Jobs userRole={role} />
@@ -128,7 +128,7 @@ function Base() {
           <Employer userRole={role} />
         </Route>
         <Route path="/" exact>
-          <Home />
+          <Home userRole={role}/>
         </Route>
       </>
     )
@@ -151,7 +151,7 @@ function Base() {
             <Profile />
           </Route>
           <Route path="/jobseekerDashboard" exact>
-            <JobseekerDashboard />
+            <JobseekerDashboard userRole={role}/>
           </Route>
         </>
       )
