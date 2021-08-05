@@ -121,7 +121,7 @@ function PeopleCard(props) {
 
                     </div>
                     <div className={classes.footerRight} >
-                        <Link to={`/jobSeeker/profile/${props.info._id}`}>
+                        <Link to={`/jobseeker/${props.info._id}`}>
                             <Button className={classes.applyButton}>View Profile</Button>
                         </Link>
                     </div>

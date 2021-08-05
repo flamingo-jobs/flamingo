@@ -40,11 +40,13 @@ function Technologies(props) {
     const jwt = require("jsonwebtoken");
     const token = sessionStorage.getItem("userToken");
     const header = jwt.decode(token, { complete: true });
-    if (header.payload.userRole === "jobseeker") {
-        loginId=sessionStorage.getItem("loginId");
-    } else {
+    if(token === null){
         loginId=props.jobseekerID;
-    }
+      }else if (header.payload.userRole === "jobseeker") {
+        loginId=sessionStorage.getItem("loginId");
+      } else {
+        loginId=props.jobseekerID;
+      }
 
     useEffect(() => {
             retrieveTechnoliges();

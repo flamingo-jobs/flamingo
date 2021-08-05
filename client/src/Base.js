@@ -115,6 +115,9 @@ function Base() {
         {/* <Route path="/jobseeker" exact>
           <Profile />
         </Route> */}
+        <Route path="/jobseeker">
+            <Profile />
+          </Route>
         <Route path="/organizations">
           <Organizations userRole={role}/>
         </Route>

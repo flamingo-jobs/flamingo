@@ -59,7 +59,7 @@ function JobDescription(props) {
 
   useEffect(() => {
     setJobId(window.location.pathname.split("/")[2]);
-  }, [window.location.pathname]);
+  }, [window.location.pathname]); 
 
   useEffect(() => {
     retrieveJob();
