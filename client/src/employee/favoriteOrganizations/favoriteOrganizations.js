@@ -5,7 +5,7 @@ import { Grid, Typography, Container } from "@material-ui/core";
 import BACKEND_URL from "../../Config";
 import axios from "axios";
 import OrganizationCard from "./components/organizationCard";
-
+import { CircularProgress } from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
   root: {
     paddingLeft: theme.spacing(1.5),
@@ -59,20 +59,23 @@ const FavoriteOrganizations = () => {
   };
 
   const displayFavoriteOrgs = () => {
-    if (!favoriteOrgIds.length) {
+    if (!favoriteOrgs.length) {
       return (
         <Grid item xs={12}>
           <FloatCard>
-            <Typography>
-              You don't have any favorite organizations yet.
-            </Typography>
+          <CircularProgress />
           </FloatCard>
         </Grid>
       );
     }
-
     if (favoriteOrgs === "empty") {
-      return null;
+      return (
+        <Grid item xs={12}>
+          <FloatCard>
+          <Typography>You haven't added any favorite organizations yet.</Typography>
+          </FloatCard>
+        </Grid>
+      );
     } else {
       return (
         <Grid item xs={9}>

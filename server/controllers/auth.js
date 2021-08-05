@@ -33,7 +33,7 @@ exports.signup = (req, res, next) => {
       password_confirmation: "required",
     });
   }
-  if (password != password_confirmation) {
+  if (password !== password_confirmation) {
     errors.push({ password: "mismatch" });
   }
   if (!role) {

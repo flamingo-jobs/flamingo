@@ -151,7 +151,7 @@ function Skills(props) {
     .then(res => {
       if(res.data.success){
         if(res.data.jobseeker.skills.length > 0){
-          if(res.data.jobseeker.skills[0] == ""){
+          if(res.data.jobseeker.skills[0] === ""){
             res.data.jobseeker.skills.splice(0,1)
           }
           setSkills(res.data.jobseeker.skills)

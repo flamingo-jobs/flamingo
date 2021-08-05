@@ -127,7 +127,10 @@ function AchievementItem(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [styleEdit, setStyleEdit] = useState({display: 'none'});
-  const awardDate = props.date.split("/");
+  let awardDate=[0,0];
+  if(props.date !== 'null/null'){
+    awardDate = props.date.split("/");
+  }
   const [state, setState] = useState({title: props.title, issuedBy: props.issuedBy, year: awardDate[1], month: awardDate[0], description: props.description});
 
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -174,7 +177,7 @@ function AchievementItem(props) {
   }
   
   useEffect(() => {
-    if (deleteSuccess == true) {
+    if (deleteSuccess === true) {
         setAlertData({severity: "success", msg: "Item deleted successfully!"});
         handleAlert();
     }
@@ -308,10 +311,10 @@ function AchievementItem(props) {
                 {state.description}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',paddingTop:'5px',marginRight:"-50px"}}>
-                Issued by : {state.issuedBy}
+                {state.issuedBy ? "Issued by : " + state.issuedBy : ""}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',paddingTop:'5px'}}>
-                Issued date : {state.month+"/"+state.year}
+                {state.year === 0 && state.month === 0 ? "" : "Issued date : " + state.month+"/"+state.year}
             </Typography>
         </Grid>
         <Grid item xs={2} spacing={2} style={{marginTop:"-5px",padding:"20px 0px 0px 0px"}}>
@@ -384,6 +387,7 @@ function AchievementItem(props) {
                     size="small"
                     value={state.title}
                     onChange={onChangeTitle}
+                    required
                   />
                   <TextField
                   className={classes.field}

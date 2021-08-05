@@ -126,8 +126,14 @@ function VolunteerItem(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [styleEdit, setStyleEdit] = useState({display: 'none'});
-  const volunteerStartDate = props.from.split("/");
-  const volunteerEndDate = props.to.split("/");
+  let volunteerStartDate=[0,0];
+  let volunteerEndDate=[0,0];
+  if(props.from !== 'null/null'){
+    volunteerStartDate = props.from.split("/");
+  }
+  if(props.to !== 'null/null'){
+    volunteerEndDate = props.to.split("/");
+  }
   const [state, setState] = useState({title: props.title, organization: props.organization, startYear: volunteerStartDate[1], startMonth: volunteerStartDate[0], endYear: volunteerEndDate[1], endMonth: volunteerEndDate[0], description: props.description});
 
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -174,7 +180,7 @@ function VolunteerItem(props) {
   }
   
   useEffect(() => {
-    if (deleteSuccess == true) {
+    if (deleteSuccess === true) {
         setAlertData({severity: "success", msg: "Item deleted successfully!"});
         handleAlert();
     }
@@ -311,16 +317,13 @@ function VolunteerItem(props) {
        <Grid container spacing={3}>
         <Grid item xs={3}>
           <Typography variant="body2" color="textSecondary" component="p">
-              {state.endMonth+"/"+state.endYear}
+              {state.endMonth === 0 ? "" : (state.endMonth+"/"+state.endYear)}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-              |
+              {state.endMonth === 0 ? "" : "|" }
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-              {state.startMonth+"/"+state.startYear}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p" style={{fontStyle:"italic",fontWeight:"bolder"}}>
-              {props.level}
+              {state.startMonth === 0 ? "" : (state.startMonth+"/"+state.startYear)}
           </Typography>
         </Grid>
 
@@ -332,7 +335,7 @@ function VolunteerItem(props) {
                 {state.description}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',paddingTop:'5px',marginRight:"-50px"}}>
-                Organization : {state.organization}
+                {state.organization ? "Organization : " + state.organization : ""}
             </Typography>
         </Grid>
 
@@ -406,6 +409,7 @@ function VolunteerItem(props) {
                     size="small"
                     value={state.title}
                     onChange={onChangeTitle}
+                    required
                   />
                   <TextField
                   className={classes.field}

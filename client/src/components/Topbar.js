@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -26,6 +26,9 @@ import BookmarksIcon from '@material-ui/icons/Bookmarks';
 import WorkIcon from '@material-ui/icons/Work';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import { Link, useHistory } from 'react-router-dom';
+import BACKEND_URL from "../Config";
+import axios from "axios";
+
 const jwt = require("jsonwebtoken");
 const token = sessionStorage.getItem("userToken");
 const header = jwt.decode(token, { complete: true });
@@ -100,6 +103,7 @@ const useStyles = makeStyles((theme) => ({
   },
   sectionMobile: {
     display: "flex",
+    alignItems: 'center',
     [theme.breakpoints.up("md")]: {
       display: "none",
     },
@@ -242,6 +246,11 @@ const useStyles = makeStyles((theme) => ({
   menuText: {
     color: theme.palette.black,
     fontWeight: 500
+  },
+  topBarIcon: {
+    color: theme.palette.stateBlue,
+    marginLeft: 8,
+    marginRight: 8
   }
 }));
 
@@ -252,6 +261,11 @@ export default function Topbar(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [notificationAnchorEl, setNotificationAnchorEl] = React.useState(null);
+
+  const [favourites, setFavourites] = React.useState(null);
+  const [savedJobs, setSavedJobs] = React.useState(null);
+  const [appliedJobs, setAppliedJobs] = React.useState(null);
+  const [notifications, setNotifications] = React.useState(null);
 
   const [searchString, setSearchString] = React.useState("");
 
@@ -284,13 +298,36 @@ export default function Topbar(props) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const loadBadgeData = () => {
+    axios.get(`${BACKEND_URL}/jobseeker/${sessionStorage.getItem("loginId")}`).then(res => {
+      if (res.data.success) {
+        if (res.data.jobseeker.hasOwnProperty("notifications")) {
+          setNotifications(res.data.jobseeker.notifications.length);
+        }
+        if (res.data.jobseeker.hasOwnProperty("favorites")) {
+          setFavourites(res.data.jobseeker.favorites.length);
+        }
+        if (res.data.jobseeker.hasOwnProperty("savedJobs")) {
+          setSavedJobs(res.data.jobseeker.savedJobs.length);
+        }
+        if (res.data.jobseeker.hasOwnProperty("applicationDetails")) {
+          setAppliedJobs(res.data.jobseeker.applicationDetails.length);
+        }
+      }
+    });
+  }
+
+  useEffect(() => {
+    loadBadgeData();
+  }, []);
+
   const loadProfilePic = () => {
     try {
-      if (header.payload.userRole == "employer") {
+      if (header.payload.userRole === "employer") {
         return require(`../employer/images/${header.payload.userId}`).default
-      } else if (header.payload.userRole == "jobseeker") {
+      } else if (header.payload.userRole === "jobseeker") {
         return require(`../employee/images/${header.payload.userId}`).default
-      } else if (header.payload.userRole == "admin") {
+      } else if (header.payload.userRole === "admin") {
         return require(`../admin/images/profilepic.jpg`).default
       }
     } catch (err) {
@@ -342,39 +379,6 @@ export default function Topbar(props) {
           <Typography className={classes.menuText} >Profile</Typography>
         </MenuItem>
 
-        { props.user === "jobseeker" &&
-          <Link to="/jobseeker/savedJobs">
-            <MenuItem className={classes.menuItem} >
-            <div className={classes.menuIcon}>
-                <BookmarksIcon />
-            </div>
-                <Typography className={classes.menuText} >Saved Jobs</Typography>
-            </MenuItem>
-          </Link>
-        }
-
-        { props.user === "jobseeker" &&
-          <Link to="/jobseeker/favoriteOrganizations">
-            <MenuItem className={classes.menuItem} >
-            <div className={classes.menuIcon}>
-                <FavoriteIcon />
-            </div>
-                <Typography className={classes.menuText} >Favorites</Typography>
-            </MenuItem>
-          </Link>
-        }
-
-        { props.user === "jobseeker" &&
-          <Link to="/jobseeker/appliedJobs">
-            <MenuItem className={classes.menuItem} >
-            <div className={classes.menuIcon}>
-                <WorkIcon />
-            </div>
-                <Typography className={classes.menuText} >Applied Jobs</Typography>
-            </MenuItem>
-          </Link>
-        }
-        
         <MenuItem className={classes.menuItem} >
           <div className={classes.menuIcon}>
             <SettingsRoundedIcon />
@@ -429,13 +433,34 @@ export default function Topbar(props) {
         )}
         {token && (
           <div className={classes.sectionMobile}>
-            <IconButton aria-label="show 4 new mails" color="primary">
-              <Badge badgeContent={4} color="secondary">
-                <WorkRoundedIcon />
-              </Badge>
-            </IconButton>
-            <IconButton aria-label="show 11 new notifications" color="inherit" style={{ width: 64 }}>
-              <Badge badgeContent={11} color="secondary">
+            {props.user === "jobseeker" &&
+              <>
+                <Link to="/jobseeker/savedJobs">
+                  <IconButton aria-label="" className={classes.topBarIcon}>
+                    <Badge badgeContent={savedJobs} color="secondary">
+                      <BookmarksIcon />
+                    </Badge>
+                  </IconButton>
+                </Link>
+                <Link to="/jobseeker/favoriteOrganizations">
+                  <IconButton aria-label="" className={classes.topBarIcon}>
+                    <Badge badgeContent={favourites} color="secondary">
+                      <FavoriteIcon />
+                    </Badge>
+                  </IconButton>
+                </Link>
+
+                <Link to="/jobseeker/appliedJobs">
+                  <IconButton aria-label="" className={classes.topBarIcon}>
+                    <Badge badgeContent={appliedJobs} color="secondary">
+                      <WorkRoundedIcon />
+                    </Badge>
+                  </IconButton>
+                </Link>
+              </>
+            }
+            <IconButton aria-label="show 11 new notifications" className={classes.topBarIcon}>
+              <Badge badgeContent={notifications} color="secondary">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
@@ -501,17 +526,39 @@ export default function Topbar(props) {
               <div className={classes.sectionDesktop}>
                 {token && (
                   <div>
-                    <IconButton aria-label="show 4 new mails" color="primary">
-                      <Badge badgeContent={4} color="secondary">
-                        <WorkRoundedIcon />
-                      </Badge>
-                    </IconButton>
+
+                    {props.user === "jobseeker" &&
+                      <>
+                        <Link to="/jobseeker/savedJobs">
+                          <IconButton aria-label="" className={classes.topBarIcon}>
+                            <Badge badgeContent={savedJobs} color="secondary">
+                              <BookmarksIcon />
+                            </Badge>
+                          </IconButton>
+                        </Link>
+                        <Link to="/jobseeker/favoriteOrganizations">
+                          <IconButton aria-label="" className={classes.topBarIcon}>
+                            <Badge badgeContent={favourites} color="secondary">
+                              <FavoriteIcon />
+                            </Badge>
+                          </IconButton>
+                        </Link>
+
+                        <Link to="/jobseeker/appliedJobs">
+                          <IconButton aria-label="" className={classes.topBarIcon}>
+                            <Badge badgeContent={appliedJobs} color="secondary">
+                              <WorkRoundedIcon />
+                            </Badge>
+                          </IconButton>
+                        </Link>
+                      </>
+                    }
+
                     <IconButton
-                      aria-label="show 17 new notifications"
-                      color="primary"
+                      className={classes.topBarIcon}
                       onClick={handleNotificationOpen}
                     >
-                      <Badge badgeContent={17} color="secondary" >
+                      <Badge badgeContent={notifications} color="secondary" >
                         <NotificationsIcon />
                       </Badge>
                     </IconButton>

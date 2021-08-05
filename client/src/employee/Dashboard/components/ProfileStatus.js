@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {  Link, makeStyles, withStyles } from '@material-ui/core'
+import { makeStyles, withStyles } from '@material-ui/core'
 import FloatCard from '../../../components/FloatCard';
 import { Grid, Typography, Button } from '@material-ui/core';
 import { indigo } from '@material-ui/core/colors';
@@ -10,6 +10,7 @@ import ChevronRightTwoToneIcon from '@material-ui/icons/ChevronRightTwoTone';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import BACKEND_URL from '../../../Config';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -102,7 +103,7 @@ function ProfileStatus(props) {
             if(res.data.jobseeker.university.length > 0){
                 if(Object.keys(res.data.jobseeker.university[0]).length === 0){
                     res.data.jobseeker.university.splice(0,1)
-                }else if(res.data.jobseeker.university[0].university == "" && res.data.jobseeker.university[0].degree == "" && res.data.jobseeker.university[0].fieldOfStudy == "" && res.data.jobseeker.university[0].startDate == "" && res.data.jobseeker.university[0].endDate == ""){
+                }else if(res.data.jobseeker.university[0].university === "" && res.data.jobseeker.university[0].degree === "" && res.data.jobseeker.university[0].fieldOfStudy === "" && res.data.jobseeker.university[0].startDate === "" && res.data.jobseeker.university[0].endDate === ""){
                     res.data.jobseeker.university.splice(0,1)
                 }
                 if(res.data.jobseeker.university.length > 0){
@@ -114,7 +115,7 @@ function ProfileStatus(props) {
             if(res.data.jobseeker.school.length > 0){
                 if(Object.keys(res.data.jobseeker.school[0]).length === 0){
                     res.data.jobseeker.school.splice(0,1)
-                }else if(res.data.jobseeker.school[0].school == ""){
+                }else if(res.data.jobseeker.school[0].school === ""){
                     res.data.jobseeker.school.splice(0,1)
                 }
                 if(res.data.jobseeker.school.length > 0){
@@ -126,7 +127,7 @@ function ProfileStatus(props) {
             if(res.data.jobseeker.course.length > 0){
                 if(Object.keys(res.data.jobseeker.course[0]).length === 0){
                     res.data.jobseeker.course.splice(0,1)
-                }else if(res.data.jobseeker.course[0].course == "" && res.data.jobseeker.course[0].institute == "" && res.data.jobseeker.course[0].from == "" && res.data.jobseeker.course[0].to == ""){
+                }else if(res.data.jobseeker.course[0].course === "" && res.data.jobseeker.course[0].institute === "" && res.data.jobseeker.course[0].from === "" && res.data.jobseeker.course[0].to === ""){
                     res.data.jobseeker.course.splice(0,1)
                 }
                 if(res.data.jobseeker.course.length > 0){
@@ -138,7 +139,7 @@ function ProfileStatus(props) {
             if(res.data.jobseeker.award.length > 0){
                 if(Object.keys(res.data.jobseeker.award[0]).length === 0){
                     res.data.jobseeker.award.splice(0,1)
-                }else if(res.data.jobseeker.award[0].title == "" && res.data.jobseeker.award[0].issuedBy == "" && res.data.jobseeker.award[0].date == "" && res.data.jobseeker.award[0].description == ""){
+                }else if(res.data.jobseeker.award[0].title === "" && res.data.jobseeker.award[0].issuedBy === "" && res.data.jobseeker.award[0].date === "" && res.data.jobseeker.award[0].description === ""){
                     res.data.jobseeker.award.splice(0,1)
                 }
                 if(res.data.jobseeker.award.length > 0){
@@ -150,7 +151,7 @@ function ProfileStatus(props) {
             if(res.data.jobseeker.volunteer.length > 0){
                 if(Object.keys(res.data.jobseeker.volunteer[0]).length === 0){
                     res.data.jobseeker.volunteer.splice(0,1)
-                }else if(res.data.jobseeker.volunteer[0].title == "" && res.data.jobseeker.volunteer[0].organization == "" && res.data.jobseeker.volunteer[0].from == "" && res.data.jobseeker.volunteer[0].to == ""){
+                }else if(res.data.jobseeker.volunteer[0].title === "" && res.data.jobseeker.volunteer[0].organization === "" && res.data.jobseeker.volunteer[0].from === "" && res.data.jobseeker.volunteer[0].to === ""){
                     res.data.jobseeker.volunteer.splice(0,1)
                 }
                 if(res.data.jobseeker.volunteer.length > 0){
@@ -162,7 +163,7 @@ function ProfileStatus(props) {
             if(res.data.jobseeker.work.length > 0){
                 if(Object.keys(res.data.jobseeker.work[0]).length === 0){
                     res.data.jobseeker.work.splice(0,1)
-                }else if(res.data.jobseeker.work[0].place == "" && res.data.jobseeker.work[0].description == "" && res.data.jobseeker.work[0].position == "" && res.data.jobseeker.work[0].from == "" && res.data.jobseeker.work[0].to == "" && res.data.jobseeker.work[0].taskAndResponsibility == ""){
+                }else if(res.data.jobseeker.work[0].place === "" && res.data.jobseeker.work[0].description=== "" && res.data.jobseeker.work[0].position === "" && res.data.jobseeker.work[0].from === "" && res.data.jobseeker.work[0].to === "" && res.data.jobseeker.work[0].taskAndResponsibility === ""){
                     res.data.jobseeker.work.splice(0,1)
                 }
                 if(res.data.jobseeker.work.length > 0){
@@ -174,7 +175,7 @@ function ProfileStatus(props) {
             if(res.data.jobseeker.project.length > 0){
                 if(Object.keys(res.data.jobseeker.project[0]).length === 0){
                     res.data.jobseeker.project.splice(0,1)
-                }else if(res.data.jobseeker.project[0].name == "" && res.data.jobseeker.project[0].link == "" && res.data.jobseeker.project[0].description == "" && res.data.jobseeker.project[0].from == "" && res.data.jobseeker.project[0].to == ""){
+                }else if(res.data.jobseeker.project[0].name === "" && res.data.jobseeker.project[0].link === "" && res.data.jobseeker.project[0].description === "" && res.data.jobseeker.project[0].from === "" && res.data.jobseeker.project[0].to === ""){
                     res.data.jobseeker.project.splice(0,1)
                 }
                 if(res.data.jobseeker.project.length > 0){
@@ -186,7 +187,7 @@ function ProfileStatus(props) {
             if(res.data.jobseeker.skills.length > 0){
                 if(Object.keys(res.data.jobseeker.skills[0]).length === 0){
                     res.data.jobseeker.skills.splice(0,1)
-                }else if(res.data.jobseeker.skills[0] == ""){
+                }else if(res.data.jobseeker.skills[0] === ""){
                     res.data.jobseeker.skills.splice(0,1)
                 }
                 if(res.data.jobseeker.skills.length > 0){
@@ -211,7 +212,9 @@ function ProfileStatus(props) {
                     </Typography>
                 </div>
                 <div style={{width:"40%"}}>
-                    <Button className={classes.defaultButton} style={{padding:"10px 15px 10px 15px",textTransform: 'none',backgroundColor:theme.palette.tuftsBlue}}>Finish Your Profile</Button>
+                    <Link to="/jobseeker">
+                        <Button className={classes.defaultButton} style={{padding:"10px 15px 10px 15px",textTransform: 'none',backgroundColor:theme.palette.tuftsBlue}}>Finish Your Profile</Button>
+                    </Link>
                 </div>
             </Grid>
           );
@@ -238,8 +241,8 @@ function ProfileStatus(props) {
                             Anne Shirley
                         </Typography>
                         <Typography variant="body2" component="p" sx={{ opacity: 0.72 }} style={{fontSize:"16px",textAlign:"left",}}>
-                            <Link style={{display: 'flex',alignItems: 'center',flexWrap: 'wrap',color: theme.palette.tuftsBlue}}>
-                            <span>View Profile</span><ChevronRightTwoToneIcon style={{marginTop:"-1px"}} />
+                            <Link to="/jobseeker" style={{display: 'flex',alignItems: 'center',flexWrap: 'wrap',color: theme.palette.tuftsBlue}}>
+                                <span>View Profile</span><ChevronRightTwoToneIcon style={{marginTop:"-1px"}} />
                             </Link>
                         </Typography>
                     </div>

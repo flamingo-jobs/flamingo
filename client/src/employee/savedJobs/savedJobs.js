@@ -5,6 +5,7 @@ import {
   Grid,
   Typography,
   Container,
+  CircularProgress,
 } from "@material-ui/core";
 import SavedJob from "./components/savedJob";
 import BACKEND_URL from "../../Config";
@@ -71,7 +72,16 @@ const SavedJobs = () => {
       return (
         <Grid item xs={12}>
           <FloatCard>
-            <Typography>You don't have any saved jobs yet.</Typography>
+          <CircularProgress />
+          </FloatCard>
+        </Grid>
+      );
+    }
+    if (savedJobIds === "empty") {
+      return (
+        <Grid item xs={12}>
+          <FloatCard>
+          <Typography>You don't have any saved jobs yet.</Typography>
           </FloatCard>
         </Grid>
       );

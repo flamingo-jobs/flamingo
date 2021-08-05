@@ -1,5 +1,5 @@
 import React from 'react'
-import { colors, makeStyles, Typography } from '@material-ui/core'
+import { CircularProgress, colors, makeStyles, Typography } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid';
 
 import OrganizationCard from './components/OrganizationCard';
@@ -13,6 +13,7 @@ import Pagination from '@material-ui/lab/Pagination';
 import PaginationItem from '@material-ui/lab/PaginationItem';
 import OrgSearchBar from './components/OrgSearchBar';
 import LoginModal from './components/loginModal';
+import FloatCard from '../components/FloatCard';
 
 const useStyles = makeStyles((theme) => ({
     organizationsGrid: {
@@ -103,11 +104,11 @@ function Organizations(props) {
 
     const updateQuery = () => {
 
-        if (Object.keys(filters).length != 0 && Object.keys(search).length != 0) {
+        if (Object.keys(filters).length !== 0 && Object.keys(search).length !== 0) {
             setQueryParams({ $and: [filters, search] });
-        } else if (Object.keys(filters).length == 0) {
+        } else if (Object.keys(filters).length === 0) {
             setQueryParams(search);
-        } else if (Object.keys(search).length == 0) {
+        } else if (Object.keys(search).length === 0) {
             setQueryParams(filters);
         } else {
             setQueryParams({});
@@ -125,7 +126,7 @@ function Organizations(props) {
 
         let start = (page - 1) * 10;
         axios.post(`${BACKEND_URL}/employers/filter`, { queryParams: queryParams, options: { skip: start, limit: 10 } }).then(res => {
-            
+
             if (res.data.success) {
                 setOrganizations(res.data.existingData)
             } else {
@@ -135,23 +136,30 @@ function Organizations(props) {
     }
 
     const retrieveJobseeker = async () => {
-        if(userId){
+        if (userId) {
             try {
-              const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
-              if (response.data.success) {
-                setFavoriteOrgs(response.data.jobseeker.favoriteOrganizations);
-              }
+                const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
+                if (response.data.success) {
+                    setFavoriteOrgs(response.data.jobseeker.favoriteOrganizations);
+                }
             } catch (err) {
-              console.log(err);
+                console.log(err);
             }
         }
     };
 
     const displayOrganizations = () => {
-        if (organizations) {
+        if (organizations.length === 0) {
+            return (
+                <Grid item sm={12} style={{ marginBottom: 16 }}>
+                    <FloatCard>
+                        <CircularProgress />
+                    </FloatCard>
+                </Grid>)
+        } else if (organizations) {
             return organizations.map(org => (
                 <Grid item xs={12} md={12} key={org._id} className={classes.gridCard}>
-                    <OrganizationCard 
+                    <OrganizationCard
                         userId={userId}
                         info={org}
                         userRole={props.userRole}
@@ -161,18 +169,13 @@ function Organizations(props) {
                     />
                 </Grid>
             ))
-        } else {
-            return (
-                <Grid item sm={12}>
-                    <Typography>No organizations to display...</Typography>
-                </Grid>)
         }
     }
 
     return (
         <>
             {/* Works only when user is not signed in */}
-            <LoginModal 
+            <LoginModal
                 open={open}
                 handleClose={handleClose}
             ></LoginModal>
@@ -184,7 +187,7 @@ function Organizations(props) {
                 <Grid item container xs={12} sm={12} md={8} lg={9} spacing={2} direction="row" className={classes.organizationsGrid} justify="flex-start" alignItems="flex-start">
                     {displayOrganizations()}
                     <Grid item sm={12}>
-                        <Pagination count={Math.ceil(count / 10)} color="primary" page={page} onChange={changePage} classes={{ ul: classes.pagination}}/>
+                        <Pagination count={Math.ceil(count / 10)} color="primary" page={page} onChange={changePage} classes={{ ul: classes.pagination }} />
                     </Grid>
                 </Grid>
                 <Grid item xs={12} sm={12} md={4} lg={3} className={classes.filterGrid}>

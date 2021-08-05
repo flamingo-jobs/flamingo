@@ -126,10 +126,18 @@ function EduItem(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [styleEdit, setStyleEdit] = useState({display: 'none'});
-  const uniStartDate = props.startDate.split("/");
-  const uniEndDate = props.endDate.split("/");
-  const schoolStartDate = props.startDate.split("/");
-  const schoolEndDate = props.endDate.split("/");
+  let uniStartDate=[0,0];
+  let uniEndDate=[0,0];
+  let schoolStartDate=[0,0];
+  let schoolEndDate=[0,0];
+  if(props.startDate !== 'null/null'){
+    uniStartDate = props.startDate.split("/");
+    schoolStartDate = props.startDate.split("/");
+  }
+  if(props.endDate !== 'null/null'){
+    uniEndDate = props.endDate.split("/");
+    schoolEndDate = props.endDate.split("/");
+  }
   const [university, setUniversity] = useState({university: props.university, degree: props.degree, fieldOfStudy: props.fieldOfStudy, GPA: props.gpa, startYear: uniStartDate[1], startMonth: uniStartDate[0], endYear: uniEndDate[1], endMonth: uniEndDate[0], societiesAndActivities: props.societiesAndActivities});
   const [school, setSchool] = useState({school: props.school, startYear: schoolStartDate[1], startMonth: schoolStartDate[0], endYear: schoolEndDate[1], endMonth: schoolEndDate[0], description: props.description});
 
@@ -178,7 +186,7 @@ function EduItem(props) {
   }
 
   useEffect(() => {
-    if (deleteSuccess == true) {
+    if (deleteSuccess === true) {
         setAlertData({severity: "success", msg: "Item deleted successfully!"});
         handleAlert();
     }
@@ -386,7 +394,7 @@ function EduItem(props) {
   
 
   useEffect(()=>{
-    if (props.level == "University") {
+    if (props.level === "University") {
       let temp = <form className={classes.form} onSubmit={onSubmitUni}>
       <div>
       <TextField
@@ -398,6 +406,7 @@ function EduItem(props) {
           size="small"
           value={university.university}
           onChange={onChangeUniversity}
+          required
           style={{marginBottom: "32px"}}
         />
         <FormControl variant="outlined" className={classes.formControl}>
@@ -408,6 +417,7 @@ function EduItem(props) {
           label="Select Degree"
           className={classes.select}
           value={university.degree}
+          required
         >
           <option aria-label="None" value="" />
           <option value="Bachelor's">Bachelor's</option>
@@ -423,6 +433,7 @@ function EduItem(props) {
           size="small"
           value={university.fieldOfStudy}
           onChange={onChangeFieldOfStudy}
+          required
         />
         <TextField
         className={classes.field}
@@ -524,7 +535,7 @@ function EduItem(props) {
         <Button type="submit" className={classes.defaultButton} style={{ width:'100%',marginTop:'5%'}}>Apply Changes</Button>
     </form>;
       setForm(temp);
-    }else if(props.level=="School"){
+    }else if(props.level==="School"){
       let temp=<form className={classes.form} onSubmit={onSubmitSchool}>
       <div>
       <TextField
@@ -536,6 +547,7 @@ function EduItem(props) {
           size="small"
           value={school.school}
           onChange={onChangeSchool}
+          required
         />
         <Grid container direction="row">
           <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
@@ -627,18 +639,18 @@ function EduItem(props) {
   },[university,school])
 
   const filterFields = () => {
-    if(props.level == "University"){
+    if(props.level === "University"){
         return (
             <React.Fragment>
                 <Grid item xs={3} style={{marginLeft:"-10px"}}>
                     <Typography variant="body2" color="textSecondary" component="p">
-                        {university.endMonth+"/"+university.endYear}
+                        {university.endMonth === 0 ? "" : (university.endMonth+"/"+university.endYear)}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
-                        |
+                        {university.endMonth === 0 ? "" : "|" }
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
-                        {university.startMonth+"/"+university.startYear}
+                        {university.startMonth === 0 ? "" : (university.startMonth+"/"+university.startYear)}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p" style={{fontStyle:"italic",fontWeight:"bolder"}}>
                         {props.level}
@@ -649,29 +661,29 @@ function EduItem(props) {
                         {university.university}
                     </Typography>
                     <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'15px',}}>
-                    {university.degree} - {university.fieldOfStudy}
+                    {(university.degree ? university.degree : "") + (university.fieldOfStudy ? " - " + university.fieldOfStudy : "")}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',}}>
-                        GPA : {university.GPA}
+                        {university.GPA ? "GPA : " + university.GPA : ""}
                     </Typography>
                     <Typography variant="body2" component="p" style={{textAlign:'left',color: '#666',marginTop:'15px'}}>
-                        <b>Societies & activities : </b>{university.societiesAndActivities}
+                        <b>{university.societiesAndActivities ? "Societies & activities : " : ""}</b>{university.societiesAndActivities}
                     </Typography>
                 </Grid>
             </React.Fragment>
         );
-    }else if(props.level == "School"){
+    }else if(props.level === "School"){
         return (
             <React.Fragment>
                 <Grid item xs={3} style={{marginLeft:"-10px"}}>
                     <Typography variant="body2" color="textSecondary" component="p">
-                      {school.endMonth+"/"+school.endYear}
+                      {school.endMonth === 0 ? "" : (school.endMonth+"/"+school.endYear)}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
-                        |
+                      {school.endMonth === 0 ? "" : "|" }
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
-                      {school.startMonth+"/"+school.startYear}
+                      {school.startMonth === 0 ? "" : (school.startMonth+"/"+school.startYear)}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p" style={{fontStyle:"italic",fontWeight:"bolder"}}>
                         {props.level}

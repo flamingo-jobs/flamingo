@@ -121,12 +121,12 @@ function PeopleSearchBar(props) {
 
     const passFilters = () => {
         let filterObjects = {};
-        if (keywords.length != 0) {
+        if (keywords.length !== 0) {
             let regexExp = keywords.join('|');
             filterObjects = { ...filterObjects, $or : [ {name: { $regex : regexExp, $options : "i"}}, {intro: { $regex : regexExp, $options : "i"}}]};
         }
 
-        if (locations.length != 0) {
+        if (locations.length !== 0) {
             let locationRegex = locations.join("|");
             filterObjects = { ...filterObjects, "address.city" : {$elemMatch: {$regex : locationRegex, $options : "i"}}};
         }

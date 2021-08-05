@@ -227,6 +227,7 @@ function EducationSection(props) {
   }
 
   function onChangeGPA(e){
+    e.preventDefault();
     setUniversity(prevState => {
       return {...prevState, GPA: e.target.value}
     })
@@ -309,7 +310,7 @@ function EducationSection(props) {
           if(Object.keys(uniData[0]).length === 0){
             uniData.splice(0,1)
             i++;
-          }else if(uniData[0].university == "" && uniData[0].degree == "" && uniData[0].fieldOfStudy == "" && uniData[0].startDate == "" && uniData[0].endDate == ""){
+          }else if(uniData[0].university === "" && uniData[0].degree === "" && uniData[0].fieldOfStudy === "" && uniData[0].startDate === "" && uniData[0].endDate === ""){
             uniData.splice(0,1)
             i++;
           }
@@ -319,7 +320,7 @@ function EducationSection(props) {
           if(Object.keys(schoolData[0]).length === 0){
             schoolData.splice(0,1)
             j++;
-          }else if(schoolData[0].school == ""){
+          }else if(schoolData[0].school === ""){
             schoolData.splice(0,1)
             i++;
           }
@@ -485,13 +486,13 @@ function EducationSection(props) {
               ))
       }
     }
-    if(eduCount == 0){
+    if(eduCount === 0){
       return (<Typography variant="body2" color="textSecondary" component="p">Education details not added.</Typography>)
     }
   }
 
   useEffect(()=>{
-    if (level == "University") {
+    if (level === "University") {
       let temp = <form className={classes.form} onSubmit={onSubmitUniversity}>
       <div>
       <TextField
@@ -502,6 +503,7 @@ function EducationSection(props) {
           variant="outlined"
           size="small"
           onChange={onChangeUniversity}
+          required
         />
         <FormControl variant="outlined" className={classes.formControl}>
         <InputLabel className={classes.placeholder} htmlFor="outlined-age-native-simple">Select Degree</InputLabel>
@@ -510,6 +512,7 @@ function EducationSection(props) {
           onChange={onChangeDegree}
           label="Select Degree"
           className={classes.select}
+          required
         >
           <option aria-label="None" value="" />
           <option value="Bachelor's">Bachelor's</option>
@@ -524,15 +527,15 @@ function EducationSection(props) {
           variant="outlined"
           size="small"
           onChange={onChangeFieldOfStudy}
+          required
         />
         <TextField
         className={classes.field}
+          type="number"
           id="outlined-basic"
-          label="GPA"
-          min="0.00"
-          step="0.01"
-          max="4.25"
-          presicion={2}  
+          pattern="^(\d+)(,\d{1,2}|.\d{1,2})?$"
+          onKeyDown={(event) => event.keyCode === 69 ? event.preventDefault() : true}
+          label="GPA" 
           variant="outlined"
           size="small"
           onChange={onChangeGPA}
@@ -619,7 +622,7 @@ function EducationSection(props) {
         <Button type="submit" className={classes.defaultButton} style={{ width:'100%',marginTop:'5%'}}>Apply Changes</Button>
     </form>;
       setForm(temp);
-    }else if(level=="School"){
+    }else if(level==="School"){
       let temp=<form className={classes.form} onSubmit={onSubmitSchool}>
       <div>
       <TextField
@@ -630,6 +633,7 @@ function EducationSection(props) {
           variant="outlined"
           size="small"
           onChange={onChangeSchool}
+          required
         />
         <Grid container direction="row">
           <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
