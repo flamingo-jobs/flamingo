@@ -132,12 +132,14 @@ function EducationSection(props) {
   let j=0;
   let eduCount=0;
   let loginId;
+  let login = false;
   const jwt = require("jsonwebtoken");
   const token = sessionStorage.getItem("userToken");
   const header = jwt.decode(token, { complete: true });
   if(token === null){
     loginId=props.jobseekerID;
   }else if (header.payload.userRole === "jobseeker") {
+    login = true;
     loginId=sessionStorage.getItem("loginId");
   } else {
     loginId=props.jobseekerID;
@@ -734,9 +736,11 @@ function EducationSection(props) {
             
         </Grid>
         <Grid item style={{ textAlign: 'right' }}>
+        { login ? <>
             <Button className={classes.defaultButton} style={{ float: 'right',marginRight: '0px',backgroundColor:'white'}} onClick={handleClick}>
                 <AddIcon style={{color: theme.palette.tuftsBlue,}} className={classes.editIcon} />
             </Button>
+            </> : null }
             <Menu
               id="simple-menu"
               anchorEl={anchorEl}

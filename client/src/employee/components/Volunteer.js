@@ -116,12 +116,14 @@ function Volunteer(props) {
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
   let i=0;
   let loginId;
+  let login = false;
   const jwt = require("jsonwebtoken");
   const token = sessionStorage.getItem("userToken");
   const header = jwt.decode(token, { complete: true });
   if(token === null){
     loginId=props.jobseekerID;
   }else if (header.payload.userRole === "jobseeker") {
+    login = true;
     loginId=sessionStorage.getItem("loginId");
   } else {
     loginId=props.jobseekerID;
@@ -334,9 +336,11 @@ function Volunteer(props) {
             </Typography>
         </Grid>
         <Grid item style={{ textAlign: 'right' }}>
+        { login ? <>
             <Button className={classes.defaultButton} style={{ float: 'right',marginRight: '0px',backgroundColor:'white'}} onClick={handleOpen}>
                 <AddIcon style={{color: theme.palette.tuftsBlue,}} className={classes.editIcon} />
             </Button>
+            </> : null }
         </Grid>
 
         {/*-------------- add new volunteer field popup content ------------------- */}

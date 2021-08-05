@@ -125,12 +125,14 @@ function IntroSection(props) {
     email: ""
   });
   let loginId;
+  let login = false;
   const jwt = require("jsonwebtoken");
   const token = sessionStorage.getItem("userToken");
   const header = jwt.decode(token, { complete: true });
   if(token === null){
     loginId=props.jobseekerID;
   }else if (header.payload.userRole === "jobseeker") {
+    login = true;
     loginId=sessionStorage.getItem("loginId");
   } else {
     loginId=props.jobseekerID;
@@ -246,9 +248,11 @@ function IntroSection(props) {
 
     return (
       <FloatCard>
+        { login ? <>
         <Button className={classes.defaultButton} style={{ float: 'right',marginRight: '0px',backgroundColor:'white'}} onClick={handleOpen}>
             <EditIcon className={classes.editIcon} style={{color: theme.palette.tuftsBlue,}} />
         </Button>
+        </> : null }
   
         {/* edit popup content */}
         <Modal

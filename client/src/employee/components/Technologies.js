@@ -25,7 +25,8 @@ const useStyles = makeStyles((theme) => ({
 
 function Technologies(props) {
     const classes = useStyles();
-
+    const [technologyStack, setTechnologyStack] = useState([]);
+    const [tech, setTech] = useState([]);
     const [technologies, setTechnologies] = useState([]);
     const [refershRequired, setRefreshRequired] = useState(false);
 
@@ -37,16 +38,18 @@ function Technologies(props) {
 
     let i=0;
     let loginId;
+    let login = false;
     const jwt = require("jsonwebtoken");
     const token = sessionStorage.getItem("userToken");
     const header = jwt.decode(token, { complete: true });
     if(token === null){
         loginId=props.jobseekerID;
-      }else if (header.payload.userRole === "jobseeker") {
+    }else if (header.payload.userRole === "jobseeker") {
+        login = true;
         loginId=sessionStorage.getItem("loginId");
-      } else {
+    } else {
         loginId=props.jobseekerID;
-      }
+    }
 
     useEffect(() => {
             retrieveTechnoliges();
@@ -89,12 +92,34 @@ function Technologies(props) {
             }
         })
 
+            console.log("inside fetchData"+loginId)
+            let technologyStackData;
+            axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
+            .then(res => {
+              if(res.data.success){
+                if(res.data.jobseeker.technologyStack.length > 0){
+                  technologyStackData = res.data.jobseeker.technologyStack;
+                  if(Object.keys(res.data.jobseeker.technologyStack[0]).length === 0){
+                      res.data.jobseeker.technologyStack.splice(0,1)
+                      i++;
+                  }else if(technologyStackData[0].technologyStack == "" && technologyStackData[0].institute == "" && technologyStackData[0].from == "" && technologyStackData[0].to == ""){
+                      res.data.jobseeker.technologyStack.splice(0,1)
+                      i++;
+                  }
+                }
+                setTechnologyStack(technologyStackData)
+                console.log(res.data.jobseeker.technologyStack)
+
+              }
+            })
     }
+
+
 
     const displayTechnologies = () => {
         if (technologies) {
             return technologies.map(technology => (
-                <DetailedAccordion key={technology._id} info={technology} onRefresh={handleRefresh} onSuccessUpdate={handleUpdatesuccess} onFailedUpdate={handleUpdateFailed} />
+                <DetailedAccordion jobseeker={loginId} key={technology._id} info={technology} techno={technologyStack} onRefresh={handleRefresh} onSuccessUpdate={handleUpdatesuccess} onFailedUpdate={handleUpdateFailed} />
             ))
         } else {
             return (
