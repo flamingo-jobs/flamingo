@@ -62,6 +62,12 @@ const jobseekerSchema = new mongoose.Schema({
   favoriteOrganizations:{
     type: Array,
   },
+  recommendedJobs: {
+    type: Array,
+  },
+  recommendedOrgs: {
+    type: Array
+  }
 });
 
 module.exports = mongoose.model("Jobseeker", jobseekerSchema);
