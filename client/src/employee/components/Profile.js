@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import {  makeStyles } from '@material-ui/core'
 import '../styles/Profile.css'
 import Grid from '@material-ui/core/Grid';
@@ -31,30 +31,35 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function Profile(match) {
+function Profile() {
     const classes = useStyles();
+    const [jobseekerID, setJobseekerID] = useState(window.location.pathname.split("/")[2]);
+
+  useEffect(() => {
+    setJobseekerID(window.location.pathname.split("/")[2]);
+  }, [window.location.pathname]);
 
     return (
         <Grid item container sm={12} spacing={3} direction="row" justify="space-between" alignItems="flex-start">
             <Grid item md={12} lg={4} spacing={3}>
-                <IntroSection jobseekerID="" />
+                <IntroSection jobseekerID={jobseekerID} />
                 <Space />
-                <EducationSection jobseekerID="" />
+                <EducationSection jobseekerID={jobseekerID} />
                 <Space />
-                <Course jobseekerID="" />
+                <Course jobseekerID={jobseekerID} />
                 <Space />
-                <Achievements jobseekerID="" />
+                <Achievements jobseekerID={jobseekerID} />
                 <Space />
-                <Volunteer jobseekerID="" />
+                <Volunteer jobseekerID={jobseekerID} />
             </Grid>
             <Grid item md={12} lg={8} spacing={3}>
-                <WorkExperience jobseekerID="" />
+                <WorkExperience jobseekerID={jobseekerID} />
                 <Space />
-                <ProjectsSection jobseekerID="" />
+                <ProjectsSection jobseekerID={jobseekerID} />
                 <Space />
-                <TechnologySection jobseekerID="" />
+                <TechnologySection jobseekerID={jobseekerID} />
                 <Space />
-                <Skills jobseekerID="" />
+                <Skills jobseekerID={jobseekerID} />
             </Grid>                                            
         </Grid>
     )

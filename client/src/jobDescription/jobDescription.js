@@ -60,7 +60,7 @@ function JobDescription(props) {
 
   useEffect(() => {
     setJobId(window.location.pathname.split("/")[2]);
-  }, [window.location.pathname]);
+  }, [window.location.pathname]); 
 
   const checkApplied = () => {
     if (job !== "empty" && job.hasOwnProperty("applicationDetails")) {

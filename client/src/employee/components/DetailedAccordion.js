@@ -122,10 +122,12 @@ export default function DetailedAccordion(props) {
   const jwt = require("jsonwebtoken");
   const token = sessionStorage.getItem("userToken");
   const header = jwt.decode(token, { complete: true });
-  if (header.payload.userRole === "jobseeker") {
-      loginId=sessionStorage.getItem("loginId");
+  if(token === null){
+    loginId=props.jobseekerID;
+  }else if (header.payload.userRole === "jobseeker") {
+    loginId=sessionStorage.getItem("loginId");
   } else {
-      loginId=props.jobseekerID;
+    loginId=props.jobseekerID;
   }
 
   useEffect(()=>{
