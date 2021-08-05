@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
@@ -106,10 +106,59 @@ const useStyles = makeStyles((theme) => ({
 
 export default function DetailedAccordion(props) {
   const classes = useStyles();
-  const [list, setList] = React.useState(props.info.list);
-  const [frontEnd, setFrontEnd] = React.useState(props.info.frontEnd);
-  const [backEnd, setBackEnd] = React.useState(props.info.backEnd);
+  const [technologies, setTechnologies] = useState([]);
+  const [technologyStack, setTechnologyStack] = useState([]);
+  const [listAll, setListAll] = React.useState(props.info.stack.list);
+  const [frontEndAll, setFrontEndAll] = React.useState(props.info.stack.frontEnd);
+  const [backEndAll, setBackEndAll] = React.useState(props.info.stack.backEnd);
+
+  const [list, setList] = React.useState([]);
+  const [frontEnd, setFrontEnd] = React.useState([]);
+  const [backEnd, setBackEnd] = React.useState([]);
   const [editing, setEditing] = React.useState(false);
+
+  let i=0;
+  let loginId;
+  const jwt = require("jsonwebtoken");
+  const token = sessionStorage.getItem("userToken");
+  const header = jwt.decode(token, { complete: true });
+  if (header.payload.userRole === "jobseeker") {
+      loginId=sessionStorage.getItem("loginId");
+  } else {
+      loginId=props.jobseekerID;
+  }
+
+  useEffect(()=>{
+    let technologyStackData;
+      axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
+      .then(res => {
+      if(res.data.success){
+          if(res.data.jobseeker.technologyStack.length > 0){
+          technologyStackData = res.data.jobseeker.technologyStack;
+          if(Object.keys(res.data.jobseeker.technologyStack[0]).length === 0){
+              res.data.jobseeker.technologyStack.splice(0,1)
+              i++;
+          }else if(technologyStackData[0].technologyStack == "" && technologyStackData[0].institute == "" && technologyStackData[0].from == "" && technologyStackData[0].to == ""){
+              res.data.jobseeker.technologyStack.splice(0,1)
+              i++;
+          }
+          }
+          setTechnologyStack(technologyStackData)
+          matchDetails()
+      }
+    })
+  },[])
+
+  const matchDetails = () => {
+    technologyStack.forEach(technology => {
+      if(props.info.name == technology.type){
+        setList(technology.list);
+        setFrontEnd(technology.frontEnd);
+        setBackEnd(technology.backEnd);
+        return;
+      }
+    });
+  }
 
   const handleList = (list) => {
     setList(list);
@@ -132,9 +181,7 @@ export default function DetailedAccordion(props) {
   }
 
   const handleCancel = () => {
-    setList(props.info.list);
-    setFrontEnd(props.info.frontEnd);
-    setBackEnd(props.info.backEnd);
+    matchDetails();
     setEditing(false);
   }
 
@@ -170,14 +217,14 @@ export default function DetailedAccordion(props) {
   const displayAccordionDetails = () => {
     return <AccordionDetails className={classes.details}>
       <Grid container spacing={1}>
-        {props.info.frontEnd ?
+        {props.info.stack.frontEnd ?
           <>
             <Grid item xs={12} lg={6}>
               <Typography className={classes.secondaryHeading}>Front-end</Typography>
               <Autocomplete
                 multiple
                 // id={`tags-filled-1-${props.info._id}`}
-                options={[]}
+                options={frontEndAll}
                 value={frontEnd}
                 freeSolo
                 disabled={!editing}
@@ -202,7 +249,7 @@ export default function DetailedAccordion(props) {
               <Autocomplete
                 multiple
                 // id={`tags-filled-2-${props.info._id}`}
-                options={[]}
+                options={backEndAll}
                 value={backEnd}
                 freeSolo
                 disabled={!editing}
@@ -226,7 +273,7 @@ export default function DetailedAccordion(props) {
             <Autocomplete
               multiple
               // id={`tags-filled-1-${props.info._id}`}
-              options={[]}
+              options={listAll}
               value={list}
               disabled={!editing}
               freeSolo
@@ -261,7 +308,7 @@ export default function DetailedAccordion(props) {
           id="panel1c-header"
         >
           <div className={classes.column}>
-            <Typography className={classes.heading}>{props.info.type}</Typography>
+            <Typography className={classes.heading}>{props.info.name}</Typography>
           </div>
           <div className={classes.column}>
 
