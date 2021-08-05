@@ -12,17 +12,15 @@ import WorkRoundedIcon from "@material-ui/icons/WorkRounded";
 import FloatCard from "../../../components/FloatCard";
 import { Link } from "react-router-dom";
 import ReactTimeAgo from "react-time-ago";
-import BookmarkIcon from '@material-ui/icons/Bookmark';
-import BookmarkBorderRoundedIcon from "@material-ui/icons/BookmarkBorderRounded";
+import BookmarkIcon from "@material-ui/icons/Bookmark";
 import BACKEND_URL from "../../../Config";
 import axios from "axios";
-import SnackBarAlert from "../../../components/SnackBarAlert";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     textAlign: "left",
   },
-  jobContainer:{
+  jobContainer: {
     marginBottom: theme.spacing(3),
   },
   header: {
@@ -46,8 +44,8 @@ const useStyles = makeStyles((theme) => ({
   favorite: {
     display: "block",
     color: theme.palette.pinkyRed,
-    "&:hover":{
-      cursor: "pointer"
+    "&:hover": {
+      cursor: "pointer",
     },
   },
   body: {
@@ -96,38 +94,10 @@ const useStyles = makeStyles((theme) => ({
 const SavedJob = (props) => {
   const classes = useStyles();
   const [job, setJob] = useState("empty");
-  const [isSaved, setIsSaved] = useState(true);
-
-  // Alert related states
-  const [alertShow, setAlertShow] = useState(false);
-  const [alertData, setAlertData] = useState({ severity: "", msg: "" });
 
   useEffect(() => {
     retrieveJob();
   }, []);
-
-  // Error related stuff
-  const displayAlert = () => {
-    return (
-      <SnackBarAlert
-        open={alertShow}
-        onClose={handleAlertClose}
-        severity={alertData.severity}
-        msg={alertData.msg}
-      />
-    );
-  };
-
-  const handleAlert = () => {
-    setAlertShow(true);
-  };
-
-  const handleAlertClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setAlertShow(false);
-  };
 
   const retrieveJob = async () => {
     try {
@@ -159,47 +129,27 @@ const SavedJob = (props) => {
   };
 
   const handleSavingJob = async (jobId) => {
-    const saveState = isSaved;
-    if(isSaved){ // Unsave
-      setIsSaved(!isSaved);
-      const newSavedJobIds = props.savedJobIdsForDB.filter((id) => id !== jobId);
-      props.setSavedJobIdsForDB(newSavedJobIds);
-      try {
-        const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateSavedJobs/${props.userId}`, newSavedJobIds);
-        if (response.data.success) {
-          // console.log('success');
-        }
-      } catch (err) {
-        // console.log(err);
-        setIsSaved(saveState);
-        setAlertData({
-          severity: "error",
-          msg: "Sorry, Something went wrong. Please try again later.",
-        });
-        handleAlert();
-      }
+    const newSavedJobIds = props.savedJobIds.filter((id) => id !== jobId);
 
-    } else {
-      setIsSaved(!isSaved);
-      const newSavedJobIds = [...props.savedJobIdsForDB, jobId];
-      props.setSavedJobIdsForDB(newSavedJobIds);
-
-      try {
-        const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateSavedJobs/${props.userId}`, newSavedJobIds);
-        if (response.data.success) {
-          // console.log('success');
-        }
-      } catch (err) {
-        // console.log(err);
-        setIsSaved(saveState);
-        setAlertData({
-          severity: "error",
-          msg: "Sorry, Job could not be saved. Please try again later.",
-        });
-        handleAlert();
+    try {
+      const response = await axios.patch(
+        `${BACKEND_URL}/jobseeker/updateSavedJobs/${props.userId}`,
+        newSavedJobIds
+      );
+      if (response.data.success) {
+        props.setAlertData({ severity: "success", msg: "Job removed successfully!"});
+        props.handleAlert();
+        props.setSavedJobIds(newSavedJobIds);
       }
+    } catch (err) {
+      // console.log(err);
+      props.setAlertData({
+        severity: "error",
+        msg: "Sorry, Something went wrong. Please try again later.",
+      });
+      props.handleAlert();
     }
-  }
+  };
 
   const displayJob = () => {
     if (job === "empty") return null;
@@ -220,8 +170,10 @@ const SavedJob = (props) => {
                 </Typography>
               </div>
               <div className={classes.headerRight}>
-                {isSaved && <BookmarkIcon className={classes.favorite} onClick={() => handleSavingJob(job._id)}/>}
-                {!isSaved && <BookmarkBorderRoundedIcon className={classes.favorite} onClick={() => handleSavingJob(job._id)}/>}
+                <BookmarkIcon
+                  className={classes.favorite}
+                  onClick={() => handleSavingJob(job._id)}
+                />
               </div>
             </div>
             <div className={classes.body}>
@@ -269,10 +221,9 @@ const SavedJob = (props) => {
 
   return (
     <>
-      {displayAlert()}
       {displayJob()}
     </>
-  )
+  );
 };
 
 export default SavedJob;

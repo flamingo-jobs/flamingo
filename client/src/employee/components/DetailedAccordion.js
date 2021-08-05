@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
@@ -106,10 +106,59 @@ const useStyles = makeStyles((theme) => ({
 
 export default function DetailedAccordion(props) {
   const classes = useStyles();
-  const [list, setList] = React.useState(props.info.stack.list);
-  const [frontEnd, setFrontEnd] = React.useState(props.info.stack.frontEnd);
-  const [backEnd, setBackEnd] = React.useState(props.info.stack.backEnd);
+  const [technologies, setTechnologies] = useState([]);
+  const [technologyStack, setTechnologyStack] = useState([]);
+  const [listAll, setListAll] = React.useState(props.info.stack.list);
+  const [frontEndAll, setFrontEndAll] = React.useState(props.info.stack.frontEnd);
+  const [backEndAll, setBackEndAll] = React.useState(props.info.stack.backEnd);
+
+  const [list, setList] = React.useState([]);
+  const [frontEnd, setFrontEnd] = React.useState([]);
+  const [backEnd, setBackEnd] = React.useState([]);
   const [editing, setEditing] = React.useState(false);
+
+  let i=0;
+  let loginId;
+  const jwt = require("jsonwebtoken");
+  const token = sessionStorage.getItem("userToken");
+  const header = jwt.decode(token, { complete: true });
+  if (header.payload.userRole === "jobseeker") {
+      loginId=sessionStorage.getItem("loginId");
+  } else {
+      loginId=props.jobseekerID;
+  }
+
+  useEffect(()=>{
+    let technologyStackData;
+      axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
+      .then(res => {
+      if(res.data.success){
+          if(res.data.jobseeker.technologyStack.length > 0){
+          technologyStackData = res.data.jobseeker.technologyStack;
+          if(Object.keys(res.data.jobseeker.technologyStack[0]).length === 0){
+              res.data.jobseeker.technologyStack.splice(0,1)
+              i++;
+          }else if(technologyStackData[0].technologyStack == "" && technologyStackData[0].institute == "" && technologyStackData[0].from == "" && technologyStackData[0].to == ""){
+              res.data.jobseeker.technologyStack.splice(0,1)
+              i++;
+          }
+          }
+          setTechnologyStack(technologyStackData)
+          matchDetails()
+      }
+    })
+  },[])
+
+  const matchDetails = () => {
+    technologyStack.forEach(technology => {
+      if(props.info.name == technology.type){
+        setList(technology.list);
+        setFrontEnd(technology.frontEnd);
+        setBackEnd(technology.backEnd);
+        return;
+      }
+    });
+  }
 
   const handleList = (list) => {
     setList(list);
@@ -132,35 +181,33 @@ export default function DetailedAccordion(props) {
   }
 
   const handleCancel = () => {
-    setList(props.info.stack.list);
-    setFrontEnd(props.info.stack.frontEnd);
-    setBackEnd(props.info.stack.backEnd);
+    matchDetails();
     setEditing(false);
   }
 
   const saveChanges = () => {
-    let data = {};
-    if (props.info.stack.list) {
-      data = {
-        stack: {
-          list: list
-        }
-      }
-    } else if (props.info.stack.frontEnd) {
-      data = {
-        stack: {
-          frontEnd: frontEnd,
-          backEnd: backEnd
-        }
-      }
-    }
-    axios.put(`${BACKEND_URL}/technologies/update/${props.info._id}`, data).then(res => {
-      if (res.data.success) {
-        props.onSuccessUpdate();
-      } else {
-        props.onFailedUpdate();
-      }
-    })
+    // let data = {};
+    // if (props.info.list) {
+    //   data = {
+    //     stack: {
+    //       list: list
+    //     }
+    //   }
+    // } else if (props.info.frontEnd) {
+    //   data = {
+    //     stack: {
+    //       frontEnd: frontEnd,
+    //       backEnd: backEnd
+    //     }
+    //   }
+    // }
+    // axios.put(`${BACKEND_URL}/technologies/update/${props.info._id}`, data).then(res => {
+    //   if (res.data.success) {
+    //     props.onSuccessUpdate();
+    //   } else {
+    //     props.onFailedUpdate();
+    //   }
+    // })
 
     // setPendingChanges(false);
     // setEditRowsModel({});
@@ -176,8 +223,8 @@ export default function DetailedAccordion(props) {
               <Typography className={classes.secondaryHeading}>Front-end</Typography>
               <Autocomplete
                 multiple
-                id={`tags-filled-1-${props.info._id}`}
-                options={[]}
+                // id={`tags-filled-1-${props.info._id}`}
+                options={frontEndAll}
                 value={frontEnd}
                 freeSolo
                 disabled={!editing}
@@ -201,8 +248,8 @@ export default function DetailedAccordion(props) {
               <Typography className={classes.secondaryHeading}>Back-end</Typography>
               <Autocomplete
                 multiple
-                id={`tags-filled-2-${props.info._id}`}
-                options={[]}
+                // id={`tags-filled-2-${props.info._id}`}
+                options={backEndAll}
                 value={backEnd}
                 freeSolo
                 disabled={!editing}
@@ -225,8 +272,8 @@ export default function DetailedAccordion(props) {
             <Typography className={classes.secondaryHeading}>Technologies</Typography>
             <Autocomplete
               multiple
-              id={`tags-filled-1-${props.info._id}`}
-              options={[]}
+              // id={`tags-filled-1-${props.info._id}`}
+              options={listAll}
               value={list}
               disabled={!editing}
               freeSolo

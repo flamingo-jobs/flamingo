@@ -59,6 +59,8 @@ function FeaturedJobs(props) {
     const classes = useStyles();
 
     const [featuredJobs, setFeaturedJobs] = useState([]);
+    const userId = sessionStorage.getItem("loginId");
+    const [savedJobIds, setSavedJobIds] = useState("empty");
 
     const retrieveFeaturedJobs = () => {
         axios.get(`${BACKEND_URL}/jobs/featuredJobs`).then(res => {
@@ -78,12 +80,35 @@ function FeaturedJobs(props) {
         retrieveFeaturedJobs();
     }, [props.skip])
 
+    useEffect(() => {
+        retrieveJobseeker();
+    }, []);
+
+    const retrieveJobseeker = async () => {
+        if(userId){
+            try {
+              const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
+              if (response.data.success) {
+                setSavedJobIds(response.data.jobseeker.savedJobs);
+              }
+            } catch (err) {
+              console.log(err);
+            }
+        }
+    };
+
     const displayFeaturedJobs = () => {
         if (featuredJobs) {
 
             return featuredJobs.map(featuredJob => (
                 <Grid item sm={12} key={featuredJob._id} className={classes.jobGridCard}>
-                    <JobCard info={featuredJob} />
+                    <JobCard 
+                        userId={userId}
+                        userRole={props.userRole} 
+                        info={featuredJob}
+                        savedJobIds={savedJobIds} 
+                        setSavedJobIds={setSavedJobIds}
+                    />
                 </Grid>
             ))
         } else {

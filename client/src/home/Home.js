@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function Home() {
+function Home(props) {
     const classes = useStyles();
 
     return (
@@ -38,7 +38,7 @@ function Home() {
                 justify="space-between"
                 alignItems="flex-start">
                 <Grid item xs={12} md={6}>
-                    <FeaturedJobs />
+                    <FeaturedJobs userRole={props.userRole}/>
                 </Grid>
                 <Grid item container xs={12} md={6} spacing={3} direction="column"
                     justify="space-between"

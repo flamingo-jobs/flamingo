@@ -11,6 +11,7 @@ const useStyles = makeStyles((theme) => ({}));
 
 const TabPanel = (props) => {
   const classes = useStyles();
+  const userId = sessionStorage.getItem("loginId");
   
   const {
     children,
@@ -92,6 +93,10 @@ const TabPanel = (props) => {
             jobs={jobs}
             searchString={searchString}
             setJobMatches={setJobMatches}
+            userId={userId}
+            userRole={props.userRole} 
+            savedJobIds={props.savedJobIds} 
+            setSavedJobIds={props.setSavedJobIds}
           ></JobCards>
         )}
         {value === index && index === 1 && (

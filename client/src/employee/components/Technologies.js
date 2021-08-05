@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-function Technologies() {
+function Technologies(props) {
     const classes = useStyles();
 
     const [technologies, setTechnologies] = useState([]);
@@ -34,6 +34,17 @@ function Technologies() {
 
     const [alertShow, setAlertShow] = React.useState(false);
     const [alertData, setAlertData] = React.useState({severity: "", msg: ""});
+
+    let i=0;
+    let loginId;
+    const jwt = require("jsonwebtoken");
+    const token = sessionStorage.getItem("userToken");
+    const header = jwt.decode(token, { complete: true });
+    if (header.payload.userRole === "jobseeker") {
+        loginId=sessionStorage.getItem("loginId");
+    } else {
+        loginId=props.jobseekerID;
+    }
 
     useEffect(() => {
             retrieveTechnoliges();
@@ -75,6 +86,7 @@ function Technologies() {
                 setTechnologies([])
             }
         })
+
     }
 
     const displayTechnologies = () => {

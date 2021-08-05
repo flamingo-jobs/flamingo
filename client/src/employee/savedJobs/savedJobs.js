@@ -7,9 +7,10 @@ import {
   Container,
   CircularProgress,
 } from "@material-ui/core";
-import FavoriteJob from "./components/savedJob";
+import SavedJob from "./components/savedJob";
 import BACKEND_URL from "../../Config";
 import axios from "axios";
+import SnackBarAlert from "../../components/SnackBarAlert";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,24 +23,44 @@ const useStyles = makeStyles((theme) => ({
 const SavedJobs = () => {
   const classes = useStyles();
   const [savedJobIds, setSavedJobIds] = useState([]);
-  // Used for updating DB
-  const [savedJobIdsForDB, setSavedJobIdsForDB] = useState([]);
   const userId = sessionStorage.getItem("loginId");
+
+  // Alert related states
+  const [alertShow, setAlertShow] = useState(false);
+  const [alertData, setAlertData] = useState({ severity: "", msg: "" });
 
   useEffect(() => {
     retrieveJobseeker();
   }, []);
 
+  // Error related stuff
+  const displayAlert = () => {
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
+
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertShow(false);
+  };
+
   const retrieveJobseeker = async () => {
     try {
       const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
       if (response.data.success) {
-        if(response.data.jobseeker.savedJobs.length !== 0){
-          setSavedJobIds(response.data.jobseeker.savedJobs);
-        } else{
-          setSavedJobIds("empty");
-        }
-        setSavedJobIdsForDB(response.data.jobseeker.savedJobs);
+        setSavedJobIds(response.data.jobseeker.savedJobs);
       }
     } catch (err) {
       console.log(err);
@@ -68,15 +89,15 @@ const SavedJobs = () => {
     return (
       <Grid item xs={9}>
         {savedJobIds.map((jobId) => (
-          <FavoriteJob
+          <SavedJob
             key={jobId}
             jobId={jobId}
             userId={userId}
             savedJobIds={savedJobIds}
             setSavedJobIds={setSavedJobIds}
-            savedJobIdsForDB={savedJobIdsForDB}
-            setSavedJobIdsForDB={setSavedJobIdsForDB}
-          ></FavoriteJob>
+            setAlertData={setAlertData}
+            handleAlert={handleAlert}
+          ></SavedJob>
         ))}
       </Grid>
     );
@@ -84,7 +105,8 @@ const SavedJobs = () => {
 
   return (
     <Container className={classes.root}>
-      <Grid container>
+      {displayAlert()}
+      <Grid container justify="center">
         {displaySavedJobs()}
       </Grid>
     </Container>

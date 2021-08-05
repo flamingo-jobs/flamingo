@@ -182,7 +182,6 @@ function Jobs(props) {
                         userRole={props.userRole}
                         savedJobIds={savedJobIds}
                         setSavedJobIds={setSavedJobIds}
-                        handleOpen={handleOpen}
                     />
                 </Grid>
             ))
@@ -191,12 +190,6 @@ function Jobs(props) {
 
     return (
         <>
-            {/* Works only when user is not signed in */}
-            <LoginModal
-                open={open}
-                handleClose={handleClose}
-            ></LoginModal>
-
             <Grid item container sm={12} spacing={3} direction="row" justify="space-between" className={classes.mainGrid} alignItems="flex-start">
                 <Grid item sm={12} className={classes.searchGrid}>
                     <JobSearchBar onChange={updateSearch} />
