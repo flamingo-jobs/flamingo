@@ -108,7 +108,7 @@ function JobCard(props) {
         } else{
             setIsSaved(props.savedJobIds.includes(props.info._id));
         }
-    }, []);
+    }, [props.favoriteOrgs, props.info]);
 
     const loadLogo = () => {
         try {

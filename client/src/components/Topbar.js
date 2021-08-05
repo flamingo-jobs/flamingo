@@ -305,8 +305,8 @@ export default function Topbar(props) {
           if (res.data.jobseeker.hasOwnProperty("notifications")) {
             setNotifications(res.data.jobseeker.notifications.length);
           }
-          if (res.data.jobseeker.hasOwnProperty("favorites")) {
-            setFavourites(res.data.jobseeker.favorites.length);
+          if (res.data.jobseeker.hasOwnProperty("favoriteOrganizations")) {
+            setFavourites(res.data.jobseeker.favoriteOrganizations.length);
           }
           if (res.data.jobseeker.hasOwnProperty("savedJobs")) {
             setSavedJobs(res.data.jobseeker.savedJobs.length);

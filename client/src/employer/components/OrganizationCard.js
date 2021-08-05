@@ -99,7 +99,7 @@ function OrganizationCard(props) {
         } else{
             setIsSaved(props.favoriteOrgs.includes(props.info._id));
         }
-    }, [props.userRole]);
+    }, [props.favoriteOrgs, props.info]);
 
     const getAvgRating = (arr = []) => {
         return arr.map(item => item.rating).reduce((a, x) => a + x, 0) / arr.length;

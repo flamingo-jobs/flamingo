@@ -33,8 +33,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-function RecommendedOrganizations() {
+function RecommendedOrganizations(props) {
     const classes = useStyles();
+    const userId = sessionStorage.getItem("loginId");
+    const [favoriteOrgs, setFavoriteOrgs] = useState("empty");
 
     const [featuredOrgs, setFeaturedOrgs] = useState([]);
 
@@ -52,12 +54,35 @@ function RecommendedOrganizations() {
         })
     }
 
+    useEffect(() => {
+        retrieveJobseeker();
+    }, []);
+
+    const retrieveJobseeker = async () => {
+        if(userId){
+            try {
+              const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
+              if (response.data.success) {
+                setFavoriteOrgs(response.data.jobseeker.favoriteOrganizations);
+              }
+            } catch (err) {
+              console.log(err);
+            }
+        }
+    };
+
     const displayFeaturedOrgs = () => {
         if (featuredOrgs) {
             
             return featuredOrgs.map(featuredOrg => (
                 <Grid item xs={12} lg={6} key={featuredOrg._id}>
-                        <Organization info={featuredOrg} />
+                        <Organization 
+                            info={featuredOrg}
+                            userId={userId}
+                            userRole={props.userRole}
+                            favoriteOrgs={favoriteOrgs}
+                            setFavoriteOrgs={setFavoriteOrgs}
+                        />
                     </Grid>
             ))
         } else {

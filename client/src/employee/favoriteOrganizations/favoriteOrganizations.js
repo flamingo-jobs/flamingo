@@ -6,6 +6,8 @@ import BACKEND_URL from "../../Config";
 import axios from "axios";
 import OrganizationCard from "./components/organizationCard";
 import { CircularProgress } from "@material-ui/core";
+import SnackBarAlert from "../../components/SnackBarAlert";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     paddingLeft: theme.spacing(1.5),
@@ -17,17 +19,42 @@ const useStyles = makeStyles((theme) => ({
 const FavoriteOrganizations = () => {
   const classes = useStyles();
   const [favoriteOrgIds, setFavoriteOrgIds] = useState([]);
-  // Used for updating DB
-  const [favoriteOrgIdsForDB, setFavoriteOrgIdsForDB] = useState([]);
   const userId = sessionStorage.getItem("loginId");
   const [favoriteOrgs, setFavoriteOrgs] = useState("empty");
+
+  // Alert related states
+  const [alertShow, setAlertShow] = useState(false);
+  const [alertData, setAlertData] = useState({ severity: "", msg: "" });
+
+  // Error related stuff
+  const displayAlert = () => {
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
+
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertShow(false);
+  };
 
   useEffect(() => {
     retrieveJobseeker();
   }, []);
 
   useEffect(() => {
-      retrieveEmployers();
+    retrieveEmployers();
   }, [favoriteOrgIds]);
 
   const retrieveJobseeker = async () => {
@@ -35,7 +62,6 @@ const FavoriteOrganizations = () => {
       const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
       if (response.data.success) {
         setFavoriteOrgIds(response.data.jobseeker.favoriteOrganizations);
-        setFavoriteOrgIdsForDB(response.data.jobseeker.favoriteOrganizations);
       }
     } catch (err) {
       console.log(err);
@@ -63,7 +89,7 @@ const FavoriteOrganizations = () => {
       return (
         <Grid item xs={12}>
           <FloatCard>
-          <CircularProgress />
+            <CircularProgress />
           </FloatCard>
         </Grid>
       );
@@ -72,7 +98,9 @@ const FavoriteOrganizations = () => {
       return (
         <Grid item xs={12}>
           <FloatCard>
-          <Typography>You haven't added any favorite organizations yet.</Typography>
+            <Typography>
+              You haven't added any favorite organizations yet.
+            </Typography>
           </FloatCard>
         </Grid>
       );
@@ -83,8 +111,10 @@ const FavoriteOrganizations = () => {
             <OrganizationCard
               userId={userId}
               org={org}
-              favoriteOrgIdsForDB={favoriteOrgIdsForDB}
-              setFavoriteOrgIdsForDB={setFavoriteOrgIdsForDB}
+              favoriteOrgIds={favoriteOrgIds}
+              setFavoriteOrgIds={setFavoriteOrgIds}
+              setAlertData={setAlertData}
+              handleAlert={handleAlert}
             ></OrganizationCard>
           ))}
         </Grid>
@@ -94,7 +124,10 @@ const FavoriteOrganizations = () => {
 
   return (
     <Container className={classes.root}>
-      <Grid container>{displayFavoriteOrgs()}</Grid>
+      {displayAlert()}
+      <Grid container justify="center">
+        {displayFavoriteOrgs()}
+      </Grid>
     </Container>
   );
 };

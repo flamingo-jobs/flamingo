@@ -19,7 +19,7 @@ function JobseekerDashboard(props) {
                 <Space />
                 <RecommendedJobs userRole={props.userRole}/>
                 <Space />
-                <RecommendedOrganizations />
+                <RecommendedOrganizations userRole={props.userRole}/>
             </Grid>
             <Grid item md={12} lg={4} spacing={3}>
                 <ProfileStatus />
