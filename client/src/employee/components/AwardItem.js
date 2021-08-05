@@ -140,12 +140,14 @@ function AchievementItem(props) {
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
   const index = props.index;
   let loginId;
+  let login = false;
   const jwt = require("jsonwebtoken");
   const token = sessionStorage.getItem("userToken");
   const header = jwt.decode(token, { complete: true });
   if(token === null){
     loginId=props.jobseekerID;
   }else if (header.payload.userRole === "jobseeker") {
+    login = true;
     loginId=sessionStorage.getItem("loginId");
   } else {
     loginId=props.jobseekerID;
@@ -320,12 +322,14 @@ function AchievementItem(props) {
             </Typography>
         </Grid>
         <Grid item xs={2} spacing={2} style={{marginTop:"-5px",padding:"20px 0px 0px 0px"}}>
+          { login ? <>
           <Button style={{minWidth:'25px',width:'25px',marginRight:"10px"}}>
               <EditIcon style={styleEdit} className={classes.editIcon} size="small" onClick={handleOpen} />
           </Button>
           <Button style={{minWidth:'25px',width:'25px'}}>
               <DeleteIcon style={styleEdit} className={classes.editIcon} size="small"  onClick={handleClickOpen} />
           </Button>
+          </> : null }
           <Dialog
               open={confirmDelete}
               onClose={handleClickClose}

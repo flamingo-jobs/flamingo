@@ -106,6 +106,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function DetailedAccordion(props) {
   const classes = useStyles();
+  const [fetchedData, setFetchedData] = useState(1);
   const [technologies, setTechnologies] = useState([]);
   const [technologyStack, setTechnologyStack] = useState([]);
   const [listAll, setListAll] = React.useState(props.info.stack.list);
@@ -123,36 +124,16 @@ export default function DetailedAccordion(props) {
   const token = sessionStorage.getItem("userToken");
   const header = jwt.decode(token, { complete: true });
   if(token === null){
-    loginId=props.jobseekerID;
+    loginId=props.jobseeker;
   }else if (header.payload.userRole === "jobseeker") {
     loginId=sessionStorage.getItem("loginId");
   } else {
-    loginId=props.jobseekerID;
+    loginId=props.jobseeker;
   }
 
-  useEffect(()=>{
-    let technologyStackData;
-      axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
-      .then(res => {
-      if(res.data.success){
-          if(res.data.jobseeker.technologyStack.length > 0){
-          technologyStackData = res.data.jobseeker.technologyStack;
-          if(Object.keys(res.data.jobseeker.technologyStack[0]).length === 0){
-              res.data.jobseeker.technologyStack.splice(0,1)
-              i++;
-          }else if(technologyStackData[0].technologyStack == "" && technologyStackData[0].institute == "" && technologyStackData[0].from == "" && technologyStackData[0].to == ""){
-              res.data.jobseeker.technologyStack.splice(0,1)
-              i++;
-          }
-          }
-          setTechnologyStack(technologyStackData)
-          matchDetails()
-      }
-    })
-  },[])
-
   const matchDetails = () => {
-    technologyStack.forEach(technology => {
+    let tech = props.techno;
+    tech.forEach(technology => {
       if(props.info.name == technology.type){
         setList(technology.list);
         setFrontEnd(technology.frontEnd);
@@ -161,6 +142,16 @@ export default function DetailedAccordion(props) {
       }
     });
   }
+
+  useEffect(()=>{
+    matchDetails();
+  },[props.techno])
+
+  // useEffect(()=>{
+  //   setTechnologyStack(null);
+  //   fetchData();
+  //   matchDetails();
+  // },[fetchedData,loginId,listAll])
 
   const handleList = (list) => {
     setList(list);

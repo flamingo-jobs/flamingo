@@ -29,7 +29,7 @@ const useStyles = makeStyles({
   },
 });
 
-function TechnologySection() {
+function TechnologySection(props) {
   const classes = useStyles();
 
   return (
@@ -50,7 +50,7 @@ function TechnologySection() {
       </Grid>
       <Grid container spacing={3}>
             <Grid item xs={12}>
-                <Technologies />
+                <Technologies jobseekerID={props.jobseekerID} />
             </Grid>
         </Grid>
     </FloatCard>
