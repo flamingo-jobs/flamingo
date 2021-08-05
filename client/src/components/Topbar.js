@@ -299,22 +299,24 @@ export default function Topbar(props) {
   };
 
   const loadBadgeData = () => {
-    axios.get(`${BACKEND_URL}/jobseeker/${sessionStorage.getItem("loginId")}`).then(res => {
-      if (res.data.success) {
-        if (res.data.jobseeker.hasOwnProperty("notifications")) {
-          setNotifications(res.data.jobseeker.notifications.length);
+    if (header.payload.userRole === "jobseeker") {
+      axios.get(`${BACKEND_URL}/jobseeker/${sessionStorage.getItem("loginId")}`).then(res => {
+        if (res.data.success) {
+          if (res.data.jobseeker.hasOwnProperty("notifications")) {
+            setNotifications(res.data.jobseeker.notifications.length);
+          }
+          if (res.data.jobseeker.hasOwnProperty("favorites")) {
+            setFavourites(res.data.jobseeker.favorites.length);
+          }
+          if (res.data.jobseeker.hasOwnProperty("savedJobs")) {
+            setSavedJobs(res.data.jobseeker.savedJobs.length);
+          }
+          if (res.data.jobseeker.hasOwnProperty("applicationDetails")) {
+            setAppliedJobs(res.data.jobseeker.applicationDetails.length);
+          }
         }
-        if (res.data.jobseeker.hasOwnProperty("favorites")) {
-          setFavourites(res.data.jobseeker.favorites.length);
-        }
-        if (res.data.jobseeker.hasOwnProperty("savedJobs")) {
-          setSavedJobs(res.data.jobseeker.savedJobs.length);
-        }
-        if (res.data.jobseeker.hasOwnProperty("applicationDetails")) {
-          setAppliedJobs(res.data.jobseeker.applicationDetails.length);
-        }
-      }
-    });
+      });
+    }
   }
 
   useEffect(() => {
