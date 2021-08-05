@@ -299,7 +299,7 @@ export default function Topbar(props) {
   };
 
   const loadBadgeData = () => {
-    if (header.payload.userRole === "jobseeker") {
+    if (header?.payload.userRole === "jobseeker") {
       axios.get(`${BACKEND_URL}/jobseeker/${sessionStorage.getItem("loginId")}`).then(res => {
         if (res.data.success) {
           if (res.data.jobseeker.hasOwnProperty("notifications")) {
