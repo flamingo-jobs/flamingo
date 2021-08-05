@@ -5,6 +5,7 @@ import {
   Grid,
   Typography,
   Container,
+  CircularProgress,
 } from "@material-ui/core";
 import FavoriteJob from "./components/savedJob";
 import BACKEND_URL from "../../Config";
@@ -33,7 +34,11 @@ const SavedJobs = () => {
     try {
       const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
       if (response.data.success) {
-        setSavedJobIds(response.data.jobseeker.savedJobs);
+        if(response.data.jobseeker.savedJobs.length !== 0){
+          setSavedJobIds(response.data.jobseeker.savedJobs);
+        } else{
+          setSavedJobIds("empty");
+        }
         setSavedJobIdsForDB(response.data.jobseeker.savedJobs);
       }
     } catch (err) {
@@ -46,7 +51,16 @@ const SavedJobs = () => {
       return (
         <Grid item xs={12}>
           <FloatCard>
-            <Typography>You don't have any saved jobs yet.</Typography>
+          <CircularProgress />
+          </FloatCard>
+        </Grid>
+      );
+    }
+    if (savedJobIds === "empty") {
+      return (
+        <Grid item xs={12}>
+          <FloatCard>
+          <Typography>You don't have any saved jobs yet.</Typography>
           </FloatCard>
         </Grid>
       );

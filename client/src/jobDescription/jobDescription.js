@@ -46,6 +46,7 @@ function JobDescription(props) {
   const [moreFromJobs, setMoreFromJobs] = useState(null);
   const [savedJobIds, setSavedJobIds] = useState([]);
   const [isSaved, setIsSaved] = useState(false);
+  const [isApplied, setIsApplied] = useState(false);
 
   let isSignedIn = false;
   if (sessionStorage.getItem("loginId") !== null) {
@@ -60,6 +61,16 @@ function JobDescription(props) {
   useEffect(() => {
     setJobId(window.location.pathname.split("/")[2]);
   }, [window.location.pathname]);
+
+  const checkApplied = () => {
+    if (job !== "empty" && job.hasOwnProperty("applicationDetails")) {
+      job.applicationDetails.forEach(application => {
+        if (userId === application.userId) {
+          setIsApplied(true);
+        }
+      });
+    }
+  }
 
   useEffect(() => {
     retrieveJob();
@@ -83,6 +94,7 @@ function JobDescription(props) {
       const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
       if (response.data.success) {
         setSavedJobIds(response.data.jobseeker.savedJobs);
+        checkApplied();
         if (response.data.jobseeker.savedJobs.includes(jobId)) {
           setIsSaved(true);
         }
@@ -111,6 +123,7 @@ function JobDescription(props) {
             setIsSaved={setIsSaved}
             savedJobIds={savedJobIds}
             setSavedJobIds={setSavedJobIds}
+            isApplied={isApplied}
           ></JobSummary>
         </Grid>
       );
@@ -148,10 +161,10 @@ function JobDescription(props) {
   };
 
   const displayApplyForm = () => {
-    if (isSignedIn === true && userId !== "empty") {
+    if (isSignedIn === true && userId !== "empty" && !isApplied) {
       if (job === "empty") {
         return (
-          <Grid item sm={12} className={classes.container} style={{marginTop: 16}}>
+          <Grid item sm={12} className={classes.container} style={{ marginTop: 16 }}>
             <FloatCard >
               <CircularProgress />
             </FloatCard>
