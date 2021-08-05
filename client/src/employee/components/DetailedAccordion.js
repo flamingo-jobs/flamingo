@@ -106,9 +106,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function DetailedAccordion(props) {
   const classes = useStyles();
-  const [list, setList] = React.useState(props.info.stack.list);
-  const [frontEnd, setFrontEnd] = React.useState(props.info.stack.frontEnd);
-  const [backEnd, setBackEnd] = React.useState(props.info.stack.backEnd);
+  const [list, setList] = React.useState(props.info.list);
+  const [frontEnd, setFrontEnd] = React.useState(props.info.frontEnd);
+  const [backEnd, setBackEnd] = React.useState(props.info.backEnd);
   const [editing, setEditing] = React.useState(false);
 
   const handleList = (list) => {
@@ -132,35 +132,35 @@ export default function DetailedAccordion(props) {
   }
 
   const handleCancel = () => {
-    setList(props.info.stack.list);
-    setFrontEnd(props.info.stack.frontEnd);
-    setBackEnd(props.info.stack.backEnd);
+    setList(props.info.list);
+    setFrontEnd(props.info.frontEnd);
+    setBackEnd(props.info.backEnd);
     setEditing(false);
   }
 
   const saveChanges = () => {
-    let data = {};
-    if (props.info.stack.list) {
-      data = {
-        stack: {
-          list: list
-        }
-      }
-    } else if (props.info.stack.frontEnd) {
-      data = {
-        stack: {
-          frontEnd: frontEnd,
-          backEnd: backEnd
-        }
-      }
-    }
-    axios.put(`${BACKEND_URL}/technologies/update/${props.info._id}`, data).then(res => {
-      if (res.data.success) {
-        props.onSuccessUpdate();
-      } else {
-        props.onFailedUpdate();
-      }
-    })
+    // let data = {};
+    // if (props.info.list) {
+    //   data = {
+    //     stack: {
+    //       list: list
+    //     }
+    //   }
+    // } else if (props.info.frontEnd) {
+    //   data = {
+    //     stack: {
+    //       frontEnd: frontEnd,
+    //       backEnd: backEnd
+    //     }
+    //   }
+    // }
+    // axios.put(`${BACKEND_URL}/technologies/update/${props.info._id}`, data).then(res => {
+    //   if (res.data.success) {
+    //     props.onSuccessUpdate();
+    //   } else {
+    //     props.onFailedUpdate();
+    //   }
+    // })
 
     // setPendingChanges(false);
     // setEditRowsModel({});
@@ -170,13 +170,13 @@ export default function DetailedAccordion(props) {
   const displayAccordionDetails = () => {
     return <AccordionDetails className={classes.details}>
       <Grid container spacing={1}>
-        {props.info.stack.frontEnd ?
+        {props.info.frontEnd ?
           <>
             <Grid item xs={12} lg={6}>
               <Typography className={classes.secondaryHeading}>Front-end</Typography>
               <Autocomplete
                 multiple
-                id={`tags-filled-1-${props.info._id}`}
+                // id={`tags-filled-1-${props.info._id}`}
                 options={[]}
                 value={frontEnd}
                 freeSolo
@@ -201,7 +201,7 @@ export default function DetailedAccordion(props) {
               <Typography className={classes.secondaryHeading}>Back-end</Typography>
               <Autocomplete
                 multiple
-                id={`tags-filled-2-${props.info._id}`}
+                // id={`tags-filled-2-${props.info._id}`}
                 options={[]}
                 value={backEnd}
                 freeSolo
@@ -225,7 +225,7 @@ export default function DetailedAccordion(props) {
             <Typography className={classes.secondaryHeading}>Technologies</Typography>
             <Autocomplete
               multiple
-              id={`tags-filled-1-${props.info._id}`}
+              // id={`tags-filled-1-${props.info._id}`}
               options={[]}
               value={list}
               disabled={!editing}
@@ -261,7 +261,7 @@ export default function DetailedAccordion(props) {
           id="panel1c-header"
         >
           <div className={classes.column}>
-            <Typography className={classes.heading}>{props.info.name}</Typography>
+            <Typography className={classes.heading}>{props.info.type}</Typography>
           </div>
           <div className={classes.column}>
 
