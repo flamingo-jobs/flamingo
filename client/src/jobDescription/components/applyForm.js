@@ -138,21 +138,26 @@ const ApplyForm = (props) => {
   };
 
   const handleFileChange = (e) => {
-    let nameSplit = e.target.files[0].name.split(".");
-    console.log("file extention", nameSplit[nameSplit.length - 1]);
-    if (nameSplit[nameSplit.length - 1] !== "pdf") {
-      setAlertData({
-        severity: "error",
-        msg: "Invalid file type, only PDF file type is allowed",
-      });
-      handleAlert();
-    } else {
-      setFileData(e.target.files[0]);
+    setFileData("empty");
+
+    if(e.target.files[0]){
+      let nameSplit = e.target.files[0].name.split(".");
+      // console.log("file extention", nameSplit[nameSplit.length - 1]);
+      if (nameSplit[nameSplit.length - 1] !== "pdf") {
+        setAlertData({
+          severity: "error",
+          msg: "Invalid file type, only PDF file type is allowed",
+        });
+        handleAlert();
+      } else {
+        setFileData(e.target.files[0]);
+      }
     }
   };
-  const handleFileRemove = () => {
-    setFileData("empty");
-  };
+
+  // const handleFileRemove = () => {
+  //   setFileData("empty");
+  // };
 
   // Error related stuff
   const displayAlert = () => {
@@ -203,7 +208,7 @@ const ApplyForm = (props) => {
       return;
     }
 
-    if (!loading) {
+    if (!loading && fileData !== "empty") {
       setSuccess(false);
       setLoading(true);
       timer.current = window.setTimeout(() => {
@@ -235,7 +240,7 @@ const ApplyForm = (props) => {
       userId: userId,
       resumeName: jobId + "--" + userId + resumeExt,
     };
-
+    
     try {
       // Update resume details in jobseeker collection
       const resumeDetailsResponseJobSeeker = await axios.patch(
@@ -339,11 +344,11 @@ const ApplyForm = (props) => {
           <form onSubmit={handleFormSubmit} encType="multipart/form-data">
             <div style={{ color: "#fff" }}>
               <input
-                accept="image/*"
                 className={classes.input}
                 id="resume"
                 name="resume"
                 type="file"
+                accept="application/pdf"
                 onChange={handleFileChange}
               />
               <label htmlFor="resume">

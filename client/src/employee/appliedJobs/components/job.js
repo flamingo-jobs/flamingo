@@ -165,10 +165,14 @@ const Job = (props) => {
       const response = await axios.get(`${BACKEND_URL}/resume/${props.jobId}/${props.userId}`,{
         responseType: 'blob'
       });
-      console.log(response);
-      return download(response.data, "Flamingo_Resume", "application/pdf");
+
+      console.log("response", response);
+      download(response.data, "Flamingo_Resume", "application/pdf");
+      return;
     } catch (err) {
-      console.log(err);
+      if (err.status === 400) {
+        console.log('Error while downloading file. Try again later');
+      }
     }
   }
 
