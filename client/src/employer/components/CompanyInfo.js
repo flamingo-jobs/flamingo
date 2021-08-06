@@ -274,12 +274,12 @@ function CompanyInfo() {
       {
         if(res.status==200){
           successAlert=true
-          alert(successAlert)
+          // alert(successAlert)
           
         }
         else{
           successAlert=false
-          alert(successAlert)
+          // alert(successAlert)
  
         }
       }
