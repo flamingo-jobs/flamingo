@@ -158,19 +158,20 @@ const TopCards = () => {
   }
 
     const classes = useStyles();
+
     const [data1, setData1] = React.useState([
-        { region: 'Asia', val: 244 },
-        { region: 'Africa', val: 100 },
+        { category: 'shortlisted', val: getTotalShortlisted() },
+        { category: 'total', val: 2 },
     ]);
 
     const [data2, setData2] = React.useState([
-        { region: 'Asia', val: 28 },
-        { region: 'Africa', val: 200 },
+        { category: 'pending', val: 2},
+        { category: 'total', val: 0 },
     ]);
 
     const [data3, setData3] = React.useState([
-        { region: 'Asia', val: 2 },
-        { region: 'Africa', val: 100 },
+        { category: 'rejected', val: getTotalRejected() },
+        { category: 'total', val: 2 },
     ]);
 
     return (
@@ -207,7 +208,7 @@ const TopCards = () => {
                             >
                             <PieSeries
                                 valueField="val"
-                                argumentField="region"
+                                argumentField="category"
                                 innerRadius={0.6}
                             />
                             <Animation />
@@ -238,7 +239,7 @@ const TopCards = () => {
                             >
                             <PieSeries
                                 valueField="val"
-                                argumentField="region"
+                                argumentField="category"
                                 innerRadius={0.6}
                             />
                             <Animation />
@@ -269,7 +270,7 @@ const TopCards = () => {
                             >
                             <PieSeries
                                 valueField="val"
-                                argumentField="region"
+                                argumentField="category"
                                 innerRadius={0.6}
                             />
                             <Animation />

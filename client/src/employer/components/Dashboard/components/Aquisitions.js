@@ -58,10 +58,9 @@ const Aquisitions = () => {
   const classes = useStyles();
 
   const [data, setData1] = React.useState([
-    { region: "Asia", val: 23 },
-    { region: "Africa", val: 39 },
-    { region: "Africa", val: 50 },
-    { region: "Africa", val: 10 },
+    { category: "Pending", val: 0 },
+    { category: "Shortlisted", val: 2 },
+    { category: "Rejected", val: 0 },
   ]);
 
   return (
@@ -81,17 +80,17 @@ const Aquisitions = () => {
               <Chart data={data} className={classes.pieChart}>
                 <PieSeries
                   valueField="val"
-                  argumentField="region"
-                  // innerRadius={0.6}
+                  argumentField="category"
+                  // innerRadius={0.2}
                 />
                 <Animation />
               </Chart>
             </Grid>
 
-            <Grid item xs={5}>
+            <Grid item xs={5} style={{marginTop:20}}>
               <Chip
-                icon={<FiberManualRecordIcon style={{color:'#32CD32'}}/>}
-                label="Applications"
+                icon={<FiberManualRecordIcon style={{color:'#5E60CE'}}/>}
+                label="Pending"
                 className={classes.legend}
               />
               <Chip
@@ -100,15 +99,12 @@ const Aquisitions = () => {
                 className={classes.legend}
               />
               <Chip
-                icon={<FiberManualRecordIcon style={{color:'#5E60CE'}}/>}
-                label="On-Hold"
-                className={classes.legend}
-              />
-              <Chip
-                icon={<FiberManualRecordIcon style={{color:"yellow"}}/>}
+                icon={<FiberManualRecordIcon style={{color:'#32CD32'}}/>}
                 label="Rejected"
                 className={classes.legend}
               />
+              
+              
             </Grid>
    
         

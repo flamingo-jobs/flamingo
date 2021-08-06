@@ -198,8 +198,8 @@ const LatestJobs = () => {
                 <StyledTableCell align="center">Category</StyledTableCell>
                 <StyledTableCell align="center">Active</StyledTableCell>
                 <StyledTableCell align="center">No of Resumes</StyledTableCell>
-                <StyledTableCell align="center">Shortlisted</StyledTableCell>
                 <StyledTableCell align="center">Pending</StyledTableCell>
+                <StyledTableCell align="center">Shortlisted</StyledTableCell>
                 <StyledTableCell align="center">Rejected</StyledTableCell>
               </TableRow>
             </TableHead>
