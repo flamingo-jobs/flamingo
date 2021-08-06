@@ -275,16 +275,17 @@ function CompanyInfo(props) {
 
     axios
       .put(`${BACKEND_URL}/employers/update/60c246913542f942e4c84454`, employer)
-      .then((res) => {
-        if (res.status === 200) {
-          successAlert = true
-          alert(successAlert)
-
+      .then((res) => 
+      {
+        if(res.status==200){
+          successAlert=true
+          // alert(successAlert)
+          
         }
-        else {
-          successAlert = false
-          alert(successAlert)
-
+        else{
+          successAlert=false
+          // alert(successAlert)
+ 
         }
       }
       );
