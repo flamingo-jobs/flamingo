@@ -192,7 +192,7 @@ function ProjectsSection(props) {
           if(Object.keys(res.data.jobseeker.project[0]).length === 0){
             res.data.jobseeker.project.splice(0,1)
             i++;
-          }else if(projectData[0].name == "" && projectData[0].link == "" && projectData[0].description == "" && projectData[0].from == "" && projectData[0].to == ""){
+          }else if(projectData[0].name === "" && projectData[0].link === "" && projectData[0].description === "" && projectData[0].from === "" && projectData[0].to === ""){
             res.data.jobseeker.project.splice(0,1)
             i++;
           }

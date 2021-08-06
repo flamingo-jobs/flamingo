@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-function Jobs(props) {
+function Recommendations(props) {
     const classes = useStyles();
 
     const urlQuery = new URLSearchParams(window.location.search);
@@ -66,6 +66,7 @@ function Jobs(props) {
     const [count, setCount] = useState(0);
     const [filters, setFilters] = useState({});
     const [search, setSearch] = useState({});
+    const [recommendedIds, setRecommendedIds] = useState([]);
     const [queryParams, setQueryParams] = useState({});
 
     const [page, setPage] = React.useState(1);
@@ -91,7 +92,7 @@ function Jobs(props) {
 
     useEffect(() => {
         retrieveJobs();
-    }, [queryParams, page]);
+    }, [queryParams, page, recommendedIds]);
 
     useEffect(() => {
         updateQuery();
@@ -123,6 +124,7 @@ function Jobs(props) {
         } else {
             setQueryParams({});
         }
+        setQueryParams({ $and: [queryParams, { "_id": { $in: recommendedIds } }] });
     }
 
     const delay = ms => new Promise(res => setTimeout(res, ms));
@@ -156,6 +158,7 @@ function Jobs(props) {
                 const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
                 if (response.data.success) {
                     setSavedJobIds(response.data.jobseeker.savedJobs);
+                    setRecommendedIds(response.data.jobseeker.recommendedJobs)
                 }
             } catch (err) {
                 console.log(err);
@@ -168,7 +171,7 @@ function Jobs(props) {
         // await delay(3000);
         if (jobs.length === 0) {
             return (
-                <Grid item sm={12} style={{marginBottom: 16}}>
+                <Grid item sm={12} style={{ marginBottom: 16 }}>
                     <FloatCard>
                         <CircularProgress />
                     </FloatCard>
@@ -182,6 +185,7 @@ function Jobs(props) {
                         userRole={props.userRole}
                         savedJobIds={savedJobIds}
                         setSavedJobIds={setSavedJobIds}
+                        handleOpen={handleOpen}
                     />
                 </Grid>
             ))
@@ -190,6 +194,12 @@ function Jobs(props) {
 
     return (
         <>
+            {/* Works only when user is not signed in */}
+            <LoginModal
+                open={open}
+                handleClose={handleClose}
+            ></LoginModal>
+
             <Grid item container sm={12} spacing={3} direction="row" justify="space-between" className={classes.mainGrid} alignItems="flex-start">
                 <Grid item sm={12} className={classes.searchGrid}>
                     <JobSearchBar onChange={updateSearch} />
@@ -208,4 +218,4 @@ function Jobs(props) {
     )
 }
 
-export default Jobs
+export default Recommendations

@@ -64,7 +64,7 @@ function Technologies(props) {
     }
 
     useEffect(() => {
-        if (updateSuccess == true) {
+        if (updateSuccess === true) {
             setAlertData({severity: "success", msg: "Changes saved successfully!"});
             handleAlert();
         }
@@ -72,7 +72,7 @@ function Technologies(props) {
     }, [updateSuccess]);
 
     useEffect(() => {
-        if (updateFailed == true) {
+        if (updateFailed === true) {
             setAlertData({severity: "error", msg: "Failed to save changes!"});
             handleAlert();
         }

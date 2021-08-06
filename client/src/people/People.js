@@ -1,5 +1,5 @@
 import React from 'react'
-import { colors, makeStyles, Typography } from '@material-ui/core'
+import { CircularProgress, colors, makeStyles, Typography } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid';
 import PeopleSearchBar from './components/PeopleSearchBar';
 import PeopleFilters from './components/PeopleFilters';
@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import Pagination from '@material-ui/lab/Pagination';
 import PaginationItem from '@material-ui/lab/PaginationItem';
 import PeopleCard from './components/PeopleCard';
+import FloatCard from '../components/FloatCard';
 
 const useStyles = makeStyles((theme) => ({
     peopleGrid: {
@@ -84,11 +85,11 @@ function People() {
 
     const updateQuery = () => {
 
-        if (Object.keys(filters).length != 0 && Object.keys(search).length != 0) {
+        if (Object.keys(filters).length !== 0 && Object.keys(search).length !== 0) {
             setQueryParams({ $and: [filters, search] });
-        } else if (Object.keys(filters).length == 0) {
+        } else if (Object.keys(filters).length === 0) {
             setQueryParams(search);
-        } else if (Object.keys(search).length == 0) {
+        } else if (Object.keys(search).length === 0) {
             setQueryParams(filters);
         } else {
             setQueryParams({});
@@ -116,7 +117,14 @@ function People() {
     }
 
     const displayPeople = () => {
-        if (people) {
+        if (people.length === 0) {
+            return (
+                <Grid item sm={12} style={{ marginBottom: 16 }}>
+                    <FloatCard>
+                        <CircularProgress />
+                    </FloatCard>
+                </Grid>)
+        } else if (people) {
             return people.map(job => (
                 <Grid key={job._id} item xs={12} md={12} lg={12} className={classes.gridCard}>
                     <PeopleCard info={job} />

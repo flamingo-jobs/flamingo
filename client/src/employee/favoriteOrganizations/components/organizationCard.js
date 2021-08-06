@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
   Avatar,
   Button,
@@ -6,8 +6,8 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core";
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
 import FloatCard from "../../../components/FloatCard";
 import Rating from "@material-ui/lab/Rating";
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     textAlign: "left",
   },
-  orgContainer:{
+  orgContainer: {
     marginBottom: theme.spacing(3),
   },
   header: {
@@ -42,8 +42,8 @@ const useStyles = makeStyles((theme) => ({
   favorite: {
     display: "block",
     color: theme.palette.pinkyRed,
-    "&:hover":{
-      cursor: "pointer"
+    "&:hover": {
+      cursor: "pointer",
     },
   },
   body: {
@@ -114,35 +114,28 @@ const OrganizationCard = (props) => {
   };
 
   const handleSavingOrg = async (orgId) => {
-    if(isSaved){
-      setIsSaved(!isSaved);
-      const newFavoriteOrgs = props.favoriteOrgIdsForDB.filter((id) => id !== orgId);
-      props.setFavoriteOrgIdsForDB(newFavoriteOrgs);
-
-      try {
-        const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateFavoriteOrgs/${props.userId}`, newFavoriteOrgs);
-        if (response.data.success) {
-          // console.log('success');
-        }
-      } catch (err) {
-        console.log(err);
+    const newFavoriteOrgs = props.favoriteOrgIds.filter((id) => id !== orgId);
+    try {
+      const response = await axios.patch(
+        `${BACKEND_URL}/jobseeker/updateFavoriteOrgs/${props.userId}`,
+        newFavoriteOrgs
+      );
+      if (response.data.success) {
+        props.setAlertData({
+          severity: "success",
+          msg: "Organization removed successfully!",
+        });
+        props.handleAlert();
+        props.setFavoriteOrgIds(newFavoriteOrgs);
       }
-
-    } else {
-      setIsSaved(!isSaved);
-      const newFavoriteOrgs = [...props.favoriteOrgIdsForDB, orgId];
-      props.setFavoriteOrgIdsForDB(newFavoriteOrgs);
-
-      try {
-        const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateFavoriteOrgs/${props.userId}`, newFavoriteOrgs);
-        if (response.data.success) {
-          // console.log('success');
-        }
-      } catch (err) {
-        console.log(err);
-      }
+    } catch (err) {
+      props.setAlertData({
+        severity: "error",
+        msg: "Sorry, Something went wrong. Please try again later.",
+      });
+      props.handleAlert();
     }
-  }
+  };
 
   return (
     <div className={classes.orgContainer}>
@@ -167,8 +160,18 @@ const OrganizationCard = (props) => {
               </div>
             </div>
             <div className={classes.headerRight}>
-              {isSaved && <FavoriteIcon className={classes.favorite} onClick={() => handleSavingOrg(props.org._id)}/>}
-              {!isSaved && <FavoriteBorderIcon className={classes.favorite} onClick={() => handleSavingOrg(props.org._id)}/>}
+              {isSaved && (
+                <FavoriteIcon
+                  className={classes.favorite}
+                  onClick={() => handleSavingOrg(props.org._id)}
+                />
+              )}
+              {!isSaved && (
+                <FavoriteBorderIcon
+                  className={classes.favorite}
+                  onClick={() => handleSavingOrg(props.org._id)}
+                />
+              )}
             </div>
           </div>
           <div className={classes.body}>

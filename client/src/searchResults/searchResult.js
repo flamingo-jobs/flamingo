@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles, Typography, Grid, Box, withStyles } from "@material-ui/core";
-import FloatCard from "../components/FloatCard";
+import { makeStyles, Grid, Box, withStyles } from "@material-ui/core";
 import { useLocation } from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
@@ -10,6 +9,9 @@ import BusinessIcon from "@material-ui/icons/Business";
 import PeopleIcon from "@material-ui/icons/People";
 import TabPanel from "./components/tabPanel";
 import Badge from "@material-ui/core/Badge";
+import axios from "axios";
+import BACKEND_URL from "../Config";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,9 +51,11 @@ const SearchResult = (props) => {
 
   const [searchString, setSearchString] = useState("");
   const [tabIndex, setTabIndex] = useState(0);
+  const userId = sessionStorage.getItem("loginId");
+  const [savedJobIds, setSavedJobIds] = useState("empty");
 
   // Search results
-  const [jobMatches, setJobMatches] = useState(1);
+  const [jobMatches, setJobMatches] = useState(0);
   const [orgMatches, setOrgMatches] = useState(0);
   const [userMatches, setUserMatches] = useState(0);
 
@@ -61,6 +65,23 @@ const SearchResult = (props) => {
 
   const handleTabChange = (event, newTabIndex) => {
     setTabIndex(newTabIndex);
+  };
+
+  useEffect(() => {
+    retrieveJobseeker();
+  }, []);
+  
+  const retrieveJobseeker = async () => {
+    if(userId){
+      try {
+        const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
+        if (response.data.success) {
+          setSavedJobIds(response.data.jobseeker.savedJobs);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
   };
 
   const SearchResultBadge = (tab) => {
@@ -118,7 +139,11 @@ const SearchResult = (props) => {
             setJobMatches={setJobMatches}
             setOrgMatches={setOrgMatches}
             setuserMatches={setUserMatches}
+            userRole={props.userRole} 
+            savedJobIds={savedJobIds} 
+            setSavedJobIds={setSavedJobIds}
           ></TabPanel>
+
           <TabPanel
             value={tabIndex}
             index={1}

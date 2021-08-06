@@ -12,7 +12,6 @@ import BookmarkBorderRoundedIcon from '@material-ui/icons/BookmarkBorderRounded'
 import BookmarksIcon from '@material-ui/icons/Bookmarks';
 import BACKEND_URL from "../../Config";
 import axios from "axios";
-import LoginModal from './loginModal';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -92,23 +91,13 @@ function JobCard(props) {
     const { loading = false } = props;
     const [isSaved, setIsSaved] = useState(false);
 
-    // Login modal 
-    const [open, setOpen] = useState(false);
-
-    const handleOpen = () => {
-        setOpen(true);
-    };
-    const handleClose = () => {
-        setOpen(false);
-    };
-
     useEffect(() => {
         if(!props.userRole){
             setIsSaved(false);
         } else{
             setIsSaved(props.savedJobIds.includes(props.info._id));
         }
-    }, [props.favoriteOrgs, props.info]);
+    }, []);
 
     const loadLogo = () => {
         try {
@@ -127,7 +116,7 @@ function JobCard(props) {
     }
 
     const handleLoginModal = () => {
-        handleOpen();
+        props.handleOpen();
     }
 
     const handleSavingJob = async () => {
@@ -178,13 +167,6 @@ function JobCard(props) {
 
     return (
         <FloatCard >
-
-        {/* Works only when user is not signed in */}
-        <LoginModal 
-            open={open}
-            handleClose={handleClose}
-        ></LoginModal>
-
         <div className={classes.root}>
             <div className={classes.header}>
                 <div className={classes.headerLeft}>

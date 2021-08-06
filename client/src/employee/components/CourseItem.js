@@ -129,10 +129,10 @@ function CourseItem(props) {
   const [styleEdit, setStyleEdit] = useState({display: 'none'});
   let courseStartDate=[0,0];
   let courseEndDate=[0,0];
-  if(props.startDate != 'null/null'){
+  if(props.startDate !== 'null/null'){
     courseStartDate = props.startDate.split("/");
   }
-  if(props.endDate != 'null/null'){
+  if(props.endDate !== 'null/null'){
     courseEndDate = props.endDate.split("/");
   }
   const [state, setState] = useState({course: props.course, institute: props.institute, startYear: courseStartDate[1], startMonth: courseStartDate[0], endYear: courseEndDate[1], endMonth: courseEndDate[0]});
@@ -185,7 +185,7 @@ function CourseItem(props) {
     }
   
   useEffect(() => {
-    if (deleteSuccess == true) {
+    if (deleteSuccess === true) {
         setAlertData({severity: "success", msg: "Item deleted successfully!"});
         handleAlert();
     }

@@ -314,7 +314,7 @@ function EducationSection(props) {
           if(Object.keys(uniData[0]).length === 0){
             uniData.splice(0,1)
             i++;
-          }else if(uniData[0].university == "" && uniData[0].degree == "" && uniData[0].fieldOfStudy == "" && uniData[0].startDate == "" && uniData[0].endDate == ""){
+          }else if(uniData[0].university === "" && uniData[0].degree === "" && uniData[0].fieldOfStudy === "" && uniData[0].startDate === "" && uniData[0].endDate === ""){
             uniData.splice(0,1)
             i++;
           }
@@ -324,7 +324,7 @@ function EducationSection(props) {
           if(Object.keys(schoolData[0]).length === 0){
             schoolData.splice(0,1)
             j++;
-          }else if(schoolData[0].school == ""){
+          }else if(schoolData[0].school === ""){
             schoolData.splice(0,1)
             i++;
           }
@@ -490,13 +490,13 @@ function EducationSection(props) {
               ))
       }
     }
-    if(eduCount == 0){
+    if(eduCount === 0){
       return (<Typography variant="body2" color="textSecondary" component="p">Education details not added.</Typography>)
     }
   }
 
   useEffect(()=>{
-    if (level == "University") {
+    if (level === "University") {
       let temp = <form className={classes.form} onSubmit={onSubmitUniversity}>
       <div>
       <TextField
@@ -626,7 +626,7 @@ function EducationSection(props) {
         <Button type="submit" className={classes.defaultButton} style={{ width:'100%',marginTop:'5%'}}>Apply Changes</Button>
     </form>;
       setForm(temp);
-    }else if(level=="School"){
+    }else if(level==="School"){
       let temp=<form className={classes.form} onSubmit={onSubmitSchool}>
       <div>
       <TextField

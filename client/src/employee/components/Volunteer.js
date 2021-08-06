@@ -166,7 +166,7 @@ function Volunteer(props) {
           if(Object.keys(res.data.jobseeker.volunteer[0]).length === 0){
             res.data.jobseeker.volunteer.splice(0,1)
             i++;
-          }else if(volunteerData[0].title == "" && volunteerData[0].organization == "" && volunteerData[0].from == "" && volunteerData[0].to == ""){
+          }else if(volunteerData[0].title === "" && volunteerData[0].organization === "" && volunteerData[0].from === "" && volunteerData[0].to === ""){
             res.data.jobseeker.volunteer.splice(0,1)
             i++;
           }

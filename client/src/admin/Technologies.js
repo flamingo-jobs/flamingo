@@ -69,7 +69,7 @@ function Technologies() {
     }
 
     useEffect(() => {
-        if (updateSuccess == true) {
+        if (updateSuccess === true) {
             setAlertData({ severity: "success", msg: "Changes saved successfully!" });
             handleAlert();
         }
@@ -77,7 +77,7 @@ function Technologies() {
     }, [updateSuccess]);
 
     useEffect(() => {
-        if (updateFailed == true) {
+        if (updateFailed === true) {
             setAlertData({ severity: "error", msg: "Failed to save changes!" });
             handleAlert();
         }
@@ -85,7 +85,7 @@ function Technologies() {
     }, [updateFailed]);
 
     useEffect(() => {
-        if (createSuccess == true) {
+        if (createSuccess === true) {
             setAlertData({ severity: "success", msg: "Item added successfully!" });
             handleAlert();
         }
@@ -93,7 +93,7 @@ function Technologies() {
     }, [createSuccess]);
 
     useEffect(() => {
-        if (createFailed == true) {
+        if (createFailed === true) {
             setAlertData({ severity: "error", msg: "Failed to add item!" });
             handleAlert();
         }

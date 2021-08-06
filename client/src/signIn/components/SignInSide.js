@@ -193,7 +193,14 @@ export default function SignInSide() {
           const token = sessionStorage.getItem("userToken");
           const header = jwt.decode(token, { complete: true });
           if (header.payload.userRole === "jobseeker") {
-            window.location = "/jobseekerDashboard";
+            const urlQuery = new URLSearchParams(window.location.search);
+            const redirect = urlQuery.get('redirectTo');
+            if (redirect) {
+              window.location =  `/jobDescription/${redirect}#applyJob`;
+            } else {
+              window.location = "/jobseekerDashboard";
+
+            }
           } else {
             window.location = "/";
           }

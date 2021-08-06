@@ -102,7 +102,7 @@ export default function StackList(props) {
 
     const passFilters = () => {
         let values = [];
-        if (checked.length == 0) {
+        if (checked.length === 0) {
             props.onChange({ name: props.technology.name, stack: [], type: null});
         } else {
             checked.map((value) => values.push(value.name));

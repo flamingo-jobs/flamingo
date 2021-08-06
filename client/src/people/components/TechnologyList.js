@@ -80,11 +80,11 @@ export default function TechnologyList(props) {
         const itemObj = { name: filterData.name, stack: filterData.stack, type: filterData.type };
 
         if (currentIndex === -1) {
-            if (itemObj.stack.length != 0) {
+            if (itemObj.stack.length !== 0) {
                 newStack.push(itemObj);
             }
         } else {
-            if (itemObj.stack.length == 0) {
+            if (itemObj.stack.length === 0) {
                 newStack.splice(currentIndex, 1);
             } else {
                 newStack.splice(currentIndex, 1);
@@ -130,7 +130,7 @@ export default function TechnologyList(props) {
         let list = [];
         let completeStack = [];
 
-        if (stack.length == 0) {
+        if (stack.length === 0) {
             props.onChange(0);
         } else {
             stack.map(item => {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import LocalOfferRoundedIcon from '@material-ui/icons/LocalOfferRounded';
 import { Avatar, Button, Chip, Typography } from '@material-ui/core';
@@ -10,7 +10,7 @@ import {
   Grid,
   Container,
 } from "@material-ui/core";
-import {Link as ScrollLink} from "react-scroll";
+import { Link as ScrollLink } from "react-scroll";
 import LoginModal from "./loginModal";
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BACKEND_URL from "../../Config";
@@ -63,6 +63,10 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.white,
     "&:hover": {
       backgroundColor: theme.palette.tuftsBlueHover,
+    },
+    "&.Mui-disabled": {
+      backgroundColor: theme.palette.lightSkyBlue,
+
     }
   },
   savBtn: {
@@ -146,14 +150,15 @@ function JobSummary(props) {
   const [alertShow, setAlertShow] = useState(false);
   const [alertData, setAlertData] = useState({ severity: "", msg: "" });
 
+
   const handleOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
   };
-  
-  const handleLoginModal= () => {
+
+  const handleLoginModal = () => {
     handleOpen();
   }
 
@@ -183,15 +188,15 @@ function JobSummary(props) {
   const handleSavingJob = async () => {
     let newSavedJobIds = [];
     const isSaved = props.isSaved;
-    
+
     props.setIsSaved(!props.isSaved);
 
-    if(props.isSaved){ // Unsave
+    if (props.isSaved) { // Unsave
       newSavedJobIds = props.savedJobIds.filter((id) => id !== props.job._id);
     } else { // Save
       newSavedJobIds = [...props.savedJobIds, props.job._id];
     }
-    
+
     props.setSavedJobIds(newSavedJobIds);
     try {
       const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateSavedJobs/${props.userId}`, newSavedJobIds);
@@ -211,8 +216,8 @@ function JobSummary(props) {
   }
 
   const displaySaveForLater = () => {
-    if(props.userRole === "jobseeker"){
-      if(props.isSaved){
+    if (props.userRole === "jobseeker") {
+      if (props.isSaved) {
         return (
           <Button
             className={classes.savBtn}
@@ -247,9 +252,10 @@ function JobSummary(props) {
     <Container>
       {displayAlert()}
 
-      <LoginModal 
+      <LoginModal
         open={open}
         handleClose={handleClose}
+        jobId={props.job._id}
       ></LoginModal>
 
       <Container className={classes.summaryContainer}>
@@ -279,7 +285,7 @@ function JobSummary(props) {
           </Grid>
           <Grid item xs={12} md={4} align="center">
             {displaySaveForLater()}
-            {props.isSignedIn && (
+            {props.isSignedIn && !props.isApplied && (
               <ScrollLink to="applyForm" smooth={true} duration={1000}>
                 <Button className={classes.applyBtn}>
                   Apply For This Job
@@ -287,11 +293,17 @@ function JobSummary(props) {
               </ScrollLink>
             )}
             {!props.isSignedIn && (
-                <Button className={classes.applyBtn} onClick={handleLoginModal}>
-                  Apply For This Job
-                </Button>
+              <Button className={classes.applyBtn} onClick={handleLoginModal}>
+                Apply For This Job
+              </Button>
             )}
-            
+            {props.isApplied && (
+              <Button disabled className={classes.applyBtn}>
+                Already Applied
+              </Button>
+            )
+            }
+
           </Grid>
         </Grid>
       </Container>

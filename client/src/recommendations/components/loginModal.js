@@ -10,7 +10,7 @@ import {
   IconButton,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
-import Flamingo from "../lotties/flamingo.json";
+import Flamingo from "../../components/lotties/flamingo.json";
 import Lottie from "react-lottie";
 import { Link } from "react-router-dom";
 
@@ -135,12 +135,12 @@ const LoginModal = (props) => {
                 <Grid item xs={8}>
                   <div className={classes.loginContent}>
                     <Typography className={classes.text}>
-                      To apply for a job opportunity,
+                      To save a job opportunity for later,
                       <br />
                       You must sign in first.
                     </Typography>
                     <div className={classes.signInBtnContainer}>
-                      <Link to={`/signin?redirectTo=${props.jobId}`}>
+                      <Link to="/signin">
                         <Button
                           className={classes.signIn}
                         >

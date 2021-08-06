@@ -130,11 +130,11 @@ function EduItem(props) {
   let uniEndDate=[0,0];
   let schoolStartDate=[0,0];
   let schoolEndDate=[0,0];
-  if(props.startDate != 'null/null'){
+  if(props.startDate !== 'null/null'){
     uniStartDate = props.startDate.split("/");
     schoolStartDate = props.startDate.split("/");
   }
-  if(props.endDate != 'null/null'){
+  if(props.endDate !== 'null/null'){
     uniEndDate = props.endDate.split("/");
     schoolEndDate = props.endDate.split("/");
   }
@@ -190,7 +190,7 @@ function EduItem(props) {
   }
 
   useEffect(() => {
-    if (deleteSuccess == true) {
+    if (deleteSuccess === true) {
         setAlertData({severity: "success", msg: "Item deleted successfully!"});
         handleAlert();
     }
@@ -398,7 +398,7 @@ function EduItem(props) {
   
 
   useEffect(()=>{
-    if (props.level == "University") {
+    if (props.level === "University") {
       let temp = <form className={classes.form} onSubmit={onSubmitUni}>
       <div>
       <TextField
@@ -539,7 +539,7 @@ function EduItem(props) {
         <Button type="submit" className={classes.defaultButton} style={{ width:'100%',marginTop:'5%'}}>Apply Changes</Button>
     </form>;
       setForm(temp);
-    }else if(props.level=="School"){
+    }else if(props.level==="School"){
       let temp=<form className={classes.form} onSubmit={onSubmitSchool}>
       <div>
       <TextField
@@ -643,18 +643,18 @@ function EduItem(props) {
   },[university,school])
 
   const filterFields = () => {
-    if(props.level == "University"){
+    if(props.level === "University"){
         return (
             <React.Fragment>
                 <Grid item xs={3} style={{marginLeft:"-10px"}}>
                     <Typography variant="body2" color="textSecondary" component="p">
-                        {university.endMonth == 0 ? "" : (university.endMonth+"/"+university.endYear)}
+                        {university.endMonth === 0 ? "" : (university.endMonth+"/"+university.endYear)}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
-                        {university.endMonth == 0 ? "" : "|" }
+                        {university.endMonth === 0 ? "" : "|" }
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
-                        {university.startMonth == 0 ? "" : (university.startMonth+"/"+university.startYear)}
+                        {university.startMonth === 0 ? "" : (university.startMonth+"/"+university.startYear)}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p" style={{fontStyle:"italic",fontWeight:"bolder"}}>
                         {props.level}
@@ -676,18 +676,18 @@ function EduItem(props) {
                 </Grid>
             </React.Fragment>
         );
-    }else if(props.level == "School"){
+    }else if(props.level === "School"){
         return (
             <React.Fragment>
                 <Grid item xs={3} style={{marginLeft:"-10px"}}>
                     <Typography variant="body2" color="textSecondary" component="p">
-                      {school.endMonth == 0 ? "" : (school.endMonth+"/"+school.endYear)}
+                      {school.endMonth === 0 ? "" : (school.endMonth+"/"+school.endYear)}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
-                      {school.endMonth == 0 ? "" : "|" }
+                      {school.endMonth === 0 ? "" : "|" }
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
-                      {school.startMonth == 0 ? "" : (school.startMonth+"/"+school.startYear)}
+                      {school.startMonth === 0 ? "" : (school.startMonth+"/"+school.startYear)}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p" style={{fontStyle:"italic",fontWeight:"bolder"}}>
                         {props.level}

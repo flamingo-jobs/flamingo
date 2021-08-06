@@ -70,11 +70,11 @@ function NavMenu(props) {
     const theme = useTheme();
     var defaultPage;
     const path = window.location.pathname.split("/");
-    if (path.length == 1) {
+    if (path.length === 1) {
         defaultPage = "home";
-    } else if (path.length == 2 && path[1] == "admin") {
+    } else if (path.length === 2 && path[1] === "admin") {
         defaultPage = "dashboard";
-    } else if (path.length > 2 && path[1] == "admin") {
+    } else if (path.length > 2 && path[1] === "admin") {
         defaultPage = path[2];
     } else {
         defaultPage = path[1];
@@ -95,7 +95,7 @@ function NavMenu(props) {
     
 
     const displayAdminLinks = () => {
-        if (props.user == "admin") {
+        if (props.user === "admin") {
             return (
                 <>
                     <Link to="/admin">
@@ -117,13 +117,13 @@ function NavMenu(props) {
                         </ListItem>
                     </Link>
                     <Link to="/admin/categories">
-                        <ListItem button key="categories" selected={selectedIndex == "categories"} onClick={(event) => handleListItemClick(event, "categories")} classes={{ selected: classes.active }} className={classes.listItem}>
+                        <ListItem button key="categories" selected={selectedIndex === "categories"} onClick={(event) => handleListItemClick(event, "categories")} classes={{ selected: classes.active }} className={classes.listItem}>
                             <ListItemIcon className={classes.linkIcon}><CategoryRoundedIcon /></ListItemIcon>
                             <ListItemText className={classes.linkText} primary="Categories" />
                         </ListItem>
                     </Link>
                     <Link to="/admin/technologies">
-                        <ListItem button key="technologies" selected={selectedIndex == "technologies"} onClick={(event) => handleListItemClick(event, "technologies")} classes={{ selected: classes.active }} className={classes.listItem}>
+                        <ListItem button key="technologies" selected={selectedIndex === "technologies"} onClick={(event) => handleListItemClick(event, "technologies")} classes={{ selected: classes.active }} className={classes.listItem}>
                             <ListItemIcon className={classes.linkIcon}><CodeRoundedIcon /></ListItemIcon>
                             <ListItemText className={classes.linkText} primary="Technologies" />
                         </ListItem>
@@ -134,7 +134,7 @@ function NavMenu(props) {
     }
 
     const displayEmployerLinks = () => {
-        if (props.user == "employer") {
+        if (props.user === "employer") {
             return (
                 <>
                     <Link to="/employer/home">
@@ -187,7 +187,7 @@ function NavMenu(props) {
     }
 
     const displayJobSeekerLinks = () => {
-        if (props.user == "jobseeker") {
+        if (props.user === "jobseeker") {
             return (
                 <>
                     <Link to="/jobseekerDashboard">
@@ -210,7 +210,7 @@ function NavMenu(props) {
                     </Link>
                     <Link to="/jobs">
                         <ListItem button key="jobs" selected={selectedIndex === "jobs"} onClick={(event) => handleListItemClick(event, "jobs")} classes={{ selected: classes.active }} className={classes.listItem}>
-                            <ListItemIcon className={classes.linkIcon}><OfflineBoltRoundedIcon /></ListItemIcon>
+                            <ListItemIcon className={classes.linkIcon}><WorkRoundedIcon /></ListItemIcon>
                             <ListItemText className={classes.linkText} primary="Jobs" />
                         </ListItem>
                     </Link>
@@ -218,12 +218,6 @@ function NavMenu(props) {
                         <ListItem button key="ogranizations" selected={selectedIndex === "organizations"} onClick={(event) => handleListItemClick(event, "organizations")} classes={{ selected: classes.active }} className={classes.listItem}>
                             <ListItemIcon className={classes.linkIcon}><BusinessRoundedIcon /></ListItemIcon>
                             <ListItemText className={classes.linkText} primary="Ogranizations" />
-                        </ListItem>
-                    </Link>
-                    <Link to="/billing">
-                        <ListItem button key="billing" selected={selectedIndex === "billing"} onClick={(event) => handleListItemClick(event, "billing")} classes={{ selected: classes.active }} className={classes.listItem}>
-                            <ListItemIcon className={classes.linkIcon}><MonetizationOnIcon /></ListItemIcon>
-                            <ListItemText className={classes.linkText} primary="Billing" />
                         </ListItem>
                     </Link>
                     <ListItem button key="services" selected={selectedIndex === "services"} onClick={(event) => handleListItemClick(event, "services")} classes={{ selected: classes.active }} className={classes.listItem}>
@@ -240,7 +234,7 @@ function NavMenu(props) {
     }
 
     const displayDefaultLinks = () => {
-        if (props.user == null) {
+        if (props.user === null) {
             return (
                 <>
                     <Link to="/">

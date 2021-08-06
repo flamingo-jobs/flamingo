@@ -310,7 +310,7 @@ const ApplyForm = (props) => {
   };
 
   return (
-    <div className={classes.applyFormWrapper} id="applyForm">
+    <div className={classes.applyFormWrapper} id="applyJob">
       {displayAlert()}
       <div className={classes.titleWrapper}>
         <FloatCard>
