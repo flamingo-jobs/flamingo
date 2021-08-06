@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Line, Pie, Doughnut, Bar, Radar, Polar } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import { Typography } from "@material-ui/core";
 import FloatCard from "../../../components/FloatCard";
 import Theme from "../../../Theme";
 import axios from "axios";
 import BACKEND_URL from "../../../Config";
-
-const MONTHS = ["January", "February", "March", "April", "May", "June", "July"];
 
 const UsersLineChart = () => {
   const [pastMonths, setPastMonths] = useState([]);
@@ -15,7 +13,7 @@ const UsersLineChart = () => {
 
   useEffect(() => {
     retrieveUsers("employer");
-    // retrieveUsers("jobseeker");
+    retrieveUsers("jobseeker");
   }, []);
 
   const retrieveUsers = async (userRole) => {
@@ -55,7 +53,7 @@ const UsersLineChart = () => {
           backgroundColor: Theme.palette.stateBlue,
           borderColor: Theme.palette.stateBlue,
           borderWidth: 1,
-          data: monthlyEmpCount,
+          data: monthlyJobseekerCount,
           ...moreData2,
         },
       ],
@@ -65,8 +63,8 @@ const UsersLineChart = () => {
   return (
     <div>
       <FloatCard>
-        <Typography>Grow of Customer Base</Typography>
-        <Line data={generateLineChart({ fill: false }, { fill: false })} />
+        <Typography>Grow of Customer Base for the Past 8 Months</Typography>
+        <Bar data={generateLineChart()} />
       </FloatCard>
     </div>
   );

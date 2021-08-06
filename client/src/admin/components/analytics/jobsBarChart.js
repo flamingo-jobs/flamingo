@@ -1,34 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Container, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import FloatCard from "../../../components/FloatCard";
-import { Line, Pie, Doughnut, Bar, Radar, Polar } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 import Theme from "../../../Theme";
 import axios from "axios";
 import BACKEND_URL from "../../../Config";
-
-const MONTHS = ["January", "February", "March", "April", "May", "June", "July"];
-
-const generateBarChart = (pastNMonths, monthlyJobCount) => {
-  return {
-    labels: pastNMonths,
-    datasets: [
-      {
-        label: "Job Count",
-        backgroundColor: Theme.palette.stateBlue,
-        borderColor: Theme.palette.stateBlue,
-        borderWidth: 1,
-        data: monthlyJobCount,
-      },
-      // {
-      //   label: "Dataset 2",
-      //   backgroundColor: Theme.palette.stateBlue,
-      //   borderColor: Theme.palette.stateBlue,
-      //   borderWidth: 1,
-      //   data: monthlyJobCount,
-      // },
-    ],
-  };
-};
 
 const UsersBarChart = () => {
   const [pastMonths, setPastMonths] = useState([]);
@@ -49,11 +25,26 @@ const UsersBarChart = () => {
     }
   };
 
+  const generateBarChart = () => {
+    return {
+      labels: pastMonths,
+      datasets: [
+        {
+          label: "Job Count",
+          backgroundColor: Theme.palette.stateBlue,
+          borderColor: Theme.palette.stateBlue,
+          borderWidth: 1,
+          data: monthlyJobCount,
+        },
+      ],
+    };
+  };
+
   return (
     <div>
       <FloatCard>
-        <Typography>Jobs created in past six months</Typography>
-        <Bar data={generateBarChart(pastMonths, monthlyJobCount)} />
+        <Typography>Jobs Created for the Past 8 Months</Typography>
+        <Line data={generateBarChart({fill: false})} />
       </FloatCard>
     </div>
   );
