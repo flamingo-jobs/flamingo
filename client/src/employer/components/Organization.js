@@ -1,10 +1,14 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import LocalOfferRoundedIcon from '@material-ui/icons/LocalOfferRounded';
 import { Avatar, Button, Chip, makeStyles, Typography } from '@material-ui/core';
 import { FavoriteRounded } from '@material-ui/icons';
 import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 import FloatCard from '../../components/FloatCard';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import BACKEND_URL from "../../Config";
+import axios from "axios";
+import LoginModal from './loginModal';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -30,7 +34,10 @@ const useStyles = makeStyles((theme) => ({
     },
     favorite: {
         display: 'block',
-        color: theme.palette.pinkyRed
+        color: theme.palette.pinkyRed,
+        "&:hover": {
+            cursor: "pointer",
+        }
     },
     body: {
         margin: 10
@@ -76,12 +83,90 @@ const useStyles = makeStyles((theme) => ({
         }
     },
 }))
+
 function Organization(props) {
 
     const classes = useStyles();
+    const [isSaved, setIsSaved] = useState(false);
+
+    // Login modal 
+    const [open, setOpen] = useState(false);
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+    const handleClose = () => {
+        setOpen(false);
+    };
+    const handleLoginModal = () => {
+        handleOpen();
+    }
+
+    useEffect(() => {
+        if(!props.userRole){
+            setIsSaved(false);
+        } else{
+            setIsSaved(props.favoriteOrgs.includes(props.info._id));
+        }
+    }, [props.favoriteOrgs, props.info]);
+
+    const handleSavingOrg = async () => {
+        if(isSaved){ // Unsave
+            setIsSaved(!isSaved);
+            const newFavoriteOrgs = props.favoriteOrgs.filter((id) => id !== props.info._id);
+            props.setFavoriteOrgs(newFavoriteOrgs);
+
+            try {
+                const response = await axios.patch(
+                    `${BACKEND_URL}/jobseeker/updateFavoriteOrgs/${props.userId}`, newFavoriteOrgs);
+
+                if (response.data.success) {
+                // console.log('success unsave');
+                }
+            } catch (err) {
+                console.log(err);
+            }
+
+        } else{ // Save
+            setIsSaved(!isSaved);
+            const newFavoriteOrgs = [...props.favoriteOrgs, props.info._id];
+            props.setFavoriteOrgs(newFavoriteOrgs);
+      
+            try {
+                const response = await axios.patch(
+                    `${BACKEND_URL}/jobseeker/updateFavoriteOrgs/${props.userId}`, newFavoriteOrgs);
+                if (response.data.success) {
+                    // console.log('success save');
+                }
+            } catch (err) {
+              console.log(err);
+            }
+        }
+    }
+
+    const displaySaveIcon = () => {
+        if(!props.userRole){
+            // When user is not signed in
+            return <FavoriteBorderIcon className={classes.favorite} onClick={handleLoginModal} />;
+        } else {
+            if(isSaved){
+                // When user is signed in && org is in favoriteOrgs 
+                return <FavoriteRounded className={classes.favorite} onClick={handleSavingOrg} />;
+            } else {
+                // When user is signed in but org is not in favoriteOrgs
+                return <FavoriteBorderIcon className={classes.favorite} onClick={handleSavingOrg}/>;
+            }
+        }
+    }
 
     return (
         <FloatCard >
+            {/* Works only when user is not signed in */}
+            <LoginModal 
+                open={open}
+                handleClose={handleClose}
+            ></LoginModal>
+
             <div className={classes.root}>
                 <div className={classes.header}>
                     <div className={classes.headerLeft}>
@@ -92,7 +177,7 @@ function Organization(props) {
                         </div>
                     </div>
                     <div className={classes.headerRight} >
-                        <FavoriteRounded className={classes.favorite} />
+                        {displaySaveIcon()}
                     </div>
                 </div>
             </div>

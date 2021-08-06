@@ -10,14 +10,11 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import BACKEND_URL from "../../../Config";
-import { useParams } from "react-router";
 import FloatCard from "../../../components/FloatCard";
 import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
-import LocalOfferRoundedIcon from "@material-ui/icons/LocalOfferRounded";
 import WorkRoundedIcon from "@material-ui/icons/WorkRounded";
-import ReactTimeAgo from "react-time-ago";
 import GetAppIcon from "@material-ui/icons/GetApp";
-import Pending from "./pendingStatus";
+import Status from "./status";
 import download from 'downloadjs';
 
 const useStyles = makeStyles((theme) => ({
@@ -228,9 +225,25 @@ const Job = (props) => {
                 </Grid>
                 <Grid item xs={12} md={4} align="center">
                   {applicationDetails.status === "pending" && (
-                    <Pending
-                      applicationDetails={applicationDetails.status}
-                    ></Pending>
+                    <Status
+                      status={applicationDetails.status}
+                      text={"Pending...."}
+
+                    ></Status>
+                  )}
+                  {applicationDetails.status === "shortlisted" && (
+                    <Status
+                      status={applicationDetails.status}
+                      text={"Shortlisted"}
+
+                    ></Status>
+                  )}
+                  {applicationDetails.status === "selected" && (
+                    <Status
+                      status={applicationDetails.status}
+                      text={"Selected"}
+
+                    ></Status>
                   )}
                 </Grid>
                 {/* <div>

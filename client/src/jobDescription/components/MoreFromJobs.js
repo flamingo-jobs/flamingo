@@ -7,6 +7,7 @@ import JobCard from '../../jobs/components/JobCard';
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
 import theme from '../../Theme';
 import BACKEND_URL from '../../Config';
+import { Link } from 'react-router-dom';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -117,12 +118,14 @@ function MoreFromJobs(props) {
                 {displayMoreFromJobs()}
                 <Grid item sm={12}>
                     <FloatCard>
-                        <Button
-                            className={classes.link}
-                            endIcon={<ArrowForwardRoundedIcon />}
-                        >
-                            See all jobs from {props.job.organization.name}
-                        </Button>
+                        <Link to={`/jobs?org=${props.job.organization.name}`}>
+                            <Button
+                                className={classes.link}
+                                endIcon={<ArrowForwardRoundedIcon />}
+                            >
+                                See all jobs from {props.job.organization.name}
+                            </Button>
+                        </Link>
                     </FloatCard>
                 </Grid>
             </Grid>

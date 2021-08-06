@@ -3,7 +3,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import FloatCard from '../../components/FloatCard';
 import Organization from '../../employer/components/Organization';
-
+import { Link } from 'react-router-dom'
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
 import axios from 'axios';
 import BACKEND_URL from '../../Config';
@@ -52,11 +52,11 @@ function FeaturedOrganizations() {
 
     const displayFeaturedOrgs = () => {
         if (featuredOrgs) {
-            
+
             return featuredOrgs.map(featuredOrg => (
                 <Grid item xs={12} lg={6} key={featuredOrg._id}>
-                        <Organization info={featuredOrg} />
-                    </Grid>
+                    <Organization info={featuredOrg} />
+                </Grid>
             ))
         } else {
             return (
@@ -79,12 +79,14 @@ function FeaturedOrganizations() {
                 </Grid>
                 <Grid item sm={12}>
                     <FloatCard>
-                        <Button
-                            className={classes.link}
-                            endIcon={<ArrowForwardRoundedIcon />}
-                        >
-                            See All
-      </Button>
+                        <Link to="/organizations">
+                            <Button
+                                className={classes.link}
+                                endIcon={<ArrowForwardRoundedIcon />}
+                            >
+                                See All
+                            </Button>
+                        </Link>
                     </FloatCard>
                 </Grid>
             </Grid>

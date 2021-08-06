@@ -10,16 +10,16 @@ import SideMenu from './components/SideMenu';
 
 
 
-function JobseekerDashboard() {
+function JobseekerDashboard(props) {
 
     return (
         <Grid item container sm={12} spacing={3} direction="row" justify="space-between" alignItems="flex-start">
             <Grid item md={12} lg={8} spacing={3}>
                 <StatCard />
                 <Space />
-                <RecommendedJobs />
+                <RecommendedJobs userRole={props.userRole}/>
                 <Space />
-                <RecommendedOrganizations />
+                <RecommendedOrganizations userRole={props.userRole}/>
             </Grid>
             <Grid item md={12} lg={4} spacing={3}>
                 <ProfileStatus />

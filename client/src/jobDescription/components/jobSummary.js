@@ -1,20 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import WorkOutlineIcon from "@material-ui/icons/WorkOutline";
 import LocalOfferRoundedIcon from '@material-ui/icons/LocalOfferRounded';
 import { Avatar, Button, Chip, Typography } from '@material-ui/core';
-import { FavoriteRounded } from '@material-ui/icons';
 import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
-import FloatCard from '../../components/FloatCard';
-import { Link } from 'react-router-dom';
-import ReactTimeAgo from 'react-time-ago'
+import ReactTimeAgo from 'react-time-ago';
 import BookmarkBorderRoundedIcon from '@material-ui/icons/BookmarkBorderRounded';
 import {
   Grid,
   Container,
 } from "@material-ui/core";
-import ninix from "../images/99x.png";
+import { Link as ScrollLink } from "react-scroll";
+import LoginModal from "./loginModal";
+import BookmarkIcon from '@material-ui/icons/Bookmark';
+import BACKEND_URL from "../../Config";
+import axios from "axios";
+import SnackBarAlert from "../../components/SnackBarAlert";
 
 const useStyles = makeStyles((theme) => ({
   border: {
@@ -62,6 +63,10 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.white,
     "&:hover": {
       backgroundColor: theme.palette.tuftsBlueHover,
+    },
+    "&.Mui-disabled": {
+      backgroundColor: theme.palette.lightSkyBlue,
+
     }
   },
   savBtn: {
@@ -138,8 +143,121 @@ const useStyles = makeStyles((theme) => ({
 function JobSummary(props) {
   const classes = useStyles();
 
+  // Login modal 
+  const [open, setOpen] = useState(false);
+
+  // Alert related states
+  const [alertShow, setAlertShow] = useState(false);
+  const [alertData, setAlertData] = useState({ severity: "", msg: "" });
+
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleLoginModal = () => {
+    handleOpen();
+  }
+
+  // Error related stuff
+  const displayAlert = () => {
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
+
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertShow(false);
+  };
+
+  const handleSavingJob = async () => {
+    let newSavedJobIds = [];
+    const isSaved = props.isSaved;
+
+    props.setIsSaved(!props.isSaved);
+
+    if (props.isSaved) { // Unsave
+      newSavedJobIds = props.savedJobIds.filter((id) => id !== props.job._id);
+    } else { // Save
+      newSavedJobIds = [...props.savedJobIds, props.job._id];
+    }
+
+    props.setSavedJobIds(newSavedJobIds);
+    try {
+      const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateSavedJobs/${props.userId}`, newSavedJobIds);
+      if (response.data.success) {
+        // console.log('success');
+      }
+    } catch (err) {
+      // console.log(err);
+      props.setIsSaved(isSaved);
+
+      setAlertData({
+        severity: "error",
+        msg: "Sorry, Job could not be saved. Please try again later.",
+      });
+      handleAlert();
+    }
+  }
+
+  const displaySaveForLater = () => {
+    if (props.userRole === "jobseeker") {
+      if (props.isSaved) {
+        return (
+          <Button
+            className={classes.savBtn}
+            onClick={handleSavingJob}
+          >
+            <BookmarkIcon />Saved
+          </Button>
+        );
+      } else {
+        return (
+          <Button
+            className={classes.savBtn}
+            onClick={handleSavingJob}
+          >
+            <BookmarkBorderRoundedIcon />Save for later
+          </Button>
+        );
+      }
+    } else {
+      return (
+        <Button
+          className={classes.savBtn}
+          onClick={handleLoginModal}
+        >
+          <BookmarkBorderRoundedIcon />Save for later
+        </Button>
+      );
+    }
+  }
+
   return (
     <Container>
+      {displayAlert()}
+
+      <LoginModal
+        open={open}
+        handleClose={handleClose}
+        jobId={props.job._id}
+      ></LoginModal>
+
       <Container className={classes.summaryContainer}>
         <Grid container alignItems="center" spacing={2}>
           <Grid item xs={12} md={8}>
@@ -166,18 +284,26 @@ function JobSummary(props) {
             </div>
           </Grid>
           <Grid item xs={12} md={4} align="center">
-            <Button
-              href="#applyForm"
-              className={classes.savBtn}
-            >
-              <BookmarkBorderRoundedIcon />Save for later
-            </Button>
-            <Button
-              href="#applyForm"
-              className={classes.applyBtn}
-            >
-              Apply For This Job
-            </Button>
+            {displaySaveForLater()}
+            {props.isSignedIn && !props.isApplied && (
+              <ScrollLink to="applyForm" smooth={true} duration={1000}>
+                <Button className={classes.applyBtn}>
+                  Apply For This Job
+                </Button>
+              </ScrollLink>
+            )}
+            {!props.isSignedIn && (
+              <Button className={classes.applyBtn} onClick={handleLoginModal}>
+                Apply For This Job
+              </Button>
+            )}
+            {props.isApplied && (
+              <Button disabled className={classes.applyBtn}>
+                Already Applied
+              </Button>
+            )
+            }
+
           </Grid>
         </Grid>
       </Container>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import {  makeStyles } from '@material-ui/core'
 import '../styles/Profile.css'
 import Grid from '@material-ui/core/Grid';
@@ -11,6 +11,7 @@ import WorkExperience from './WorkExperience';
 import Volunteer from './Volunteer';
 import Course from './Course';
 import TechnologySection from './TechnologySection';
+import Skills from './Skills';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -32,26 +33,33 @@ const useStyles = makeStyles((theme) => ({
 
 function Profile() {
     const classes = useStyles();
+    const [jobseekerID, setJobseekerID] = useState(window.location.pathname.split("/")[3]);
+
+  useEffect(() => {
+    setJobseekerID(window.location.pathname.split("/")[3]);
+  }, [window.location.pathname]);
 
     return (
         <Grid item container sm={12} spacing={3} direction="row" justify="space-between" alignItems="flex-start">
             <Grid item md={12} lg={4} spacing={3}>
-                <IntroSection />
+                <IntroSection jobseekerID={jobseekerID} />
                 <Space />
-                <EducationSection />
+                <EducationSection jobseekerID={jobseekerID} />
                 <Space />
-                <Course />
+                <Course jobseekerID={jobseekerID} />
                 <Space />
-                <Achievements />
+                <Achievements jobseekerID={jobseekerID} />
                 <Space />
-                <Volunteer />
+                <Volunteer jobseekerID={jobseekerID} />
             </Grid>
             <Grid item md={12} lg={8} spacing={3}>
-                <WorkExperience />
+                <WorkExperience jobseekerID={jobseekerID} />
                 <Space />
-                <ProjectsSection />
+                <ProjectsSection jobseekerID={jobseekerID} />
                 <Space />
-                <TechnologySection />
+                <TechnologySection jobseekerID={jobseekerID} />
+                <Space />
+                <Skills jobseekerID={jobseekerID} />
             </Grid>                                            
         </Grid>
     )

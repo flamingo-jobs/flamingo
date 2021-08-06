@@ -2,25 +2,19 @@ import { React, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   Typography,
-  Chip,
   Container,
-  IconButton,
   CardMedia,
   Link,
   Grid,
-  Avatar,
   TextField,
-  Snackbar,
-  Dialog,
-  ListItem,
-  Slide,
   Button,
   Box,
 } from "@material-ui/core";
+import SnackBarAlert from "../../components/SnackBarAlert";
 import cardImage from "../../signIn/images/flamingo.gif";
 import FloatCard from "../../components/FloatCard";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import BACKEND_URL from "../../Config";
 import { PasswordResetFailure } from "./PasswordResetFailure";
@@ -38,6 +32,9 @@ function Copyright() {
     </Typography>
   );
 }
+
+const passwordRegexp =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -153,23 +150,61 @@ const useStyles = makeStyles((theme) => ({
 export const ResetPassword = () => {
   const classes = useStyles();
 
+  // Alert stuff
+  const [alertShow, setAlertShow] = useState(false);
+  const [alertData, setAlertData] = useState({ severity: "", msg: "" });
+  const displayAlert = () => {
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertShow(false);
+  };
+
   const [isSuccess, setIsSuccess] = useState(false);
   const [isFailure, setIsFailure] = useState(false);
   const [passwordValue, setPasswordValue] = useState("");
   const [confirmPasswordValue, setConfirmPasswordValue] = useState("");
 
   const { passwordResetCode } = useParams();
+
+  const badPassword = (password) => {
+    if (!passwordRegexp.test(password)) {
+      return true;
+    }
+  };
+
   const onResetClicked = async (e) => {
     e.preventDefault();
-    try {
-      await axios.put(
-        `${BACKEND_URL}/api/reset-password/${passwordResetCode}`,
-        { newPassword: passwordValue }
-      );
-      setIsSuccess(true);
-    } catch (err) {
-      setIsFailure(true);
-      console.log(err);
+    if (badPassword(passwordValue)) {
+      setAlertData({
+        severity: "error",
+        msg: "Please make an stronger password! Your password must contain minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character",
+      });
+      handleAlert();
+    } else {
+      try {
+        await axios.put(
+          `${BACKEND_URL}/api/reset-password/${passwordResetCode}`,
+          { newPassword: passwordValue }
+        );
+        setIsSuccess(true);
+      } catch (err) {
+        setIsFailure(true);
+        console.log(err);
+      }
     }
   };
 
@@ -178,7 +213,7 @@ export const ResetPassword = () => {
 
   return (
     <div className={classes.root}>
-      {console.log(passwordResetCode)}
+      {displayAlert()}
       <Container maxWidth={false} className={classes.container}>
         <Grid
           item

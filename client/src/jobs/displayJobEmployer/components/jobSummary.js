@@ -7,7 +7,7 @@ import axios from "axios";
 import BACKEND_URL from "../../../Config";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import ReactTimeAgo from "react-time-ago";
-
+import DeleteIcon from "@material-ui/icons/Delete";
 import {
   Typography,
   Grid,
@@ -17,9 +17,9 @@ import {
   Chip,
 } from "@material-ui/core";
 import FloatCard from "../../../components/FloatCard";
-import ninix from "../images/99x.png";
 import JobSummaryModal from "./jobSummaryModal";
-import TodayIcon from '@material-ui/icons/Today';
+import TodayIcon from "@material-ui/icons/Today";
+import DeleteModal from "./deleteModal";
 
 const useStyles = makeStyles((theme) => ({
   summaryContainer: {
@@ -103,15 +103,36 @@ const useStyles = makeStyles((theme) => ({
   typeText: {
     color: "#666",
   },
-  time:{
+  time: {
     padding: "4px 0px",
     marginLeft: "20px",
+  },
+  deleteBtnContainer: {
+    height: "100%",
+    // display: "flex",
+    // flexDirection: "column",
+    // justifyContent: "center",
+  },
+  deleteBtn: {
+    padding: "0px",
+    paddingTop: "9px",
+    "&:hover": {
+      background: theme.palette.white,
+    },
+  },
+  deleteIcon: {
+    color: theme.palette.tagIcon,
+    transition: "0.3s",
+    "&:hover": {
+      color: theme.palette.red,
+      transition: "0.3s",
+    },
   },
 }));
 
 const getFormattedDate = (date) => {
   // console.log("Due date", date);
-  const dateStr = date.toString().slice(0,10).replaceAll("-","/");
+  const dateStr = date.toString().slice(0, 10).replaceAll("-", "/");
   return dateStr;
 };
 
@@ -125,6 +146,16 @@ function JobSummary(props) {
   };
   const handleClose = () => {
     setOpen(false);
+  };
+
+  // delete modal
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+
+  const handleOpenDeleteModal = () => {
+    setOpenDeleteModal(true);
+  };
+  const handleCloseDeleteModal = () => {
+    setOpenDeleteModal(false);
   };
 
   const handleSummaryChange = (event) => {
@@ -142,7 +173,7 @@ function JobSummary(props) {
     const newJob = { ...props.job };
     newJob.dueDate = date;
     props.setJob(newJob);
-  }
+  };
 
   const handleSummarySubmit = async (e) => {
     e.preventDefault();
@@ -181,9 +212,44 @@ function JobSummary(props) {
       console.log("Error: ", err);
     }
   };
+
+  const handleDelete = async () => {
+    try {
+      const response = await axios.delete(
+        `${BACKEND_URL}/jobs/delete/${props.jobId}`
+      );
+      if (response.data.success) {
+        props.setAlertData({
+          severity: "success",
+          msg: "Job deleted successfully",
+        });
+        props.handleAlert();
+        window.location = "/employer/jobs";
+      }else{
+        props.setAlertData({
+          severity: "error",
+          msg: "Somethig went wrong",
+        });
+        props.handleAlert();
+      }
+    } catch {
+      props.setAlertData({
+        severity: "error",
+        msg: "Somethig went wrong",
+      });
+      props.handleAlert();
+    }
+  };
+
   // style={{border: "1px solid red"}}
   return (
     <>
+      <DeleteModal
+        open={openDeleteModal}
+        handleClose={handleCloseDeleteModal}
+        handleDelete={handleDelete}
+      ></DeleteModal>
+
       <JobSummaryModal
         job={props.job}
         categories={props.categories}
@@ -200,7 +266,7 @@ function JobSummary(props) {
         <Container className={classes.summaryContainer}>
           <Grid container xs={12}>
             <Grid item container>
-              <Grid item container xs={11}>
+              <Grid item container xs={10}>
                 <Chip
                   icon={<LocalOfferRoundedIcon className={classes.tagIcon} />}
                   label={props.job.category}
@@ -210,6 +276,16 @@ function JobSummary(props) {
                   <Typography>
                     <ReactTimeAgo date={props.job.postedDate} locale="en-US" />
                   </Typography>
+                </div>
+              </Grid>
+              <Grid item xs={1}>
+                <div className={classes.deleteBtnContainer}>
+                  <IconButton
+                    className={classes.deleteBtn}
+                    onClick={handleOpenDeleteModal}
+                  >
+                    <DeleteIcon className={classes.deleteIcon} />
+                  </IconButton>
                 </div>
               </Grid>
               <Grid item xs={1}>
@@ -278,7 +354,7 @@ function JobSummary(props) {
             </Grid>
             <Grid item xs={12}>
               <Typography align="left" className={classes.description}>
-                {(props.job.description)}
+                {props.job.description}
               </Typography>
             </Grid>
           </Grid>

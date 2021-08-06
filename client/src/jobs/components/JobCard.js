@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import LocalOfferRoundedIcon from '@material-ui/icons/LocalOfferRounded';
 import { Avatar, Button, Chip, makeStyles, Typography } from '@material-ui/core';
 import { FavoriteRounded } from '@material-ui/icons';
@@ -7,7 +7,12 @@ import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 import FloatCard from '../../components/FloatCard';
 import { Link } from 'react-router-dom';
 import ReactTimeAgo from 'react-time-ago'
+import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarkBorderRoundedIcon from '@material-ui/icons/BookmarkBorderRounded';
+import BookmarksIcon from '@material-ui/icons/Bookmarks';
+import BACKEND_URL from "../../Config";
+import axios from "axios";
+import LoginModal from './loginModal';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -33,7 +38,10 @@ const useStyles = makeStyles((theme) => ({
     },
     favorite: {
         display: 'block',
-        color: theme.palette.pinkyRed
+        color: theme.palette.pinkyRed,
+        "&:hover":{
+            cursor: "pointer",
+        },
     },
     body: {
         margin: 10
@@ -77,10 +85,30 @@ const useStyles = makeStyles((theme) => ({
         }
     },
 }))
+
 function JobCard(props) {
 
     const classes = useStyles();
     const { loading = false } = props;
+    const [isSaved, setIsSaved] = useState(false);
+
+    // Login modal 
+    const [open, setOpen] = useState(false);
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    useEffect(() => {
+        if(!props.userRole){
+            setIsSaved(false);
+        } else{
+            setIsSaved(props.savedJobIds.includes(props.info._id));
+        }
+    }, [props.favoriteOrgs, props.info]);
 
     const loadLogo = () => {
         try {
@@ -98,8 +126,65 @@ function JobCard(props) {
         }
     }
 
+    const handleLoginModal = () => {
+        handleOpen();
+    }
+
+    const handleSavingJob = async () => {
+        if(isSaved){ // Unsave
+            setIsSaved(!isSaved);
+            const newSavedJobIds = props.savedJobIds.filter((id) => id !== props.info._id);
+            props.setSavedJobIds(newSavedJobIds);
+
+            try {
+                const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateSavedJobs/${props.userId}`, newSavedJobIds);
+                if (response.data.success) {
+                // console.log('success');
+                }
+            } catch (err) {
+                console.log(err);
+            }
+
+        } else{ // Save
+            setIsSaved(!isSaved);
+            const newSavedJobIds = [...props.savedJobIds, props.info._id];
+            props.setSavedJobIds(newSavedJobIds);
+      
+            try {
+              const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateSavedJobs/${props.userId}`, newSavedJobIds);
+              if (response.data.success) {
+                // console.log('success');
+              }
+            } catch (err) {
+              console.log(err);
+            }
+        }
+    }
+
+    const displaySaveIcon = () => {
+        if(!props.userRole){
+            // When user is not signed in
+            return <BookmarkBorderRoundedIcon className={classes.favorite} onClick={handleLoginModal} />;
+        } else {
+            if(isSaved){
+                // When user is signed in && Job is in savedjobs 
+                return <BookmarkIcon className={classes.favorite} onClick={handleSavingJob} />;
+            } else {
+                // When user is signed in but Job is not in savedJobs
+                return <BookmarkBorderRoundedIcon className={classes.favorite} onClick={handleSavingJob}/>;
+            }
+        }
+    }
+
     return (
         <FloatCard >
+
+        {/* Works only when user is not signed in */}
+        <LoginModal 
+            open={open}
+            handleClose={handleClose}
+        ></LoginModal>
+
         <div className={classes.root}>
             <div className={classes.header}>
                 <div className={classes.headerLeft}>
@@ -107,7 +192,7 @@ function JobCard(props) {
                     <Typography className={classes.time}><ReactTimeAgo date={props.info.postedDate} locale="en-US"/></Typography>
                 </div>
                 <div className={classes.headerRight}>
-                    <BookmarkBorderRoundedIcon className={classes.favorite} />
+                    {displaySaveIcon()}
                 </div>
 
             </div>

@@ -5,7 +5,6 @@ import axios from 'axios';
 import FloatCard from '../../../components/FloatCard';
 import JobCard from '../../../jobs/components/JobCard';
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
-import theme from '../../../Theme';
 import BACKEND_URL from '../../../Config';
 
 
@@ -59,6 +58,8 @@ const useStyles = makeStyles((theme) => ({
 }))
 function RecommendedJobs(props) {
     const classes = useStyles();
+    const userId = sessionStorage.getItem("loginId");
+    const [savedJobIds, setSavedJobIds] = useState("empty");
 
     const [featuredJobs, setFeaturedJobs] = useState([]);
 
@@ -82,12 +83,35 @@ function RecommendedJobs(props) {
         retrieveFeaturedJobs();
     }, [props.skip])
 
+    useEffect(() => {
+        retrieveJobseeker();
+    }, []);
+
+    const retrieveJobseeker = async () => {
+        if(userId){
+            try {
+              const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
+              if (response.data.success) {
+                setSavedJobIds(response.data.jobseeker.savedJobs);
+              }
+            } catch (err) {
+              console.log(err);
+            }
+        }
+    };
+
     const displayFeaturedJobs = () => {
         if (featuredJobs) {
 
             return featuredJobs.map(featuredJob => (
                 <Grid item sm={12} key={featuredJob._id} className={classes.jobGridCard}>
-                    <JobCard info={featuredJob} />
+                    <JobCard 
+                        info={featuredJob}
+                        userId={userId}
+                        userRole={props.userRole}
+                        savedJobIds={savedJobIds}
+                        setSavedJobIds={setSavedJobIds}
+                    />
                 </Grid>
             ))
         } else {

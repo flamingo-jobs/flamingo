@@ -6,7 +6,6 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import theme from '../../Theme';
-import StarIcon from '@material-ui/icons/Star';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import BACKEND_URL from '../../Config';
@@ -16,6 +15,9 @@ import CloseIcon from '@material-ui/icons/Close';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import TextField from '@material-ui/core/TextField';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
 import ImportContactsIcon from '@material-ui/icons/ImportContacts';
 
 import Dialog from '@material-ui/core/Dialog';
@@ -75,13 +77,49 @@ const useStyles = makeStyles((theme) => ({
     padding: '5% 15% 5% 15%'
   },
   field: {
-    margin: "20px 0px 20px 0px",
+    margin: "25px 0px 20px 0px",
     display: "flex",
     fontSize: "16px",
     "& label": {
       color: "#777",
       fontSize: '16px',
     }
+  },
+  select: {
+    minWidth: "200px",
+    fontSize: "16px",
+    display: "flex",
+    "& .MuiSelect-outlined": {
+      padding: "10px 10px 10px 10px"
+    }
+  },
+  selectYear: {
+    margin: "20px 10px 0px 0px",
+    minWidth: "90px",
+    fontSize: "16px",
+    display: "flex",
+    "& .MuiSelect-outlined": {
+      padding: "10px 10px 10px 10px"
+    }
+  },
+  selectMonth: {
+    margin: "20px 10px 0px 0px",
+    minWidth: "80px",
+    fontSize: "16px",
+    display: "flex",
+    "& .MuiSelect-outlined": {
+      padding: "10px 10px 10px 10px"
+    }
+  },
+  placeholder: {
+    color: "#777",
+    fontSize: '16px',
+    marginTop:"-8px",
+  },
+  placeholderDate: {
+    color: "#777",
+    fontSize: '14px',
+    marginTop:"12px",
   }
 }));
 
@@ -89,7 +127,15 @@ function CourseItem(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [styleEdit, setStyleEdit] = useState({display: 'none'});
-  const [state, setState] = useState({name: props.name, institute: props.institute, from: props.from, to: props.to, description: props.description});
+  let courseStartDate=[0,0];
+  let courseEndDate=[0,0];
+  if(props.startDate !== 'null/null'){
+    courseStartDate = props.startDate.split("/");
+  }
+  if(props.endDate !== 'null/null'){
+    courseEndDate = props.endDate.split("/");
+  }
+  const [state, setState] = useState({course: props.course, institute: props.institute, startYear: courseStartDate[1], startMonth: courseStartDate[0], endYear: courseEndDate[1], endMonth: courseEndDate[0]});
 
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
@@ -97,10 +143,49 @@ function CourseItem(props) {
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
   const index = props.index;
-  let loginId=sessionStorage.getItem("loginId");
+  let loginId;
+  let login = false;
+  const jwt = require("jsonwebtoken");
+  const token = sessionStorage.getItem("userToken");
+  const header = jwt.decode(token, { complete: true });
+  if(token === null){
+    loginId=props.jobseekerID;
+  }else if (header.payload.userRole === "jobseeker") {
+    login = true;
+    loginId=sessionStorage.getItem("loginId");
+  } else {
+    loginId=props.jobseekerID;
+  }
+
+    //generate year list
+    function getYearsFrom(){
+      let maxOffset = 25;
+      let thisYear = (new Date()).getFullYear();
+      let allYears = [];
+      for(let x = 0; x <= maxOffset; x++) {
+          allYears.push(thisYear - x)
+      }
+  
+      return allYears.map((x) => (<option value={x}>{x}</option>));
+    }
+  
+    //generate month list
+    function getMonthsFrom(){
+      let maxOffset = 12;
+      let allMonths = [];
+      for(let x = 1; x <= maxOffset; x++) {
+        if(x<10){
+          allMonths.push("0"+x);
+        }else{
+          allMonths.push(x);
+        }        
+      }
+  
+      return allMonths.map((x) => (<option value={x}>{x}</option>));
+    }
   
   useEffect(() => {
-    if (deleteSuccess == true) {
+    if (deleteSuccess === true) {
         setAlertData({severity: "success", msg: "Item deleted successfully!"});
         handleAlert();
     }
@@ -153,9 +238,9 @@ function CourseItem(props) {
   
 
   //---------------------------- text field onChange events
-  function onChangeName(e){
+  function onChangeCourse(e){
     setState(prevState => {
-      return {...prevState, name: e.target.value}
+      return {...prevState, course: e.target.value}
     })
   }
 
@@ -165,32 +250,38 @@ function CourseItem(props) {
     })
   }
 
-  function onChangeFrom(e){
+  function onChangestartYear(e){
     setState(prevState => {
-      return {...prevState, from: e.target.value}
+      return {...prevState, startYear: e.target.value}
     })
   }
 
-  function onChangeTo(e){
+  function onChangestartMonth(e){
     setState(prevState => {
-      return {...prevState, to: e.target.value}
+      return {...prevState, startMonth: e.target.value}
     })
   }
 
-  function onChangeDescription(e){
+  function onChangeEndYear(e){
     setState(prevState => {
-      return {...prevState, description: e.target.value}
+      return {...prevState, endYear: e.target.value}
     })
   }
+
+  function onChangeEndMonth(e){
+    setState(prevState => {
+      return {...prevState, endMonth: e.target.value}
+    })
+  }
+
 
   function onSubmit(e){
     e.preventDefault();
     const course = {
-        name: state.name,
+        course: state.course,
         institute: state.institute,
-        from: state.from,
-        to: state.to,
-        description: state.description,
+        from: state.startMonth+"/"+state.startYear,
+        to: state.endMonth+"/"+state.endYear,
     }
 
     axios.put(`${BACKEND_URL}/jobseeker/updateCourse/${loginId}`,{index:props.index,course:course})
@@ -228,8 +319,8 @@ function CourseItem(props) {
         <ImportContactsIcon style={{color: "#cc99ff",}} />
         </Grid>
         <Grid item xs={9}>
-            <Typography gutterBottom style={{textAlign:'justify',fontSize:'16px',fontWeight:'bold',color:'#666'}}>
-                {state.name}
+            <Typography gutterBottom style={{textAlign:'left',fontSize:'16px',fontWeight:'bold',color:'#666'}}>
+                {state.course}
             </Typography>
             <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'14px',fontWeight:'bold',}}>
                 {state.institute}
@@ -238,16 +329,18 @@ function CourseItem(props) {
                 {state.description}
             </Typography>
             <Typography variant="body2" color="textSecondary" style={{textAlign:'left'}}>
-                {props.from} - {props.to}
+                {state.startMonth===0 ? "" : state.startMonth+"/"+state.startYear+ " - " +state.endMonth+"/"+state.endYear}
             </Typography>
         </Grid>
         <Grid item xs={2} spacing={2} style={{marginTop:"-5px",padding:"20px 0px 0px 0px"}}>
+        { login ? <>
           <Button style={{minWidth:'25px',width:'25px',marginRight:"10px"}}>
               <EditIcon style={styleEdit} className={classes.editIcon} size="small" onClick={handleOpen} />
           </Button>
           <Button style={{minWidth:'25px',width:'25px'}}>
               <DeleteIcon style={styleEdit} className={classes.editIcon} size="small"  onClick={handleClickOpen} />
           </Button>
+          </> : null }
           <Dialog
               open={confirmDelete}
               onClose={handleClickClose}
@@ -309,8 +402,9 @@ function CourseItem(props) {
                     type="text"
                     variant="outlined"
                     size="small"
-                    value={state.name}
-                    onChange={onChangeName}
+                    value={state.course}
+                    onChange={onChangeCourse}
+                    required
                   />
                   <TextField
                   className={classes.field}
@@ -321,41 +415,80 @@ function CourseItem(props) {
                     size="small"
                     value={state.institute}
                     onChange={onChangeInstitute}
+                    required
                   />
-                  <Grid container direction="row" style={{marginTop:'-18px'}}>
-                    <TextField
-                    className={classes.field}
-                    id="outlined-basic"
-                    label="From"
-                    type="number"
-                    variant="outlined"
-                    size="small"
-                    value={state.from}
-                    onChange={onChangeFrom}
-                    style={{width:'30%',marginRight:'10%'}}
-                    />
-                    <TextField
-                    className={classes.field}
-                    id="outlined-basic"
-                    label="To"
-                    type="number"
-                    variant="outlined"
-                    size="small"
-                    value={state.to}
-                    onChange={onChangeTo}
-                    style={{width:'30%'}}
-                    />
+                  <Grid container direction="row">
+                    <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
+                      <Grid item xs={12}>
+                        <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px"}}>Start Date</Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <FormControl variant="outlined" className={classes.formControl}>
+                          <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
+                          <Select
+                            native
+                            onChange={onChangestartYear}
+                            label="Start Date"
+                            value={state.startYear}
+                            className={classes.selectYear}
+                          >
+                            <option aria-label="None" value="" />
+                            {getYearsFrom()}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <FormControl variant="outlined" className={classes.formControl}>
+                          <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
+                          <Select
+                            native
+                            onChange={onChangestartMonth}
+                            label="Start Date"
+                            value={state.startMonth}
+                            className={classes.selectMonth}
+                          >
+                            <option aria-label="None" value="" />
+                            {getMonthsFrom()}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                    </Grid>
+                    <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
+                      <Grid item xs={12}>
+                        <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px"}}>End Date</Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <FormControl variant="outlined" className={classes.formControl}>
+                          <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
+                          <Select
+                            native
+                            onChange={onChangeEndYear}
+                            label="End Date"
+                            value={state.endYear}
+                            className={classes.selectYear}
+                          >
+                            <option aria-label="None" value="" />
+                            {getYearsFrom()}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <FormControl variant="outlined" className={classes.formControl}>
+                          <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
+                          <Select
+                            native
+                            onChange={onChangeEndMonth}
+                            label="Start Date"
+                            value={state.endMonth}
+                            className={classes.selectMonth}
+                          >
+                            <option aria-label="None" value="" />
+                            {getMonthsFrom()}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                    </Grid>
                   </Grid>
-                  <TextField
-                    className={classes.field}
-                    id="outlined-multiline-static"
-                    label="Description"
-                    multiline
-                    rows={5}
-                    variant="outlined"
-                    value={state.description}
-                    onChange= {onChangeDescription}
-                  />
                   </div>
                   <Button type="submit" className={classes.defaultButton} style={{ width:'100%',marginTop:'5%'}}>Apply Changes</Button>
               </form>

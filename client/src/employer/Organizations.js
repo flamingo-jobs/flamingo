@@ -1,5 +1,5 @@
 import React from 'react'
-import { colors, makeStyles, Typography } from '@material-ui/core'
+import { CircularProgress, colors, makeStyles, Typography } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid';
 
 import OrganizationCard from './components/OrganizationCard';
@@ -12,6 +12,8 @@ import { Link } from 'react-router-dom';
 import Pagination from '@material-ui/lab/Pagination';
 import PaginationItem from '@material-ui/lab/PaginationItem';
 import OrgSearchBar from './components/OrgSearchBar';
+import LoginModal from './components/loginModal';
+import FloatCard from '../components/FloatCard';
 
 const useStyles = makeStyles((theme) => ({
     organizationsGrid: {
@@ -51,8 +53,11 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-function Organizations() {
+function Organizations(props) {
     const classes = useStyles();
+
+    const userId = sessionStorage.getItem("loginId");
+    const [favoriteOrgs, setFavoriteOrgs] = useState("empty");
 
     const [organizations, setOrganizations] = useState([]);
     const [count, setCount] = useState(0);
@@ -61,6 +66,16 @@ function Organizations() {
     const [queryParams, setQueryParams] = useState({});
 
     const [page, setPage] = React.useState(1);
+
+    // Login modal 
+    const [open, setOpen] = useState(false);
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     const changePage = (event, value) => {
         setPage(value);
@@ -74,6 +89,10 @@ function Organizations() {
         updateQuery();
     }, [filters, search])
 
+    useEffect(() => {
+        retrieveJobseeker();
+    }, []);
+
     const updateFilters = (filterData) => {
         setFilters(filterData);
     }
@@ -85,11 +104,11 @@ function Organizations() {
 
     const updateQuery = () => {
 
-        if (Object.keys(filters).length != 0 && Object.keys(search).length != 0) {
+        if (Object.keys(filters).length !== 0 && Object.keys(search).length !== 0) {
             setQueryParams({ $and: [filters, search] });
-        } else if (Object.keys(filters).length == 0) {
+        } else if (Object.keys(filters).length === 0) {
             setQueryParams(search);
-        } else if (Object.keys(search).length == 0) {
+        } else if (Object.keys(search).length === 0) {
             setQueryParams(filters);
         } else {
             setQueryParams({});
@@ -107,7 +126,7 @@ function Organizations() {
 
         let start = (page - 1) * 10;
         axios.post(`${BACKEND_URL}/employers/filter`, { queryParams: queryParams, options: { skip: start, limit: 10 } }).then(res => {
-            
+
             if (res.data.success) {
                 setOrganizations(res.data.existingData)
             } else {
@@ -116,23 +135,51 @@ function Organizations() {
         })
     }
 
+    const retrieveJobseeker = async () => {
+        if (userId) {
+            try {
+                const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
+                if (response.data.success) {
+                    setFavoriteOrgs(response.data.jobseeker.favoriteOrganizations);
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        }
+    };
+
     const displayOrganizations = () => {
-        if (organizations) {
+        if (organizations.length === 0) {
+            return (
+                <Grid item sm={12} style={{ marginBottom: 16 }}>
+                    <FloatCard>
+                        <CircularProgress />
+                    </FloatCard>
+                </Grid>)
+        } else if (organizations) {
             return organizations.map(org => (
                 <Grid item xs={12} md={12} key={org._id} className={classes.gridCard}>
-                    <OrganizationCard info={org} />
+                    <OrganizationCard
+                        userId={userId}
+                        info={org}
+                        userRole={props.userRole}
+                        favoriteOrgs={favoriteOrgs}
+                        setFavoriteOrgs={setFavoriteOrgs}
+                        handleOpen={handleOpen}
+                    />
                 </Grid>
             ))
-        } else {
-            return (
-                <Grid item sm={12}>
-                    <Typography>No organizations to display...</Typography>
-                </Grid>)
         }
     }
 
     return (
         <>
+            {/* Works only when user is not signed in */}
+            <LoginModal
+                open={open}
+                handleClose={handleClose}
+            ></LoginModal>
+
             <Grid item container sm={12} spacing={3} direction="row" justify="space-between" className={classes.mainGrid} alignItems="flex-start">
                 <Grid item sm={12} className={classes.searchGrid}>
                     <OrgSearchBar onChange={updateSearch} />
@@ -140,7 +187,7 @@ function Organizations() {
                 <Grid item container xs={12} sm={12} md={8} lg={9} spacing={2} direction="row" className={classes.organizationsGrid} justify="flex-start" alignItems="flex-start">
                     {displayOrganizations()}
                     <Grid item sm={12}>
-                        <Pagination count={Math.ceil(count / 10)} color="primary" page={page} onChange={changePage} classes={{ ul: classes.pagination}}/>
+                        <Pagination count={Math.ceil(count / 10)} color="primary" page={page} onChange={changePage} classes={{ ul: classes.pagination }} />
                     </Grid>
                 </Grid>
                 <Grid item xs={12} sm={12} md={4} lg={3} className={classes.filterGrid}>

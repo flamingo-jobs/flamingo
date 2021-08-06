@@ -11,8 +11,7 @@ import {
   MenuItem,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
-import { StateBlueTextField } from "../styles/customTextField";
-import FloatCard from "../../../components/FloatCard";
+import { StateBlueTextField } from "./customTextField";
 import RemoveIcon from "@material-ui/icons/Remove";
 import AddIcon from "@material-ui/icons/Add";
 

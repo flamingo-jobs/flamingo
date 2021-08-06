@@ -4,13 +4,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import FloatCard from '../../components/FloatCard';
-import cardImage from '../images/profilePic.jpg';
 import theme from '../../Theme';
-import EditIcon from '@material-ui/icons/Edit';
 import LaptopChromebookIcon from '@material-ui/icons/LaptopChromebook';
 import Grid from '@material-ui/core/Grid';
 import ProjectItem from './ProjectItem';
-import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import AddIcon from '@material-ui/icons/Add';
@@ -23,6 +20,9 @@ import CloseIcon from '@material-ui/icons/Close';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import TextField from '@material-ui/core/TextField';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
 import SnackBarAlert from "../../components/SnackBarAlert";
 
 const useStyles = makeStyles({
@@ -86,6 +86,42 @@ const useStyles = makeStyles({
       fontSize: '16px',
     }
   },
+  select: {
+    minWidth: "200px",
+    fontSize: "16px",
+    display: "flex",
+    "& .MuiSelect-outlined": {
+      padding: "10px 10px 10px 10px"
+    }
+  },
+  selectYear: {
+    margin: "20px 10px 0px 0px",
+    minWidth: "90px",
+    fontSize: "16px",
+    display: "flex",
+    "& .MuiSelect-outlined": {
+      padding: "10px 10px 10px 10px"
+    }
+  },
+  selectMonth: {
+    margin: "20px 10px 0px 0px",
+    minWidth: "80px",
+    fontSize: "16px",
+    display: "flex",
+    "& .MuiSelect-outlined": {
+      padding: "10px 10px 10px 10px"
+    }
+  },
+  placeholder: {
+    color: "#777",
+    fontSize: '16px',
+    marginTop:"-8px",
+  },
+  placeholderDate: {
+    color: "#777",
+    fontSize: '14px',
+    marginTop:"12px",
+  },
   paperModal: {
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
@@ -95,29 +131,73 @@ const useStyles = makeStyles({
   },
 });
 
-function ProjectsSection() {
+function ProjectsSection(props) {
   const classes = useStyles();
   const [fetchedData, setFetchedData] = useState('');
   const [open, setOpen] = useState(false);
   const [project, setProject] = useState(null);
-  const [state, setState] = useState({name: null, link: null, description: null, from: null, to: null, usedTech: null});
+  const [state, setState] = useState({name: null, link: null, description: null, startYear: null, startMonth: null, endYear: null, endMonth: null, usedTech: null});
 
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
   let i=0;
-  let loginId=sessionStorage.getItem("loginId");
+  let loginId;
+  let login = false;
+  const jwt = require("jsonwebtoken");
+  const token = sessionStorage.getItem("userToken");
+  const header = jwt.decode(token, { complete: true });
+  if(token === null){
+    loginId=props.jobseekerID;
+  }else if (header.payload.userRole === "jobseeker") {
+    login = true;
+    loginId=sessionStorage.getItem("loginId");
+  } else {
+    loginId=props.jobseekerID;
+  }
+
+  //generate year list
+  function getYearsFrom(){
+    let maxOffset = 25;
+    let thisYear = (new Date()).getFullYear();
+    let allYears = [];
+    for(let x = 0; x <= maxOffset; x++) {
+        allYears.push(thisYear - x)
+    }
+
+    return allYears.map((x) => (<option value={x}>{x}</option>));
+  }
+
+  //generate month list
+  function getMonthsFrom(){
+    let maxOffset = 12;
+    let allMonths = [];
+    for(let x = 1; x <= maxOffset; x++) {
+      if(x<10){
+        allMonths.push("0"+x);
+      }else{
+        allMonths.push(x);
+      }        
+    }
+
+    return allMonths.map((x) => (<option value={x}>{x}</option>));
+  }
 
   function fetchData(){
+    let projectData;
     axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
     .then(res => {
       if(res.data.success){
         if(res.data.jobseeker.project.length > 0){
+          projectData = res.data.jobseeker.project;
           if(Object.keys(res.data.jobseeker.project[0]).length === 0){
+            res.data.jobseeker.project.splice(0,1)
+            i++;
+          }else if(projectData[0].name === "" && projectData[0].link === "" && projectData[0].description === "" && projectData[0].from === "" && projectData[0].to === ""){
             res.data.jobseeker.project.splice(0,1)
             i++;
           }
         }       
-        setProject(res.data.jobseeker.project)
+        setProject(projectData)
       }
     })
     setFetchedData(0)
@@ -146,7 +226,7 @@ function ProjectsSection() {
   }
 
   useEffect(()=>{
-    setState({name: null, link: null, description: null, from: null, to: null, usedTech: null});
+    setState({name: null, link: null, description: null, startYear: null, startMonth: null, endYear: null, endMonth: null, usedTech: null});
     setProject(null);
     fetchData();
   },[fetchedData])
@@ -202,15 +282,27 @@ function ProjectsSection() {
     })
   }
 
-  function onChangeFrom(e){
+  function onChangestartYear(e){
     setState(prevState => {
-      return {...prevState, from: e.target.value}
+      return {...prevState, startYear: e.target.value}
     })
   }
 
-  function onChangeTo(e){
+  function onChangestartMonth(e){
     setState(prevState => {
-      return {...prevState, to: e.target.value}
+      return {...prevState, startMonth: e.target.value}
+    })
+  }
+
+  function onChangeEndYear(e){
+    setState(prevState => {
+      return {...prevState, endYear: e.target.value}
+    })
+  }
+
+  function onChangeEndMonth(e){
+    setState(prevState => {
+      return {...prevState, endMonth: e.target.value}
     })
   }
 
@@ -226,8 +318,8 @@ function ProjectsSection() {
         name: state.name,
         link: state.link,
         description: state.description,
-        from: state.from,
-        to: state.to,
+        from: state.startMonth+"/"+state.startYear,
+        to: state.endMonth+"/"+state.endYear,
         usedTech: state.usedTech
     }
 
@@ -278,12 +370,11 @@ function ProjectsSection() {
             </Typography>
         </Grid>
         <Grid item style={{ textAlign: 'right' }}>
+        { login ? <>
             <Button className={classes.defaultButton} style={{ float: 'right',marginRight: '0px',backgroundColor:'white'}} onClick={handleOpen}>
                 <AddIcon style={{color: theme.palette.tuftsBlue,}} className={classes.editIcon} />
             </Button>
-            <Button className={classes.defaultButton} style={{ float: 'right',marginRight: '0px',backgroundColor:'white'}}>
-                <GitHubIcon style={{color: theme.palette.tuftsBlue,marginRight:'15px'}} />
-            </Button>
+            </> : null }
         </Grid>
 
         <Modal
@@ -326,6 +417,7 @@ function ProjectsSection() {
                     variant="outlined"
                     size="small"
                     onChange={onChangeName}
+                    required
                   />
                   <TextField
                   className={classes.field}
@@ -344,29 +436,77 @@ function ProjectsSection() {
                     rows={5}
                     variant="outlined"
                     onChange= {onChangeDescription}
+                    required
                   />
-                  <Grid container direction="row" style={{marginTop:'-18px'}}>
-                    <TextField
-                    className={classes.field}
-                    id="outlined-basic"
-                    label="From"
-                    type="number"
-                    variant="outlined"
-                    size="small"
-                    onChange={onChangeFrom}
-                    style={{width:'30%',marginRight:'10%'}}
-                    />
-                    <TextField
-                    className={classes.field}
-                    id="outlined-basic"
-                    label="To"
-                    type="number"
-                    variant="outlined"
-                    size="small"
-                    onChange={onChangeTo}
-                    style={{width:'30%'}}
-                    />
-                    <TextField
+                  <Grid container direction="row">
+                    <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
+                      <Grid item xs={12}>
+                        <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px"}}>Start Date</Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <FormControl variant="outlined" className={classes.formControl}>
+                          <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
+                          <Select
+                            native
+                            onChange={onChangestartYear}
+                            label="Start Date"
+                            className={classes.selectYear}
+                          >
+                            <option aria-label="None" value="" />
+                            {getYearsFrom()}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <FormControl variant="outlined" className={classes.formControl}>
+                          <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
+                          <Select
+                            native
+                            onChange={onChangestartMonth}
+                            label="Start Date"
+                            className={classes.selectMonth}
+                          >
+                            <option aria-label="None" value="" />
+                            {getMonthsFrom()}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                    </Grid>
+                    <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
+                      <Grid item xs={12}>
+                        <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px"}}>End Date</Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <FormControl variant="outlined" className={classes.formControl}>
+                          <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
+                          <Select
+                            native
+                            onChange={onChangeEndYear}
+                            label="End Date"
+                            className={classes.selectYear}
+                          >
+                            <option aria-label="None" value="" />
+                            {getYearsFrom()}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <FormControl variant="outlined" className={classes.formControl}>
+                          <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
+                          <Select
+                            native
+                            onChange={onChangeEndMonth}
+                            label="Start Date"
+                            className={classes.selectMonth}
+                          >
+                            <option aria-label="None" value="" />
+                            {getMonthsFrom()}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <TextField
                     className={classes.field}
                     id="outlined-basic"
                     label="Tech. Stack"
@@ -374,8 +514,8 @@ function ProjectsSection() {
                     variant="outlined"
                     size="small"
                     onChange={onChangeUsedTech}
+                    required
                   />
-                  </Grid>
                   </div>
                   <Button type="submit" className={classes.defaultButton} style={{ width:'100%',marginTop:'5%'}}>Apply Changes</Button>
               </form>

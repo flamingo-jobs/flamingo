@@ -9,10 +9,12 @@ const create = async (req, res) => {
     }catch(err){
         res.status(400).json({error: err});
     }
+    console.log("New job", newJob)
 
 }
 
-const getAll = (req, res) => {
+const getAll = async (req, res) => {
+    console.log(JSON.stringify(req.body.queryParams));
     Jobs.find(req.body.queryParams, null, req.body.options).exec((err, jobs) => {
         if (err) {
             return res.status(400).json({
@@ -25,6 +27,17 @@ const getAll = (req, res) => {
         });
     });
 }
+
+const getSearched = async (req, res) => {
+    try {
+        const result = await Jobs.find({
+            title: { $regex: '.*' + req.params.searchString + '.*', $options: "i" },
+        });
+        res.status(200).json({ success: true, jobs: result });
+    } catch (err) {
+        res.status(400).json({ success: false, error: err });
+    }
+};
 
 const getById = (req, res) => {
     Jobs.findById(req.params.id).exec((err, job) => {
@@ -131,7 +144,21 @@ const resetAll = (req, res) => { // To clear the test resume details
                 sucess: "Updated successfully"
             });
         }
-    );
+        );
+    }
+
+const updateResumeStatus = async (req, res) => {
+    try{
+        const updatedJobs = await Jobs.updateOne(
+            {_id: req.params.id, "applicationDetails.userId": req.body.userId},
+            {
+                $set:{ [`applicationDetails.$.status`]: req.body.status }
+            },
+        );
+        res.status(200).json({ success: true });
+    }catch(err){
+        res.status(400).json({ success: false, error: err});
+    }
 }
 
 const updateResumeDetails =   (req, res) => {
@@ -187,8 +214,10 @@ const remove = (req, res) => {
 module.exports = {
     create,
     getAll,
+    getSearched,
     getById,
     update,
+    updateResumeStatus,
     updateResumeDetails,
     remove,
     getFeaturedJobs,

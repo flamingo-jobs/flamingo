@@ -5,7 +5,6 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import FloatCard from '../../components/FloatCard';
 import theme from '../../Theme';
-import EditIcon from '@material-ui/icons/Edit';
 import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
 import Grid from '@material-ui/core/Grid';
 import AwardItem from './AwardItem';
@@ -17,6 +16,9 @@ import AddIcon from '@material-ui/icons/Add';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import TextField from '@material-ui/core/TextField';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
 import SnackBarAlert from "../../components/SnackBarAlert";
 
 const useStyles = makeStyles({
@@ -64,32 +66,112 @@ const useStyles = makeStyles({
       color: "#777",
       fontSize: '16px',
     }
+  },
+  select: {
+    minWidth: "200px",
+    fontSize: "16px",
+    display: "flex",
+    "& .MuiSelect-outlined": {
+      padding: "10px 10px 10px 10px"
+    }
+  },
+  selectYear: {
+    margin: "20px 10px 0px 0px",
+    minWidth: "90px",
+    fontSize: "16px",
+    display: "flex",
+    "& .MuiSelect-outlined": {
+      padding: "10px 10px 10px 10px"
+    }
+  },
+  selectMonth: {
+    margin: "20px 10px 0px 0px",
+    minWidth: "80px",
+    fontSize: "16px",
+    display: "flex",
+    "& .MuiSelect-outlined": {
+      padding: "10px 10px 10px 10px"
+    }
+  },
+  placeholder: {
+    color: "#777",
+    fontSize: '16px',
+    marginTop:"-8px",
+  },
+  placeholderDate: {
+    color: "#777",
+    fontSize: '14px',
+    marginTop:"12px",
   }
 });
 
-function Achievements() {
+function Achievements(props) {
   const classes = useStyles();
   const [fetchedData, setFetchedData] = useState('');
   const [open, setOpen] = useState(false);
   const [award, setAward] = useState(null);
-  const [state, setState] = useState({title: null, issuedBy: null, date: null, description: null});
+  const [state, setState] = useState({title: null, issuedBy: null, year: null, month:null, description: null});
 
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
   let i=0;
-  let loginId=sessionStorage.getItem("loginId");
+  let loginId;
+  let login = false;
+  const jwt = require("jsonwebtoken");
+  const token = sessionStorage.getItem("userToken");
+  const header = jwt.decode(token, { complete: true });
+  if(token === null){
+    loginId=props.jobseekerID;
+  }else if (header.payload.userRole === "jobseeker") {
+    login = true;
+    loginId=sessionStorage.getItem("loginId");
+  } else {
+    loginId=props.jobseekerID;
+  }
+
+  //generate year list
+  function getYearsFrom(){
+    let maxOffset = 25;
+    let thisYear = (new Date()).getFullYear();
+    let allYears = [];
+    for(let x = 0; x <= maxOffset; x++) {
+        allYears.push(thisYear - x)
+    }
+
+    return allYears.map((x) => (<option value={x}>{x}</option>));
+  }
+
+  //generate month list
+  function getMonthsFrom(){
+    let maxOffset = 12;
+    let allMonths = [];
+    for(let x = 1; x <= maxOffset; x++) {
+      if(x<10){
+        allMonths.push("0"+x);
+      }else{
+        allMonths.push(x);
+      }        
+    }
+
+    return allMonths.map((x) => (<option value={x}>{x}</option>));
+  }
 
   function fetchData(){
+    let awardData;
     axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
     .then(res => {
       if(res.data.success){
         if(res.data.jobseeker.award.length > 0){
+          awardData = res.data.jobseeker.award;
           if(Object.keys(res.data.jobseeker.award[0]).length === 0){
+            res.data.jobseeker.award.splice(0,1)
+            i++;
+          }else if(awardData[0].title === "" && awardData[0].issuedBy === "" && awardData[0].date === "" && awardData[0].description === ""){
             res.data.jobseeker.award.splice(0,1)
             i++;
           }
         }
-        setAward(res.data.jobseeker.award)
+        setAward(awardData)
       }
     })
     setFetchedData(0)
@@ -118,7 +200,7 @@ function Achievements() {
   }
 
   useEffect(()=>{
-    setState({title: null, issuedBy: null, date: null, description: null});
+    setState({title: null, issuedBy: null,  year: null, month: null, description: null});
     setAward(null);
     fetchData();
   },[fetchedData])
@@ -168,9 +250,15 @@ function Achievements() {
     })
   }
 
-  function onChangeDate(e){
+  function onChangeYear(e){
     setState(prevState => {
-      return {...prevState, date: e.target.value}
+      return {...prevState, year: e.target.value}
+    })
+  }
+
+  function onChangeMonth(e){
+    setState(prevState => {
+      return {...prevState, month: e.target.value}
     })
   }
 
@@ -185,7 +273,7 @@ function Achievements() {
     const newAward = {
         title: state.title,
         issuedBy: state.issuedBy,
-        date: state.date,
+        date: state.month+"/"+state.year,
         description: state.description,
     }
 
@@ -235,9 +323,11 @@ function Achievements() {
             </Typography>
         </Grid>
         <Grid item style={{ textAlign: 'right' }}>
+        { login ? <>
             <Button className={classes.defaultButton} style={{ float: 'right',marginRight: '0px',backgroundColor:'white'}} onClick={handleOpen}>
                 <AddIcon style={{color: theme.palette.tuftsBlue,}} className={classes.editIcon} />
             </Button>
+            </> : null }
         </Grid>
 
         {/*-------------- add new edu field popup content ------------------- */}
@@ -280,6 +370,7 @@ function Achievements() {
                     variant="outlined"
                     size="small"
                     onChange={onChangeTitle}
+                    required
                   />
                   <TextField
                   className={classes.field}
@@ -290,16 +381,41 @@ function Achievements() {
                     size="small"
                     onChange={onChangeIssuedBy}
                   />
-                  <TextField
-                  className={classes.field}
-                    id="outlined-basic"
-                    label="Date"
-                    type="number"
-                    variant="outlined"
-                    size="small"
-                    onChange={onChangeDate}
-                    style={{width:'30%'}}
-                  />
+                  <Grid container direction="row">
+                    <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
+                      <Grid item xs={12}>
+                        <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px"}}>Issued Date</Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <FormControl variant="outlined" className={classes.formControl}>
+                          <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
+                          <Select
+                            native
+                            onChange={onChangeYear}
+                            label="Start Date"
+                            className={classes.selectYear}
+                          >
+                            <option aria-label="None" value="" />
+                            {getYearsFrom()}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <FormControl variant="outlined" className={classes.formControl}>
+                          <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
+                          <Select
+                            native
+                            onChange={onChangeMonth}
+                            label="Start Date"
+                            className={classes.selectMonth}
+                          >
+                            <option aria-label="None" value="" />
+                            {getMonthsFrom()}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                    </Grid>
+                  </Grid>
                   <TextField
                     className={classes.field}
                     id="outlined-multiline-static"

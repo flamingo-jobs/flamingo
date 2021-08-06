@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import Grid from '@material-ui/core/Grid';
 import DashboardRoundedIcon from '@material-ui/icons/DashboardRounded';
 import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
@@ -13,15 +11,10 @@ import BusinessRoundedIcon from '@material-ui/icons/BusinessRounded';
 import PeopleAltRoundedIcon from '@material-ui/icons/PeopleAltRounded';
 import PhoneRoundedIcon from '@material-ui/icons/PhoneRounded';
 import ThumbsUpDownRoundedIcon from '@material-ui/icons/ThumbsUpDownRounded';
-import Lottie from 'react-lottie';
-import Flamingo from './lotties/flamingo.json';
-import FloatCard from './FloatCard';
 import { Link } from 'react-router-dom'
-import { Route, BrowserRouter } from "react-router-dom";
 import OfflineBoltRoundedIcon from '@material-ui/icons/OfflineBoltRounded';
 import CategoryRoundedIcon from '@material-ui/icons/CategoryRounded';
 import CodeRoundedIcon from '@material-ui/icons/CodeRounded';
-import AssessmentIcon from '@material-ui/icons/Assessment';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import DescriptionIcon from '@material-ui/icons/Description';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
@@ -77,11 +70,11 @@ function NavMenu(props) {
     const theme = useTheme();
     var defaultPage;
     const path = window.location.pathname.split("/");
-    if (path.length == 1) {
+    if (path.length === 1) {
         defaultPage = "home";
-    } else if (path.length == 2 && path[1] == "admin") {
+    } else if (path.length === 2 && path[1] === "admin") {
         defaultPage = "dashboard";
-    } else if (path.length > 2 && path[1] == "admin") {
+    } else if (path.length > 2 && path[1] === "admin") {
         defaultPage = path[2];
     } else {
         defaultPage = path[1];
@@ -102,7 +95,7 @@ function NavMenu(props) {
     
 
     const displayAdminLinks = () => {
-        if (props.user == "admin") {
+        if (props.user === "admin") {
             return (
                 <>
                     <Link to="/admin">
@@ -124,13 +117,13 @@ function NavMenu(props) {
                         </ListItem>
                     </Link>
                     <Link to="/admin/categories">
-                        <ListItem button key="categories" selected={selectedIndex == "categories"} onClick={(event) => handleListItemClick(event, "categories")} classes={{ selected: classes.active }} className={classes.listItem}>
+                        <ListItem button key="categories" selected={selectedIndex === "categories"} onClick={(event) => handleListItemClick(event, "categories")} classes={{ selected: classes.active }} className={classes.listItem}>
                             <ListItemIcon className={classes.linkIcon}><CategoryRoundedIcon /></ListItemIcon>
                             <ListItemText className={classes.linkText} primary="Categories" />
                         </ListItem>
                     </Link>
                     <Link to="/admin/technologies">
-                        <ListItem button key="technologies" selected={selectedIndex == "technologies"} onClick={(event) => handleListItemClick(event, "technologies")} classes={{ selected: classes.active }} className={classes.listItem}>
+                        <ListItem button key="technologies" selected={selectedIndex === "technologies"} onClick={(event) => handleListItemClick(event, "technologies")} classes={{ selected: classes.active }} className={classes.listItem}>
                             <ListItemIcon className={classes.linkIcon}><CodeRoundedIcon /></ListItemIcon>
                             <ListItemText className={classes.linkText} primary="Technologies" />
                         </ListItem>
@@ -141,7 +134,7 @@ function NavMenu(props) {
     }
 
     const displayEmployerLinks = () => {
-        if (props.user == "employer") {
+        if (props.user === "employer") {
             return (
                 <>
                     <Link to="/employer/home">
@@ -194,16 +187,22 @@ function NavMenu(props) {
     }
 
     const displayJobSeekerLinks = () => {
-        if (props.user == "jobseeker") {
+        if (props.user === "jobseeker") {
             return (
                 <>
-                    <Link to="/">
+                    <Link to="/jobseekerDashboard">
                         <ListItem button key="dashboard" selected={selectedIndex === "dashboard"} onClick={(event) => handleListItemClick(event, "dashboard")} classes={{ selected: classes.active }} className={classes.listItem}>
                             <ListItemIcon className={classes.linkIcon}><DashboardRoundedIcon /></ListItemIcon>
                             <ListItemText className={classes.linkText} primary="Dashboard" />
                         </ListItem>
                     </Link>
-                    <Link to="/jobseeker/recomendations">
+                    <Link to="/jobseeker">
+                        <ListItem button key="profile" selected={selectedIndex === "profile"} onClick={(event) => handleListItemClick(event, "profile")} classes={{ selected: classes.active }} className={classes.listItem}>
+                            <ListItemIcon className={classes.linkIcon}><PeopleAltRoundedIcon /></ListItemIcon>
+                            <ListItemText className={classes.linkText} primary="Profile" />
+                        </ListItem>
+                    </Link>
+                    <Link to="/recommendations">
                         <ListItem button key="recommendations" selected={selectedIndex === "recommendations"} onClick={(event) => handleListItemClick(event, "recommendations")} classes={{ selected: classes.active }} className={classes.listItem}>
                             <ListItemIcon className={classes.linkIcon}><OfflineBoltRoundedIcon /></ListItemIcon>
                             <ListItemText className={classes.linkText} primary="Recommendations" />
@@ -221,12 +220,6 @@ function NavMenu(props) {
                             <ListItemText className={classes.linkText} primary="Ogranizations" />
                         </ListItem>
                     </Link>
-                    <Link to="/people">
-                        <ListItem button key="people" selected={selectedIndex === "people"} onClick={(event) => handleListItemClick(event, "people")} classes={{ selected: classes.active }} className={classes.listItem}>
-                            <ListItemIcon className={classes.linkIcon}><PeopleAltRoundedIcon /></ListItemIcon>
-                            <ListItemText className={classes.linkText} primary="People" />
-                        </ListItem>
-                    </Link>
                     <ListItem button key="services" selected={selectedIndex === "services"} onClick={(event) => handleListItemClick(event, "services")} classes={{ selected: classes.active }} className={classes.listItem}>
                         <ListItemIcon className={classes.linkIcon}><ThumbsUpDownRoundedIcon /></ListItemIcon>
                         <ListItemText className={classes.linkText} primary="Services" />
@@ -241,7 +234,7 @@ function NavMenu(props) {
     }
 
     const displayDefaultLinks = () => {
-        if (props.user == null) {
+        if (props.user === null) {
             return (
                 <>
                     <Link to="/">

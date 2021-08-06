@@ -11,7 +11,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 
 // Custom components
 import FloatCard from "../../../components/FloatCard";
-import { StateBlueTextField } from "../styles/customTextField";
+import { StateBlueTextField } from "./customTextField";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -38,6 +38,9 @@ const useStyles = makeStyles((theme) => ({
   },
   submitButton: {
     background: theme.palette.stateBlue,
+    "&:hover": {
+      background: theme.palette.stateBlueHover,
+    },
   },
 }));
 

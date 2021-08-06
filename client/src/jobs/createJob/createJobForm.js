@@ -46,6 +46,15 @@ const keywords = [
   { name: "Back end" },
 ];
 
+const minEducationList = [
+  "Bachelor's Degree (Undergraduate)",
+  "Bachelor's Degree (Graduated)",
+  "Master's Degree",
+  "Diploma",
+];
+
+const minExperienceList = ["0", "0-1", "1-3", "+3"];
+
 const getFormattedDate = (date) => {
   const dateStr = `${date.getDate().toString().padStart(2, "0")}/
   ${(date.getMonth() + 1).toString().padStart(2, "0")}/
@@ -55,8 +64,7 @@ const getFormattedDate = (date) => {
 
 const CreateJobForm = () => {
   const classes = useStyles();
-  const empId = "60c246913542f942e4c84454";
-
+  const empId = sessionStorage.getItem("loginId");
   // Data retrieved from DB
   const [categories, setCategories] = useState("empty");
   const [types, setTypes] = useState("empty");
@@ -76,6 +84,8 @@ const CreateJobForm = () => {
   const [location, setLocation] = useState("");
   const [currentDate, setCurrentDate] = useState(new Date());
   const [dueDate, setDueDate] = useState(null);
+  const [minEducation, setMinEducation] = useState(minEducationList[0]);
+  const [minExperience, setMinExperience] = useState(minExperienceList[0]);
   const [minSalary, setMinSalary] = useState(0);
   const [maxSalary, setMaxSalary] = useState(0);
   const [tasksFields, setTasksFields] = useState([""]);
@@ -120,6 +130,12 @@ const CreateJobForm = () => {
   };
   const handleMaxSalaryChange = (event) => {
     setMaxSalary(parseFloat(event.target.value, 10));
+  };
+  const handleMinEducationChange = (event) => {
+    setMinEducation(event.target.value);
+  };
+  const handleMinExperienceChange = (event) => {
+    setMinExperience(event.target.value);
   };
 
   // ***** Tasks & Responsibilites *****
@@ -218,6 +234,8 @@ const CreateJobForm = () => {
       location: location,
       postedDate: currentDate,
       dueDate: dueDate,
+      minimumEducation: minEducation,
+      minimumExperience: minExperience,
       salaryRange: {
         min: minSalary,
         max: maxSalary,
@@ -229,6 +247,7 @@ const CreateJobForm = () => {
       isPublished: isPublished,
       isFeatured: isFeatured,
     };
+
     try {
       const response = await axios.post(`${BACKEND_URL}/jobs/create`, newJob);
       if (response.data.success === true) {
@@ -237,6 +256,7 @@ const CreateJobForm = () => {
           msg: "Job created successfully!",
         });
         handleAlert();
+        window.location = "/employer/jobs";
       } else {
         setAlertData({
           severity: "error",
@@ -267,6 +287,10 @@ const CreateJobForm = () => {
           category={category}
           categories={categories}
           dueDate={dueDate}
+          minEducation={minEducation}
+          minExperience={minExperience}
+          minEducationList={minEducationList}
+          minExperienceList={minExperienceList}
           handleTitleChange={handleTitleChange}
           handleCategoryChange={handleCategoryChange}
           handleJobTypeChange={handleJobTypeChange}
@@ -275,6 +299,8 @@ const CreateJobForm = () => {
           handleDateChange={handleDateChange}
           handleMinSalaryChange={handleMinSalaryChange}
           handleMaxSalaryChange={handleMaxSalaryChange}
+          handleMinEducationChange={handleMinEducationChange}
+          handleMinExperienceChange={handleMinExperienceChange}
         ></SummaryForm>
       );
     }

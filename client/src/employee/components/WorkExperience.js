@@ -74,33 +74,112 @@ const useStyles = makeStyles({
       color: "#777",
       fontSize: '16px',
     }
+  },
+  select: {
+    minWidth: "200px",
+    fontSize: "16px",
+    display: "flex",
+    "& .MuiSelect-outlined": {
+      padding: "10px 10px 10px 10px"
+    }
+  },
+  selectYear: {
+    margin: "20px 10px 0px 0px",
+    minWidth: "90px",
+    fontSize: "16px",
+    display: "flex",
+    "& .MuiSelect-outlined": {
+      padding: "10px 10px 10px 10px"
+    }
+  },
+  selectMonth: {
+    margin: "20px 10px 0px 0px",
+    minWidth: "80px",
+    fontSize: "16px",
+    display: "flex",
+    "& .MuiSelect-outlined": {
+      padding: "10px 10px 10px 10px"
+    }
+  },
+  placeholder: {
+    color: "#777",
+    fontSize: '16px',
+    marginTop:"-8px",
+  },
+  placeholderDate: {
+    color: "#777",
+    fontSize: '14px',
+    marginTop:"12px",
   }
 });
 
-function WorkExperience() {
+function WorkExperience(props) {
   const classes = useStyles();
   const [fetchedData, setFetchedData] = useState('');
   const [open, setOpen] = useState(false);
-  const [work, setWork] = useState(null);
-  const [state, setState] = useState({place: null, description: null, position: null, from: null, to: null, taskAndResponsibility: null});
+  const [work, setWork] = useState([]);
+  const [state, setState] = useState({place: null, description: null, position: null, startYear: null, startMonth: null, endYear: null, endMonth: null, taskAndResponsibility: null});
 
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
   let i=0;
-  let loginId=sessionStorage.getItem("loginId");
+  let loginId;
+  let login = false;
+  const jwt = require("jsonwebtoken");
+  const token = sessionStorage.getItem("userToken");
+  const header = jwt.decode(token, { complete: true });
+  if(token === null){
+    loginId=props.jobseekerID;
+  }else if (header.payload.userRole === "jobseeker") {
+    login = true;
+    loginId=sessionStorage.getItem("loginId");
+  } else {
+    loginId=props.jobseekerID;
+  }
+
+  //generate year list
+  function getYearsFrom(){
+    let maxOffset = 25;
+    let thisYear = (new Date()).getFullYear();
+    let allYears = [];
+    for(let x = 0; x <= maxOffset; x++) {
+        allYears.push(thisYear - x)
+    }
+
+    return allYears.map((x) => (<option value={x}>{x}</option>));
+  }
+
+  //generate month list
+  function getMonthsFrom(){
+    let maxOffset = 12;
+    let allMonths = [];
+    for(let x = 1; x <= maxOffset; x++) {
+      if(x<10){
+        allMonths.push("0"+x);
+      }else{
+        allMonths.push(x);
+      }        
+    }
+
+    return allMonths.map((x) => (<option value={x}>{x}</option>));
+  }
 
   function fetchData(){
+    let workData;
     axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
     .then(res => {
       if(res.data.success){
         if(res.data.jobseeker.work.length > 0){
-          if(Object.keys(res.data.jobseeker.work[0]).length === 0){
-            res.data.jobseeker.work.splice(0,1)
+          workData = res.data.jobseeker.work;
+          if(Object.keys(workData[0]).length === 0){
+            workData.splice(0,1)
+            i++;
+          }else if(workData[0].place === "" && workData[0].description === "" && workData[0].position === "" && workData[0].from === "" && workData[0].to === "" && workData[0].taskAndResponsibility === ""){
+            workData.splice(0,1)
             i++;
           }
-          //setWork(res.data.jobseeker.work)
         }
-        
+        setWork(workData)
       }
     })
     setFetchedData(0)
@@ -129,7 +208,7 @@ function WorkExperience() {
   }
 
   useEffect(()=>{
-    setState({place: null, description: null, position: null, from: null, to: null, taskAndResponsibility: null});
+    setState({place: null, description: null, position: null, startYear: null, startMonth: null, endYear: null, endMonth: null, taskAndResponsibility: null});
     setWork(null);
     fetchData();
   },[fetchedData])
@@ -185,15 +264,28 @@ function WorkExperience() {
     })
   }
 
-  function onChangeFrom(e){
+  
+  function onChangestartYear(e){
     setState(prevState => {
-      return {...prevState, from: e.target.value}
+      return {...prevState, startYear: e.target.value}
     })
   }
 
-  function onChangeTo(e){
+  function onChangestartMonth(e){
     setState(prevState => {
-      return {...prevState, to: e.target.value}
+      return {...prevState, startMonth: e.target.value}
+    })
+  }
+
+  function onChangeEndYear(e){
+    setState(prevState => {
+      return {...prevState, endYear: e.target.value}
+    })
+  }
+
+  function onChangeEndMonth(e){
+    setState(prevState => {
+      return {...prevState, endMonth: e.target.value}
     })
   }
 
@@ -203,27 +295,17 @@ function WorkExperience() {
     })
   }
 
-  function getYearsFrom(){
-    let minOffset = 0, maxOffset = 25;
-    let thisYear = (new Date()).getFullYear();
-    let allYears = [];
-    for(let x = 0; x <= maxOffset; x++) {
-        allYears.push(thisYear - x)
-    }
-
-    return allYears.map((x) => (<MenuItem value={x}>{x}</MenuItem>));
-  }
-
   function onSubmit(e){
     e.preventDefault();
     const newWork = {
         place: state.place,
         description: state.description,
         position: state.position,
-        from: state.from,
-        to: state.to,
+        from: state.startMonth+"/"+state.startYear,
+        to: state.endMonth+"/"+state.endYear,
         taskAndResponsibility: state.taskAndResponsibility,
     }
+    console.log("my work"+newWork);
 
     axios.put(`${BACKEND_URL}/jobseeker/addWork/${loginId}`,newWork)
     .then(res => {
@@ -271,9 +353,12 @@ function WorkExperience() {
             </Typography>
         </Grid>
         <Grid item style={{ textAlign: 'right' }}>
+          {login ? 
+          <>
             <Button className={classes.defaultButton} style={{ float: 'right',marginRight: '0px',backgroundColor:'white'}}>
-                <AddIcon style={{color: theme.palette.tuftsBlue,}} className={classes.editIcon} onClick={handleOpen} />
-            </Button>
+              <AddIcon style={{color: theme.palette.tuftsBlue,}} className={classes.editIcon} onClick={handleOpen} />
+          </Button>
+          </> : null}
         </Grid>
 
         {/*-------------- add new edu field popup content ------------------- */}
@@ -316,6 +401,7 @@ function WorkExperience() {
                     variant="outlined"
                     size="small"
                     onChange={onChangePosition}
+                    required
                   />
                   <TextField
                   className={classes.field}
@@ -325,40 +411,75 @@ function WorkExperience() {
                     variant="outlined"
                     size="small"
                     onChange={onChangePlace}
+                    required
                   />
-                  <Grid container direction="row" style={{marginTop:'-18px'}}>
-                    {/* <TextField
-                    className={classes.field}
-                    id="outlined-basic"
-                    label="From"
-                    type="number"
-                    variant="outlined"
-                    size="small"
-                    onChange={onChangeFrom}
-                    style={{width:'30%',marginRight:'10%'}}
-                    /> */}
-                    <FormControl variant="outlined" className={classes.field}>
-                      <InputLabel id="demo-simple-select-outlined-label">From</InputLabel>
-                      <Select
-                        labelId="demo-simple-select-outlined-label"
-                        id="demo-simple-select-outlined"
-                        label="From"
-                        onChange={onChangeFrom}
-                        style={{width:'120px',marginRight:'20px'}}
-                      >
-                        {getYearsFrom()}
-                      </Select>
-                    </FormControl>
-                    <TextField
-                    className={classes.field}
-                    id="outlined-basic"
-                    label="To"
-                    type="number"
-                    variant="outlined"
-                    size="small"
-                    onChange={onChangeTo}
-                    style={{width:'30%'}}
-                    />
+                  <Grid container direction="row">
+                    <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
+                      <Grid item xs={12}>
+                        <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px"}}>Start Date</Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <FormControl variant="outlined" className={classes.formControl}>
+                          <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
+                          <Select
+                            native
+                            onChange={onChangestartYear}
+                            label="Start Date"
+                            className={classes.selectYear}
+                          >
+                            <option aria-label="None" value="" />
+                            {getYearsFrom()}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <FormControl variant="outlined" className={classes.formControl}>
+                          <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
+                          <Select
+                            native
+                            onChange={onChangestartMonth}
+                            label="Start Date"
+                            className={classes.selectMonth}
+                          >
+                            <option aria-label="None" value="" />
+                            {getMonthsFrom()}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                    </Grid>
+                    <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
+                      <Grid item xs={12}>
+                        <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px"}}>End Date</Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <FormControl variant="outlined" className={classes.formControl}>
+                          <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
+                          <Select
+                            native
+                            onChange={onChangeEndYear}
+                            label="End Date"
+                            className={classes.selectYear}
+                          >
+                            <option aria-label="None" value="" />
+                            {getYearsFrom()}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <FormControl variant="outlined" className={classes.formControl}>
+                          <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
+                          <Select
+                            native
+                            onChange={onChangeEndMonth}
+                            label="Start Date"
+                            className={classes.selectMonth}
+                          >
+                            <option aria-label="None" value="" />
+                            {getMonthsFrom()}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                    </Grid>
                   </Grid>
                   <TextField
                     className={classes.field}

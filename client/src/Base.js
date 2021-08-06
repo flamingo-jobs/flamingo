@@ -27,6 +27,11 @@ import Employers from "./admin/Employers";
 import AppliedJobs from "./employee/appliedJobs/appliedJobs";
 import JobseekerDashboard from "./employee/Dashboard/JobseekerDashboard";
 import Dashboard from "./admin/Dashboard";
+import SavedJobs from "./employee/savedJobs/savedJobs";
+import FavoriteOrganizations from "./employee/favoriteOrganizations/favoriteOrganizations";
+import Applications from "./employer/applications/applications";
+import SearchResult from "./searchResults/searchResult";
+import Recommendations from "./recommendations/Recommendations"
 
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -101,26 +106,32 @@ function Base() {
   const loadDefault = () => {
     return (
       <>
+        <Route path="/searchResults">
+          <SearchResult userRole={role}/>
+        </Route>
         <Route path="/jobs">
-          <Jobs />
+          <Jobs userRole={role} />
         </Route>
-        <Route path="/jobseeker" exact>
+        {/* <Route path="/jobseeker" exact>
           <Profile />
-        </Route>
+        </Route> */}
+        <Route path="/jobseeker/profile">
+            <Profile />
+          </Route>
         <Route path="/organizations">
-          <Organizations />
+          <Organizations userRole={role}/>
         </Route>
         <Route path="/jobDescription" >
-          <JobDescription />
+          <JobDescription userRole={role} />
         </Route>
         <Route path="/people">
           <People />
         </Route>
-        {/* <Route path="/employer">
-          <Employer />
-        </Route> */}
+        <Route path="/employer/company">
+          <Employer userRole={role} />
+        </Route>
         <Route path="/" exact>
-          <Home />
+          <Home userRole={role}/>
         </Route>
       </>
     )
@@ -133,12 +144,21 @@ function Base() {
           <Route path="/jobseeker/appliedJobs">
             <AppliedJobs />
           </Route>
+          <Route path="/recommendations">
+            <Recommendations />
+          </Route>
+          <Route path="/jobseeker/savedJobs">
+            <SavedJobs />
+          </Route>
+          <Route path="/jobseeker/favoriteOrganizations">
+            <FavoriteOrganizations />
+          </Route>
           <Route path="/jobseeker" exact>
             <Profile />
           </Route>
           <Route path="/jobseekerDashboard" exact>
-          <JobseekerDashboard />
-        </Route>
+            <JobseekerDashboard userRole={role}/>
+          </Route>
         </>
       )
     }
@@ -160,11 +180,14 @@ function Base() {
           <Route exact path="/employer/jobs">
             <EmployerJobList/>
           </Route>
-          <Route path="/employer/company">
-            <Employer />
-          </Route>
+          {/* <Route path="/employer/company">
+            <Employer userRole={role} />
+          </Route> */}
           <Route path="/employer/analytics">
             Analytics
+          </Route>
+          <Route path="/employer/resumes">
+            <Applications></Applications>
           </Route>
           <Route path="/employer/billing">
             <EmployerBilling/>

@@ -116,16 +116,18 @@ export default function TechCard(props) {
 
             <Grid item sm={1}>
               {/* PLUS BUTTON TO ADD NEW TECHNOLOGIES */}
-
-              <IconButton
-                variant="outlined"
-                size="small"
-                aria-label="add-tech-form-title"
-                className={classes.addButton}
-                onClick={handleClickOpen}
-              >
-                <EditIcon />
-              </IconButton>
+              
+              {props.userRole === "employer" && 
+                <IconButton
+                  variant="outlined"
+                  size="small"
+                  aria-label="add-tech-form-title"
+                  className={classes.addButton}
+                  onClick={handleClickOpen}
+                >
+                  <EditIcon />
+                </IconButton>
+              }
 
               {/* DIALOG BOX TO ADD TECHNOLOGIES */}
 

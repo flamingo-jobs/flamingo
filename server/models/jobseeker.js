@@ -47,8 +47,26 @@ const jobseekerSchema = new mongoose.Schema({
   technologyStack: {
     type: Array,
   },
+  skills: {
+    type: Array,
+  },
   applicationDetails:{
     type: Array,
+  },
+  notifications:{
+    type: Array
+  },
+  savedJobs:{
+    type: Array,
+  },
+  favoriteOrganizations:{
+    type: Array,
+  },
+  recommendedJobs: {
+    type: Array,
+  },
+  recommendedOrgs: {
+    type: Array
   }
 });
 

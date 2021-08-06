@@ -1,17 +1,20 @@
 const express = require('express');
 const router = express.Router();
 const jobsController = require('../controllers/jobsController');
-
+const recommendationController = require('../controllers/recommendationController');
 // create jobs
 
 router.post('/jobs/create', jobsController.create);
 
 // get jobs
 
+router.get('/jobs', jobsController.getAll);
 router.post('/jobs', jobsController.getAll);
 
+router.get('/jobs/generateRecommendations/:id', recommendationController.generateRecommendations);
 
 // get specific
+router.get('/jobs/search/:searchString', jobsController.getSearched);
 
 router.get('/jobs/featuredJobs', jobsController.getFeaturedJobs);
 
@@ -33,6 +36,7 @@ router.patch("/jobs/resetApplicationDetails", jobsController.resetAll);
 // update job
 
 router.put('/jobs/update/:id', jobsController.update);
+router.patch('/jobs/updateResumeStatus/:id', jobsController.updateResumeStatus);
 
 // delete job
 

@@ -36,6 +36,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import swal from 'sweetalert';
 import { Alert, AlertTitle } from '@material-ui/lab';
+import { Link } from "react-router-dom";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -66,10 +67,14 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 200,
     marginBottom: 15,
   },
+  infoTagsContainer:{
+    marginLeft: theme.spacing(2),
+  },
   companyDescription: {
     paddingTop: -25,
     paddingLeft: 20,
     paddingRight: 20,
+    paddingBottom: 20,
   },
   companyName: {
     fontWeight: 500,
@@ -90,7 +95,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
   },
   locationTags: {
-    marginTop: -50,
+    marginTop: -10,
     marginBottom: 10,
     marginLeft: -14,
     marginRight: -20,
@@ -141,7 +146,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function CompanyInfo() {
+function CompanyInfo(props) {
   const classes = useStyles();
 
   const fixedOptions = [];
@@ -193,7 +198,7 @@ function CompanyInfo() {
         }
         res.data.employer.locations.forEach(element => {
           console.log(element)
-          setLocation(location => [...location, {city:element}])  
+          setLocation(location => [...location, { city: element }])
         });
 
       });
@@ -332,15 +337,17 @@ function CompanyInfo() {
                     label={subscription}
                     className={classes.membershipType}
                   />
-
-                  <IconButton
-                    variant="outlined"
-                    aria-label="edit"
-                    className={classes.editButton}
-                    onClick={handleClickOpen}
-                  >
-                    <EditIcon />
-                  </IconButton>
+                  {props.userRole === "employer" && 
+                    <IconButton
+                      variant="outlined"
+                      aria-label="edit"
+                      className={classes.editButton}
+                      onClick={handleClickOpen}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                  }
+                  
 
                   {/* <form onSubmit={onSubmit}> */}
                   <form>
@@ -425,7 +432,7 @@ function CompanyInfo() {
                                     input: classes.textField,
                                   },
                                 }}
-                                onChange={onChangeDescription}
+                                onChange={onChangeDescription} 
                               />
                             </Grid>
 
@@ -598,41 +605,45 @@ function CompanyInfo() {
                 spacing={5}
               >
                 <Grid item xs={1}>
-                  <IconButton
-                    onClick={() => window.open("https://" + website)}
-                    variant="outlined"
-                    aria-label="website"
-                  >
-                    <LanguageIcon />
-                  </IconButton>
+                  <Link to={"https://" + website}>
+                    <IconButton
+                      variant="outlined"
+                      aria-label="website"
+                    >
+                      <LanguageIcon />
+                    </IconButton>
+                  </Link>
                 </Grid>
 
                 <Grid item xs={1}>
-                  <IconButton
-                    onClick={() => window.open("https://" + linkedIn)}
-                    variant="outlined"
-                    aria-label="website"
-                  >
-                    <LinkedInIcon />
-                  </IconButton>
+                  <Link to={"https://" + linkedIn}>
+                    <IconButton
+                      variant="outlined"
+                      aria-label="website"
+                    >
+                      <LinkedInIcon />
+                    </IconButton>
+                  </Link>
                 </Grid>
                 <Grid item xs={1}>
-                  <IconButton
-                    onClick={() => window.open("https://" + twitter)}
-                    variant="outlined"
-                    aria-label="website"
-                  >
-                    <TwitterIcon />
-                  </IconButton>
+                  <Link to={"https://" + twitter}>
+                    <IconButton
+                      variant="outlined"
+                      aria-label="website"
+                    >
+                      <TwitterIcon />
+                    </IconButton>
+                  </Link>
                 </Grid>
                 <Grid item xs={1}>
-                  <IconButton
-                    onClick={() => window.open("https://" + facebook)}
-                    variant="outlined"
-                    aria-label="website"
-                  >
-                    <FacebookIcon />
-                  </IconButton>
+                  <Link to={"https://" + facebook}>
+                    <IconButton
+                      variant="outlined"
+                      aria-label="website"
+                    >
+                      <FacebookIcon />
+                    </IconButton>
+                  </Link>
                 </Grid>
               </Grid>
             </Grid>
@@ -641,7 +652,7 @@ function CompanyInfo() {
 
           {/* Edit Company Logo */}
 
-          <Grid item container alignItems="center" direction="row" xs={12}>
+          <Grid item container alignItems="center" direction="row" xs={12} >
             <Grid item sm={3} className={classes.editPhoto}>
               <input
                 accept="image/*"
@@ -651,14 +662,16 @@ function CompanyInfo() {
               />
 
               <label htmlFor="raised-button-file">
-                <IconButton
-                  variant="outlined"
-                  component="span"
-                  aria-label="edit"
-                  className={classes.editPhotoButton}
-                >
-                  <PhotoCameraIcon />
-                </IconButton>
+                {props.userRole === "employer" && 
+                  <IconButton
+                    variant="outlined"
+                    component="span"
+                    aria-label="edit"
+                    className={classes.editPhotoButton}
+                  >
+                    <PhotoCameraIcon />
+                  </IconButton>
+                }
               </label>
             </Grid>
           </Grid>
@@ -675,28 +688,29 @@ function CompanyInfo() {
           This is an error alert — <strong>check it out!</strong>
         </Alert>
         )} */}
-    
 
-      <br />
+
+        <br />
 
         <Grid container xs={12} direction="row" spacing={3}>
           {/* BODY PART OF THE COMPANY INFO CARD */}
 
           <Grid item xs={12}>
             {/* <div className={classes.infoTags}> */}
-
-            {Object.keys(technologyStack).map((item, i) => (
-              <Chip
-                icon={<LocalOfferRoundedIcon className={classes.tagIcon} />}
-                label={technologyStack[i].name}
-                className={classes.label}
-              />
-            ))}
+            <div className={classes.infoTagsContainer}>
+              {Object.keys(technologyStack).map((item, i) => (
+                <Chip
+                  icon={<LocalOfferRoundedIcon className={classes.tagIcon} />}
+                  label={technologyStack[i].name}
+                  className={classes.label}
+                />
+              ))}
+            </div>
           </Grid>
 
           <Grid item xs={12} className={classes.body}>
-            <div className={classes.companyDescription}>
-              <Typography style={{whiteSpace:"pre-line"}} variant="body2" align="justify">
+            <div className={classes.companyDescription} >
+              <Typography style={{ whiteSpace: "pre-line" }} variant="body2" align="justify">
                 {description}
               </Typography>
             </div>

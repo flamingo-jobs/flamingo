@@ -22,6 +22,9 @@ import CloseIcon from '@material-ui/icons/Close';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import TextField from '@material-ui/core/TextField';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -85,6 +88,42 @@ const useStyles = makeStyles((theme) => ({
           color: "#777",
           fontSize: '16px',
         }
+      },
+      select: {
+        minWidth: "200px",
+        fontSize: "16px",
+        display: "flex",
+        "& .MuiSelect-outlined": {
+          padding: "10px 10px 10px 10px"
+        }
+      },
+      selectYear: {
+        margin: "20px 10px 0px 0px",
+        minWidth: "90px",
+        fontSize: "16px",
+        display: "flex",
+        "& .MuiSelect-outlined": {
+          padding: "10px 10px 10px 10px"
+        }
+      },
+      selectMonth: {
+        margin: "20px 10px 0px 0px",
+        minWidth: "80px",
+        fontSize: "16px",
+        display: "flex",
+        "& .MuiSelect-outlined": {
+          padding: "10px 10px 10px 10px"
+        }
+      },
+      placeholder: {
+        color: "#777",
+        fontSize: '16px',
+        marginTop:"-8px",
+      },
+      placeholderDate: {
+        color: "#777",
+        fontSize: '14px',
+        marginTop:"12px",
       }
 }));
 
@@ -92,7 +131,15 @@ function ProjectItem(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [styleEdit, setStyleEdit] = useState({display: 'none'});
-  const [state, setState] = useState({name: props.name, link: props.link, description: props.description, from: props.from, to: props.to, usedTech: props.usedTech});
+  let projectStartDate=[0,0];
+  let projectEndDate=[0,0];
+  if(props.from !== 'null/null'){
+    projectStartDate = props.from.split("/");
+  }
+  if(props.to !== 'null/null'){
+    projectEndDate = props.to.split("/");
+  }
+  const [state, setState] = useState({name: props.name, link: props.link, description: props.description, startYear: projectStartDate[1], startMonth: projectStartDate[0], endYear: projectEndDate[1], endMonth: projectEndDate[0], usedTech: props.usedTech});
 
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
@@ -100,10 +147,49 @@ function ProjectItem(props) {
   const [loading, setLoading] = useState(true);
   const [alertShow, setAlertShow] = React.useState(false);
   const index = props.index;
-  let loginId=sessionStorage.getItem("loginId");
+  let loginId;
+  let login = false;
+  const jwt = require("jsonwebtoken");
+  const token = sessionStorage.getItem("userToken");
+  const header = jwt.decode(token, { complete: true });
+  if(token === null){
+    loginId=props.jobseekerID;
+  }else if (header.payload.userRole === "jobseeker") {
+    login = true;
+    loginId=sessionStorage.getItem("loginId");
+  } else {
+    loginId=props.jobseekerID;
+  }
+
+  //generate year list
+  function getYearsFrom(){
+    let maxOffset = 25;
+    let thisYear = (new Date()).getFullYear();
+    let allYears = [];
+    for(let x = 0; x <= maxOffset; x++) {
+        allYears.push(thisYear - x)
+    }
+
+    return allYears.map((x) => (<option value={x}>{x}</option>));
+  }
+
+  //generate month list
+  function getMonthsFrom(){
+    let maxOffset = 12;
+    let allMonths = [];
+    for(let x = 1; x <= maxOffset; x++) {
+      if(x<10){
+        allMonths.push("0"+x);
+      }else{
+        allMonths.push(x);
+      }        
+    }
+
+    return allMonths.map((x) => (<option value={x}>{x}</option>));
+  }
   
   useEffect(() => {
-    if (deleteSuccess == true) {
+    if (deleteSuccess === true) {
         setAlertData({severity: "success", msg: "Item deleted successfully!"});
         handleAlert();
     }
@@ -175,15 +261,27 @@ const handleDelete = () => {
     })
   }
 
-  function onChangeFrom(e){
+  function onChangestartYear(e){
     setState(prevState => {
-      return {...prevState, from: e.target.value}
+      return {...prevState, startYear: e.target.value}
     })
   }
 
-  function onChangeTo(e){
+  function onChangestartMonth(e){
     setState(prevState => {
-      return {...prevState, to: e.target.value}
+      return {...prevState, startMonth: e.target.value}
+    })
+  }
+
+  function onChangeEndYear(e){
+    setState(prevState => {
+      return {...prevState, endYear: e.target.value}
+    })
+  }
+
+  function onChangeEndMonth(e){
+    setState(prevState => {
+      return {...prevState, endMonth: e.target.value}
     })
   }
 
@@ -199,12 +297,12 @@ const handleDelete = () => {
         name: state.name,
         link: state.link,
         description: state.description,
-        from: state.from,
-        to: state.to,
+        from: state.startMonth+"/"+state.startYear,
+        to: state.endMonth+"/"+state.endYear,
         usedTech: state.usedTech
   }
 
-    axios.delete(`${BACKEND_URL}/jobseeker/updateProject/${loginId}`,{index:props.index,project:project})
+    axios.put(`${BACKEND_URL}/jobseeker/updateProject/${loginId}`,{index:props.index,project:project})
     .then(res => {
       if(res.data.success){
         setAlertData({
@@ -229,7 +327,7 @@ const handleDelete = () => {
     <TimelineItem>
         <TimelineOppositeContent style={{flex:'0.2'}}>
             <Typography variant="body2" color="textSecondary">
-                {props.from} - {props.to}
+              {state.startMonth===0 ? "" : state.startMonth+"/"+state.startYear+ " - " +state.endMonth+"/"+state.endYear}
             </Typography>
         </TimelineOppositeContent>
         <TimelineSeparator>
@@ -255,19 +353,21 @@ const handleDelete = () => {
                     {state.description}
                 </Typography>
                 <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'14px',fontWeight:'bold',paddingTop:'5px'}}>
-                    {state.usedTech}
+                    {state.usedTech ? "Tech Stack : " + state.usedTech : ""}
                 </Typography>
                 <Typography variant="body2" color="textSecondary" style={{textAlign:'left',paddingTop:'10px'}}>
-                    {state.link == null ? "" : "Link : "+state.link}
+                    {state.link === null ? "" : "Link : "+state.link}
                 </Typography>
               </Grid>
               <Grid item xs={2} spacing={2} style={{marginTop:"-5px",padding:"20px 0px 0px 0px"}}>
+              { login ? <>
                     <Button style={{minWidth:'25px',width:'25px',marginRight:"10px"}}>
                         <EditIcon style={styleEdit} className={classes.editIcon} size="small" onClick={handleOpen} />
                     </Button>
                     <Button style={{minWidth:'25px',width:'25px'}}>
                         <DeleteIcon style={styleEdit} className={classes.editIcon} size="small"  onClick={handleClickOpen} />
                     </Button>
+                    </> : null }
                     <Dialog
                         open={confirmDelete}
                         onClose={handleClickClose}
@@ -331,6 +431,7 @@ const handleDelete = () => {
                                 size="small"
                                 value={state.name}
                                 onChange={onChangeName}
+                                required
                             />
                             <TextField
                                 className={classes.field}
@@ -351,41 +452,91 @@ const handleDelete = () => {
                                 variant="outlined"
                                 value={state.description}
                                 onChange= {onChangeDescription}
+                                required
                             />
-                            <Grid container direction="row" style={{marginTop:'-18px'}}>
-                                <TextField
-                                className={classes.field}
-                                id="outlined-basic"
-                                label="From"
-                                type="number"
-                                variant="outlined"
-                                size="small"
-                                value={state.from}
-                                onChange={onChangeFrom}
-                                style={{width:'30%',marginRight:'10%'}}
-                                />
-                                <TextField
-                                className={classes.field}
-                                id="outlined-basic"
-                                label="To"
-                                type="number"
-                                variant="outlined"
-                                size="small"
-                                value={state.to}
-                                onChange={onChangeTo}
-                                style={{width:'30%'}}
-                                />
-                                <TextField
-                                className={classes.field}
-                                id="outlined-basic"
-                                label="Tech. Stack"
-                                type="text"
-                                variant="outlined"
-                                size="small"
-                                value={state.usedTech}
-                                onChange={onChangeUsedTech}
-                                />
+                            <Grid container direction="row">
+                              <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
+                                <Grid item xs={12}>
+                                  <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px"}}>Start Date</Typography>
+                                </Grid>
+                                <Grid item xs={6}>
+                                  <FormControl variant="outlined" className={classes.formControl}>
+                                    <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
+                                    <Select
+                                      native
+                                      onChange={onChangestartYear}
+                                      label="Start Date"
+                                      value={state.startYear}
+                                      className={classes.selectYear}
+                                    >
+                                      <option aria-label="None" value="" />
+                                      {getYearsFrom()}
+                                    </Select>
+                                  </FormControl>
+                                </Grid>
+                                <Grid item xs={6}>
+                                  <FormControl variant="outlined" className={classes.formControl}>
+                                    <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
+                                    <Select
+                                      native
+                                      onChange={onChangestartMonth}
+                                      label="Start Date"
+                                      value={state.startMonth}
+                                      className={classes.selectMonth}
+                                    >
+                                      <option aria-label="None" value="" />
+                                      {getMonthsFrom()}
+                                    </Select>
+                                  </FormControl>
+                                </Grid>
                               </Grid>
+                              <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
+                                <Grid item xs={12}>
+                                  <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px"}}>End Date</Typography>
+                                </Grid>
+                                <Grid item xs={6}>
+                                  <FormControl variant="outlined" className={classes.formControl}>
+                                    <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
+                                    <Select
+                                      native
+                                      onChange={onChangeEndYear}
+                                      label="End Date"
+                                      value={state.endYear}
+                                      className={classes.selectYear}
+                                    >
+                                      <option aria-label="None" value="" />
+                                      {getYearsFrom()}
+                                    </Select>
+                                  </FormControl>
+                                </Grid>
+                                <Grid item xs={6}>
+                                  <FormControl variant="outlined" className={classes.formControl}>
+                                    <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
+                                    <Select
+                                      native
+                                      onChange={onChangeEndMonth}
+                                      label="Start Date"
+                                      value={state.endMonth}
+                                      className={classes.selectMonth}
+                                    >
+                                      <option aria-label="None" value="" />
+                                      {getMonthsFrom()}
+                                    </Select>
+                                  </FormControl>
+                                </Grid>
+                              </Grid>
+                            </Grid>
+                            <TextField
+                            className={classes.field}
+                            id="outlined-basic"
+                            label="Tech. Stack"
+                            type="text"
+                            variant="outlined"
+                            size="small"
+                            value={state.usedTech}
+                            onChange={onChangeUsedTech}
+                            required
+                            />
                             </div>
                             <Button type="submit" className={classes.defaultButton} style={{ width:'100%',marginTop:'5%'}}>Apply Changes</Button>
                         </form>        

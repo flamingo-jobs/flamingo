@@ -23,6 +23,8 @@ import RemoveCircleRoundedIcon from "@material-ui/icons/RemoveCircleRounded";
 import { Link } from "react-router-dom";
 
 const jwt = require("jsonwebtoken");
+const passwordRegexp =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -201,6 +203,12 @@ export default function StartHiring() {
   };
   const [formData, setForm] = useForm(defaultData);
 
+  const badPassword = (password) => {
+    if (!passwordRegexp.test(password)) {
+      return true;
+    }
+  };
+
   const createAccount = (e) => {
     e.preventDefault();
     const signupData = {
@@ -210,27 +218,38 @@ export default function StartHiring() {
       password_confirmation: formData.confirmPassword,
       role: "employer",
     };
-    if (formData.password === formData.confirmPassword) {
-      axios.post(`${BACKEND_URL}/api/signup`, signupData).then((res) => {
-        if (res.data.success) {
-          sessionStorage.setItem("userToken", res.data.token);
-          const userId = jwt.decode(res.data.token, { complete: true }).payload
-            .userId;
-          sendData(userId);
-        } else {
-          setAlertData({
-            severity: "error",
-            msg: "User account creation failed!",
-          });
-          handleAlert();
-        }
-      });
-    } else {
+    if (badPassword(formData.password)) {
       setAlertData({
         severity: "error",
-        msg: "Please check whether your passwords are matching!",
+        msg: `Please make an stronger password!
+        Your password must contain minimum 8 characters, 
+        at least 1 uppercase letter, 1 lowercase letter, 
+        1 number and 1 special character`,
       });
       handleAlert();
+    } else {
+      if (formData.password === formData.confirmPassword) {
+        axios.post(`${BACKEND_URL}/api/signup`, signupData).then((res) => {
+          if (res.data.success) {
+            sessionStorage.setItem("userToken", res.data.token);
+            const userId = jwt.decode(res.data.token, { complete: true })
+              .payload.userId;
+            sendData(userId);
+          } else {
+            setAlertData({
+              severity: "error",
+              msg: "User account creation failed!",
+            });
+            handleAlert();
+          }
+        });
+      } else {
+        setAlertData({
+          severity: "error",
+          msg: "Please check whether your passwords are matching!",
+        });
+        handleAlert();
+      }
     }
   };
 
@@ -370,7 +389,7 @@ export default function StartHiring() {
                         </Typography>
                       </Grid>
 
-                      <Grid item xs={12} md={5} lg={4}>
+                      <Grid item xs={12} md={5} lg={5}>
                         <Grid container alignItems="center" spacing={3}>
                           {/* Basic Details */}
                           <Grid item xs={12} align="left">
@@ -549,11 +568,6 @@ export default function StartHiring() {
                               </Grid>
                             );
                           })}
-                        </Grid>
-                      </Grid>
-
-                      <Grid item xs={12} md={6} lg={5}>
-                        <Grid container alignItems="center" spacing={3}>
                           {/* Social Media Links */}
                           <Grid item xs={12} align="left">
                             <Typography className={classes.title}>
@@ -626,13 +640,31 @@ export default function StartHiring() {
                               </Grid>
                             );
                           })}
+                        </Grid>
+                      </Grid>
 
+                      <Grid item xs={12} md={6} lg={5}>
+                        <Grid container alignItems="center" spacing={3}>
                           {/* Login Credentials */}
                           <Grid item xs={11} align="left">
-                            <Typography className={classes.title}>
-                              Login Credentials
+                            <Grid item xs={11} align="left">
+                              <Typography className={classes.title}>
+                                Login Credentials
+                              </Typography>
+                            </Grid>
+                            <Typography variant="caption">
+                              After the signing up process completes, an admin
+                              account will be created with full access. You can
+                              create accounts for your employers with
+                              restricting access to specific parts by using
+                              pre-defined roles under{" "}
+                              <i>
+                                {" "}
+                                Account {">"} Settings {">"} Add Role{" "}
+                              </i>
                             </Typography>
                           </Grid>
+
                           <Grid item container alignItems="center" spacing={3}>
                             <Grid item xs={12} md={11} align="left">
                               <TextField
@@ -673,6 +705,27 @@ export default function StartHiring() {
                                 size="small"
                               />
                             </Grid>
+                            <Grid item xs={12} align="left">
+                              <Typography variant="caption" display="block">
+                                Please make sure that your password contains at
+                                least,
+                                <ul>
+                                  <li>8 characters</li>
+                                  <li>1 uppercase letter</li>
+                                  <li>1 lowercase letter</li>
+                                  <li>1 number and 1 special character</li>
+                                </ul>
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={12} align="left">
+                              <Typography variant="caption" display="block">
+                                By clicking sign up, you are agreeing with our{" "}
+                                <a href="/terms-and-conditions" target="_blank">
+                                  Terms {"&"} Conditions
+                                </a>
+                                .
+                              </Typography>
+                            </Grid>
                           </Grid>
                         </Grid>
                       </Grid>
@@ -701,7 +754,6 @@ export default function StartHiring() {
                             md={6}
                             className={classes.actions}
                             spacing={2}
-
                           >
                             <Grid item>
                               <Button
@@ -714,16 +766,15 @@ export default function StartHiring() {
                               </Button>
                             </Grid>
                             <Grid item>
-                              <Button
-                                fullWidth
-                                onClick={() => {
-                                  window.location = "/";
-                                }}
-                                variant="contained"
-                                className={classes.cancel}
-                              >
-                                Cancel
-                              </Button>
+                              <Link to="/">
+                                <Button
+                                  fullWidth
+                                  variant="contained"
+                                  className={classes.cancel}
+                                >
+                                  Cancel
+                                </Button>
+                              </Link>
                             </Grid>
                           </Grid>
                         </Grid>

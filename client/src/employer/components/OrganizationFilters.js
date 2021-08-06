@@ -49,11 +49,11 @@ function OrganizationFilters(props) {
     const combineFilters = () => {
         let filterObjects = {};
 
-        if (categories != 0) {
+        if (categories !== 0) {
             filterObjects = { ...filterObjects, categories };
         }
 
-        if (technologyStack != 0) {
+        if (technologyStack !== 0) {
             filterObjects = { ...filterObjects, $and : technologyStack };
         }
 

@@ -6,6 +6,9 @@ import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 import FloatCard from '../../components/FloatCard';
 import SchoolRoundedIcon from '@material-ui/icons/SchoolRounded';
+import { Link } from 'react-router-dom';
+
+
 const useStyles = makeStyles((theme) => ({
     root: {
         textAlign: 'left'
@@ -106,8 +109,8 @@ function PeopleCard(props) {
 
                     <Typography noWrap className={classes.description} >{props.info.intro}</Typography>
                     <div className={classes.infoTags}>
-                        { props.info.education && props.info.education.length > 0 ? <Chip icon={<SchoolRoundedIcon />} label={props.info.education[0].university} className={classes.tag} /> : null}
-                        { props.info.work.length > 0 ? <Chip icon={<WorkRoundedIcon />} label={props.info.work[0].place} className={classes.tag} /> : null}
+                        {props.info.education && props.info.education.length > 0 ? <Chip icon={<SchoolRoundedIcon />} label={props.info.education[0].university} className={classes.tag} /> : null}
+                        {props.info.work.length > 0 ? <Chip icon={<WorkRoundedIcon />} label={props.info.work[0].place} className={classes.tag} /> : null}
 
                     </div>
                 </div>
@@ -118,7 +121,9 @@ function PeopleCard(props) {
 
                     </div>
                     <div className={classes.footerRight} >
-                        <Button className={classes.applyButton}>View Profile</Button>
+                        <Link to={`/jobseeker/profile/${props.info._id}`}>
+                            <Button className={classes.applyButton}>View Profile</Button>
+                        </Link>
                     </div>
                 </div>
             </div>

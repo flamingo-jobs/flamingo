@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -8,8 +8,6 @@ import Badge from "@material-ui/core/Badge";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import SearchIcon from "@material-ui/icons/Search";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MenuRoundedIcon from "@material-ui/icons/MenuRounded";
 import "./styles/Custom.css";
@@ -17,17 +15,19 @@ import logo from "./images/logo.jpg";
 import { Button, Avatar, Typography } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import HomeRoundedIcon from "@material-ui/icons/HomeRounded";
-import BusinessRoundedIcon from "@material-ui/icons/BusinessRounded";
-import PeopleAltRoundedIcon from "@material-ui/icons/PeopleAltRounded";
-import PhoneRoundedIcon from "@material-ui/icons/PhoneRounded";
-import ThumbsUpDownRoundedIcon from "@material-ui/icons/ThumbsUpDownRounded";
 import NavMenu from "./NavMenu";
 import Backdrop from '@material-ui/core/Backdrop';
 import ExitToAppRoundedIcon from '@material-ui/icons/ExitToAppRounded';
 import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
 import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
+import NotificationsPopover from "./NotificationPopover";
+import BookmarksIcon from '@material-ui/icons/Bookmarks';
+import WorkIcon from '@material-ui/icons/Work';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import { Link, useHistory } from 'react-router-dom';
+import BACKEND_URL from "../Config";
+import axios from "axios";
 
 const jwt = require("jsonwebtoken");
 const token = sessionStorage.getItem("userToken");
@@ -103,6 +103,7 @@ const useStyles = makeStyles((theme) => ({
   },
   sectionMobile: {
     display: "flex",
+    alignItems: 'center',
     [theme.breakpoints.up("md")]: {
       display: "none",
     },
@@ -204,6 +205,16 @@ const useStyles = makeStyles((theme) => ({
 
     }
   },
+  notificationMenu: {
+    marginTop: 60,
+    '& .MuiMenu-paper': {
+      minWidth: 300,
+      padding: 16,
+      borderRadius: 12,
+      boxShadow: 'rgba(83, 144, 217, 0.6) 0px 4px 12px',
+
+    }
+  },
   logOut: {
     backgroundColor: theme.palette.tuftsBlue,
     color: theme.palette.white,
@@ -235,16 +246,40 @@ const useStyles = makeStyles((theme) => ({
   menuText: {
     color: theme.palette.black,
     fontWeight: 500
+  },
+  topBarIcon: {
+    color: theme.palette.stateBlue,
+    marginLeft: 8,
+    marginRight: 8
   }
 }));
 
 export default function Topbar(props) {
   const classes = useStyles();
+  const history = useHistory();
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [notificationAnchorEl, setNotificationAnchorEl] = React.useState(null);
+
+  const [favourites, setFavourites] = React.useState(null);
+  const [savedJobs, setSavedJobs] = React.useState(null);
+  const [appliedJobs, setAppliedJobs] = React.useState(null);
+  const [notifications, setNotifications] = React.useState(null);
+
+  const [searchString, setSearchString] = React.useState("");
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const isNotificationMenuOpen = Boolean(notificationAnchorEl);
+
+  const handleNotificationClose = () => {
+    setNotificationAnchorEl(null);
+  };
+
+  const handleNotificationOpen = (event) => {
+    setNotificationAnchorEl(event.currentTarget);
+  };
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -263,18 +298,38 @@ export default function Topbar(props) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const loadMyAccount = () => {
-    window.location = "/account/" + header.payload.userId;
-  };
+  const loadBadgeData = () => {
+    if (header?.payload.userRole === "jobseeker") {
+      axios.get(`${BACKEND_URL}/jobseeker/${sessionStorage.getItem("loginId")}`).then(res => {
+        if (res.data.success) {
+          if (res.data.jobseeker.hasOwnProperty("notifications")) {
+            setNotifications(res.data.jobseeker.notifications.length);
+          }
+          if (res.data.jobseeker.hasOwnProperty("favoriteOrganizations")) {
+            setFavourites(res.data.jobseeker.favoriteOrganizations.length);
+          }
+          if (res.data.jobseeker.hasOwnProperty("savedJobs")) {
+            setSavedJobs(res.data.jobseeker.savedJobs.length);
+          }
+          if (res.data.jobseeker.hasOwnProperty("applicationDetails")) {
+            setAppliedJobs(res.data.jobseeker.applicationDetails.length);
+          }
+        }
+      });
+    }
+  }
+
+  useEffect(() => {
+    loadBadgeData();
+  }, []);
 
   const loadProfilePic = () => {
     try {
-      console.log(header.payload.userRole)
-      if (header.payload.userRole == "employer") {
+      if (header.payload.userRole === "employer") {
         return require(`../employer/images/${header.payload.userId}`).default
-      } else if (header.payload.userRole == "jobseeker") {
+      } else if (header.payload.userRole === "jobseeker") {
         return require(`../employee/images/${header.payload.userId}`).default
-      } else if (header.payload.userRole == "admin") {
+      } else if (header.payload.userRole === "admin") {
         return require(`../admin/images/profilepic.jpg`).default
       }
     } catch (err) {
@@ -285,6 +340,25 @@ export default function Topbar(props) {
   const profileLink = () => {
 
   }
+
+  const notificationId = "primary-notification-menu";
+  const renderNotification = (
+    <Backdrop className={classes.backdrop} open={isNotificationMenuOpen} onClick={handleNotificationClose}>
+      <Menu
+        anchorEl={notificationAnchorEl}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        id={notificationId}
+        keepMounted
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
+        open={isNotificationMenuOpen}
+        onClose={handleNotificationClose}
+        className={classes.notificationMenu}
+
+      >
+        <NotificationsPopover loginId={token ? header.payload.loginId : null} userRole={token ? header.payload.userRole : null} />
+      </Menu>
+    </Backdrop>
+  );
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -306,6 +380,7 @@ export default function Topbar(props) {
           </div>
           <Typography className={classes.menuText} >Profile</Typography>
         </MenuItem>
+
         <MenuItem className={classes.menuItem} >
           <div className={classes.menuIcon}>
             <SettingsRoundedIcon />
@@ -342,33 +417,52 @@ export default function Topbar(props) {
       >
         {!token && (
           <div>
-            <Button
-              onClick={() => {
-                window.location = "/startHiring";
-              }}
-              className={classes.startHiring}
-            >
-              Start Hiring
-            </Button>
-            <Button
-              onClick={() => {
-                window.location = "/signin";
-              }}
-              className={classes.signInMobile}
-            >
-              Sign In
-            </Button>
+            <Link to="/startHiring">
+              <Button
+                className={classes.startHiring}
+              >
+                Start Hiring
+              </Button>
+            </Link>
+            <Link to="/signin">
+              <Button
+                className={classes.signInMobile}
+              >
+                Sign In
+              </Button>
+            </Link>
           </div>
         )}
         {token && (
           <div className={classes.sectionMobile}>
-            <IconButton aria-label="show 4 new mails" color="primary">
-              <Badge badgeContent={4} color="secondary">
-                <WorkRoundedIcon />
-              </Badge>
-            </IconButton>
-            <IconButton aria-label="show 11 new notifications" color="inherit" style={{ width: 64 }}>
-              <Badge badgeContent={11} color="secondary">
+            {props.user === "jobseeker" &&
+              <>
+                <Link to="/jobseeker/savedJobs">
+                  <IconButton aria-label="" className={classes.topBarIcon}>
+                    <Badge badgeContent={savedJobs} color="secondary">
+                      <BookmarksIcon />
+                    </Badge>
+                  </IconButton>
+                </Link>
+                <Link to="/jobseeker/favoriteOrganizations">
+                  <IconButton aria-label="" className={classes.topBarIcon}>
+                    <Badge badgeContent={favourites} color="secondary">
+                      <FavoriteIcon />
+                    </Badge>
+                  </IconButton>
+                </Link>
+
+                <Link to="/jobseeker/appliedJobs">
+                  <IconButton aria-label="" className={classes.topBarIcon}>
+                    <Badge badgeContent={appliedJobs} color="secondary">
+                      <WorkRoundedIcon />
+                    </Badge>
+                  </IconButton>
+                </Link>
+              </>
+            }
+            <IconButton aria-label="show 11 new notifications" className={classes.topBarIcon}>
+              <Badge badgeContent={notifications} color="secondary">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
@@ -392,6 +486,21 @@ export default function Topbar(props) {
     </Backdrop>
   );
   const preventDefault = (event) => event.preventDefault();
+
+  const handleSearchChange = (e) => {
+    setSearchString(e.target.value);
+  }
+
+  const handleSearchSubmit = (e) => {
+    if (e.key === 'Enter' && searchString.length !== 0) {
+      // console.log("enter pressed", searchString);
+      history.push({
+        pathname: '/searchResults',
+        searchString: searchString,
+      });
+    }
+  }
+
   return (
     <Card className={classes.root}>
       <CardContent className={classes.content}>
@@ -411,22 +520,47 @@ export default function Topbar(props) {
                     input: classes.inputInput,
                   }}
                   inputProps={{ "aria-label": "search" }}
+                  onChange={handleSearchChange}
+                  onKeyPress={(e) => handleSearchSubmit(e)}
                 />
               </div>
               <div className={classes.grow} />
               <div className={classes.sectionDesktop}>
                 {token && (
                   <div>
-                    <IconButton aria-label="show 4 new mails" color="primary">
-                      <Badge badgeContent={4} color="secondary">
-                        <WorkRoundedIcon />
-                      </Badge>
-                    </IconButton>
+
+                    {props.user === "jobseeker" &&
+                      <>
+                        <Link to="/jobseeker/savedJobs">
+                          <IconButton aria-label="" className={classes.topBarIcon}>
+                            <Badge badgeContent={savedJobs} color="secondary">
+                              <BookmarksIcon />
+                            </Badge>
+                          </IconButton>
+                        </Link>
+                        <Link to="/jobseeker/favoriteOrganizations">
+                          <IconButton aria-label="" className={classes.topBarIcon}>
+                            <Badge badgeContent={favourites} color="secondary">
+                              <FavoriteIcon />
+                            </Badge>
+                          </IconButton>
+                        </Link>
+
+                        <Link to="/jobseeker/appliedJobs">
+                          <IconButton aria-label="" className={classes.topBarIcon}>
+                            <Badge badgeContent={appliedJobs} color="secondary">
+                              <WorkRoundedIcon />
+                            </Badge>
+                          </IconButton>
+                        </Link>
+                      </>
+                    }
+
                     <IconButton
-                      aria-label="show 17 new notifications"
-                      color="primary"
+                      className={classes.topBarIcon}
+                      onClick={handleNotificationOpen}
                     >
-                      <Badge badgeContent={17} color="secondary" >
+                      <Badge badgeContent={notifications} color="secondary" >
                         <NotificationsIcon />
                       </Badge>
                     </IconButton>
@@ -445,22 +579,20 @@ export default function Topbar(props) {
                 )}
                 {!token && (
                   <div>
-                    <Button
-                      onClick={() => {
-                        window.location = "/startHiring";
-                      }}
-                      className={classes.startHiring}
-                    >
-                      Start Hiring
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        window.location = "/signin";
-                      }}
-                      className={classes.signIn}
-                    >
-                      Sign In
-                    </Button>
+                    <Link to="/startHiring">
+                      <Button
+                        className={classes.startHiring}
+                      >
+                        Start Hiring
+                      </Button>
+                    </Link>
+                    <Link to="/signin">
+                      <Button
+                        className={classes.signIn}
+                      >
+                        Sign In
+                      </Button>
+                    </Link>
                   </div>
                 )}
               </div>
@@ -479,6 +611,7 @@ export default function Topbar(props) {
           </AppBar>
           {renderMobileMenu}
           {renderMenu}
+          {renderNotification}
         </div>
       </CardContent>
     </Card>

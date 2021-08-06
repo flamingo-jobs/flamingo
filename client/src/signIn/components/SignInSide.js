@@ -1,4 +1,4 @@
-import { React, useState, forwardRef } from "react";
+import { React, useState } from "react";
 import { useForm } from "react-hooks-helper";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -22,7 +22,6 @@ import {
   Snackbar,
   Dialog,
   ListItem,
-  Slide,
 } from "@material-ui/core";
 import { Redirect } from "react-router-dom";
 import MuiAlert from "@material-ui/lab/Alert";
@@ -190,7 +189,21 @@ export default function SignInSide() {
           }
           sessionStorage.setItem("userToken", res.data.token);
           sessionStorage.setItem("loginId", res.data.loginId);
-          window.location = "/";
+          const jwt = require("jsonwebtoken");
+          const token = sessionStorage.getItem("userToken");
+          const header = jwt.decode(token, { complete: true });
+          if (header.payload.userRole === "jobseeker") {
+            const urlQuery = new URLSearchParams(window.location.search);
+            const redirect = urlQuery.get('redirectTo');
+            if (redirect) {
+              window.location =  `/jobDescription/${redirect}#applyJob`;
+            } else {
+              window.location = "/jobseekerDashboard";
+
+            }
+          } else {
+            window.location = "/";
+          }
         } else {
           handleCredentialError();
         }
@@ -231,9 +244,6 @@ export default function SignInSide() {
   const handleCloseChoice = () => {
     setChoice(false);
   };
-  const Transition = forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-  });
   const DialogTitle = withStyles(classes)((props) => {
     const { children, classes, onClose, ...other } = props;
     return (
@@ -261,7 +271,7 @@ export default function SignInSide() {
 
   return (
     <div className={classes.root}>
-      <div className={classes.overlay} >
+      <div className={classes.overlay}>
         <Container maxWidth={false} className={classes.container}>
           <Grid
             item
@@ -378,7 +388,9 @@ export default function SignInSide() {
                     {/* Forgot Password or Register */}
                     <Grid container>
                       <Grid item xs={12} sm={4} className={classes.forgotPwd}>
-                        <Link to="/forgot-password" className={classes.link}>Forgot password?</Link>
+                        <Link to="/forgot-password" className={classes.link}>
+                          Forgot password?
+                        </Link>
                       </Grid>
                       <Grid item xs={12} sm={8} className={classes.signUp}>
                         <Link
@@ -425,22 +437,22 @@ export default function SignInSide() {
             aria-labelledby="customized-dialog-title"
             open={choice}
           >
-            <DialogTitle id="customized-dialog-title" onClose={handleCloseChoice}>
+            <DialogTitle
+              id="customized-dialog-title"
+              onClose={handleCloseChoice}
+            >
               Sign up as
             </DialogTitle>
             <DialogContent dividers>
               <Grid container direction="row">
                 <Grid item xs={12} md={6}>
-                  <ListItem
-                    button
-                    onClick={() => {
-                      window.location = "/getHired";
-                    }}
-                  >
-                    <Box mt={5} mb={5} ml={10} mr={10}>
-                      <Typography>JobSeeker</Typography>
-                    </Box>
-                  </ListItem>
+                  <Link to="/getHired">
+                    <ListItem button>
+                      <Box mt={5} mb={5} ml={10} mr={10}>
+                        <Typography>JobSeeker</Typography>
+                      </Box>
+                    </ListItem>
+                  </Link>
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <ListItem

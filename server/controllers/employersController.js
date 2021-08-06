@@ -30,6 +30,17 @@ const getAll = (req, res) => {
   });
 };
 
+const getSearched = async (req, res) => {
+  try {
+    const result = await Employers.find({
+      name: { $regex: req.params.string, $options: "i" },
+    });
+    res.status(200).json({ success: true, employers: result });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err });
+  }
+};
+
 const getFiltered = (req, res) => {
   Employers.find(req.body.queryParams, null, req.body.options).exec(
     (err, employers) => {
@@ -58,6 +69,23 @@ const getById = (req, res) => {
       employer: employer,
     });
   });
+};
+
+const getByIds = async (req, res) => {
+  const employerIds = req.params.empIds.split("$$");
+  
+  try{
+    const response = await Employers.find({'_id':{$in: employerIds}});
+    res.status(200).json({
+      success: true,
+      employers: response
+    });
+  }catch(err){
+    res.status(400).json({
+      success: false,
+      error: err,
+    });
+  }
 };
 
 const getEmployerCount = (req, res) => {
@@ -124,7 +152,9 @@ const remove = (req, res) => {
 module.exports = {
   create,
   getAll,
+  getSearched,
   getById,
+  getByIds,
   update,
   remove,
   getFeaturedEmployers,

@@ -11,14 +11,12 @@ import cardImage from '../images/profilePic.jpg';
 import theme from '../../Theme';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import GitHubIcon from '@material-ui/icons/GitHub';
-import EmailIcon from '@material-ui/icons/Email';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import EditIcon from '@material-ui/icons/Edit';
 import Grid from '@material-ui/core/Grid';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import PhoneIcon from '@material-ui/icons/Phone';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
@@ -109,7 +107,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-function IntroSection() {
+function IntroSection(props) {
 
   const classes = useStyles();
   const [open, setOpen] = useState(false);
@@ -126,16 +124,29 @@ function IntroSection() {
     landLine: "",
     email: ""
   });
-  let loginId=sessionStorage.getItem("loginId");
+  let loginId;
+  let login = false;
+  const jwt = require("jsonwebtoken");
+  const token = sessionStorage.getItem("userToken");
+  const header = jwt.decode(token, { complete: true });
+  if(token === null){
+    loginId=props.jobseekerID;
+  }else if (header.payload.userRole === "jobseeker") {
+    login = true;
+    loginId=sessionStorage.getItem("loginId");
+  } else {
+    loginId=props.jobseekerID;
+  }
 
 
   useEffect(()=>{
     axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
     .then(res => {
       if(res.data.success){
+        let nameArr = res.data.jobseeker.name.split(" ")
         setState({
-          firstName: res.data.jobseeker.firstName,
-          lastName: res.data.jobseeker.lastName,
+          firstName: nameArr[0],
+          lastName: nameArr[1],
           tagline: res.data.jobseeker.lagline,
           intro: res.data.jobseeker.intro,
           street: res.data.jobseeker.address.street,
@@ -237,9 +248,11 @@ function IntroSection() {
 
     return (
       <FloatCard>
+        { login ? <>
         <Button className={classes.defaultButton} style={{ float: 'right',marginRight: '0px',backgroundColor:'white'}} onClick={handleOpen}>
             <EditIcon className={classes.editIcon} style={{color: theme.palette.tuftsBlue,}} />
         </Button>
+        </> : null }
   
         {/* edit popup content */}
         <Modal

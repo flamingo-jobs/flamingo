@@ -120,16 +120,17 @@ function TechCategory(props) {
 
           <Grid item sm={1}>
             {/* button to open the dialog box to add new tech categories */}
-
-            <IconButton
-              variant="outlined"
-              size="small"
-              aria-label="add"
-              className={classes.addButton}
-              onClick={handleClickOpen}
-            >
-              <EditIcon />
-            </IconButton>
+            {props.userRole === "employer" && 
+              <IconButton
+                variant="outlined"
+                size="small"
+                aria-label="add"
+                className={classes.addButton}
+                onClick={handleClickOpen}
+              >
+                <EditIcon />
+              </IconButton>
+            }
 
             {/* dialog box to add new tech categories */}
 
@@ -183,7 +184,12 @@ function TechCategory(props) {
         <Grid container xs={12} direction="column" spacing={1}>
           {Array.from(subArray).map((object, i) => (
             <Grid item sm={12}>
-              <TechCard name={object} list={props.list} className={classes.techCard}/>
+              <TechCard
+                name={object} 
+                list={props.list} 
+                className={classes.techCard}
+                userRole={props.userRole}
+              />
             </Grid>
           ))}
         </Grid>

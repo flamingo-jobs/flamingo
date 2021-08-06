@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Grid, Container, Typography } from "@material-ui/core";
+import React, { useState, useEffect, useRef } from "react";
+import { Grid, Container, Typography, CircularProgress } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import BACKEND_URL from "../Config";
@@ -39,18 +39,20 @@ const useStyles = makeStyles((theme) => ({
 
 // style={{border: "1px solid red"}}
 
-function JobDescription() {
+function JobDescription(props) {
   const classes = useStyles();
 
   const [job, setJob] = useState("empty");
   const [moreFromJobs, setMoreFromJobs] = useState(null);
+  const [savedJobIds, setSavedJobIds] = useState([]);
+  const [isSaved, setIsSaved] = useState(false);
+  const [isApplied, setIsApplied] = useState(false);
 
   let isSignedIn = false;
   if (sessionStorage.getItem("loginId") !== null) {
     isSignedIn = true;
   }
 
-  // const userId = "60e88763e523bf3354852516";
   const userId = sessionStorage.getItem("loginId");
 
   let { id } = useParams();
@@ -58,10 +60,21 @@ function JobDescription() {
 
   useEffect(() => {
     setJobId(window.location.pathname.split("/")[2]);
-  }, [window.location.pathname]);
+  }, [window.location.pathname]); 
+
+  const checkApplied = () => {
+    if (job !== "empty" && job.hasOwnProperty("applicationDetails")) {
+      job.applicationDetails.forEach(application => {
+        if (userId === application.userId) {
+          setIsApplied(true);
+        }
+      });
+    }
+  }
 
   useEffect(() => {
     retrieveJob();
+    retrieveJobseeker();
     displayMoreFromJobs();
     displayRelatedJobs();
   }, [jobId]);
@@ -76,30 +89,50 @@ function JobDescription() {
     });
   };
 
+  const retrieveJobseeker = async () => {
+    try {
+      const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
+      if (response.data.success) {
+        setSavedJobIds(response.data.jobseeker.savedJobs);
+        checkApplied();
+        if (response.data.jobseeker.savedJobs.includes(jobId)) {
+          setIsSaved(true);
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const displaySummary = () => {
-    if (job == "empty") {
+    if (job === "empty") {
       return (
         <Grid item sm={12}>
-          <Typography>No infromation to display</Typography>
+          <CircularProgress />
         </Grid>
       );
     } else {
       return (
         <Grid item sm={12} className={classes.container}>
-          <JobSummary job={job}></JobSummary>
+          <JobSummary
+            userId={userId}
+            job={job}
+            isSignedIn={isSignedIn}
+            userRole={props.userRole}
+            isSaved={isSaved}
+            setIsSaved={setIsSaved}
+            savedJobIds={savedJobIds}
+            setSavedJobIds={setSavedJobIds}
+            isApplied={isApplied}
+          ></JobSummary>
         </Grid>
       );
     }
   };
 
   const displayResponsibilities = () => {
-    if (job == "empty") {
-      return (
-        <Grid item sm={12}>
-          <Typography>No infromation to display</Typography>
-        </Grid>
-      );
-    } else {
+    if (job !== "empty") {
+
       return (
         <Grid item xs={12} lg={12} className={classes.container}>
           <Responsibilities
@@ -112,13 +145,8 @@ function JobDescription() {
 
   // **** add margin bottom to the last component when signed in ***
   const displayRequirements = () => {
-    if (job == "empty") {
-      return (
-        <Grid item sm={12}>
-          <Typography>No infromation to display</Typography>
-        </Grid>
-      );
-    } else {
+    if (job !== "empty") {
+
       return (
         <Grid
           item
@@ -133,30 +161,69 @@ function JobDescription() {
   };
 
   const displayApplyForm = () => {
-    if (isSignedIn === true && userId !== "empty" && job !== "empty") {
-
-      return (
-        <Grid item sm={12}>
-          <ApplyForm userId={userId} jobId={jobId}></ApplyForm>
-        </Grid>
-      );
+    if (isSignedIn === true && userId !== "empty" && !isApplied) {
+      if (job === "empty") {
+        return (
+          <Grid item sm={12} className={classes.container} style={{ marginTop: 16 }}>
+            <FloatCard >
+              <CircularProgress />
+            </FloatCard>
+          </Grid>
+        );
+      } else {
+        return (
+          <Grid item sm={12}>
+            <ApplyForm userId={userId} jobId={jobId}></ApplyForm>
+          </Grid>
+        );
+      }
     }
   };
 
   const displayCompanySummary = () => {
-    if (job != "empty") {
+    if (job === "empty") {
+      return (
+        <Grid item container spacing={3} sm={12}>
+          <Grid item xs={12}>
+            <FloatCard>
+              <CircularProgress />
+            </FloatCard>
+          </Grid>
+        </Grid>
+      );
+    } else {
       return <CompanySummary job={job} />;
     }
   };
 
   const displayMoreFromJobs = () => {
-    if (job != "empty") {
+    if (job === "empty") {
+      return (
+        <Grid item container spacing={3} sm={12}>
+          <Grid item xs={12}>
+            <FloatCard>
+              <CircularProgress />
+            </FloatCard>
+          </Grid>
+        </Grid>
+      );
+    } else {
       return <MoreFromJobs job={job} />;
     }
   };
 
   const displayRelatedJobs = () => {
-    if (job != "empty") {
+    if (job === "empty") {
+      return (
+        <Grid item container spacing={3} sm={12}>
+          <Grid item xs={12}>
+            <FloatCard>
+              <CircularProgress />
+            </FloatCard>
+          </Grid>
+        </Grid>
+      );
+    } else {
       return <RelatedJobs job={job} />;
     }
   };

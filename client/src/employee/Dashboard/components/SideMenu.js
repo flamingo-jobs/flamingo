@@ -3,7 +3,6 @@ import { Link, makeStyles } from '@material-ui/core'
 import FloatCard from '../../../components/FloatCard';
 import { Grid, Typography, Paper} from '@material-ui/core';
 import { indigo } from '@material-ui/core/colors';
-import theme from '../../../Theme';
 import WorkTwoToneIcon from '@material-ui/icons/WorkTwoTone';
 import BookmarkTwoToneIcon from '@material-ui/icons/BookmarkTwoTone';
 import NavigateNextTwoToneIcon from '@material-ui/icons/NavigateNextTwoTone';
@@ -97,7 +96,7 @@ function SideMenu() {
                                             <WorkTwoToneIcon style={{marginTop:"5px"}} />
                                         </Grid>
                                         <Grid item xs={9} style={{marginTop:"4px"}}>
-                                            <span>Hot jobs near you</span>
+                                            <span>Hot jobs near me</span>
                                         </Grid>
                                         <Grid item xs={1}>
                                             <NavigateNextTwoToneIcon style={{marginTop:"5px"}} />

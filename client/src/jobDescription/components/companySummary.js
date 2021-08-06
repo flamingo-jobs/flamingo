@@ -125,7 +125,7 @@ function CompanySummary(props) {
 
 
     const displaySummary = () => {
-        if (summary == "empty") {
+        if (summary === "empty") {
             return (
                 <Grid item sm={12}>
                     <Typography>No infromation to display</Typography>
