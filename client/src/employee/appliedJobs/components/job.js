@@ -166,9 +166,8 @@ const Job = (props) => {
         responseType: 'blob'
       });
 
-      console.log("response", response);
-      download(response.data, "Flamingo_Resume", "application/pdf");
-      return;
+      return download(response.data, "Flamingo_Resume", "application/pdf");
+      
     } catch (err) {
       if (err.status === 400) {
         console.log('Error while downloading file. Try again later');

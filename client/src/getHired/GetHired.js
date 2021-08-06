@@ -299,6 +299,7 @@ export default function GetHired() {
       gender: gender,
       tagline: formData.tagline,
       intro: formData.description,
+      dateRegistered: new Date(),
       address: {
         street: formData.street,
         city: formData.city,
@@ -616,7 +617,8 @@ export default function GetHired() {
                           </Grid>
                           <Grid item xs={12} align="left">
                             <Typography variant="caption" display="block">
-                              Please make sure that your password contains at least,
+                              Please make sure that your password contains at
+                              least,
                               <ul>
                                 <li>8 characters</li>
                                 <li>1 uppercase letter</li>

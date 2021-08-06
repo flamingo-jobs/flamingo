@@ -4,7 +4,8 @@ import WeeklyApplications from './components/WeeklyApplications';
 import NewJobSeekers from './components/NewJobSeekers';
 import NewEmployers from './components/NewEmployers';
 import NewJobPostings from './components/NewJobPostings';
-import UsersBarChart from './components/analytics/usersBarChart';
+import JobsBarChart from './components/analytics/jobsBarChart';
+import UsersLineChart from './components/analytics/userLineChart';
 
 // style={{border: "1px solid red"}}
 function Dashboard() {
@@ -29,11 +30,12 @@ function Dashboard() {
                         <NewJobPostings />
                     </Grid>
 
-                    <Grid item xs={12} md={6} lg={8}>
-                        <UsersBarChart/>
+                    <Grid item xs={12} md={6}>
+                        <JobsBarChart/>
                     </Grid>
 
-                    <Grid item xs={12} md={6} lg={4}>
+                    <Grid item xs={12} md={6}>
+                        <UsersLineChart/>
                     </Grid>
 
                     <Grid item xs={12} md={6} lg={8}>

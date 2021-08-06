@@ -39,7 +39,7 @@ const jobseekerSchema = new mongoose.Schema({
     type: Array,
   },
   interests: {
-    type: Array
+    type: Array,
   },
   volunteer: {
     type: Array,
@@ -50,27 +50,33 @@ const jobseekerSchema = new mongoose.Schema({
   skills: {
     type: Array,
   },
-  applicationDetails:[{
-    status :{ type: String},
-    appliedDate : {type: Date},
-    jobId: {type: String},
-    resumeName: {type: String}
-  }],
-  notifications:{
-    type: Array
-  },
-  savedJobs:{
+  applicationDetails: [
+    {
+      status: { type: String },
+      appliedDate: { type: Date },
+      jobId: { type: String },
+      resumeName: { type: String },
+    },
+  ],
+  notifications: {
     type: Array,
   },
-  favoriteOrganizations:{
+  savedJobs: {
+    type: Array,
+  },
+  favoriteOrganizations: {
     type: Array,
   },
   recommendedJobs: {
     type: Array,
   },
   recommendedOrgs: {
-    type: Array
-  }
+    type: Array,
+  },
+  dateRegistered: {
+    type: Date,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("Jobseeker", jobseekerSchema);
