@@ -87,7 +87,6 @@ const getById = (req, res) => {
 
 const getByIds = async (req, res) => {
   const jobseekers = req.params.ids.split("$$");
-  
   try{
     const response = await Jobseeker.find({'_id':{$in: jobseekers}});
     res.status(200).json({

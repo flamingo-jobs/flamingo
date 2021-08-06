@@ -50,9 +50,12 @@ const jobseekerSchema = new mongoose.Schema({
   skills: {
     type: Array,
   },
-  applicationDetails:{
-    type: Array,
-  },
+  applicationDetails:[{
+    status :{ type: String},
+    appliedDate : {type: Date},
+    jobId: {type: String},
+    resumeName: {type: String}
+  }],
   notifications:{
     type: Array
   },

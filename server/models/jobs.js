@@ -72,9 +72,12 @@ const jobSchema = new mongoose.Schema({
         type:Boolean,
         required: true
     },   
-    applicationDetails:{
-        type: Array,
-    }, 
+    applicationDetails: [{
+        status :{ type: String},
+        appliedDate : {type: Date},
+        userId: {type: String},
+        resumeName: {type: String}
+    }], 
 
 });
 

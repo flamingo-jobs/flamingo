@@ -40,7 +40,6 @@ const Applications = () => {
     }
     setAlertShow(false);
   };
-
   useEffect(() => {
     retrieveJob();
   }, [jobId]);
