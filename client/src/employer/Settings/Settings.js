@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useForm } from "react-hooks-helper";
 import PropTypes from "prop-types";
 import {
   makeStyles,
@@ -19,6 +20,7 @@ import {
   Container,
   Checkbox,
 } from "@material-ui/core";
+import SnackBarAlert from "../../components/SnackBarAlert";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -96,7 +98,8 @@ const Settings = () => {
       description: "Edit Company Details",
     },
   ];
-
+  const defaultData = { email: "", password: "", confirmPassword: "" };
+  const [formData, setForm] = useForm(defaultData);
   const [value, setValue] = useState(0);
   const [checked, setChecked] = useState([]);
 
@@ -117,11 +120,53 @@ const Settings = () => {
     setValue(newValue);
   };
 
+  // Alert stuff
+  const [alertShow, setAlertShow] = useState(false);
+  const [alertData, setAlertData] = useState({ severity: "", msg: "" });
+  const displayAlert = () => {
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertShow(false);
+  };
+
+  const addNewUser = (e) => {
+    e.preventDefault();
+    if (formData.password === formData.confirmPassword) {
+      const newUserData = {
+        email: formData.email,
+        password: formData.password,
+        accessTokens: checked.map(x => x.name),
+      };
+      //goto next step
+    } else {
+      setAlertData({
+        severity: "error",
+        msg: `Please make sure passwords are matching`,
+      });
+      handleAlert();
+    }
+  };
+
   return (
     <div className={classes.root}>
       <div>
         <Card className={classes.topCard}>
           <CardContent>
+            {displayAlert()}
             <Grid container direction="row" style={{ maxWidth: "100%" }}>
               <Grid item xs={12}>
                 <div className={classes.tabRoot}>
@@ -146,7 +191,7 @@ const Settings = () => {
                     >
                       <Grid item xs={12} align="center">
                         <Container>
-                          <form className={classes.form} onSubmit="">
+                          <form className={classes.form} onSubmit={addNewUser}>
                             <Grid
                               container
                               spacing={2}
@@ -179,6 +224,8 @@ const Settings = () => {
                                         type="email"
                                         size="small"
                                         variant="outlined"
+                                        value={formData.email}
+                                        onChange={setForm}
                                         className={classes.shortTextField}
                                         required
                                       />
@@ -189,6 +236,8 @@ const Settings = () => {
                                         name="password"
                                         type="password"
                                         variant="outlined"
+                                        value={formData.password}
+                                        onChange={setForm}
                                         className={classes.shortTextField}
                                         required
                                         size="small"
@@ -200,6 +249,8 @@ const Settings = () => {
                                         name="confirmPassword"
                                         type="password"
                                         variant="outlined"
+                                        value={formData.confirmPassword}
+                                        onChange={setForm}
                                         className={classes.shortTextField}
                                         required
                                         size="small"
