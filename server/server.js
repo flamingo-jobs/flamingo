@@ -16,6 +16,7 @@ const employerRoutes = require('./routes/employers');
 const jobSeekerRoutes = require('./routes/jobseeker');
 const authRoutes = require('./routes/auth');
 const resumeRoutes = require("./routes/resumes");
+const logoRoutes = require("./routes/logos");
 const keywordsRoutes = require("./routes/keywords");
 const analyticsRoutes = require("./routes/analytics");
 
@@ -32,6 +33,7 @@ app.use(typeRoutes);
 app.use(employerRoutes);
 app.use(jobSeekerRoutes);
 app.use(resumeRoutes);
+app.use(logoRoutes);
 app.use(keywordsRoutes);
 app.use(analyticsRoutes);
 app.use('/api', authRoutes);

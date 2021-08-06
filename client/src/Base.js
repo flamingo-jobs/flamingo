@@ -16,6 +16,7 @@ import CreateJobForm from "./jobs/createJob/createJobForm";
 import People from './people/People';
 import Employer from './employer/Employer';
 import EmployerBilling from './employer/Billing';
+import EmployerSettings from './employer/Settings/Settings';
 import EmployerDashboard from './employer/Dashboard';
 import EmployerJobList from './employer/EmployerJobList';
 import Technologies from './admin/Technologies';
@@ -191,6 +192,9 @@ function Base() {
           </Route>
           <Route path="/employer/billing">
             <EmployerBilling/>
+          </Route>
+          <Route path="/employer/settings">
+            <EmployerSettings/>
           </Route>
         </>
       );

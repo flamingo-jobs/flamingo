@@ -6,7 +6,7 @@ const path = require("path");
 // const fileName = Date.now().toString();
 let fileName = "";
 
-const fileStorageEngine = multer.diskStorage({
+const resumeStorageEngine = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.join(__dirname, "../resumes/"));
   },
@@ -17,10 +17,38 @@ const fileStorageEngine = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage: fileStorageEngine }).single("resume");
+const logoStorageEngine = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, "../logos/"));
+  },
+  filename: (req, file, cb) => {
+    fileName = req.body.company + path.extname(file.originalname);
+    fileName.replace(/:/g, "-");
+    cb(null, fileName);
+  },
+});
+
+const uploadLogo = multer({ storage: logoStorageEngine }).single("logo");
+const uploadResume = multer({ storage: resumeStorageEngine }).single("resume");
+
 
 const uploadResumeToServer = (req, res) => {
-  upload(req, res, (err) => {
+  uploadResume(req, res, (err) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        error: err,
+      });
+    }
+    return res.status(200).json({
+      success: true,
+    });
+  });
+  // console.log(req.file);
+};
+
+const uploadLogoToServer = (req, res) => {
+  uploadLogo(req, res, (err) => {
     if (err) {
       return res.status(400).json({
         success: false,
@@ -53,5 +81,6 @@ const downloadResume = async (req, res) => {
 
 module.exports = {
   uploadResumeToServer,
+  uploadLogoToServer,
   downloadResume,
 };

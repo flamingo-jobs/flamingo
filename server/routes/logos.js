@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 const filesController = require('../controllers/filesController');
 
-router.post("/resume", filesController.uploadResumeToServer);
+router.post("/logo", filesController.uploadLogoToServer);
  
-router.get("/resume/:jobId/:userId", filesController.downloadResume);
+//router.get("/logo/:loginId", filesController.downloadLogo);
 
 module.exports = router;
