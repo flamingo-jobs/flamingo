@@ -33,10 +33,10 @@ const useStyles = makeStyles((theme) => ({
 
 function Profile() {
     const classes = useStyles();
-    const [jobseekerID, setJobseekerID] = useState(window.location.pathname.split("/")[2]);
+    const [jobseekerID, setJobseekerID] = useState(window.location.pathname.split("/")[3]);
 
   useEffect(() => {
-    setJobseekerID(window.location.pathname.split("/")[2]);
+    setJobseekerID(window.location.pathname.split("/")[3]);
   }, [window.location.pathname]);
 
     return (
