@@ -27,6 +27,8 @@ router.get('/jobseeker/getNotifications/:id', jobseekerController.getNotificatio
 
 router.put('/jobseeker/update/:id', jobseekerController.update);
 router.put('/jobseeker/updateSkills/:id', jobseekerController.updateSkills);
+router.put('/jobseeker/updateTechnologyStack/:id', jobseekerController.updateTechnologyStack);
+router.put('/jobseeker/updateTechnologyItem/:id', jobseekerController.updateTechnologyItem);
 router.put('/jobseeker/updateUniversity/:id', jobseekerController.updateUniversity);
 router.put('/jobseeker/updateSchool/:id', jobseekerController.updateSchool);
 router.put('/jobseeker/updateCourse/:id', jobseekerController.updateCourse);
@@ -59,5 +61,6 @@ router.put('/jobseeker/removeProject/:id', jobseekerController.removeProject);
 router.put('/jobseeker/removeWork/:id', jobseekerController.removeWork);
 router.put('/jobseeker/removeAward/:id', jobseekerController.removeAward);
 router.put('/jobseeker/removeVolunteer/:id', jobseekerController.removeVolunteer);
+router.put('/jobseeker/removeSkill/:id', jobseekerController.removeSkill);
 
 module.exports = router;

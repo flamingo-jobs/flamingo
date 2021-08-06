@@ -157,10 +157,9 @@ function Skills(props) {
         if(res.data.jobseeker.skills.length > 0){
           if(res.data.jobseeker.skills[0] === ""){
             res.data.jobseeker.skills.splice(0,1)
+            i++;
           }
           setSkills(res.data.jobseeker.skills)
-          removeDuplicates()
-          showCombo()
         }       
       }
     })
@@ -173,11 +172,10 @@ function Skills(props) {
         if(chipData[j] === skills[index]){
           chipData.splice(j, 1);
           break;
-        }
-        
-      }
-      
+        }        
+      }     
     }
+    showCombo()
   }
 
 
@@ -291,21 +289,44 @@ function Skills(props) {
   }
 
   const handleDelete = (chipToDelete) => () => {
-    setChipData((chips) => chips.filter((chip) => chip.key !== chipToDelete.key));
+    setChipData([])
+    skills.splice(chipToDelete,1)
+    axios.put(`${BACKEND_URL}/jobseeker/removeSkill/${loginId}`,skills)
+    .then(res => {
+      if(res.data.success){
+        setAlertData({
+          severity: "success",
+          msg: "Skill deleted successfully!",
+        });
+        handleAlert();
+        fetchData();
+      } else {
+        setAlertData({
+          severity: "error",
+          msg: "Skill could not be deleted!",
+        });
+      }
+    });
+    setShow(false);
+        showCombo();
+        handleAlert();
+        removeDuplicates();
+    handleClose();
+    setFetchedData(1)
   };
   
   const showCombo = () => {
       if(show){
         return (
-          <React.Fragment>
+          <>
           <Autocomplete
           style={{width:"100%",margin:"10px 120px 20px 120px"}}
             multiple
-            id="tags-standard"
+            id="tags-outlined"
+            filterSelectedOptions
             options={chipData}
             getOptionLabel={(option) => option}
             onChange={(event, value) => {
-              removeDuplicates();
               setNewData(value);
             }}
             renderInput={(params) => (
@@ -318,14 +339,14 @@ function Skills(props) {
             )}
           />
           <Grid item xs={12}>
-            <Button className={classes.defaultButton} onClick={onSubmit} style={{float:"right",marginRight:"115px"}}>Save</Button>
-            <Button onClick={showClose} style={{float:"right",marginRight:"15px"}}>Cancel</Button>
-            
-          </Grid>
-          </React.Fragment>
+          <Button className={classes.defaultButton} onClick={onSubmit} style={{float:"right",marginRight:"115px"}}>Save</Button>
+          <Button onClick={showClose} style={{float:"right",marginRight:"15px"}}>Cancel</Button>         
+        </Grid>
+          </>
         );
+      }else{
+        return <></>;
       }
-    
   }
 
   return (
@@ -348,6 +369,7 @@ function Skills(props) {
         </Grid>       
       </Grid>
       <Grid container spacing={3}>
+      {removeDuplicates()}
       {showCombo()}
       
         <Grid item xs={12} alignItems="center" justify="center">
@@ -355,16 +377,23 @@ function Skills(props) {
                 {
                 skills.map((data) => {
                     let icon;
-                    return (
+                    return show ? (
                     <li key={i++}>
                         <Chip
                         icon={icon}
                         label={data}
-                        onDelete={handleDelete(data)}
+                        onDelete={handleDelete(i)}
                         className={classes.chip}
                         />
                     </li>
-                    );
+                    ) : 
+                    (<li key={i++}>
+                        <Chip
+                        icon={icon}
+                        label={data}
+                        className={classes.chip}
+                        />
+                    </li>);
                 })}
             </Paper>
         </Grid>

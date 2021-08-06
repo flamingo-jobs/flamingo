@@ -423,7 +423,7 @@ function IntroSection(props) {
           </Grid>
         </Grid>
         <Paper elevation={0} className={classes.paperCont}>
-            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',}}>
+            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',}}>
               {state.intro}
             </Typography>
         </Paper>

@@ -117,8 +117,7 @@ export default function DetailedAccordion(props) {
   const [frontEnd, setFrontEnd] = React.useState([]);
   const [backEnd, setBackEnd] = React.useState([]);
   const [editing, setEditing] = React.useState(false);
-
-  let i=0;
+  let index;
   let loginId;
   let login = false;
   const jwt = require("jsonwebtoken");
@@ -135,14 +134,20 @@ export default function DetailedAccordion(props) {
 
   const matchDetails = () => {
     let tech = props.techno;
-    tech?.forEach(technology => {
-      if(props.info.name == technology.type){
-        setList(technology.list);
-        setFrontEnd(technology.frontEnd);
-        setBackEnd(technology.backEnd);
-        return;
+    if(tech){
+      for (let k = 0; k < tech.length; k++) {
+        if(props.info.name == tech[k].type){
+          index = k;
+          console.log("blaa "+index)
+          setList(tech[k].list);
+          setFrontEnd(tech[k].frontEnd);
+          setBackEnd(tech[k].backEnd);
+          return;
+        }
+        
       }
-    });
+    }
+
   }
 
   useEffect(()=>{
@@ -175,28 +180,50 @@ export default function DetailedAccordion(props) {
   }
 
   const saveChanges = () => {
-    // let data = {};
-    // if (props.info.list) {
-    //   data = {
-    //     stack: {
-    //       list: list
+    let data = {};
+    console.log(index)
+    // if(index > -1){
+    //   if (props.info.stack.list) {
+    //     data = {
+    //         list: list
+    //     }
+    //   } else if (props.info.stack.frontEnd) {
+    //     data = {
+    //         frontEnd: frontEnd,
+    //         backEnd: backEnd
     //     }
     //   }
-    // } else if (props.info.frontEnd) {
-    //   data = {
-    //     stack: {
-    //       frontEnd: frontEnd,
-    //       backEnd: backEnd
-    //     }
-    //   }
-    // }
-    // axios.put(`${BACKEND_URL}/technologies/update/${props.info._id}`, data).then(res => {
+    //   axios.put(`${BACKEND_URL}/jobseeker/updateTechnologyItem/${loginId}`,{index:index,techItem:data})
+    // .then(res => {
     //   if (res.data.success) {
     //     props.onSuccessUpdate();
     //   } else {
     //     props.onFailedUpdate();
     //   }
     // })
+    // }else{
+    //   let technologyStack= {};
+    //   if (props.info.stack.list) {
+    //     technologyStack = {
+    //         type : props.info.name,
+    //         list: list
+    //     }
+    //   } else if (props.info.stack.frontEnd) {
+    //     technologyStack = {
+    //       type : props.info.name,
+    //         frontEnd: frontEnd,
+    //         backEnd: backEnd
+    //     }
+    //   }
+    //   axios.put(`${BACKEND_URL}/jobseeker/updateTechnologyStack/${loginId}`,technologyStack)
+    // .then(res => {
+    //   if (res.data.success) {
+    //     props.onSuccessUpdate();
+    //   } else {
+    //     props.onFailedUpdate();
+    //   }
+    // });
+    // }
 
     // setPendingChanges(false);
     // setEditRowsModel({});
