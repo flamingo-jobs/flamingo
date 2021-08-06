@@ -1,6 +1,7 @@
 const Jobs = require('../models/jobs');
 const Employers = require("../models/employers");
 const Jobseekers = require("../models/jobseeker");
+const Category = require("../models/categories");
 
 const MONTHS = [
 "January", "February", "March", "April", 
@@ -80,7 +81,7 @@ const getMonthlyJobs = async (req, res) => {
 const getMonthlyUsers = async (req, res) => {
     var monthNames = [];
 
-    const numberOfMonthsNeeded = 12;
+    const numberOfMonthsNeeded = 8;
     var monthlyUserCount;
     var pastNMonths = new Array(numberOfMonthsNeeded);
     var pastNMonthsUserCount = new Array(numberOfMonthsNeeded);
@@ -147,7 +148,33 @@ const getMonthlyUsers = async (req, res) => {
 
 }
 
+const getJobCategories = async (req, res) => {
+    try{
+        var categories = await Category.find().select('name count');
+        var categoryNames = [];
+        var categoryCount = [];
+
+        categories.sort((a, b) => {
+            return b.count - a.count;
+        });
+
+        var topCategories = categories.slice(0, 5);
+        topCategories.map(cat => {
+            categoryNames.push(cat.name);
+            if(cat.count > 0){
+                categoryCount.push(cat.count);
+            }else {
+                categoryCount.push(0);
+            }
+        });
+        res.status(200).json({ success: true, categories: categoryNames, count: categoryCount});
+    }catch(err){
+        res.status(400).json({ success: false, error: err });
+    }
+}
+
 module.exports = {
     getMonthlyJobs,
     getMonthlyUsers,
+    getJobCategories,
 }

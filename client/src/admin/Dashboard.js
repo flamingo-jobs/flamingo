@@ -6,6 +6,7 @@ import NewEmployers from './components/NewEmployers';
 import NewJobPostings from './components/NewJobPostings';
 import JobsBarChart from './components/analytics/jobsBarChart';
 import UsersLineChart from './components/analytics/userLineChart';
+import CategoryPieChart from "./components/analytics/categoryPieChart";
 
 // style={{border: "1px solid red"}}
 function Dashboard() {
@@ -38,7 +39,8 @@ function Dashboard() {
                         <UsersLineChart/>
                     </Grid>
 
-                    <Grid item xs={12} md={6} lg={8}>
+                    <Grid item xs={12} md={4}>
+                        <CategoryPieChart/>
                     </Grid>
 
                     <Grid item xs={12} md={6} lg={4}>
