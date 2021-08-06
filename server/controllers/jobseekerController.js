@@ -140,6 +140,23 @@ const updateSkills = (req, res) => {
   );
 };
 
+const updateTechnologyStack = (req, res) => {
+  Jobseeker.findOneAndUpdate(
+    { _id: req.params.id },
+    { $push: { technologyStack: req.body } },
+    (err, jobseeker) => {
+      if (err) {
+        return res.status(400).json({
+          error: err,
+        });
+      }
+      return res.status(200).json({
+        success: true,
+      });
+    }
+  );
+};
+
 const updateVolunteer = (req, res) => {
   Jobseeker.updateOne(
     { _id: req.params.id },
@@ -164,6 +181,25 @@ const updateAward = (req, res) => {
     { _id: req.params.id },
     {
       $set: { [`award.${req.body.index}`]: req.body.award },
+    },
+    (err, jobseeker) => {
+      if (err) {
+        return res.status(400).json({
+          error: err,
+        });
+      }
+      return res.status(200).json({
+        success: true,
+      });
+    }
+  );
+};
+
+const updateTechnologyItem = (req, res) => {
+  Jobseeker.updateOne(
+    { _id: req.params.id },
+    {
+      $set: { [`technologyStack.${req.body.index}`]: req.body.techItem },
     },
     (err, jobseeker) => {
       if (err) {
@@ -632,6 +668,25 @@ const removeVolunteer = (req, res) => {
   );
 };
 
+const removeSkill = (req, res) => {
+  Jobseeker.findByIdAndUpdate(
+    req.params.id,
+    {
+      $set: { skills: req.body },
+    },
+    (err, jobseeker) => {
+      if (err) {
+        return res.status(400).json({
+          error: err,
+        });
+      }
+      return res.status(200).json({
+        success: true,
+      });
+    }
+  );
+};
+
 const getNotifications = (req, res) => {
   Jobseeker.findById(req.params.id, 'notifications').exec((err, notifications) => {
     if (err) {
@@ -664,6 +719,8 @@ module.exports = {
   updateSchool,
   updateCourse,
   updateSkills,
+  updateTechnologyItem,
+  updateTechnologyStack,
   updateVolunteer,
   updateAward,
   updateWork,
@@ -681,6 +738,7 @@ module.exports = {
   removeWork,
   removeAward,
   removeVolunteer,
+  removeSkill,
   getFiltered,
   getCount,
   block,
