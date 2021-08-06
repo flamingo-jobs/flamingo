@@ -86,7 +86,7 @@ function Recommendations(props) {
     };
 
     useEffect(() => {
-        // console.log(jobs.length)
+        console.log(jobs.length)
         displayJobs();
     }, [jobs]);
 
@@ -96,7 +96,7 @@ function Recommendations(props) {
 
     useEffect(() => {
         updateQuery();
-    }, [filters, search]);
+    }, [filters, search, recommendedIds]);
 
     useEffect(() => {
         retrieveJobseeker();
@@ -114,23 +114,22 @@ function Recommendations(props) {
     const updateQuery = () => {
 
         if (Object.keys(filters).length !== 0 && Object.keys(search).length !== 0) {
-            setQueryParams({ $and: [filters, search] });
+            setQueryParams({ $and: [{ $and: [filters, search] }, { "_id": { $in: recommendedIds } }] });
         } else if (Object.keys(filters).length === 0) {
-            setQueryParams(search);
+            setQueryParams({ $and: [search, { "_id": { $in: recommendedIds } }] });
         } else if (Object.keys(search).length === 0) {
-            setQueryParams(filters);
+            setQueryParams({ $and: [filters, { "_id": { $in: recommendedIds } }] });
         } else if (featured) {
-            setQueryParams({ isFeatured: true });
+            setQueryParams({ $and: [{ isFeatured: true }, { "_id": { $in: recommendedIds } }] });
         } else {
-            setQueryParams({});
+            setQueryParams({ "_id": { $in: recommendedIds } });
         }
-        setQueryParams({ $and: [queryParams, { "_id": { $in: recommendedIds } }] });
     }
 
     const delay = ms => new Promise(res => setTimeout(res, ms));
 
     const retrieveJobs = async () => {
-        if ((featured && JSON.stringify(queryParams) === "{}") || (org && JSON.stringify(queryParams) === "{}")) {
+        if (JSON.stringify(queryParams) === "{}" || JSON.stringify(queryParams) === `{"$and":[{},{"_id":{"$in":[]}}]}`) {
             return;
         }
         axios.post(`${BACKEND_URL}/jobs/getJobCount`, queryParams).then(res => {
@@ -158,7 +157,7 @@ function Recommendations(props) {
                 const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
                 if (response.data.success) {
                     setSavedJobIds(response.data.jobseeker.savedJobs);
-                    setRecommendedIds(response.data.jobseeker.recommendedJobs)
+                    setRecommendedIds(response.data.jobseeker.recommendedJobs.sort(({score:a},{score:b}) => b-a).map(job => job.id));
                 }
             } catch (err) {
                 console.log(err);

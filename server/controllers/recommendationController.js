@@ -28,7 +28,7 @@ const generateRecommendations = (req, res) => {
                     // education
 
                     item.university.forEach((degree) => {
-                        if (job.education === degree) {
+                        if (job.minimumEducation.includes(degree.degree)) {
                             education += 100;
                         }
                     });
@@ -65,12 +65,14 @@ const generateRecommendations = (req, res) => {
                     // skills
 
                     if (item.hasOwnProperty("skills")) {
-                        skills = similarity(item.skills.join(' '),job.qualifications.join(' '));
+                        skills = similarity(item.skills.join(' '), job.qualifications.join(' '));
                     }
 
                     total = education * 0.1 + experience * 0.2 + techStack * 0.2 + projectTech * 0.2 + skills * 0.2 + certificates * 0.1;
 
                     recommendedJobSeekers.push({ jobSeekerId: item._id, score: total });
+
+                    updateJobSeekerProfile(item._id, item.recommendedJobs, req.params.id, total);
                 })
             }
 
@@ -108,6 +110,29 @@ const findPercentage = (first, second) => {
     }, 0);
     return (count / first.length) * 100;
 };
+
+const updateJobSeekerProfile = (jobSeekerId, recommendedJobs, jobId, total) => {
+
+    const newValue = { id: jobId, score: total };
+
+    Jobseeker.updateOne({ "_id": jobSeekerId },
+        [{
+            $set: {
+                recommendedJobs: {
+                    $cond: {
+                        if: { $in: [newValue.id, "$recommendedJobs.id"] },
+                        then: "$recommendedJobs",
+                        else: { $concatArrays: ["$recommendedJobs", [newValue]] }
+                    }
+                }
+            }
+        }], (err, jobseeker) => {
+            if (err) {
+                return false;
+            }
+            return true;
+        });
+}
 
 module.exports = {
     generateRecommendations
