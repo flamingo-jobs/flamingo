@@ -40,13 +40,29 @@ const useStyles = makeStyles((theme) => ({
     float: "center",
   },
   pieChart:{
-    width:100,
-    height:100,
+    width:90,
+    height:90,
     padding: '0 0 0 0',
-    marginTop: -200,
+    marginTop: -190,
     marginBottom: -200,
-    marginLeft: 100,
-  }
+    marginLeft: 65,
+  },
+  applicationCard:{
+    paddingBottom:20,
+  },
+  applicationsTitle:{
+    fontWeight: "bolder",
+    fontSize: 15,
+    color: theme.palette.stateBlue,
+    marginBottom: 20,
+    float: "center",
+  },
+  applicationsNumber:{
+    fontWeight: "bolder",
+    fontSize: 51,
+    color: theme.palette.stateBlue,
+    float: "center",
+  },
 
 }));
 
@@ -74,15 +90,33 @@ const TopCards = () => {
     return (
     <Grid container direction="row" xs={12} spacing={1} className={classes.root}>
 
-        <Grid item xs={4}>
+        <Grid item xs={3}>
+            <FloatCard className={classes.applicationCard}>
+                {/* <Grid container direction="row" xs={12} spacing={2}>
+                    <Grid item > */}
+                        <Typography variant="body2" className={classes.applicationsTitle}>
+                            APPLICATIONS
+                        </Typography>
+                        
+                        <Typography variant="h5" className={classes.applicationsNumber} style={{float:"center"}}>
+                            50
+                        </Typography>
+                    {/* </Grid>
+                    
+                </Grid> */}
+                
+            </FloatCard>
+        </Grid>
+
+        <Grid item xs={3}>
             <FloatCard>
                 <Grid container direction="row" xs={12} spacing={2}>
                     <Grid item xs={1}>
                         <Typography variant="body2" className={classes.cardTitle}>
-                            APPLICATIONS
+                            SHORTLISTED
                         </Typography>
                         <Typography variant="h5" className={classes.cardNumber}>
-                            244
+                            24
                         </Typography>
                     </Grid>
                     <Grid item xs={10}>
@@ -105,15 +139,15 @@ const TopCards = () => {
             </FloatCard>
         </Grid>
 
-        <Grid item xs={4}>
+        <Grid item xs={3}>
         <FloatCard>
                 <Grid container direction="row" xs={12} spacing={2}>
                     <Grid item xs={1}>
                         <Typography variant="body2" className={classes.cardTitle}>
-                            SHORTLISTED
+                            PENDING
                         </Typography>
                         <Typography variant="h5" className={classes.cardNumber}>
-                            126
+                            14
                         </Typography>
                     </Grid>
                     <Grid item xs={10}>
@@ -136,12 +170,12 @@ const TopCards = () => {
             </FloatCard>
         </Grid>
 
-        <Grid item xs={4}>
+        <Grid item xs={3}>
         <FloatCard>
                 <Grid container direction="row" xs={12} spacing={2}>
                     <Grid item xs={1}>
                         <Typography variant="body2" className={classes.cardTitle}>
-                            ONHOLD
+                            REJECTED
                         </Typography>
                         <Typography variant="h5" className={classes.cardNumber}>
                             12

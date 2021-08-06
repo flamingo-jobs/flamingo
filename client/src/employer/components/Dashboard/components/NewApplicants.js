@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   button:{
     backgroundColor: theme.palette.blueJeans,
     color: "white",
-    margin: 10,
+    margin: 17,
     borderRadius: 25,
     paddingLeft: 20,
     paddingRight: 20,
@@ -169,12 +169,8 @@ const NewApplicants = () => {
                 </Grid>
             </Grid>  
 
-            <Link to="#">
-            <Button
-              className={classes.button}
-            >
-              View All
-            </Button>
+            <Link to={`/employer/resumes`}>
+              <Button className={classes.button}>View All</Button>
             </Link>
             
 
