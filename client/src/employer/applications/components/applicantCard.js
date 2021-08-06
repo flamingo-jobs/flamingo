@@ -149,7 +149,9 @@ function ApplicantCard(props) {
       });
       return download(response.data, "Flamingo_Resume", "application/pdf");
     } catch (err) {
-      console.log(err);
+      if (err.status === 400) {
+        console.log('Error while downloading file. Try again later');
+      }
     }
   }
 
