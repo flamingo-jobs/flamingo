@@ -169,12 +169,8 @@ const NewApplicants = () => {
                 </Grid>
             </Grid>  
 
-            <Link to="#">
-            <Button
-              className={classes.button}
-            >
-              View All
-            </Button>
+            <Link to={`/employer/resumes`}>
+              <Button className={classes.button}>View All</Button>
             </Link>
             
 

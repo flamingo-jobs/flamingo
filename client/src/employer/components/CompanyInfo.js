@@ -326,7 +326,7 @@ function CompanyInfo(props) {
             >
               {/* PANEL 01 FOR COMPANY NAME, MEMBERSHIP TYPE AND EDIT BUTTON */}
 
-              <Grid item xs={9}>
+              <Grid item xs={9} style={{marginBottom:-30}}>
                 <Typography variant="h5" className={classes.companyName}>
                   {name}
                 </Typography>

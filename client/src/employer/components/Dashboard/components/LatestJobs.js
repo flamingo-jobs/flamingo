@@ -91,6 +91,7 @@ const useStyles = makeStyles((theme) => ({
   tableContainer:{
     marginLeft:20,
     marginTop: 30,
+    marginRight:100,
   }
 }));
 
@@ -115,11 +116,61 @@ const LatestJobs = () => {
         console.log(res.data.employerJobs);
         if (res.data.success) {
           setState({
-            allJobs: res.data.employerJobs,
+            allJobs: res.data.employerJobs.slice(0,5),
           });
         }
       });
   }, []);
+
+  const getPending = (row) => {
+    var pending = 0;
+
+    row.applicationDetails.forEach(element => {
+      
+      if(element.status=="pending"){
+        pending++;
+
+      }
+      console.log(element.status) 
+    }
+    );
+
+    return pending;
+  }
+
+  const getShortlisted = (row) => {
+    var shortlisted = 0;
+
+    row.applicationDetails.forEach(element => {
+      
+      if(element.status=="shortlisted"){
+        shortlisted++;
+
+      }
+      console.log(element.status) 
+    }
+    );
+
+    return shortlisted;
+  }
+
+  const getRejected = (row) => {
+    var rejected = 0;
+
+    row.applicationDetails.forEach(element => {
+      
+      if(element.status=="rejected"){
+        rejected++;
+
+      }
+      console.log(element.status) 
+    }
+    );
+
+    return rejected;
+  }
+
+  
 
   return (
     <div className={classes.root}>
@@ -133,12 +184,13 @@ const LatestJobs = () => {
           <Table className={classes.table} aria-label="customized table">
             <colgroup>
               <col style={{ width: "20%" }} />
-              <col style={{ width: "10%" }} />
-              <col style={{ width: "10%" }} />
-              <col style={{ width: "10%" }} />
-              <col style={{ width: "10%" }} />
-              <col style={{ width: "10%" }} />
-              <col style={{ width: "10%" }} />
+              <col style={{ width: "5%" }} />
+              <col style={{ width: "5%" }} />
+              <col style={{ width: "5%" }} />
+              <col style={{ width: "5%" }} />
+              <col style={{ width: "5%" }} />
+              <col style={{ width: "5%" }} />
+              <col style={{ width: "5%" }} />
             </colgroup>
             <TableHead>
               <TableRow>
@@ -147,8 +199,8 @@ const LatestJobs = () => {
                 <StyledTableCell align="center">Active</StyledTableCell>
                 <StyledTableCell align="center">No of Resumes</StyledTableCell>
                 <StyledTableCell align="center">Shortlisted</StyledTableCell>
-                <StyledTableCell align="right">On-Hold</StyledTableCell>
-                <StyledTableCell align="right">Rejected</StyledTableCell>
+                <StyledTableCell align="center">Pending</StyledTableCell>
+                <StyledTableCell align="center">Rejected</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -185,17 +237,23 @@ const LatestJobs = () => {
                   </StyledTableCell>
                 
                 {/* Shortlisted */}
-                  <StyledTableCell align="right">
+                  <StyledTableCell align="center">
+                    
+                    {getPending(row)}
                    
                   </StyledTableCell>
 
                 {/* OnHold */}
-                  <StyledTableCell align="right">
+                  <StyledTableCell align="center">
+
+                    {getShortlisted(row)}
                    
                   </StyledTableCell>
                 {/* Rejected */}
-                  <StyledTableCell align="right">
-                   
+                  <StyledTableCell align="center">
+
+                    {getRejected(row)}
+
                   </StyledTableCell>
 
                 </StyledTableRow>

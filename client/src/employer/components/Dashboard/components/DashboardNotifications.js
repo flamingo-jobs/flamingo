@@ -123,13 +123,20 @@ const DashboardNotifications = () => {
             </Grid>  
         </Card>
 
-        <Link to="#">
-        <Button
-              className={classes.button}
-            >
-              View All
-            </Button>
-            </Link>
+        <Card className={classes.notificationCard}>
+            <Grid container direction="row" xs={12}>
+                <Grid item xs={2}>
+                    <NotificationsIcon className={classes.notificationsIconSmall}/>
+                </Grid>
+                <Grid item xs={10}>
+                    <Typography variant="body2" className={classes.notificationsText}>
+                    You received 2 new resumes for the job DevOps Engineer
+                    </Typography>
+                </Grid>
+            </Grid>  
+        </Card>
+
+       
 
       </FloatCard>
     </div>

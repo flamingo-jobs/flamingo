@@ -14,6 +14,9 @@ import FloatCard from "../../FloatCard";
 import wso2 from "../images/wso2.png";
 import Box from "@material-ui/core/Box";
 import Rating from "@material-ui/lab/Rating";
+import axios from "axios";
+import BACKEND_URL from "../../../../Config";
+import { useState, useEffect } from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,17 +50,38 @@ const useStyles = makeStyles((theme) => ({
 const CompanySummaryCard = () => {
   const classes = useStyles();
 
+  const [state, setState] = useState({
+    logo: " ",
+  });
+
+  const name = state.name;
+  const logo = state.logo;
+
+  useEffect(() => {
+    axios
+      .get(`${BACKEND_URL}/employers/` + "60c246913542f942e4c84454")
+      .then((res) => {
+        console.log(res.data.employer);
+        if (res.data.success) {
+          setState({
+            name: res.data.employer.name,
+            logo: res.data.employer.logo,
+          });
+        }
+      });
+  }, []);
+
   return (
     <div className={classes.root}>
       <FloatCard>
         {/* LOGO */}
         <div className={classes.logoItem}>
-          {/* <Avatar className={classes.logo} src={require(`../images/${employer.logo}`).default} variant="square" /> */}
+          {/* <Avatar className={classes.logo} src={require(`../images/${logo}`).default} variant="square" /> */}
           <Avatar className={classes.logo} src={wso2} variant="square" />
         </div>
 
         <Typography variant="h5" className={classes.companyName}>
-          WSO2
+          {name}
         </Typography>
 
         <Grid item container spacing={1} justify="center" alignItems="center" className={classes.ratingContainer}>
