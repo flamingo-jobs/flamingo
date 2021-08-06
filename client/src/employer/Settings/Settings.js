@@ -77,11 +77,46 @@ function a11yProps(index) {
 }
 const Settings = () => {
   const classes = useStyles();
+
+  const accessTokens = [
+    {
+      value: "jobs",
+      description: "Handle Jobs",
+    },
+    {
+      value: "resume",
+      description: "Handle Resumes",
+    },
+    {
+      value: "billing",
+      description: "Billing",
+    },
+    {
+      value: "company",
+      description: "Edit Company Details",
+    },
+  ];
+
   const [value, setValue] = useState(0);
+  const [checked, setChecked] = useState([]);
+
+  const handleChecked = (value, itemId) => () => {
+    const newChecked = [...checked];
+    const itemObj = { index: itemId, name: value };
+    const currentIndex = checked.findIndex((x) => x.index === itemId);
+
+    if (currentIndex === -1) {
+      newChecked.push(itemObj);
+    } else {
+      newChecked.splice(currentIndex, 1);
+    }
+    setChecked(newChecked);
+  };
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
   return (
     <div className={classes.root}>
       <div>
@@ -97,7 +132,6 @@ const Settings = () => {
                     onChange={handleChange}
                     aria-label="Vertical tabs example"
                     className={classes.tabs}
-                    centered
                   >
                     <Tab label="Add User" {...a11yProps(0)} />
                     <Tab label="Users" {...a11yProps(1)} />
@@ -127,7 +161,8 @@ const Settings = () => {
                                       <Typography className={classes.title}>
                                         Create temporary passwords for new
                                         users. They will be able to change their
-                                        passwords after they login to the system.
+                                        passwords after they login to the
+                                        system.
                                       </Typography>
                                     </Grid>
                                   </Grid>
@@ -186,98 +221,44 @@ const Settings = () => {
                                   <Grid item xs={12} align="left">
                                     <Grid item xs={12} align="left">
                                       <List component="nav">
-                                        <ListItem
-                                          className={classes.listItem}
-                                          key="0"
-                                          role={undefined}
-                                          dense
-                                          button
-                                        >
-                                          <ListItemIcon
-                                            className={classes.itemCheckBox}
-                                          >
-                                            <Checkbox
-                                              edge="start"
-                                              checked={false}
-                                              tabIndex={-1}
-                                              disableRipple
-                                              className={classes.checkBox}
-                                            />
-                                          </ListItemIcon>
-                                          <ListItemText
-                                            id="0"
-                                            primary="Handle Jobs"
-                                          />
-                                        </ListItem>{" "}
-                                        <ListItem
-                                          className={classes.listItem}
-                                          key="1"
-                                          role={undefined}
-                                          dense
-                                          button
-                                        >
-                                          <ListItemIcon
-                                            className={classes.itemCheckBox}
-                                          >
-                                            <Checkbox
-                                              edge="start"
-                                              checked={false}
-                                              tabIndex={-1}
-                                              disableRipple
-                                              className={classes.checkBox}
-                                            />
-                                          </ListItemIcon>
-                                          <ListItemText
-                                            id="1"
-                                            primary="Handle Resumes"
-                                          />
-                                        </ListItem>{" "}
-                                        <ListItem
-                                          className={classes.listItem}
-                                          key="2"
-                                          role={undefined}
-                                          dense
-                                          button
-                                        >
-                                          <ListItemIcon
-                                            className={classes.itemCheckBox}
-                                          >
-                                            <Checkbox
-                                              edge="start"
-                                              checked={false}
-                                              tabIndex={-1}
-                                              disableRipple
-                                              className={classes.checkBox}
-                                            />
-                                          </ListItemIcon>
-                                          <ListItemText
-                                            id="2"
-                                            primary="Billing"
-                                          />
-                                        </ListItem>
-                                        <ListItem
-                                          className={classes.listItem}
-                                          key="3"
-                                          role={undefined}
-                                          dense
-                                          button
-                                        >
-                                          <ListItemIcon
-                                            className={classes.itemCheckBox}
-                                          >
-                                            <Checkbox
-                                              edge="start"
-                                              checked={false}
-                                              tabIndex={-1}
-                                              disableRipple
-                                              className={classes.checkBox}
-                                            />
-                                          </ListItemIcon>
-                                          <ListItemText
-                                            id="3"
-                                            primary="Edit Company Details"
-                                          />
-                                        </ListItem>
+                                        {accessTokens.map((x, i) => {
+                                          return (
+                                            <ListItem
+                                              className={classes.listItem}
+                                              key={i}
+                                              role={undefined}
+                                              dense
+                                              button
+                                              onClick={handleChecked(
+                                                x.value,
+                                                i
+                                              )}
+                                            >
+                                              <ListItemIcon
+                                                className={classes.itemCheckBox}
+                                              >
+                                                <Checkbox
+                                                  edge="start"
+                                                  checked={
+                                                    checked.findIndex(
+                                                      (x) => x.index === i
+                                                    ) !== -1
+                                                  }
+                                                  tabIndex={-1}
+                                                  disableRipple
+                                                  className={classes.checkBox}
+                                                  inputProps={{
+                                                    "aria-labelledby": i,
+                                                  }}
+                                                />
+                                              </ListItemIcon>
+                                              <ListItemText
+                                                id="i"
+                                                primary={x.description}
+                                              />
+                                            </ListItem>
+                                          );
+                                        })}
                                       </List>
                                     </Grid>
                                   </Grid>
@@ -307,7 +288,7 @@ const Settings = () => {
                                         fullWidth
                                         type="submit"
                                         variant="contained"
-                                        className={classes.submit}
+                                        className={classes.button}
                                       >
                                         Add User
                                       </Button>
