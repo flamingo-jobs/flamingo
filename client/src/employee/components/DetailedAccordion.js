@@ -120,12 +120,14 @@ export default function DetailedAccordion(props) {
 
   let i=0;
   let loginId;
+  let login = false;
   const jwt = require("jsonwebtoken");
   const token = sessionStorage.getItem("userToken");
   const header = jwt.decode(token, { complete: true });
   if(token === null){
     loginId=props.jobseeker;
   }else if (header.payload.userRole === "jobseeker") {
+    login = true;
     loginId=sessionStorage.getItem("loginId");
   } else {
     loginId=props.jobseeker;
@@ -133,7 +135,7 @@ export default function DetailedAccordion(props) {
 
   const matchDetails = () => {
     let tech = props.techno;
-    tech.forEach(technology => {
+    tech?.forEach(technology => {
       if(props.info.name == technology.type){
         setList(technology.list);
         setFrontEnd(technology.frontEnd);
@@ -146,12 +148,6 @@ export default function DetailedAccordion(props) {
   useEffect(()=>{
     matchDetails();
   },[props.techno])
-
-  // useEffect(()=>{
-  //   setTechnologyStack(null);
-  //   fetchData();
-  //   matchDetails();
-  // },[fetchedData,loginId,listAll])
 
   const handleList = (list) => {
     setList(list);
@@ -309,10 +305,12 @@ export default function DetailedAccordion(props) {
         </AccordionSummary>
         {displayAccordionDetails()}
         <Divider />
+        {login ? <>
         <AccordionActions>
 
           {editing ? <><Button size="small" onClick={handleCancel}>Cancel</Button> <Button size="small" color="primary" onClick={handleSave}>Save</Button> </> : <Button size="small" color="primary" onClick={handleEdit}>Edit</Button>}
         </AccordionActions>
+        </> : null }
       </Accordion>
     </div>
   );
