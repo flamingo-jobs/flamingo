@@ -1,5 +1,4 @@
 import React from "react";
-// import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
   makeStyles,
   Avatar,
@@ -12,6 +11,9 @@ import Box from "@material-ui/core/Box";
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import ApplicantImage from "../images/1.jpg";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import BACKEND_URL from "../../../../Config";
+import { useState, useEffect } from "react";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -64,6 +66,42 @@ const NewApplicants = () => {
 
   const classes = useStyles();
 
+  const [value, setValue] = React.useState(2);
+
+  const [state, setState] = useState({
+    allJobs: [],
+  });
+
+  const allJobs = state.allJobs;
+
+  useEffect(() => {
+    axios
+      .get(
+        `${BACKEND_URL}/jobs/filterAllByOrganization/` +
+          "60c246913542f942e4c84454"
+      )
+      .then((res) => {
+        console.log(res.data.employerJobs);
+        if (res.data.success) {
+          setState({
+            allJobs: res.data.employerJobs.slice(0,3),
+          });
+        }
+      });
+  }, []);
+
+  // const getApplicantUserId = () => {
+
+  //   var applicantUserIds = [" "," "," "];
+
+  //   allJobs.forEach(job => {
+  //     applicantUserIds.push(job.applicationDetails.userId);
+  // }    
+  // );
+  //   return applicantUserId;
+  // }
+
+
   return (
     <div className={classes.root}>
       <FloatCard>
@@ -96,7 +134,7 @@ const NewApplicants = () => {
                                 fontSize={12}
                                 m={1}
                             >
-                               Applied for Software Engineer
+                               Applied for SE
                             </Box>
                            
                         </Typography>

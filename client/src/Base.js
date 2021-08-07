@@ -18,6 +18,7 @@ import Employer from './employer/Employer';
 import EmployerBilling from './employer/Billing';
 import EmployerSettings from './employer/Settings/Settings';
 import EmployerDashboard from './employer/Dashboard';
+import EmployerTechnologies from './employer/Technologies';
 import EmployerJobList from './employer/EmployerJobList';
 import Technologies from './admin/Technologies';
 import { Switch } from "react-router-dom";
@@ -184,8 +185,8 @@ function Base() {
           {/* <Route path="/employer/company">
             <Employer userRole={role} />
           </Route> */}
-          <Route path="/employer/analytics">
-            Analytics
+          <Route path="/employer/techstack">
+            <EmployerTechnologies/>
           </Route>
           <Route path="/employer/resumes">
             <Applications></Applications>
