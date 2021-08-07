@@ -109,6 +109,7 @@ const Responsibilities = (props) => {
       handleClose();
       props.setAlertData({ severity: "success", msg: "Changes saved successfully!" });
       props.handleAlert();
+      await axios.get(`${BACKEND_URL}/jobs/generateRecommendations/${props.jobId}`);
       // console.log(response);
     } catch (err) {
       handleClose();

@@ -256,6 +256,7 @@ const CreateJobForm = () => {
           msg: "Job created successfully!",
         });
         handleAlert();
+        await axios.get(`${BACKEND_URL}/jobs/generateRecommendations/${response.data.job._id}`);
         window.location = "/employer/jobs";
       } else {
         setAlertData({
@@ -267,7 +268,7 @@ const CreateJobForm = () => {
     } catch (err) {
       setAlertData({
         severity: "error",
-        msg: "Job could not be created!",
+        msg: "Sorry, Something Went Wrong!",
       });
       handleAlert();
       // console.log(err);
