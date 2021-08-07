@@ -159,21 +159,6 @@ const TopCards = () => {
 
     const classes = useStyles();
 
-    const [data1, setData1] = React.useState([
-        { category: 'shortlisted', val: getTotalShortlisted() },
-        { category: 'total', val: 2 },
-    ]);
-
-    const [data2, setData2] = React.useState([
-        { category: 'pending', val: 2},
-        { category: 'total', val: 0 },
-    ]);
-
-    const [data3, setData3] = React.useState([
-        { category: 'rejected', val: getTotalRejected() },
-        { category: 'total', val: 2 },
-    ]);
-
     return (
     <Grid container direction="row" xs={12} spacing={1} className={classes.root}>
 
@@ -203,7 +188,10 @@ const TopCards = () => {
                     <Grid item xs={10}>
                   
                         <Chart
-                            data={data1}
+                            data={[
+                              { category: 'shortlisted', val: getTotalShortlisted() },
+                              { category: 'total', val: getTotalApplications() - getTotalShortlisted()},
+                            ]}
                             className={classes.pieChart}
                             >
                             <PieSeries
@@ -228,13 +216,16 @@ const TopCards = () => {
                             PENDING
                         </Typography>
                         <Typography variant="h5" className={classes.cardNumber}>
-                        {   getTotalPending()}
+                        {getTotalPending()}
                         </Typography>
                     </Grid>
                     <Grid item xs={10}>
                   
                         <Chart
-                            data={data2}
+                            data={[
+                              { category: 'pending', val: getTotalPending() },
+                              { category: 'total', val: getTotalApplications() - getTotalPending()},
+                            ]}
                             className={classes.pieChart}
                             >
                             <PieSeries
@@ -265,7 +256,10 @@ const TopCards = () => {
                     <Grid item xs={10}>
                   
                         <Chart
-                            data={data3}
+                            data={[
+                              { category: 'rejected', val: getTotalRejected() },
+                              { category: 'total', val: getTotalApplications() - getTotalRejected()},
+                            ]}
                             className={classes.pieChart}
                             >
                             <PieSeries
