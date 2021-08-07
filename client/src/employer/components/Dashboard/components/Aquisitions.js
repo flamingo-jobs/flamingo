@@ -23,6 +23,8 @@ import { Animation } from "@devexpress/dx-react-chart";
 import { useState, useEffect } from "react";
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import Chip from "@material-ui/core/Chip";
+import axios from "axios";
+import BACKEND_URL from "../../../../Config";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,11 +59,78 @@ const useStyles = makeStyles((theme) => ({
 const Aquisitions = () => {
   const classes = useStyles();
 
-  const [data, setData1] = React.useState([
-    { category: "Pending", val: 0 },
-    { category: "Shortlisted", val: 2 },
-    { category: "Rejected", val: 0 },
-  ]);
+  const [state, setState] = useState({
+    allJobs: [],
+  });
+
+  const allJobs = state.allJobs;
+
+  useEffect(() => {
+    axios
+      .get(
+        `${BACKEND_URL}/jobs/filterAllByOrganization/` +
+          "60c246913542f942e4c84454"
+      )
+      .then((res) => {
+        console.log(res.data.employerJobs);
+        if (res.data.success) {
+          setState({
+            allJobs: res.data.employerJobs,
+          });
+        }
+      });
+  }, []);
+
+  const getTotalPending = () => {
+
+    var totalPending = 0;
+
+    allJobs.forEach(job => {
+      
+        job.applicationDetails.forEach(jobApplication => { 
+            if(jobApplication.status=="pending"){
+                totalPending++
+            }
+        }   
+        );
+    }    
+    );
+    return totalPending;
+  }
+
+  const getTotalShortlisted = () => {
+
+    var totalShortlisted = 2;
+
+    allJobs.forEach(job => {
+      
+        job.applicationDetails.forEach(jobApplication => { 
+            if(jobApplication.status=="shortlisted"){
+                totalShortlisted++
+            }
+        }   
+        );
+    }    
+    );
+    return totalShortlisted;
+  }
+
+  const getTotalRejected = () => {
+
+    var totalRejected = 3;
+
+    allJobs.forEach(job => {
+      
+        job.applicationDetails.forEach(jobApplication => { 
+            if(jobApplication.status=="rejected"){
+                totalRejected++
+            }
+        }   
+        );
+    }    
+    );
+    return totalRejected;
+  }
 
   return (
     <div className={classes.root}>
@@ -77,7 +146,12 @@ const Aquisitions = () => {
           <Grid item container direction="row" xs={12}>
 
             <Grid item xs={6}>
-              <Chart data={data} className={classes.pieChart}>
+              <Chart data={[
+                { category: "Pending", val: getTotalPending() },
+                { category: "Shortlisted", val: getTotalShortlisted() },
+                { category: "Rejected", val: getTotalRejected() },
+              ]} 
+              className={classes.pieChart}>
                 <PieSeries
                   valueField="val"
                   argumentField="category"
