@@ -103,7 +103,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LineGraph = () => {
+
   const classes = useStyles();
+
+  // Get dates for the graph
   var day1 = new Date();
   var day2 = new Date();
   var day3 = new Date();
@@ -162,22 +165,63 @@ const LineGraph = () => {
   day1 = mm1 + '/' + dd1;
   var day1full = yyyy1 + '-' + mm1 + '-' + dd1;
 
+  const [value, setValue] = React.useState(2);
+
+  const [state, setState] = useState({
+    allJobs: [],
+  });
+
+  const allJobs = state.allJobs;
+
+  useEffect(() => {
+    axios
+      .get(
+        `${BACKEND_URL}/jobs/filterAllByOrganization/` +
+          "60c246913542f942e4c84454"
+      )
+      .then((res) => {
+        console.log(res.data.employerJobs);
+        if (res.data.success) {
+          setState({
+            allJobs: res.data.employerJobs,
+          });
+        }
+      });
+  }, []);
+
+  const getTotalApplications = (date) => {
+
+    var noOfApplications = 0;
+
+    allJobs.forEach(job => {
+      
+      job.applicationDetails.forEach(jobApplication => { 
+          if(jobApplication.appliedDate.slice(0, 10) == date){ 
+              noOfApplications++
+          }
+      }   
+      );
+  }    
+  );
+    return noOfApplications;
+  }
+
 
   const data = [
     {
-      date: day1, applications: 59.8,
+      date: day1, applications: getTotalApplications(day1full),
     }, {
-      date: day2, applications: 74.2, 
+      date: day2, applications: getTotalApplications(day2full), 
     }, {
-      date: day3, applications: 40, 
+      date: day3, applications: getTotalApplications(day3full), 
     }, {
-      date: day4, applications: 22.6, 
+      date: day4, applications: getTotalApplications(day4full), 
     },{
-      date: day5, applications: 22.6, 
+      date: day5, applications: getTotalApplications(day5full), 
     },{
-      date: day6, applications: 22.6,  
+      date: day6, applications: getTotalApplications(day6full),  
     },{
-      date: day7, applications: 22.6,  
+      date: day7, applications: getTotalApplications(day7full),  
     }];
 
   return (
