@@ -13,6 +13,8 @@ import Pagination from '@material-ui/lab/Pagination';
 import PaginationItem from '@material-ui/lab/PaginationItem';
 import LoginModal from './components/loginModal';
 import FloatCard from '../components/FloatCard';
+import NoInfo from '../components/NoInfo';
+import Loading from '../components/Loading';
 
 const useStyles = makeStyles((theme) => ({
     jobsGrid: {
@@ -90,6 +92,7 @@ function Jobs(props) {
     }, [jobs]);
 
     useEffect(() => {
+        setJobs([]);
         retrieveJobs();
     }, [queryParams, page]);
 
@@ -141,7 +144,12 @@ function Jobs(props) {
             let start = (page - 1) * 10;
             axios.post(`${BACKEND_URL}/jobs`, { queryParams: queryParams, options: { skip: start, limit: 10 } }).then(res => {
                 if (res.data.success) {
-                    setJobs(res.data.existingData)
+                    if (res.data.existingData.length !== 0) {
+                        setJobs(res.data.existingData);
+                    } else {
+                        setJobs("empty");
+                    }
+
                 } else {
                     setJobs(null)
                 }
@@ -166,11 +174,18 @@ function Jobs(props) {
 
     const displayJobs = () => {
         // await delay(3000);
-        if (jobs.length === 0) {
+        if (jobs === "empty") {
             return (
-                <Grid item sm={12} style={{marginBottom: 16}}>
+                <Grid item sm={12} style={{ marginBottom: 16 }}>
                     <FloatCard>
-                        <CircularProgress />
+                        <NoInfo message="Sorry, we can't find any job that matches with your requirements. Keep in touch with us" />
+                    </FloatCard>
+                </Grid>)
+        } else if (jobs.length === 0) {
+            return (
+                <Grid item sm={12} style={{ marginBottom: 16 }}>
+                    <FloatCard>
+                        <Loading />
                     </FloatCard>
                 </Grid>)
         } else {
@@ -197,7 +212,10 @@ function Jobs(props) {
                 <Grid item container xs={12} sm={12} md={8} lg={9} spacing={2} direction="row" className={classes.jobsGrid} justify="flex-start" alignItems="flex-start">
                     {displayJobs()}
                     <Grid item sm={12}>
-                        <Pagination count={Math.ceil(count / 10)} color="primary" page={page} onChange={changePage} classes={{ ul: classes.pagination }} />
+                        {jobs !== "empty" ?
+                            <Pagination count={Math.ceil(count / 10)} color="primary" page={page} onChange={changePage} classes={{ ul: classes.pagination }} />
+                            : null
+                        }
                     </Grid>
                 </Grid>
                 <Grid item xs={12} sm={12} md={4} lg={3} className={classes.filterGrid}>
