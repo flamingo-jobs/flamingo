@@ -12,6 +12,7 @@ router.get('/jobs', jobsController.getAll);
 router.post('/jobs', jobsController.getAll);
 
 router.get('/jobs/generateRecommendations/:id', recommendationController.generateRecommendations);
+router.get('/jobs/generateJobSeekerRecommendations/:id', recommendationController.generateJobSeekerRecommendations);
 
 // get specific
 router.get('/jobs/search/:searchString', jobsController.getSearched);
