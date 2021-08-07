@@ -188,9 +188,9 @@ const StatusModal = (props) => {
                       label="Shortlisted"
                     />
                     <FormControlLabel
-                      value="selected"
+                      value="rejected"
                       control={<CustomRadio />}
-                      label="Selected"
+                      label="Rejected"
                     />
                   </RadioGroup>
                 </FormControl>

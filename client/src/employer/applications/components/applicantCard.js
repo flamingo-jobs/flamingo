@@ -17,6 +17,7 @@ import StatusModal from "./statusModal";
 import axios from "axios";
 import BACKEND_URL from "../../../Config";
 import download from 'downloadjs';
+import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -147,11 +148,12 @@ function ApplicantCard(props) {
       const response = await axios.get(`${BACKEND_URL}/resume/${jobId}/${props.jobseeker._id}`,{
         responseType: 'blob'
       });
-      return download(response.data, "Flamingo_Resume", "application/pdf");
+      const file = new Blob([response.data], {
+        type: "application/pdf",
+      });
+      return download(file, props.jobseeker.name, "application/pdf");
     } catch (err) {
-      if (err.status === 400) {
-        console.log('Error while downloading file. Try again later');
-      }
+      console.log(err);
     }
   }
 
@@ -185,7 +187,7 @@ function ApplicantCard(props) {
             <div className={classes.headerRight}>
               {status === "pending" && <Status status={status} text={"Pending...."}></Status>}
               {status === "shortlisted" && <Status status={status} text={"Shortlisted"}></Status>}
-              {status === "selected" && <Status status={status} text={"Selected"}></Status>}
+              {status === "rejected" && <Status status={status} text={"Rejected"}></Status>}
               <IconButton aria-label="delete" className={classes.editButton}>
                 <EditIcon className={classes.editIcon} onClick={handleOpen}/>
               </IconButton>
@@ -224,7 +226,9 @@ function ApplicantCard(props) {
               >
                 Downlaod Resume
               </Button>
-              <Button className={classes.applyButton}>View Profile</Button>
+              <Link to="/jobseeker/profile">
+                <Button className={classes.applyButton}>View Profile</Button>
+              </Link>
             </div>
           </div>
         </div>

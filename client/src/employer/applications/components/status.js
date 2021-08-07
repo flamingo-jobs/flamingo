@@ -86,14 +86,14 @@ const Status = (props) => {
             width="30px"
           />
         )}
-        {props.status === "selected" && (
+        {/* {props.status === "rejected" && (
           <Lottie
             className={classes.lottie}
             options={selectedOptions}
             height="30px"
             width="30px"
           />
-        )}
+        )} */}
       </div>
 
       <div className={classes.statusText}>

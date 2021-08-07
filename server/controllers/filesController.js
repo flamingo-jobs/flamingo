@@ -2,6 +2,7 @@ const Jobseeker = require("../models/jobseeker");
 
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
 
 // const fileName = Date.now().toString();
 let fileName = "";
@@ -64,18 +65,14 @@ const uploadLogoToServer = (req, res) => {
 
 const downloadResume = async (req, res) => {
   try {
-    res.set({
-      'Content-Type': "application/pdf"
-    });
     const resumeName = req.params.jobId + "--" + req.params.userId + ".pdf";
     const resumePath = path.join(__dirname, '..', "resumes" , resumeName);
-    res.sendFile(resumePath);
+
+    var file = fs.createReadStream(resumePath);
+    file.pipe(res);
 
   } catch (error) {
-    res.status(400).json({
-      success: false,
-      error: "Error while downloading file. Please try again later."
-    });
+    console.log(error)
   }
 }
 
