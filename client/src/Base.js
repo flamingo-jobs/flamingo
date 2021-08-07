@@ -13,17 +13,17 @@ import Jobs from "./jobs/Jobs";
 import JobDescription from "./jobDescription/jobDescription";
 import Categories from "./admin/Categories";
 import CreateJobForm from "./jobs/createJob/createJobForm";
-import People from './people/People';
-import Employer from './employer/Employer';
-import EmployerBilling from './employer/Billing';
-import EmployerSettings from './employer/Settings/Settings';
-import EmployerDashboard from './employer/Dashboard';
-import EmployerTechnologies from './employer/Technologies';
-import EmployerJobList from './employer/EmployerJobList';
-import Technologies from './admin/Technologies';
+import People from "./people/People";
+import Employer from "./employer/Employer";
+import EmployerBilling from "./employer/Billing";
+import EmployerSettings from "./employer/Settings/Settings";
+import EmployerDashboard from "./employer/Dashboard";
+import EmployerTechnologies from "./employer/Technologies";
+import EmployerJobList from "./employer/EmployerJobList";
+import Technologies from "./admin/Technologies";
 import { Switch } from "react-router-dom";
 import Organizations from "./employer/Organizations";
-import DisplayJob from './jobs/displayJobEmployer/displayJob';
+import DisplayJob from "./jobs/displayJobEmployer/displayJob";
 import JobSeekers from "./admin/JobSeekers";
 import Employers from "./admin/Employers";
 import AppliedJobs from "./employee/appliedJobs/appliedJobs";
@@ -33,7 +33,9 @@ import SavedJobs from "./employee/savedJobs/savedJobs";
 import FavoriteOrganizations from "./employee/favoriteOrganizations/favoriteOrganizations";
 import Applications from "./employer/applications/applications";
 import SearchResult from "./searchResults/searchResult";
-import Recommendations from "./recommendations/Recommendations"
+import Recommendations from "./recommendations/Recommendations";
+import BACKEND_URL from "./Config";
+import axios from "axios";
 
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -96,7 +98,11 @@ function Base() {
   //Redirect user to signin page if not logged in
   const token = sessionStorage.getItem("userToken");
 
-  const [role, setRole] = useState(jwt.decode(token, { complete: true }) ? jwt.decode(token, { complete: true }).payload.userRole : null);
+  const [role, setRole] = useState(
+    jwt.decode(token, { complete: true })
+      ? jwt.decode(token, { complete: true }).payload.userRole
+      : null
+  );
 
   useEffect(() => {
     loadEmployer();
@@ -109,7 +115,7 @@ function Base() {
     return (
       <>
         <Route path="/searchResults">
-          <SearchResult userRole={role}/>
+          <SearchResult userRole={role} />
         </Route>
         <Route path="/jobs">
           <Jobs userRole={role} />
@@ -118,12 +124,12 @@ function Base() {
           <Profile />
         </Route> */}
         <Route path="/jobseeker/profile">
-            <Profile />
-          </Route>
-        <Route path="/organizations">
-          <Organizations userRole={role}/>
+          <Profile />
         </Route>
-        <Route path="/jobDescription" >
+        <Route path="/organizations">
+          <Organizations userRole={role} />
+        </Route>
+        <Route path="/jobDescription">
           <JobDescription userRole={role} />
         </Route>
         <Route path="/people">
@@ -133,11 +139,11 @@ function Base() {
           <Employer userRole={role} />
         </Route>
         <Route path="/" exact>
-          <Home userRole={role}/>
+          <Home userRole={role} />
         </Route>
       </>
-    )
-  }
+    );
+  };
 
   const loadJobSeeker = () => {
     if (role === "jobseeker") {
@@ -159,19 +165,19 @@ function Base() {
             <Profile />
           </Route>
           <Route path="/jobseekerDashboard" exact>
-            <JobseekerDashboard userRole={role}/>
+            <JobseekerDashboard userRole={role} />
           </Route>
         </>
-      )
+      );
     }
-  }
+  };
 
   const loadEmployer = () => {
     if (role === "employer") {
       return (
         <>
           <Route path="/employer/home">
-            <EmployerDashboard/>
+            <EmployerDashboard />
           </Route>
           <Route path="/employer/jobs/create">
             <CreateJobForm />
@@ -180,22 +186,22 @@ function Base() {
             <DisplayJob />
           </Route>
           <Route exact path="/employer/jobs">
-            <EmployerJobList/>
+            <EmployerJobList />
           </Route>
           {/* <Route path="/employer/company">
             <Employer userRole={role} />
           </Route> */}
           <Route path="/employer/techstack">
-            <EmployerTechnologies/>
+            <EmployerTechnologies />
           </Route>
           <Route path="/employer/resumes">
             <Applications></Applications>
           </Route>
           <Route path="/employer/billing">
-            <EmployerBilling/>
+            <EmployerBilling />
           </Route>
           <Route path="/employer/settings">
-            <EmployerSettings/>
+            <EmployerSettings />
           </Route>
         </>
       );
@@ -206,8 +212,8 @@ function Base() {
     if (role === "admin") {
       return (
         <>
-         <Route path="/admin" exact>
-            <Dashboard/>
+          <Route path="/admin" exact>
+            <Dashboard />
           </Route>
           <Route path="/admin/categories">
             <Categories />
@@ -222,9 +228,9 @@ function Base() {
             <Employers />
           </Route>
         </>
-      )
+      );
     }
-  }
+  };
 
   return (
     <div className={classes.root}>
@@ -270,7 +276,7 @@ function Base() {
               justify="space-between"
             >
               <Grid item sm={12}>
-                <Topbar user={role}/>
+                <Topbar user={role} />
               </Grid>
               <Grid
                 container
@@ -285,14 +291,11 @@ function Base() {
                   {loadJobSeeker()}
                   {loadAdmin()}
                 </Switch>
-                <Switch>
-                  {loadDefault()}
-                </Switch>
+                <Switch>{loadDefault()}</Switch>
               </Grid>
               <Grid item xs={12}>
                 <Footer />
               </Grid>
-
             </Grid>
           </Grid>
         </Container>
