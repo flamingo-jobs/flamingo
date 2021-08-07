@@ -330,6 +330,7 @@ export default function GetHired() {
   };
 
   const handleSuccessLogin = (id, loginId) => {
+    axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`)
     const linker = { id: id, loginId: loginId };
     setProgress(70);
     axios.post(`${BACKEND_URL}/api/link-account`, linker).then((res) => {

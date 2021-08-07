@@ -17,7 +17,6 @@ import {
   ListItemIcon,
   ListItemText,
   TextField,
-  TextareaAutosize,
   Container,
   Checkbox,
 } from "@material-ui/core";
@@ -168,8 +167,8 @@ const Settings = () => {
       const newUserData = {
         name: formData.name,
         email: formData.email,
-        password: "12345",
-        password_confirmation: "12345",
+        password: "6BjLjfNbn+B%u9Rh",
+        password_confirmation: "6BjLjfNbn+B%u9Rh",
         role: "employer",
         accessTokens: checked.map((x) => x.name),
         dateRegistered: new Date(),
@@ -328,7 +327,7 @@ const Settings = () => {
                                   <Grid item xs={12} align="left">
                                     <Grid item xs={12} align="left">
                                       <Typography className={classes.title}>
-                                        Set access priviledges
+                                        Set access privileges
                                       </Typography>
                                     </Grid>
                                   </Grid>
