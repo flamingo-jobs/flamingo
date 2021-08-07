@@ -34,6 +34,37 @@ const generateRecommendations = (req, res) => {
                     });
 
                     // experience
+                    let dateDiff = 0;
+
+                    item.work.forEach((work) => {
+                        const date1 = new Date(`1/${work.from}`);
+                        const date2 = new Date(`1/${work.to}`);
+                        const diffTime = Math.abs(date2 - date1);
+                        const diffYears = Math.abs(diffTime / (1000 * 60 * 60 * 24 * 365));
+                        dateDiff += diffYears;
+                    });
+
+                    if (item.minimumExperience === "0" && dateDiff === 0) {
+                        experience += 70;
+                        if (dateDiff > 0) {
+                            experience += 30;
+                        }
+                    } else if (item.minimumExperience === "0-1" && dateDiff >= 0 && dateDiff <= 1) {
+                        experience += 70;
+                        if (dateDiff > 1) {
+                            experience += 30;
+                        }
+                    } else if (item.minimumExperience === "1-3" && dateDiff >= 1 && dateDiff <= 3) {
+                        experience += 70;
+                        if (dateDiff > 3) {
+                            experience += 30;
+                        }
+                    } else if (item.minimumExperience === "3+" && dateDiff > 3) {
+                        experience += 70;
+                        if (dateDiff > 5) {
+                            experience += 30;
+                        }
+                    }
 
                     // tech stack
                     const techArray = [];
@@ -70,11 +101,15 @@ const generateRecommendations = (req, res) => {
 
                     total = education * 0.1 + experience * 0.2 + techStack * 0.2 + projectTech * 0.2 + skills * 0.2 + certificates * 0.1;
 
-                    recommendedJobSeekers.push({ jobSeekerId: item._id, score: total });
+                    if (total >= 10) {
+                        recommendedJobSeekers.push({ jobSeekerId: item._id, score: total });
+                    }
 
                     updateJobSeekerProfile(item._id, item.recommendedJobs, req.params.id, total);
                 })
             }
+
+            updateJob(recommendedJobSeekers, req.params.id);
 
             return res.status(200).json({
                 success: true,
@@ -115,16 +150,33 @@ const updateJobSeekerProfile = (jobSeekerId, recommendedJobs, jobId, total) => {
 
     const newValue = { id: jobId, score: total };
 
-    Jobseeker.updateOne({ "_id": jobSeekerId },
-        [{
-            $set: {
-                recommendedJobs: {
-                    $cond: {
-                        if: { $in: [newValue.id, "$recommendedJobs.id"] },
-                        then: "$recommendedJobs",
-                        else: { $concatArrays: ["$recommendedJobs", [newValue]] }
+    if (total >= 10) {
+        Jobseeker.updateOne({ "_id": jobSeekerId },
+            [{
+                $set: {
+                    recommendedJobs: {
+                        $cond: {
+                            if: { $in: [newValue.id, "$recommendedJobs.id"] },
+                            then: "$recommendedJobs",
+                            else: { $concatArrays: ["$recommendedJobs", [newValue]] }
+                        }
                     }
                 }
+            }], (err, jobseeker) => {
+                if (err) {
+                    return false;
+                }
+                return true;
+            });
+    }
+}
+
+const updateJob = (recommendedJobSeekers, jobId) => {
+
+    Jobs.updateOne({ "_id": jobId },
+        [{
+            $set: {
+                recommendedJobSeekers: recommendedJobSeekers
             }
         }], (err, jobseeker) => {
             if (err) {

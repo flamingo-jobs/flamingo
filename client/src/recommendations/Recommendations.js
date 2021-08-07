@@ -1,5 +1,5 @@
 import React from 'react'
-import { colors, makeStyles, CircularProgress } from '@material-ui/core'
+import { colors, makeStyles, CircularProgress, Typography } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid';
 import JobSearchBar from './components/JobSearchBar';
 import JobCard from './components/JobCard';
@@ -13,6 +13,8 @@ import Pagination from '@material-ui/lab/Pagination';
 import PaginationItem from '@material-ui/lab/PaginationItem';
 import LoginModal from './components/loginModal';
 import FloatCard from '../components/FloatCard';
+import NoInfo from '../components/NoInfo';
+import Loading from '../components/Loading';
 
 const useStyles = makeStyles((theme) => ({
     jobsGrid: {
@@ -129,6 +131,10 @@ function Recommendations(props) {
     const delay = ms => new Promise(res => setTimeout(res, ms));
 
     const retrieveJobs = async () => {
+        if (recommendedIds === "empty") {
+            setJobs("empty");
+            return;
+        }
         if (JSON.stringify(queryParams) === "{}" || JSON.stringify(queryParams) === `{"$and":[{},{"_id":{"$in":[]}}]}`) {
             return;
         }
@@ -157,7 +163,11 @@ function Recommendations(props) {
                 const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
                 if (response.data.success) {
                     setSavedJobIds(response.data.jobseeker.savedJobs);
-                    setRecommendedIds(response.data.jobseeker.recommendedJobs.sort(({score:a},{score:b}) => b-a).map(job => job.id));
+                    if (response.data.jobseeker.recommendedJobs.length !== 0) {
+                        setRecommendedIds(response.data.jobseeker.recommendedJobs.sort(({ score: a }, { score: b }) => b - a).map(job => job.id));
+                    } else {
+                        setRecommendedIds("empty");
+                    }
                 }
             } catch (err) {
                 console.log(err);
@@ -168,11 +178,18 @@ function Recommendations(props) {
 
     const displayJobs = () => {
         // await delay(3000);
-        if (jobs.length === 0) {
+        if (jobs === "empty") {
             return (
                 <Grid item sm={12} style={{ marginBottom: 16 }}>
                     <FloatCard>
-                        <CircularProgress />
+                        <NoInfo message="Sorry, we don't have recommendations for you right now. Complete your profile to get recommendations." />
+                    </FloatCard>
+                </Grid>)
+        } else if (jobs.length === 0) {
+            return (
+                <Grid item sm={12} style={{ marginBottom: 16 }}>
+                    <FloatCard>
+                        <Loading />
                     </FloatCard>
                 </Grid>)
         } else {
@@ -206,7 +223,10 @@ function Recommendations(props) {
                 <Grid item container xs={12} sm={12} md={8} lg={9} spacing={2} direction="row" className={classes.jobsGrid} justify="flex-start" alignItems="flex-start">
                     {displayJobs()}
                     <Grid item sm={12}>
-                        <Pagination count={Math.ceil(count / 10)} color="primary" page={page} onChange={changePage} classes={{ ul: classes.pagination }} />
+                        {jobs !== "empty" ?
+                            <Pagination count={Math.ceil(count / 10)} color="primary" page={page} onChange={changePage} classes={{ ul: classes.pagination }} />
+                            : null
+                        }
                     </Grid>
                 </Grid>
                 <Grid item xs={12} sm={12} md={4} lg={3} className={classes.filterGrid}>
