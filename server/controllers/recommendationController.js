@@ -149,7 +149,7 @@ const generateJobSeekerRecommendations = (req, res) => {
                     // education
 
                     jobseeker.university.forEach((degree) => {
-                        if (job.minimumEducation?.includes(degree.degree)) {
+                        if (job.minimumEducation && job.minimumEducation.includes(degree.degree)) {
                             education += 100;
                         }
                     });
