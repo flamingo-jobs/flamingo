@@ -6,13 +6,14 @@ import ComputerIcon from "@material-ui/icons/Computer";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import AddIcon from '@material-ui/icons/Add';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundSize: "cover",
     marginLeft: 20,
-    marginTop:10,
-    marginBottom:10,
+    marginTop: 10,
+    marginBottom: 10,
   },
   title: {
     fontWeight: "bolder",
@@ -31,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 20,
     marginRight: 20,
   },
-  button:{
+  button: {
     backgroundColor: theme.palette.blueJeans,
     color: "white",
     borderRadius: 25,
@@ -41,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.blueJeansHover,
       color: "white",
     },
-  }
+  },
 }));
 
 const AddTechForm = () => {
@@ -63,7 +64,7 @@ const AddTechForm = () => {
             <Typography variant="h6" className={classes.title}>
               Add Technologies
             </Typography>
-            <ComputerIcon className={classes.notificationsIcon} />
+            <AddIcon className={classes.notificationsIcon} />
           </Grid>
 
           <Grid item className={classes.comboBox}>
@@ -119,8 +120,15 @@ const AddTechForm = () => {
         </FloatCard>
       </Grid>
 
-      <Grid item>
-        <FloatCard></FloatCard>
+      <Grid item container direction="row" xs={6} spacing={3}className={classes.boxTwo}>
+        <FloatCard>
+          <Grid item className={classes.comboBox}>
+            <Typography variant="h6" className={classes.title}>
+              Available Technologies
+            </Typography>
+            <ComputerIcon className={classes.notificationsIcon} />
+          </Grid>
+        </FloatCard>
       </Grid>
     </Grid>
   );
