@@ -256,6 +256,8 @@ export default function GetHired() {
       password: formData.password,
       password_confirmation: formData.confirmPassword,
       role: "jobseeker",
+      accessTokens: ["all"],
+      dateRegistered: new Date(),
     };
     if (badPassword(formData.password)) {
       setProgress(0);

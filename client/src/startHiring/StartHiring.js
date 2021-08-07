@@ -219,6 +219,8 @@ export default function StartHiring() {
       password: formData.password,
       password_confirmation: formData.confirmPassword,
       role: "employer",
+      accessTokens: ["all"],
+      dateRegistered: new Date(),
     };
     if (badPassword(formData.password)) {
       setAlertData({
@@ -265,6 +267,7 @@ export default function StartHiring() {
       email: formData.email,
       dateRegistered: new Date(),
       links: social,
+      subscription: { type: "Basic", startDate: new Date() },
     };
     axios.post(`${BACKEND_URL}/employers/create`, employerData).then((res) => {
       if (res.data.success) {

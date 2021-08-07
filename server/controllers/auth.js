@@ -12,7 +12,15 @@ const emailRegexp =
 
 // User signup
 exports.signup = (req, res, next) => {
-  let { name, email, password, password_confirmation, role } = req.body;
+  let {
+    name,
+    email,
+    password,
+    password_confirmation,
+    role,
+    accessTokens,
+    dateRegistered,
+  } = req.body;
   let errors = [];
 
   // Validate inputs
@@ -61,6 +69,8 @@ exports.signup = (req, res, next) => {
           email: email,
           password: password,
           role: role,
+          accessTokens: accessTokens,
+          dateRegistered: dateRegistered,
         });
 
         // Hash password
@@ -237,4 +247,41 @@ exports.resetPassword = async (req, res) => {
     }
   });
   res.sendStatus(200);
+};
+
+exports.inviteEmlpoyee = async (req, res) => {
+  const { id, empName, email, loginId, adminName, adminEmail, message } =
+    req.body;
+  const passwordResetCode = uuid();
+  const result = await User.findByIdAndUpdate(
+    id,
+    {
+      $set: { loginId, passwordResetCode },
+    },
+    (err) => {
+      if (err) {
+        return res.status(400).json({
+          error: err,
+        });
+      }
+      try {
+        sendEmail({
+          to: email,
+          from: "flamingojobs.help@gmail.com",
+          subject: "Invitation - Flamingo",
+          text: `
+        Hi ${empName}, ${adminName} (${adminEmail}) is inviting you to join Flamingo. Click on this link to activate your account:
+        http://${FRONTEND_URL}/invitation/${passwordResetCode} Message: ${message}
+        `,
+        });
+        return res.status(200).json({
+          success: true,
+        });
+      } catch (e) {
+        return res.status(500).json({
+          error: e,
+        });
+      }
+    }
+  );
 };

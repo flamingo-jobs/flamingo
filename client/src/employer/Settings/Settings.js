@@ -17,10 +17,14 @@ import {
   ListItemIcon,
   ListItemText,
   TextField,
+  TextareaAutosize,
   Container,
   Checkbox,
 } from "@material-ui/core";
 import SnackBarAlert from "../../components/SnackBarAlert";
+import axios from "axios";
+import BACKEND_URL from "../../Config";
+const jwt = require("jsonwebtoken");
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -94,11 +98,19 @@ const Settings = () => {
       description: "Billing",
     },
     {
+      value: "user",
+      description: "Handle Users",
+    },
+    {
       value: "company",
       description: "Edit Company Details",
     },
   ];
-  const defaultData = { email: "", password: "", confirmPassword: "" };
+  const defaultData = {
+    name: "",
+    email: "",
+    message: "",
+  };
   const [formData, setForm] = useForm(defaultData);
   const [value, setValue] = useState(0);
   const [checked, setChecked] = useState([]);
@@ -143,22 +155,71 @@ const Settings = () => {
     setAlertShow(false);
   };
 
-  const addNewUser = (e) => {
+  const addNewUser = async (e) => {
     e.preventDefault();
-    if (formData.password === formData.confirmPassword) {
-      const newUserData = {
-        email: formData.email,
-        password: formData.password,
-        accessTokens: checked.map(x => x.name),
-      };
-      //goto next step
-    } else {
+    if (checked.length === 0) {
       setAlertData({
         severity: "error",
-        msg: `Please make sure passwords are matching`,
+        msg: "Please set access priviledges for your employee!",
       });
       handleAlert();
+      return;
+    } else {
+      const newUserData = {
+        name: formData.name,
+        email: formData.email,
+        password: "12345",
+        password_confirmation: "12345",
+        role: "employer",
+        accessTokens: checked.map((x) => x.name),
+        dateRegistered: new Date(),
+      };
+      axios.post(`${BACKEND_URL}/api/signup`, newUserData).then((res) => {
+        if (res.data.success) {
+          const userId = jwt.decode(res.data.token, { complete: true }).payload
+            .userId;
+          sendEmail(userId);
+        } else {
+          setAlertData({
+            severity: "error",
+            msg: "Failed to add new employee!",
+          });
+          handleAlert();
+        }
+      });
     }
+  };
+
+  const sendEmail = (userId) => {
+    const invitationData = {
+      id: userId,
+      empName: formData.name,
+      email: formData.email,
+      loginId: sessionStorage.getItem("loginId"),
+      adminName: jwt.decode(sessionStorage.getItem("userToken"), {
+        complete: true,
+      }).payload.username,
+      adminEmail: jwt.decode(sessionStorage.getItem("userToken"), {
+        complete: true,
+      }).payload.email,
+      message: formData.message,
+    };
+    axios.post(`${BACKEND_URL}/api/invite`, invitationData).then((res) => {
+      if (res.data.success) {
+        console.log("successd");
+        setAlertData({
+          severity: "success",
+          msg: `Successful! Invitaion sent to ${formData.email}`,
+        });
+        handleAlert();
+      } else {
+        setAlertData({
+          severity: "error",
+          msg: "Failed to send email to employee!",
+        });
+        handleAlert();
+      }
+    });
   };
 
   return (
@@ -204,10 +265,10 @@ const Settings = () => {
                                   <Grid item xs={11} align="left">
                                     <Grid item xs={11} align="left">
                                       <Typography className={classes.title}>
-                                        Create temporary passwords for new
-                                        users. They will be able to change their
-                                        passwords after they login to the
-                                        system.
+                                        Send invitations to your employees and
+                                        they will be able to create their
+                                        accounts by clicking the invitation
+                                        link.
                                       </Typography>
                                     </Grid>
                                   </Grid>
@@ -217,7 +278,20 @@ const Settings = () => {
                                     alignItems="center"
                                     spacing={3}
                                   >
-                                    <Grid item xs={12} md={11} align="left">
+                                    <Grid item xs={12} align="left">
+                                      <TextField
+                                        label="Name"
+                                        name="name"
+                                        type="text"
+                                        size="small"
+                                        variant="outlined"
+                                        value={formData.name}
+                                        onChange={setForm}
+                                        className={classes.shortTextField}
+                                        required
+                                      />
+                                    </Grid>
+                                    <Grid item xs={12} align="left">
                                       <TextField
                                         label="Email Address"
                                         name="email"
@@ -230,30 +304,19 @@ const Settings = () => {
                                         required
                                       />
                                     </Grid>
-                                    <Grid item xs={12} md={11} align="left">
+                                    <Grid item xs={12} align="left">
                                       <TextField
-                                        label="Password"
-                                        name="password"
-                                        type="password"
+                                        label="Message"
+                                        name="message"
+                                        type="text"
+                                        size="small"
                                         variant="outlined"
-                                        value={formData.password}
+                                        value={formData.message}
                                         onChange={setForm}
                                         className={classes.shortTextField}
                                         required
-                                        size="small"
-                                      />
-                                    </Grid>
-                                    <Grid item xs={12} md={11} align="left">
-                                      <TextField
-                                        label="Confirm Password"
-                                        name="confirmPassword"
-                                        type="password"
-                                        variant="outlined"
-                                        value={formData.confirmPassword}
-                                        onChange={setForm}
-                                        className={classes.shortTextField}
-                                        required
-                                        size="small"
+                                        multiline
+                                        rows={3}
                                       />
                                     </Grid>
                                   </Grid>
@@ -265,7 +328,7 @@ const Settings = () => {
                                   <Grid item xs={12} align="left">
                                     <Grid item xs={12} align="left">
                                       <Typography className={classes.title}>
-                                        Set access restrictions
+                                        Set access priviledges
                                       </Typography>
                                     </Grid>
                                   </Grid>
@@ -341,7 +404,7 @@ const Settings = () => {
                                         variant="contained"
                                         className={classes.button}
                                       >
-                                        Add User
+                                        Send Invitation
                                       </Button>
                                     </Grid>
                                     <Grid item>
