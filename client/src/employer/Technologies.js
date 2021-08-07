@@ -4,6 +4,7 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
+import AddTechForm from "./components/AddTechForm";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -23,7 +24,7 @@ const Technologies = () => {
 
     <Grid container direction="row" xs={12} spacing={1} className={classes.root}>
 
-          
+      <AddTechForm/>
         
     </Grid>
 
