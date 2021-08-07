@@ -1,24 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { Typography } from "@material-ui/core";
 import FloatCard from "../../../components/FloatCard";
-import { Line } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import Theme from "../../../Theme";
 import axios from "axios";
 import BACKEND_URL from "../../../Config";
 
-const UsersBarChart = () => {
+const ResumeBarChart = () => {
   const [pastMonths, setPastMonths] = useState([]);
-  const [monthlyJobCount, setMonthlyJobCount] = useState([]);
+  const [monthlyResumeCount, setMonthlyResumeCount] = useState([]);
+  
   useEffect(() => {
-    retrieveJobs();
+    retrieveResumeCount();
   }, []);
 
-  const retrieveJobs = async () => {
+  const retrieveResumeCount = async () => {
     try {
-      const response = await axios.get(`${BACKEND_URL}/analytics/getMonthlyJobs`);
+      const response = await axios.get(
+        `${BACKEND_URL}/analytics/getMonthlyResumes`
+      );
       if (response.data.success) {
         setPastMonths(response.data.months);
-        setMonthlyJobCount(response.data.jobCount);
+        setMonthlyResumeCount(response.data.resumeCount);
+        console.log("pastMonths", response.data.months);
+        console.log("monthlyResumeCount", response.data.resumeCount);
       }
     } catch (err) {
       console.log(err);
@@ -30,11 +35,11 @@ const UsersBarChart = () => {
       labels: pastMonths,
       datasets: [
         {
-          label: "Job Count",
+          label: "Resume Count",
           backgroundColor: Theme.palette.stateBlue,
           borderColor: Theme.palette.stateBlue,
           borderWidth: 1,
-          data: monthlyJobCount,
+          data: monthlyResumeCount,
         },
       ],
     };
@@ -43,11 +48,11 @@ const UsersBarChart = () => {
   return (
     <div>
       <FloatCard>
-        <Typography>Jobs Created for the Past 8 Months</Typography>
-        <Line data={generateBarChart({fill: false})} />
+        <Typography>Number of Resumes in Each Month</Typography>
+        <Bar data={generateBarChart()} />
       </FloatCard>
     </div>
   );
 };
 
-export default UsersBarChart;
+export default ResumeBarChart;

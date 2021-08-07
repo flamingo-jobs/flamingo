@@ -7,14 +7,7 @@ import axios from "axios";
 import BACKEND_URL from "../../../Config";
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) => ({
-  chartContainer: {
-    height: "400px",
-  },
-}));
-
 const CategoryPieChart = () => {
-  const classes = useStyles();
   const [categoryNames, setCategoryNames] = useState([]);
   const [categoryCount, setCategoryCount] = useState([]);
 
@@ -57,7 +50,7 @@ const CategoryPieChart = () => {
   };
 
   return (
-    <div className={classes.chartContainer}>
+    <div>
       <FloatCard>
         <Typography>Most Popular Job Categories</Typography>
         <Pie data={genPieData()} />

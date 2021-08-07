@@ -6,7 +6,7 @@ import Theme from "../../../Theme";
 import axios from "axios";
 import BACKEND_URL from "../../../Config";
 
-const UsersLineChart = () => {
+const UsersBarChart = () => {
   const [pastMonths, setPastMonths] = useState([]);
   const [monthlyEmpCount, setMonthlyEmpCount] = useState([]);
   const [monthlyJobseekerCount, setMonthlyJobseekerCount] = useState([]);
@@ -36,7 +36,7 @@ const UsersLineChart = () => {
     }
   };
 
-  const generateLineChart = (moreData = {}, moreData2 = {}) => {
+  const generateBarChart = (moreData = {}, moreData2 = {}) => {
     return {
       labels: pastMonths,
       datasets: [
@@ -64,10 +64,10 @@ const UsersLineChart = () => {
     <div>
       <FloatCard>
         <Typography>Grow of Customer Base for the Past 8 Months</Typography>
-        <Bar data={generateLineChart()} />
+        <Bar data={generateBarChart()} />
       </FloatCard>
     </div>
   );
 };
 
-export default UsersLineChart;
+export default UsersBarChart;
