@@ -100,7 +100,7 @@ const Aquisitions = () => {
 
   const getTotalShortlisted = () => {
 
-    var totalShortlisted = 2;
+    var totalShortlisted = 0;
 
     allJobs.forEach(job => {
       
@@ -117,7 +117,7 @@ const Aquisitions = () => {
 
   const getTotalRejected = () => {
 
-    var totalRejected = 3;
+    var totalRejected = 0;
 
     allJobs.forEach(job => {
       
