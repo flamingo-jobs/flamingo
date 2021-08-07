@@ -179,10 +179,10 @@ function NavMenu(props) {
                         </ListItem>
                     </Link>
  
-                    <ListItem button key="contactUs" selected={selectedIndex === "contactUs"} onClick={(event) => handleListItemClick(event, "contactUs")} classes={{ selected: classes.active }} className={classes.listItem}>
+                    {/* <ListItem button key="contactUs" selected={selectedIndex === "contactUs"} onClick={(event) => handleListItemClick(event, "contactUs")} classes={{ selected: classes.active }} className={classes.listItem}>
                         <ListItemIcon className={classes.linkIcon}><PhoneRoundedIcon /></ListItemIcon>
                         <ListItemText className={classes.linkText} primary="Contact Us" />
-                    </ListItem>
+                    </ListItem> */}
                 </>
             )
         }
