@@ -150,24 +150,45 @@ const getMonthlyUsers = async (req, res) => {
 
 const getJobCategories = async (req, res) => {
     try{
-        var categories = await Category.find().select('name count');
-        var categoryNames = [];
-        var categoryCount = [];
+        var uniqueCategories = await Category.find().select("name -_id");
+        var postedJobCats = await Jobs.find().select('category -_id');
 
-        categories.sort((a, b) => {
+        var catCount = [];
+        // set count of all the unique categories to 0
+        uniqueCategories.map(cat => {
+            catCount.push({
+                name: cat.name,
+                count: 0
+            });
+        });
+
+        postedJobCats.map(cat => {
+            catCount.map(obj => {
+                if(obj.name === cat.category){
+                    obj.count++;
+                }
+            });
+        });
+
+        catCount.sort((a, b) => {
             return b.count - a.count;
         });
 
-        var topCategories = categories.slice(0, 5);
-        topCategories.map(cat => {
-            categoryNames.push(cat.name);
-            if(cat.count > 0){
-                categoryCount.push(cat.count);
-            }else {
-                categoryCount.push(0);
-            }
-        });
-        res.status(200).json({ success: true, categories: categoryNames, count: categoryCount});
+        var catNames = [];
+        var count = [];
+        for(var i=0; i<5; i++){
+            catNames.push(catCount[i].name);
+            count.push(catCount[i].count);
+        }
+
+        var otherCount = 0;
+        for(var i=5; i<catCount.length; i++){
+            otherCount = otherCount + catCount[i].count
+        }
+        catNames.push("other");
+        count.push(otherCount);
+
+        res.status(200).json({ success: true, categories: catNames, count: count});
     }catch(err){
         res.status(400).json({ success: false, error: err });
     }

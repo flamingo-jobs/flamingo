@@ -9,7 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   chartContainer: {
-    height: "400px"
+    height: "400px",
   },
 }));
 
@@ -23,7 +23,7 @@ const CategoryPieChart = () => {
   }, []);
 
   const retrieveCategories = async () => {
-    try{
+    try {
       const response = await axios.get(
         `${BACKEND_URL}/analytics/getCategories`
       );
@@ -31,13 +31,12 @@ const CategoryPieChart = () => {
         setCategoryNames(response.data.categories);
         setCategoryCount(response.data.count);
       }
-    }catch(err){
-      console.log(err)
+    } catch (err) {
+      console.log(err);
     }
-  }
+  };
 
   const genPieData = () => {
-
     return {
       datasets: [
         {
@@ -48,6 +47,7 @@ const CategoryPieChart = () => {
             "#45b649",
             "#eeba0b",
             "#f85032",
+            "#cb997e",
           ],
           label: "Categories",
         },
