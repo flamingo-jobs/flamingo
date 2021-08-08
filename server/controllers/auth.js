@@ -285,3 +285,17 @@ exports.inviteEmlpoyee = async (req, res) => {
     }
   );
 };
+
+exports.getUsersByEmployer = async (req, res) => {
+  User.find({ "loginId": req.params.id }, (err, employerUsers) => {
+    if (err) {
+      return res.status(400).json({
+        error: err,
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      employerUsers: employerUsers,
+    });
+  });
+};
