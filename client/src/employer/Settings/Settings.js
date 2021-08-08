@@ -428,7 +428,17 @@ const Settings = () => {
                     </Grid>
                   </TabPanel>
                   <TabPanel value={value} index={1}>
-                      <UsersTable />
+                    <Grid
+                      container
+                      spacing={3}
+                      justify="center"
+                      alignItems="center"
+                      className={classes.mainGrid}
+                    >
+                      <Grid item xs={12} align="center" fullWidth>
+                        <UsersTable />
+                      </Grid>
+                    </Grid>
                   </TabPanel>
                 </div>
               </Grid>

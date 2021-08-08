@@ -11,8 +11,9 @@ import Chip from "@material-ui/core/Chip";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import CancelIcon from "@material-ui/icons/Cancel";
 import Button from "@material-ui/core/Button";
-import EditIcon from '@material-ui/icons/Edit';
-import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import EditIcon from "@material-ui/icons/Edit";
+import VpnKeyIcon from "@material-ui/icons/VpnKey";
+import Loading from "../../components/Loading";
 import axios from "axios";
 import BACKEND_URL from "../../Config";
 import { useState, useEffect } from "react";
@@ -89,9 +90,8 @@ export default function CustomizedTables() {
       });
   }, []);
 
-  return (
+  return allUsers.length ? (
     <TableContainer component={Paper}>
-      {console.log(allUsers)}
       <Table className={classes.table} aria-label="customized table">
         <colgroup>
           <col style={{ width: "15%" }} />
@@ -108,7 +108,7 @@ export default function CustomizedTables() {
             <StyledTableCell align="center">Priviledges</StyledTableCell>
             <StyledTableCell align="center">Registered Date</StyledTableCell>
             <StyledTableCell align="center">Status</StyledTableCell>
-            <StyledTableCell align="right">Edit</StyledTableCell>
+            <StyledTableCell align="center">Edit</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -150,19 +150,21 @@ export default function CustomizedTables() {
               </StyledTableCell>
 
               <StyledTableCell align="right">
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    className={classes.button}
-                    endIcon={<EditIcon />}
-                  >
-                    Edit
-                  </Button>
+                <Button
+                  variant="outlined"
+                  size="small"
+                  className={classes.button}
+                  endIcon={<EditIcon />}
+                >
+                  Edit
+                </Button>
               </StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
       </Table>
     </TableContainer>
+  ) : (
+    <Loading />
   );
 }
