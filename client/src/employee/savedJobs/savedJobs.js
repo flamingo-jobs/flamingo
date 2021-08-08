@@ -80,35 +80,35 @@ const SavedJobs = () => {
       return (
         <Grid item xs={12}>
           <FloatCard>
-          <Typography>You don't have any saved jobs yet.</Typography>
+            <Typography>You don't have any saved jobs yet.</Typography>
           </FloatCard>
         </Grid>
       );
     }
     return (
-      <Grid item xs={9}>
-        {savedJobIds.map((jobId) => (
-          <SavedJob
-            key={jobId}
-            jobId={jobId}
-            userId={userId}
-            savedJobIds={savedJobIds}
-            setSavedJobIds={setSavedJobIds}
-            setAlertData={setAlertData}
-            handleAlert={handleAlert}
-          ></SavedJob>
-        ))}
-      </Grid>
+        savedJobIds.map((jobId) => (
+          <Grid item xs={12} lg={6}>
+            <SavedJob
+              key={jobId}
+              jobId={jobId}
+              userId={userId}
+              savedJobIds={savedJobIds}
+              setSavedJobIds={setSavedJobIds}
+              setAlertData={setAlertData}
+              handleAlert={handleAlert}
+            ></SavedJob>
+          </Grid>
+        ))
     );
   };
 
   return (
-    <Container className={classes.root}>
+    <Grid container className={classes.root}>
       {displayAlert()}
-      <Grid container justify="center">
+      <Grid item container spacing={3} direction="column" xs={12}>
         {displaySavedJobs()}
       </Grid>
-    </Container>
+    </Grid>
   );
 };
 

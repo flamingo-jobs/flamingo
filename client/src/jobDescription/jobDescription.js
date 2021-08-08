@@ -81,6 +81,11 @@ function JobDescription(props) {
     displayRelatedJobs();
   }, [jobId]);
 
+  useEffect(() => {
+    checkApplied();
+
+  }, [job]);
+
   const retrieveJob = () => {
     axios.get(`${BACKEND_URL}/jobs/${jobId}`).then((res) => {
       if (res.data.success) {
@@ -96,7 +101,6 @@ function JobDescription(props) {
       const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
       if (response.data.success) {
         setSavedJobIds(response.data.jobseeker.savedJobs);
-        checkApplied();
         if (response.data.jobseeker.savedJobs.includes(jobId)) {
           setIsSaved(true);
         }

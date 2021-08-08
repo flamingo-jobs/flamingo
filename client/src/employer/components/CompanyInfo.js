@@ -189,7 +189,7 @@ function CompanyInfo(props) {
             description: res.data.employer.description,
             technologyStack: res.data.employer.technologyStack,
             links: res.data.employer.links,
-            subscription: res.data.employer.subscription,
+            subscription: res.data.employer.subscription.type,
             website: res.data.employer.links.website,
             facebook: res.data.employer.links.facebook,
             linkedIn: res.data.employer.links.linkedIn,

@@ -125,7 +125,7 @@ function Base() {
         {/* <Route path="/jobseeker" exact>
           <Profile />
         </Route> */}
-        <Route path="/jobseeker/profile">
+        <Route path="/jobseeker/profile/:id">
           <Profile />
         </Route>
         <Route path="/organizations">
