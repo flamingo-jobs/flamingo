@@ -21,8 +21,10 @@ const useStyles = makeStyles((theme) => ({
   tasksTitle: {
     fontSize: "15px",
     textAlign: "left",
-    marginBottom: theme.spacing(2),
     color: theme.palette.stateBlue,
+  },
+  mainContainer: {
+    padding: theme.spacing(5),
   },
   removeIcon: {
     color: theme.palette.stateBlue,
@@ -41,46 +43,44 @@ const TasksForm = ({
   const classes = useStyles();
   return (
     <Grid item xs={12} className={classes.card}>
-      <FloatCard>
-        <Container className={classes.tasksContainer}>
-          <Typography className={classes.tasksTitle}>
-            Tasks and Responsibilites
-          </Typography>
-          <Grid container spacing={2}>
-            {tasksFields.map((field, index) => (
-              <Grid item container key={index}>
-                <Grid item xs={10}>
-                  <StateBlueTextField
-                    name="task"
-                    label="Responsibility"
-                    variant="outlined"
-                    value={field}
-                    fullWidth
-                    multiline
-                    onChange={(event) => handleTaskChange(event, index)}
-                  />
-                </Grid>
-                <Grid item xs={2}>
-                  <IconButton
-                    disabled={tasksFields.length === 1}
-                    onClick={() => handleTaskRemove(index)}
-                  >
-                    <RemoveIcon
-                      className={classes.removeIcon}
-                      style={{
-                        color: tasksFields.length === 1 ? "#bbb" : null,
-                      }}
+        <Grid item container spacing={4} className={classes.mainContainer}>
+          <Grid item xs={12}>
+            <Grid container spacing={2}>
+              {tasksFields.map((field, index) => (
+                <Grid item container key={index}>
+                  <Grid item xs={10}>
+                    <StateBlueTextField
+                      name="task"
+                      label="Responsibility"
+                      variant="outlined"
+                      value={field}
+                      fullWidth
+                      multiline
+                      size="small"
+                      onChange={(event) => handleTaskChange(event, index)}
                     />
-                  </IconButton>
-                  <IconButton onClick={handleTaskAdd}>
-                    <AddIcon className={classes.addIcon} />
-                  </IconButton>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <IconButton
+                      disabled={tasksFields.length === 1}
+                      onClick={() => handleTaskRemove(index)}
+                    >
+                      <RemoveIcon
+                        className={classes.removeIcon}
+                        style={{
+                          color: tasksFields.length === 1 ? "#bbb" : null,
+                        }}
+                      />
+                    </IconButton>
+                    <IconButton onClick={handleTaskAdd}>
+                      <AddIcon className={classes.addIcon} />
+                    </IconButton>
+                  </Grid>
                 </Grid>
-              </Grid>
-            ))}
+              ))}
+            </Grid>
           </Grid>
-        </Container>
-      </FloatCard>
+        </Grid>
     </Grid>
   );
 };

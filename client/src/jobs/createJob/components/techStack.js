@@ -15,8 +15,10 @@ const useStyles = makeStyles((theme) => ({
   techStackTitle: {
     fontSize: "15px",
     textAlign: "left",
-    marginBottom: theme.spacing(2),
     color: theme.palette.stateBlue,
+  },
+  mainContainer: {
+    padding: theme.spacing(5),
   },
   techStackContainer: {
     padding: theme.spacing(3),
@@ -43,42 +45,39 @@ const TechStack = ({ technologies, handleTechStack }) => {
 
   return (
     <Grid item xs={12} className={classes.card}>
-      <FloatCard>
-        <Container className={classes.techStackContainer}>
-          <Typography className={classes.techStackTitle}>
-            Technology Stack
-          </Typography>
-
-          <Autocomplete
-            multiple
-            id="techStack"
-            options={options}
-            defaultValue={undefined}
-            freeSolo
-            onChange={(event, values) => handleTechStack(values)}
-            renderTags={(value, getTagProps) =>
-              value.map((option, index) => (
-                <Chip
+        <Grid item container spacing={4} className={classes.mainContainer}>
+          <Grid item xs={12}>
+            <Autocomplete
+              multiple
+              id="techStack"
+              options={options}
+              defaultValue={undefined}
+              freeSolo
+              onChange={(event, values) => handleTechStack(values)}
+              renderTags={(value, getTagProps) =>
+                value.map((option, index) => (
+                  <Chip
+                    variant="outlined"
+                    label={option}
+                    {...getTagProps({ index })}
+                    className={classes.chip}
+                    deleteIcon={<CancelIcon className={classes.chipRemove} />}
+                  />
+                ))
+              }
+              renderInput={(params) => (
+                <StateBlueTextField
+                  {...params}
                   variant="outlined"
-                  label={option}
-                  {...getTagProps({ index })}
-                  className={classes.chip}
-                  deleteIcon={<CancelIcon className={classes.chipRemove} />}
+                  placeholder="Add a new technology..."
+                  size="small"
                 />
-              ))
-            }
-            renderInput={(params) => (
-              <StateBlueTextField
-                {...params}
-                variant="outlined"
-                placeholder="Add a new technology..."
-              />
-            )}
-          />
-        </Container>
-      </FloatCard>
+              )}
+            />
+            </Grid>
+        </Grid>
     </Grid>
-  );
+      );
 };
 
-export default TechStack;
+      export default TechStack;

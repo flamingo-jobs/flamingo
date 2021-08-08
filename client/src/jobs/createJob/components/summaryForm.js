@@ -54,14 +54,13 @@ const useStyles = makeStyles((theme) => ({
   summaryTitle: {
     fontSize: "15px",
     textAlign: "left",
-    marginBottom: theme.spacing(2),
     color: theme.palette.stateBlue,
   },
   card: {
     marginBottom: theme.spacing(2),
   },
-  textField: {
-    marginBottom: theme.spacing(3),
+  mainContainer: {
+    padding: theme.spacing(5),
   },
   dateWrapper: {
     marginLeft: theme.spacing(2),
@@ -100,180 +99,181 @@ const SummaryForm = ({
   // style={{border: "1px solid red"}}
   return (
     <Grid item xs={12} className={classes.card}>
-      <FloatCard>
-        <Container className={classes.summaryContainer}>
-          <Typography className={classes.summaryTitle}>
-            Basic details
-          </Typography>
+        <Grid item container spacing={4} className={classes.mainContainer}>
           {/* Title of the Job */}
-          <StateBlueTextField
-            required
-            id="title"
-            label="Title"
-            variant="outlined"
-            fullWidth
-            className={classes.textField}
-            onChange={handleTitleChange}
-          />
 
+          <Grid item xs={12}>
+            <StateBlueTextField
+              required
+              id="title"
+              label="Title"
+              variant="outlined"
+              size="small"
+              fullWidth
+              className={classes.textField}
+              onChange={handleTitleChange}
+            />
+          </Grid>
           {/* Category    */}
-          <Grid container spacing={1} className={classes.textField}>
-            <Grid item xs={6}>
-              <StateBlueTextField
-                id="category"
-                select
-                label="Category"
-                value={category}
-                onChange={handleCategoryChange}
-                variant="outlined"
-                fullWidth
-              >
-                {categories.map((category) => (
-                  <MenuItem key={category.id} value={category.name}>
-                    {category.name}
-                  </MenuItem>
-                ))}
-              </StateBlueTextField>
-            </Grid>
+          <Grid item xs={6}>
+            <StateBlueTextField
+              id="category"
+              select
+              label="Category"
+              value={category}
+              onChange={handleCategoryChange}
+              variant="outlined"
+              size="small"
+              fullWidth
+            >
+              {categories.map((category) => (
+                <MenuItem key={category.id} value={category.name}>
+                  {category.name}
+                </MenuItem>
+              ))}
+            </StateBlueTextField>
+          </Grid>
 
-            {/* Job type */}
-            <Grid item xs={6}>
-              <StateBlueTextField
-                id="jobType"
-                select
-                label="Job type"
-                value={jobType}
-                onChange={handleJobTypeChange}
-                variant="outlined"
-                fullWidth
-              >
-                {types.map((type) => (
-                  <MenuItem key={type.id} value={type.name}>
-                    {type.name}
-                  </MenuItem>
-                ))}
-              </StateBlueTextField>
-            </Grid>
+          {/* Job type */}
+          <Grid item xs={6}>
+            <StateBlueTextField
+              id="jobType"
+              select
+              label="Job type"
+              value={jobType}
+              onChange={handleJobTypeChange}
+              variant="outlined"
+              size="small"
+              fullWidth
+            >
+              {types.map((type) => (
+                <MenuItem key={type.id} value={type.name}>
+                  {type.name}
+                </MenuItem>
+              ))}
+            </StateBlueTextField>
           </Grid>
 
           {/* Description */}
-          <StateBlueTextField
-            required
-            id="description"
-            label="Descriptionof the job opportunity"
-            variant="outlined"
-            fullWidth
-            multiline
-            className={classes.textField}
-            onChange={handleDescriptionChange}
-          />
+          <Grid item xs={12}>
+            <StateBlueTextField
+              required
+              id="description"
+              label="Descriptionof the job opportunity"
+              variant="outlined"
+              fullWidth
+              size="small"
+              multiline
+              className={classes.textField}
+              onChange={handleDescriptionChange}
+            />
+          </Grid>
 
           {/* Location & Due date */}
-          <Grid container spacing={1} className={classes.textField}>
-            <Grid item xs={6}>
-              <StateBlueTextField
-                id="location"
-                select
-                label="Location"
-                value={location}
-                onChange={handleLocationChange}
-                variant="outlined"
-                fullWidth
-              >
-                {empLocations.map((location) => (
-                  <MenuItem key={location} value={location}>
-                    {location}
-                  </MenuItem>
-                ))}
-              </StateBlueTextField>
-            </Grid>
+          <Grid item xs={6}>
+            <StateBlueTextField
+              id="location"
+              select
+              label="Location"
+              size="small"
+              value={location}
+              onChange={handleLocationChange}
+              variant="outlined"
+              fullWidth
+            >
+              {empLocations.map((location) => (
+                <MenuItem key={location} value={location}>
+                  {location}
+                </MenuItem>
+              ))}
+            </StateBlueTextField>
+          </Grid>
 
-            <Grid item xs={6} className={classes.textField}>
-              <div className={classes.dateWrapper}>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <ThemeProvider theme={materialTheme}>
-                    <KeyboardDatePicker
-                      format="dd/MM/yyyy"
-                      placeholder="DD/MM/YYYY"
-                      id="dueDate"
-                      label="Due Date"
-                      value={dueDate}
-                      onChange={handleDateChange}
-                      KeyboardButtonProps={{
-                        "aria-label": "Change date",
-                      }}
-                    />
-                  </ThemeProvider>
-                </MuiPickersUtilsProvider>
-              </div>
-            </Grid>
+          <Grid item xs={6}>
+            <div className={classes.dateWrapper}>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <ThemeProvider theme={materialTheme}>
+                  <KeyboardDatePicker
+                    format="dd/MM/yyyy"
+                    placeholder="DD/MM/YYYY"
+                    id="dueDate"
+                    label="Due Date"
+                    size="small"
+                    value={dueDate}
+                    onChange={handleDateChange}
+                    KeyboardButtonProps={{
+                      "aria-label": "Change date",
+                    }}
+                  />
+                </ThemeProvider>
+              </MuiPickersUtilsProvider>
+            </div>
           </Grid>
 
           {/* Requried Degrees & Experience */}
-          <Grid container spacing={1} className={classes.textField}>
-            <Grid item xs={6}>
-              <StateBlueTextField
-                id="minEducation"
-                select
-                label="Minimum Education Requirement"
-                value={minEducation}
-                onChange={handleMinEducationChange}
-                variant="outlined"
-                fullWidth
-              >
-                {minEducationList.map((edu) => (
-                  <MenuItem key={edu} value={edu}>
-                    {edu}
-                  </MenuItem>
-                ))}
-              </StateBlueTextField>
-            </Grid>
+          <Grid item xs={6}>
+            <StateBlueTextField
+              id="minEducation"
+              select
+              label="Minimum Education Requirement"
+              value={minEducation}
+              size="small"
+              onChange={handleMinEducationChange}
+              variant="outlined"
+              fullWidth
+            >
+              {minEducationList.map((edu) => (
+                <MenuItem key={edu} value={edu}>
+                  {edu}
+                </MenuItem>
+              ))}
+            </StateBlueTextField>
+          </Grid>
 
-            <Grid item xs={6}>
-              <StateBlueTextField
-                id="minExperience"
-                select
-                label="Minimum Experience Required"
-                value={minExperience}
-                onChange={handleMinExperienceChange}
-                variant="outlined"
-                fullWidth
-              >
-                {minExperienceList.map((exp) => (
-                  <MenuItem key={exp} value={exp}>
-                    {exp + " years"}
-                  </MenuItem>
-                ))}
-              </StateBlueTextField>
-            </Grid>
+          <Grid item xs={6}>
+            <StateBlueTextField
+              id="minExperience"
+              select
+              label="Minimum Experience Required"
+              value={minExperience}
+              onChange={handleMinExperienceChange}
+              variant="outlined"
+              size="small"
+              fullWidth
+            >
+              {minExperienceList.map((exp) => (
+                <MenuItem key={exp} value={exp}>
+                  {exp + " years"}
+                </MenuItem>
+              ))}
+            </StateBlueTextField>
           </Grid>
 
           {/* Salary range */}
-          <Grid container spacing={1} className={classes.textField}>
-            <Grid item xs={6}>
-              <StateBlueTextField
-                id="minSalary"
-                label="Minimum Salary"
-                onChange={handleMinSalaryChange}
-                variant="outlined"
-                placeholder=""
-                fullWidth
-              ></StateBlueTextField>
-            </Grid>
-
-            <Grid item xs={6}>
-              <StateBlueTextField
-                id="maxSalary"
-                label="Maximum Salary"
-                onChange={handleMaxSalaryChange}
-                variant="outlined"
-                fullWidth
-              ></StateBlueTextField>
-            </Grid>
+          <Grid item xs={6}>
+            <StateBlueTextField
+              id="minSalary"
+              label="Minimum Salary"
+              onChange={handleMinSalaryChange}
+              variant="outlined"
+              placeholder=""
+              fullWidth
+              size="small"
+            ></StateBlueTextField>
           </Grid>
-        </Container>
-      </FloatCard>
-    </Grid>
+
+          <Grid item xs={6}>
+            <StateBlueTextField
+              id="maxSalary"
+              label="Maximum Salary"
+              onChange={handleMaxSalaryChange}
+              variant="outlined"
+              fullWidth
+              size="small"
+            ></StateBlueTextField>
+          </Grid>
+        </Grid>
+    </Grid >
   );
 };
 

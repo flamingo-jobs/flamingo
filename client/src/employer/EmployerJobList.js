@@ -58,7 +58,7 @@ const EmployerJobList = () => {
   const classes = useStyles();
 
   const history = useHistory();
-  const handleClick = () => history.push('../jobs/createJob/createJobForm');
+  const handleClick = () => history.push('../jobs/createJob/createJobSetup');
 
   return (
     <Grid

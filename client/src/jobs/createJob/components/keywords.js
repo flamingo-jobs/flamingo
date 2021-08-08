@@ -21,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
   keywordsTitle: {
     fontSize: "15px",
     textAlign: "left",
-    marginBottom: theme.spacing(2),
     color: theme.palette.stateBlue,
   },
   keywordsContainer: {
@@ -29,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonContainer: {
     paddingTop: theme.spacing(3),
+  },
+  mainContainer: {
+    padding: theme.spacing(5),
   },
   chip: {
     color: theme.palette.white,
@@ -49,10 +51,8 @@ const Keywords = ({ keywords, handleKeywordsChange }) => {
 
   return (
     <Grid item xs={12} className={classes.card}>
-      <FloatCard>
-        <Container className={classes.keywordsContainer}>
-          <Typography className={classes.keywordsTitle}>Keywords</Typography>
-
+      <Grid item container spacing={4} className={classes.mainContainer}>
+        <Grid item xs={12}>
           <Autocomplete
             multiple
             id="keywords"
@@ -75,23 +75,12 @@ const Keywords = ({ keywords, handleKeywordsChange }) => {
                 {...params}
                 variant="outlined"
                 placeholder="Add Keyword..."
+                size="small"
               />
             )}
           />
-          <Grid container className={classes.buttonContainer}>
-            <Grid item container xs={12} justify="flex-end">
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                className={classes.submitButton}
-              >
-                Create
-              </Button>
-            </Grid>
-          </Grid>
-        </Container>
-      </FloatCard>
+        </Grid>
+      </Grid>
     </Grid>
   );
 };

@@ -12,7 +12,7 @@ import { Route } from "react-router-dom";
 import Jobs from "./jobs/Jobs";
 import JobDescription from "./jobDescription/jobDescription";
 import Categories from "./admin/Categories";
-import CreateJobForm from "./jobs/createJob/createJobForm";
+// import CreateJobForm from "./jobs/createJob/createJobForm";
 import People from "./people/People";
 import Employer from "./employer/Employer";
 import EmployerBilling from "./employer/Billing";
@@ -36,6 +36,7 @@ import SearchResult from "./searchResults/searchResult";
 import Recommendations from "./recommendations/Recommendations";
 import BACKEND_URL from "./Config";
 import axios from "axios";
+import CreateJobSetup from "./jobs/createJob/CreateJobSetup";
 
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -180,7 +181,7 @@ function Base() {
             <EmployerDashboard />
           </Route>
           <Route path="/employer/jobs/create">
-            <CreateJobForm />
+            <CreateJobSetup />
           </Route>
           <Route path="/employer/jobs/update">
             <DisplayJob />

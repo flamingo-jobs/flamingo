@@ -385,8 +385,8 @@ const CreateJobForm = () => {
     <>
       {displayAlert()}
 
-      <Grid container spacing={2} className={classes.root} justify="center">
-        <Grid item xs={10}>
+      <Grid item container sm={12} spacing={3} direction="row" justify="space-between" className={classes.mainGrid} alignItems="flex-start">
+        <Grid item xs={12}>
           <FloatCard>
             <Typography variant="h6" className={classes.title}>
               Create a new Job
@@ -394,7 +394,7 @@ const CreateJobForm = () => {
           </FloatCard>
         </Grid>
 
-        <Grid item xs={10}>
+        <Grid item xs={12}>
           <form onSubmit={handleSubmit}>
             <Grid container xs={12}>
               {displaySummary()}

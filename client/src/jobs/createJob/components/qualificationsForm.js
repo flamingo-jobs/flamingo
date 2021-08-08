@@ -18,10 +18,12 @@ const useStyles = makeStyles((theme) => ({
   qualificationsContainer: {
     padding: theme.spacing(3),
   },
+  mainContainer: {
+    padding: theme.spacing(5),
+  },
   qualificationsTitle: {
     fontSize: "15px",
     textAlign: "left",
-    marginBottom: theme.spacing(2),
     color: theme.palette.stateBlue,
   },
   removeIcon: {
@@ -42,49 +44,47 @@ const QualificationForm = ({
 
   return (
     <Grid item xs={12} className={classes.card}>
-      <FloatCard>
-        <Container className={classes.qualificationsContainer}>
-          <Typography className={classes.qualificationsTitle}>
-            Qualifications and Requirements
-          </Typography>
-          <Grid container spacing={2}>
-            {qualificationsFields.map((field, index) => (
-              <Grid item container key={index}>
-                <Grid item xs={10}>
-                  <StateBlueTextField
-                    name="qualification"
-                    label="Qualification"
-                    variant="outlined"
-                    value={field}
-                    fullWidth
-                    multiline
-                    onChange={(event) =>
-                      handleQualificationChange(event, index)
-                    }
-                  />
-                </Grid>
-                <Grid item xs={2}>
-                  <IconButton
-                    disabled={qualificationsFields.length === 1}
-                    onClick={() => handleQualificationRemove(index)}
-                  >
-                    <RemoveIcon
-                      className={classes.removeIcon}
-                      style={{
-                        color:
-                          qualificationsFields.length === 1 ? "#bbb" : null,
-                      }}
+        <Grid item container spacing={4} className={classes.mainContainer}>
+          <Grid item xs={12}>
+            <Grid container spacing={2}>
+              {qualificationsFields.map((field, index) => (
+                <Grid item container key={index}>
+                  <Grid item xs={10}>
+                    <StateBlueTextField
+                      name="qualification"
+                      label="Qualification"
+                      variant="outlined"
+                      value={field}
+                      fullWidth
+                      multiline
+                      size="small"
+                      onChange={(event) =>
+                        handleQualificationChange(event, index)
+                      }
                     />
-                  </IconButton>
-                  <IconButton onClick={handleQualificationAdd}>
-                    <AddIcon className={classes.addIcon} />
-                  </IconButton>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <IconButton
+                      disabled={qualificationsFields.length === 1}
+                      onClick={() => handleQualificationRemove(index)}
+                    >
+                      <RemoveIcon
+                        className={classes.removeIcon}
+                        style={{
+                          color:
+                            qualificationsFields.length === 1 ? "#bbb" : null,
+                        }}
+                      />
+                    </IconButton>
+                    <IconButton onClick={handleQualificationAdd}>
+                      <AddIcon className={classes.addIcon} />
+                    </IconButton>
+                  </Grid>
                 </Grid>
-              </Grid>
-            ))}
+              ))}
+            </Grid>
           </Grid>
-        </Container>
-      </FloatCard>
+        </Grid>
     </Grid>
   );
 };
