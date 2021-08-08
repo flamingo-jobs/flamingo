@@ -58,13 +58,6 @@ const AddTechForm = () => {
 
   const data = state.data;
 
-  // const technologies = [
-  //   { category: "The Shawshank Redemption" },
-  //   { category: "The Godfather" },
-  //   { category: "The Godfather: Part II" },
-  //   { category: "The Dark Knight" },
-  // ];
-
   useEffect(() => {
     axios.get(`${BACKEND_URL}/technologies/`).then((res) => {
       if (res.data.success) {
@@ -76,7 +69,10 @@ const AddTechForm = () => {
 
       console.log(data);
     });
+
+
   }, []);
+
   const getMainCategories = () => {
     var temp = [];
 
@@ -129,10 +125,39 @@ const AddTechForm = () => {
 
     return temp;
   };
+
   function submitForm() {
     console.log(selectedStack.category);
     console.log(selectedMainCategory);
     console.log(selectedSubCategory);
+
+    var currentTechStack;
+
+    axios
+    .get(`${BACKEND_URL}/employers/` + "60c246913542f942e4c84454")
+    .then((res) => {
+      console.log(res.data.employer);
+      if (res.data.success) {    
+        currentTechStack = res.data.employer.technologyStack;
+
+        // currentTechStack.forEach(mainCategory => {
+        //   if(mainCategory.name==selectedMainCategory){
+        //     mainCategory.stack.forEach(subCategory => {
+        //       if(subCategory==selectedSubCategory){
+                
+        //       }
+        //     }
+        //   }
+        // }      
+        // );
+      }
+     
+      console.log(currentTechStack);
+    });
+
+
+
+
   }
   const toggleMainCategory = (event, values) => {
     selectedMainCategoryFn(values.category);
