@@ -12,6 +12,7 @@ import theme from '../../Theme';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import FacebookIcon from '@material-ui/icons/Facebook';
+import MailRoundedIcon from '@material-ui/icons/MailRounded';
 import EditIcon from '@material-ui/icons/Edit';
 import Grid from '@material-ui/core/Grid';
 import Modal from '@material-ui/core/Modal';
@@ -26,6 +27,7 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from "@material-ui/core/IconButton";
 import Avatar from "@material-ui/core/Avatar";
 import Paper from '@material-ui/core/Paper';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   paperCont: {
@@ -431,7 +433,14 @@ function IntroSection(props) {
   
         <CardActions style={{marginBottom:"-10px"}}>
         <Grid container>
-          <Grid item xs style={{ textAlign: 'left',margin:"-15px 0px 0px 0px" }}>
+          <Grid item xs style={{ textAlign: 'center',margin:"-15px 0px 0px 0px" }}>
+              <a href={`mailto:${state.email}`}>
+                <IconButton>
+                  <Avatar className={classes.avatar}>
+                    <MailRoundedIcon />
+                  </Avatar>
+                </IconButton>
+              </a>
               <IconButton>
                 <Avatar className={classes.avatar}>
                   <FacebookIcon />
@@ -447,9 +456,6 @@ function IntroSection(props) {
                   <GitHubIcon />
                 </Avatar>
               </IconButton>
-          </Grid>
-          <Grid item style={{ textAlign: 'right' }}>
-              <Button className={classes.defaultButton} style={{ float: 'right',marginRight: '0px',}}>Upload CV</Button>
           </Grid>
         </Grid>
           
