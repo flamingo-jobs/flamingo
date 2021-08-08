@@ -381,7 +381,7 @@ export default function Topbar(props) {
           <Typography className={classes.menuText} >Profile</Typography>
         </MenuItem>
 
-        <MenuItem className={classes.menuItem} >
+        <MenuItem className={classes.menuItem} onClick={()=>{history.push(`/${props.user}/settings`)}}>
           <div className={classes.menuIcon}>
             <SettingsRoundedIcon />
           </div>
