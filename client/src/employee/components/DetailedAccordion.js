@@ -137,12 +137,10 @@ export default function DetailedAccordion(props) {
     if(tech){
       for (let k = 0; k < tech.length; k++) {
         if(props.info.name == tech[k].type){
-          index = k;
-          console.log("blaa "+index)
           setList(tech[k].list);
           setFrontEnd(tech[k].frontEnd);
           setBackEnd(tech[k].backEnd);
-          return;
+          return k;
         }
         
       }
@@ -151,7 +149,8 @@ export default function DetailedAccordion(props) {
   }
 
   useEffect(()=>{
-    matchDetails();
+    const k = matchDetails();
+    index = k;
   },[props.techno])
 
   const handleList = (list) => {
@@ -181,49 +180,48 @@ export default function DetailedAccordion(props) {
 
   const saveChanges = () => {
     let data = {};
-    console.log(index)
-    // if(index > -1){
-    //   if (props.info.stack.list) {
-    //     data = {
-    //         list: list
-    //     }
-    //   } else if (props.info.stack.frontEnd) {
-    //     data = {
-    //         frontEnd: frontEnd,
-    //         backEnd: backEnd
-    //     }
-    //   }
-    //   axios.put(`${BACKEND_URL}/jobseeker/updateTechnologyItem/${loginId}`,{index:index,techItem:data})
-    // .then(res => {
-    //   if (res.data.success) {
-    //     props.onSuccessUpdate();
-    //   } else {
-    //     props.onFailedUpdate();
-    //   }
-    // })
-    // }else{
-    //   let technologyStack= {};
-    //   if (props.info.stack.list) {
-    //     technologyStack = {
-    //         type : props.info.name,
-    //         list: list
-    //     }
-    //   } else if (props.info.stack.frontEnd) {
-    //     technologyStack = {
-    //       type : props.info.name,
-    //         frontEnd: frontEnd,
-    //         backEnd: backEnd
-    //     }
-    //   }
-    //   axios.put(`${BACKEND_URL}/jobseeker/updateTechnologyStack/${loginId}`,technologyStack)
-    // .then(res => {
-    //   if (res.data.success) {
-    //     props.onSuccessUpdate();
-    //   } else {
-    //     props.onFailedUpdate();
-    //   }
-    // });
-    // }
+    if(index > -1){
+      if (props.info.stack.list) {
+        data = {
+            list: list
+        }
+      } else if (props.info.stack.frontEnd) {
+        data = {
+            frontEnd: frontEnd,
+            backEnd: backEnd
+        }
+      }
+      axios.put(`${BACKEND_URL}/jobseeker/updateTechnologyItem/${loginId}`,data)
+    .then(res => {
+      if (res.data.success) {
+        props.onSuccessUpdate();
+      } else {
+        props.onFailedUpdate();
+      }
+    })
+    }else{
+      let technologyStack= {};
+      if (props.info.stack.list) {
+        technologyStack = {
+            type : props.info.name,
+            list: list
+        }
+      } else if (props.info.stack.frontEnd) {
+        technologyStack = {
+          type : props.info.name,
+            frontEnd: frontEnd,
+            backEnd: backEnd
+        }
+      }
+      axios.put(`${BACKEND_URL}/jobseeker/updateTechnologyStack/${loginId}`,technologyStack)
+    .then(res => {
+      if (res.data.success) {
+        props.onSuccessUpdate();
+      } else {
+        props.onFailedUpdate();
+      }
+    });
+    }
 
     // setPendingChanges(false);
     // setEditRowsModel({});

@@ -196,22 +196,22 @@ const updateAward = (req, res) => {
 };
 
 const updateTechnologyItem = (req, res) => {
-  Jobseeker.updateOne(
-    { _id: req.params.id },
+  Jobseeker.findByIdAndUpdate(
+    req.params.id,
     {
-      $set: { [`technologyStack.${req.body.index}`]: req.body.techItem },
+        $set:req.body
     },
-    (err, jobseeker) => {
-      if (err) {
-        return res.status(400).json({
-          error: err,
+    (err,technology) =>{
+        if(err){
+            return res.status(400).json({
+                error:err
+            })
+        }
+        return res.status(200).json({
+            success: "Updated successfully"
         });
-      }
-      return res.status(200).json({
-        success: true,
-      });
     }
-  );
+);
 };
 
 const updateUniversity = (req, res) => {

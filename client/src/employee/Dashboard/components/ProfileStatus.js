@@ -255,7 +255,7 @@ function ProfileStatus(props) {
                         <Typography  variant="body2" component="p" sx={{ opacity: 0.72 }} style={{fontSize:"16px",textAlign:"left", fontWeight:"bold", paddingBottom:"5px",color:"#666"}}>
                             Your profile is {(state.universities + state.schools + state.courses + state.awards + state.volunteerings + state.works + state.projects + state.skills)/8*100}% complete
                         </Typography>
-                        <BorderLinearProgress variant="determinate" value={40} />
+                        <BorderLinearProgress variant="determinate" value={(state.universities + state.schools + state.courses + state.awards + state.volunteerings + state.works + state.projects + state.skills)/8*100} />
                     </div>
                 </Grid>
                 {displayStatus()}

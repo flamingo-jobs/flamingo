@@ -1,11 +1,16 @@
-import React from 'react'
-import {  makeStyles } from '@material-ui/core'
+import React, {useState, useEffect} from 'react'
+import { makeStyles, withStyles } from '@material-ui/core'
 import FloatCard from '../../../components/FloatCard';
 import { Grid, Typography, Paper } from '@material-ui/core';
 import { indigo } from '@material-ui/core/colors';
 import CardMedia from '@material-ui/core/CardMedia';
 import statImage1 from '../images/statImage1.jpg';
 import statImage2 from '../images/statImage2.jpg';
+import { Link } from 'react-router-dom';
+import ChevronRightTwoToneIcon from '@material-ui/icons/ChevronRightTwoTone';
+import theme from '../../../Theme';
+import BACKEND_URL from "../../../Config";
+import axios from "axios";
 
 // ----------------------------------------------------------------------
 
@@ -45,9 +50,37 @@ const useStyles = makeStyles((theme) => ({
       },
 }));
 
-function StatCard() {
+function StatCard(props) {
     const classes = useStyles();
-    const TOTAL = 714000;
+    const [appliedJobs,setAppliedJobs] = useState(0);
+    let loginId;
+    let login = false;
+    const jwt = require("jsonwebtoken");
+    const token = sessionStorage.getItem("userToken");
+    const header = jwt.decode(token, { complete: true });
+    if(token === null){
+        loginId=props.jobseekerID;
+    }else if (header.payload.userRole === "jobseeker") {
+        login = true;
+        loginId=sessionStorage.getItem("loginId");
+    } else {
+        loginId=props.jobseekerID;
+    }
+
+    useEffect(() => {
+        fetchData();
+      }, []);
+
+    function fetchData(){
+        axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
+        .then(res => {
+          if(res.data.success){
+            if(res.data.jobseeker.hasOwnProperty("applicationDetails")){
+              setAppliedJobs(res.data.jobseeker.applicationDetails.length);
+            }       
+          }
+        })
+      }
 
     return (
         <FloatCard>
@@ -71,7 +104,12 @@ function StatCard() {
                                     <Typography sx={{ opacity: 0.72 }} style={{fontSize:"25px"}}>
                                         Careers for Me
                                     </Typography>
-                                    <Typography variant="h3">15</Typography>
+                                    <Typography variant="h3" style={{paddingBottom:"40px"}}>15</Typography>
+                                    <Typography variant="body2" component="p" sx={{ opacity: 0.72 }} style={{fontSize:"16px",textAlign:"left",}}>
+                                        <Link to="/jobseeker/appliedJobs" style={{display: 'flex',flexWrap: 'wrap',color: theme.palette.tuftsBlue,marginBottom:"-20px",float:"right"}}>
+                                            <span>More Details</span><ChevronRightTwoToneIcon style={{marginTop:"-1px"}} />
+                                        </Link>
+                                    </Typography>
                                 </div>
                             </Grid>
                         </Grid>        
@@ -93,7 +131,12 @@ function StatCard() {
                                     <Typography sx={{ opacity: 0.72 }} style={{fontSize:"25px"}}>
                                         Applied Jobs
                                     </Typography>
-                                    <Typography variant="h3">15</Typography>
+                                    <Typography variant="h3" style={{paddingBottom:"40px"}}>{appliedJobs}</Typography>
+                                    <Typography variant="body2" component="p" sx={{ opacity: 0.72 }} style={{fontSize:"16px",textAlign:"left",}}>
+                                        <Link to="/jobseeker/appliedJobs" style={{display: 'flex',flexWrap: 'wrap',color: theme.palette.tuftsBlue,marginBottom:"-20px",float:"right"}}>
+                                            <span>More Details</span><ChevronRightTwoToneIcon style={{marginTop:"-1px"}} />
+                                        </Link>
+                                    </Typography>
                                 </div>
                             </Grid>
                         </Grid>        
