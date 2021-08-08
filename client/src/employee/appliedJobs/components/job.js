@@ -161,15 +161,19 @@ const Job = (props) => {
 
   const handleResumeDownload = async () => {
     const resumeName = props.applicationDetails.resumeName;
+
     try {
       const response = await axios.get(`${BACKEND_URL}/resume/${props.jobId}/${props.userId}`,{
-        responseType: 'blob'
+        responseType: 'arraybuffer'
+      });
+      const file = new Blob([response.data], {
+        type: "application/pdf",
       });
 
-      console.log("response", response);
-      download(response.data, "Flamingo_Resume", "application/pdf");
-      return;
+      return download(response.data, "Flamingo_Resume", "application/pdf");
+      
     } catch (err) {
+      console.log(err)
       if (err.status === 400) {
         console.log('Error while downloading file. Try again later');
       }

@@ -11,6 +11,7 @@ import SavedJob from "./components/savedJob";
 import BACKEND_URL from "../../Config";
 import axios from "axios";
 import SnackBarAlert from "../../components/SnackBarAlert";
+import Loading from "../../components/Loading";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -71,9 +72,7 @@ const SavedJobs = () => {
     if (!savedJobIds.length) {
       return (
         <Grid item xs={12}>
-          <FloatCard>
-          <CircularProgress />
-          </FloatCard>
+          <Loading />
         </Grid>
       );
     }

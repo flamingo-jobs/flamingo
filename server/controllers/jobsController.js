@@ -5,12 +5,10 @@ const create = async (req, res) => {
     const newJob = new Jobs(req.body);
     try{
         const savedPost = await newJob.save();
-        res.status(200).json({success: true});
+        res.status(200).json({success: true, job: savedPost});
     }catch(err){
         res.status(400).json({error: err});
     }
-    console.log("New job", newJob)
-
 }
 
 const getAll = async (req, res) => {

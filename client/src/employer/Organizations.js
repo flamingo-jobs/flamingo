@@ -14,6 +14,8 @@ import PaginationItem from '@material-ui/lab/PaginationItem';
 import OrgSearchBar from './components/OrgSearchBar';
 import LoginModal from './components/loginModal';
 import FloatCard from '../components/FloatCard';
+import NoInfo from '../components/NoInfo';
+import Loading from '../components/Loading';
 
 const useStyles = makeStyles((theme) => ({
     organizationsGrid: {
@@ -128,7 +130,11 @@ function Organizations(props) {
         axios.post(`${BACKEND_URL}/employers/filter`, { queryParams: queryParams, options: { skip: start, limit: 10 } }).then(res => {
 
             if (res.data.success) {
-                setOrganizations(res.data.existingData)
+                if (res.data.existingData.length !== 0) {
+                    setOrganizations(res.data.existingData);
+                } else {
+                    setOrganizations("empty");
+                }
             } else {
                 setOrganizations(null)
             }
@@ -149,11 +155,18 @@ function Organizations(props) {
     };
 
     const displayOrganizations = () => {
-        if (organizations.length === 0) {
+        if (organizations === "empty") {
             return (
                 <Grid item sm={12} style={{ marginBottom: 16 }}>
                     <FloatCard>
-                        <CircularProgress />
+                        <NoInfo message="Sorry, we can't find any organizations that matches with your requirements. Keep in touch with us" />
+                    </FloatCard>
+                </Grid>)
+        } else if (organizations.length === 0) {
+            return (
+                <Grid item sm={12} style={{ marginBottom: 16 }}>
+                    <FloatCard>
+                        <Loading />
                     </FloatCard>
                 </Grid>)
         } else if (organizations) {
@@ -187,7 +200,10 @@ function Organizations(props) {
                 <Grid item container xs={12} sm={12} md={8} lg={9} spacing={2} direction="row" className={classes.organizationsGrid} justify="flex-start" alignItems="flex-start">
                     {displayOrganizations()}
                     <Grid item sm={12}>
-                        <Pagination count={Math.ceil(count / 10)} color="primary" page={page} onChange={changePage} classes={{ ul: classes.pagination }} />
+                        {organizations !== "empty" ?
+                            <Pagination count={Math.ceil(count / 10)} color="primary" page={page} onChange={changePage} classes={{ ul: classes.pagination }} />
+                            : null
+                        }
                     </Grid>
                 </Grid>
                 <Grid item xs={12} sm={12} md={4} lg={3} className={classes.filterGrid}>

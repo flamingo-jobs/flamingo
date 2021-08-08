@@ -21,6 +21,8 @@ import { Avatar, Badge } from "@material-ui/core";
 import AddCircleRoundedIcon from "@material-ui/icons/AddCircleRounded";
 import RemoveCircleRoundedIcon from "@material-ui/icons/RemoveCircleRounded";
 import { Link } from "react-router-dom";
+import path from "path";
+import fs from "fs";
 
 const jwt = require("jsonwebtoken");
 const passwordRegexp =
@@ -217,6 +219,8 @@ export default function StartHiring() {
       password: formData.password,
       password_confirmation: formData.confirmPassword,
       role: "employer",
+      accessTokens: ["all"],
+      dateRegistered: new Date(),
     };
     if (badPassword(formData.password)) {
       setAlertData({
@@ -263,6 +267,7 @@ export default function StartHiring() {
       email: formData.email,
       dateRegistered: new Date(),
       links: social,
+      subscription: { type: "Basic", startDate: new Date() },
     };
     axios.post(`${BACKEND_URL}/employers/create`, employerData).then((res) => {
       if (res.data.success) {
@@ -301,20 +306,24 @@ export default function StartHiring() {
   };
   const handleUploads = () => {
     formData.logo = selectedFile ? selectedFile.name : "";
-    /*
-    const image = selectedFile;
-    fetch("https://freeimage.host/api/1/upload?key=<YOUR_API_KEY>", {
-      method: "POST",
-      body: image,
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        console.log("Success:", result);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
+
+    if (selectedFile) {
+      const data = new FormData();
+      const image = selectedFile;
+      data.append("logo", image);
+      data.append("company", formData.name);
+      axios.post(`${BACKEND_URL}/logo`, data).then((res) => {
+        if (res.data.success) {
+          //continue to next step
+        } else {
+          setAlertData({
+            severity: "error",
+            msg: "Image upload failed!",
+          });
+          handleAlert();
+        }
       });
-      */
+    }
   };
 
   // Dinamic Inuputs

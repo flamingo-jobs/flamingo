@@ -2,11 +2,12 @@ const Jobseeker = require("../models/jobseeker");
 
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
 
 // const fileName = Date.now().toString();
 let fileName = "";
 
-const fileStorageEngine = multer.diskStorage({
+const resumeStorageEngine = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.join(__dirname, "../resumes/"));
   },
@@ -17,10 +18,38 @@ const fileStorageEngine = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage: fileStorageEngine }).single("resume");
+const logoStorageEngine = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, "../logos/"));
+  },
+  filename: (req, file, cb) => {
+    fileName = req.body.company + path.extname(file.originalname);
+    fileName.replace(/:/g, "-");
+    cb(null, fileName);
+  },
+});
+
+const uploadLogo = multer({ storage: logoStorageEngine }).single("logo");
+const uploadResume = multer({ storage: resumeStorageEngine }).single("resume");
+
 
 const uploadResumeToServer = (req, res) => {
-  upload(req, res, (err) => {
+  uploadResume(req, res, (err) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        error: err,
+      });
+    }
+    return res.status(200).json({
+      success: true,
+    });
+  });
+  // console.log(req.file);
+};
+
+const uploadLogoToServer = (req, res) => {
+  uploadLogo(req, res, (err) => {
     if (err) {
       return res.status(400).json({
         success: false,
@@ -36,22 +65,19 @@ const uploadResumeToServer = (req, res) => {
 
 const downloadResume = async (req, res) => {
   try {
-    res.set({
-      'Content-Type': "application/pdf"
-    });
     const resumeName = req.params.jobId + "--" + req.params.userId + ".pdf";
     const resumePath = path.join(__dirname, '..', "resumes" , resumeName);
-    res.sendFile(resumePath);
+
+    var file = fs.createReadStream(resumePath);
+    file.pipe(res);
 
   } catch (error) {
-    res.status(400).json({
-      success: false,
-      error: "Error while downloading file. Please try again later."
-    });
+    console.log(error)
   }
 }
 
 module.exports = {
   uploadResumeToServer,
+  uploadLogoToServer,
   downloadResume,
 };

@@ -132,6 +132,11 @@ export default function ProfileSetup() {
     setAlertShow(false);
   };
 
+  const sendToHome = () => {
+    axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${sessionStorage.getItem("loginId")}`)
+    window.location = "/";
+  };
+
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
 
@@ -153,7 +158,7 @@ export default function ProfileSetup() {
         .put(`${BACKEND_URL}/jobseeker/update/${loginId}`, jobSeekerData)
         .then((res) => {
           if (res.data.success) {
-            window.location = "/";
+            sendToHome();
           } else {
             setAlertData({
               severity: "error",
@@ -498,9 +503,7 @@ export default function ProfileSetup() {
                         </Grid>
                         <Grid item xs={6} align="right">
                           <Link to="/">
-                            <Button
-                              className={classes.skip}
-                            >
+                            <Button className={classes.skip}>
                               Skip and do this later
                             </Button>
                           </Link>
@@ -528,9 +531,7 @@ export default function ProfileSetup() {
                                 <div>
                                   {activeStep === 0 ? (
                                     <Link to="/jobs">
-                                      <Button
-                                        className={classes.previous}
-                                      >
+                                      <Button className={classes.previous}>
                                         Cancel
                                       </Button>
                                     </Link>

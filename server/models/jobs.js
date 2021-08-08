@@ -78,6 +78,9 @@ const jobSchema = new mongoose.Schema({
         userId: {type: String},
         resumeName: {type: String}
     }], 
+    recommendedJobs:{
+        type: Array
+    }
 
 });
 

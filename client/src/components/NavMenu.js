@@ -18,6 +18,7 @@ import CodeRoundedIcon from '@material-ui/icons/CodeRounded';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import DescriptionIcon from '@material-ui/icons/Description';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
+import ComputerIcon from '@material-ui/icons/Computer';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -149,6 +150,14 @@ function NavMenu(props) {
                             <ListItemText className={classes.linkText} primary="Company" />
                         </ListItem>
                     </Link>
+
+                    <Link to="/employer/techstack">
+                        <ListItem button key="techstack" selected={selectedIndex === "techstack"} onClick={(event) => handleListItemClick(event, "techstack")} classes={{ selected: classes.active }} className={classes.listItem}>
+                            <ListItemIcon className={classes.linkIcon}><ComputerIcon /></ListItemIcon>
+                            <ListItemText className={classes.linkText} primary="Technologies" />
+                        </ListItem>
+                    </Link>
+                    
                     <Link to="/employer/jobs">
                         <ListItem button key="jobs" selected={selectedIndex === "jobs"} onClick={(event) => handleListItemClick(event, "jobs")} classes={{ selected: classes.active }} className={classes.listItem}>
                             <ListItemIcon className={classes.linkIcon}><WorkRoundedIcon /></ListItemIcon>
@@ -163,13 +172,6 @@ function NavMenu(props) {
                         </ListItem>
                     </Link>
 
-                    {/* <Link to="/employer/analytics">
-                        <ListItem button key="analytics" selected={selectedIndex === "analytics"} onClick={(event) => handleListItemClick(event, "analytics")} classes={{ selected: classes.active }} className={classes.listItem}>
-                            <ListItemIcon className={classes.linkIcon}><AssessmentIcon /></ListItemIcon>
-                            <ListItemText className={classes.linkText} primary="Analytics" />
-                        </ListItem>
-                    </Link> */}
-
                     <Link to="/employer/billing">
                         <ListItem button key="billing" selected={selectedIndex === "billing"} onClick={(event) => handleListItemClick(event, "billing")} classes={{ selected: classes.active }} className={classes.listItem}>
                             <ListItemIcon className={classes.linkIcon}><MonetizationOnIcon /></ListItemIcon>
@@ -177,10 +179,10 @@ function NavMenu(props) {
                         </ListItem>
                     </Link>
  
-                    <ListItem button key="contactUs" selected={selectedIndex === "contactUs"} onClick={(event) => handleListItemClick(event, "contactUs")} classes={{ selected: classes.active }} className={classes.listItem}>
+                    {/* <ListItem button key="contactUs" selected={selectedIndex === "contactUs"} onClick={(event) => handleListItemClick(event, "contactUs")} classes={{ selected: classes.active }} className={classes.listItem}>
                         <ListItemIcon className={classes.linkIcon}><PhoneRoundedIcon /></ListItemIcon>
                         <ListItemText className={classes.linkText} primary="Contact Us" />
-                    </ListItem>
+                    </ListItem> */}
                 </>
             )
         }

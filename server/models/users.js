@@ -25,6 +25,12 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: false,
   },
+  accessTokens: {
+    type: Array,
+  },
+  dateRegistered: {
+    type: Date,
+  },
 });
 
 module.exports = mongoose.model("Users", userSchema);

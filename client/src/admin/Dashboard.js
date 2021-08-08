@@ -4,7 +4,11 @@ import WeeklyApplications from './components/WeeklyApplications';
 import NewJobSeekers from './components/NewJobSeekers';
 import NewEmployers from './components/NewEmployers';
 import NewJobPostings from './components/NewJobPostings';
-import UsersBarChart from './components/analytics/usersBarChart';
+import JobsLineChart from './components/analytics/jobsLineChart';
+import UsersBarChart from './components/analytics/userBarChart';
+import CategoryPieChart from "./components/analytics/categoryPieChart";
+import ResumeBarChart from "./components/analytics/resumeBarChart";
+import SubsBarChart from './components/analytics/subsBarChart';
 
 // style={{border: "1px solid red"}}
 function Dashboard() {
@@ -29,23 +33,26 @@ function Dashboard() {
                         <NewJobPostings />
                     </Grid>
 
-                    <Grid item xs={12} md={6} lg={8}>
+                    <Grid item xs={12} md={6}>
+                        <JobsLineChart/>
+                    </Grid>
+
+                    <Grid item xs={12} md={6}>
                         <UsersBarChart/>
                     </Grid>
 
-                    <Grid item xs={12} md={6} lg={4}>
+                    <Grid item xs={12} md={6}>
+                        <ResumeBarChart/>
                     </Grid>
 
-                    <Grid item xs={12} md={6} lg={8}>
+                    <Grid item xs={12} md={6}>
+                        <SubsBarChart/>
                     </Grid>
 
-                    <Grid item xs={12} md={6} lg={4}>
-                    </Grid>
-
-                    <Grid item xs={12} md={6} lg={8}>
-                    </Grid>
-
-                    <Grid item xs={12} md={6} lg={4}>
+                    <Grid item container xs={12}  justify="center">
+                        <Grid item xs={12} md={4}>
+                            <CategoryPieChart/>
+                        </Grid>
                     </Grid>
 
                     <Grid item xs={12} md={6} lg={4}>

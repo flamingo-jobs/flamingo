@@ -5,7 +5,7 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import FloatCard from "../../../components/FloatCard";
 import CreateIcon from "@material-ui/icons/Create";
 import QualificationsModal from "./qualificationsModal";
@@ -41,10 +41,10 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "20px",
     color: theme.palette.tagIcon,
     transition: "0.3s",
-    "&:hover":{
+    "&:hover": {
       transition: "0.3s",
       color: theme.palette.black,
-    }
+    },
   },
   iconGridItem: {
     display: "flex",
@@ -77,7 +77,7 @@ const Qualifications = (props) => {
   };
 
   const handleQualificationRemove = (index) => {
-    const newJob = {...props.job};
+    const newJob = { ...props.job };
     newJob.qualifications.splice(
       newJob.qualifications.findIndex((qualification, i) => index === i),
       1
@@ -86,9 +86,9 @@ const Qualifications = (props) => {
   };
 
   const handleQualificationAdd = () => {
-    const newJob = {...props.job};
+    const newJob = { ...props.job };
     newJob.qualifications = [...newJob.qualifications, [""]];
-    props.setJob(newJob)
+    props.setJob(newJob);
   };
 
   const handleQualificationsSubmit = async (e) => {
@@ -105,11 +105,18 @@ const Qualifications = (props) => {
       );
       // console.log(response);
       handleClose();
-      props.setAlertData({ severity: "success", msg: "Changes saved successfully!" });
+      props.setAlertData({
+        severity: "success",
+        msg: "Changes saved successfully!",
+      });
       props.handleAlert();
+      await axios.get(`${BACKEND_URL}/jobs/generateRecommendations/${props.jobId}`);
     } catch (err) {
       handleClose();
-      props.setAlertData({ severity: "error", msg: "Changes could not be applied" });
+      props.setAlertData({
+        severity: "error",
+        msg: "Changes could not be applied",
+      });
       props.handleAlert();
       console.log("Error: ", err);
     }
@@ -144,7 +151,7 @@ const Qualifications = (props) => {
           <List dense={true} className={classes.list}>
             {props.job.qualifications.map((qualification) => (
               <ListItem key={qualification}>
-                <ListItemIcon style={{minWidth: 25}}>
+                <ListItemIcon style={{ minWidth: 25 }}>
                   <FiberManualRecordIcon fontSize="inherit" />
                 </ListItemIcon>
                 <ListItemText primary={qualification} />

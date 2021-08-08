@@ -13,6 +13,7 @@ import FloatCard from "../components/FloatCard";
 import MoreFromJobs from "./components/MoreFromJobs";
 import RelatedJobs from "./components/RelatedJobs";
 import CompanySummary from "./components/companySummary";
+import Loading from "../components/Loading";
 
 const useStyles = makeStyles((theme) => ({
   border: {
@@ -73,6 +74,7 @@ function JobDescription(props) {
   }
 
   useEffect(() => {
+    setJob("empty");
     retrieveJob();
     retrieveJobseeker();
     displayMoreFromJobs();
@@ -108,7 +110,7 @@ function JobDescription(props) {
     if (job === "empty") {
       return (
         <Grid item sm={12}>
-          <CircularProgress />
+          <Loading />
         </Grid>
       );
     } else {
@@ -166,7 +168,7 @@ function JobDescription(props) {
         return (
           <Grid item sm={12} className={classes.container} style={{ marginTop: 16 }}>
             <FloatCard >
-              <CircularProgress />
+              <Loading />
             </FloatCard>
           </Grid>
         );
@@ -186,7 +188,7 @@ function JobDescription(props) {
         <Grid item container spacing={3} sm={12}>
           <Grid item xs={12}>
             <FloatCard>
-              <CircularProgress />
+              <Loading />
             </FloatCard>
           </Grid>
         </Grid>
@@ -202,7 +204,7 @@ function JobDescription(props) {
         <Grid item container spacing={3} sm={12}>
           <Grid item xs={12}>
             <FloatCard>
-              <CircularProgress />
+              <Loading />
             </FloatCard>
           </Grid>
         </Grid>
@@ -218,7 +220,7 @@ function JobDescription(props) {
         <Grid item container spacing={3} sm={12}>
           <Grid item xs={12}>
             <FloatCard>
-              <CircularProgress />
+              <Loading />
             </FloatCard>
           </Grid>
         </Grid>

@@ -125,7 +125,7 @@ const Applications = () => {
   return (
     <>
       {displayAlert()}
-      <Grid container spacing={3} className={classes.root}>
+      <Grid container spacing={3} className={classes.root} justify="center">
         <Grid item xs={9}>
           {displayApplicants()}
         </Grid>

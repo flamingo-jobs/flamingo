@@ -100,6 +100,7 @@ const TechStack = (props) => {
         msg: "Changes saved successfully!",
       });
       props.handleAlert();
+      await axios.get(`${BACKEND_URL}/jobs/generateRecommendations/${props.jobId}`);
     } catch (err) {
       handleClose();
       props.setAlertData({

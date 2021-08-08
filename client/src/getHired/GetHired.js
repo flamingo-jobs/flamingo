@@ -256,6 +256,8 @@ export default function GetHired() {
       password: formData.password,
       password_confirmation: formData.confirmPassword,
       role: "jobseeker",
+      accessTokens: ["all"],
+      dateRegistered: new Date(),
     };
     if (badPassword(formData.password)) {
       setProgress(0);
@@ -299,6 +301,7 @@ export default function GetHired() {
       gender: gender,
       tagline: formData.tagline,
       intro: formData.description,
+      dateRegistered: new Date(),
       address: {
         street: formData.street,
         city: formData.city,
@@ -327,6 +330,7 @@ export default function GetHired() {
   };
 
   const handleSuccessLogin = (id, loginId) => {
+    axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`)
     const linker = { id: id, loginId: loginId };
     setProgress(70);
     axios.post(`${BACKEND_URL}/api/link-account`, linker).then((res) => {
@@ -616,7 +620,8 @@ export default function GetHired() {
                           </Grid>
                           <Grid item xs={12} align="left">
                             <Typography variant="caption" display="block">
-                              Please make sure that your password contains at least,
+                              Please make sure that your password contains at
+                              least,
                               <ul>
                                 <li>8 characters</li>
                                 <li>1 uppercase letter</li>
