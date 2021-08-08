@@ -36,6 +36,7 @@ import SearchResult from "./searchResults/searchResult";
 import Recommendations from "./recommendations/Recommendations";
 import BACKEND_URL from "./Config";
 import axios from "axios";
+import Billing from "./employee/Billing";
 
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -166,6 +167,9 @@ function Base() {
           </Route>
           <Route path="/jobseekerDashboard" exact>
             <JobseekerDashboard userRole={role} />
+          </Route>
+          <Route path="/jobseeker/billing">
+            <Billing />
           </Route>
         </>
       );

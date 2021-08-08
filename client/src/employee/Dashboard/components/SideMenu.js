@@ -1,11 +1,12 @@
 import React from 'react'
-import { Link, makeStyles } from '@material-ui/core'
+import {makeStyles } from '@material-ui/core'
 import FloatCard from '../../../components/FloatCard';
 import { Grid, Typography, Paper} from '@material-ui/core';
 import { indigo } from '@material-ui/core/colors';
 import WorkTwoToneIcon from '@material-ui/icons/WorkTwoTone';
 import BookmarkTwoToneIcon from '@material-ui/icons/BookmarkTwoTone';
 import NavigateNextTwoToneIcon from '@material-ui/icons/NavigateNextTwoTone';
+import { Link } from 'react-router-dom';
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
@@ -69,13 +70,34 @@ function SideMenu() {
                     <Paper elevation={0} className={classes.paperCont}>  
                         <div style={{width:"100%"}}>
                             <Typography variant="body2" component="p" style={{fontSize:"20px",textAlign:"left"}}>
-                                <Link style={{display: 'flex',alignItems: 'center',color: indigo[600]}}>
+                                <Link to="jobseeker/savedJobs" style={{display: 'flex',alignItems: 'center',color: indigo[600]}}>
                                     <Grid container xs={12}>
                                         <Grid item xs={2}>
                                             <BookmarkTwoToneIcon style={{marginTop:"5px"}} />
                                         </Grid>
                                         <Grid item xs={9} style={{marginTop:"4px"}}>
                                             <span>Saved jobs</span>
+                                        </Grid>
+                                        <Grid item xs={1}>
+                                            <NavigateNextTwoToneIcon style={{marginTop:"5px"}} />
+                                        </Grid>
+                                    </Grid>
+                                </Link>
+                            </Typography>
+                        </div>      
+                    </Paper>
+                </Grid>
+                <Grid item xs={12} style={{alignItems:"center",display: "flex"}}>
+                    <Paper elevation={0} className={classes.paperCont}>  
+                        <div style={{width:"100%"}}>
+                            <Typography variant="body2" component="p" style={{fontSize:"20px",textAlign:"left"}}>
+                                <Link to="jobseeker/favoriteOrganizations" style={{display: 'flex',alignItems: 'center',color: indigo[600]}}>
+                                    <Grid container xs={12}>
+                                        <Grid item xs={2}>
+                                            <BookmarkTwoToneIcon style={{marginTop:"5px"}} />
+                                        </Grid>
+                                        <Grid item xs={9} style={{marginTop:"4px"}}>
+                                            <span>Favourite Organizations</span>
                                         </Grid>
                                         <Grid item xs={1}>
                                             <NavigateNextTwoToneIcon style={{marginTop:"5px"}} />
