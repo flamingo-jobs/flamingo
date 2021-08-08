@@ -24,6 +24,7 @@ import SnackBarAlert from "../../components/SnackBarAlert";
 import UsersTable from "../components/UsersTable";
 import axios from "axios";
 import BACKEND_URL from "../../Config";
+import FloatCard from "../../components/FloatCard";
 const jwt = require("jsonwebtoken");
 
 const useStyles = makeStyles((theme) => ({
@@ -47,6 +48,16 @@ const useStyles = makeStyles((theme) => ({
     overflow: "unset",
     margin: "0px 10px 20px 5px",
     flexGrow: 1,
+  },
+  mainGrid: {
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+      alignItems: "stretch"
+    },
+    [theme.breakpoints.down('xs')]: {
+      paddingRight: 12,
+      paddingLeft: 12
+    },
   },
 }));
 
@@ -223,10 +234,9 @@ const Settings = () => {
   };
 
   return (
-    <Grid container className={classes.root}>
+    <Grid item container sm={12} spacing={3} direction="row" justify="space-between" className={classes.mainGrid} alignItems="flex-start">
       <Grid item xs={12} align="center">
-        <Card className={classes.topCard}>
-          <CardContent>
+        <FloatCard>
             {displayAlert()}
             <div className={classes.tabRoot}>
               <Tabs
@@ -435,8 +445,7 @@ const Settings = () => {
                 </Grid>
               </TabPanel>
             </div>
-          </CardContent>
-        </Card>
+        </FloatCard>
       </Grid>
     </Grid>
   );
