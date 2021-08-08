@@ -9,6 +9,8 @@ import AddIcon from "@material-ui/icons/Add";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import BACKEND_URL from "../../Config";
+import Lottie from "react-lottie";
+import WorkingImage from "../lotties/working.json";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,6 +50,15 @@ const AddTechForm = () => {
   const [value, setValue] = React.useState(2);
 
   const classes = useStyles();
+
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: WorkingImage,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
 
   const [state, setState] = useState({
     data: [],
@@ -132,33 +143,83 @@ const AddTechForm = () => {
     console.log(selectedSubCategory);
 
     var currentTechStack;
+    var temp = null;
+    var flag = true;
 
     axios
-    .get(`${BACKEND_URL}/employers/` + "60c246913542f942e4c84454")
-    .then((res) => {
-      console.log(res.data.employer);
-      if (res.data.success) {    
-        currentTechStack = res.data.employer.technologyStack;
+      .get(`${BACKEND_URL}/employers/` + "60c246913542f942e4c84454")
+      .then((res) => {
+        // console.log(res.data.employer);
+        if (res.data.success) {
+          currentTechStack = res.data.employer.technologyStack;
 
-        // currentTechStack.forEach(mainCategory => {
-        //   if(mainCategory.name==selectedMainCategory){
-        //     mainCategory.stack.forEach(subCategory => {
-        //       if(subCategory==selectedSubCategory){
-                
-        //       }
-        //     }
-        //   }
-        // }      
-        // );
-      }
-     
-      console.log(currentTechStack);
-    });
+          currentTechStack.forEach((mainCategory) => {
+            if (mainCategory.name == selectedMainCategory) {
+              flag = false;
+              if (
+                mainCategory.stack.frontEnd != undefined &&
+                selectedSubCategory == "frontEnd"
+              ) {
+                console.log("Front end");
+                if (
+                  !mainCategory.stack.frontEnd.includes(selectedStack.category)
+                ) {
+                  console.log("selected " + selectedStack.category);
+                  mainCategory.stack.frontEnd.push(selectedStack.category);
+                  return;
+                }
+              } else if (
+                mainCategory.stack.backEnd != undefined &&
+                selectedSubCategory == "backEnd"
+              ) {
+                console.log("Back end");
+                if (
+                  !mainCategory.stack.backEnd.includes(selectedStack.category)
+                ) {
+                  console.log("selected " + selectedStack.category);
+                  mainCategory.stack.backEnd.push(selectedStack.category);
+                  return;
+                }
+              } else if (
+                mainCategory.stack.list != undefined &&
+                selectedSubCategory == "list"
+              ) {
+                console.log("List");
+
+                if (!mainCategory.stack.list.includes(selectedStack.category)) {
+                  console.log("selected " + selectedStack.category);
+                  mainCategory.stack.list.push(selectedStack.category);
+                  return;
+                }
+              } else {
+                mainCategory.stack[selectedSubCategory] = [
+                  selectedStack.category,
+                ];
+                return;
+              }
+            }
+          });
+          if (flag) {
+            console.log('flag')
+            temp = {
+              name: selectedMainCategory,
+              stack: {
+                [selectedSubCategory]: [selectedStack.category],
+              },
+            };
+            currentTechStack.push(temp);
+          }
+        }
+
+        console.log(currentTechStack);
 
 
+        // send currentTechStack to backend
 
-
+      });
   }
+
+
   const toggleMainCategory = (event, values) => {
     selectedMainCategoryFn(values.category);
     console.log(selectedMainCategory);
@@ -238,6 +299,15 @@ const AddTechForm = () => {
             >
               SAVE
             </Button>
+          </Grid>
+          <Grid item className={classes.comboBox}>
+            <Lottie
+              className={classes.lottie}
+              options={defaultOptions}
+              height={"inherit"}
+              width={"inherit"}
+            />
+
           </Grid>
         </FloatCard>
     </Grid>
