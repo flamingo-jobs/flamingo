@@ -225,7 +225,7 @@ function ProfileStatus(props) {
     return (
         <FloatCard>
             <Grid container spacing={3} style={{padding: "20px"}}>
-                <Grid item sm={12} md={3}>
+                <Grid item md={12} lg={3}>
                     <Typography component="div">
                         <CardMedia
                             className={classes.media}
@@ -235,9 +235,9 @@ function ProfileStatus(props) {
                         />
                     </Typography>
                 </Grid>
-                <Grid item sm={12} md={8} style={{alignItems:"center",display: "flex"}}>
+                <Grid item md={12} lg={9} style={{alignItems:"center",display: "flex",paddingLeft:"40px",paddingRight:"0px"}}>
                     <div>
-                        <Typography sx={{ opacity: 0.72 }} style={{fontSize:"30px",textAlign:"left",fontWeight:"bold",color: theme.palette.stateBlue}}>
+                        <Typography sx={{ opacity: 0.72 }} style={{fontSize:"25px",fontWeight:"bold",color: theme.palette.stateBlue}}>
                             Anne Shirley
                         </Typography>
                         <Typography variant="body2" component="p" sx={{ opacity: 0.72 }} style={{fontSize:"16px",textAlign:"left",}}>
@@ -246,9 +246,6 @@ function ProfileStatus(props) {
                             </Link>
                         </Typography>
                     </div>
-                </Grid>
-                <Grid item sm={12} md={4} style={{alignItems:"center",display: "flex"}}>
-
                 </Grid>
                 <Grid item sm={12} style={{alignItems:"center",display: "flex"}}>
                     <div style={{width:"100%"}}>
