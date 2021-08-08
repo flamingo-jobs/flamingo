@@ -150,7 +150,6 @@ export default function CustomizedTables() {
               </StyledTableCell>
 
               <StyledTableCell align="right">
-                <Link to={`/employer/jobs/update/${row._id}`}>
                   <Button
                     variant="outlined"
                     size="small"
@@ -159,7 +158,6 @@ export default function CustomizedTables() {
                   >
                     Edit
                   </Button>
-                </Link>
               </StyledTableCell>
             </StyledTableRow>
           ))}
