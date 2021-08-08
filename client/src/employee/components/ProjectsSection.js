@@ -167,6 +167,18 @@ function ProjectsSection(props) {
     return allYears.map((x) => (<option value={x}>{x}</option>));
   }
 
+  //generate year list
+  function getYearsTo(){
+    let maxOffset = 30;
+    let thisYear = (new Date()).getFullYear();
+    let allYears = [];
+    for(let x = -7; x <= maxOffset; x++) {
+        allYears.push(thisYear - x)
+    }
+
+    return allYears.map((x) => (<option value={x}>{x}</option>));
+  }
+
   //generate month list
   function getMonthsFrom(){
     let maxOffset = 12;
@@ -486,7 +498,7 @@ function ProjectsSection(props) {
                             className={classes.selectYear}
                           >
                             <option aria-label="None" value="" />
-                            {getYearsFrom()}
+                            {getYearsTo()}
                           </Select>
                         </FormControl>
                       </Grid>
