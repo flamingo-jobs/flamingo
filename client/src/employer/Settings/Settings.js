@@ -21,6 +21,7 @@ import {
   Checkbox,
 } from "@material-ui/core";
 import SnackBarAlert from "../../components/SnackBarAlert";
+import UsersTable from "../components/UsersTable";
 import axios from "axios";
 import BACKEND_URL from "../../Config";
 const jwt = require("jsonwebtoken");
@@ -427,7 +428,7 @@ const Settings = () => {
                     </Grid>
                   </TabPanel>
                   <TabPanel value={value} index={1}>
-                    Item Two
+                      <UsersTable />
                   </TabPanel>
                 </div>
               </Grid>
