@@ -92,28 +92,27 @@ function Technologies(props) {
             }
         })
 
-            console.log("inside fetchData"+loginId)
-            let technologyStackData;
-            axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
-            .then(res => {
-              if(res.data.success){
-                if(res.data.jobseeker.technologyStack.length > 0){
-                  technologyStackData = res.data.jobseeker.technologyStack;
-                  if(Object.keys(res.data.jobseeker.technologyStack[0]).length === 0){
-                      res.data.jobseeker.technologyStack.splice(0,1)
-                      i++;
-                  }else if(technologyStackData[0].technologyStack == "" && technologyStackData[0].institute == "" && technologyStackData[0].from == "" && technologyStackData[0].to == ""){
-                      res.data.jobseeker.technologyStack.splice(0,1)
-                      i++;
-                  }
+        console.log("inside fetchData"+loginId)
+        let technologyStackData;
+        axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
+        .then(res => {
+            if(res.data.success){
+            if(res.data.jobseeker.technologyStack.length > 0){
+                technologyStackData = res.data.jobseeker.technologyStack;
+                if(Object.keys(res.data.jobseeker.technologyStack[0]).length === 0){
+                    res.data.jobseeker.technologyStack.splice(0,1)
+                    i++;
+                }else if(technologyStackData[0].technologyStack == "" && technologyStackData[0].institute == "" && technologyStackData[0].from == "" && technologyStackData[0].to == ""){
+                    res.data.jobseeker.technologyStack.splice(0,1)
+                    i++;
                 }
-                setTechnologyStack(technologyStackData)
-                console.log(res.data.jobseeker.technologyStack)
+            }
+            setTechnologyStack(technologyStackData)
+            console.log(res.data.jobseeker.technologyStack)
 
-              }
-            })
+            }
+        })
     }
-
 
 
     const displayTechnologies = () => {

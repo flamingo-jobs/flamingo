@@ -179,53 +179,48 @@ export default function DetailedAccordion(props) {
   }
 
   const saveChanges = () => {
-    let data = {};
-    if(index > -1){
-      if (props.info.stack.list) {
-        data = {
-            list: list
-        }
-      } else if (props.info.stack.frontEnd) {
-        data = {
-            frontEnd: frontEnd,
-            backEnd: backEnd
-        }
-      }
-      axios.put(`${BACKEND_URL}/jobseeker/updateTechnologyItem/${loginId}`,data)
-    .then(res => {
-      if (res.data.success) {
-        props.onSuccessUpdate();
-      } else {
-        props.onFailedUpdate();
-      }
-    })
-    }else{
-      let technologyStack= {};
-      if (props.info.stack.list) {
-        technologyStack = {
-            type : props.info.name,
-            list: list
-        }
-      } else if (props.info.stack.frontEnd) {
-        technologyStack = {
+    let technology= {};
+    if (props.info.stack.list) {
+      technology = {
           type : props.info.name,
-            frontEnd: frontEnd,
-            backEnd: backEnd
-        }
+          list: list
       }
-      axios.put(`${BACKEND_URL}/jobseeker/updateTechnologyStack/${loginId}`,technologyStack)
-    .then(res => {
-      if (res.data.success) {
-        props.onSuccessUpdate();
-      } else {
-        props.onFailedUpdate();
+    } else if (props.info.stack.frontEnd) {
+      technology = {
+          type : props.info.name,
+          frontEnd: frontEnd,
+          backEnd: backEnd
       }
-    });
     }
 
-    // setPendingChanges(false);
-    // setEditRowsModel({});
-    // setUpdatedRows([]);
+    let tech = props.techno;
+    if(tech){
+      let newIndex = tech.length;
+      let objIndex = tech.findIndex((obj => obj.type == props.info.name));
+      if(objIndex > -1){
+        tech[objIndex] = technology;
+      }else{
+        tech[newIndex] = technology;
+      }
+    }else{
+      tech = technology;
+    }
+    
+  
+      let data = {
+        technologyStack : tech,
+      }
+      
+      axios.put(`${BACKEND_URL}/jobseeker/update/${loginId}`,data)
+      .then(res => {
+        if (res.data.success) {
+          props.onSuccessUpdate();
+        } else {
+          props.onFailedUpdate();
+        }
+      })
+    
+    
   }
 
   const displayAccordionDetails = () => {
