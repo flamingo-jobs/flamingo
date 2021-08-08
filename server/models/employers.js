@@ -29,7 +29,8 @@ const employerSchema = new mongoose.Schema({
     required: true,
   },
   subscription: {
-    type: Object,
+    type: { type: String },
+    startDate: { type: Date }
   },
   scale: {
     type: String,

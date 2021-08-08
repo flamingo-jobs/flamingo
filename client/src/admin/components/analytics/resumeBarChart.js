@@ -22,8 +22,6 @@ const ResumeBarChart = () => {
       if (response.data.success) {
         setPastMonths(response.data.months);
         setMonthlyResumeCount(response.data.resumeCount);
-        console.log("pastMonths", response.data.months);
-        console.log("monthlyResumeCount", response.data.resumeCount);
       }
     } catch (err) {
       console.log(err);

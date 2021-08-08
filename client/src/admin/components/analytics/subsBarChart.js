@@ -12,6 +12,26 @@ const SubsBarChart = () => {
   const [monthlyStandard, setMonthlyStandard] = useState([]);
   const [monthlyPremium, setMonthlyPremium] = useState([]);
 
+  useEffect(() => {
+    retrieveSubscriptions();
+  }, []);
+
+  const retrieveSubscriptions = async () => {
+    try {
+      const response = await axios.get(
+        `${BACKEND_URL}/analytics/getMonthlySubs`
+      );
+      if (response.data.success) {
+        setPastMonths(response.data.months);
+        setMonthlyBasic(response.data.basic);
+        setMonthlyStandard(response.data.standard);
+        setMonthlyPremium(response.data.premium);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const generateBarChart = (moreData = {}, moreData2 = {}) => {
     return {
       labels: pastMonths,
