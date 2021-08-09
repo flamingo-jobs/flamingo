@@ -11,19 +11,49 @@ const create = async (req, res) => {
     }
 }
 
+// const getAll = async (req, res) => {
+//     console.log(JSON.stringify(req.body.queryParams));
+//     Jobs.find(req.body.queryParams, null, req.body.options).exec((err, jobs) => {
+//         if (err) {
+//             return res.status(400).json({
+//                 error: err
+//             })
+//         }
+//         return res.status(200).json({
+//             success: true,
+//             existingData: jobs
+//         });
+//     });
+// }
+
 const getAll = async (req, res) => {
     console.log(JSON.stringify(req.body.queryParams));
-    Jobs.find(req.body.queryParams, null, req.body.options).exec((err, jobs) => {
-        if (err) {
-            return res.status(400).json({
-                error: err
-            })
-        }
-        return res.status(200).json({
-            success: true,
-            existingData: jobs
+    if (req.body.relatedJob) {
+        Jobs.find(req.body.queryParams, { score: { $meta: "textScore" } }, req.body.options).exec((err, jobs) => {
+            if (err) {
+                return res.status(400).json({
+                    error: err
+                })
+            }
+            return res.status(200).json({
+                success: true,
+                existingData: jobs
+            });
         });
-    });
+    } else {
+        Jobs.find(req.body.queryParams, null, req.body.options).exec((err, jobs) => {
+            if (err) {
+                return res.status(400).json({
+                    error: err
+                })
+            }
+            return res.status(200).json({
+                success: true,
+                existingData: jobs
+            });
+        });
+    }
+
 }
 
 const getSearched = async (req, res) => {
@@ -75,17 +105,31 @@ const getById = (req, res) => {
 }
 
 const getJobCount = (req, res) => {
-    Jobs.countDocuments(req.body).exec((err, jobCount) => {
-        if (err) {
-            return res.status(400).json({
-                error: err
-            })
-        }
-        return res.status(200).json({
-            success: true,
-            jobCount: jobCount
+    if (req.body.relatedJob) {
+        Jobs.countDocuments(req.body.queryParams, { score: { $meta: "textScore" } }).exec((err, jobCount) => {
+            if (err) {
+                return res.status(400).json({
+                    error: err
+                })
+            }
+            return res.status(200).json({
+                success: true,
+                jobCount: jobCount
+            });
         });
-    });
+    } else {
+        Jobs.countDocuments(req.body.queryParams).exec((err, jobCount) => {
+            if (err) {
+                return res.status(400).json({
+                    error: err
+                })
+            }
+            return res.status(200).json({
+                success: true,
+                jobCount: jobCount
+            });
+        });
+    }
 }
 
 const getJobsFromEmployer = (req, res) => {

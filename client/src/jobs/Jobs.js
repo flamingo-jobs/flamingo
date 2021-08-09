@@ -106,13 +106,7 @@ function Jobs(props) {
         if (relatedJob) {
             let regexExp = relatedJob.replace("%20", "|");
             setSearch({
-                $or: [
-                    { title: { $regex: regexExp, $options: "i" } },
-                    { description: { $regex: regexExp, $options: "i" } },
-                    { tasksAndResponsibilities: { $regex: regexExp, $options: "i" } },
-                    { qualifications: { $regex: regexExp, $options: "i" } },
-                    { keywords: { $regex: regexExp, $options: "i" } },
-                ]
+                $text: { $search: relatedJob }
             })
         }
     }, []);
@@ -147,7 +141,7 @@ function Jobs(props) {
         if ((featured && JSON.stringify(queryParams) === "{}") || (org && JSON.stringify(queryParams) === "{}")) {
             return;
         }
-        axios.post(`${BACKEND_URL}/jobs/getJobCount`, queryParams).then(res => {
+        axios.post(`${BACKEND_URL}/jobs/getJobCount`, { queryParams: queryParams, related: relatedJob }).then(res => {
             if (res.data.success) {
                 setCount(res.data.jobCount)
             } else {
@@ -155,7 +149,7 @@ function Jobs(props) {
             }
 
             let start = (page - 1) * 10;
-            axios.post(`${BACKEND_URL}/jobs`, { queryParams: queryParams, options: { skip: start, limit: 10 } }).then(res => {
+            axios.post(`${BACKEND_URL}/jobs`, { queryParams: queryParams, related: relatedJob, options: { skip: start, limit: 10 } }).then(res => {
                 if (res.data.success) {
                     if (res.data.existingData.length !== 0) {
                         setJobs(res.data.existingData);
