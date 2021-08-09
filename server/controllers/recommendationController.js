@@ -223,7 +223,7 @@ const generateJobSeekerRecommendations = (req, res) => {
                     total = education * 0.1 + experience * 0.2 + techStack * 0.2 + projectTech * 0.2 + skills * 0.2 + certificates * 0.1;
 
                     if (total >= 10) {
-                        recommendedJobs.push({ jobId: job._id, score: total });
+                        recommendedJobs.push({ id: job._id, score: total });
                     }
 
                     updateJobData(req.params.id, job.recommendedJobs, job._id, total);

@@ -60,6 +60,7 @@ function Jobs(props) {
     const urlQuery = new URLSearchParams(window.location.search);
     const featured = urlQuery.get('featured');
     const org = urlQuery.get('org');
+    const relatedJob = urlQuery.get('related');
 
     const userId = sessionStorage.getItem("loginId");
     const [savedJobIds, setSavedJobIds] = useState("empty");
@@ -102,6 +103,18 @@ function Jobs(props) {
 
     useEffect(() => {
         retrieveJobseeker();
+        if (relatedJob) {
+            let regexExp = relatedJob.replace("%20", "|");
+            setSearch({
+                $or: [
+                    { title: { $regex: regexExp, $options: "i" } },
+                    { description: { $regex: regexExp, $options: "i" } },
+                    { tasksAndResponsibilities: { $regex: regexExp, $options: "i" } },
+                    { qualifications: { $regex: regexExp, $options: "i" } },
+                    { keywords: { $regex: regexExp, $options: "i" } },
+                ]
+            })
+        }
     }, []);
 
     const updateFilters = (filterData) => {

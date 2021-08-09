@@ -3,11 +3,11 @@ const Jobs = require('../models/jobs');
 
 const create = async (req, res) => {
     const newJob = new Jobs(req.body);
-    try{
+    try {
         const savedPost = await newJob.save();
-        res.status(200).json({success: true, job: savedPost});
-    }catch(err){
-        res.status(400).json({error: err});
+        res.status(200).json({ success: true, job: savedPost });
+    } catch (err) {
+        res.status(400).json({ error: err });
     }
 }
 
@@ -27,11 +27,34 @@ const getAll = async (req, res) => {
 }
 
 const getSearched = async (req, res) => {
+    // try {
+    //     const result = await Jobs.find({
+    //         title: { $regex: '.*' + req.params.searchString + '.*', $options: "i" },
+    //     });
+    //     res.status(200).json({ success: true, jobs: result });
+    // } catch (err) {
+    //     res.status(400).json({ success: false, error: err });
+    // }
+
     try {
-        const result = await Jobs.find({
-            title: { $regex: '.*' + req.params.searchString + '.*', $options: "i" },
-        });
-        res.status(200).json({ success: true, jobs: result });
+        const result = await Jobs.find({ $text: { $search: req.params.searchString } },
+            { score: { $meta: "textScore" } }, req.body.options).sort({ score: { $meta: "textScore" } });
+        if (result.length == 0) {
+            let regexExp = req.params.searchString.replace("%20", "|");
+            let params = {
+                $or: [
+                    { title: { $regex: regexExp, $options: "i" } },
+                    { description: { $regex: regexExp, $options: "i" } },
+                    { tasksAndResponsibilities: { $regex: regexExp, $options: "i" } },
+                    { qualifications: { $regex: regexExp, $options: "i" } },
+                    { keywords: { $regex: regexExp, $options: "i" } },
+                ]
+            }
+            let medResult = await Jobs.find(params, null, req.body.options);
+            res.status(200).json({ success: true, jobs: medResult });
+        } else {
+            res.status(200).json({ success: true, jobs: result });
+        }
     } catch (err) {
         res.status(400).json({ success: false, error: err });
     }
@@ -66,7 +89,7 @@ const getJobCount = (req, res) => {
 }
 
 const getJobsFromEmployer = (req, res) => {
-    Jobs.find({ 'organization.id' : req.params.id }, null, { limit: 3 }, (err, moreFromJobs) => {
+    Jobs.find({ 'organization.id': req.params.id }, null, { limit: 3 }, (err, moreFromJobs) => {
         if (err) {
             return res.status(400).json({
                 error: err
@@ -80,7 +103,7 @@ const getJobsFromEmployer = (req, res) => {
 }
 
 const getAllJobsFromEmployer = (req, res) => {
-    Jobs.find({ 'organization.id' : req.params.id }, (err, employerJobs) => {
+    Jobs.find({ 'organization.id': req.params.id }, (err, employerJobs) => {
         if (err) {
             return res.status(400).json({
                 error: err
@@ -131,7 +154,7 @@ const update = (req, res) => {
 const resetAll = (req, res) => { // To clear the test resume details
     Jobs.updateMany(
         {},
-        { $set: { applicationDetails: [] }},
+        { $set: { applicationDetails: [] } },
         (err, job) => {
             if (err) {
                 return res.status(400).json({
@@ -142,30 +165,30 @@ const resetAll = (req, res) => { // To clear the test resume details
                 sucess: "Updated successfully"
             });
         }
-        );
-    }
+    );
+}
 
 const updateResumeStatus = async (req, res) => {
-    try{
+    try {
         const updatedJobs = await Jobs.updateOne(
-            {_id: req.params.id, "applicationDetails.userId": req.body.userId},
+            { _id: req.params.id, "applicationDetails.userId": req.body.userId },
             {
-                $set:{ [`applicationDetails.$.status`]: req.body.status }
+                $set: { [`applicationDetails.$.status`]: req.body.status }
             },
         );
         res.status(200).json({ success: true });
-    }catch(err){
-        res.status(400).json({ success: false, error: err});
+    } catch (err) {
+        res.status(400).json({ success: false, error: err });
     }
 }
 
-const updateResumeDetails =   (req, res) => {
+const updateResumeDetails = (req, res) => {
     Jobs.findByIdAndUpdate(
         req.params.id,
         {
-            $pull: { applicationDetails: {resumeName: req.body.resumeName}  }
+            $pull: { applicationDetails: { resumeName: req.body.resumeName } }
         },
-        { safe: true, multi:true },
+        { safe: true, multi: true },
         (err, job) => {
             if (err) {
                 return res.status(400).json({
@@ -179,7 +202,7 @@ const updateResumeDetails =   (req, res) => {
     Jobs.findByIdAndUpdate(
         req.params.id,
         {
-            $push: { applicationDetails: req.body  }
+            $push: { applicationDetails: req.body }
         },
         (err, job) => {
             if (err) {

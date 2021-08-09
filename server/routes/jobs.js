@@ -8,7 +8,6 @@ router.post('/jobs/create', jobsController.create);
 
 // get jobs
 
-router.get('/jobs', jobsController.getAll);
 router.post('/jobs', jobsController.getAll);
 
 router.get('/jobs/generateRecommendations/:id', recommendationController.generateRecommendations);
@@ -16,6 +15,8 @@ router.get('/jobs/generateJobSeekerRecommendations/:id', recommendationControlle
 
 // get specific
 router.get('/jobs/search/:searchString', jobsController.getSearched);
+
+router.post('/jobs/related/:searchString', jobsController.getSearched);
 
 router.get('/jobs/featuredJobs', jobsController.getFeaturedJobs);
 

@@ -7,6 +7,7 @@ import JobCard from '../../jobs/components/JobCard';
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
 import theme from '../../Theme';
 import BACKEND_URL from '../../Config';
+import { Link } from 'react-router-dom';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -64,12 +65,24 @@ function RelatedJobs(props) {
         let regexExp = props.job.title.replace(" ", "|");
         let params = { $or: [{ title: { $regex: regexExp, $options: "i" } }, { description: { $regex: regexExp, $options: "i" } }] }
 
-        axios.post(`${BACKEND_URL}/jobs`, { queryParams: params, options: { limit: 3 } }).then(res => {
+        // axios.post(`${BACKEND_URL}/jobs`, { queryParams: params, options: { limit: 3 } }).then(res => {
+        //     if (res.data.success) {
+        //         if (props.job) {
+        //             setRelatedJobs(res.data.existingData.filter((job) => job._id !== props.job._id));
+        //         } else {
+        //             setRelatedJobs(res.data.existingData);
+        //         }
+        //     } else {
+        //         setRelatedJobs(null)
+        //     }
+        // })
+
+        axios.post(`${BACKEND_URL}/jobs/related/${props.job.title}`, { options: { limit: 3 } }).then(res => {
             if (res.data.success) {
                 if (props.job) {
-                    setRelatedJobs(res.data.existingData.filter((job) => job._id !== props.job._id));
+                    setRelatedJobs(res.data.jobs.filter((job) => job._id !== props.job._id));
                 } else {
-                    setRelatedJobs(res.data.existingData);
+                    setRelatedJobs(res.data.jobs);
                 }
             } else {
                 setRelatedJobs(null)
@@ -96,7 +109,7 @@ function RelatedJobs(props) {
         } else {
             return (
                 <Grid item sm={12}>
-                    <Typography>No more jobs from {props.job.organization.name}</Typography>
+                    <Typography>No related jobs are found!</Typography>
                 </Grid>)
         }
     }
@@ -117,12 +130,14 @@ function RelatedJobs(props) {
                 {displayRelatedJobs()}
                 <Grid item sm={12}>
                     <FloatCard>
-                        <Button
-                            className={classes.link}
-                            endIcon={<ArrowForwardRoundedIcon />}
-                        >
-                            See more related jobs
-                        </Button>
+                        <Link to={`/jobs?related=${props.job.title}`}>
+                            <Button
+                                className={classes.link}
+                                endIcon={<ArrowForwardRoundedIcon />}
+                            >
+                                See more related jobs
+                            </Button>
+                        </Link>
                     </FloatCard>
                 </Grid>
             </Grid>

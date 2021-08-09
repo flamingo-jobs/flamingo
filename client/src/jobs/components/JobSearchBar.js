@@ -97,10 +97,9 @@ function JobSearchBar(props) {
 
     const [commonKeywords, setCommonKeywords] = useState([]);
 
-    useEffect(() => {
-        retrieveOrganizations();
-
-    }, [])
+    // useEffect(() => {
+    //     retrieveOrganizations();
+    // }, [])
 
     const [keywords, setKeyword] = useState([]);
     const [locations, setLocations] = useState([]);
@@ -122,7 +121,13 @@ function JobSearchBar(props) {
         let filterObjects = {};
         if (keywords.length !== 0) {
             let regexExp = keywords.join('|');
-            filterObjects = { ...filterObjects, $or: [{ title: { $regex: regexExp, $options: "i" } }, { description: { $regex: regexExp, $options: "i" } }] };
+            filterObjects = { ...filterObjects, $or: [
+                { title: { $regex: regexExp, $options: "i" } },
+                { description: { $regex: regexExp, $options: "i" } },
+                { tasksAndResponsibilities: { $regex: regexExp, $options: "i" } },
+                { qualifications: { $regex: regexExp, $options: "i" } },
+                { keywords: { $regex: regexExp, $options: "i" } },
+            ] };
         }
 
         if (locations.length !== 0) {
@@ -131,15 +136,15 @@ function JobSearchBar(props) {
         props.onChange(filterObjects);
     }
 
-    const retrieveOrganizations = () => {
-        axios.get(`${BACKEND_URL}/employers`).then(res => {
-            if (res.data.success) {
-                setCommonKeywords(res.data.existingData)
-            } else {
-                setCommonKeywords([])
-            }
-        })
-    }
+    // const retrieveOrganizations = () => {
+    //     axios.get(`${BACKEND_URL}/employers`).then(res => {
+    //         if (res.data.success) {
+    //             setCommonKeywords(res.data.existingData)
+    //         } else {
+    //             setCommonKeywords([])
+    //         }
+    //     })
+    // }
 
     return (
         <FloatCard backColor={theme.palette.blueJeans}>
