@@ -186,6 +186,7 @@ export default function SignInSide() {
         if (res.data.success) {
           if (remember) {
             localStorage.setItem("userToken", res.data.token);
+            localStorage.setItem("loginId", res.data.loginId);
           }
           sessionStorage.setItem("userToken", res.data.token);
           sessionStorage.setItem("loginId", res.data.loginId);
@@ -194,12 +195,11 @@ export default function SignInSide() {
           const header = jwt.decode(token, { complete: true });
           if (header.payload.userRole === "jobseeker") {
             const urlQuery = new URLSearchParams(window.location.search);
-            const redirect = urlQuery.get('redirectTo');
+            const redirect = urlQuery.get("redirectTo");
             if (redirect) {
-              window.location =  `/jobDescription/${redirect}#applyJob`;
+              window.location = `/jobDescription/${redirect}#applyJob`;
             } else {
               window.location = "/jobseekerDashboard";
-
             }
           } else {
             window.location = "/";

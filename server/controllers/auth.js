@@ -4,6 +4,8 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { createJWT } = require("../utils/auth");
 const User = require("../models/users");
+const JobSeeker = require("../models/jobseeker");
+const Employer = require("../models/employers");
 const FRONTEND_URL = require("../Config").FRONTEND_URL;
 
 // Regex for validation of email address
@@ -88,6 +90,7 @@ exports.signup = (req, res, next) => {
                   user.username,
                   user.email,
                   user.role,
+                  user.accessTokens,
                   3600
                 );
 
@@ -174,6 +177,7 @@ exports.signin = (req, res) => {
               user.username,
               user.email,
               user.role,
+              user.accessTokens,
               3600
             );
             jwt.verify(
@@ -181,7 +185,7 @@ exports.signin = (req, res) => {
               process.env.TOKEN_SECRET,
               (err, decoded) => {
                 if (err) {
-                  res.status(500).json({ errors: "err1" });
+                  res.status(500).json({ errors: "token-error" });
                 }
                 if (decoded) {
                   return res.status(200).json({
@@ -194,7 +198,7 @@ exports.signin = (req, res) => {
             );
           })
           .catch((err) => {
-            res.status(500).json({ errors: "err2" });
+            res.status(500).json({ errors: err });
           });
       }
     })
@@ -287,7 +291,7 @@ exports.inviteEmlpoyee = async (req, res) => {
 };
 
 exports.getUsersByEmployer = async (req, res) => {
-  User.find({ "loginId": req.params.id }, (err, employerUsers) => {
+  User.find({ loginId: req.params.id }, (err, employerUsers) => {
     if (err) {
       return res.status(400).json({
         error: err,
@@ -298,4 +302,91 @@ exports.getUsersByEmployer = async (req, res) => {
       employerUsers: employerUsers,
     });
   });
+};
+
+exports.checkPassword = async (req, res) => {
+  const { userId, password } = req.body;
+  User.findOne({ _id: userId })
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({
+          errors: [{ user: "not found" }],
+        });
+      } else {
+        bcrypt
+          .compare(password, user.password)
+          .then((isMatch) => {
+            if (!isMatch) {
+              return res.json({ success: false });
+            }
+            return res.status(200).json({
+              success: true,
+            });
+          })
+          .catch((err) => {
+            res.status(500).json({ success: false });
+          });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ success: false });
+    });
+};
+
+exports.deleteUser = async (req, res) => {
+  const { userId, loginId, role, accessTokens } = req.body;
+  if (role === "jobseeker" || role === "admin") {
+    User.findByIdAndDelete(userId).exec((err, deletedUser) => {
+      if (err) {
+        return res.status(400).json({
+          error: err,
+        });
+      }
+    });
+    if (role === "jobseeker") {
+      JobSeeker.findByIdAndDelete(loginId).exec((err, deletedJobSeeker) => {
+        if (err) {
+          return res.status(400).json({
+            error: err,
+          });
+        }
+      });
+    }
+    return res.status(200).json({
+      success: "User deleted successfully",
+    });
+  } else if (role === "employer") {
+    if (accessTokens[0] === "all") {
+      //If admin-amployer deletes whole company
+      User.deleteMany(loginId).exec((err, deletedUser) => {
+        if (err) {
+          return res.status(400).json({
+            error: err,
+          });
+        }
+      });
+      Employer.findByIdAndDelete(loginId).exec((err, deletedEmployer) => {
+        if (err) {
+          return res.status(400).json({
+            error: err,
+          });
+        }
+      });
+      return res.status(200).json({
+        success: "User deleted successfully",
+      });
+    } else {
+      //If non-admin employers delete their accounts
+      User.findByIdAndDelete(userId).exec((err, deletedUser) => {
+        if (err) {
+          return res.status(400).json({
+            error: err,
+          });
+        }
+        return res.status(200).json({
+          success: "User deleted successfully",
+        });
+      });
+    }
+  }
 };
