@@ -100,7 +100,8 @@ function JobCard(props) {
       ? jwt.decode(token, { complete: true }).payload.userRole
       : null
     );
-  
+
+    
     useEffect(() => {
         if(!role){
             setIsSaved(false);
@@ -136,7 +137,7 @@ function JobCard(props) {
             props.setSavedJobIds(newSavedJobIds);
 
             try {
-                const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateSavedJobs/${props.userId}`, newSavedJobIds);
+                const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateSavedJobs/${userId}`, newSavedJobIds);
                 if (response.data.success) {
                 console.log('success');
                 }
@@ -150,7 +151,7 @@ function JobCard(props) {
             props.setSavedJobIds(newSavedJobIds);
       
             try {
-              const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateSavedJobs/${props.userId}`, newSavedJobIds);
+              const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateSavedJobs/${userId}`, newSavedJobIds);
               if (response.data.success) {
                 console.log('success');
               }

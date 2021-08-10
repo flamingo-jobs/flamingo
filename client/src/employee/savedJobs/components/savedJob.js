@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "left",
   },
   jobContainer: {
-    marginBottom: theme.spacing(3),
+    // marginBottom: theme.spacing(3),
   },
   header: {
     display: "flex",

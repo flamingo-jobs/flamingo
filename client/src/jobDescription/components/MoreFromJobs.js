@@ -61,8 +61,25 @@ function MoreFromJobs(props) {
     const classes = useStyles();
 
     const [moreFromJobs, setMoreFromJobs] = useState([]);
+    const [savedJobIds, setSavedJobIds] = useState("empty");
+    const userId = sessionStorage.getItem("loginId");
 
-
+    useEffect(() => {
+        retrieveJobseeker();
+      }, []);
+      
+    const retrieveJobseeker = async () => {
+        if(userId){
+            try {
+                const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
+                if (response.data.success) {
+                    setSavedJobIds(response.data.jobseeker.savedJobs);
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        }
+    };
 
     const retrieveMoreFromJobs = () => {
         axios.get(`${BACKEND_URL}/jobs/filterByOrganization/${props.job.organization.id}`).then(res => {
@@ -87,11 +104,14 @@ function MoreFromJobs(props) {
     }, [moreFromJobs])
 
     const displayMoreFromJobs = () => {
-        if (moreFromJobs) {
-
+        if (moreFromJobs && savedJobIds !== "empty") {
             return moreFromJobs.map(featuredJob => (
                 <Grid item sm={12} key={featuredJob._id} className={classes.jobGridCard}>
-                    <JobCard info={featuredJob} />
+                    <JobCard 
+                        info={featuredJob} 
+                        savedJobIds={savedJobIds}
+                        setSavedJobIds={setSavedJobIds}
+                    />
                 </Grid>
             ))
         } else {

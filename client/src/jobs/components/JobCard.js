@@ -116,7 +116,7 @@ function JobCard(props) {
         if(!role){
             setIsSaved(false);
         } else{
-            setIsSaved(props.savedJobIds.includes(props.info._id));
+            setIsSaved(props.savedJobIds?.includes(props.info._id));
         }
     }, [props.favoriteOrgs, props.info]);
 
