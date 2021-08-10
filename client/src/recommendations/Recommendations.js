@@ -178,7 +178,7 @@ function Recommendations(props) {
 
     const displayJobs = () => {
         // await delay(3000);
-        if (jobs === "empty") {
+        if (jobs === "empty" ) {
             return (
                 <Grid item sm={12} style={{ marginBottom: 16 }}>
                     <FloatCard>
@@ -192,13 +192,11 @@ function Recommendations(props) {
                         <Loading />
                     </FloatCard>
                 </Grid>)
-        } else {
+        } else if(savedJobIds !== "empty"){
             return jobs.map(job => (
                 <Grid item key={job._id} xs={12} className={classes.gridCard}>
                     <JobCard
-                        userId={userId}
                         info={job}
-                        userRole={props.userRole}
                         savedJobIds={savedJobIds}
                         setSavedJobIds={setSavedJobIds}
                         handleOpen={handleOpen}

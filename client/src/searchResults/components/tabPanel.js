@@ -14,7 +14,6 @@ const TabPanel = (props) => {
   const userId = sessionStorage.getItem("loginId");
   
   const {
-    children,
     value,
     index,
     searchString,
@@ -35,13 +34,13 @@ const TabPanel = (props) => {
 
   const retrieveJobs = async () => {
     try {
-      if (props.searchString !== "") {
+      if (searchString !== "") {
         const response = await axios.get(
-          `${BACKEND_URL}/jobs/search/${props.searchString}`
+          `${BACKEND_URL}/jobs/search/${searchString}`
         );
         if (response.data.success) {
           setJobs(response.data.jobs);
-          props.setJobMatches(response.data.jobs.length);
+          setJobMatches(response.data.jobs.length);
         }
       }
     } catch (err) {
@@ -51,13 +50,13 @@ const TabPanel = (props) => {
 
   const retrieveOrganizations = async () => {
     try {
-      if (props.searchString !== "") {
+      if (searchString !== "") {
         const response = await axios.get(
-          `${BACKEND_URL}/employers/search/${props.searchString}`
+          `${BACKEND_URL}/employers/search/${searchString}`
         );
         if (response.data.success) {
           setOrganizations(response.data.employers);
-          props.setOrgMatches(response.data.employers.length);
+          setOrgMatches(response.data.employers.length);
         }
       }
     } catch (err) {
@@ -67,13 +66,13 @@ const TabPanel = (props) => {
 
   const retrieveUsers = async () => {
     try {
-      if (props.searchString !== "") {
+      if (searchString !== "") {
         const response = await axios.get(
-          `${BACKEND_URL}/jobseekers/search/${props.searchString}`
+          `${BACKEND_URL}/jobseekers/search/${searchString}`
         );
         if (response.data.success) {
           setUsers(response.data.jobseekers);
-          props.setUserMatches(response.data.jobseekers.length);
+          setUserMatches(response.data.jobseekers.length);
         }
       }
     } catch (err) {
@@ -92,9 +91,6 @@ const TabPanel = (props) => {
           <JobCards
             jobs={jobs}
             searchString={searchString}
-            setJobMatches={setJobMatches}
-            userId={userId}
-            userRole={props.userRole} 
             savedJobIds={props.savedJobIds} 
             setSavedJobIds={props.setSavedJobIds}
           ></JobCards>
@@ -103,14 +99,12 @@ const TabPanel = (props) => {
           <OrganizationCards
             organizations={organizations}
             searchString={searchString}
-            setOrgMatches={setOrgMatches}
           ></OrganizationCards>
         )}
         {value === index && index === 2 && (
           <UserCards
             users={users}
             searchString={searchString}
-            setUserMatches={setUserMatches}
           ></UserCards>
         )}
       </Grid>

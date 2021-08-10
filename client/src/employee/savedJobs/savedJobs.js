@@ -103,11 +103,11 @@ const SavedJobs = () => {
   };
 
   return (
-    <Grid container className={classes.root}>
+    <Grid container spacing={3} className={classes.root} >
       {displayAlert()}
-      <Grid item container spacing={3} direction="column" xs={12}>
+      {/* <Grid item container spacing={3} direction="column" xs={12}> */}
         {displaySavedJobs()}
-      </Grid>
+      {/* </Grid> */}
     </Grid>
   );
 };

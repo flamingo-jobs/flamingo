@@ -72,7 +72,7 @@ function RecommendedOrganizations(props) {
     };
 
     const displayFeaturedOrgs = () => {
-        if (featuredOrgs) {
+        if (featuredOrgs && favoriteOrgs !== "empty") {
             
             return featuredOrgs.map(featuredOrg => (
                 <Grid item xs={12} lg={6} key={featuredOrg._id}>

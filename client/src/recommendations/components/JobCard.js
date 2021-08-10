@@ -12,6 +12,8 @@ import BookmarkBorderRoundedIcon from '@material-ui/icons/BookmarkBorderRounded'
 import BookmarksIcon from '@material-ui/icons/Bookmarks';
 import BACKEND_URL from "../../Config";
 import axios from "axios";
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -90,9 +92,17 @@ function JobCard(props) {
     const classes = useStyles();
     const { loading = false } = props;
     const [isSaved, setIsSaved] = useState(false);
+    const userId = sessionStorage.getItem("loginId");
 
+    const token = sessionStorage.getItem("userToken");
+    const [role, setRole] = useState(
+      jwt.decode(token, { complete: true })
+      ? jwt.decode(token, { complete: true }).payload.userRole
+      : null
+    );
+  
     useEffect(() => {
-        if(!props.userRole){
+        if(!role){
             setIsSaved(false);
         } else{
             setIsSaved(props.savedJobIds.includes(props.info._id));
@@ -128,7 +138,7 @@ function JobCard(props) {
             try {
                 const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateSavedJobs/${props.userId}`, newSavedJobIds);
                 if (response.data.success) {
-                // console.log('success');
+                console.log('success');
                 }
             } catch (err) {
                 console.log(err);
@@ -142,7 +152,7 @@ function JobCard(props) {
             try {
               const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateSavedJobs/${props.userId}`, newSavedJobIds);
               if (response.data.success) {
-                // console.log('success');
+                console.log('success');
               }
             } catch (err) {
               console.log(err);
@@ -151,7 +161,7 @@ function JobCard(props) {
     }
 
     const displaySaveIcon = () => {
-        if(!props.userRole){
+        if(!role){
             // When user is not signed in
             return <BookmarkBorderRoundedIcon className={classes.favorite} onClick={handleLoginModal} />;
         } else {

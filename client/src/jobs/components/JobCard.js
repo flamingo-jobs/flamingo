@@ -13,6 +13,8 @@ import BookmarksIcon from '@material-ui/icons/Bookmarks';
 import BACKEND_URL from "../../Config";
 import axios from "axios";
 import LoginModal from './loginModal';
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -92,6 +94,14 @@ function JobCard(props) {
     const { loading = false } = props;
     const [isSaved, setIsSaved] = useState(false);
 
+    const userId = sessionStorage.getItem("loginId");
+    const token = sessionStorage.getItem("userToken");
+    const [role, setRole] = useState(
+      jwt.decode(token, { complete: true })
+      ? jwt.decode(token, { complete: true }).payload.userRole
+      : null
+    );
+
     // Login modal 
     const [open, setOpen] = useState(false);
 
@@ -103,7 +113,7 @@ function JobCard(props) {
     };
 
     useEffect(() => {
-        if(!props.userRole){
+        if(!role){
             setIsSaved(false);
         } else{
             setIsSaved(props.savedJobIds.includes(props.info._id));
@@ -137,7 +147,7 @@ function JobCard(props) {
             props.setSavedJobIds(newSavedJobIds);
 
             try {
-                const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateSavedJobs/${props.userId}`, newSavedJobIds);
+                const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateSavedJobs/${userId}`, newSavedJobIds);
                 if (response.data.success) {
                 // console.log('success');
                 }
@@ -151,7 +161,7 @@ function JobCard(props) {
             props.setSavedJobIds(newSavedJobIds);
       
             try {
-              const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateSavedJobs/${props.userId}`, newSavedJobIds);
+              const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateSavedJobs/${userId}`, newSavedJobIds);
               if (response.data.success) {
                 // console.log('success');
               }
@@ -162,10 +172,10 @@ function JobCard(props) {
     }
 
     const displaySaveIcon = () => {
-        if(!props.userRole){
+        if(!role){
             // When user is not signed in
             return <BookmarkBorderRoundedIcon className={classes.favorite} onClick={handleLoginModal} />;
-        } else {
+        } else if(role === "jobseeker"){
             if(isSaved){
                 // When user is signed in && Job is in savedjobs 
                 return <BookmarkIcon className={classes.favorite} onClick={handleSavingJob} />;

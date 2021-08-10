@@ -16,6 +16,8 @@ import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BACKEND_URL from "../../Config";
 import axios from "axios";
 import SnackBarAlert from "../../components/SnackBarAlert";
+import Tooltip from '@material-ui/core/Tooltip';
+
 
 const useStyles = makeStyles((theme) => ({
   border: {
@@ -216,38 +218,74 @@ function JobSummary(props) {
   }
 
   const displaySaveForLater = () => {
-    if (props.userRole === "jobseeker") {
-      if (props.isSaved) {
-        return (
-          <Button
-            className={classes.savBtn}
-            onClick={handleSavingJob}
-          >
-            <BookmarkIcon />Saved
-          </Button>
-        );
+    if(props.userRole !== "employer" && props.userRole !== "admin"){
+      if (props.userRole === "jobseeker") {
+        if (props.isSaved) {
+          return (
+            <Button
+              className={classes.savBtn}
+              onClick={handleSavingJob}
+            >
+              <BookmarkIcon />Saved
+            </Button>
+          );
+        } else {
+          return (
+            <Button
+              className={classes.savBtn}
+              onClick={handleSavingJob}
+            >
+              <BookmarkBorderRoundedIcon />Save for later
+            </Button>
+          );
+        }
       } else {
         return (
           <Button
             className={classes.savBtn}
-            onClick={handleSavingJob}
+            onClick={handleLoginModal}
           >
             <BookmarkBorderRoundedIcon />Save for later
           </Button>
         );
       }
-    } else {
-      return (
-        <Button
-          className={classes.savBtn}
-          onClick={handleLoginModal}
-        >
-          <BookmarkBorderRoundedIcon />Save for later
-        </Button>
-      );
+
     }
   }
 
+  const displayApplyButton = () => {
+    if(props.userRole !== "employer" && props.userRole !== "admin"){
+      if(props.isSignedIn && !props.isApplied){
+        return (
+          <ScrollLink to="applyForm" smooth={true} duration={1000}>
+            <Button className={classes.applyBtn}>
+              Apply For This Job
+            </Button>
+          </ScrollLink>
+        );
+      }
+
+      if(!props.isSignedIn){
+        return (
+          <Button className={classes.applyBtn} onClick={handleLoginModal}>
+            Apply For This Job
+          </Button>);
+      }
+
+      if(props.isApplied){
+        return (
+          <Tooltip title="You Can Upload Your CV Again Using the Applied Jobs Page">
+            <div>
+              <Button disabled className={classes.applyBtn}>
+                Already Applied
+              </Button>
+            </div>
+          </Tooltip>
+        );
+      }
+    }
+  }
+// style={{border: "1px solid red"}}
   return (
     <Container>
       {displayAlert()}
@@ -285,24 +323,7 @@ function JobSummary(props) {
           </Grid>
           <Grid item xs={12} md={4} align="center">
             {displaySaveForLater()}
-            {props.isSignedIn && !props.isApplied && (
-              <ScrollLink to="applyForm" smooth={true} duration={1000}>
-                <Button className={classes.applyBtn}>
-                  Apply For This Job
-                </Button>
-              </ScrollLink>
-            )}
-            {!props.isSignedIn && (
-              <Button className={classes.applyBtn} onClick={handleLoginModal}>
-                Apply For This Job
-              </Button>
-            )}
-            {props.isApplied && (
-              <Button disabled className={classes.applyBtn}>
-                Already Applied
-              </Button>
-            )
-            }
+            {displayApplyButton()}
 
           </Grid>
         </Grid>
