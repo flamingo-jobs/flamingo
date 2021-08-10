@@ -162,7 +162,7 @@ const Settings = () => {
     };
 
     axios.post(`${BACKEND_URL}/api/remove-user`, deleteUserData).then((res) => {
-      console.log("hukaa");
+      
       if (res.data.success) {
         sessionStorage.clear();
         localStorage.clear();

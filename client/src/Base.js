@@ -135,7 +135,6 @@ function Base() {
   const loadDefault = () => {
     return (
       <>
-        {console.log("process says : " + env.REACT_APP_TOKEN_SECRET)}
         <Route path="/searchResults">
           <SearchResult userRole={role} />
         </Route>
