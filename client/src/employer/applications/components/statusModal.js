@@ -183,6 +183,11 @@ const StatusModal = (props) => {
                       label="Pending"
                     />
                     <FormControlLabel
+                      value="reviewing"
+                      control={<CustomRadio />}
+                      label="Reviewing"
+                    />
+                    <FormControlLabel
                       value="shortlisted"
                       control={<CustomRadio />}
                       label="Shortlisted"
