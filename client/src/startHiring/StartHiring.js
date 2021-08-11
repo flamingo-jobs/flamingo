@@ -26,7 +26,7 @@ import fs from "fs";
 
 const jwt = require("jsonwebtoken");
 const passwordRegexp =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})/;
 
 const useStyles = makeStyles((theme) => ({
   root: {
