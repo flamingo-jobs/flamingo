@@ -17,6 +17,7 @@ import Keywords from "./components/keywords";
 import TechStack from "./components/techStack";
 import BACKEND_URL from "../../Config";
 import SnackBarAlert from "../../components/SnackBarAlert";
+const jwt = require("jsonwebtoken");
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -135,7 +136,10 @@ export default function CreateJobSetup() {
     return dateStr;
   };
 
+  // Session variables
   const empId = sessionStorage.getItem("loginId");
+  const userId = jwt.decode(sessionStorage.getItem("userToken"),{complete:true}).payload.userId;
+
   // Data retrieved from DB
   const [categories, setCategories] = useState("empty");
   const [types, setTypes] = useState("empty");
@@ -316,6 +320,7 @@ export default function CreateJobSetup() {
       keywords: keywordsState,
       isPublished: isPublished,
       isFeatured: isFeatured,
+      createdBy: userId,
     };
 
     try {

@@ -9,14 +9,16 @@ import {
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import BillingPackageCard from "./components/BillingPackageCard";
+import NoAccess from "../components/NoAccess";
 import FloatCard from "./components/FloatCard";
+const jwt = require("jsonwebtoken");
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundSize: "cover",
     // minHeight: "100vh",
-    marginLeft: 10, 
-    marginRight: 10, 
+    marginLeft: 10,
+    marginRight: 10,
   },
   container: {
     paddingTop: 20,
@@ -40,19 +42,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+let haveAccess = false;
+
+if (sessionStorage.getItem("userToken")) {
+  var accessTokens = jwt.decode(sessionStorage.getItem("userToken"), {
+    complete: true,
+  }).payload.accessTokens;
+  if (accessTokens.includes("all") || accessTokens.includes("billing")) {
+    haveAccess = true;
+  }
+}
+
 const Billing = () => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
       {/* <FloatCard> */}
-        {/* <Grid container xs={12} direction="row" spacing={1}>
+      {/* <Grid container xs={12} direction="row" spacing={1}>
           <Grid item xs={12}> */}
-            <BillingPackageCard></BillingPackageCard>
-          {/* </Grid>
+      {haveAccess ? <BillingPackageCard /> : <NoAccess/>}
+      {/* </Grid>
         </Grid> */}
       {/* </FloatCard> */}
-
     </div>
   );
 };

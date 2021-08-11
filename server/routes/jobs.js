@@ -25,6 +25,8 @@ router.get('/jobs/filterByOrganization/:id', jobsController.getJobsFromEmployer)
 //get all jobs of a particular employer
 router.get('/jobs/filterAllByOrganization/:id', jobsController.getAllJobsFromEmployer);
 
+router.get('/jobs/filterAllByUser/:loginId/:userId', jobsController.getAllJobsFromUser);
+
 // get specific
 
 router.post('/jobs/getJobCount', jobsController.getJobCount);

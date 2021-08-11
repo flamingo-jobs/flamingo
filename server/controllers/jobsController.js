@@ -160,6 +160,20 @@ const getAllJobsFromEmployer = (req, res) => {
     });
 }
 
+const getAllJobsFromUser = (req, res) => {
+    Jobs.find({ 'organization.id': req.params.loginId, "createdBy" : req.params.userId }, (err, employerJobs) => {
+        if (err) {
+            return res.status(400).json({
+                error: err
+            })
+        }
+        return res.status(200).json({
+            success: true,
+            employerJobs: employerJobs
+        });
+    });
+}
+
 const getFeaturedJobs = (req, res) => {
     Jobs.find({ isFeatured: true }, null, { limit: 3 }, (err, featuredJobs) => {
         if (err) {
@@ -289,6 +303,7 @@ module.exports = {
     getJobCount,
     getJobsFromEmployer,
     getAllJobsFromEmployer,
+    getAllJobsFromUser,
     resetAll,
 
 }

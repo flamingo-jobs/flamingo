@@ -17,7 +17,8 @@ import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
 import axios from "axios";
 import BACKEND_URL from "../../Config";
 import { useState, useEffect } from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+const jwt = require("jsonwebtoken");
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -67,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CustomizedTables() {
+export default function CustomizedTables(props) {
   const classes = useStyles();
 
   const [value, setValue] = React.useState(2);
@@ -78,17 +79,26 @@ export default function CustomizedTables() {
 
   const allJobs = state.allJobs;
 
+  const loginId = sessionStorage.getItem("loginId");
+  const userId = jwt.decode(sessionStorage.getItem("userToken"), {
+    complete: true,
+  }).payload.userId;
+  
+  const generateURL = () => {
+    return props.singleJobAccess
+      ? `${BACKEND_URL}/jobs/filterAllByUser/${loginId}/${userId}`
+      : `${BACKEND_URL}/jobs/filterAllByOrganization/${loginId}`;
+  };
+
   useEffect(() => {
-    axios
-      .get(`${BACKEND_URL}/jobs/filterAllByOrganization/` + "60c246913542f942e4c84454")
-      .then((res) => {
-        console.log(res.data.employerJobs);
-        if (res.data.success) {
-          setState({
-            allJobs: res.data.employerJobs,
-          });
-        }
-      });
+    axios.get(generateURL()).then((res) => {
+      console.log(res.data.employerJobs);
+      if (res.data.success) {
+        setState({
+          allJobs: res.data.employerJobs,
+        });
+      }
+    });
   }, []);
 
   return (
@@ -140,7 +150,9 @@ export default function CustomizedTables() {
               </StyledTableCell>
 
               {/* <StyledTableCell align="center">{row.postedDate.slice(0, 10)}</StyledTableCell> */}
-              <StyledTableCell align="center">{row.dueDate.slice(0, 10)}</StyledTableCell>
+              <StyledTableCell align="center">
+                {row.dueDate.slice(0, 10)}
+              </StyledTableCell>
               <StyledTableCell align="center">
                 {row.isPublished ? (
                   <Chip
@@ -162,28 +174,28 @@ export default function CustomizedTables() {
 
               <StyledTableCell align="right">
                 <Link to={`/employer/resumes/${row._id}`}>
-                    <Button
-                      variant="outlined"
-                      size="small"
-                      className={classes.button}
-                      endIcon={<NavigateNextIcon />}
-                    >
-                      Resumes
-                    </Button>
-                  </Link>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    className={classes.button}
+                    endIcon={<NavigateNextIcon />}
+                  >
+                    Resumes
+                  </Button>
+                </Link>
               </StyledTableCell>
 
               <StyledTableCell align="right">
                 <Link to={`/employer/jobs/update/${row._id}`}>
-                    <Button
-                      variant="outlined"
-                      size="small"
-                      className={classes.button}
-                      endIcon={<NavigateNextIcon />}
-                    >
-                      View
-                    </Button>
-                  </Link>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    className={classes.button}
+                    endIcon={<NavigateNextIcon />}
+                  >
+                    View
+                  </Button>
+                </Link>
               </StyledTableCell>
             </StyledTableRow>
           ))}
