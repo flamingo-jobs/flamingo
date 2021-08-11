@@ -138,7 +138,7 @@ function Recommendations(props) {
         if (JSON.stringify(queryParams) === "{}" || JSON.stringify(queryParams) === `{"$and":[{},{"_id":{"$in":[]}}]}`) {
             return;
         }
-        axios.post(`${BACKEND_URL}/jobs/getJobCount`, queryParams).then(res => {
+        axios.post(`${BACKEND_URL}/jobs/getJobCount`, { queryParams: queryParams }).then(res => {
             if (res.data.success) {
                 setCount(res.data.jobCount)
             } else {
@@ -146,15 +146,20 @@ function Recommendations(props) {
             }
 
             let start = (page - 1) * 10;
-            axios.post(`${BACKEND_URL}/jobs`, { queryParams: queryParams, options: { skip: start, limit: 10 } }).then(res => {
+            axios.post(`${BACKEND_URL}/jobs/recommended`, { queryParams: queryParams, options: { skip: start, limit: 10 } }).then(res => {
                 if (res.data.success) {
-                    setJobs(res.data.existingData)
+                    setJobs(res.data.existingData.sort(sortJobsBasedOnScore))
                 } else {
                     setJobs(null)
                 }
             })
         })
 
+    }
+
+
+    function sortJobsBasedOnScore(a, b) {
+        return recommendedIds.indexOf(a._id) - recommendedIds.indexOf(b._id);
     }
 
     const retrieveJobseeker = async () => {

@@ -29,7 +29,7 @@ const create = async (req, res) => {
 const getAll = async (req, res) => {
     console.log(JSON.stringify(req.body.queryParams));
     if (req.body.relatedJob) {
-        Jobs.find(req.body.queryParams, { score: { $meta: "textScore" } }, req.body.options).exec((err, jobs) => {
+        Jobs.find(req.body.queryParams, { score: { $meta: "textScore" } }, req.body.options).sort({ "postedDate": -1 }).exec((err, jobs) => {
             if (err) {
                 return res.status(400).json({
                     error: err
@@ -41,7 +41,7 @@ const getAll = async (req, res) => {
             });
         });
     } else {
-        Jobs.find(req.body.queryParams, null, req.body.options).exec((err, jobs) => {
+        Jobs.find(req.body.queryParams, null, req.body.options).sort({ "postedDate": -1 }).exec((err, jobs) => {
             if (err) {
                 return res.status(400).json({
                     error: err
@@ -53,8 +53,24 @@ const getAll = async (req, res) => {
             });
         });
     }
-
 }
+
+const getAllRecommendedJobs = async (req, res) => {
+    console.log(JSON.stringify(req.body.queryParams));
+
+    Jobs.find(req.body.queryParams, null, req.body.options).exec((err, jobs) => {
+        if (err) {
+            return res.status(400).json({
+                error: err
+            })
+        }
+        return res.status(200).json({
+            success: true,
+            existingData: jobs
+        });
+    });
+}
+
 
 const getSearched = async (req, res) => {
     // try {
@@ -305,5 +321,6 @@ module.exports = {
     getAllJobsFromEmployer,
     getAllJobsFromUser,
     resetAll,
+    getAllRecommendedJobs
 
 }

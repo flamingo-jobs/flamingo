@@ -17,7 +17,8 @@ import StatusModal from "./statusModal";
 import axios from "axios";
 import BACKEND_URL from "../../../Config";
 import download from 'downloadjs';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -151,7 +152,37 @@ function ApplicantCard(props) {
       const file = new Blob([response.data], {
         type: "application/pdf",
       });
+
+      if(status === "pending"){
+        setStatus("reviewing");
+        const jobseekerData = {
+          status: "reviewing",
+          jobId: jobId,
+        };
+        const jobData = {
+          status: "reviewing",
+          userId: props.jobseeker._id
+        };
+  
+        const jobseekerResponse = await axios.patch(
+          `${BACKEND_URL}/jobseeker/updateResumeStatus/${props.jobseeker._id}`,
+          jobseekerData
+        );
+  
+        const jobResponse = await axios.patch(
+          `${BACKEND_URL}/jobs/updateResumeStatus/${jobId}`,
+          jobData
+        );
+        if (jobseekerResponse.data.success && jobResponse.data.success) {
+          props.setAlertData({
+            severity: "success",
+            msg: "Status Changed successfully!",
+          });
+          props.handleAlert();
+        }
+      }
       return download(file, props.jobseeker.name, "application/pdf");
+
     } catch (err) {
       console.log(err);
     }
@@ -186,6 +217,7 @@ function ApplicantCard(props) {
             </div>
             <div className={classes.headerRight}>
               {status === "pending" && <Status status={status} text={"Pending...."}></Status>}
+              {status === "reviewing" && <Status status={status} text={"Reviewing"}></Status>}
               {status === "shortlisted" && <Status status={status} text={"Shortlisted"}></Status>}
               {status === "rejected" && <Status status={status} text={"Rejected"}></Status>}
               <IconButton aria-label="delete" className={classes.editButton}>
