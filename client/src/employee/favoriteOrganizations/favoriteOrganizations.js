@@ -69,32 +69,34 @@ const FavoriteOrganizations = () => {
   };
 
   const retrieveEmployers = async () => {
-    if (favoriteOrgIds.length) {
-      const empIds = favoriteOrgIds.join("$$");
-      try {
-        const response = await axios.get(
-          `${BACKEND_URL}/employers/favorites/${empIds}`
-        );
-        if (response.data.success) {
-          setFavoriteOrgs(response.data.employers);
+    if(favoriteOrgIds !== "empty"){
+      if (favoriteOrgIds.length) {
+        const empIds = favoriteOrgIds.join("$$");
+        try {
+          const response = await axios.get(
+            `${BACKEND_URL}/employers/favorites/${empIds}`
+          );
+          if (response.data.success) {
+            setFavoriteOrgs(response.data.employers);
+          }
+        } catch (err) {
+          console.log(err);
         }
-      } catch (err) {
-        console.log(err);
       }
     }
   };
 
   const displayFavoriteOrgs = () => {
-    if (!favoriteOrgs.length) {
-      return (
-        <Grid item xs={12}>
-          <FloatCard>
-            <CircularProgress />
-          </FloatCard>
-        </Grid>
-      );
-    }
-    if (favoriteOrgs === "empty") {
+    // if (!favoriteOrgs.length) {
+    //   return (
+    //     <Grid item xs={12}>
+    //       <FloatCard>
+    //         <CircularProgress />
+    //       </FloatCard>
+    //     </Grid>
+    //   );
+    // }
+    if (favoriteOrgs === "empty" || favoriteOrgIds.length===0) {
       return (
         <Grid item xs={12}>
           <FloatCard>

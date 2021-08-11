@@ -101,7 +101,7 @@ function RecommendedJobs(props) {
     };
 
     const displayFeaturedJobs = () => {
-        if (featuredJobs) {
+        if (featuredJobs && savedJobIds !== "empty") {
 
             return featuredJobs.map(featuredJob => (
                 <Grid item sm={12} key={featuredJob._id} className={classes.jobGridCard}>

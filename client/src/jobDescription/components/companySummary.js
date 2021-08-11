@@ -10,6 +10,12 @@ import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 import Rating from '@material-ui/lab/Rating';
 import BACKEND_URL from '../../Config';
 import axios from 'axios';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import LoginModal from "./loginModal";
+
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
+
 
 const useStyles = makeStyles((theme) => ({
     header: {
@@ -100,6 +106,28 @@ function CompanySummary(props) {
     const classes = useStyles();
 
     const [summary, setSummary] = useState("empty");
+    const [isFavorite, setIsFavorite] = useState(false);
+    const [jobseeker, setJobseeker] = useState("empty");
+
+    const token = sessionStorage.getItem("userToken");
+
+    const [role, setRole] = useState(
+        jwt.decode(token, { complete: true })
+        ? jwt.decode(token, { complete: true }).payload.userRole
+        : null
+    );
+
+    // Login modal 
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => {
+      setOpen(true);
+    };
+    const handleClose = () => {
+      setOpen(false);
+    };
+    const handleLoginModal = () => {
+        handleOpen();
+    }
 
     const getAvgRating = (arr = []) => {
         return arr.map(item => item.rating).reduce((a, x) => a + x, 0) / arr.length;
@@ -123,6 +151,90 @@ function CompanySummary(props) {
         displaySummary();
     }, [summary])
 
+    useEffect(() => {
+        retrieveJobseeker();
+      }, []);
+
+    useEffect(() => {
+        if(jobseeker !== "empty"){
+            if(jobseeker.favoriteOrganizations?.includes(props.job.organization.id)){
+                setIsFavorite(true);
+            }
+        }
+    }, [jobseeker]);
+
+    const retrieveJobseeker = async () => {
+        try {
+          if(props.userId && role === "jobseeker"){
+            const response = await axios.get(`${BACKEND_URL}/jobseeker/${props.userId}`);
+            if (response.data.success) {
+              setJobseeker(response.data.jobseeker);
+            }
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      };
+    
+
+    const handleAddingFavorite = async () => {
+        if(isFavorite){ // Unsave
+            setIsFavorite(!isFavorite);
+            const newFavoriteOrgs = jobseeker.favoriteOrganizations.filter((id) => id !== props.job.organization.id);
+            try {
+                const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateFavoriteOrgs/${props.userId}`, newFavoriteOrgs);
+                if (response.data.success) {
+                console.log('success');
+                }
+            } catch (err) {
+                console.log(err);
+            }
+
+        } else{ // Save
+            setIsFavorite(!isFavorite);
+            const newFavoriteOrgs = [...jobseeker.favoriteOrganizations, props.job.organization.id];
+            try {
+              const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateFavoriteOrgs/${props.userId}`, newFavoriteOrgs);
+              if (response.data.success) {
+                console.log('success');
+              }
+            } catch (err) {
+              console.log(err);
+            }
+        }
+    }
+
+    const displayFavoriteButton = () => {
+        if(role !== "employer" && role !== "admin"){
+            if(!role){
+                // When user is not signed in
+                return (
+                    <Button className={classes.favButton} onClick={handleLoginModal}>
+                        <FavoriteBorderIcon className={classes.favorite}/>
+                        Add to Favorites
+                    </Button>
+                );
+            } else if(role && role==="jobseeker"){
+                if(isFavorite){
+                    // When user is signed in && Org is in favorites 
+                    return (
+                        <Button className={classes.favButton} onClick={handleAddingFavorite}>
+                            <FavoriteRounded className={classes.favorite}/>
+                            Remove from favourites
+                        </Button>
+                    );
+                } else {
+                    // When user is signed in but Org is not in favorites
+                    return (
+                        <Button className={classes.favButton} onClick={handleAddingFavorite}>
+                            <FavoriteBorderIcon className={classes.favorite}/>
+                            Add to Favorites
+                        </Button>
+                    );
+                }
+            }
+        }
+    }
 
     const displaySummary = () => {
         if (summary === "empty") {
@@ -144,7 +256,8 @@ function CompanySummary(props) {
                     <div className={classes.reviews}>
                         <Rating name="read-only" value={getAvgRating(summary.reviews)} readOnly />
                     </div>
-                    <Button className={classes.favButton}><FavoriteRounded className={classes.favorite} />Remove from favourites</Button>
+                    {displayFavoriteButton()}
+
 
                 </div>
                 <div className={classes.body} >
@@ -160,6 +273,12 @@ function CompanySummary(props) {
 
     return (
         <div>
+            <LoginModal
+                open={open}
+                handleClose={handleClose}
+                jobId={props.job._id}
+            ></LoginModal>
+
             <Grid container direction="column" spacing={2} className={classes.container}>
                 <Grid item sm={12}>
                     <FloatCard>

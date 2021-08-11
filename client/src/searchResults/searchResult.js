@@ -139,7 +139,6 @@ const SearchResult = (props) => {
             setJobMatches={setJobMatches}
             setOrgMatches={setOrgMatches}
             setuserMatches={setUserMatches}
-            userRole={props.userRole} 
             savedJobIds={savedJobIds} 
             setSavedJobIds={setSavedJobIds}
           ></TabPanel>

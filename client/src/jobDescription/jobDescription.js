@@ -98,11 +98,14 @@ function JobDescription(props) {
 
   const retrieveJobseeker = async () => {
     try {
-      const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
-      if (response.data.success) {
-        setSavedJobIds(response.data.jobseeker.savedJobs);
-        if (response.data.jobseeker.savedJobs.includes(jobId)) {
-          setIsSaved(true);
+      if(userId){
+        const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
+        if (response.data.success) {
+          setSavedJobIds(response.data.jobseeker.savedJobs);
+  
+          if (response.data.jobseeker.savedJobs.includes(jobId)) {
+            setIsSaved(true);
+          }
         }
       }
     } catch (err) {
@@ -167,23 +170,26 @@ function JobDescription(props) {
   };
 
   const displayApplyForm = () => {
-    if (isSignedIn === true && userId !== "empty" && !isApplied) {
-      if (job === "empty") {
-        return (
-          <Grid item sm={12} className={classes.container} style={{ marginTop: 16 }}>
-            <FloatCard >
-              <Loading />
-            </FloatCard>
-          </Grid>
-        );
-      } else {
-        return (
-          <Grid item sm={12}>
-            <ApplyForm userId={userId} jobId={jobId}></ApplyForm>
-          </Grid>
-        );
+    if(props.userRole !== "employer" && props.userRole !== "admin"){
+      if (isSignedIn === true && userId !== "empty" && !isApplied) {
+        if (job === "empty") {
+          return (
+            <Grid item sm={12} className={classes.container} style={{ marginTop: 16 }}>
+              <FloatCard >
+                <Loading />
+              </FloatCard>
+            </Grid>
+          );
+        } else {
+          return (
+            <Grid item sm={12}>
+              <ApplyForm userId={userId} jobId={jobId}></ApplyForm>
+            </Grid>
+          );
+        }
       }
     }
+
   };
 
   const displayCompanySummary = () => {
@@ -197,8 +203,13 @@ function JobDescription(props) {
           </Grid>
         </Grid>
       );
-    } else {
-      return <CompanySummary job={job} />;
+    } else { 
+      return (
+        <CompanySummary 
+          job={job}
+          userId={userId}
+        />
+      );
     }
   };
 

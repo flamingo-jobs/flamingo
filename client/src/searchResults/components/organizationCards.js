@@ -14,7 +14,26 @@ const useStyles = makeStyles((theme) => ({
 
 const OrganizationCards = (props) => {
   const classes = useStyles();
+  const userId = sessionStorage.getItem("loginId");
+  const [favoriteOrgs, setFavoriteOrgs] = useState("empty");
 
+  useEffect(() => {
+      retrieveJobseeker();
+  }, []);
+
+  const retrieveJobseeker = async () => {
+    try {
+        if(userId){
+          const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
+          if (response.data.success) {
+              setFavoriteOrgs(response.data.jobseeker.favoriteOrganizations);
+          }
+        }
+    } catch (err) {
+        console.log(err);
+    }
+  };
+  
   const displayOrganizations = () => {
     if (props.organizations.length === 0) {
       return (
@@ -24,14 +43,15 @@ const OrganizationCards = (props) => {
           </FloatCard>
         </Grid>
       );
-    } else {
+    } else{
       return (
         <Grid item xs={9}>
           {props.organizations.map((organization) => (
-            <div className={classes.orgCardWrapper}>
+            <div className={classes.orgCardWrapper} key={organization._id}>
               <OrganizationCard
-                key={organization._id}
                 info={organization}
+                favoriteOrgs={favoriteOrgs}
+                setFavoriteOrgs={setFavoriteOrgs}
               ></OrganizationCard>
             </div>
           ))}

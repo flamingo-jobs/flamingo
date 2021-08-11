@@ -10,6 +10,10 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import BACKEND_URL from "../../Config";
 import axios from "axios";
 import { Link } from 'react-router-dom'
+import LoginModal from './loginModal';
+
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -93,13 +97,36 @@ function OrganizationCard(props) {
 
     const [isSaved, setIsSaved] = useState(false);
 
+    const token = sessionStorage.getItem("userToken");
+    const userId = sessionStorage.getItem("loginId");
+    
+    const [role, setRole] = useState(
+        jwt.decode(token, { complete: true })
+        ? jwt.decode(token, { complete: true }).payload.userRole
+        : null
+    );
+
+    // Login modal 
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => {
+      setOpen(true);
+    };
+    const handleClose = () => {
+      setOpen(false);
+    };
+    const handleLoginModal = () => {
+        handleOpen();
+    }
+
+    
+
     useEffect(() => {
-        if(!props.userRole){
-            setIsSaved(false);
-        } else{
+        if(props.favoriteOrgs !== "empty"){
             setIsSaved(props.favoriteOrgs.includes(props.info._id));
+        } else{
+            setIsSaved(false);
         }
-    }, [props.favoriteOrgs, props.info]);
+    }, [props.favoriteOrgs]);
 
     const getAvgRating = (arr = []) => {
         return arr.map(item => item.rating).reduce((a, x) => a + x, 0) / arr.length;
@@ -112,20 +139,17 @@ function OrganizationCard(props) {
             return require(`../images/default_company_logo.png`).default;
         }
     }
-    
-    const handleLoginModal = () => {
-        props.handleOpen();
-    }
 
     const handleAddingFavorite = async () => {
         if(isSaved){ // Unsave
             setIsSaved(!isSaved);
             const newFavoriteOrgs = props.favoriteOrgs.filter((id) => id !== props.info._id);
             props.setFavoriteOrgs(newFavoriteOrgs);
+
             try {
-                const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateFavoriteOrgs/${props.userId}`, newFavoriteOrgs);
+                const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateFavoriteOrgs/${userId}`, newFavoriteOrgs);
                 if (response.data.success) {
-                // console.log('success');
+                console.log('success');
                 }
             } catch (err) {
                 console.log(err);
@@ -136,9 +160,9 @@ function OrganizationCard(props) {
             const newFavoriteOrgs = [...props.favoriteOrgs, props.info._id];
             props.setFavoriteOrgs(newFavoriteOrgs);
             try {
-              const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateFavoriteOrgs/${props.userId}`, newFavoriteOrgs);
+              const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateFavoriteOrgs/${userId}`, newFavoriteOrgs);
               if (response.data.success) {
-                // console.log('success');
+                console.log('success');
               }
             } catch (err) {
               console.log(err);
@@ -147,10 +171,10 @@ function OrganizationCard(props) {
     }
 
     const displayFavoriteIcon = () => {
-        if(!props.userRole){
+        if(!role){
             // When user is not signed in
             return <FavoriteBorderIcon className={classes.favorite} onClick={handleLoginModal} />;
-        } else {
+        } else if(role === "jobseeker") {
             if(isSaved){
                 // When user is signed in && Org is in favorites 
                 return <FavoriteRounded className={classes.favorite} onClick={handleAddingFavorite} />;
@@ -163,6 +187,11 @@ function OrganizationCard(props) {
 
     return (
         <FloatCard >
+            <LoginModal
+                open={open}
+                handleClose={handleClose}
+            ></LoginModal>
+
             <div className={classes.root}>
                 <div className={classes.header}>
                     <div className={classes.headerLeft}>

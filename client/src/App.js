@@ -12,6 +12,7 @@ import Base from "./Base";
 import ScrollToTop from "./components/ScrollToTop.js";
 import ProfileSetup from "./getHired/ProfileSetup";
 
+
 function App() {
   return (
     <div className="App">

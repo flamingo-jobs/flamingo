@@ -9,6 +9,8 @@ const {
   resetPassword,
   inviteEmlpoyee,
   getUsersByEmployer,
+  checkPassword,
+  deleteUser,
 } = require("../controllers/auth");
 
 router.put("/forgot-password/:email", forgotPassword);
@@ -18,5 +20,7 @@ router.post("/signup", signup);
 router.post("/signin", signin);
 router.post("/link-account", linkAccount);
 router.get("/getUsersByEmployer/:id", getUsersByEmployer);
+router.post("/check-password", checkPassword);
+router.post("/remove-user", deleteUser);
 
 module.exports = router;

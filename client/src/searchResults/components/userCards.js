@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
 
 const UserCards = (props) => {
   const classes = useStyles();
+  const userId = sessionStorage.getItem("loginId");
 
   const displayUsers = () => {
     if (props.users.length === 0) {
@@ -28,9 +29,8 @@ const UserCards = (props) => {
       return (
         <Grid item xs={9}>
           {props.users.map((user) => (
-            <div className={classes.userCardWrapper}>
+            <div className={classes.userCardWrapper} key={user._id}>
               <UserCard
-                key={user._id}
                 info={user}
               ></UserCard>
             </div>

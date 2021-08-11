@@ -28,6 +28,7 @@ import JobSeekers from "./admin/JobSeekers";
 import Employers from "./admin/Employers";
 import AppliedJobs from "./employee/appliedJobs/appliedJobs";
 import JobseekerDashboard from "./employee/Dashboard/JobseekerDashboard";
+import JobSeekerSettings from "./employee/Settings/Settings";
 import Dashboard from "./admin/Dashboard";
 import SavedJobs from "./employee/savedJobs/savedJobs";
 import FavoriteOrganizations from "./employee/favoriteOrganizations/favoriteOrganizations";
@@ -38,9 +39,27 @@ import BACKEND_URL from "./Config";
 import axios from "axios";
 import CreateJobSetup from "./jobs/createJob/CreateJobSetup";
 import Billing from "./employee/Billing";
-
+import { env } from "process";
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+
+// Login user if localStorage contains a valid userToken
+if (localStorage.getItem("userToken") && localStorage.getItem("loginId")) {
+  jwt.verify(
+    localStorage.getItem("userToken"),
+    env.REACT_APP_TOKEN_SECRET,
+    function (err, decoded) {
+      if (err) {
+        localStorage.removeItem("userToken");
+        localStorage.removeItem("loginId");
+      }
+      if (decoded) {
+        sessionStorage.setItem("userToken", localStorage.getItem("userToken"));
+        sessionStorage.setItem("loginId", localStorage.getItem("loginId"));
+      }
+    }
+  );
+}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -168,6 +187,9 @@ function Base() {
           </Route>
           <Route path="/jobseekerDashboard" exact>
             <JobseekerDashboard userRole={role} />
+          </Route>
+          <Route path="/jobseeker/settings">
+            <JobSeekerSettings />
           </Route>
           <Route path="/jobseeker/billing">
             <Billing />

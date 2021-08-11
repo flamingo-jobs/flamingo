@@ -56,10 +56,31 @@ const useStyles = makeStyles((theme) => ({
         display: "grid"
     }
 }))
+
 function RelatedJobs(props) {
     const classes = useStyles();
 
     const [relatedJobs, setRelatedJobs] = useState([]);
+
+    const [savedJobIds, setSavedJobIds] = useState("empty");
+    const userId = sessionStorage.getItem("loginId");
+
+    useEffect(() => {
+        retrieveJobseeker();
+      }, []);
+      
+    const retrieveJobseeker = async () => {
+        if(userId){
+            try {
+                const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
+                if (response.data.success) {
+                    setSavedJobIds(response.data.jobseeker.savedJobs);
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        }
+    };
 
     const retrieveRelatedJobs = () => {
         let regexExp = props.job.title.replace(" ", "|");
@@ -99,11 +120,14 @@ function RelatedJobs(props) {
     }, [relatedJobs])
 
     const displayRelatedJobs = () => {
-        if (relatedJobs) {
-
+        if (relatedJobs && savedJobIds !== "empty") {
             return relatedJobs.map(featuredJob => (
                 <Grid item sm={12} key={featuredJob._id} className={classes.jobGridCard}>
-                    <JobCard info={featuredJob} />
+                    <JobCard 
+                        info={featuredJob} 
+                        savedJobIds={savedJobIds}
+                        setSavedJobIds={setSavedJobIds}
+                    />
                 </Grid>
             ))
         } else {
