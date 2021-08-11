@@ -1,5 +1,6 @@
 const Jobs = require('../models/jobs');
 const Jobseeker = require('../models/jobseeker');
+const mongoose = require('mongoose');
 
 const generateRecommendations = (req, res) => {
 
@@ -44,22 +45,22 @@ const generateRecommendations = (req, res) => {
                         dateDiff += diffYears;
                     });
 
-                    if (item.minimumExperience === "0" && dateDiff === 0) {
+                    if (job.minimumExperience === "0" && dateDiff === 0) {
                         experience += 70;
                         if (dateDiff > 0) {
                             experience += 30;
                         }
-                    } else if (item.minimumExperience === "0-1" && dateDiff >= 0 && dateDiff <= 1) {
+                    } else if (job.minimumExperience === "0-1" && dateDiff >= 0 && dateDiff <= 1) {
                         experience += 70;
                         if (dateDiff > 1) {
                             experience += 30;
                         }
-                    } else if (item.minimumExperience === "1-3" && dateDiff >= 1 && dateDiff <= 3) {
+                    } else if (job.minimumExperience === "1-3" && dateDiff >= 1 && dateDiff <= 3) {
                         experience += 70;
                         if (dateDiff > 3) {
                             experience += 30;
                         }
-                    } else if (item.minimumExperience === "3+" && dateDiff > 3) {
+                    } else if (job.minimumExperience === "3+" && dateDiff > 3) {
                         experience += 70;
                         if (dateDiff > 5) {
                             experience += 30;
@@ -67,16 +68,14 @@ const generateRecommendations = (req, res) => {
                     }
 
                     // tech stack
-                    const techArray = [];
+                    var techArray = [];
                     item.technologyStack.forEach((category) => {
-                        if (category.hasOwnProperty("stack")) {
-                            if (category.stack.hasOwnProperty("list")) {
-                                techArray.push.apply(techArray, category.stack.list);
-                            } else if (category.stack.hasOwnProperty("frontEnd")) {
-                                techArray.push.apply(techArray, category.stack.frontEnd);
-                            } else if (category.stack.hasOwnProperty("backEnd")) {
-                                techArray.push.apply(techArray, category.stack.backEnd);
-                            }
+                        if (category.hasOwnProperty("list")) {
+                            techArray.push.apply(techArray, category.list);
+                        } else if (category.hasOwnProperty("frontEnd")) {
+                            techArray.push.apply(techArray, techArray.frontEnd);
+                        } else if (category.hasOwnProperty("backEnd")) {
+                            techArray.push.apply(techArray, category.backEnd);
                         }
                     });
 
@@ -84,7 +83,7 @@ const generateRecommendations = (req, res) => {
 
                     // project stack
 
-                    const projectArray = [];
+                    var projectArray = [];
                     item.project.forEach((project) => {
                         if (project.hasOwnProperty("techStack")) {
                             projectArray.push.apply(projectArray, project.techStack);
@@ -101,15 +100,15 @@ const generateRecommendations = (req, res) => {
 
                     total = education * 0.1 + experience * 0.2 + techStack * 0.2 + projectTech * 0.2 + skills * 0.2 + certificates * 0.1;
 
-                    if (total >= 10) {
+                    if (total >= 15) {
                         recommendedJobSeekers.push({ jobSeekerId: item._id, score: total });
                     }
 
-                    updateJobSeekerProfile(item._id, item.recommendedJobs, req.params.id, total);
+                    // updateJobSeekerProfile(item._id, item.recommendedJobs, req.params.id, total);
                 })
             }
 
-            updateJob(recommendedJobSeekers, req.params.id);
+         //   updateJob(recommendedJobSeekers, req.params.id);
 
             return res.status(200).json({
                 success: true,
@@ -147,7 +146,6 @@ const generateJobSeekerRecommendations = (req, res) => {
                     let total = 0;
 
                     // education
-
                     jobseeker.university.forEach((degree) => {
                         if (job.minimumEducation && job.minimumEducation.includes(degree.degree)) {
                             education += 100;
@@ -188,16 +186,14 @@ const generateJobSeekerRecommendations = (req, res) => {
                     }
 
                     // tech stack
-                    const techArray = [];
+                    var techArray = [];
                     jobseeker.technologyStack.forEach((category) => {
-                        if (category.hasOwnProperty("stack")) {
-                            if (category.stack.hasOwnProperty("list")) {
-                                techArray.push.apply(techArray, category.stack.list);
-                            } else if (category.stack.hasOwnProperty("frontEnd")) {
-                                techArray.push.apply(techArray, category.stack.frontEnd);
-                            } else if (category.stack.hasOwnProperty("backEnd")) {
-                                techArray.push.apply(techArray, category.stack.backEnd);
-                            }
+                        if (category.hasOwnProperty("list")) {
+                            techArray.push.apply(techArray, category.list);
+                        } else if (category.hasOwnProperty("frontEnd")) {
+                            techArray.push.apply(techArray, techArray.frontEnd);
+                        } else if (category.hasOwnProperty("backEnd")) {
+                            techArray.push.apply(techArray, category.backEnd);
                         }
                     });
 
@@ -205,7 +201,7 @@ const generateJobSeekerRecommendations = (req, res) => {
 
                     // project stack
 
-                    const projectArray = [];
+                    var projectArray = [];
                     jobseeker.project.forEach((project) => {
                         if (project.hasOwnProperty("techStack")) {
                             projectArray.push.apply(projectArray, project.techStack);
@@ -219,10 +215,11 @@ const generateJobSeekerRecommendations = (req, res) => {
                     if (jobseeker.hasOwnProperty("skills")) {
                         skills = similarity(jobseeker.skills.join(' '), job.qualifications.join(' '));
                     }
+                    console.log(techStack);
 
                     total = education * 0.1 + experience * 0.2 + techStack * 0.2 + projectTech * 0.2 + skills * 0.2 + certificates * 0.1;
 
-                    if (total >= 10) {
+                    if (total >= 15) {
                         recommendedJobs.push({ id: job._id, score: total });
                     }
 
@@ -269,9 +266,9 @@ const findPercentage = (first, second) => {
 
 const updateJobSeekerProfile = (jobSeekerId, recommendedJobs, jobId, total) => {
 
-    const newValue = { id: jobId, score: total };
+    const newValue = { id: mongoose.Types.ObjectId(jobId), score: total };
 
-    if (total >= 10) {
+    if (total >= 15) {
         Jobseeker.updateOne({ "_id": jobSeekerId },
             [{
                 $set: {
@@ -309,9 +306,9 @@ const updateJob = (recommendedJobSeekers, jobId) => {
 
 const updateJobData = (jobSeekerId, recommendedJobs, jobId, total) => {
 
-    const newValue = { id: jobSeekerId, score: total };
+    const newValue = { id: mongoose.Types.ObjectId(jobSeekerId), score: total };
 
-    if (total >= 10) {
+    if (total >= 15) {
         Jobs.updateOne({ "_id": jobId },
             [{
                 $set: {
