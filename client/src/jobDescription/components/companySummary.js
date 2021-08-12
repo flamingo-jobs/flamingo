@@ -12,6 +12,7 @@ import BACKEND_URL from '../../Config';
 import axios from 'axios';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import LoginModal from "./loginModal";
+import SnackBarAlert from "../../components/SnackBarAlert";
 
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -109,6 +110,9 @@ function CompanySummary(props) {
     const [isFavorite, setIsFavorite] = useState(false);
     const [jobseeker, setJobseeker] = useState("empty");
 
+    const [alertShow, setAlertShow] = useState(false);
+    const [alertData, setAlertData] = useState({ severity: "", msg: "" });
+
     const token = sessionStorage.getItem("userToken");
 
     const [role, setRole] = useState(
@@ -128,6 +132,17 @@ function CompanySummary(props) {
     const handleLoginModal = () => {
         handleOpen();
     }
+
+    const handleAlert = () => {
+        setAlertShow(true);
+      };
+    
+    const handleAlertClose = (event, reason) => {
+        if (reason === "clickaway") {
+            return;
+        }
+        setAlertShow(false);
+    };
 
     const getAvgRating = (arr = []) => {
         return arr.map(item => item.rating).reduce((a, x) => a + x, 0) / arr.length;
@@ -184,10 +199,18 @@ function CompanySummary(props) {
             try {
                 const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateFavoriteOrgs/${props.userId}`, newFavoriteOrgs);
                 if (response.data.success) {
-                console.log('success');
+                    setAlertData({
+                        severity: "success",
+                        msg: "Organization Removed From Favorite Organizations",
+                    });
+                    handleAlert();
                 }
             } catch (err) {
-                console.log(err);
+                setAlertData({
+                    severity: "error",
+                    msg: "Something Went Wrong. Please Try Again Later.",
+                });
+                handleAlert();
             }
 
         } else{ // Save
@@ -196,10 +219,18 @@ function CompanySummary(props) {
             try {
               const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateFavoriteOrgs/${props.userId}`, newFavoriteOrgs);
               if (response.data.success) {
-                console.log('success');
+                setAlertData({
+                    severity: "success",
+                    msg: "Organization Saved, Successfully!",
+                });
+                handleAlert();
               }
             } catch (err) {
-              console.log(err);
+                setAlertData({
+                    severity: "error",
+                    msg: "Something Went Wrong. Please Try Again Later.",
+                });
+                handleAlert();
             }
         }
     }
@@ -235,6 +266,17 @@ function CompanySummary(props) {
             }
         }
     }
+
+    const displayAlert = () => {
+        return (
+          <SnackBarAlert
+            open={alertShow}
+            onClose={handleAlertClose}
+            severity={alertData.severity}
+            msg={alertData.msg}
+          />
+        );
+      };
 
     const displaySummary = () => {
         if (summary === "empty") {
@@ -273,6 +315,8 @@ function CompanySummary(props) {
 
     return (
         <div>
+            {displayAlert()}
+
             <LoginModal
                 open={open}
                 handleClose={handleClose}
