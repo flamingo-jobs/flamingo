@@ -126,20 +126,15 @@ function EduItem(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [styleEdit, setStyleEdit] = useState({display: 'none'});
-  let uniStartDate=[0,0];
-  let uniEndDate=[0,0];
-  let schoolStartDate=[0,0];
-  let schoolEndDate=[0,0];
+  let startDate=[0,0];
+  let endDate=[0,0];
   if(props.startDate !== 'null/null'){
-    uniStartDate = props.startDate.split("/");
-    schoolStartDate = props.startDate.split("/");
+    startDate = props.startDate.split("/");
   }
   if(props.endDate !== 'null/null'){
-    uniEndDate = props.endDate.split("/");
-    schoolEndDate = props.endDate.split("/");
+    endDate = props.endDate.split("/");
   }
-  const [university, setUniversity] = useState({university: props.university, degree: props.degree, fieldOfStudy: props.fieldOfStudy, GPA: props.gpa, startYear: uniStartDate[1], startMonth: uniStartDate[0], endYear: uniEndDate[1], endMonth: uniEndDate[0], societiesAndActivities: props.societiesAndActivities});
-  const [school, setSchool] = useState({school: props.school, startYear: schoolStartDate[1], startMonth: schoolStartDate[0], endYear: schoolEndDate[1], endMonth: schoolEndDate[0], description: props.description});
+  const [education, setEducation] = useState({institute: props.institute, type: props.type, fieldOfStudy: props.fieldOfStudy, GPA: props.gpa, startYear: startDate[1], startMonth: startDate[0], endYear: endDate[1], endMonth: endDate[0], societiesAndActivities: props.societiesAndActivities});
 
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
@@ -255,191 +250,101 @@ function EduItem(props) {
   };
 
   
-  //---------------------------- university text fields onChange events
-  function onChangeUniversity(e){
-    setUniversity(prevState => {
-      return {...prevState, university: e.target.value}
+  //---------------------------- text fields onChange events
+  function onChangeInstitute(e){
+    setEducation(prevState => {
+      return {...prevState, institute: e.target.value}
     })
   }
 
-  function onChangeDegree(e){
-    setUniversity(prevState => {
-      return {...prevState, degree: e.target.value}
+  function onChangeType(e){
+    setEducation(prevState => {
+      return {...prevState, type: e.target.value}
     })
   }
 
   function onChangeFieldOfStudy(e){
-    setUniversity(prevState => {
+    setEducation(prevState => {
       return {...prevState, fieldOfStudy: e.target.value}
     })
   }
 
   function onChangeGPA(e){
-    setUniversity(prevState => {
+    e.preventDefault();
+    setEducation(prevState => {
       return {...prevState, GPA: e.target.value}
     })
   }
 
   function onChangestartYear(e){
-    setUniversity(prevState => {
+    setEducation(prevState => {
       return {...prevState, startYear: e.target.value}
     })
   }
 
   function onChangestartMonth(e){
-    setUniversity(prevState => {
+    setEducation(prevState => {
       return {...prevState, startMonth: e.target.value}
     })
   }
 
   function onChangeEndYear(e){
-    setUniversity(prevState => {
+    setEducation(prevState => {
       return {...prevState, endYear: e.target.value}
     })
   }
 
   function onChangeEndMonth(e){
-    setUniversity(prevState => {
+    setEducation(prevState => {
       return {...prevState, endMonth: e.target.value}
     })
   }
 
   function onChangeSocietiesAndActivities(e){
-    setUniversity(prevState => {
+    setEducation(prevState => {
       return {...prevState, societiesAndActivities: e.target.value}
-    })
-  }
-
-  //---------------------------- school text fields onChange events
-  function onChangeSchool(e){
-    setSchool(prevState => {
-      return {...prevState, school: e.target.value}
-    })
-  }
-
-  function onChangeSchoolstartYear(e){
-    setSchool(prevState => {
-      return {...prevState, startYear: e.target.value}
-    })
-  }
-
-  function onChangeSchoolstartMonth(e){
-    setSchool(prevState => {
-      return {...prevState, startMonth: e.target.value}
-    })
-  }
-
-  function onChangeSchoolEndYear(e){
-    setSchool(prevState => {
-      return {...prevState, endYear: e.target.value}
-    })
-  }
-
-  function onChangeSchoolEndMonth(e){
-    setSchool(prevState => {
-      return {...prevState, endMonth: e.target.value}
-    })
-  }
-
-  function onChangeDescription(e){
-    setSchool(prevState => {
-      return {...prevState, description: e.target.value}
     })
   }
   //----------------------------------
 
   function onSubmitUni(e){
-    console.log("update function");
-    e.preventDefault();
-    const uni = {
-        university: university.university,
-        degree: university.degree,
-        fieldOfStudy: university.fieldOfStudy,
-        GPA: university.GPA,
-        startDate: university.startMonth+"/"+university.startYear,
-        endDate: university.endMonth+"/"+university.endYear,
-        societiesAndActivities: university.societiesAndActivities
-    }
+    // console.log("update function");
+    // e.preventDefault();
+    // const uni = {
+    //     university: university.university,
+    //     degree: university.degree,
+    //     fieldOfStudy: university.fieldOfStudy,
+    //     GPA: university.GPA,
+    //     startDate: university.startMonth+"/"+university.startYear,
+    //     endDate: university.endMonth+"/"+university.endYear,
+    //     societiesAndActivities: university.societiesAndActivities
+    // }
 
-    axios.put(`${BACKEND_URL}/jobseeker/updateUniversity/${loginId}`,{index:props.index,university:uni})
-    .then(res => {
-      if(res.data.success){
-        setAlertData({
-          severity: "success",
-          msg: "University updated successfully!",
-        });
-        handleAlert();
-      } else {
-        setAlertData({
-          severity: "error",
-          msg: "University could not be updated!",
-        });
-        handleAlert();
-      }
-    });
-    handleClose();
-  }
-
-  function onSubmitSchool(e){
-    e.preventDefault();
-    const sch = {
-        school: school.school,
-        startDate: school.startMonth+"/"+school.startYear,
-        endDate: school.endMonth+"/"+school.endYear,
-        description: school.description
-    }
-
-    axios.put(`${BACKEND_URL}/jobseeker/updateSchool/${loginId}`,{index:props.index,school:sch})
-    .then(res => {
-      if(res.data.success){
-        setAlertData({
-          severity: "success",
-          msg: "School updated successfully!",
-        });
-        handleAlert();
-      } else {
-        setAlertData({
-          severity: "error",
-          msg: "School could not be updated!",
-        });
-        handleAlert();
-      }
-    });
-    handleClose();
+    // axios.put(`${BACKEND_URL}/jobseeker/updateUniversity/${loginId}`,{index:props.index,university:uni})
+    // .then(res => {
+    //   if(res.data.success){
+    //     setAlertData({
+    //       severity: "success",
+    //       msg: "University updated successfully!",
+    //     });
+    //     handleAlert();
+    //   } else {
+    //     setAlertData({
+    //       severity: "error",
+    //       msg: "University could not be updated!",
+    //     });
+    //     handleAlert();
+    //   }
+    // });
+    // handleClose();
   }
   
 
   useEffect(()=>{
-    if (props.level === "University") {
-      let temp = <form className={classes.form} onSubmit={onSubmitUni}>
-      <div>
-      <TextField
-        className={classes.field}
-          id="outlined-basic"
-          label="University"
-          type="text"
-          variant="outlined"
-          size="small"
-          value={university.university}
-          onChange={onChangeUniversity}
-          required
-          style={{marginBottom: "32px"}}
-        />
-        <FormControl variant="outlined" className={classes.formControl}>
-        <InputLabel className={classes.placeholder} htmlFor="outlined-age-native-simple">Select Degree</InputLabel>
-        <Select
-          native
-          onChange={onChangeDegree}
-          label="Select Degree"
-          className={classes.select}
-          value={university.degree}
-          required
-        >
-          <option aria-label="None" value="" />
-          <option value="Bachelor's">Bachelor's</option>
-          <option value="Msc">Msc</option>
-        </Select>
-      </FormControl>
+    setForm(null);
+    if(props.type === "University"){
+      let temp =
+      <>
         <TextField
         className={classes.field}
           id="outlined-basic"
@@ -447,21 +352,18 @@ function EduItem(props) {
           type="text"
           variant="outlined"
           size="small"
-          value={university.fieldOfStudy}
           onChange={onChangeFieldOfStudy}
           required
         />
         <TextField
         className={classes.field}
+          type="number"
           id="outlined-basic"
-          label="GPA"
-          min="0.00"
-          step="0.01"
-          max="4.25"
-          presicion={2}  
+          pattern="^(\d+)(,\d{1,2}|.\d{1,2})?$"
+          onKeyDown={(event) => event.keyCode === 69 ? event.preventDefault() : true}
+          label="GPA" 
           variant="outlined"
           size="small"
-          value={university.GPA}
           onChange={onChangeGPA}
           style={{width:'30%'}}
         />
@@ -477,7 +379,6 @@ function EduItem(props) {
                   native
                   onChange={onChangestartYear}
                   label="Start Date"
-                  value={university.startYear}
                   className={classes.selectYear}
                 >
                   <option aria-label="None" value="" />
@@ -492,7 +393,6 @@ function EduItem(props) {
                   native
                   onChange={onChangestartMonth}
                   label="Start Date"
-                  value={university.startMonth}
                   className={classes.selectMonth}
                 >
                   <option aria-label="None" value="" />
@@ -512,7 +412,6 @@ function EduItem(props) {
                   native
                   onChange={onChangeEndYear}
                   label="End Date"
-                  value={university.endYear}
                   className={classes.selectYear}
                 >
                   <option aria-label="None" value="" />
@@ -527,7 +426,6 @@ function EduItem(props) {
                   native
                   onChange={onChangeEndMonth}
                   label="Start Date"
-                  value={university.endMonth}
                   className={classes.selectMonth}
                 >
                   <option aria-label="None" value="" />
@@ -544,178 +442,185 @@ function EduItem(props) {
           type="text"
           variant="outlined"
           size="small"
-          value={university.societiesAndActivities}
           onChange={onChangeSocietiesAndActivities}
         />
-        </div>
-        <Button type="submit" className={classes.defaultButton} style={{ width:'100%',marginTop:'5%'}}>Apply Changes</Button>
-    </form>;
+        </>;
       setForm(temp);
-    }else if(props.level==="School"){
-      let temp=<form className={classes.form} onSubmit={onSubmitSchool}>
-      <div>
-      <TextField
-        className={classes.field}
-          id="outlined-basic"
-          label="School"
-          type="text"
-          variant="outlined"
-          size="small"
-          value={school.school}
-          onChange={onChangeSchool}
-          required
-        />
-        <Grid container direction="row">
-          <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
-            <Grid item xs={12}>
-              <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px"}}>Start Date</Typography>
+      // -----------------------------------School fields ---------------------------------
+    }else if(props.type === "School"){
+        let temp =
+        <>
+          <Grid container direction="row">
+            <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
+              <Grid item xs={12}>
+                <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px"}}>Start Date</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl variant="outlined" className={classes.formControl}>
+                  <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
+                  <Select
+                    native
+                    onChange={onChangestartYear}
+                    label="Start Date"
+                    className={classes.selectYear}
+                  >
+                    <option aria-label="None" value="" />
+                    {getYearsFrom()}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl variant="outlined" className={classes.formControl}>
+                  <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
+                  <Select
+                    native
+                    onChange={onChangestartMonth}
+                    label="Start Date"
+                    className={classes.selectMonth}
+                  >
+                    <option aria-label="None" value="" />
+                    {getMonthsFrom()}
+                  </Select>
+                </FormControl>
+              </Grid>
             </Grid>
-            <Grid item xs={6}>
-              <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
-                <Select
-                  native
-                  onChange={onChangeSchoolstartYear}
-                  label="Start Date"
-                  value={school.startYear}
-                  className={classes.selectYear}
-                >
-                  <option aria-label="None" value="" />
-                  {getYearsFrom()}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={6}>
-              <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
-                <Select
-                  native
-                  onChange={onChangeSchoolstartMonth}
-                  label="Start Date"
-                  value={school.startMonth}
-                  className={classes.selectMonth}
-                >
-                  <option aria-label="None" value="" />
-                  {getMonthsFrom()}
-                </Select>
-              </FormControl>
-            </Grid>
-          </Grid>
-          <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
-            <Grid item xs={12}>
-              <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px"}}>End Date</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
-                <Select
-                  native
-                  onChange={onChangeSchoolEndYear}
-                  label="End Date"
-                  value={school.endYear}
-                  className={classes.selectYear}
-                >
-                  <option aria-label="None" value="" />
-                  {getYearsTo()}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={6}>
-              <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
-                <Select
-                  native
-                  onChange={onChangeSchoolEndMonth}
-                  label="Start Date"
-                  value={school.endMonth}
-                  className={classes.selectMonth}
-                >
-                  <option aria-label="None" value="" />
-                  {getMonthsFrom()}
-                </Select>
-              </FormControl>
+            <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
+              <Grid item xs={12}>
+                <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px"}}>End Date</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl variant="outlined" className={classes.formControl}>
+                  <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
+                  <Select
+                    native
+                    onChange={onChangeEndYear}
+                    label="End Date"
+                    className={classes.selectYear}
+                  >
+                    <option aria-label="None" value="" />
+                    {getYearsTo()}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl variant="outlined" className={classes.formControl}>
+                  <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
+                  <Select
+                    native
+                    onChange={onChangeEndMonth}
+                    label="Start Date"
+                    className={classes.selectMonth}
+                  >
+                    <option aria-label="None" value="" />
+                    {getMonthsFrom()}
+                  </Select>
+                </FormControl>
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
-        <TextField
+          <TextField
           className={classes.field}
-          id="outlined-multiline-static"
-          label="Description"
-          multiline
-          rows={5}
-          variant="outlined"
-          value={school.description}
-          onChange= {onChangeDescription}
-        />
-        </div>
-        <Button type="submit" className={classes.defaultButton} style={{ width:'100%',marginTop:'5%'}}>Apply Changes</Button>
-    </form>;
-    setForm(temp);
+            id="outlined-basic"
+            label="Societies and Activities"
+            type="text"
+            variant="outlined"
+            size="small"
+            onChange={onChangeSocietiesAndActivities}
+          />
+          </>;
+        setForm(temp);
     }
-  },[university,school])
+  },[open,education.type])
 
   const filterFields = () => {
-    if(props.level === "University"){
+    if(props.type === "University"){
         return (
             <React.Fragment>
                 <Grid item xs={3} style={{marginLeft:"-10px"}}>
                     <Typography variant="body2" color="textSecondary" component="p">
-                        {university.endMonth === 0 ? "" : (university.endMonth+"/"+university.endYear)}
+                        {education.endMonth === 0 ? "" : (education.endMonth+"/"+education.endYear)}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
-                        {university.endMonth === 0 ? "" : "|" }
+                        {education.endMonth === 0 ? "" : "|" }
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
-                        {university.startMonth === 0 ? "" : (university.startMonth+"/"+university.startYear)}
+                        {education.startMonth === 0 ? "" : (education.startMonth+"/"+education.startYear)}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p" style={{fontStyle:"italic",fontWeight:"bolder"}}>
-                        {props.level}
+                        {education.type}
                     </Typography>
                 </Grid>
                 <Grid item xs={7} spacing={2}>
                     <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'15px',fontWeight:'bold',marginRight:"-45px"}}>
-                        {university.university}
+                        {education.institute}
                     </Typography>
                     <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'15px',}}>
-                    {(university.degree ? university.degree : "") + (university.fieldOfStudy ? " - " + university.fieldOfStudy : "")}
+                    {(education.fieldOfStudy ? "Field of Study : " + education.fieldOfStudy : "")}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',}}>
-                        {university.GPA ? "GPA : " + university.GPA : ""}
+                        {education.GPA ? "GPA : " + education.GPA : ""}
                     </Typography>
                     <Typography variant="body2" component="p" style={{textAlign:'left',color: '#666',marginTop:'15px'}}>
-                        <b>{university.societiesAndActivities ? "Societies & activities : " : ""}</b>{university.societiesAndActivities}
+                        <b>{education.societiesAndActivities ? "Societies & activities : " : ""}</b>{education.societiesAndActivities}
                     </Typography>
                 </Grid>
             </React.Fragment>
         );
-    }else if(props.level === "School"){
+    }else if(props.type === "Diploma" || props.type === "Graduate Diploma" || props.type === "Bachelor's" || props.type === "M.Phil." || props.type === "PhD"){
         return (
             <React.Fragment>
                 <Grid item xs={3} style={{marginLeft:"-10px"}}>
                     <Typography variant="body2" color="textSecondary" component="p">
-                      {school.endMonth === 0 ? "" : (school.endMonth+"/"+school.endYear)}
+                      {education.endMonth === 0 ? "" : (education.endMonth+"/"+education.endYear)}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
-                      {school.endMonth === 0 ? "" : "|" }
+                      {education.endMonth === 0 ? "" : "|" }
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
-                      {school.startMonth === 0 ? "" : (school.startMonth+"/"+school.startYear)}
+                      {education.startMonth === 0 ? "" : (education.startMonth+"/"+education.startYear)}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p" style={{fontStyle:"italic",fontWeight:"bolder"}}>
-                        {props.level}
+                        {education.type}
                     </Typography>
                 </Grid>
                 <Grid item xs={7} spacing={2}>
                     <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'15px',fontWeight:'bold',marginRight:"-45px"}}>
-                        {school.school}
+                        {education.institute}
                     </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',marginRight:"-45px"}}>
-                        {school.description}
+                    <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'15px',}}>
+                    {(education.fieldOfStudy ? "Field of Study : " + education.fieldOfStudy : "")}
                     </Typography>
                 </Grid>
             </React.Fragment>
         );
-    }
+    }else if(props.type === "School" || props.type === "College"){
+      return (
+          <React.Fragment>
+              <Grid item xs={3} style={{marginLeft:"-10px"}}>
+                  <Typography variant="body2" color="textSecondary" component="p">
+                    {education.endMonth === 0 ? "" : (education.endMonth+"/"+education.endYear)}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary" component="p">
+                    {education.endMonth === 0 ? "" : "|" }
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary" component="p">
+                    {education.startMonth === 0 ? "" : (education.startMonth+"/"+education.startYear)}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary" component="p" style={{fontStyle:"italic",fontWeight:"bolder"}}>
+                      {education.type}
+                  </Typography>
+              </Grid>
+              <Grid item xs={7} spacing={2}>
+                  <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'15px',fontWeight:'bold',marginRight:"-45px"}}>
+                      {education.institute}
+                  </Typography>
+                  <Typography variant="body2" component="p" style={{textAlign:'left',color: '#666',marginTop:'15px'}}>
+                      <b>{education.societiesAndActivities ? "Societies & activities : " : ""}</b>{education.societiesAndActivities}
+                  </Typography>
+              </Grid>
+          </React.Fragment>
+      );
+  }
   }
 
   return (
@@ -780,7 +685,7 @@ function EduItem(props) {
                 <Grid container xs={12} direction="row">
                   <Grid item xs={10}>
                     <Typography gutterBottom variant="h5" style={{textAlign:'center',paddingLeft:'50px',color:theme.palette.stateBlue}}>
-                      Edit {props.level} Details
+                      Edit Education Details
                     </Typography>
                     <Divider variant="middle" style={{marginLeft:'100px'}} />
                   </Grid>
