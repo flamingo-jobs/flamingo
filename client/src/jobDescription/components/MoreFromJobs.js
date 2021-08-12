@@ -63,18 +63,15 @@ function MoreFromJobs(props) {
     const [moreFromJobs, setMoreFromJobs] = useState([]);
     const [savedJobIds, setSavedJobIds] = useState("empty");
     const userId = sessionStorage.getItem("loginId");
-    const jwt = require("jsonwebtoken");
-    const token = sessionStorage.getItem("userToken");
-    const header = jwt.decode(token, { complete: true });
 
     useEffect(() => {
         retrieveJobseeker();
       }, []);
       
-    const retrieveJobseeker = () => {
-        if(header?.payload.userRole === "jobseeker"){
+    const retrieveJobseeker = async () => {
+        if(userId){
             try {
-                const response = axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
+                const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
                 if (response.data.success) {
                     setSavedJobIds(response.data.jobseeker.savedJobs);
                 }
