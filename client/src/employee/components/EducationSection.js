@@ -118,8 +118,8 @@ const useStyles = makeStyles({
 function EducationSection(props) {
   const classes = useStyles();
   const [fetchedData, setFetchedData] = useState('');
-  const [universityFields, setUniversityFields] = useState(null);
-  const [schoolFields, setSchoolFields] = useState(null);
+  const [educationFields, setEducationFields] = useState(null);
+  const [education, setEducation] = useState({institute: null, type: "School", fieldOfStudy: null, GPA: null, startYear: null, startMonth: null, endYear: null, endMonth: null, societiesAndActivities: null});
   const [university, setUniversity] = useState({university: null, degree: null,fieldOfStudy: null, GPA: null, startYear: null, startMonth: null, endYear: null, endMonth: null, societiesAndActivities: null});
   const [school, setSchool] = useState({school: null, startYear: null, startMonth: null, endYear: null, endMonth: null, description: null});
   const [level, setLevel] = useState(null);
@@ -223,156 +223,128 @@ function EducationSection(props) {
     setAlertShow(false);
   };
 
-  //---------------------------- university text fields onChange events
-  function onChangeUniversity(e){
-    setUniversity(prevState => {
-      return {...prevState, university: e.target.value}
+  //---------------------------- text fields onChange events
+  function onChangeInstitute(e){
+    setEducation(prevState => {
+      return {...prevState, institute: e.target.value}
     })
   }
 
-  function onChangeDegree(e){
-    setUniversity(prevState => {
-      return {...prevState, degree: e.target.value}
+  function onChangeType(e){
+    setEducation(prevState => {
+      return {...prevState, type: e.target.value}
     })
   }
 
   function onChangeFieldOfStudy(e){
-    setUniversity(prevState => {
+    setEducation(prevState => {
       return {...prevState, fieldOfStudy: e.target.value}
     })
   }
 
   function onChangeGPA(e){
     e.preventDefault();
-    setUniversity(prevState => {
+    setEducation(prevState => {
       return {...prevState, GPA: e.target.value}
     })
   }
 
   function onChangestartYear(e){
-    setUniversity(prevState => {
+    setEducation(prevState => {
       return {...prevState, startYear: e.target.value}
     })
   }
 
   function onChangestartMonth(e){
-    setUniversity(prevState => {
+    setEducation(prevState => {
       return {...prevState, startMonth: e.target.value}
     })
   }
 
   function onChangeEndYear(e){
-    setUniversity(prevState => {
+    setEducation(prevState => {
       return {...prevState, endYear: e.target.value}
     })
   }
 
   function onChangeEndMonth(e){
-    setUniversity(prevState => {
+    setEducation(prevState => {
       return {...prevState, endMonth: e.target.value}
     })
   }
 
   function onChangeSocietiesAndActivities(e){
-    setUniversity(prevState => {
+    setEducation(prevState => {
       return {...prevState, societiesAndActivities: e.target.value}
     })
   }
 
-  //---------------------------- school text fields onChange events
-  function onChangeSchool(e){
-    setSchool(prevState => {
-      return {...prevState, school: e.target.value}
-    })
-  }
-
-  function onChangeSchoolstartYear(e){
-    setSchool(prevState => {
-      return {...prevState, startYear: e.target.value}
-    })
-  }
-
-  function onChangeSchoolstartMonth(e){
-    setSchool(prevState => {
-      return {...prevState, startMonth: e.target.value}
-    })
-  }
-
-  function onChangeSchoolEndYear(e){
-    setSchool(prevState => {
-      return {...prevState, endYear: e.target.value}
-    })
-  }
-
-  function onChangeSchoolEndMonth(e){
-    setSchool(prevState => {
-      return {...prevState, endMonth: e.target.value}
-    })
-  }
-
-  function onChangeDescription(e){
-    setSchool(prevState => {
-      return {...prevState, description: e.target.value}
-    })
-  }
 
   function fetchData(){
-    let uniData,schoolData;
+    let eduData;
     axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
     .then(res => {
       if(res.data.success){
-        if(res.data.jobseeker.university.length > 0){
-          uniData = res.data.jobseeker.university;
-          if(Object.keys(uniData[0]).length === 0){
-            uniData.splice(0,1)
+        if(res.data.jobseeker.education.length > 0){
+          eduData = res.data.jobseeker.education;
+          if(Object.keys(eduData[0]).length === 0){
+            eduData.splice(0,1)
             i++;
-          }else if(uniData[0].university === "" && uniData[0].degree === "" && uniData[0].fieldOfStudy === "" && uniData[0].startDate === "" && uniData[0].endDate === ""){
-            uniData.splice(0,1)
-            i++;
-          }
-        }
-        if(res.data.jobseeker.school.length > 0){
-          schoolData = res.data.jobseeker.school;
-          if(Object.keys(schoolData[0]).length === 0){
-            schoolData.splice(0,1)
-            j++;
-          }else if(schoolData[0].school === ""){
-            schoolData.splice(0,1)
+          }else if(eduData[0].institute === "" && eduData[0].type === "" && eduData[0].fieldOfStudy === "" && eduData[0].startDate === "" && eduData[0].endDate === ""){
+            eduData.splice(0,1)
             i++;
           }
         }
-        setUniversityFields(uniData)
-        setSchoolFields(schoolData)
+        setEducationFields(eduData)
         console.log("data fetched");
       }
     })
     setFetchedData(0)
   }
 
-  function onSubmitUniversity(e){
+  function onSubmitEducation(e){
     e.preventDefault();
-    const uni = {
-      university: university.university,
-      degree: university.degree,
-      fieldOfStudy: university.fieldOfStudy,
-      GPA: university.GPA,
-      startDate: university.startMonth+"/"+university.startYear,
-      endDate: university.endMonth+"/"+university.endYear,
-      societiesAndActivities: university.societiesAndActivities
+    let edu;
+    if(education.type === "University"){
+    edu = {
+      institute: education.institute,
+      type: education.type,
+      fieldOfStudy: education.fieldOfStudy,
+      GPA: education.GPA,
+      startDate: education.startMonth+"/"+education.startYear,
+      endDate: education.endMonth+"/"+education.endYear,
+      societiesAndActivities: education.societiesAndActivities
     }
+  }else if(education.type === "Diploma" || education.type === "Graduate Diploma" || education.type === "Bachelor's" || education.type === "M.Phil." || education.type === "PhD"){
+    edu = {
+      institute: education.institute,
+      type: education.type,
+      fieldOfStudy: education.fieldOfStudy,
+      startDate: education.startMonth+"/"+education.startYear,
+      endDate: education.endMonth+"/"+education.endYear
+    }
+  }else if(education.type === "School" || education.type === "College"){
+    edu = {
+      institute: education.institute,
+      type: education.type,
+      startDate: education.startMonth+"/"+education.startYear,
+      endDate: education.endMonth+"/"+education.endYear,
+      societiesAndActivities: education.societiesAndActivities
+    }
+  }
 
-    axios.put(`${BACKEND_URL}/jobseeker/addUniversity/${loginId}`,uni)
+    axios.put(`${BACKEND_URL}/jobseeker/addEducation/${loginId}`,edu)
     .then(res => {
       if(res.data.success){
         setAlertData({
           severity: "success",
-          msg: "University added successfully!",
+          msg: "Education added successfully!",
         });
         handleAlert();
       } else {
         setAlertData({
           severity: "error",
-          msg: "University could not be added!",
+          msg: "Education could not be added!",
         });
         handleAlert();
       }
@@ -381,39 +353,39 @@ function EducationSection(props) {
     handleClose();
   }
 
-  function onSubmitSchool(e){
-    e.preventDefault();
-    const sch = {
-      school: school.school,
-      startDate: school.startMonth+"/"+school.startYear,
-      endDate: school.endMonth+"/"+school.endYear,
-      description: school.description
-    }
+  // function onSubmitSchool(e){
+  //   e.preventDefault();
+  //   const sch = {
+  //     school: school.school,
+  //     startDate: school.startMonth+"/"+school.startYear,
+  //     endDate: school.endMonth+"/"+school.endYear,
+  //     description: school.description
+  //   }
 
-    axios.put(`${BACKEND_URL}/jobseeker/addSchool/${loginId}`,sch)
-    .then(res => {
-      if(res.data.success){
-        setAlertData({
-          severity: "success",
-          msg: "School added successfully!",
-        });
-        handleAlert();
-      } else {
-        setAlertData({
-          severity: "error",
-          msg: "School could not be added!",
-        });
-        handleAlert();
-      }
-    });
-    setFetchedData(1);
-    handleClose();
-  }
+  //   axios.put(`${BACKEND_URL}/jobseeker/addSchool/${loginId}`,sch)
+  //   .then(res => {
+  //     if(res.data.success){
+  //       setAlertData({
+  //         severity: "success",
+  //         msg: "School added successfully!",
+  //       });
+  //       handleAlert();
+  //     } else {
+  //       setAlertData({
+  //         severity: "error",
+  //         msg: "School could not be added!",
+  //       });
+  //       handleAlert();
+  //     }
+  //   });
+  //   setFetchedData(1);
+  //   handleClose();
+  // }
 
   useEffect(()=>{
-    setUniversity({
-      university: null,
-      degree: null,
+    setEducation({
+      institute: null,
+      type: null,
       fieldOfStudy: null,
       GPA: null,
       startYear: null,
@@ -422,57 +394,24 @@ function EducationSection(props) {
       endMonth: null,
       societiesAndActivities: null
     })
-    setSchool({
-      school: null,
-      startYear: null,
-      startMonth: null,
-      endYear: null,
-      endMonth: null,
-      description: null
-    })
-    setUniversityFields(null);
-    setSchoolFields(null);
+    setEducationFields(null);
     fetchData()
   },[fetchedData])
 
-  function deleteUniversity(index){
-    universityFields.splice(index,1);
-    console.log(universityFields)
-    axios.put(`${BACKEND_URL}/jobseeker/removeUniversity/${loginId}`,universityFields)
+  function deleteEducation(index){
+    educationFields.splice(index,1);
+    axios.put(`${BACKEND_URL}/jobseeker/removeEducation/${loginId}`,educationFields)
     .then(res => {
       if(res.data.success){
         setAlertData({
           severity: "success",
-          msg: "University deleted successfully!",
+          msg: "Education details deleted successfully!",
         });
         handleAlert();
       } else {
         setAlertData({
           severity: "error",
-          msg: "University could not be deleted!",
-        });
-        handleAlert();
-      }
-    });
-    handleClose();
-    setFetchedData(1)  
-  }
-
-  function deleteSchool(index){
-    schoolFields.splice(index,1);
-    console.log(schoolFields)
-    axios.put(`${BACKEND_URL}/jobseeker/removeSchool/${loginId}`,schoolFields)
-    .then(res => {
-      if(res.data.success){
-        setAlertData({
-          severity: "success",
-          msg: "School deleted successfully!",
-        });
-        handleAlert();
-      } else {
-        setAlertData({
-          severity: "error",
-          msg: "School could not be deleted!",
+          msg: "Education details could not be deleted!",
         });
         handleAlert();
       }
@@ -482,59 +421,26 @@ function EducationSection(props) {
   }
 
 
-  const displayUniFields = () => {
-    if (universityFields) {
-      if (universityFields.length > 0) {
-        eduCount=1;
-        return universityFields.map(edu => (
-              <EduItem index={i++} level="University" startDate={edu.startDate} endDate={edu.endDate} university={edu.university} degree={edu.degree} fieldOfStudy={edu.fieldOfStudy} gpa={edu.GPA} societiesAndActivities={edu.societiesAndActivities}  parentFunction={deleteUniversity} />
+  const displayEduFields = () => {
+    if (educationFields) {
+      if (educationFields.length > 0) {
+        return educationFields.map(edu => (
+              <EduItem index={i++} startDate={edu.startDate} endDate={edu.endDate} institute={edu.institute} type={edu.type} fieldOfStudy={edu.fieldOfStudy} gpa={edu.GPA} societiesAndActivities={edu.societiesAndActivities}  parentFunction={deleteEducation} />
               ))
+      }else{
+        return (<Typography variant="body2" color="textSecondary" component="p">Education details not added.</Typography>)
       }
-    }
-  }
-
-  const displaySchoolFields = () => {
-    if (schoolFields) {
-      if (schoolFields.length > 0) {
-        eduCount=1;
-        return schoolFields.map(edu => (
-              <EduItem index={j++} level="School" startDate={edu.startDate} endDate={edu.endDate} school={edu.school} description={edu.description}  parentFunction={deleteSchool} />
-              ))
-      }
-    }
-    if(eduCount === 0){
+    }else{
       return (<Typography variant="body2" color="textSecondary" component="p">Education details not added.</Typography>)
     }
   }
 
+
   useEffect(()=>{
-    if (level === "University") {
-      let temp = <form className={classes.form} onSubmit={onSubmitUniversity}>
-      <div>
-      <TextField
-        className={classes.field}
-          id="outlined-basic"
-          label="University"
-          type="text"
-          variant="outlined"
-          size="small"
-          onChange={onChangeUniversity}
-          required
-        />
-        <FormControl variant="outlined" className={classes.formControl}>
-        <InputLabel className={classes.placeholder} htmlFor="outlined-age-native-simple">Select Degree</InputLabel>
-        <Select
-          native
-          onChange={onChangeDegree}
-          label="Select Degree"
-          className={classes.select}
-          required
-        >
-          <option aria-label="None" value="" />
-          <option value="Bachelor's">Bachelor's</option>
-          <option value="Msc">Msc</option>
-        </Select>
-      </FormControl>
+    setForm(null);
+    if(education.type === "University"){
+      let temp =
+      <>
         <TextField
         className={classes.field}
           id="outlined-basic"
@@ -634,34 +540,33 @@ function EducationSection(props) {
           size="small"
           onChange={onChangeSocietiesAndActivities}
         />
-        </div>
-        <Button type="submit" className={classes.defaultButton} style={{ width:'100%',marginTop:'5%'}}>Apply Changes</Button>
-    </form>;
+        </>;
       setForm(temp);
-    }else if(level==="School"){
-      let temp=<form className={classes.form} onSubmit={onSubmitSchool}>
-      <div>
-      <TextField
-        className={classes.field}
+      // -----------------------------------School/College fields ---------------------------------
+    }else if(education.type === "Diploma" || education.type === "Graduate Diploma" || education.type === "Bachelor's" || education.type === "M.Phil." || education.type === "PhD"){
+      let temp =
+      <>
+        <TextField
+          className={classes.field}
           id="outlined-basic"
-          label="School"
+          label="Field of Study"
           type="text"
           variant="outlined"
           size="small"
-          onChange={onChangeSchool}
+          onChange={onChangeFieldOfStudy}
           required
         />
         <Grid container direction="row">
           <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
             <Grid item xs={12}>
-              <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px"}}>Start Date</Typography>
+              <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px",marginTop:"15px"}}>Start Date</Typography>
             </Grid>
             <Grid item xs={6}>
               <FormControl variant="outlined" className={classes.formControl}>
                 <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
                 <Select
                   native
-                  onChange={onChangeSchoolstartYear}
+                  onChange={onChangestartYear}
                   label="Start Date"
                   className={classes.selectYear}
                 >
@@ -675,7 +580,7 @@ function EducationSection(props) {
                 <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
                 <Select
                   native
-                  onChange={onChangeSchoolstartMonth}
+                  onChange={onChangestartMonth}
                   label="Start Date"
                   className={classes.selectMonth}
                 >
@@ -687,14 +592,14 @@ function EducationSection(props) {
           </Grid>
           <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
             <Grid item xs={12}>
-              <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px"}}>End Date</Typography>
+              <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px",marginTop:"15px"}}>End Date</Typography>
             </Grid>
             <Grid item xs={6}>
               <FormControl variant="outlined" className={classes.formControl}>
                 <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
                 <Select
                   native
-                  onChange={onChangeSchoolEndYear}
+                  onChange={onChangeEndYear}
                   label="End Date"
                   className={classes.selectYear}
                 >
@@ -708,7 +613,7 @@ function EducationSection(props) {
                 <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
                 <Select
                   native
-                  onChange={onChangeSchoolEndMonth}
+                  onChange={onChangeEndMonth}
                   label="Start Date"
                   className={classes.selectMonth}
                 >
@@ -719,21 +624,92 @@ function EducationSection(props) {
             </Grid>
           </Grid>
         </Grid>
-        <TextField
+        </>;
+      setForm(temp);
+  }else{
+        let temp =
+        <>
+          <Grid container direction="row">
+            <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
+              <Grid item xs={12}>
+                <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px",marginTop:"15px"}}>Start Date</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl variant="outlined" className={classes.formControl}>
+                  <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
+                  <Select
+                    native
+                    onChange={onChangestartYear}
+                    label="Start Date"
+                    className={classes.selectYear}
+                  >
+                    <option aria-label="None" value="" />
+                    {getYearsFrom()}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl variant="outlined" className={classes.formControl}>
+                  <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
+                  <Select
+                    native
+                    onChange={onChangestartMonth}
+                    label="Start Date"
+                    className={classes.selectMonth}
+                  >
+                    <option aria-label="None" value="" />
+                    {getMonthsFrom()}
+                  </Select>
+                </FormControl>
+              </Grid>
+            </Grid>
+            <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
+              <Grid item xs={12}>
+                <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px",marginTop:"15px"}}>End Date</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl variant="outlined" className={classes.formControl}>
+                  <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
+                  <Select
+                    native
+                    onChange={onChangeEndYear}
+                    label="End Date"
+                    className={classes.selectYear}
+                  >
+                    <option aria-label="None" value="" />
+                    {getYearsTo()}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl variant="outlined" className={classes.formControl}>
+                  <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
+                  <Select
+                    native
+                    onChange={onChangeEndMonth}
+                    label="Start Date"
+                    className={classes.selectMonth}
+                  >
+                    <option aria-label="None" value="" />
+                    {getMonthsFrom()}
+                  </Select>
+                </FormControl>
+              </Grid>
+            </Grid>
+          </Grid>
+          <TextField
           className={classes.field}
-          id="outlined-multiline-static"
-          label="Description"
-          multiline
-          rows={5}
-          variant="outlined"
-          onChange= {onChangeDescription}
-        />
-        </div>
-        <Button type="submit" className={classes.defaultButton} style={{ width:'100%',marginTop:'5%'}}>Apply Changes</Button>
-    </form>;
-    setForm(temp);
+            id="outlined-basic"
+            label="Societies and Activities"
+            type="text"
+            variant="outlined"
+            size="small"
+            onChange={onChangeSocietiesAndActivities}
+          />
+          </>;
+        setForm(temp);
     }
-  },[level,university,school])
+  },[open,education])
 
   return (
     <>
@@ -749,35 +725,16 @@ function EducationSection(props) {
         </Grid>
         <Grid item style={{ textAlign: 'right' }}>
         { login ? <>
-            <Button className={classes.defaultButton} style={{ float: 'right',marginRight: '0px',backgroundColor:'white'}} onClick={handleClick}>
+            <Button className={classes.defaultButton} style={{ float: 'right',marginRight: '0px',backgroundColor:'white'}} onClick={handleOpen}>
                 <AddIcon style={{color: theme.palette.tuftsBlue,}} className={classes.editIcon} />
             </Button>
             </> : null }
-            <Menu
-              id="simple-menu"
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleCloseMenu}
-            >
-              <MenuItem onClick={()=>{
-                handleCloseMenu()
-                setLevel("University")
-                handleOpen()
-                }}>University</MenuItem>
-              <MenuItem onClick={()=>{
-                handleCloseMenu()
-                setLevel("School")
-                handleOpen()
-                }}>School</MenuItem>
-            </Menu>
         </Grid>
         
       </Grid>
       <Grid container>
             <Grid item xs={12}>
-              {displayUniFields()}
-              {displaySchoolFields()}
+              {displayEduFields()}
             </Grid>
         </Grid>
 
@@ -811,8 +768,41 @@ function EducationSection(props) {
                   </Grid>
                 </Grid>
               </div>
-              {form}
-              
+              <form className={classes.form} onSubmit={onSubmitEducation}>
+                <div>
+                  <TextField
+                    className={classes.field}
+                    id="outlined-basic"
+                    label="University/School/Institute"
+                    type="text"
+                    variant="outlined"
+                    size="small"
+                    onChange={onChangeInstitute}
+                    required
+                  />
+                  <FormControl variant="outlined" className={classes.formControl}>
+                    <InputLabel className={classes.placeholder} htmlFor="outlined-age-native-simple">Select Type</InputLabel>
+                    <Select
+                      native
+                      onChange={onChangeType}
+                      label="Select Type"
+                      className={classes.select}
+                      required
+                    >
+                      <option value="School">School</option>
+                      <option value="College">College</option>
+                      <option value="University">University</option>
+                      <option value="Diploma">Diploma</option>
+                      <option value="Graduate Diploma">Graduate Diploma</option>
+                      <option value="Bachelor's">Bachelor's</option>
+                      <option value="M.Phil.">M.Phil.</option>
+                      <option value="PhD">PhD</option>
+                    </Select>
+                  </FormControl>
+                  {form}
+                </div>
+                <Button type="submit" className={classes.defaultButton} style={{ width:'100%',marginTop:'5%'}}>Apply Changes</Button>
+              </form>         
             </div>
           </Fade>
         </Modal>

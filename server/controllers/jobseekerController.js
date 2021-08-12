@@ -387,10 +387,10 @@ const resetAll = (req, res) => { // To clear the test resume details
 }
 
 //--------------- add --------------------------------------------
-const addUniversity = (req, res) => {
+const addEducation = (req, res) => {
   Jobseeker.findOneAndUpdate(
     { _id: req.params.id },
-    { $push: { university: req.body } },
+    { $push: { education: req.body } },
     (err, jobseeker) => {
       if (err) {
         return res.status(400).json({
@@ -404,22 +404,39 @@ const addUniversity = (req, res) => {
   );
 };
 
-const addSchool = (req, res) => {
-  Jobseeker.findOneAndUpdate(
-    { _id: req.params.id },
-    { $push: { school: req.body } },
-    (err, jobseeker) => {
-      if (err) {
-        return res.status(400).json({
-          error: err,
-        });
-      }
-      return res.status(200).json({
-        success: true,
-      });
-    }
-  );
-};
+// const addUniversity = (req, res) => {
+//   Jobseeker.findOneAndUpdate(
+//     { _id: req.params.id },
+//     { $push: { university: req.body } },
+//     (err, jobseeker) => {
+//       if (err) {
+//         return res.status(400).json({
+//           error: err,
+//         });
+//       }
+//       return res.status(200).json({
+//         success: true,
+//       });
+//     }
+//   );
+// };
+
+// const addSchool = (req, res) => {
+//   Jobseeker.findOneAndUpdate(
+//     { _id: req.params.id },
+//     { $push: { school: req.body } },
+//     (err, jobseeker) => {
+//       if (err) {
+//         return res.status(400).json({
+//           error: err,
+//         });
+//       }
+//       return res.status(200).json({
+//         success: true,
+//       });
+//     }
+//   );
+// };
 
 const addCourse = (req, res) => {
   Jobseeker.findOneAndUpdate(
@@ -708,8 +725,9 @@ module.exports = {
   getById,
   getByIds,
   update,
-  addUniversity,
-  addSchool,
+  // addUniversity,
+  // addSchool,
+  addEducation,
   addCourse,
   addAward,
   addVolunteering,

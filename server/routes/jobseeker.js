@@ -43,8 +43,9 @@ router.patch("/jobseeker/updateFavoriteOrgs/:id", jobseekerController.updateFavo
 router.patch("/jobseeker/resetApplicationDetails", jobseekerController.resetAll);
 
 // add new fields
-router.put('/jobseeker/addUniversity/:id', jobseekerController.addUniversity);
-router.put('/jobseeker/addSchool/:id', jobseekerController.addSchool);
+// router.put('/jobseeker/addUniversity/:id', jobseekerController.addUniversity);
+// router.put('/jobseeker/addSchool/:id', jobseekerController.addSchool);
+router.put('/jobseeker/addEducation/:id', jobseekerController.addEducation);
 router.put('/jobseeker/addCourse/:id', jobseekerController.addCourse);
 router.put('/jobseeker/addAward/:id', jobseekerController.addAward);
 router.put('/jobseeker/addVolunteering/:id', jobseekerController.addVolunteering);
