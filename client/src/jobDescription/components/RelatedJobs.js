@@ -65,6 +65,8 @@ function RelatedJobs(props) {
     const [savedJobIds, setSavedJobIds] = useState("empty");
     const userId = sessionStorage.getItem("loginId");
 
+    const isSignedIn = sessionStorage.getItem( "userToken" ) ? true : false;
+
     useEffect(() => {
         retrieveJobseeker();
       }, []);
@@ -120,7 +122,7 @@ function RelatedJobs(props) {
     }, [relatedJobs])
 
     const displayRelatedJobs = () => {
-        if (relatedJobs && savedJobIds !== "empty") {
+        if (!isSignedIn || (isSignedIn && relatedJobs && savedJobIds !== "empty")) {
             return relatedJobs.map(featuredJob => (
                 <Grid item sm={12} key={featuredJob._id} className={classes.jobGridCard}>
                     <JobCard 

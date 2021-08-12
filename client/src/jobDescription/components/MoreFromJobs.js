@@ -63,6 +63,7 @@ function MoreFromJobs(props) {
     const [moreFromJobs, setMoreFromJobs] = useState([]);
     const [savedJobIds, setSavedJobIds] = useState("empty");
     const userId = sessionStorage.getItem("loginId");
+    const isSignedIn = sessionStorage.getItem( "userToken" ) ? true : false;
 
     useEffect(() => {
         retrieveJobseeker();
@@ -104,7 +105,7 @@ function MoreFromJobs(props) {
     }, [moreFromJobs])
 
     const displayMoreFromJobs = () => {
-        if (moreFromJobs && savedJobIds !== "empty") {
+        if (!isSignedIn || (isSignedIn && moreFromJobs && savedJobIds !== "empty")) {
             return moreFromJobs.map(featuredJob => (
                 <Grid item sm={12} key={featuredJob._id} className={classes.jobGridCard}>
                     <JobCard 
