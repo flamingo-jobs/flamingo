@@ -14,8 +14,11 @@ import FloatCard from "../../../components/FloatCard";
 import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
 import WorkRoundedIcon from "@material-ui/icons/WorkRounded";
 import GetAppIcon from "@material-ui/icons/GetApp";
+import PublishIcon from "@material-ui/icons/Publish";
 import Status from "./status";
-import download from 'downloadjs';
+import download from "downloadjs";
+import UploadModal from "./uploadModal";
+import SnackBarAlert from "../../../components/SnackBarAlert";
 
 const useStyles = makeStyles((theme) => ({
   border: {
@@ -107,7 +110,7 @@ const useStyles = makeStyles((theme) => ({
       justifyContent: "center",
     },
   },
-  appliedOn:{
+  appliedOn: {
     fontSize: "16px",
     fontWeight: 500,
     marginRight: "10px",
@@ -115,19 +118,27 @@ const useStyles = makeStyles((theme) => ({
   appliedDate: {
     color: theme.palette.black,
   },
+  btnContainer: {
+    display: "flex",
+    justifyContent: "flex-end",
+    gap: theme.spacing(2),
+  },
   downloadContainer: {
     marginTop: "20px",
     display: "flex",
-    justifyContent: "left",
+    // justifyContent: "flex-start",
     [theme.breakpoints.down("sm")]: {
       justifyContent: "center",
     },
   },
   downloadBtn: {
-    background: theme.palette.tuftsBlue,
+    paddingLeft: "13px",
+    paddingRight: "13px",
+    borderRadius: 12,
+    backgroundColor: theme.palette.vividSkyBlue,
     color: theme.palette.white,
     "&:hover": {
-      background: theme.palette.tuftsBlueHover,
+      backgroundColor: theme.palette.vividSkyBlueHover,
     },
   },
 }));
@@ -138,6 +149,30 @@ const Job = (props) => {
   const [applicationDetails, setApplicationDetails] = useState(
     props.applicationDetails
   );
+
+  const [alertShow, setAlertShow] = useState(false);
+  const [alertData, setAlertData] = useState({ severity: "", msg: "" });
+
+  const [open, setOpen] = useState(false);
+  const [fileData, setFileData] = useState("empty");
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertShow(false);
+  };
 
   useEffect(() => {
     retrieveJob();
@@ -163,22 +198,35 @@ const Job = (props) => {
     const resumeName = props.applicationDetails.resumeName;
 
     try {
-      const response = await axios.get(`${BACKEND_URL}/resume/${props.jobId}/${props.userId}`,{
-        responseType: 'arraybuffer'
-      });
+      const response = await axios.get(
+        `${BACKEND_URL}/resume/${props.jobId}/${props.userId}`,
+        {
+          responseType: "arraybuffer",
+        }
+      );
       const file = new Blob([response.data], {
         type: "application/pdf",
       });
 
       return download(response.data, "Flamingo_Resume", "application/pdf");
-      
     } catch (err) {
-      console.log(err)
+      console.log(err);
       if (err.status === 400) {
-        console.log('Error while downloading file. Try again later');
+        console.log("Error while downloading file. Try again later");
       }
     }
-  }
+  };
+
+  const displayAlert = () => {
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
 
   // style={{border: "1px solid red"}}
   const displayJob = () => {
@@ -186,6 +234,17 @@ const Job = (props) => {
       return (
         <FloatCard>
           <Container>
+            {displayAlert()}
+            <UploadModal
+              open={open}
+              jobId={props.jobId}
+              handleClose={handleClose}
+              fileData={fileData}
+              setFileData={setFileData}
+              setAlertData={setAlertData}
+              handleAlert={handleAlert}
+            ></UploadModal>
+
             <Container className={classes.summaryContainer}>
               <Grid container alignItems="center" spacing={2}>
                 <Grid item xs={12} md={8}>
@@ -231,26 +290,29 @@ const Job = (props) => {
                     </div>
                   </div>
                 </Grid>
-                <Grid item xs={12} md={4} align="center">
+                <Grid item xs={12} md={4} align="right">
                   {applicationDetails.status === "pending" && (
                     <Status
                       status={applicationDetails.status}
                       text={"Pending...."}
-
+                    ></Status>
+                  )}
+                  {applicationDetails.status === "reviewing" && (
+                    <Status
+                      status={applicationDetails.status}
+                      text={"Reviewing"}
                     ></Status>
                   )}
                   {applicationDetails.status === "shortlisted" && (
                     <Status
                       status={applicationDetails.status}
                       text={"Shortlisted"}
-
                     ></Status>
                   )}
                   {applicationDetails.status === "selected" && (
                     <Status
                       status={applicationDetails.status}
                       text={"Selected"}
-
                     ></Status>
                   )}
                 </Grid>
@@ -268,18 +330,34 @@ const Job = (props) => {
               )}
               <div className={classes.appliedContainer}>
                 <Typography className={classes.appliedDate}>
-                  <span className={classes.appliedOn}>Applied on:</span> {props.applicationDetails.appliedDate.slice(0,10)}
+                  <span className={classes.appliedOn}>Applied on:</span>{" "}
+                  {props.applicationDetails.appliedDate.slice(0, 10)}
                 </Typography>
               </div>
-              <div className={classes.downloadContainer}>
-                <Button
-                  variant="contained"
-                  className={classes.downloadBtn}
-                  startIcon={<GetAppIcon />}
-                  onClick={handleResumeDownload}
-                >
-                  Download Resume
-                </Button>
+              <div className={classes.btnContainer}>
+                {applicationDetails.status === "pending" && (
+                  <div className={classes.downloadContainer}>
+                    <Button
+                      variant="contained"
+                      className={classes.downloadBtn}
+                      onClick={handleOpen}
+                      startIcon={<PublishIcon />}
+                    >
+                      Change the Resume
+                    </Button>
+                  </div>
+                )}
+
+                <div className={classes.downloadContainer}>
+                  <Button
+                    variant="contained"
+                    className={classes.downloadBtn}
+                    startIcon={<GetAppIcon />}
+                    onClick={handleResumeDownload}
+                  >
+                    Download Resume
+                  </Button>
+                </div>
               </div>
             </Container>
           </Container>

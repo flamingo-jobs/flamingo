@@ -9,6 +9,7 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import BACKEND_URL from "../../Config";
 import axios from "axios";
 import LoginModal from './loginModal';
+import SnackBarAlert from "../../components/SnackBarAlert";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -89,6 +90,9 @@ function Organization(props) {
     const classes = useStyles();
     const [isSaved, setIsSaved] = useState(false);
 
+    const [alertShow, setAlertShow] = useState(false);
+    const [alertData, setAlertData] = useState({ severity: "", msg: "" });
+
     // Login modal 
     const [open, setOpen] = useState(false);
 
@@ -101,6 +105,17 @@ function Organization(props) {
     const handleLoginModal = () => {
         handleOpen();
     }
+
+    const handleAlert = () => {
+        setAlertShow(true);
+      };
+    
+    const handleAlertClose = (event, reason) => {
+        if (reason === "clickaway") {
+            return;
+        }
+        setAlertShow(false);
+    };
 
     useEffect(() => {
         if(!props.userRole){
@@ -121,10 +136,18 @@ function Organization(props) {
                     `${BACKEND_URL}/jobseeker/updateFavoriteOrgs/${props.userId}`, newFavoriteOrgs);
 
                 if (response.data.success) {
-                // console.log('success unsave');
+                    setAlertData({
+                        severity: "success",
+                        msg: "Organization Removed From Favorite Organizations",
+                    });
+                    handleAlert();
                 }
             } catch (err) {
-                console.log(err);
+                setAlertData({
+                    severity: "error",
+                    msg: "Something Went Wrong. Please Try Again Later.",
+                });
+                handleAlert();
             }
 
         } else{ // Save
@@ -136,10 +159,18 @@ function Organization(props) {
                 const response = await axios.patch(
                     `${BACKEND_URL}/jobseeker/updateFavoriteOrgs/${props.userId}`, newFavoriteOrgs);
                 if (response.data.success) {
-                    // console.log('success save');
+                    setAlertData({
+                        severity: "success",
+                        msg: "Organization Removed From Favorite Organizations",
+                    });
+                    handleAlert();
                 }
             } catch (err) {
-              console.log(err);
+                setAlertData({
+                    severity: "error",
+                    msg: "Something Went Wrong. Please Try Again Later.",
+                });
+                handleAlert();
             }
         }
     }
@@ -159,8 +190,21 @@ function Organization(props) {
         }
     }
 
+    const displayAlert = () => {
+        return (
+          <SnackBarAlert
+            open={alertShow}
+            onClose={handleAlertClose}
+            severity={alertData.severity}
+            msg={alertData.msg}
+          />
+        );
+      };
+
     return (
         <FloatCard >
+            {displayAlert()}
+
             {/* Works only when user is not signed in */}
             <LoginModal 
                 open={open}

@@ -67,7 +67,7 @@ const Status = (props) => {
       preserveAspectRatio: "xMidYMid slice",
     },
   };
-  const selectedOptions = {
+  const rejectedOptions = {
     loop: true,
     autoplay: true,
     animationData: Check,
@@ -75,7 +75,8 @@ const Status = (props) => {
       preserveAspectRatio: "xMidYMid slice",
     },
   };
-
+  
+  // style={{border: "1px solid red"}}
   return (
     <div className={classes.resumeStatus}>
       <div className={classes.animation}>
@@ -91,8 +92,8 @@ const Status = (props) => {
           <Lottie
             className={classes.lottie}
             options={reviewingOptions}
-            height="40px"
-            width="40px"
+            height="25px"
+            width="25px"
           />
         )}
         {props.status === "shortlisted" && (

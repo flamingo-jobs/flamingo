@@ -25,7 +25,7 @@ import { Link } from "react-router-dom";
 
 const jwt = require("jsonwebtoken");
 const passwordRegexp =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})/;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -330,7 +330,9 @@ export default function GetHired() {
   };
 
   const handleSuccessLogin = (id, loginId) => {
-    axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`)
+    axios.get(
+      `${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`
+    );
     const linker = { id: id, loginId: loginId };
     setProgress(70);
     axios.post(`${BACKEND_URL}/api/link-account`, linker).then((res) => {

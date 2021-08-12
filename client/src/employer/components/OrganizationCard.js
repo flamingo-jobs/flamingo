@@ -11,6 +11,7 @@ import BACKEND_URL from "../../Config";
 import axios from "axios";
 import { Link } from 'react-router-dom'
 import LoginModal from './loginModal';
+import SnackBarAlert from "../../components/SnackBarAlert";
 
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -106,6 +107,10 @@ function OrganizationCard(props) {
         : null
     );
 
+    const [alertShow, setAlertShow] = useState(false);
+    const [alertData, setAlertData] = useState({ severity: "", msg: "" });
+
+
     // Login modal 
     const [open, setOpen] = useState(false);
     const handleOpen = () => {
@@ -118,7 +123,16 @@ function OrganizationCard(props) {
         handleOpen();
     }
 
+    const handleAlert = () => {
+        setAlertShow(true);
+      };
     
+    const handleAlertClose = (event, reason) => {
+        if (reason === "clickaway") {
+            return;
+        }
+        setAlertShow(false);
+    };
 
     useEffect(() => {
         if(props.favoriteOrgs !== "empty"){
@@ -149,10 +163,18 @@ function OrganizationCard(props) {
             try {
                 const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateFavoriteOrgs/${userId}`, newFavoriteOrgs);
                 if (response.data.success) {
-                console.log('success');
+                    setAlertData({
+                        severity: "success",
+                        msg: "Organization Removed From Favorite Organizations",
+                    });
+                    handleAlert();
                 }
             } catch (err) {
-                console.log(err);
+                setAlertData({
+                    severity: "error",
+                    msg: "Something Went Wrong. Please Try Again Later.",
+                });
+                handleAlert();
             }
 
         } else{ // Save
@@ -162,10 +184,18 @@ function OrganizationCard(props) {
             try {
               const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateFavoriteOrgs/${userId}`, newFavoriteOrgs);
               if (response.data.success) {
-                console.log('success');
+                setAlertData({
+                    severity: "success",
+                    msg: "Organization Saved, Successfully!",
+                });
+                handleAlert();
               }
             } catch (err) {
-              console.log(err);
+                setAlertData({
+                    severity: "error",
+                    msg: "Something Went Wrong. Please Try Again Later.",
+                });
+                handleAlert();
             }
         }
     }
@@ -185,8 +215,21 @@ function OrganizationCard(props) {
         }
     }
 
+    const displayAlert = () => {
+        return (
+          <SnackBarAlert
+            open={alertShow}
+            onClose={handleAlertClose}
+            severity={alertData.severity}
+            msg={alertData.msg}
+          />
+        );
+      };
+
     return (
         <FloatCard >
+            {displayAlert()}
+
             <LoginModal
                 open={open}
                 handleClose={handleClose}
