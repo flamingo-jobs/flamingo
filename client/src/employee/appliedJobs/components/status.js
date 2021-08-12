@@ -5,6 +5,7 @@ import Hourglass from "../lotties/hourglass.json";
 import List from "../lotties/list.json";
 import Check from "../lotties/check.json";
 import { makeStyles } from "@material-ui/core/styles";
+import Review from "../lotties/review.json";
 
 const useStyles = makeStyles((theme) => ({
   resumeStatus: {
@@ -49,6 +50,14 @@ const Status = (props) => {
       preserveAspectRatio: "xMidYMid slice",
     },
   };
+  const reviewingOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: Review,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
   const shortlistedOptions = {
     loop: true,
     autoplay: true,
@@ -75,6 +84,14 @@ const Status = (props) => {
             options={pendingOptions}
             height="20px"
             width="20px"
+          />
+        )}
+        {props.status === "reviewing" && (
+          <Lottie
+            className={classes.lottie}
+            options={reviewingOptions}
+            height="30px"
+            width="30px"
           />
         )}
         {props.status === "shortlisted" && (

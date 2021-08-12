@@ -66,6 +66,7 @@ const useStyles = makeStyles((theme) => ({
   },
   body: {
     margin: 10,
+    marginTop: 20,
   },
   title: {
     fontWeight: 500,
@@ -215,7 +216,7 @@ function ApplicantCard(props) {
                 </Typography>
               </div>
             </div>
-            <div className={classes.headerRight}>
+            <div className={classes.headerRight} >
               {status === "pending" && <Status status={status} text={"Pending...."}></Status>}
               {status === "reviewing" && <Status status={status} text={"Reviewing"}></Status>}
               {status === "shortlisted" && <Status status={status} text={"Shortlisted"}></Status>}
