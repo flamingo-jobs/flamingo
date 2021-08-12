@@ -20,12 +20,15 @@ const jobseekerSchema = new mongoose.Schema({
   contact: {
     type: Object,
   },
-  university: {
+  education: {
     type: Array,
   },
-  school: {
-    type: Array,
-  },
+  // university: {
+  //   type: Array,
+  // },
+  // school: {
+  //   type: Array,
+  // },
   course: {
     type: Array,
   },
