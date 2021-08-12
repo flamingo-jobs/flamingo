@@ -10,6 +10,7 @@ const app = express();
 const userRoutes = require('./routes/users');
 const jobRoutes = require('./routes/jobs');
 const categoryRoutes = require('./routes/categories');
+const certificationsRoutes = require('./routes/certifications');
 const technologyRoutes = require('./routes/technologies');
 const typeRoutes = require('./routes/types');
 const employerRoutes = require('./routes/employers');
@@ -36,6 +37,7 @@ app.use(resumeRoutes);
 app.use(logoRoutes);
 app.use(keywordsRoutes);
 app.use(analyticsRoutes);
+app.use(certificationsRoutes);
 app.use('/api', authRoutes);
 
 const PORT = 8000;
