@@ -214,30 +214,11 @@ const updateTechnologyItem = (req, res) => {
 );
 };
 
-const updateUniversity = (req, res) => {
+const updateEducation = (req, res) => {
   Jobseeker.updateOne(
     { _id: req.params.id },
     {
-      $set: { [`university.${req.body.index}`]: req.body.university },
-    },
-    (err, jobseeker) => {
-      if (err) {
-        return res.status(400).json({
-          error: err,
-        });
-      }
-      return res.status(200).json({
-        success: true,
-      });
-    }
-  );
-};
-
-const updateSchool = (req, res) => {
-  Jobseeker.updateOne(
-    { _id: req.params.id },
-    {
-      $set: { [`school.${req.body.index}`]: req.body.school },
+      $set: { [`education.${req.body.index}`]: req.body.education },
     },
     (err, jobseeker) => {
       if (err) {
@@ -403,40 +384,6 @@ const addEducation = (req, res) => {
     }
   );
 };
-
-// const addUniversity = (req, res) => {
-//   Jobseeker.findOneAndUpdate(
-//     { _id: req.params.id },
-//     { $push: { university: req.body } },
-//     (err, jobseeker) => {
-//       if (err) {
-//         return res.status(400).json({
-//           error: err,
-//         });
-//       }
-//       return res.status(200).json({
-//         success: true,
-//       });
-//     }
-//   );
-// };
-
-// const addSchool = (req, res) => {
-//   Jobseeker.findOneAndUpdate(
-//     { _id: req.params.id },
-//     { $push: { school: req.body } },
-//     (err, jobseeker) => {
-//       if (err) {
-//         return res.status(400).json({
-//           error: err,
-//         });
-//       }
-//       return res.status(200).json({
-//         success: true,
-//       });
-//     }
-//   );
-// };
 
 const addCourse = (req, res) => {
   Jobseeker.findOneAndUpdate(
@@ -725,16 +672,13 @@ module.exports = {
   getById,
   getByIds,
   update,
-  // addUniversity,
-  // addSchool,
   addEducation,
   addCourse,
   addAward,
   addVolunteering,
   addProject,
   addWork,
-  updateUniversity,
-  updateSchool,
+  updateEducation,
   updateCourse,
   updateSkills,
   updateTechnologyItem,

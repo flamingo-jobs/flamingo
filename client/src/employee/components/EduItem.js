@@ -307,7 +307,7 @@ function EduItem(props) {
   }
   //----------------------------------
 
-  function onSubmitUni(e){
+  function onSubmit(e){
     // console.log("update function");
     // e.preventDefault();
     // const uni = {
@@ -337,12 +337,59 @@ function EduItem(props) {
     //   }
     // });
     // handleClose();
+    e.preventDefault();
+    let edu;
+    if(education.type === "Bachelor's"){
+      edu = {
+        institute: education.institute,
+        type: education.type,
+        fieldOfStudy: education.fieldOfStudy,
+        GPA: education.GPA,
+        startDate: education.startMonth+"/"+education.startYear,
+        endDate: education.endMonth+"/"+education.endYear,
+        societiesAndActivities: education.societiesAndActivities
+      }
+    }else if(education.type === "Diploma" || education.type === "Graduate Diploma" || education.type === "M.Phil." || education.type === "PhD"){
+      edu = {
+        institute: education.institute,
+        type: education.type,
+        fieldOfStudy: education.fieldOfStudy,
+        startDate: education.startMonth+"/"+education.startYear,
+        endDate: education.endMonth+"/"+education.endYear
+      }
+    }else if(education.type === "School" || education.type === "College"){
+      edu = {
+        institute: education.institute,
+        type: education.type,
+        startDate: education.startMonth+"/"+education.startYear,
+        endDate: education.endMonth+"/"+education.endYear,
+        societiesAndActivities: education.societiesAndActivities
+      }
+    }
+
+    axios.put(`${BACKEND_URL}/jobseeker/updateEducation/${loginId}`,{index:props.index,education:edu})
+    .then(res => {
+      if(res.data.success){
+        setAlertData({
+          severity: "success",
+          msg: "Education details updated successfully!",
+        });
+        handleAlert();
+      } else {
+        setAlertData({
+          severity: "error",
+          msg: "Education details could not be updated!",
+        });
+        handleAlert();
+      }
+    });
+    handleClose();
   }
   
 
   useEffect(()=>{
     setForm(null);
-    if(props.type === "University"){
+    if(props.type === "Bachelor's"){
       let temp =
       <>
         <TextField
@@ -352,6 +399,7 @@ function EduItem(props) {
           type="text"
           variant="outlined"
           size="small"
+          value={education.fieldOfStudy}
           onChange={onChangeFieldOfStudy}
           required
         />
@@ -364,6 +412,7 @@ function EduItem(props) {
           label="GPA" 
           variant="outlined"
           size="small"
+          value={education.GPA}
           onChange={onChangeGPA}
           style={{width:'30%'}}
         />
@@ -377,6 +426,7 @@ function EduItem(props) {
                 <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
                 <Select
                   native
+                  value={education.startYear}
                   onChange={onChangestartYear}
                   label="Start Date"
                   className={classes.selectYear}
@@ -391,6 +441,7 @@ function EduItem(props) {
                 <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
                 <Select
                   native
+                  value={education.startMonth}
                   onChange={onChangestartMonth}
                   label="Start Date"
                   className={classes.selectMonth}
@@ -410,6 +461,7 @@ function EduItem(props) {
                 <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
                 <Select
                   native
+                  value={education.endYear}
                   onChange={onChangeEndYear}
                   label="End Date"
                   className={classes.selectYear}
@@ -424,6 +476,7 @@ function EduItem(props) {
                 <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
                 <Select
                   native
+                  value={education.endMonth}
                   onChange={onChangeEndMonth}
                   label="Start Date"
                   className={classes.selectMonth}
@@ -442,12 +495,101 @@ function EduItem(props) {
           type="text"
           variant="outlined"
           size="small"
+          value={education.societiesAndActivities}
           onChange={onChangeSocietiesAndActivities}
         />
         </>;
       setForm(temp);
       // -----------------------------------School fields ---------------------------------
-    }else if(props.type === "School"){
+    }else if(education.type === "Diploma" || education.type === "Graduate Diploma" || education.type === "M.Phil." || education.type === "PhD"){
+      let temp =
+      <>
+        <TextField
+          className={classes.field}
+          id="outlined-basic"
+          label="Field of Study"
+          type="text"
+          variant="outlined"
+          size="small"
+          value={education.fieldOfStudy}
+          onChange={onChangeFieldOfStudy}
+          required
+        />
+        <Grid container direction="row">
+          <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
+            <Grid item xs={12}>
+              <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px",marginTop:"15px"}}>Start Date</Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
+                <Select
+                  native
+                  value={education.startYear}
+                  onChange={onChangestartYear}
+                  label="Start Date"
+                  className={classes.selectYear}
+                >
+                  <option aria-label="None" value="" />
+                  {getYearsFrom()}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={6}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
+                <Select
+                  native
+                  value={education.startMonth}
+                  onChange={onChangestartMonth}
+                  label="Start Date"
+                  className={classes.selectMonth}
+                >
+                  <option aria-label="None" value="" />
+                  {getMonthsFrom()}
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
+          <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
+            <Grid item xs={12}>
+              <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px",marginTop:"15px"}}>End Date</Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
+                <Select
+                  native
+                  value={education.endYear}
+                  onChange={onChangeEndYear}
+                  label="End Date"
+                  className={classes.selectYear}
+                >
+                  <option aria-label="None" value="" />
+                  {getYearsTo()}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={6}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
+                <Select
+                  native
+                  value={education.endMonth}
+                  onChange={onChangeEndMonth}
+                  label="Start Date"
+                  className={classes.selectMonth}
+                >
+                  <option aria-label="None" value="" />
+                  {getMonthsFrom()}
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
+        </Grid>
+        </>;
+      setForm(temp);
+    }else if(props.type === "School" || props.type === "College"){
         let temp =
         <>
           <Grid container direction="row">
@@ -460,6 +602,7 @@ function EduItem(props) {
                   <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
                   <Select
                     native
+                    value={education.startYear}
                     onChange={onChangestartYear}
                     label="Start Date"
                     className={classes.selectYear}
@@ -474,6 +617,7 @@ function EduItem(props) {
                   <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
                   <Select
                     native
+                    value={education.startMonth}
                     onChange={onChangestartMonth}
                     label="Start Date"
                     className={classes.selectMonth}
@@ -493,6 +637,7 @@ function EduItem(props) {
                   <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
                   <Select
                     native
+                    value={education.endYear}
                     onChange={onChangeEndYear}
                     label="End Date"
                     className={classes.selectYear}
@@ -507,6 +652,7 @@ function EduItem(props) {
                   <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
                   <Select
                     native
+                    value={education.endMonth}
                     onChange={onChangeEndMonth}
                     label="Start Date"
                     className={classes.selectMonth}
@@ -525,15 +671,16 @@ function EduItem(props) {
             type="text"
             variant="outlined"
             size="small"
+            value={education.societiesAndActivities}
             onChange={onChangeSocietiesAndActivities}
           />
           </>;
         setForm(temp);
     }
-  },[open,education.type])
+  },[open,education])
 
   const filterFields = () => {
-    if(props.type === "University"){
+    if(props.type === "Bachelor's"){
         return (
             <React.Fragment>
                 <Grid item xs={3} style={{marginLeft:"-10px"}}>
@@ -566,7 +713,7 @@ function EduItem(props) {
                 </Grid>
             </React.Fragment>
         );
-    }else if(props.type === "Diploma" || props.type === "Graduate Diploma" || props.type === "Bachelor's" || props.type === "M.Phil." || props.type === "PhD"){
+    }else if(props.type === "Diploma" || props.type === "Graduate Diploma" || props.type === "M.Phil." || props.type === "PhD"){
         return (
             <React.Fragment>
                 <Grid item xs={3} style={{marginLeft:"-10px"}}>
@@ -696,7 +843,43 @@ function EduItem(props) {
                   </Grid>
                 </Grid>
               </div>
-              {form}
+              <form className={classes.form} onSubmit={onSubmit}>
+                <div>
+                  <TextField
+                    className={classes.field}
+                    id="outlined-basic"
+                    label="University/School/Institute"
+                    type="text"
+                    variant="outlined"
+                    size="small"
+                    value={education.institute}
+                    onChange={onChangeInstitute}
+                    required
+                  />
+                  <FormControl variant="outlined" className={classes.formControl}>
+                    <InputLabel className={classes.placeholder} htmlFor="outlined-age-native-simple">Select Type</InputLabel>
+                    <Select
+                      native
+                      value={education.type}
+                      onChange={onChangeType}
+                      label="Select Type"
+                      className={classes.select}
+                      required
+                      disabled
+                    >
+                      <option value="School">School</option>
+                      <option value="College">College</option>
+                      <option value="Diploma">Diploma</option>
+                      <option value="Graduate Diploma">Graduate Diploma</option>
+                      <option value="Bachelor's">Bachelor's</option>
+                      <option value="M.Phil.">M.Phil.</option>
+                      <option value="PhD">PhD</option>
+                    </Select>
+                  </FormControl>
+                  {form}
+                </div>
+                <Button type="submit" className={classes.defaultButton} style={{ width:'100%',marginTop:'5%'}}>Apply Changes</Button>
+              </form>   
             </div>
           </Fade>
         </Modal>
