@@ -20,6 +20,8 @@ import FloatCard from "../../../components/FloatCard";
 import JobSummaryModal from "./jobSummaryModal";
 import TodayIcon from "@material-ui/icons/Today";
 import DeleteModal from "./deleteModal";
+import CancelIcon from '@material-ui/icons/Cancel';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 const useStyles = makeStyles((theme) => ({
   summaryContainer: {
@@ -31,8 +33,28 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 15,
     backgroundColor: theme.palette.tagYellow,
   },
+  activeChip: {
+    alignSelf: "left",
+    marginRight: 15,
+    backgroundColor: "#4caf50",
+    color: theme.palette.white,
+    fontWeight: 500,
+  },
+  inactiveChip: {
+    alignSelf: "left",
+    marginRight: 15,
+    backgroundColor: "#f44336",
+    color: theme.palette.white,
+    fontWeight: 500,
+  },
   tagIcon: {
     color: theme.palette.tagIcon,
+  },
+  activeIcon: {
+    color: theme.palette.white,
+  },
+  inactiveIcon: {
+    color: theme.palette.white,
   },
   jobTitle: {
     fontSize: "23px",
@@ -72,6 +94,15 @@ const useStyles = makeStyles((theme) => ({
       transition: "0.3s",
       color: theme.palette.black,
     },
+  },
+  minEducation: {
+    fontWeight: 600,
+  },
+  minExperience: {
+    fontWeight: 600,
+  },
+  salary: {
+    fontWeight: 600,
   },
   description: {
     marginTop: theme.spacing(2),
@@ -148,6 +179,15 @@ function JobSummary(props) {
     setOpen(false);
   };
 
+  const minEducationList = [
+    "Bachelor's Degree (Undergraduate)",
+    "Bachelor's Degree (Graduated)",
+    "Master's Degree",
+    "Diploma",
+  ];
+
+  const minExperienceList = ["0", "0-1", "1-3", "+3"];
+
   // delete modal
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
@@ -162,6 +202,8 @@ function JobSummary(props) {
     const newJob = { ...props.job };
     if (event.target.name === "min" || event.target.name === "max") {
       newJob.salaryRange[event.target.name] = event.target.value;
+    } else if (event.target.name === "isPublished") {
+      newJob[event.target.name] = event.target.checked;
     } else {
       // console.log("changed value", event.target.value);
       newJob[event.target.name] = event.target.value;
@@ -188,20 +230,28 @@ function JobSummary(props) {
         min: props.job.salaryRange.min,
         max: props.job.salaryRange.max,
       },
+      isPublished: props.job.isPublished,
+      minimumEducation: props.job.minimumEducation,
+      minimumExperience: props.job.minimumExperience,
     };
 
+    console.log(updateFields);
     try {
       const response = await axios.put(
         `${BACKEND_URL}/jobs/update/${props.jobId}`,
         updateFields
       );
-      handleClose();
-      props.setAlertData({
-        severity: "success",
-        msg: "Changes saved successfully!",
-      });
-      props.handleAlert();
-      await axios.get(`${BACKEND_URL}/jobs/generateRecommendations/${props.jobId}`);
+
+      if(response.data.success){
+        await axios.get(`${BACKEND_URL}/jobs/generateRecommendations/${props.jobId}`);
+
+        handleClose();
+        props.setAlertData({
+          severity: "success",
+          msg: "Changes saved successfully!",
+        });
+        props.handleAlert();
+      }
       // console.log(response);
     } catch (err) {
       handleClose();
@@ -226,7 +276,7 @@ function JobSummary(props) {
         });
         props.handleAlert();
         window.location = "/employer/jobs";
-      }else{
+      } else {
         props.setAlertData({
           severity: "error",
           msg: "Somethig went wrong",
@@ -261,6 +311,8 @@ function JobSummary(props) {
         handleSummaryChange={handleSummaryChange}
         handleSummarySubmit={handleSummarySubmit}
         handleDueDateChange={handleDueDateChange}
+        minEducationList={minEducationList}
+        minExperienceList={minExperienceList}
       ></JobSummaryModal>
 
       <FloatCard>
@@ -272,6 +324,18 @@ function JobSummary(props) {
                   icon={<LocalOfferRoundedIcon className={classes.tagIcon} />}
                   label={props.job.category}
                   className={classes.label}
+                />
+                {/* ClearIcon */}
+                <Chip
+                  icon={
+                    props.job.isPublished ? (
+                      <CheckCircleIcon className={classes.activeIcon} />
+                    ) : (
+                      <CancelIcon className={classes.inactiveIcon} />
+                    )
+                  }
+                  label={props.job.isPublished ? "Active" : "Inactive"}
+                  className={ props.job.isPublished ? classes.activeChip : classes.inactiveChip }
                 />
                 <div className={classes.time}>
                   <Typography>
@@ -351,6 +415,30 @@ function JobSummary(props) {
                     {getFormattedDate(props.job.dueDate)}
                   </Typography>
                 </div>
+              </div>
+            </Grid>
+            <Grid item xs={12}>
+              <div>
+                <Typography align="left" className={classes.description}>
+                  <span className={classes.minEducation}>
+                    Minimum Education:{" "}
+                  </span>
+                  {props.job.minimumEducation}
+                </Typography>
+              </div>
+              <div>
+                <Typography align="left" className={classes.description}>
+                  <span className={classes.minExperience}>
+                    Minimum Experience:{" "}
+                  </span>
+                  {props.job.minimumExperience} years
+                </Typography>
+              </div>
+              <div>
+                <Typography align="left" className={classes.description}>
+                  <span className={classes.salary}>Salary: </span>Rs.
+                  {props.job.salaryRange.min} - Rs.{props.job.salaryRange.max}
+                </Typography>
               </div>
             </Grid>
             <Grid item xs={12}>

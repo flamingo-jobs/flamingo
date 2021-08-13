@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles, Grid, Box, withStyles } from "@material-ui/core";
+import { makeStyles, Grid, withStyles } from "@material-ui/core";
 import { useLocation } from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";

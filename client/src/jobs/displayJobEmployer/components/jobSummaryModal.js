@@ -19,6 +19,10 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
+import FormControl from "@material-ui/core/FormControl";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Switch from '@material-ui/core/Switch';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -56,6 +60,9 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 500,
     borderBottom: "1px solid #ddd",
   },
+  location: {
+    paddingTop: "6px",
+  },
   closeButton: {
     width: "20px",
     "&:hover": {
@@ -75,6 +82,9 @@ const useStyles = makeStyles((theme) => ({
   textField: {
     marginBottom: theme.spacing(3),
   },
+  publishBtnContainer:{
+    marginTop: theme.spacing(1),
+  },
   submitBtnContainer: {
     width: "100%",
     display: "flex",
@@ -90,9 +100,9 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   date: {
-    width:"100%",
+    width: "100%",
     display: "flex",
-    justifyContent:"center",
+    justifyContent: "center",
   },
 }));
 
@@ -171,6 +181,7 @@ const JobSummaryModal = (props) => {
                         label="Title"
                         variant="outlined"
                         fullWidth
+                        size="small"
                         value={props.job.title}
                         className={classes.textField}
                         onChange={props.handleSummaryChange}
@@ -189,6 +200,7 @@ const JobSummaryModal = (props) => {
                           onChange={props.handleSummaryChange}
                           variant="outlined"
                           fullWidth
+                          size="small"
                         >
                           {props.categories.map((category) => (
                             <MenuItem key={category.id} value={category.name}>
@@ -209,6 +221,7 @@ const JobSummaryModal = (props) => {
                           onChange={props.handleSummaryChange}
                           variant="outlined"
                           fullWidth
+                          size="small"
                         >
                           {props.types.map((type) => (
                             <MenuItem key={type.id} value={type.name}>
@@ -245,6 +258,8 @@ const JobSummaryModal = (props) => {
                           onChange={props.handleSummaryChange}
                           variant="outlined"
                           fullWidth
+                          size="small"
+                          className={classes.location}
                         >
                           {props.locations.map((location) => (
                             <MenuItem key={location} value={location}>
@@ -255,7 +270,7 @@ const JobSummaryModal = (props) => {
                       </Grid>
 
                       <Grid item xs={6}>
-                        <Grid container className={`${classes.textField}`}>
+                        <Grid container>
                           <div className={classes.date}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                               <ThemeProvider theme={materialTheme}>
@@ -269,6 +284,7 @@ const JobSummaryModal = (props) => {
                                   KeyboardButtonProps={{
                                     "aria-label": "change date",
                                   }}
+                                  size="small"
                                 />
                               </ThemeProvider>
                             </MuiPickersUtilsProvider>
@@ -277,6 +293,49 @@ const JobSummaryModal = (props) => {
                       </Grid>
                     </Grid>
 
+                    {/* Requried Degrees & Experience */}
+                    <Grid container spacing={1}>
+                      <Grid item xs={6}>
+                        <StateBlueTextField
+                          id="minEducation"
+                          name="minimumEducation"
+                          select
+                          label="Minimum Education Requirement"
+                          value={props.job.minimumEducation}
+                          size="small"
+                          onChange={props.handleSummaryChange}
+                          variant="outlined"
+                          fullWidth
+                          className={classes.textField}
+                        >
+                          {props.minEducationList.map((edu) => (
+                            <MenuItem key={edu} value={edu}>
+                              {edu}
+                            </MenuItem>
+                          ))}
+                        </StateBlueTextField>
+                      </Grid>
+
+                      <Grid item xs={6}>
+                        <StateBlueTextField
+                          id="minExperience"
+                          name="minimumExperience"
+                          select
+                          label="Minimum Experience Required"
+                          value={props.job.minimumExperience}
+                          onChange={props.handleSummaryChange}
+                          variant="outlined"
+                          size="small"
+                          fullWidth
+                        >
+                          {props.minExperienceList.map((exp) => (
+                            <MenuItem key={exp} value={exp}>
+                              {exp + " years"}
+                            </MenuItem>
+                          ))}
+                        </StateBlueTextField>
+                      </Grid>
+                    </Grid>
                     {/* Salary range */}
                     <Grid container spacing={1}>
                       <Grid item xs={6}>
@@ -288,6 +347,7 @@ const JobSummaryModal = (props) => {
                           variant="outlined"
                           placeholder=""
                           fullWidth
+                          size="small"
                           value={props.job.salaryRange.min}
                         ></StateBlueTextField>
                       </Grid>
@@ -300,13 +360,30 @@ const JobSummaryModal = (props) => {
                           onChange={props.handleSummaryChange}
                           variant="outlined"
                           fullWidth
+                          size="small"
                           value={props.job.salaryRange.max}
                         ></StateBlueTextField>
                       </Grid>
                     </Grid>
-                    {/* <Grid item>
 
-                    </Grid> */}
+                    {/* isPublished */}
+                    <FormControl component="fieldset" className={classes.publishBtnContainer}>
+                      <FormGroup>
+                        <FormControlLabel style={{marginLeft: "0px"}}
+                          control={
+                            <Switch
+                              checked={props.job.isPublished}
+                              color="primary"
+                              onChange={props.handleSummaryChange}
+                              name="isPublished"
+                            />
+                          }
+                          labelPlacement="start"
+                          label="Publish the Job"
+                        />
+                      </FormGroup>
+                    </FormControl>
+
                     <div className={classes.submitBtnContainer}>
                       <Button
                         variant="contained"

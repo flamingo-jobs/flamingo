@@ -1,8 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, MenuItem, Typography, Container } from "@material-ui/core";
+import { Grid, MenuItem } from "@material-ui/core";
 import { StateBlueTextField } from "./customTextField";
-import FloatCard from "../../../components/FloatCard";
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,

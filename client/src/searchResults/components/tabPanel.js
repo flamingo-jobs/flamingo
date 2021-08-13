@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles, Typography, Grid, Box } from "@material-ui/core";
-import FloatCard from "../../components/FloatCard";
+import { makeStyles, Grid } from "@material-ui/core";
 import JobCards from "./jobCards";
 import OrganizationCards from "./organizationCards";
 import UserCards from "./userCards";
