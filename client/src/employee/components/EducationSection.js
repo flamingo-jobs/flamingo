@@ -305,7 +305,7 @@ function EducationSection(props) {
   function onSubmitEducation(e){
     e.preventDefault();
     let edu;
-    if(education.type === "University"){
+    if(education.type === "Bachelor's"){
     edu = {
       institute: education.institute,
       type: education.type,
@@ -315,7 +315,7 @@ function EducationSection(props) {
       endDate: education.endMonth+"/"+education.endYear,
       societiesAndActivities: education.societiesAndActivities
     }
-  }else if(education.type === "Diploma" || education.type === "Graduate Diploma" || education.type === "Bachelor's" || education.type === "M.Phil." || education.type === "PhD"){
+  }else if(education.type === "Diploma" || education.type === "Graduate Diploma" || education.type === "M.Phil." || education.type === "PhD"){
     edu = {
       institute: education.institute,
       type: education.type,
@@ -353,34 +353,6 @@ function EducationSection(props) {
     handleClose();
   }
 
-  // function onSubmitSchool(e){
-  //   e.preventDefault();
-  //   const sch = {
-  //     school: school.school,
-  //     startDate: school.startMonth+"/"+school.startYear,
-  //     endDate: school.endMonth+"/"+school.endYear,
-  //     description: school.description
-  //   }
-
-  //   axios.put(`${BACKEND_URL}/jobseeker/addSchool/${loginId}`,sch)
-  //   .then(res => {
-  //     if(res.data.success){
-  //       setAlertData({
-  //         severity: "success",
-  //         msg: "School added successfully!",
-  //       });
-  //       handleAlert();
-  //     } else {
-  //       setAlertData({
-  //         severity: "error",
-  //         msg: "School could not be added!",
-  //       });
-  //       handleAlert();
-  //     }
-  //   });
-  //   setFetchedData(1);
-  //   handleClose();
-  // }
 
   useEffect(()=>{
     setEducation({
@@ -438,7 +410,7 @@ function EducationSection(props) {
 
   useEffect(()=>{
     setForm(null);
-    if(education.type === "University"){
+    if(education.type === "Bachelor's"){
       let temp =
       <>
         <TextField
@@ -543,7 +515,7 @@ function EducationSection(props) {
         </>;
       setForm(temp);
       // -----------------------------------School/College fields ---------------------------------
-    }else if(education.type === "Diploma" || education.type === "Graduate Diploma" || education.type === "Bachelor's" || education.type === "M.Phil." || education.type === "PhD"){
+    }else if(education.type === "Diploma" || education.type === "Graduate Diploma" || education.type === "M.Phil." || education.type === "PhD"){
       let temp =
       <>
         <TextField
@@ -791,7 +763,6 @@ function EducationSection(props) {
                     >
                       <option value="School">School</option>
                       <option value="College">College</option>
-                      <option value="University">University</option>
                       <option value="Diploma">Diploma</option>
                       <option value="Graduate Diploma">Graduate Diploma</option>
                       <option value="Bachelor's">Bachelor's</option>
