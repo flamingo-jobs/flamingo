@@ -11,6 +11,8 @@ import RefreshRoundedIcon from '@material-ui/icons/RefreshRounded';
 import AddIcon from '@material-ui/icons/Add';
 import AddNewCertificationPopup from './components/AddNewCertificationPopup'
 import GridTable from './components/GridTable'
+import NoInfo from '../components/NoInfo'
+import Loading from '../components/Loading'
 
 const useStyles = makeStyles((theme) => ({
     table: {
@@ -139,6 +141,7 @@ function Certifications() {
 
     const handleRefresh = () => {
         setRefreshRequired(true);
+        setCertifications([]);
     }
 
     const retrieveCertifications = () => {
@@ -146,21 +149,31 @@ function Certifications() {
             if (res.data.success) {
                 setCertifications(res.data.existingData)
             } else {
-                setCertifications([])
+                setCertifications("empty")
             }
         })
     }
 
     const displayCertifications = () => {
-        if (certifications) {
+        if (certifications === "empty") {
+            return (
+                <Grid item sm={12} style={{ marginBottom: 16 }}>
+                    <FloatCard>
+                        <NoInfo message="Sorry, we can't find any technology right now!" />
+                    </FloatCard>
+                </Grid>)
+        } else if (certifications.length === 0) {
+            return (
+                <Grid item sm={12} style={{ marginBottom: 16 }}>
+                    <FloatCard>
+                        <Loading />
+                    </FloatCard>
+                </Grid>)
+        } else {
             return certifications.map(certification => (
                 <CertificationsAccordion handleDelete={handleDelete} handleClickOpen={handleClickOpen} confirmDelete={confirmDelete} handleClose={handleClose} deleteRow={deleteRow} key={certification._id} info={certification} onRefresh={handleRefresh} onSuccessUpdate={handleUpdatesuccess} onFailedUpdate={handleUpdateFailed} />
             ))
-        } else {
-            return (
-                <Typography>No featured Jobs</Typography>
-            )
-        }
+        } 
     }
 
     const displayAlert = () => {
