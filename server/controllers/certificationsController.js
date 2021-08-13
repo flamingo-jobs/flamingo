@@ -102,7 +102,7 @@ const addNew = (req,res) => {
 }
 
 const remove = (req, res) => {
-    Certifications.deleteMany(req.body).exec((err,deletedCertification) => {
+    Certifications.findByIdAndDelete(req.params.id).exec((err,deletedCertification) => {
         if(err){
             return res.status(400).json({
                 error: err

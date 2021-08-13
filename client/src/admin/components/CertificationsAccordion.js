@@ -19,6 +19,15 @@ import axios from 'axios';
 import CertificationGrid from './CertificationGrid';
 import EditCertificationIssuer from './EditCertificationIssuer';
 import { useEffect } from 'react';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
+import SaveRoundedIcon from '@material-ui/icons/SaveRounded';
+import SnackBarAlert from '../../components/SnackBarAlert';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
@@ -131,6 +140,7 @@ export default function DetailedAccordion(props) {
     setEditing(false);
   }
 
+
   const displayAccordionDetails = () => {
     return <CertificationGrid certId={props.info._id} columns={certificationColumns} type={`certifications/${props.info._id}`} />
   }
@@ -139,6 +149,31 @@ export default function DetailedAccordion(props) {
     if (editing) {
       return <EditCertificationIssuer onSuccess={props.onRefresh} open={editing} info={props.info} handleDone={doneEdit} />
     }
+  }
+
+  const displayDeleteConfirmation = () => {
+    return (<Dialog
+      open={props.confirmDelete}
+      onClose={props.handleClose}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+      classes={{ paper: classes.paperRoot }}
+    >
+      <DialogTitle id="alert-dialog-title">{"Confirm Delete?"}</DialogTitle>
+      <DialogContent>
+        <DialogContentText id="alert-dialog-description">
+          Are you sure that you want to delete the selected item? <b>This cannot be undone.</b>
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={props.handleClose} color="primary">
+          No
+        </Button>
+        <Button onClick={props.deleteRow} color="primary" className={classes.confrimDelete} autoFocus>
+          Yes
+        </Button>
+      </DialogActions>
+    </Dialog>)
   }
 
   return (
@@ -160,6 +195,8 @@ export default function DetailedAccordion(props) {
         <Divider />
         <AccordionActions>
           {displayEditPopup()}
+          {displayDeleteConfirmation()}
+          <Button size="small" color="secondary" onClick={() => { props.handleDelete(props.info._id) }}>Delete</Button>
           <Button size="small" color="primary" onClick={handleEdit}>Edit</Button>
         </AccordionActions>
       </Accordion>
