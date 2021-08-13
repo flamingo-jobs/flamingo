@@ -20,6 +20,6 @@ router.put('/technologies/update/:id', technologiesController.update);
 
 // delete category
 
-router.post('/technologies/delete', technologiesController.remove);
+router.delete('/technologies/delete/:id', technologiesController.remove);
 
 module.exports = router;

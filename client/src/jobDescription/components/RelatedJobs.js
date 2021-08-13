@@ -8,6 +8,7 @@ import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
 import theme from '../../Theme';
 import BACKEND_URL from '../../Config';
 import { Link } from 'react-router-dom';
+const jwt = require("jsonwebtoken");
 
 
 const useStyles = makeStyles((theme) => ({
@@ -65,6 +66,15 @@ function RelatedJobs(props) {
     const [savedJobIds, setSavedJobIds] = useState("empty");
     const userId = sessionStorage.getItem("loginId");
 
+    const isSignedIn = sessionStorage.getItem( "userToken" ) ? true : false;
+
+    const token = sessionStorage.getItem("userToken");
+    const [role, setRole] = useState(
+        jwt.decode(token, { complete: true })
+          ? jwt.decode(token, { complete: true }).payload.userRole
+          : null
+    );
+
     useEffect(() => {
         retrieveJobseeker();
       }, []);
@@ -120,7 +130,10 @@ function RelatedJobs(props) {
     }, [relatedJobs])
 
     const displayRelatedJobs = () => {
-        if (relatedJobs && savedJobIds !== "empty") {
+        if (!isSignedIn || 
+            (isSignedIn && role === "jobseeker" && relatedJobs && savedJobIds !== "empty") ||
+            (isSignedIn && role === "admin" && relatedJobs) || 
+            (isSignedIn && role === "employer" && relatedJobs)) {
             return relatedJobs.map(featuredJob => (
                 <Grid item sm={12} key={featuredJob._id} className={classes.jobGridCard}>
                     <JobCard 

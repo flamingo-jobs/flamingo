@@ -19,6 +19,8 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import DescriptionIcon from '@material-ui/icons/Description';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import ComputerIcon from '@material-ui/icons/Computer';
+import FileCopyRoundedIcon from '@material-ui/icons/FileCopyRounded';
+import TuneRoundedIcon from '@material-ui/icons/TuneRounded';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -127,6 +129,18 @@ function NavMenu(props) {
                         <ListItem button key="technologies" selected={selectedIndex === "technologies"} onClick={(event) => handleListItemClick(event, "technologies")} classes={{ selected: classes.active }} className={classes.listItem}>
                             <ListItemIcon className={classes.linkIcon}><CodeRoundedIcon /></ListItemIcon>
                             <ListItemText className={classes.linkText} primary="Technologies" />
+                        </ListItem>
+                    </Link>
+                    <Link to="/admin/certifications">
+                        <ListItem button key="certifications" selected={selectedIndex === "certifications"} onClick={(event) => handleListItemClick(event, "certifications")} classes={{ selected: classes.active }} className={classes.listItem}>
+                            <ListItemIcon className={classes.linkIcon}><FileCopyRoundedIcon /></ListItemIcon>
+                            <ListItemText className={classes.linkText} primary="Certifications" />
+                        </ListItem>
+                    </Link>
+                    <Link to="/admin/preferences">
+                        <ListItem button key="preferences" selected={selectedIndex === "preferences"} onClick={(event) => handleListItemClick(event, "preferences")} classes={{ selected: classes.active }} className={classes.listItem}>
+                            <ListItemIcon className={classes.linkIcon}><TuneRoundedIcon /></ListItemIcon>
+                            <ListItemText className={classes.linkText} primary="Preferences" />
                         </ListItem>
                     </Link>
                 </>

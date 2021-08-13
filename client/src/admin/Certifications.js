@@ -11,6 +11,8 @@ import RefreshRoundedIcon from '@material-ui/icons/RefreshRounded';
 import AddIcon from '@material-ui/icons/Add';
 import AddNewCertificationPopup from './components/AddNewCertificationPopup'
 import GridTable from './components/GridTable'
+import NoInfo from '../components/NoInfo'
+import Loading from '../components/Loading'
 
 const useStyles = makeStyles((theme) => ({
     table: {
@@ -45,6 +47,11 @@ function Certifications() {
     const [updateSuccess, setUpdateSuccess] = React.useState(false);
     const [updateFailed, setUpdateFailed] = React.useState(false);
 
+    const [confirmDelete, setConfirmDelete] = React.useState(false);
+    const [deleteSuccess, setDeleteSuccess] = React.useState(false);
+    const [deleteFailed, setDeleteFailed] = React.useState(false);
+    const [deleteId, setDeleteId] = React.useState("");
+
     const [alertShow, setAlertShow] = React.useState(false);
     const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
 
@@ -61,6 +68,14 @@ function Certifications() {
         }
     }, [refershRequired])
 
+    const handleClickOpen = () => {
+        setConfirmDelete(true);
+    };
+
+    const handleClose = () => {
+        setConfirmDelete(false);
+    };
+
     const handleUpdatesuccess = () => {
         setUpdateSuccess(true);
     }
@@ -68,6 +83,11 @@ function Certifications() {
     const handleUpdateFailed = () => {
         setUpdateFailed(true);
     }
+
+    const handleDelete = (id) => {
+        setDeleteId(id);
+        setConfirmDelete(true);
+    };
 
     useEffect(() => {
         if (updateSuccess === true) {
@@ -101,8 +121,27 @@ function Certifications() {
         setCreateFailed(false);
     }, [createFailed]);
 
+    useEffect(() => {
+        if (deleteSuccess === true) {
+            setAlertData({ severity: "success", msg: "Item deleted successfully!" });
+            handleAlert();
+        }
+        setDeleteSuccess(false);
+        handleRefresh();
+    }, [deleteSuccess]);
+
+    useEffect(() => {
+        if (deleteFailed === true) {
+            setAlertData({ severity: "error", msg: "Failed to delete item!" });
+            handleAlert();
+        }
+        setDeleteFailed(false);
+        handleRefresh();
+    }, [deleteFailed]);
+
     const handleRefresh = () => {
         setRefreshRequired(true);
+        setCertifications([]);
     }
 
     const retrieveCertifications = () => {
@@ -110,21 +149,31 @@ function Certifications() {
             if (res.data.success) {
                 setCertifications(res.data.existingData)
             } else {
-                setCertifications([])
+                setCertifications("empty")
             }
         })
     }
 
     const displayCertifications = () => {
-        if (certifications) {
-            return certifications.map(certification => (
-                <CertificationsAccordion key={certification._id} info={certification} onRefresh={handleRefresh} onSuccessUpdate={handleUpdatesuccess} onFailedUpdate={handleUpdateFailed} />
-            ))
-        } else {
+        if (certifications === "empty") {
             return (
-                <Typography>No featured Jobs</Typography>
-            )
-        }
+                <Grid item sm={12} style={{ marginBottom: 16 }}>
+                    <FloatCard>
+                        <NoInfo message="Sorry, we can't find any technology right now!" />
+                    </FloatCard>
+                </Grid>)
+        } else if (certifications.length === 0) {
+            return (
+                <Grid item sm={12} style={{ marginBottom: 16 }}>
+                    <FloatCard>
+                        <Loading />
+                    </FloatCard>
+                </Grid>)
+        } else {
+            return certifications.map(certification => (
+                <CertificationsAccordion handleDelete={handleDelete} handleClickOpen={handleClickOpen} confirmDelete={confirmDelete} handleClose={handleClose} deleteRow={deleteRow} key={certification._id} info={certification} onRefresh={handleRefresh} onSuccessUpdate={handleUpdatesuccess} onFailedUpdate={handleUpdateFailed} />
+            ))
+        } 
     }
 
     const displayAlert = () => {
@@ -156,6 +205,23 @@ function Certifications() {
     }
     const closeAddNewPopup = () => {
         setOpenAddNewPopup(false);
+    }
+
+    const deleteRow = () => {
+        if (deleteId !== "") {
+            deleteRecord();
+            setConfirmDelete(false);
+        }
+    };
+
+    const deleteRecord = () => {
+        axios.delete(`${BACKEND_URL}/certifications/delete/${deleteId}`).then(res => {
+            if (res.data.success) {
+                setDeleteSuccess(true);
+            } else {
+                setDeleteFailed(true);
+            }
+        })
     }
 
     const displayAddNewPopup = () => {

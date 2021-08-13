@@ -16,6 +16,11 @@ import Grid from '@material-ui/core/Grid'
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import BACKEND_URL from '../../Config';
 import axios from 'axios';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -169,6 +174,31 @@ export default function DetailedAccordion(props) {
     // setUpdatedRows([]);
   }
 
+  const displayDeleteConfirmation = () => {
+    return (<Dialog
+      open={props.confirmDelete}
+      onClose={props.handleClose}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+      classes={{ paper: classes.paperRoot }}
+    >
+      <DialogTitle id="alert-dialog-title">{"Confirm Delete?"}</DialogTitle>
+      <DialogContent>
+        <DialogContentText id="alert-dialog-description">
+          Are you sure that you want to delete the selected item? <b>This cannot be undone.</b>
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={props.handleClose} color="primary">
+          No
+        </Button>
+        <Button onClick={props.deleteRow} color="primary" className={classes.confrimDelete} autoFocus>
+          Yes
+        </Button>
+      </DialogActions>
+    </Dialog>)
+  }
+
   const displayAccordionDetails = () => {
     return <AccordionDetails className={classes.details}>
       <Grid container spacing={1}>
@@ -270,10 +300,11 @@ export default function DetailedAccordion(props) {
           </div>
         </AccordionSummary>
         {displayAccordionDetails()}
+        {displayDeleteConfirmation()}
         <Divider />
         <AccordionActions>
 
-          {editing ? <><Button size="small" onClick={handleCancel}>Cancel</Button> <Button size="small" color="primary" onClick={handleSave}>Save</Button> </> : <Button size="small" color="primary" onClick={handleEdit}>Edit</Button>}
+          {editing ? <><Button size="small" onClick={handleCancel}>Cancel</Button> <Button size="small" color="primary" onClick={handleSave}>Save</Button> </> : <><Button size="small" color="secondary" onClick={() => { props.handleDelete(props.info._id) }}>Delete</Button><Button size="small" color="primary" onClick={handleEdit}>Edit</Button></>}
         </AccordionActions>
       </Accordion>
     </div>

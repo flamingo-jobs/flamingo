@@ -17,6 +17,7 @@ import SaveRoundedIcon from '@material-ui/icons/SaveRounded';
 import SnackBarAlert from '../../components/SnackBarAlert';
 import AddNewCatePopup from './AddNewCatePopup';
 import FloatCard from '../../components/FloatCard';
+import AddNewCertificatesPopup from './AddNewCertificatesPopup copy';
 
 const useStyles = makeStyles((theme) => ({
     table: {
@@ -333,7 +334,7 @@ function CertificationGrid(props) {
     }
 
     const displayAddNewPopup = () => {
-        return <AddNewCatePopup open={openAddNewPopup} onClose={closeAddNewPopup} onSuccess={handleCreateSuccess} onError={handleCreateError} />
+        return <AddNewCertificatesPopup certId={props.certId} open={openAddNewPopup} onClose={closeAddNewPopup} onSuccess={handleCreateSuccess} onError={handleCreateError} />
     }
 
     return (

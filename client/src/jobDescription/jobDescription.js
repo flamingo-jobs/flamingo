@@ -55,7 +55,7 @@ function JobDescription(props) {
   }
 
   const userId = sessionStorage.getItem("loginId");
-
+  
   let { id } = useParams();
   const [jobId, setJobId] = useState(window.location.pathname.split("/")[2]);
 

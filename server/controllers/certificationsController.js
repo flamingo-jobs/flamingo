@@ -81,8 +81,28 @@ const update = (req,res) => {
     );
 }
 
+const addNew = (req,res) => {
+
+    Certifications.findByIdAndUpdate(
+        req.params.id,
+        {
+            $addToSet: req.body
+        },
+        (err,certification) =>{
+            if(err){
+                return res.status(400).json({
+                    error:err
+                })
+            }
+            return res.status(200).json({
+                success: "Updated successfully"
+            });
+        }
+    );
+}
+
 const remove = (req, res) => {
-    Certifications.deleteMany(req.body).exec((err,deletedCertification) => {
+    Certifications.findByIdAndDelete(req.params.id).exec((err,deletedCertification) => {
         if(err){
             return res.status(400).json({
                 error: err
@@ -101,6 +121,7 @@ module.exports = {
     getById,
     update,
     remove,
-    getFeaturedCertifications
+    getFeaturedCertifications,
+    addNew
 
 }

@@ -21,9 +21,9 @@ router.get('/certifications/:id', certificationsController.getById);
 // update category
 
 router.put('/certifications/update/:id', certificationsController.update);
-
+router.put('/certifications/addNewCertificates/:id', certificationsController.addNew);
 // delete category
 
-router.post('/certifications/delete', certificationsController.remove);
+router.delete('/certifications/delete/:id', certificationsController.remove);
 
 module.exports = router;
