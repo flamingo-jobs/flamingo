@@ -336,7 +336,7 @@ exports.checkPassword = async (req, res) => {
 exports.deleteUser = async (req, res) => {
   const { userId, loginId, role, accessTokens } = req.body;
   if (role === "jobseeker" || role === "admin") {
-    User.findByIdAndDelete(userId, function(err) {
+    User.findByIdAndDelete(userId, function (err) {
       if (err) {
         return res.status(400).json({
           error: err,
@@ -344,7 +344,7 @@ exports.deleteUser = async (req, res) => {
       }
     });
     if (role === "jobseeker") {
-      JobSeeker.findByIdAndDelete(loginId, function(err) {
+      JobSeeker.findByIdAndDelete(loginId, function (err) {
         if (err) {
           return res.status(400).json({
             error: err,
@@ -357,7 +357,7 @@ exports.deleteUser = async (req, res) => {
     });
   } else if (role === "employer") {
     if (accessTokens[0] === "all") {
-      //If admin-amployer deletes whole company
+      //If admin-employer deletes whole company
       User.deleteMany(loginId).exec((err, deletedUser) => {
         if (err) {
           return res.status(400).json({

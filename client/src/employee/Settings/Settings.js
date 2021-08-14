@@ -155,25 +155,36 @@ const Settings = () => {
       complete: true,
     }).payload;
     const deleteUserData = {
-      userID: userData.userId,
+      userId: userData.userId,
       loginId: sessionStorage.getItem("loginId"),
       role: userData.userRole,
       accessTokens: userData.accessTokens,
     };
     console.log(deleteUserData);
-    axios.post(`${BACKEND_URL}/api/remove-user`, deleteUserData).then((res) => {
-      if (res.data.success) {
-        sessionStorage.clear();
-        localStorage.clear();
-        window.location = "/";
-      } else {
-        setAlertData({
-          severity: "error",
-          msg: "Failed to delete account!",
-        });
-        handleAlert();
-      }
-    });
+    axios
+      .post(`${BACKEND_URL}/api/remove-user`, deleteUserData)
+      .then((res) => {
+        if (res.data.success) {
+          sessionStorage.clear();
+          localStorage.clear();
+          window.location = "/";
+        } else {
+          setAlertData({
+            severity: "error",
+            msg: "Failed to delete account!",
+          });
+          handleAlert();
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          setAlertData({
+            severity: "error",
+            msg: "Failed to delete account!",
+          });
+          handleAlert();
+        }
+      });
   };
 
   return (
