@@ -21,7 +21,7 @@ import { Link } from "react-router-dom";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
-    backgroundColor: theme.palette.blueJeans,
+    backgroundColor: theme.palette.tuftsBlue,
     color: theme.palette.common.white,
   },
   body: {
@@ -32,7 +32,7 @@ const StyledTableCell = withStyles((theme) => ({
 const StyledTableRow = withStyles((theme) => ({
   root: {
     "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.greenyLightSky,
+      backgroundColor: theme.palette.whiteHover,
     },
   },
 }))(TableRow);
