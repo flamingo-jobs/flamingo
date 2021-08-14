@@ -100,7 +100,7 @@ function ProfileStatus(props) {
         axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
         .then(res => {
           if(res.data.success){
-            if(res.data.jobseeker.university.length > 0){
+            if(res.data.jobseeker.university?.length > 0){
                 if(Object.keys(res.data.jobseeker.university[0]).length === 0){
                     res.data.jobseeker.university.splice(0,1)
                 }else if(res.data.jobseeker.university[0].university === "" && res.data.jobseeker.university[0].degree === "" && res.data.jobseeker.university[0].fieldOfStudy === "" && res.data.jobseeker.university[0].startDate === "" && res.data.jobseeker.university[0].endDate === ""){
@@ -112,7 +112,7 @@ function ProfileStatus(props) {
                     })
                 }                    
             }
-            if(res.data.jobseeker.school.length > 0){
+            if(res.data.jobseeker.school?.length > 0){
                 if(Object.keys(res.data.jobseeker.school[0]).length === 0){
                     res.data.jobseeker.school.splice(0,1)
                 }else if(res.data.jobseeker.school[0].school === ""){
