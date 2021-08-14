@@ -157,12 +157,11 @@ const Settings = () => {
     const deleteUserData = {
       userID: userData.userId,
       loginId: sessionStorage.getItem("loginId"),
-      role: userData.role,
+      role: userData.userRole,
       accessTokens: userData.accessTokens,
     };
-
+    console.log(deleteUserData);
     axios.post(`${BACKEND_URL}/api/remove-user`, deleteUserData).then((res) => {
-      
       if (res.data.success) {
         sessionStorage.clear();
         localStorage.clear();

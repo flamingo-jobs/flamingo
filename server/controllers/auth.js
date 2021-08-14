@@ -336,7 +336,7 @@ exports.checkPassword = async (req, res) => {
 exports.deleteUser = async (req, res) => {
   const { userId, loginId, role, accessTokens } = req.body;
   if (role === "jobseeker" || role === "admin") {
-    User.findByIdAndDelete(userId).exec((err, deletedUser) => {
+    User.findByIdAndDelete(userId, function(err) {
       if (err) {
         return res.status(400).json({
           error: err,
@@ -344,7 +344,7 @@ exports.deleteUser = async (req, res) => {
       }
     });
     if (role === "jobseeker") {
-      JobSeeker.findByIdAndDelete(loginId).exec((err, deletedJobSeeker) => {
+      JobSeeker.findByIdAndDelete(loginId, function(err) {
         if (err) {
           return res.status(400).json({
             error: err,
