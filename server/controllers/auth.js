@@ -393,7 +393,10 @@ exports.deleteUser = async (req, res) => {
 
 exports.updateAccessTokens = async (req, res) => {
   const { email, accessTokens } = req.body;
-  const result = await User.updateOne({email:email}, { $set: { accessTokens } });
+  const result = await User.updateOne(
+    { email: email },
+    { $set: { accessTokens } }
+  );
   if (result.nModified > 0) {
     return res.status(200).json({
       success: true,
@@ -403,4 +406,21 @@ exports.updateAccessTokens = async (req, res) => {
       success: false,
     });
   }
+};
+
+exports.changePassword = async (req, res) => {
+  const { userId, newPassword } = req.body;
+  const newPasswordHash = await bcrypt.hash(newPassword, 10);
+  await User.findByIdAndUpdate(userId, {
+    $set: { password: newPasswordHash },
+  }).then((result) => {
+    if (!result) {
+      return res.status(500).json({
+        success: false,
+      });
+    }
+  });
+  res.status(200).json({
+    success: true,
+  });
 };

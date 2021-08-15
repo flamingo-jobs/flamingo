@@ -301,9 +301,8 @@ export default function CustomizedTables() {
                 </DialogTitle>
                 <DialogContent>
                   <DialogContentText>
-                    You are going to permanently delete your account from
-                    Flamingo.com. Please confirm to delete your account. $
-                    {row.email}
+                    Select all the privileges apply to {row.username} (
+                    {row.email})
                   </DialogContentText>
                   <List component="nav">
                     <Grid
