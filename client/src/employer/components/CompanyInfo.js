@@ -38,6 +38,17 @@ import swal from 'sweetalert';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { Link } from "react-router-dom";
 
+const jwt = require("jsonwebtoken");
+let haveAccess = false;
+
+if (sessionStorage.getItem("userToken")) {
+  var accessTokens = jwt.decode(sessionStorage.getItem("userToken"), {
+    complete: true,
+  }).payload.accessTokens;
+  if (accessTokens.includes("all") || accessTokens.includes("company")) {
+    haveAccess = true;
+  }
+}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -337,7 +348,7 @@ function CompanyInfo(props) {
                     label={subscription}
                     className={classes.membershipType}
                   />
-                  {props.userRole === "employer" && 
+                  {props.userRole === "employer" && haveAccess && 
                     <IconButton
                       variant="outlined"
                       aria-label="edit"
