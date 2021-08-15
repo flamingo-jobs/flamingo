@@ -116,19 +116,19 @@ const Settings = () => {
   const accessTokens = [
     {
       value: "alljobs",
-      description: "Handle Jobs",
+      description: "Handle all jobs",
     },
     {
       value: "allresume",
-      description: "Handle Resumes",
+      description: "Handle all resumes",
     },
     {
       value: "singlejob",
-      description: "Handle Jobs by User",
+      description: "Post and handle jobs",
     },
     {
       value: "singleresume",
-      description: "Handle Resumes for the Jobs by User",
+      description: "Handle resumes for the jobs posted by the user",
     },
     {
       value: "billing",
@@ -136,11 +136,11 @@ const Settings = () => {
     },
     {
       value: "user",
-      description: "Handle Users",
+      description: "Handle users",
     },
     {
       value: "company",
-      description: "Edit Company Details",
+      description: "Edit company profile",
     },
   ];
   const defaultData = {

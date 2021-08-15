@@ -258,7 +258,7 @@ export default function StartHiring() {
   };
 
   const sendData = (userId) => {
-    handleUploads();
+    const filename=handleUploads();
     const employerData = {
       name: formData.name,
       logo: formData.logo,
@@ -310,23 +310,29 @@ export default function StartHiring() {
     if (selectedFile) {
       const data = new FormData();
       const image = selectedFile;
-      data.append("logo", image);
       data.append("company", formData.name);
-      axios.post(`${BACKEND_URL}/logo`, data).then((res) => {
-        if (res.data.success) {
-          //continue to next step
-        } else {
-          setAlertData({
-            severity: "error",
-            msg: "Image upload failed!",
-          });
-          handleAlert();
-        }
-      });
+      data.append("logo", image);
+      axios
+        .post(`${BACKEND_URL}/logo`, data, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => {
+          if (res.data.success) {
+            return res.data;
+          } else {
+            setAlertData({
+              severity: "error",
+              msg: "Image upload failed!",
+            });
+            handleAlert();
+          }
+        });
     }
   };
 
-  // Dinamic Inuputs
+  // Dinamic Inputs
   const [social, setSocial] = useState([{ platform: "", link: "" }]);
   const handleSocialInputChange = (e, index) => {
     const { name, value } = e.target;
