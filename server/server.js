@@ -20,6 +20,7 @@ const resumeRoutes = require("./routes/resumes");
 const logoRoutes = require("./routes/logos");
 const keywordsRoutes = require("./routes/keywords");
 const analyticsRoutes = require("./routes/analytics");
+const settingsRoutes = require("./routes/settings");
 
 // app middleware
 app.use(bodyParser.json());
@@ -37,6 +38,7 @@ app.use(resumeRoutes);
 app.use(logoRoutes);
 app.use(keywordsRoutes);
 app.use(analyticsRoutes);
+app.use(settingsRoutes);
 app.use(certificationsRoutes);
 app.use('/api', authRoutes);
 

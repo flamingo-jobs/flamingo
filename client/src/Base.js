@@ -41,6 +41,7 @@ import CreateJobSetup from "./jobs/createJob/CreateJobSetup";
 import Billing from "./employee/Billing";
 import { env } from "process";
 import Certifications from "./admin/Certifications";
+import Settings from "./admin/Settings";
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
@@ -251,6 +252,9 @@ function Base() {
           </Route>
           <Route path="/admin/certifications">
             <Certifications />
+          </Route>
+          <Route path="/admin/settings">
+            <Settings />
           </Route>
           <Route path="/admin/jobSeekers">
             <JobSeekers />
