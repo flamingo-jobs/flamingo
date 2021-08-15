@@ -390,3 +390,17 @@ exports.deleteUser = async (req, res) => {
     }
   }
 };
+
+exports.updateAccessTokens = async (req, res) => {
+  const { email, accessTokens } = req.body;
+  const result = await User.updateOne({email:email}, { $set: { accessTokens } });
+  if (result.nModified > 0) {
+    return res.status(200).json({
+      success: true,
+    });
+  } else {
+    return res.status(500).json({
+      success: false,
+    });
+  }
+};
