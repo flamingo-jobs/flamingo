@@ -41,13 +41,14 @@ function NoAccess(props) {
     >
       <Grid item xs={12}>
         <FloatCard>
-          <Grid container  style={{ padding: 24 }}>
+          <Grid container style={{ padding: 24 }}>
             <Grid item xs={12}>
               <Lottie options={defaultOptions} height={150} width={150} />
             </Grid>
             <Grid item xs={12} style={{ marginTop: 16 }}>
               <Typography variant="h6">
-                Looks like you do not have access for this page!{props.message}
+                Looks like you do not have access{" "}
+                {props.message ? props.message : "for this page!"}
               </Typography>
             </Grid>{" "}
             <Grid item xs={12} style={{ marginTop: 16 }}>
