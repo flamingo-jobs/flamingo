@@ -1,5 +1,4 @@
 import React from "react";
-// import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
   CssBaseline,
   Container,
@@ -9,9 +8,7 @@ import {
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import CompanyInfo from "./components/CompanyInfo";
-import TechStack from "./components/TechStack";
-import FeaturedJobs from "./components/FeaturedJobs";
-import Reviews from "./components/Reviews";
+import Technologies from "./components/Technologies";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,6 +40,20 @@ const useStyles = makeStyles((theme) => ({
 const Employer = (props) => {
   const classes = useStyles();
 
+  let loginId;
+  let login = false;
+  const jwt = require("jsonwebtoken");
+  const token = sessionStorage.getItem("userToken");
+  const header = jwt.decode(token, { complete: true });
+  if (token === null) {
+    loginId = props.employerID;
+  } else if (header.payload.userRole === "employer") {
+    login = true;
+    loginId = sessionStorage.getItem("loginId");
+  } else {
+    loginId = props.employerID;
+  }
+
   return (
     <Grid
       container
@@ -52,12 +63,25 @@ const Employer = (props) => {
       justify="space-between"
       alignItems="flex-start"
     >
-      <Grid item container xs={12} sm={12} md={7} spacing={3}>
+      <Grid
+        item
+        container
+        xs={12}
+        sm={12}
+        md={7}
+        spacing={3}
+        style={{ marginLeft: 10, marginTop: 5, marginBottom: 5 }}
+      >
         <CompanyInfo userRole={props.userRole}></CompanyInfo>
       </Grid>
 
       <Grid item xs={12} sm={12} md={5} spacing={3}>
-        <TechStack userRole={props.userRole}></TechStack>
+        <Technologies
+          showEdit={false}
+          employerId={loginId}
+          login={login}
+          userRole={props.userRole}
+        ></Technologies>
       </Grid>
     </Grid>
   );

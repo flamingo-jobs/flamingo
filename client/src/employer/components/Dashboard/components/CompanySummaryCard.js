@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const CompanySummaryCard = () => {
+const CompanySummaryCard = (props) => {
   const classes = useStyles();
 
   const [state, setState] = useState({
@@ -59,7 +59,7 @@ const CompanySummaryCard = () => {
 
   useEffect(() => {
     axios
-      .get(`${BACKEND_URL}/employers/` + "60c246913542f942e4c84454")
+      .get(`${BACKEND_URL}/employers/${props.employerId}`)
       .then((res) => {
         console.log(res.data.employer);
         if (res.data.success) {

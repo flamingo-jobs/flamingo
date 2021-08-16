@@ -95,7 +95,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const LatestJobs = () => {
+const LatestJobs = (props) => {
   const classes = useStyles();
 
   const [value, setValue] = React.useState(2);
@@ -109,8 +109,7 @@ const LatestJobs = () => {
   useEffect(() => {
     axios
       .get(
-        `${BACKEND_URL}/jobs/filterAllByOrganization/` +
-          "60c246913542f942e4c84454"
+        `${BACKEND_URL}/jobs/filterAllByOrganization/${props.employerId}`
       )
       .then((res) => {
         console.log(res.data.employerJobs);
