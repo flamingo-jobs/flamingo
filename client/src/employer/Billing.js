@@ -1,16 +1,9 @@
 import React from "react";
-// import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
-  CssBaseline,
-  Container,
-  ThemeProvider,
   makeStyles,
-  useTheme,
 } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
 import BillingPackageCard from "./components/BillingPackageCard";
 import NoAccess from "../components/NoAccess";
-import FloatCard from "./components/FloatCard";
 const jwt = require("jsonwebtoken");
 
 const useStyles = makeStyles((theme) => ({

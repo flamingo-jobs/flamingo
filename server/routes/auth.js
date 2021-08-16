@@ -11,6 +11,8 @@ const {
   getUsersByEmployer,
   checkPassword,
   deleteUser,
+  updateAccessTokens,
+  changePassword,
 } = require("../controllers/auth");
 
 router.put("/forgot-password/:email", forgotPassword);
@@ -22,5 +24,7 @@ router.post("/link-account", linkAccount);
 router.get("/getUsersByEmployer/:id", getUsersByEmployer);
 router.post("/check-password", checkPassword);
 router.post("/remove-user", deleteUser);
+router.post("/update-tokens", updateAccessTokens);
+router.post("/change-password", changePassword);
 
 module.exports = router;

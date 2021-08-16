@@ -6,6 +6,23 @@ import BACKEND_URL from "../../Config";
 import FloatCard from "../../components/FloatCard";
 import ApplicantCard from "./components/applicantCard";
 import SnackBarAlert from "../../components/SnackBarAlert";
+import NoAccess from "../../components/NoAccess";
+
+const jwt = require("jsonwebtoken");
+
+let resumeAccess = false;
+let singleResumeAccess = false;
+
+if (sessionStorage.getItem("userToken")) {
+  var accessTokens = jwt.decode(sessionStorage.getItem("userToken"), {
+    complete: true,
+  }).payload.accessTokens;
+  if (accessTokens.includes("all") || accessTokens.includes("allresume")) {
+    resumeAccess = true;
+  } else if (accessTokens.includes("singleresume")) {
+    singleResumeAccess = true;
+  }
+}
 
 const useStyles = makeStyles((theme) => ({
   border: {
@@ -127,7 +144,11 @@ const Applications = () => {
       {displayAlert()}
       <Grid container spacing={3} className={classes.root} justify="center">
         <Grid item xs={9}>
-          {displayApplicants()}
+          {resumeAccess || singleResumeAccess ? (
+            displayApplicants()
+          ) : (
+            <NoAccess />
+          )}
         </Grid>
       </Grid>
     </>

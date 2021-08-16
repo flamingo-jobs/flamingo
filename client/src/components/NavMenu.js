@@ -21,6 +21,7 @@ import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import ComputerIcon from '@material-ui/icons/Computer';
 import FileCopyRoundedIcon from '@material-ui/icons/FileCopyRounded';
 import TuneRoundedIcon from '@material-ui/icons/TuneRounded';
+import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -137,10 +138,10 @@ function NavMenu(props) {
                             <ListItemText className={classes.linkText} primary="Certifications" />
                         </ListItem>
                     </Link>
-                    <Link to="/admin/preferences">
-                        <ListItem button key="preferences" selected={selectedIndex === "preferences"} onClick={(event) => handleListItemClick(event, "preferences")} classes={{ selected: classes.active }} className={classes.listItem}>
-                            <ListItemIcon className={classes.linkIcon}><TuneRoundedIcon /></ListItemIcon>
-                            <ListItemText className={classes.linkText} primary="Preferences" />
+                    <Link to="/admin/settings">
+                        <ListItem button key="settings" selected={selectedIndex === "settings"} onClick={(event) => handleListItemClick(event, "settings")} classes={{ selected: classes.active }} className={classes.listItem}>
+                            <ListItemIcon className={classes.linkIcon}><SettingsRoundedIcon /></ListItemIcon>
+                            <ListItemText className={classes.linkText} primary="Settings" />
                         </ListItem>
                     </Link>
                 </>

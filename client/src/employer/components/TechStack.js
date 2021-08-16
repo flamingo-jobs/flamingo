@@ -1,33 +1,35 @@
 import React, { useEffect } from "react";
 import {
-  Avatar,
   Button,
-  Chip,
   makeStyles,
   Typography,
   withStyles,
 } from "@material-ui/core";
-import { FavoriteRounded } from "@material-ui/icons";
 import FloatCard from "./FloatCard";
 import Grid from "@material-ui/core/Grid";
 import TechCategory from "./TechCategory";
-import AddIcon from "@material-ui/icons/Add";
 import IconButton from "@material-ui/core/IconButton";
-import RemoveIcon from "@material-ui/icons/Remove";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import TextField from "@material-ui/core/TextField";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
-import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import { purple } from "@material-ui/core/colors";
-import Box from "@material-ui/core/Box";
 import EditIcon from '@material-ui/icons/Edit';
+
+const jwt = require("jsonwebtoken");
+let haveAccess = false;
+
+if (sessionStorage.getItem("userToken")) {
+  var accessTokens = jwt.decode(sessionStorage.getItem("userToken"), {
+    complete: true,
+  }).payload.accessTokens;
+  if (accessTokens.includes("all") || accessTokens.includes("company")) {
+    haveAccess = true;
+  }
+}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -149,7 +151,7 @@ function TechStack(props) {
               <Grid item sm={1}>
                 {/* button to open the dialog box to add new tech categories */}
 
-                {props.userRole === "employer" && 
+                {props.userRole === "employer" && haveAccess && 
                   <IconButton
                     variant="outlined"
                     size="small"

@@ -268,23 +268,35 @@ export default function GetHired() {
       handleAlert();
     } else {
       if (formData.password === formData.confirmPassword) {
-        axios.post(`${BACKEND_URL}/api/signup`, signupData).then((res) => {
-          if (res.data.success) {
-            setProgress(30);
-            sessionStorage.setItem("userToken", res.data.token);
-            const userId = jwt.decode(res.data.token, { complete: true })
-              .payload.userId;
-            setProgress(40);
-            sendData(userId);
-          } else {
+        axios
+          .post(`${BACKEND_URL}/api/signup`, signupData)
+          .then((res) => {
+            if (res.data.success) {
+              setProgress(30);
+              sessionStorage.setItem("userToken", res.data.token);
+              const userId = jwt.decode(res.data.token, { complete: true })
+                .payload.userId;
+              setProgress(40);
+              sendData(userId);
+            } else {
+              setProgress(0);
+              setAlertData({
+                severity: "error",
+                msg: "Failed to create user account!",
+              });
+              handleAlert();
+            }
+          })
+          .catch((err) => {
             setProgress(0);
-            setAlertData({
-              severity: "error",
-              msg: "Failed to create user account!",
-            });
-            handleAlert();
-          }
-        });
+            if (err) {
+              setAlertData({
+                severity: "error",
+                msg: "Failed to connect with server!",
+              });
+              handleAlert();
+            }
+          });
       } else {
         setProgress(0);
         setAlertData({
@@ -326,13 +338,18 @@ export default function GetHired() {
         });
         handleAlert();
       }
+    }).catch((err) => {
+      if (err) {
+        setAlertData({
+          severity: "error",
+          msg: "There is an error with server! Please contact support",
+        });
+        handleAlert();
+      }
     });
   };
 
   const handleSuccessLogin = (id, loginId) => {
-    axios.get(
-      `${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`
-    );
     const linker = { id: id, loginId: loginId };
     setProgress(70);
     axios.post(`${BACKEND_URL}/api/link-account`, linker).then((res) => {
@@ -346,6 +363,14 @@ export default function GetHired() {
         setAlertData({
           severity: "error",
           msg: "Failed to link accounts!",
+        });
+        handleAlert();
+      }
+    }).catch((err) => {
+      if (err) {
+        setAlertData({
+          severity: "error",
+          msg: "There is an error with server! Please contact support",
         });
         handleAlert();
       }

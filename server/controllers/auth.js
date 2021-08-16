@@ -336,7 +336,7 @@ exports.checkPassword = async (req, res) => {
 exports.deleteUser = async (req, res) => {
   const { userId, loginId, role, accessTokens } = req.body;
   if (role === "jobseeker" || role === "admin") {
-    User.findByIdAndDelete(userId).exec((err, deletedUser) => {
+    User.findByIdAndDelete(userId, function (err) {
       if (err) {
         return res.status(400).json({
           error: err,
@@ -344,7 +344,7 @@ exports.deleteUser = async (req, res) => {
       }
     });
     if (role === "jobseeker") {
-      JobSeeker.findByIdAndDelete(loginId).exec((err, deletedJobSeeker) => {
+      JobSeeker.findByIdAndDelete(loginId, function (err) {
         if (err) {
           return res.status(400).json({
             error: err,
@@ -357,7 +357,7 @@ exports.deleteUser = async (req, res) => {
     });
   } else if (role === "employer") {
     if (accessTokens[0] === "all") {
-      //If admin-amployer deletes whole company
+      //If admin-employer deletes whole company
       User.deleteMany(loginId).exec((err, deletedUser) => {
         if (err) {
           return res.status(400).json({
@@ -389,4 +389,38 @@ exports.deleteUser = async (req, res) => {
       });
     }
   }
+};
+
+exports.updateAccessTokens = async (req, res) => {
+  const { email, accessTokens } = req.body;
+  const result = await User.updateOne(
+    { email: email },
+    { $set: { accessTokens } }
+  );
+  if (result.nModified > 0) {
+    return res.status(200).json({
+      success: true,
+    });
+  } else {
+    return res.status(500).json({
+      success: false,
+    });
+  }
+};
+
+exports.changePassword = async (req, res) => {
+  const { userId, newPassword } = req.body;
+  const newPasswordHash = await bcrypt.hash(newPassword, 10);
+  await User.findByIdAndUpdate(userId, {
+    $set: { password: newPasswordHash },
+  }).then((result) => {
+    if (!result) {
+      return res.status(500).json({
+        success: false,
+      });
+    }
+  });
+  res.status(200).json({
+    success: true,
+  });
 };

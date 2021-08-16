@@ -133,7 +133,13 @@ export default function ProfileSetup() {
   };
 
   const sendToHome = () => {
-    axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${sessionStorage.getItem("loginId")}`)
+    if (university.length > 1) {
+      axios.get(
+        `${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${sessionStorage.getItem(
+          "loginId"
+        )}`
+      );
+    }
     window.location = "/";
   };
 

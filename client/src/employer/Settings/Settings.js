@@ -30,6 +30,8 @@ import BACKEND_URL from "../../Config";
 import FloatCard from "../../components/FloatCard";
 import NoAccess from "../../components/NoAccess";
 const jwt = require("jsonwebtoken");
+const passwordRegexp =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})/;
 
 let userAccess = false;
 
@@ -65,6 +67,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   mainGrid: {
+    paddingLeft: 12,
     [theme.breakpoints.down("sm")]: {
       flexDirection: "column",
       alignItems: "stretch",
@@ -116,19 +119,19 @@ const Settings = () => {
   const accessTokens = [
     {
       value: "alljobs",
-      description: "Handle Jobs",
+      description: "Handle all jobs",
     },
     {
       value: "allresume",
-      description: "Handle Resumes",
+      description: "Handle all resumes",
     },
     {
       value: "singlejob",
-      description: "Handle Jobs by User",
+      description: "Post and handle jobs",
     },
     {
       value: "singleresume",
-      description: "Handle Resumes for the Jobs by User",
+      description: "Handle resumes for the jobs posted by the user",
     },
     {
       value: "billing",
@@ -136,11 +139,11 @@ const Settings = () => {
     },
     {
       value: "user",
-      description: "Handle Users",
+      description: "Handle users",
     },
     {
       value: "company",
-      description: "Edit Company Details",
+      description: "Edit company profile",
     },
   ];
   const defaultData = {
@@ -292,24 +295,125 @@ const Settings = () => {
       complete: true,
     }).payload;
     const deleteUserData = {
-      userID: userData.userId,
+      userId: userData.userId,
       loginId: sessionStorage.getItem("loginId"),
-      role: userData.role,
+      role: userData.userRole,
       accessTokens: userData.accessTokens,
     };
-    axios.post(`${BACKEND_URL}/api/remove-user`, deleteUserData).then((res) => {
-      if (res.data.success) {
-        sessionStorage.clear();
-        localStorage.clear();
-        window.location = "/";
+    axios
+      .post(`${BACKEND_URL}/api/remove-user`, deleteUserData)
+      .then((res) => {
+        if (res.data.success) {
+          sessionStorage.clear();
+          localStorage.clear();
+          window.location = "/";
+        } else {
+          setAlertData({
+            severity: "error",
+            msg: "Failed to delete account!",
+          });
+          handleAlert();
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          setAlertData({
+            severity: "error",
+            msg: "Failed to delete account!",
+          });
+          handleAlert();
+        }
+      });
+  };
+
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+
+  const handleChangePassword = async (e) => {
+    e.preventDefault();
+    const userId = jwt.decode(sessionStorage.getItem("userToken"), {
+      complete: true,
+    }).payload.userId;
+    axios
+      .post(`${BACKEND_URL}/api/check-password`, {
+        userId: userId,
+        password: oldPassword,
+      })
+      .then((res) => {
+        if (res.data.success) {
+          updatePassword(userId);
+        } else {
+          setAlertData({
+            severity: "error",
+            msg: "Password you have entered does not match with your account password!",
+          });
+          handleAlert();
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          setAlertData({
+            severity: "error",
+            msg: "Cannot connect to server! Please try again later",
+          });
+          handleAlert();
+        }
+      });
+  };
+
+  const badPassword = (password) => {
+    if (!passwordRegexp.test(password)) {
+      return true;
+    }
+  };
+
+  const updatePassword = async (userId) => {
+    if (badPassword(newPassword)) {
+      setAlertData({
+        severity: "error",
+        msg: `Please make an stronger password!
+        Your password must contain minimum 8 characters, 
+        at least 1 uppercase letter, 1 lowercase letter, 
+        1 number and 1 special character`,
+      });
+      handleAlert();
+    } else {
+      if (newPassword === confirmNewPassword) {
+        const newPasswordData = {
+          newPassword: newPassword,
+        };
+        axios
+          .post(`${BACKEND_URL}/change-password`, newPasswordData)
+          .then((res) => {
+            if (res.data.success) {
+              setOldPassword("");
+              setNewPassword("");
+              setConfirmNewPassword("");
+              setAlertData({
+                severity: "success",
+                msg: "Your password has been changed!",
+              });
+              handleAlert();
+            }
+          })
+          .catch((err) => {
+            if (err) {
+              setAlertData({
+                severity: "error",
+                msg: "Cannot connect right now. Please check again later!",
+              });
+              handleAlert();
+            }
+          });
       } else {
         setAlertData({
           severity: "error",
-          msg: "Failed to delete account!",
+          msg: "Please check your passwords are matching!",
         });
         handleAlert();
       }
-    });
+    }
   };
 
   return (
@@ -568,11 +672,118 @@ const Settings = () => {
             <TabPanel value={value} index={2}>
               <Grid
                 container
-                justify="center"
-                alignItems="center"
+                justify="left"
+                alignItems="left"
                 className={classes.mainGrid}
-                spacing={3}
+                spacing={2}
+                direction="column"
               >
+                <form onSubmit={handleChangePassword}>
+                  <Grid item xs={12}>
+                    <Grid item xs={12} md={12} lg={6} align="left">
+                      <Grid container spacing={3}>
+                        <Grid item xs={12} align="left">
+                          <Typography variant="h5">Change Password</Typography>
+                          <Typography>
+                            Please provide your previous password to change the
+                            password.
+                          </Typography>
+                          <Typography variant="caption" display="block">
+                                Please make sure that your password contains at
+                                least,
+                                <ul>
+                                  <li>8 characters</li>
+                                  <li>1 uppercase letter</li>
+                                  <li>1 lowercase letter</li>
+                                  <li>1 number and 1 special character</li>
+                                </ul>
+                              </Typography>
+                        </Grid>
+                        <Grid item xs={12} align="left">
+                          <TextField
+                            label="Old Password"
+                            name="oldPassword"
+                            type="password"
+                            value={oldPassword}
+                            onChange={(e) => setOldPassword(e.target.value)}
+                            size="small"
+                            variant="outlined"
+                            required
+                          />
+                        </Grid>
+                        <Grid item xs={6} align="left">
+                          <TextField
+                            label="New Password"
+                            name="newPassword"
+                            type="password"
+                            value={newPassword}
+                            onChange={(e) => setNewPassword(e.target.value)}
+                            size="small"
+                            variant="outlined"
+                            required
+                          />
+                        </Grid>
+                        <Grid item xs={6} align="left">
+                          <TextField
+                            label="Confirm New Password"
+                            name="confirmNewPassword"
+                            type="password"
+                            value={confirmNewPassword}
+                            onChange={(e) =>
+                              setConfirmNewPassword(e.target.value)
+                            }
+                            size="small"
+                            variant="outlined"
+                            required
+                          />
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    {/* Submit Buttons */}
+                    <Grid item xs={12}>
+                      <Grid
+                        item
+                        container
+                        xs={12}
+                        className={classes.footer}
+                        alignItems="left"
+                        justify="left"
+                        spacing={3}
+                      >
+                        <Grid
+                          item
+                          container
+                          md={6}
+                          className={classes.actions}
+                          spacing={2}
+                        >
+                          <Grid item>
+                            <Button
+                              fullWidth
+                              type="submit"
+                              variant="contained"
+                              className={classes.button}
+                            >
+                              Change Password
+                            </Button>
+                          </Grid>
+                          <Grid item>
+                            <Link to="/">
+                              <Button
+                                fullWidth
+                                variant="contained"
+                                className={classes.cancel}
+                              >
+                                Cancel
+                              </Button>
+                            </Link>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </form>
+                <Box mt={5} />
                 <form onSubmit={handleClickOpen}>
                   <Grid item xs={12}>
                     <Grid item xs={12} md={12} lg={6} align="left">
