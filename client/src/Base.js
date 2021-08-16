@@ -230,7 +230,7 @@ function Base() {
           <Route path="/employer/billing">
             <EmployerBilling />
           </Route>
-          <Route path="/employer/billing/payment">
+          <Route path="/employer/payment/:package">
             <Payment />
           </Route>
           <Route path="/employer/settings">

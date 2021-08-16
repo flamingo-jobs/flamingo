@@ -1,12 +1,10 @@
 import React from "react";
 import theme from "../Theme";
-import { makeStyles, Grid, Card, Typography } from "@material-ui/core";
+import { makeStyles, Grid, Typography } from "@material-ui/core";
 import BillingPackageCard from "./components/BillingPackageCard";
 import Payment from "./components/Payment";
 import NoAccess from "../components/NoAccess";
 import FloatCard from "../components/FloatCard";
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
 const jwt = require("jsonwebtoken");
 
 const useStyles = makeStyles((theme) => ({
@@ -92,16 +90,13 @@ const Billing = () => {
       sm={12}
       spacing={3}
       direction="row"
-      className={classes.mainGrid}
       alignItems="center"
       justify="center"
     >
       <Grid item xs={12}>
-        <FloatCard>
           <div className={classes.root}>
             {haveAccess ? <BillingPackageCard /> : <NoAccess />}
           </div>
-        </FloatCard>
       </Grid>
     </Grid>
   );

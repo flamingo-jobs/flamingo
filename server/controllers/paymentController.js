@@ -82,4 +82,4 @@ const stripePayment = async (req, res) => {
   res.redirect(303, session.url);
 };
 
-module.exports = { acceptPayment };
+module.exports = { acceptPayment, stripePayment };
