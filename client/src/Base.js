@@ -42,6 +42,7 @@ import Billing from "./employee/Billing";
 import { env } from "process";
 import Certifications from "./admin/Certifications";
 import Settings from "./admin/Settings";
+import Payment from "./employer/components/Payment";
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
@@ -228,6 +229,9 @@ function Base() {
           </Route>
           <Route path="/employer/billing">
             <EmployerBilling />
+          </Route>
+          <Route path="/employer/billing/payment">
+            <Payment />
           </Route>
           <Route path="/employer/settings">
             <EmployerSettings />

@@ -1,4 +1,7 @@
 // https://support.payhere.lk/api-&-mobile-sdk/payhere-checkout
+const stripe = require("stripe")(
+  "sk_test_51JPAzhLTr96FRMgQ0xCmr03nHYxqHShBQZzOBnQ7mWo4JOTdrhy7yvPzbUEZ6iazCFCQBIRVu95cJFDqE3tgryG30076ZZjy9k"
+);
 
 const Payment = require("../models/payment");
 const Employers = require("../models/employers");
@@ -31,7 +34,6 @@ const acceptPayment = async (req, res) => {
     if (local_md5sig === md5sig && status_code === 2) {
       const savedPayment = await newPayment.save();
       if (savedPayment) {
-          
         /*
         ......................................................
         >> Update employer document with subscribed package <<
@@ -42,13 +44,13 @@ const acceptPayment = async (req, res) => {
           success: true,
         });
       } else {
-        res.status(400).json({
+        res.status(500).json({
           success: false,
           error: "payment_save_failed (check model format)",
         });
       }
     } else {
-      res.status(400).json({
+      res.status(500).json({
         success: false,
         error: "bad_payment",
       });
@@ -59,6 +61,25 @@ const acceptPayment = async (req, res) => {
       error: err,
     });
   }
+};
+
+const YOUR_DOMAIN = "http://localhost:3000/employer/billing"
+
+const stripePayment = async (req, res) => {
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ["card"],
+    line_items: [
+      {
+        // TODO: replace this with the `price` of the product you want to sell
+        price: "{{PRICE_ID}}",
+        quantity: 1,
+      },
+    ],
+    mode: "payment",
+    success_url: `${YOUR_DOMAIN}?success=true`,
+    cancel_url: `${YOUR_DOMAIN}?canceled=true`,
+  });
+  res.redirect(303, session.url);
 };
 
 module.exports = { acceptPayment };
