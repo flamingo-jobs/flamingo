@@ -180,12 +180,12 @@ function NavMenu(props) {
                         </ListItem>
                     </Link>
 
-                    <Link to="/employer/resumes">
+                    {/* <Link to="/employer/resumes">
                         <ListItem button key="jobs" selected={selectedIndex === "resumes"} onClick={(event) => handleListItemClick(event, "resumes")} classes={{ selected: classes.active }} className={classes.listItem}>
                             <ListItemIcon className={classes.linkIcon}><DescriptionIcon /></ListItemIcon>
                             <ListItemText className={classes.linkText} primary="Resumes" />
                         </ListItem>
-                    </Link>
+                    </Link> */}
 
                     <Link to="/employer/billing">
                         <ListItem button key="billing" selected={selectedIndex === "billing"} onClick={(event) => handleListItemClick(event, "billing")} classes={{ selected: classes.active }} className={classes.listItem}>

@@ -101,6 +101,42 @@ const useStyles = makeStyles((theme) => ({
     margin: 3,
     marginRight: 5,
   },
+  editButton: {
+    backgroundColor: theme.palette.blueJeans,
+    color: "white",
+    margin: 17,
+    borderRadius: 25,
+    paddingLeft: 20,
+    paddingRight: 20,
+    "&:hover": {
+      backgroundColor: theme.palette.blueJeansHover,
+      color: "white",
+    },
+  },
+  cancelButton: {
+    backgroundColor: theme.palette.blueJeans,
+    color: "white",
+    margin: 17,
+    borderRadius: 25,
+    paddingLeft: 20,
+    paddingRight: 20,
+    "&:hover": {
+      backgroundColor: theme.palette.blueJeansHover,
+      color: "white",
+    },
+  },
+  saveButton: {
+    backgroundColor: theme.palette.blueJeans,
+    color: "white",
+    margin: 17,
+    borderRadius: 25,
+    paddingLeft: 20,
+    paddingRight: 20,
+    "&:hover": {
+      backgroundColor: theme.palette.blueJeansHover,
+      color: "white",
+    },
+  },
 }));
 
 export default function DetailedAccordion(props) {
@@ -118,20 +154,11 @@ export default function DetailedAccordion(props) {
   const [frontEnd, setFrontEnd] = React.useState([]);
   const [backEnd, setBackEnd] = React.useState([]);
   const [editing, setEditing] = React.useState(false);
+
   let index;
   let loginId;
-  let login = false;
-  // const jwt = require("jsonwebtoken");
-  // const token = sessionStorage.getItem("userToken");
-  // const header = jwt.decode(token, { complete: true });
-  // if(token === null){
-  loginId = props.jobseeker;
-  // }else if (header.payload.userRole === "jobseeker") {
-  login = true;
-  //   loginId=sessionStorage.getItem("loginId");
-  // } else {
-  //   loginId=props.jobseeker;
-  // }
+  let login = true;
+  loginId = props.employerId;
 
   const matchDetails = () => {
     let tech = props.techno;
@@ -209,15 +236,11 @@ export default function DetailedAccordion(props) {
     };
 
     axios
-      .put(
-        `${BACKEND_URL}/employers/update/${"60c246913542f942e4c84454"}`,
-        data
-      )
+      .put(`${BACKEND_URL}/employers/update/${props.employerId}`, data)
       .then((res) => {
         if (res.data.sucess == "Updated successfully") {
           props.onSuccessUpdate();
         } else {
-          
           props.onFailedUpdate();
         }
       })
@@ -367,25 +390,41 @@ export default function DetailedAccordion(props) {
         </AccordionSummary>
         {displayAccordionDetails()}
         <Divider />
-        {login ? (
-          <>
-            <AccordionActions>
-              {editing ? (
-                <>
-                  <Button size="small" onClick={handleCancel}>
-                    Cancel
-                  </Button>{" "}
-                  <Button size="small" color="primary" onClick={handleSave}>
-                    Save
-                  </Button>{" "}
-                </>
-              ) : (
-                <Button size="small" color="primary" onClick={handleEdit}>
-                  Edit
-                </Button>
-              )}
-            </AccordionActions>
-          </>
+        {props.login ? (
+          props.showEdit ? (
+            <>
+              <AccordionActions>
+                {editing ? (
+                  <>
+                    <Button
+                      size="small"
+                      className={classes.cancelButton}
+                      onClick={handleCancel}
+                    >
+                      Cancel
+                    </Button>{" "}
+                    <Button
+                      size="small"
+                      color="primary"
+                      className={classes.saveButton}
+                      onClick={handleSave}
+                    >
+                      Save
+                    </Button>{" "}
+                  </>
+                ) : (
+                  <Button
+                    size="small"
+                    color="primary"
+                    className={classes.editButton}
+                    onClick={handleEdit}
+                  >
+                    Edit
+                  </Button>
+                )}
+              </AccordionActions>
+            </>
+          ) : null
         ) : null}
       </Accordion>
     </div>

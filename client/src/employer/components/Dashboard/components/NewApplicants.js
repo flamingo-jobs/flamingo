@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const NewApplicants = () => {
+const NewApplicants = (props) => {
 
   const classes = useStyles();
 
@@ -77,8 +77,7 @@ const NewApplicants = () => {
   useEffect(() => {
     axios
       .get(
-        `${BACKEND_URL}/jobs/filterAllByOrganization/` +
-          "60c246913542f942e4c84454"
+        `${BACKEND_URL}/jobs/filterAllByOrganization/${props.employerId}`
       )
       .then((res) => {
         console.log(res.data.employerJobs);

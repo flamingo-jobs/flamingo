@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const TopCards = () => {
+const TopCards = (props) => {
 
   const [value, setValue] = React.useState(2);
 
@@ -80,8 +80,7 @@ const TopCards = () => {
   useEffect(() => {
     axios
       .get(
-        `${BACKEND_URL}/jobs/filterAllByOrganization/` +
-          "60c246913542f942e4c84454"
+        `${BACKEND_URL}/jobs/filterAllByOrganization/${props.employerId}`
       )
       .then((res) => {
         console.log(res.data.employerJobs);

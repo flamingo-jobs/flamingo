@@ -36,6 +36,9 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 40,
     marginRight: 20,
   },
+  lottie:{
+    marginTop: -100,
+  },
   button: {
     backgroundColor: theme.palette.blueJeans,
     color: "white",
@@ -53,6 +56,20 @@ const AddTechForm = (props) => {
   const [value, setValue] = React.useState(2);
 
   const classes = useStyles();
+
+  let loginId;
+  let login = false;
+  const jwt = require("jsonwebtoken");
+  const token = sessionStorage.getItem("userToken");
+  const header = jwt.decode(token, { complete: true });
+  if (token === null) {
+    loginId = props.employerID;
+  } else if (header.payload.userRole === "employer") {
+    login = true;
+    loginId = sessionStorage.getItem("loginId");
+  } else {
+    loginId = props.employerID;
+  }
 
   const defaultOptions = {
     loop: true,
@@ -74,12 +91,12 @@ const AddTechForm = (props) => {
         </Grid>
 
         <Grid item xs={12}>
-          <Technologies jobseekerID={"60c246913542f942e4c84454"} />
+          <Technologies showEdit={true} login={login} employerId={loginId} />
         </Grid>
 
 
 
-        <Grid item className={classes.comboBox}>
+        <Grid item className={classes.lottie}>
           <Lottie
             className={classes.lottie}
             options={defaultOptions}

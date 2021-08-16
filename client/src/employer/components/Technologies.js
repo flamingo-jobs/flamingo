@@ -38,18 +38,7 @@ function Technologies(props) {
 
     let i=0;
     let loginId;
-    let login = false;
-    // const jwt = require("jsonwebtoken");
-    // const token = sessionStorage.getItem("userToken");
-    // const header = jwt.decode(token, { complete: true });
-    // if(token === null){
-        loginId=props.jobseekerID;
-    // }else if (header.payload.userRole === "jobseeker") {
-        login = true;
-    //     loginId=sessionStorage.getItem("loginId");
-    // } else {
-    //     loginId=props.jobseekerID;
-    // }
+    
 
     useEffect(() => {
             retrieveTechnoliges();
@@ -92,9 +81,9 @@ function Technologies(props) {
             }
         })
 
-        console.log("inside fetchData"+"60c246913542f942e4c84454")
+        // console.log("inside fetchData"+"60c246913542f942e4c84454")
         let technologyStackData;
-        axios.get(`${BACKEND_URL}/employers/${'60c246913542f942e4c84454'}`)
+        axios.get(`${BACKEND_URL}/employers/${props.employerId}`)
         .then(res => {
             if(res.data.success){
             if(res.data.employer.technologyStack.length > 0){
@@ -118,7 +107,7 @@ function Technologies(props) {
     const displayTechnologies = () => {
         if (technologies) {
             return technologies.map(technology => (
-                <DetailedAccordion employer={"60c246913542f942e4c84454"} key={technology._id} info={technology} techno={technologyStack} onRefresh={handleRefresh} onSuccessUpdate={handleUpdatesuccess} onFailedUpdate={handleUpdateFailed} />
+                <DetailedAccordion  showEdit={props.showEdit} login={props.login} employerId={props.employerId} key={technology._id} info={technology} techno={technologyStack} onRefresh={handleRefresh} onSuccessUpdate={handleUpdatesuccess} onFailedUpdate={handleUpdateFailed} />
             ))
         } else {
             return (
