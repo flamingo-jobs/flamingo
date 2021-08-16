@@ -128,10 +128,10 @@ function VolunteerItem(props) {
   const [styleEdit, setStyleEdit] = useState({display: 'none'});
   let volunteerStartDate=[0,0];
   let volunteerEndDate=[0,0];
-  if(props.from !== 'null/null'){
+  if(props.from !== 'null/null' && props.from !== '0/0'){
     volunteerStartDate = props.from.split("/");
   }
-  if(props.to !== 'null/null'){
+  if(props.to !== 'null/null' && props.to !== '0/0'){
     volunteerEndDate = props.to.split("/");
   }
   const [state, setState] = useState({title: props.title, organization: props.organization, startYear: volunteerStartDate[1], startMonth: volunteerStartDate[0], endYear: volunteerEndDate[1], endMonth: volunteerEndDate[0], description: props.description});
