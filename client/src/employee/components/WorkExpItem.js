@@ -128,10 +128,10 @@ function WorkExpItem(props) {
   const [styleEdit, setStyleEdit] = useState({display: 'none'});
   let workStartDate=[0,0];
   let workEndDate=[0,0];
-  if(props.from !== 'null/null'){
+  if(props.from !== 'null/null' && props.from !== '0/0'){
     workStartDate = props.from.split("/");
   }
-  if(props.to !== 'null/null'){
+  if(props.to !== 'null/null' && props.to !== '0/0'){
     workEndDate = props.to.split("/");
   }
   const [state, setState] = useState({place: props.place, description: props.description, position: props.position, startYear: workStartDate[1], startMonth: workStartDate[0], endYear: workEndDate[1], endMonth: workEndDate[0], taskAndResponsibility: props.task});

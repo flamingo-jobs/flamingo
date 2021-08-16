@@ -385,7 +385,7 @@ console.log(edu);
   useEffect(()=>{
     setEducation({
       institute: null,
-      type: null,
+      type: "School",
       fieldOfStudy: null,
       GPA: null,
       startYear: null,
@@ -858,6 +858,7 @@ console.log(edu);
                     <InputLabel className={classes.placeholder} htmlFor="outlined-age-native-simple">Select Type</InputLabel>
                     <Select
                       native
+                      defaultValue={"School"}
                       onChange={onChangeType}
                       label="Select Type"
                       className={classes.select}

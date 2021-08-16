@@ -149,7 +149,7 @@ function IntroSection(props) {
         setState({
           firstName: nameArr[0],
           lastName: nameArr[1],
-          tagline: res.data.jobseeker.lagline,
+          tagline: res.data.jobseeker.tagline,
           intro: res.data.jobseeker.intro,
           street: res.data.jobseeker.address.street,
           city: res.data.jobseeker.address.city,
