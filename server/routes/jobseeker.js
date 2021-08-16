@@ -54,8 +54,7 @@ router.put('/jobseeker/addWork/:id', jobseekerController.addWork);
 // delete
 
 router.delete('/jobseeker/delete/:id', jobseekerController.remove);
-router.put('/jobseeker/removeUniversity/:id', jobseekerController.removeUniversity);
-router.put('/jobseeker/removeSchool/:id', jobseekerController.removeSchool);
+router.put('/jobseeker/removeEducation/:id', jobseekerController.removeEducation);
 router.put('/jobseeker/removeCourse/:id', jobseekerController.removeCourse);
 router.put('/jobseeker/removeProject/:id', jobseekerController.removeProject);
 router.put('/jobseeker/removeWork/:id', jobseekerController.removeWork);

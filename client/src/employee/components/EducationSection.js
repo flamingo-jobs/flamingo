@@ -119,10 +119,14 @@ function EducationSection(props) {
   const classes = useStyles();
   const [fetchedData, setFetchedData] = useState('');
   const [educationFields, setEducationFields] = useState(null);
+  const school=[];
+  const college=[];
+  const diploma=[];
+  const graduateDiploma=[];
+  const bachelors=[];
+  const mPhil=[];
+  const phD=[];
   const [education, setEducation] = useState({institute: null, type: "School", fieldOfStudy: null, GPA: null, startYear: null, startMonth: null, endYear: null, endMonth: null, societiesAndActivities: null});
-  const [university, setUniversity] = useState({university: null, degree: null,fieldOfStudy: null, GPA: null, startYear: null, startMonth: null, endYear: null, endMonth: null, societiesAndActivities: null});
-  const [school, setSchool] = useState({school: null, startYear: null, startMonth: null, endYear: null, endMonth: null, description: null});
-  const [level, setLevel] = useState(null);
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -279,6 +283,29 @@ function EducationSection(props) {
     })
   }
 
+  function matchFields(){
+    if(educationFields){
+      for (let index = 0; index < educationFields.length; index++) {
+        if(educationFields[index].type === "School"){
+          school.push({in: index,field: educationFields[index]});
+        }else if(educationFields[index].type === "College"){
+          college.push({in: index,field: educationFields[index]});
+        }else if(educationFields[index].type === "Diploma"){
+          diploma.push({in: index,field: educationFields[index]});
+        }else if(educationFields[index].type === "Graduate Diploma"){
+          graduateDiploma.push({in: index,field: educationFields[index]});
+        }else if(educationFields[index].type === "Bachelor's"){
+          bachelors.push({in: index,field: educationFields[index]});
+        }else if(educationFields[index].type === "M.Phil."){
+          mPhil.push({in: index,field: educationFields[index]});
+        }else if(educationFields[index].type === "PhD"){
+          phD.push({in: index,field: educationFields[index]});
+        }
+        
+      }
+    }
+  }
+
 
   function fetchData(){
     let eduData;
@@ -295,7 +322,8 @@ function EducationSection(props) {
             i++;
           }
         }
-        setEducationFields(eduData)
+        setEducationFields(eduData);
+        matchFields();
         console.log("data fetched");
       }
     })
@@ -323,7 +351,7 @@ function EducationSection(props) {
       startDate: education.startMonth+"/"+education.startYear,
       endDate: education.endMonth+"/"+education.endYear
     }
-  }else if(education.type === "School" || education.type === "College"){
+  }else{
     edu = {
       institute: education.institute,
       type: education.type,
@@ -332,7 +360,7 @@ function EducationSection(props) {
       societiesAndActivities: education.societiesAndActivities
     }
   }
-
+console.log(edu);
     axios.put(`${BACKEND_URL}/jobseeker/addEducation/${loginId}`,edu)
     .then(res => {
       if(res.data.success){
@@ -389,20 +417,87 @@ function EducationSection(props) {
       }
     });
     handleClose();
-    setFetchedData(1)  
+    setFetchedData(1);
   }
 
 
-  const displayEduFields = () => {
+  const displayPhdFields = () => {
     if (educationFields) {
-      if (educationFields.length > 0) {
-        return educationFields.map(edu => (
-              <EduItem index={i++} startDate={edu.startDate} endDate={edu.endDate} institute={edu.institute} type={edu.type} fieldOfStudy={edu.fieldOfStudy} gpa={edu.GPA} societiesAndActivities={edu.societiesAndActivities}  parentFunction={deleteEducation} />
+      if (phD) {
+        eduCount=1;
+        return phD.map(edu => (
+              <EduItem index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities}  parentFunction={deleteEducation} />
               ))
-      }else{
-        return (<Typography variant="body2" color="textSecondary" component="p">Education details not added.</Typography>)
       }
-    }else{
+    }
+  }
+
+  const displayMphilFields = () => {
+    if (educationFields) {
+      if (mPhil) {
+        eduCount=1;
+        return mPhil.map(edu => (
+              <EduItem index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities}  parentFunction={deleteEducation} />
+              ))
+      }
+    }
+  }
+
+  const displayBachelorsFields = () => {
+    if (educationFields) {
+      if (bachelors) {
+        eduCount=1;
+        return bachelors.map(edu => (
+              <EduItem index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities}  parentFunction={deleteEducation} />
+              ))
+      }
+    }
+  }
+  
+  const displayGraduateDiplomaFields = () => {
+    if (educationFields) {
+      if (graduateDiploma) {
+        eduCount=1;
+        return graduateDiploma.map(edu => (
+              <EduItem index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities}  parentFunction={deleteEducation} />
+              ))
+      }
+    }
+  }
+  
+  const displayDiplomaFields = () => {
+    if (educationFields) {
+      if (diploma) {
+        eduCount=1;
+        return diploma.map(edu => (
+              <EduItem index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities}  parentFunction={deleteEducation} />
+              ))
+      }
+    }
+  }
+  
+  const displayCollegeFields = () => {
+    if (educationFields) {
+      if (college) {
+        eduCount=1;
+        return college.map(edu => (
+              <EduItem index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities}  parentFunction={deleteEducation} />
+              ))
+      }
+    }
+  }
+
+  const displaySchoolFields = () => {
+    if (educationFields) {
+      if (school) {
+        eduCount=1;
+        return school.map(edu => (
+              <EduItem index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities}  parentFunction={deleteEducation} />
+              ))
+      }
+    }
+
+    if(eduCount === 0){
       return (<Typography variant="body2" color="textSecondary" component="p">Education details not added.</Typography>)
     }
   }
@@ -706,7 +801,14 @@ function EducationSection(props) {
       </Grid>
       <Grid container>
             <Grid item xs={12}>
-              {displayEduFields()}
+              {matchFields()}
+              {displayPhdFields()}
+              {displayMphilFields()}
+              {displayBachelorsFields()}
+              {displayGraduateDiplomaFields()}
+              {displayDiplomaFields()}
+              {displayCollegeFields()}
+              {displaySchoolFields()}
             </Grid>
         </Grid>
 

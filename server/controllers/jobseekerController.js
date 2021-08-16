@@ -537,30 +537,11 @@ const removeWork = (req, res) => {
   );
 };
 
-const removeUniversity = (req, res) => {
+const removeEducation = (req, res) => {
   Jobseeker.findByIdAndUpdate(
     req.params.id,
     {
-      $set: { university: req.body },
-    },
-    (err, jobseeker) => {
-      if (err) {
-        return res.status(400).json({
-          error: err,
-        });
-      }
-      return res.status(200).json({
-        success: true,
-      });
-    }
-  );
-};
-
-const removeSchool = (req, res) => {
-  Jobseeker.findByIdAndUpdate(
-    req.params.id,
-    {
-      $set: { school: req.body },
+      $set: { education: req.body },
     },
     (err, jobseeker) => {
       if (err) {
@@ -693,8 +674,7 @@ module.exports = {
   updateFavoriteOrgs,
   resetAll,
   remove,
-  removeUniversity,
-  removeSchool,
+  removeEducation,
   removeCourse,
   removeProject,
   removeWork,
