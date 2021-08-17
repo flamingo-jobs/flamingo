@@ -252,6 +252,25 @@ const updateCourse = (req, res) => {
   );
 };
 
+const updateCertificate = (req, res) => {
+  Jobseeker.updateOne(
+    { _id: req.params.id },
+    {
+      $set: { [`certificate.${req.body.index}`]: req.body.certificate },
+    },
+    (err, jobseeker) => {
+      if (err) {
+        return res.status(400).json({
+          error: err,
+        });
+      }
+      return res.status(200).json({
+        success: true,
+      });
+    }
+  );
+};
+
 const updateWork = (req, res) => {
   Jobseeker.updateOne(
     { _id: req.params.id },
@@ -389,6 +408,23 @@ const addCourse = (req, res) => {
   Jobseeker.findOneAndUpdate(
     { _id: req.params.id },
     { $push: { course: req.body } },
+    (err, jobseeker) => {
+      if (err) {
+        return res.status(400).json({
+          error: err,
+        });
+      }
+      return res.status(200).json({
+        success: true,
+      });
+    }
+  );
+};
+
+const addCertificate = (req, res) => {
+  Jobseeker.findOneAndUpdate(
+    { _id: req.params.id },
+    { $push: { certificate: req.body } },
     (err, jobseeker) => {
       if (err) {
         return res.status(400).json({
@@ -575,6 +611,25 @@ const removeCourse = (req, res) => {
   );
 };
 
+const removeCertificate = (req, res) => {
+  Jobseeker.findByIdAndUpdate(
+    req.params.id,
+    {
+      $set: { certificate: req.body },
+    },
+    (err, jobseeker) => {
+      if (err) {
+        return res.status(400).json({
+          error: err,
+        });
+      }
+      return res.status(200).json({
+        success: true,
+      });
+    }
+  );
+};
+
 const removeAward = (req, res) => {
   Jobseeker.findByIdAndUpdate(
     req.params.id,
@@ -655,12 +710,14 @@ module.exports = {
   update,
   addEducation,
   addCourse,
+  addCertificate,
   addAward,
   addVolunteering,
   addProject,
   addWork,
   updateEducation,
   updateCourse,
+  updateCertificate,
   updateSkills,
   updateTechnologyItem,
   updateTechnologyStack,
@@ -676,6 +733,7 @@ module.exports = {
   remove,
   removeEducation,
   removeCourse,
+  removeCertificate,
   removeProject,
   removeWork,
   removeAward,
