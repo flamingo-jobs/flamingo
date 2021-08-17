@@ -4,11 +4,12 @@ const stripe = require("stripe")(
 );
 
 const Payment = require("../models/payment");
+const Order = require("../models/order");
 const Employers = require("../models/employers");
 const MERCHANT_SECRET = require("../Config").MERCHANT_SECRET;
 const md5 = require("js-md5");
 
-const acceptPayment = async (req, res) => {
+const payherePayment = async (req, res) => {
   const newPayment = new Payment(req.body);
   const {
     merchant_id,
@@ -63,7 +64,7 @@ const acceptPayment = async (req, res) => {
   }
 };
 
-const YOUR_DOMAIN = "http://localhost:3000/employer/billing"
+const YOUR_DOMAIN = "http://localhost:3000/employer/billing";
 
 const stripePayment = async (req, res) => {
   const session = await stripe.checkout.sessions.create({
@@ -82,4 +83,28 @@ const stripePayment = async (req, res) => {
   res.redirect(303, session.url);
 };
 
-module.exports = { acceptPayment, stripePayment };
+const createOrder = async (req, res) => {
+  const newOrder = new Order(req.body);
+  try {
+    const savedOrder = await newOrder.save();
+    res.status(200).json({ success: true, order: savedOrder._id });
+  } catch (err) {
+    res.status(400).json({ error: err });
+  }
+};
+
+const getOrderById = async (req, res) => {
+  Order.findById(req.params.id).exec((err, savedOrder) => {
+    if (err) {
+      return res.status(400).json({
+        error: err,
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      order: savedOrder,
+    });
+  });
+};
+
+module.exports = { payherePayment, stripePayment, createOrder, getOrderById };
