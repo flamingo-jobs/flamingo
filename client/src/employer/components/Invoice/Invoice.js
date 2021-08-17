@@ -4,7 +4,7 @@ import InvoiceMain from "./components/InvoiceMain";
 
 const Invoice = ({ invoice }) => (
   <Fragment>
-    <PDFViewer width="1000" height="600" className="app">
+    <PDFViewer width="100%" height="600" className="app">
       <InvoiceMain invoice={invoice} />
     </PDFViewer>
   </Fragment>

@@ -50,6 +50,17 @@ const useStyles = makeStyles((theme) => ({
     margin: "30px 10px 30px 10px",
     flexGrow: 1,
   },
+  mainGrid: {
+    paddingLeft: 12,
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+      alignItems: "stretch",
+    },
+    [theme.breakpoints.down("xs")]: {
+      paddingRight: 12,
+      paddingLeft: 12,
+    },
+  },
   button: {
     backgroundColor: theme.palette.stateBlue,
     color: theme.palette.white,
@@ -65,17 +76,6 @@ const useStyles = makeStyles((theme) => ({
     overflow: "unset",
     margin: "0px 10px 20px 5px",
     flexGrow: 1,
-  },
-  mainGrid: {
-    paddingLeft: 12,
-    [theme.breakpoints.down("sm")]: {
-      flexDirection: "column",
-      alignItems: "stretch",
-    },
-    [theme.breakpoints.down("xs")]: {
-      paddingRight: 12,
-      paddingLeft: 12,
-    },
   },
   dialogbuttons: {
     color: "red",
