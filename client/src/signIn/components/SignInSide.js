@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import { useForm } from "react-hooks-helper";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -172,6 +172,8 @@ export default function SignInSide() {
   const [remember, setRemember] = useState(false);
   const handleRemember = () => setRemember(!remember);
 
+  const [googleOauthUrl, setGoogleOauthUrl] = useState("");
+
   const login = (e) => {
     e.preventDefault();
 
@@ -214,6 +216,19 @@ export default function SignInSide() {
         else handleCredentialError();
       });
   };
+
+  useEffect(() => {
+    const loadOauthUrl = async () => {
+      try {
+        const response = await axios.get(`${BACKEND_URL}/api/google/url`);
+        const { url } = response.data;
+        setGoogleOauthUrl(url);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    loadOauthUrl();
+  }, []);
 
   const classes = useStyles();
 
@@ -334,6 +349,16 @@ export default function SignInSide() {
                           <GitHubIcon />
                         </Avatar>
                       </IconButton>
+                    </div>
+                    <div>
+                      <Button
+                        disable={!googleOauthUrl}
+                        onClick={() => {
+                          window.location.href = googleOauthUrl;
+                        }}
+                      >
+                        Log in with Google
+                      </Button>
                     </div>
                     <Typography className={classes.text}>or</Typography>
                   </div>

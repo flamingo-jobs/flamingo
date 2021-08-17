@@ -7,6 +7,7 @@ const User = require("../models/users");
 const JobSeeker = require("../models/jobseeker");
 const Employer = require("../models/employers");
 const FRONTEND_URL = require("../Config").FRONTEND_URL;
+const getGoogleOauthUrl = require("../utils/getGoogleOauthUrl").getGoogleOauthUrl;
 
 // Regex for validation of email address
 const emailRegexp =
@@ -423,4 +424,9 @@ exports.changePassword = async (req, res) => {
   res.status(200).json({
     success: true,
   });
+};
+
+exports.getGoogleOauthUrlRoute = async (req, res) => {
+  const url = getGoogleOauthUrl();
+  res.status(200).json({ url });
 };
