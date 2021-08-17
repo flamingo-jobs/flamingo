@@ -5,11 +5,13 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Chip from "@material-ui/core/Chip";
 import Grid from "@material-ui/core/Grid";
-import { Box, Avatar } from "@material-ui/core";
+import { Box, Avatar, TextField } from "@material-ui/core";
 import Divider from "@material-ui/core/Divider";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import stripeLogo from "./images/stripe-logo-blue.png";
+import payhereLogo from "./images/PayHere-Logo.png";
 import StripeCheckoutForm from "./StripeCheckoutForm";
+import PayHereCheckoutForm from "./PayHereCheckoutForm";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,6 +20,18 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 10,
     margin: "30px 10px 30px 10px",
     //background: "linear-gradient(45deg, #64DFDF 30%, #FFFFFF 90%)",
+  },
+  mainGrid: {
+    paddingLeft: 12,
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+      alignItems: "stretch",
+    },
+    [theme.breakpoints.down("xs")]: {
+      paddingRight: 12,
+      paddingLeft: 20,
+      paddingBottom: 12,
+    },
   },
   title: {
     color: theme.palette.grey,
@@ -65,7 +79,7 @@ const packageList = [
   { name: "premium", value: "4990" },
 ];
 
-export default function BillingPackageCard() {
+export default function Payment() {
   const classes = useStyles();
 
   const [subscription, setSubscription] = useState({});
@@ -80,7 +94,8 @@ export default function BillingPackageCard() {
   }, [window.location.pathname]);
 
   return (
-    <Grid container xs={12} spacing={3} direction="row">
+    <Grid container sm={12} spacing={3} direction="row" alignItems="flex-start">
+      {/* PAYMENT DETAILS */}
       <Grid item container xs={12} lg={8}>
         <FloatCard className={classes.root}>
           <Typography variant="h4" gutterBottom>
@@ -129,10 +144,33 @@ export default function BillingPackageCard() {
               className={classes.features}
             />
           </div>
+          <Divider variant="middle" />
           <br />
+          <Grid
+            container
+            className={classes.mainGrid}
+            sm={12}
+            spacing={2}
+            direction="row"
+            align="left"
+          >
+            <Grid item xs={12}>
+              <Typography variant="h4" gutterBottom>
+                <Box
+                  fontWeight={400}
+                  fontSize={20}
+                  m={1}
+                  className={classes.title}
+                >
+                  Payment info
+                </Box>
+              </Typography>
+            </Grid>
+          </Grid>
         </FloatCard>
       </Grid>
 
+      {/* STRIPR PAYENT 
       <Grid item container xs={12} lg={4}>
         <FloatCard className={classes.root}>
           <Typography variant="h4" gutterBottom>
@@ -158,6 +196,37 @@ export default function BillingPackageCard() {
           </Typography>
 
           <StripeCheckoutForm subscription={subscription} />
+          <br />
+        </FloatCard>
+      </Grid>
+      */}
+
+      {/* PAYHERE PAYMENT */}
+      <Grid item container xs={12} lg={4}>
+        <FloatCard className={classes.root}>
+          <Typography variant="h4" gutterBottom>
+            <Box fontWeight={400} fontSize={20} m={1} className={classes.title}>
+              <center>
+                <Avatar
+                  className={classes.logo}
+                  src={payhereLogo}
+                  variant="square"
+                />
+              </center>
+            </Box>
+
+            <Box
+              fontWeight={400}
+              fontSize={12}
+              m={1}
+              className={classes.annual}
+            >
+              Payment infrastructure for the internet
+            </Box>
+            <Divider variant="middle" />
+          </Typography>
+
+          <PayHereCheckoutForm subscription={subscription} />
           <br />
         </FloatCard>
       </Grid>

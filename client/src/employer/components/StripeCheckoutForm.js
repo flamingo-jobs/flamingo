@@ -188,27 +188,38 @@ const CheckoutForm = (props) => {
           }}
         />
         <Field
-          label="Email"
-          id="email"
-          type="email"
-          placeholder="janedoe@gmail.com"
-          required
-          autoComplete="email"
-          value={billingDetails.email}
+          label="Address"
+          id="address"
+          type="text"
+          placeholder="Apt, Gate Code (optional)"
+          autoComplete="address"
+          value={billingDetails.address}
           onChange={(e) => {
-            setBillingDetails({ ...billingDetails, email: e.target.value });
+            setBillingDetails({ ...billingDetails, address: e.target.value });
           }}
         />
         <Field
           label="Phone"
           id="phone"
-          type="tel"
-          placeholder="(941) 555-0123"
+          type="text"
+          placeholder="Phone"
           required
-          autoComplete="tel"
+          autoComplete="phone"
           value={billingDetails.phone}
           onChange={(e) => {
             setBillingDetails({ ...billingDetails, phone: e.target.value });
+          }}
+        />
+        <Field
+          label="Email"
+          id="email"
+          type="text"
+          placeholder="Email"
+          required
+          autoComplete="email"
+          value={billingDetails.email}
+          onChange={(e) => {
+            setBillingDetails({ ...billingDetails, email: e.target.value });
           }}
         />
       </fieldset>
@@ -222,7 +233,7 @@ const CheckoutForm = (props) => {
       </fieldset>
       {error && <ErrorMessage>{error.message}</ErrorMessage>}
       <SubmitButton processing={processing} error={error} disabled={!stripe}>
-        Pay ${subscription.value/200}
+        Pay LKR {subscription.value}
       </SubmitButton>
     </form>
   );
