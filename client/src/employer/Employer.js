@@ -1,7 +1,8 @@
 import React from "react";
 import { makeStyles, Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
-import CompanyInfo from "./components/CompanyInfo";
+import CompanyBasicInfo from "./components/CompanyBasicInfo";
+import CompanyDescription from "./components/CompanyDescription";
 import Technologies from "./components/Technologies";
 import FloatCard from "./components/FloatCard";
 import ComputerIcon from "@material-ui/icons/Computer";
@@ -76,9 +77,16 @@ const Employer = (props) => {
         sm={12}
         md={7}
         spacing={3}
-        style={{ marginLeft: 10, marginTop: 5, marginBottom: 5 }}
+        style={{ marginLeft: 10, marginTop: -5, marginBottom: 5 }}
       >
-        <CompanyInfo userRole={props.userRole}></CompanyInfo>
+        <Grid item>
+          <CompanyBasicInfo userRole={props.userRole}></CompanyBasicInfo>
+        </Grid>
+
+        <Grid item>
+          <CompanyDescription userRole={props.userRole}></CompanyDescription>
+        </Grid>
+
       </Grid>
 
       <Grid

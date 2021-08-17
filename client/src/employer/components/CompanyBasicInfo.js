@@ -81,12 +81,6 @@ const useStyles = makeStyles((theme) => ({
   infoTagsContainer: {
     marginLeft: theme.spacing(2),
   },
-  companyDescription: {
-    paddingTop: -25,
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingBottom: 20,
-  },
   companyName: {
     fontWeight: 500,
     marginBottom: 5,
@@ -106,14 +100,14 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
   },
   locationTags: {
-    marginTop: -10,
+    marginTop: -20,
     marginBottom: 10,
     marginLeft: -14,
     marginRight: -20,
   },
   tag: {
-    marginRight: -10,
-    backgroundColor: "white",
+    marginRight: 8,
+    backgroundColor: theme.palette.tagYellow,
   },
   label: {
     alignSelf: "left",
@@ -125,7 +119,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 260,
   },
   rating: {
-    marginTop: -25,
+    marginTop: -15,
   },
   ratingText: {
     marginTop: -35,
@@ -144,7 +138,7 @@ const useStyles = makeStyles((theme) => ({
   },
   editPhoto: {
     marginLeft: 50,
-    marginTop: -35,
+    marginTop: -45,
   },
   textField: {
     fontSize: 14,
@@ -157,7 +151,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function CompanyInfo(props) {
+function CompanyBasicInfo(props) {
   const classes = useStyles();
 
   const fixedOptions = [];
@@ -179,7 +173,6 @@ function CompanyInfo(props) {
 
   const [state, setState] = useState({
     name: " ",
-    description: " ",
     technologyStack: Object,
 
     subscription: " ",
@@ -190,7 +183,6 @@ function CompanyInfo(props) {
   });
 
   const name = state.name;
-  const description = state.description;
   const technologyStack = state.technologyStack;
   const links = state.links;
   const subscription = state.subscription;
@@ -202,28 +194,25 @@ function CompanyInfo(props) {
   var successAlert = false;
 
   useEffect(() => {
-    axios
-      .get(`${BACKEND_URL}/employers/${loginId}`)
-      .then((res) => {
-        console.log(res.data.employer);
-        if (res.data.success) {
-          setState({
-            name: res.data.employer.name,
-            description: res.data.employer.description,
-            technologyStack: res.data.employer.technologyStack,
-            links: res.data.employer.links,
-            subscription: res.data.employer.subscription.type,
-            website: res.data.employer.links.website,
-            facebook: res.data.employer.links.facebook,
-            linkedIn: res.data.employer.links.linkedIn,
-            twitter: res.data.employer.links.twitter,
-          });
-        }
-        res.data.employer.locations.forEach((element) => {
-          console.log(element);
-          setLocation((location) => [...location, { city: element }]);
+    axios.get(`${BACKEND_URL}/employers/${loginId}`).then((res) => {
+      console.log(res.data.employer);
+      if (res.data.success) {
+        setState({
+          name: res.data.employer.name,
+          technologyStack: res.data.employer.technologyStack,
+          links: res.data.employer.links,
+          subscription: res.data.employer.subscription.type,
+          website: res.data.employer.links.website,
+          facebook: res.data.employer.links.facebook,
+          linkedIn: res.data.employer.links.linkedIn,
+          twitter: res.data.employer.links.twitter,
         });
+      }
+      res.data.employer.locations.forEach((element) => {
+        console.log(element);
+        setLocation((location) => [...location, { city: element }]);
       });
+    });
   }, []);
 
   //Event handlers for the edit detail dialog box
@@ -242,12 +231,6 @@ function CompanyInfo(props) {
   function onChangeName(e) {
     setState((prevState) => {
       return { ...prevState, name: e.target.value };
-    });
-  }
-
-  function onChangeDescription(e) {
-    setState((prevState) => {
-      return { ...prevState, description: e.target.value };
     });
   }
 
@@ -283,7 +266,7 @@ function CompanyInfo(props) {
     });
     const employer = {
       name: name,
-      description: description,
+
       // locations: locations,
 
       links: {
@@ -431,24 +414,6 @@ function CompanyInfo(props) {
                                     variant="outlined"
                                   />
                                 )}
-                              />
-                            </Grid>
-
-                            <Grid item sm={12}>
-                              <TextField
-                                multiline
-                                fullWidth
-                                id="description"
-                                defaultValue={description}
-                                label="Description"
-                                rows={5}
-                                variant="outlined"
-                                InputProps={{
-                                  classes: {
-                                    input: classes.textField,
-                                  },
-                                }}
-                                onChange={onChangeDescription}
                               />
                             </Grid>
 
@@ -668,11 +633,11 @@ function CompanyInfo(props) {
                 {props.userRole === "employer" && (
                   <IconButton
                     variant="outlined"
-                    component="span"
                     aria-label="edit"
                     className={classes.editPhotoButton}
+                    // onClick={handleClickOpen}
                   >
-                    <PhotoCameraIcon />
+                    <EditIcon />
                   </IconButton>
                 )}
               </label>
@@ -680,48 +645,7 @@ function CompanyInfo(props) {
           </Grid>
         </Grid>
 
-        {/* {successAlert ? (
-            <Alert severity="success">
-            <AlertTitle>Success</AlertTitle>
-            This is a success alert — <strong>check it out!</strong>
-          </Alert>
-        ) : (
-          <Alert severity="error">
-          <AlertTitle>Error</AlertTitle>
-          This is an error alert — <strong>check it out!</strong>
-        </Alert>
-        )} */}
-
         <br />
-
-        <Grid container xs={12} direction="row" spacing={3}>
-          {/* BODY PART OF THE COMPANY INFO CARD */}
-
-          <Grid item xs={12}>
-            {/* <div className={classes.infoTags}> */}
-            <div className={classes.infoTagsContainer}>
-              {Object.keys(technologyStack).map((item, i) => (
-                <Chip
-                  icon={<LocalOfferRoundedIcon className={classes.tagIcon} />}
-                  label={technologyStack[i].type}
-                  className={classes.label}
-                />
-              ))}
-            </div>
-          </Grid>
-
-          <Grid item xs={12} className={classes.body}>
-            <div className={classes.companyDescription}>
-              <Typography
-                style={{ whiteSpace: "pre-line" }}
-                variant="body2"
-                align="justify"
-              >
-                {description}
-              </Typography>
-            </div>
-          </Grid>
-        </Grid>
       </FloatCard>
     </div>
   );
@@ -748,4 +672,4 @@ const cities = [
   { city: "C" },
 ];
 
-export default CompanyInfo;
+export default CompanyBasicInfo;
