@@ -41,7 +41,8 @@ const useStyles = makeStyles((theme) => ({
       }
     },
     '& .MuiPaper-elevation1': {
-      boxShadow: 'rgba(83, 144, 217, 0.1) 0px 4px 12px',
+      background: theme.palette.lightSkyBlueHover,
+      boxShadow: 'none',
     }
 
   },
@@ -115,9 +116,16 @@ const useStyles = makeStyles((theme) => ({
     margin: 3,
     marginRight: 5
   },
+  featuredCheck: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingLeft: 8,
+    paddingRight: 8
+  },
 }));
 
-export default function RecommendationSettingsAccordion(props) {
+export default function ShortlistingExperienceSettingsAccordion(props) {
   const classes = useStyles();
 
   const [editing, setEditing] = React.useState(false);
@@ -133,12 +141,8 @@ export default function RecommendationSettingsAccordion(props) {
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
 
-  const [isMinimumToggle, setMinimumToggle] = React.useState(true);
+  const [minimum, setMinimum] = React.useState(0);
 
-  const handleMinimumToggleChange = (event) => {
-    setMinimumToggle(event.target.checked);
-    getSettingValues("Minimum", !event.target.checked);
-  };
 
   const handleClose = () => {
     setConfirmDelete(false);
@@ -160,9 +164,14 @@ export default function RecommendationSettingsAccordion(props) {
   useEffect(() => {
     displayAccordionDetails();
     if (settings) {
-      setMinimumToggle(!settings.settings.ignoreMinimum);
+      setMinimum(settings.settings.minimum);
     }
   }, [settings])
+
+
+  // useEffect(() => {
+  //     displaySettingOptions();
+  // }, [minimum])
 
   useEffect(() => {
     if (updatedSettings) {
@@ -226,9 +235,9 @@ export default function RecommendationSettingsAccordion(props) {
   };
 
   const retrieveRecommendationSettings = () => {
-    axios.get(`${BACKEND_URL}/settingsByType/recommendation`).then(res => {
+    axios.get(`${BACKEND_URL}/settingsByType/shortlistingExperience`).then(res => {
       if (res.data.success) {
-        setSettings(res.data.existingData[0])
+        setSettings(res.data.existingData[0]);
       } else {
         setSettings("empty")
       }
@@ -241,6 +250,10 @@ export default function RecommendationSettingsAccordion(props) {
 
     axios.put(`${BACKEND_URL}/settings/update/${settings._id}`, data).then(res => {
       if (res.data.success) {
+        setRefreshRequired(true);
+        setSettings(false);
+        setUpdatedSettings(false);
+        retrieveRecommendationSettings();
         handleUpdatesuccess();
       } else {
         handleUpdateFailed();
@@ -252,7 +265,7 @@ export default function RecommendationSettingsAccordion(props) {
   const resetToDefault = () => {
     setConfirmDelete(false);
 
-    axios.get(`${BACKEND_URL}/settingsByType/recommendationDefaults`).then(res => {
+    axios.get(`${BACKEND_URL}/settingsByType/shortlistingExperiencenDefaults`).then(res => {
       if (res.data.success) {
         let data = { settings: res.data.existingData[0].settings };
 
@@ -284,23 +297,24 @@ export default function RecommendationSettingsAccordion(props) {
     }
 
     switch (name) {
-      case "Technology Stack":
-        newSettings.settings.techStack = value;
+      case "Minimum Requirement":
+        newSettings.settings.minimum = value;
+        setMinimum(value);
         break;
-      case "Project Technology Stack":
-        newSettings.settings.projectTechStack = value;
+      case "0 years":
+        newSettings.settings["0"] = value;
         break;
-      case "Skills":
-        newSettings.settings.skills = value;
+      case "0-1 years":
+        newSettings.settings["0-1"] = value;
         break;
-      case "Certificates":
-        newSettings.settings.certifications = value;
+      case "1-3 years":
+        newSettings.settings["1-3"] = value;
         break;
-      case "Courses":
-        newSettings.settings.courses = value;
+      case "3-5 years":
+        newSettings.settings["3-5"] = value;
         break;
-      case "Minimum":
-        newSettings.settings.ignoreMinimum = value;
+      case "5+ years":
+        newSettings.settings["5+"] = value;
         break;
       default:
         break;
@@ -309,8 +323,9 @@ export default function RecommendationSettingsAccordion(props) {
   }
 
   const calculateTotal = () => {
-    let total = updatedSettings.settings.techStack + updatedSettings.settings.projectTechStack +
-      updatedSettings.settings.skills + updatedSettings.settings.certifications + updatedSettings.settings.courses;
+    let total = updatedSettings.settings.minimum + updatedSettings.settings["0"] +
+      updatedSettings.settings["0-1"] + updatedSettings.settings["1-3"] +
+      updatedSettings.settings["3-5"] + updatedSettings.settings["5+"];
     if (total === 100) {
       setInvalid(false);
     } else {
@@ -346,34 +361,28 @@ export default function RecommendationSettingsAccordion(props) {
   const displayAccordionDetails = () => {
     return <AccordionDetails className={classes.details}>
       <Grid container spacing={1}>
+
         <Grid item xs={12} style={{ padding: 24 }}>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Checkbox
-              checked={isMinimumToggle}
-              onChange={handleMinimumToggleChange}
-              color="primary"
-              inputProps={{ 'aria-label': 'primary checkbox' }}
-            />
-            <Typography className={classes.featuredJobs}>Suggesst jobs only if the minimum requirements are met</Typography>
-          </div>
-        </Grid>
-        <Grid item xs={12} style={{ padding: 24 }}>
-          <Typography>Below values are considered as the weights for generate sugessted jobs for job seekers. <br />Total wights should be 100%.</Typography>
+          <Typography>Applicants who has met the minimum experience qualifications get the below marks for years of experiences.</Typography>
         </Grid>
         {displaySettingOptions()}
       </Grid>
-    </AccordionDetails>
+    </AccordionDetails >
   }
 
   const displaySettingOptions = () => {
     if (settings !== false) {
       return (
         <Grid item xs={12}>
-          <ContinousSlider name={"Technology Stack"} value={settings.settings.techStack} passValue={getSettingValues} />
-          <ContinousSlider name={"Project Technology Stack"} value={settings.settings.projectTechStack} passValue={getSettingValues} />
-          <ContinousSlider name={"Skills"} value={settings.settings.skills} passValue={getSettingValues} />
-          <ContinousSlider name={"Certificates"} value={settings.settings.certifications} passValue={getSettingValues} />
-          <ContinousSlider name={"Courses"} value={settings.settings.courses} passValue={getSettingValues} />
+          <ContinousSlider name={"Minimum Requirement"} value={settings.settings.minimum} passValue={getSettingValues} />
+          <div style={{ padding: 24 }}>
+            <Typography>Remaining percentage are divided as the weights for each years of experience levels. <br />Total wights of below levels should be {100 - minimum}%.</Typography>
+          </div>
+          <ContinousSlider name={"0 years"} value={settings.settings["0"]} passValue={getSettingValues} max={100 - minimum}/>
+          <ContinousSlider name={"0-1 years"} value={settings.settings["0-1"]} passValue={getSettingValues} max={100 - minimum}/>
+          <ContinousSlider name={"1-3 years"} value={settings.settings["1-3"]} passValue={getSettingValues} max={100 - minimum}/>
+          <ContinousSlider name={"3-5 years"} value={settings.settings["3-5"]} passValue={getSettingValues} max={100 - minimum}/>
+          <ContinousSlider name={"5+ years"} value={settings.settings["5+"]} passValue={getSettingValues} max={100 - minimum}/>
         </Grid>
       )
     } else {
@@ -390,9 +399,9 @@ export default function RecommendationSettingsAccordion(props) {
           aria-controls="panel1c-content"
           id="panel1c-header"
         >
-          <Typography className={classes.heading}>Job Suggestions</Typography>
+          <Typography className={classes.heading}>Advanced Education Settigns</Typography>
           <Typography className={classes.secondaryHeading}>
-            Change the settings related to job suggestions
+            Controll the wieghts given for each education levels
           </Typography>
         </AccordionSummary>
         {displayAccordionDetails()}

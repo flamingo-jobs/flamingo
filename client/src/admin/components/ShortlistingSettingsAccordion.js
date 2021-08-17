@@ -26,6 +26,8 @@ import Alert from '@material-ui/lab/Alert';
 import Loading from '../../components/Loading';
 import SnackBarAlert from '../../components/SnackBarAlert';
 import { Checkbox, Switch } from '@material-ui/core';
+import ShortlistingEducationSettingsAccordion from './ShortlistingEducationSettingsAccordion';
+import ShortlistingExperienceSettingsAccordion from './ShortlistingExperienceSettingsAccordion';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -115,9 +117,16 @@ const useStyles = makeStyles((theme) => ({
     margin: 3,
     marginRight: 5
   },
+  featuredCheck: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingLeft: 8,
+    paddingRight: 8
+  },
 }));
 
-export default function RecommendationSettingsAccordion(props) {
+export default function ShortlistingSettingsAccordion(props) {
   const classes = useStyles();
 
   const [editing, setEditing] = React.useState(false);
@@ -133,7 +142,7 @@ export default function RecommendationSettingsAccordion(props) {
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
 
-  const [isMinimumToggle, setMinimumToggle] = React.useState(true);
+  const [isMinimumToggle, setMinimumToggle] = React.useState(false);
 
   const handleMinimumToggleChange = (event) => {
     setMinimumToggle(event.target.checked);
@@ -226,7 +235,7 @@ export default function RecommendationSettingsAccordion(props) {
   };
 
   const retrieveRecommendationSettings = () => {
-    axios.get(`${BACKEND_URL}/settingsByType/recommendation`).then(res => {
+    axios.get(`${BACKEND_URL}/settingsByType/shortlisting`).then(res => {
       if (res.data.success) {
         setSettings(res.data.existingData[0])
       } else {
@@ -241,6 +250,10 @@ export default function RecommendationSettingsAccordion(props) {
 
     axios.put(`${BACKEND_URL}/settings/update/${settings._id}`, data).then(res => {
       if (res.data.success) {
+        setRefreshRequired(true);
+        setSettings(false);
+        setUpdatedSettings(false);
+        retrieveRecommendationSettings();
         handleUpdatesuccess();
       } else {
         handleUpdateFailed();
@@ -252,7 +265,7 @@ export default function RecommendationSettingsAccordion(props) {
   const resetToDefault = () => {
     setConfirmDelete(false);
 
-    axios.get(`${BACKEND_URL}/settingsByType/recommendationDefaults`).then(res => {
+    axios.get(`${BACKEND_URL}/settingsByType/shortlistingDefaults`).then(res => {
       if (res.data.success) {
         let data = { settings: res.data.existingData[0].settings };
 
@@ -284,6 +297,12 @@ export default function RecommendationSettingsAccordion(props) {
     }
 
     switch (name) {
+      case "Education":
+        newSettings.settings.education = value;
+        break;
+      case "Experience":
+        newSettings.settings.experience = value;
+        break;
       case "Technology Stack":
         newSettings.settings.techStack = value;
         break;
@@ -299,6 +318,12 @@ export default function RecommendationSettingsAccordion(props) {
       case "Courses":
         newSettings.settings.courses = value;
         break;
+      case "Awards":
+        newSettings.settings.awards = value;
+        break;
+      case "Extra Curricular":
+        newSettings.settings.extraCurricular = value;
+        break;
       case "Minimum":
         newSettings.settings.ignoreMinimum = value;
         break;
@@ -309,8 +334,10 @@ export default function RecommendationSettingsAccordion(props) {
   }
 
   const calculateTotal = () => {
-    let total = updatedSettings.settings.techStack + updatedSettings.settings.projectTechStack +
-      updatedSettings.settings.skills + updatedSettings.settings.certifications + updatedSettings.settings.courses;
+    let total = updatedSettings.settings.education + updatedSettings.settings.experience +
+      updatedSettings.settings.techStack + updatedSettings.settings.projectTechStack +
+      updatedSettings.settings.skills + updatedSettings.settings.certifications +
+      updatedSettings.settings.courses + updatedSettings.settings.awards + updatedSettings.settings.extraCurricular;
     if (total === 100) {
       setInvalid(false);
     } else {
@@ -354,7 +381,8 @@ export default function RecommendationSettingsAccordion(props) {
               color="primary"
               inputProps={{ 'aria-label': 'primary checkbox' }}
             />
-            <Typography className={classes.featuredJobs}>Suggesst jobs only if the minimum requirements are met</Typography>
+            <Typography className={classes.featuredJobs}>Shortlist only the applicants who has met the minimum qualifications</Typography>
+
           </div>
         </Grid>
         <Grid item xs={12} style={{ padding: 24 }}>
@@ -362,18 +390,30 @@ export default function RecommendationSettingsAccordion(props) {
         </Grid>
         {displaySettingOptions()}
       </Grid>
-    </AccordionDetails>
+    </AccordionDetails >
   }
 
   const displaySettingOptions = () => {
     if (settings !== false) {
       return (
         <Grid item xs={12}>
+          <ContinousSlider name={"Education"} value={settings.settings.education} passValue={getSettingValues} />
+          <div style={{padding: 20, paddingTop: 0}}>
+          <ShortlistingEducationSettingsAccordion />
+
+          </div>
+          <ContinousSlider name={"Experience"} value={settings.settings.experience} passValue={getSettingValues} />
+          <div style={{padding: 20, paddingTop: 0}}>
+          <ShortlistingExperienceSettingsAccordion />
+
+          </div>
           <ContinousSlider name={"Technology Stack"} value={settings.settings.techStack} passValue={getSettingValues} />
           <ContinousSlider name={"Project Technology Stack"} value={settings.settings.projectTechStack} passValue={getSettingValues} />
           <ContinousSlider name={"Skills"} value={settings.settings.skills} passValue={getSettingValues} />
           <ContinousSlider name={"Certificates"} value={settings.settings.certifications} passValue={getSettingValues} />
           <ContinousSlider name={"Courses"} value={settings.settings.courses} passValue={getSettingValues} />
+          <ContinousSlider name={"Extra Curricular"} value={settings.settings.extraCurricular} passValue={getSettingValues} />
+          <ContinousSlider name={"Awards"} value={settings.settings.awards} passValue={getSettingValues} />
         </Grid>
       )
     } else {
@@ -390,9 +430,9 @@ export default function RecommendationSettingsAccordion(props) {
           aria-controls="panel1c-content"
           id="panel1c-header"
         >
-          <Typography className={classes.heading}>Job Suggestions</Typography>
+          <Typography className={classes.heading}>Resume Shortlisting</Typography>
           <Typography className={classes.secondaryHeading}>
-            Change the settings related to job suggestions
+            Change the settings related to resume shortlisting
           </Typography>
         </AccordionSummary>
         {displayAccordionDetails()}
