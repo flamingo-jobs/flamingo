@@ -10,7 +10,7 @@ import SnackBarAlert from '../../components/SnackBarAlert'
 
 const useStyles = makeStyles((theme) => ({
     paperCont: {
-      backgroundColor: 'MintCream', 
+      backgroundColor: theme.palette.lightyPink, 
       paddingLeft: 10,
       paddingRight: 10,
       marginBottom: 25,

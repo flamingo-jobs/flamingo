@@ -1,14 +1,10 @@
 import React from "react";
-import {
-  CssBaseline,
-  Container,
-  ThemeProvider,
-  makeStyles,
-  useTheme,
-} from "@material-ui/core";
+import { makeStyles, Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import CompanyInfo from "./components/CompanyInfo";
 import Technologies from "./components/Technologies";
+import FloatCard from "./components/FloatCard";
+import ComputerIcon from "@material-ui/icons/Computer";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,6 +30,16 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("xs")]: {
       display: "none",
     },
+  },
+  title: {
+    fontWeight: "bolder",
+    color: theme.palette.stateBlue,
+    float: "left",
+    marginLeft: 20,
+  },
+  icon: {
+    color: theme.palette.stateBlue,
+    marginLeft: -40,
   },
 }));
 
@@ -75,13 +81,42 @@ const Employer = (props) => {
         <CompanyInfo userRole={props.userRole}></CompanyInfo>
       </Grid>
 
-      <Grid item xs={12} sm={12} md={5} spacing={3}>
-        <Technologies
-          showEdit={false}
-          employerId={loginId}
-          login={login}
-          userRole={props.userRole}
-        ></Technologies>
+      <Grid
+        item
+        container
+        xs={12}
+        sm={12}
+        md={5}
+        spacing={1}
+        style={{ marginTop: 5, marginBottom: 5, marginRight: 5 }}
+      >
+        <FloatCard>
+          <Grid
+            item
+            container
+            xs={12}
+            direction="row"
+            style={{ marginTop: 20 }}
+          >
+            <Grid item xs={10}>
+              <Typography variant="h6" className={classes.title}>
+                Company Technology Stack
+              </Typography>
+            </Grid>
+            <Grid item xs={2}>
+              <ComputerIcon className={classes.icon} />
+            </Grid>
+          </Grid>
+
+          <Grid item style={{ marginLeft: 15, marginTop: 10 }}>
+            <Technologies
+              showEdit={false}
+              employerId={loginId}
+              login={login}
+              userRole={props.userRole}
+            ></Technologies>
+          </Grid>
+        </FloatCard>
       </Grid>
     </Grid>
   );
