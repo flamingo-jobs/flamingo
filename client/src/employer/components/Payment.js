@@ -75,8 +75,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const packageList = [
-  { name: "standard", value: "1990" },
-  { name: "premium", value: "4990" },
+  { desc: "standard", value: "1990" },
+  { desc: "premium", value: "4990" },
 ];
 
 export default function Payment() {
@@ -88,10 +88,12 @@ export default function Payment() {
     const selectedPackage = window.location.pathname.split("/")[3];
     setSubscription(
       packageList.find((x) => {
-        return x.name === selectedPackage;
+        return x.desc === selectedPackage;
       })
     );
   }, [window.location.pathname]);
+
+  const props = { subscription };
 
   return (
     <Grid container sm={12} spacing={3} direction="row" alignItems="flex-start">
@@ -100,7 +102,7 @@ export default function Payment() {
         <FloatCard className={classes.root}>
           <Typography variant="h4" gutterBottom>
             <Box fontWeight={400} fontSize={20} m={1} className={classes.title}>
-              {subscription.name}
+              {subscription.desc}
             </Box>
 
             <Box fontWeight={800} fontSize={30} m={1} className={classes.price}>
@@ -226,7 +228,7 @@ export default function Payment() {
             <Divider variant="middle" />
           </Typography>
 
-          <PayHereCheckoutForm subscription={subscription} />
+          <PayHereCheckoutForm />
           <br />
         </FloatCard>
       </Grid>

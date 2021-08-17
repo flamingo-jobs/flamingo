@@ -103,6 +103,27 @@ const SuccessPayment = (props) => {
       });
   }, []);
 
+  if (order) {
+    var invoiceData = {
+      id: orderId,
+      invoice_no: order.paymentDate.slice(0, 10) + orderId.slice(0, 3),
+      balance: order.amount,
+      company: order.first_name + " " + order.last_name,
+      email: order.email,
+      phone: order.phone,
+      address: order.address + ", " + order.city + ", " + order.country,
+      trans_date: order.paymentDate.slice(0, 10),
+      due_date: order.paymentDate.slice(0, 10),
+      items: [
+        {
+          sno: 1,
+          desc: order.items + " subscription package",
+          qty: 1,
+          rate: order.amount,
+        },
+      ],
+    };
+  }
   return (
     <Grid
       item
@@ -116,7 +137,9 @@ const SuccessPayment = (props) => {
       align="left"
     >
       <Grid item xs={12}>
-        <FloatCard>{order ? <Invoice order={order} /> : <Loading />}</FloatCard>
+        <FloatCard>
+          {order ? <Invoice invoice={invoiceData} /> : <Loading />}
+        </FloatCard>
       </Grid>
     </Grid>
   );

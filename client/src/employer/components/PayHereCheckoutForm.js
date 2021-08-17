@@ -1,16 +1,20 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import SnackBarAlert from "../../components/SnackBarAlert";
 import theme from "../../Theme";
 import {
   makeStyles,
   Grid,
-  Box,
   Button,
   TextField,
   Typography,
 } from "@material-ui/core";
 import BACKEND_URL from "../../Config";
 import axios from "axios";
+
+const packageList = [
+  { desc: "standard", value: "1990" },
+  { desc: "premium", value: "4990" },
+];
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -74,16 +78,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CheckoutForm = (props) => {
-  const subscription = props.subscription;
+const PayHereCheckoutForm = () => {
   const classes = useStyles();
   const payForm = useRef(null);
   const [orderId, setOrderId] = useState("");
+  const [subscription, setSubscription] = useState({});
   const [billingDetails, setBillingDetails] = useState({
     merchant_id: "1218131",
     return_url: "http://localhost:3000/employer/success-payment",
     cancel_url: "http://localhost:3000/employer/cancel-payment",
-    notify_url: `http://${BACKEND_URL}/payment`,
+    notify_url: `${BACKEND_URL}/payment`,
     first_name: "",
     last_name: "",
     email: "",
@@ -91,14 +95,28 @@ const CheckoutForm = (props) => {
     address: "",
     city: "",
     country: "Sri Lanka",
-    items: subscription.name,
+    items: "",
     currency: "LKR",
     recurrence: "1 Month",
     duration: "1 Month",
-    amount: subscription.value,
+    amount: "",
     paymentDate: new Date(),
     employer: sessionStorage.getItem("loginId"),
   });
+
+  useEffect(() => {
+    const selectedPackage = window.location.pathname.split("/")[3];
+    setSubscription(
+      packageList.find((x) => {
+        return x.desc === selectedPackage;
+      })
+    );
+    setBillingDetails({
+      ...billingDetails,
+      items: selectedPackage,
+      amount: selectedPackage === "premium" ? "4990" : "1990",
+    });
+  }, [window.location.pathname]);
 
   // Alert stuff
   const [alertShow, setAlertShow] = useState(false);
@@ -170,7 +188,7 @@ const CheckoutForm = (props) => {
         value={billingDetails.notify_url}
       />
       <input type="hidden" name="order_id" value={orderId} />
-      <input type="hidden" name="items" value={subscription.name} />
+      <input type="hidden" name="items" value={subscription.desc} />
       <input type="hidden" name="currency" value={billingDetails.currency} />
       <input
         type="hidden"
@@ -190,6 +208,7 @@ const CheckoutForm = (props) => {
         alignItems="flex-start"
       >
         {displayAlert()}
+        {console.log(billingDetails)}
         <Grid item xs={12}>
           <Typography variane="h6">Billing Details</Typography>
         </Grid>
@@ -328,10 +347,6 @@ const CheckoutForm = (props) => {
       </Grid>
     </form>
   );
-};
-
-const PayHereCheckoutForm = (props) => {
-  return <CheckoutForm subscription={props.subscription} />;
 };
 
 export default PayHereCheckoutForm;
