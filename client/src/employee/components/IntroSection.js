@@ -400,31 +400,31 @@ function IntroSection(props) {
           />
         </Typography>
           <CardContent>
-            <Typography gutterBottom variant="h5" style={{color: theme.palette.stateBlue,fontWeight:'bold'}}>
+            <Typography gutterBottom variant="h5" style={{color: theme.palette.stateBlue,fontWeight:'bold',marginTop:"-5px"}}>
               {state.firstName+" "+state.lastName}
             </Typography>
-            <Typography gutterBottom style={{color: theme.palette.stateBlue,marginTop:'-5px'}}>
+            <Typography gutterBottom style={{color: theme.palette.stateBlue,marginTop:'-8px'}}>
               {state.tagline}
             </Typography>
-            <Grid container>
-          <Grid item xs style={{ textAlign: 'left',margin:"0px 0px 0px 0px" }}>
-            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',}}>
-              <IconButton>
+            <Grid container xs={12}>
+          <Grid item xs={12} style={{ textAlign: 'center',margin:"0px 0px 0px 0px" }}>
+            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'center',}}>
+              <IconButton style={{paddingLeft:"0px"}}>
                 <PhoneIcon style={{color: '#666',}} />
               </IconButton>
               {state.mobile}
             </Typography>
           </Grid>
-          <Grid item style={{ textAlign: 'right' }}>
-            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',}}>
-              <IconButton>
+          <Grid item xs={12} style={{ textAlign: 'center',marginTop:"-20px" }}>
+            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'center',}}>
+              <IconButton style={{paddingLeft:"0px"}}>
                 <LocationOnIcon style={{color: '#666',}} />
               </IconButton>
               {state.street+", "+state.city}
             </Typography>
           </Grid>
         </Grid>
-        <Paper elevation={0} className={classes.paperCont}>
+        <Paper elevation={0} className={classes.paperCont} style={{backgroundColor: "#ececf9"}}>
             <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',}}>
               {state.intro}
             </Typography>
