@@ -88,11 +88,11 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: "left",
     backgroundColor: theme.palette.tagYellow,
   },
-  tableContainer:{
-    marginLeft:20,
+  tableContainer: {
+    marginLeft: 20,
     marginTop: 30,
-    marginRight:100,
-  }
+    marginRight: 100,
+  },
 }));
 
 const LatestJobs = (props) => {
@@ -108,14 +108,12 @@ const LatestJobs = (props) => {
 
   useEffect(() => {
     axios
-      .get(
-        `${BACKEND_URL}/jobs/filterAllByOrganization/${props.employerId}`
-      )
+      .get(`${BACKEND_URL}/jobs/filterAllByOrganization/${props.employerId}`)
       .then((res) => {
         console.log(res.data.employerJobs);
         if (res.data.success) {
           setState({
-            allJobs: res.data.employerJobs.slice(0,5),
+            allJobs: res.data.employerJobs.slice(0, 5),
           });
         }
       });
@@ -124,52 +122,54 @@ const LatestJobs = (props) => {
   const getPending = (row) => {
     var pending = 0;
 
-    row.applicationDetails.forEach(element => {
-      
-      if(element.status=="pending"){
+    row.applicationDetails.forEach((element) => {
+      if (element.status == "pending") {
         pending++;
-
       }
-      console.log(element.status) 
-    }
-    );
+      console.log(element.status);
+    });
 
     return pending;
-  }
+  };
+
+  const getReviewing = (row) => {
+    var reviewing = 0;
+
+    row.applicationDetails.forEach((element) => {
+      if (element.status == "reviewing") {
+        reviewing++;
+      }
+      console.log(element.status);
+    });
+
+    return reviewing;
+  };
 
   const getShortlisted = (row) => {
     var shortlisted = 0;
 
-    row.applicationDetails.forEach(element => {
-      
-      if(element.status=="shortlisted"){
+    row.applicationDetails.forEach((element) => {
+      if (element.status == "shortlisted") {
         shortlisted++;
-
       }
-      console.log(element.status) 
-    }
-    );
+      console.log(element.status);
+    });
 
     return shortlisted;
-  }
+  };
 
   const getRejected = (row) => {
     var rejected = 0;
 
-    row.applicationDetails.forEach(element => {
-      
-      if(element.status=="rejected"){
+    row.applicationDetails.forEach((element) => {
+      if (element.status == "rejected") {
         rejected++;
-
       }
-      console.log(element.status) 
-    }
-    );
+      console.log(element.status);
+    });
 
     return rejected;
-  }
-
-  
+  };
 
   return (
     <div className={classes.root}>
@@ -190,6 +190,7 @@ const LatestJobs = (props) => {
               <col style={{ width: "5%" }} />
               <col style={{ width: "5%" }} />
               <col style={{ width: "5%" }} />
+              <col style={{ width: "5%" }} />
             </colgroup>
             <TableHead>
               <TableRow>
@@ -198,6 +199,7 @@ const LatestJobs = (props) => {
                 <StyledTableCell align="center">Active</StyledTableCell>
                 <StyledTableCell align="center">No of Resumes</StyledTableCell>
                 <StyledTableCell align="center">Pending</StyledTableCell>
+                <StyledTableCell align="center">Reviewing</StyledTableCell>
                 <StyledTableCell align="center">Shortlisted</StyledTableCell>
                 <StyledTableCell align="center">Rejected</StyledTableCell>
               </TableRow>
@@ -234,27 +236,26 @@ const LatestJobs = (props) => {
                   <StyledTableCell align="center">
                     {row.applicationDetails.length}
                   </StyledTableCell>
-                
-                {/* Shortlisted */}
+
+                  {/* Pending */}
                   <StyledTableCell align="center">
-                    
                     {getPending(row)}
-                   
                   </StyledTableCell>
 
-                {/* OnHold */}
+                  {/* Reviewing */}
                   <StyledTableCell align="center">
+                    {getReviewing(row)}
+                  </StyledTableCell>
 
+                  {/* Shortlisted  */}
+                  <StyledTableCell align="center">
                     {getShortlisted(row)}
-                   
                   </StyledTableCell>
-                {/* Rejected */}
+
+                  {/* Rejected */}
                   <StyledTableCell align="center">
-
                     {getRejected(row)}
-
                   </StyledTableCell>
-
                 </StyledTableRow>
               ))}
             </TableBody>
