@@ -7,7 +7,11 @@ const User = require("../models/users");
 const JobSeeker = require("../models/jobseeker");
 const Employer = require("../models/employers");
 const FRONTEND_URL = require("../Config").FRONTEND_URL;
-const getGoogleOauthUrl = require("../utils/getGoogleOauthUrl").getGoogleOauthUrl;
+const getGoogleOauthUrl =
+  require("../utils/getGoogleOauthUrl").getGoogleOauthUrl;
+const getGoogleUser = require("../utils/getGoogleUser").getGoogleUser;
+const updateOrCreateUserFromOauth =
+  require("../utils/updateOrCreateUserFromOauth").updateOrCreateUserFromOauth;
 
 // Regex for validation of email address
 const emailRegexp =
@@ -221,7 +225,7 @@ exports.forgotPassword = async (req, res) => {
         text: `
       Hi, We're sending you this email because you requested
       a password reset. Click on this link to create a new password:
-      http://${FRONTEND_URL}/reset-password/${passwordResetCode}
+      ${FRONTEND_URL}/reset-password/${passwordResetCode}
       If you didn't request a password reset, you can
       ignore this email. Your password will not be changed.
       `,
@@ -276,7 +280,7 @@ exports.inviteEmlpoyee = async (req, res) => {
           subject: "Invitation - Flamingo",
           text: `
         Hi ${empName}, ${adminName} (${adminEmail}) is inviting you to join Flamingo. Click on this link to activate your account:
-        http://${FRONTEND_URL}/invitation/${passwordResetCode} Message: ${message}
+        ${FRONTEND_URL}/invitation/${passwordResetCode} Message: ${message}
         `,
         });
         return res.status(200).json({
@@ -429,4 +433,32 @@ exports.changePassword = async (req, res) => {
 exports.getGoogleOauthUrlRoute = async (req, res) => {
   const url = getGoogleOauthUrl();
   res.status(200).json({ url });
+};
+
+exports.googleOauthCallbackRoute = async (req, res) => {
+  const { code } = req.query;
+  const oauthUserInfo = await getGoogleUser({ code });
+  const updatedUser = await updateOrCreateUserFromOauth({ oauthUserInfo });
+  if (updatedUser) {
+    let access_token = createJWT(
+      updatedUser._id,
+      updatedUser.username,
+      updatedUser.email,
+      updatedUser.role,
+      updatedUser.accessTokens,
+      3600
+    );
+    jwt.verify(access_token, process.env.TOKEN_SECRET, (err, decoded) => {
+      if (err) {
+        res.redirect(`${FRONTEND_URL}/signIn?error=tokenfail`);
+      }
+      if (decoded) {
+        res.redirect(
+          `${FRONTEND_URL}/signIn?token=${access_token}&loginId=${updatedUser.loginId}`
+        );
+      }
+    });
+  } else {
+    res.redirect(`${FRONTEND_URL}/signIn?error=nouser`);
+  }
 };

@@ -14,6 +14,7 @@ const {
   updateAccessTokens,
   changePassword,
   getGoogleOauthUrlRoute,
+  googleOauthCallbackRoute,
 } = require("../controllers/auth");
 
 router.put("/forgot-password/:email", forgotPassword);
@@ -28,5 +29,6 @@ router.post("/remove-user", deleteUser);
 router.post("/update-tokens", updateAccessTokens);
 router.post("/change-password", changePassword);
 router.get("/google/url", getGoogleOauthUrlRoute);
+router.get("/google-callback", googleOauthCallbackRoute);
 
 module.exports = router;

@@ -23,7 +23,7 @@ import {
   Dialog,
   ListItem,
 } from "@material-ui/core";
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import MuiAlert from "@material-ui/lab/Alert";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogContent from "@material-ui/core/DialogContent";
@@ -33,6 +33,8 @@ import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import ArrowBackRoundedIcon from "@material-ui/icons/ArrowBackRounded";
 import { Link } from "react-router-dom";
+import { useQueryParams } from "../../utils/useQueryparams";
+import { useToken } from "./useToken";
 import axios from "axios";
 import BACKEND_URL from "../../Config";
 
@@ -172,7 +174,9 @@ export default function SignInSide() {
   const [remember, setRemember] = useState(false);
   const handleRemember = () => setRemember(!remember);
 
+  const [, setToken] = useToken();
   const [googleOauthUrl, setGoogleOauthUrl] = useState("");
+  const { token: oauthToken, loginId, error } = useQueryParams;
 
   const login = (e) => {
     e.preventDefault();
@@ -216,6 +220,19 @@ export default function SignInSide() {
         else handleCredentialError();
       });
   };
+
+  const history = useHistory();
+
+  useEffect(() => {
+    if (oauthToken && loginId) {
+      setToken(oauthToken);
+      sessionStorage.setItem("loginId", loginId);
+      history.push("/home");
+    }
+    if (error) {
+
+    }
+  }, [oauthToken, loginId, error, setToken, history]);
 
   useEffect(() => {
     const loadOauthUrl = async () => {
