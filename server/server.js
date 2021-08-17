@@ -21,6 +21,7 @@ const logoRoutes = require("./routes/logos");
 const keywordsRoutes = require("./routes/keywords");
 const analyticsRoutes = require("./routes/analytics");
 const settingsRoutes = require("./routes/settings");
+const paymentRoutes = require("./routes/payment");
 
 // app middleware
 app.use(bodyParser.json());
@@ -41,6 +42,7 @@ app.use(analyticsRoutes);
 app.use(settingsRoutes);
 app.use(certificationsRoutes);
 app.use('/api', authRoutes);
+app.use(paymentRoutes)
 
 const PORT = 8000;
 

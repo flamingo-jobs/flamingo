@@ -21,7 +21,7 @@ import {
 } from "@devexpress/dx-react-chart-material-ui";
 import { Animation } from "@devexpress/dx-react-chart";
 import { useState, useEffect } from "react";
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import Chip from "@material-ui/core/Chip";
 import axios from "axios";
 import BACKEND_URL from "../../../../Config";
@@ -49,11 +49,11 @@ const useStyles = makeStyles((theme) => ({
     marginTop: -180,
     marginLeft: 10,
     marginBottom: -180,
-    float:"center",
+    float: "center",
   },
-  legend:{
+  legend: {
     backgroundColor: theme.palette.white,
-  }
+  },
 }));
 
 const Aquisitions = (props) => {
@@ -67,9 +67,7 @@ const Aquisitions = (props) => {
 
   useEffect(() => {
     axios
-      .get(
-        `${BACKEND_URL}/jobs/filterAllByOrganization/${props.employerId}`
-      )
+      .get(`${BACKEND_URL}/jobs/filterAllByOrganization/${props.employerId}`)
       .then((res) => {
         console.log(res.data.employerJobs);
         if (res.data.success) {
@@ -81,111 +79,114 @@ const Aquisitions = (props) => {
   }, []);
 
   const getTotalPending = () => {
-
     var totalPending = 0;
 
-    allJobs.forEach(job => {
-      
-        job.applicationDetails.forEach(jobApplication => { 
-            if(jobApplication.status=="pending"){
-                totalPending++
-            }
-        }   
-        );
-    }    
-    );
+    allJobs.forEach((job) => {
+      job.applicationDetails.forEach((jobApplication) => {
+        if (jobApplication.status == "pending") {
+          totalPending++;
+        }
+      });
+    });
     return totalPending;
-  }
+  };
+
+  const getTotalReviewing = () => {
+    var totalReviewing = 0;
+
+    allJobs.forEach((job) => {
+      job.applicationDetails.forEach((jobApplication) => {
+        if (jobApplication.status == "reviewing") {
+          totalReviewing++;
+        }
+      });
+    });
+    return totalReviewing;
+  };
 
   const getTotalShortlisted = () => {
-
     var totalShortlisted = 0;
 
-    allJobs.forEach(job => {
-      
-        job.applicationDetails.forEach(jobApplication => { 
-            if(jobApplication.status=="shortlisted"){
-                totalShortlisted++
-            }
-        }   
-        );
-    }    
-    );
+    allJobs.forEach((job) => {
+      job.applicationDetails.forEach((jobApplication) => {
+        if (jobApplication.status == "shortlisted") {
+          totalShortlisted++;
+        }
+      });
+    });
     return totalShortlisted;
-  }
+  };
 
   const getTotalRejected = () => {
-
     var totalRejected = 0;
 
-    allJobs.forEach(job => {
-      
-        job.applicationDetails.forEach(jobApplication => { 
-            if(jobApplication.status=="rejected"){
-                totalRejected++
-            }
-        }   
-        );
-    }    
-    );
+    allJobs.forEach((job) => {
+      job.applicationDetails.forEach((jobApplication) => {
+        if (jobApplication.status == "rejected") {
+          totalRejected++;
+        }
+      });
+    });
     return totalRejected;
-  }
+  };
 
   return (
     <div className={classes.root}>
       <FloatCard>
         <Grid container direction="row" xs={12}>
           <Grid item>
-              <Typography variant="h6" className={classes.title}>
+            <Typography variant="h6" className={classes.title}>
               Aquisitions
-              </Typography>
-              <AssignmentIcon className={classes.notificationsIcon} />
+            </Typography>
+            <AssignmentIcon className={classes.notificationsIcon} />
           </Grid>
 
           <Grid item container direction="row" xs={12}>
-
             <Grid item xs={6}>
-              <Chart data={[
-                { category: "Pending", val: getTotalPending() },
-                { category: "Shortlisted", val: getTotalShortlisted() },
-                { category: "Rejected", val: getTotalRejected() },
-              ]} 
-              className={classes.pieChart}>
+              <Chart
+                data={[
+                  { category: "Pending", val: getTotalPending() },
+                  { category: "Reviewing", val: getTotalReviewing() },
+                  { category: "Shortlisted", val: getTotalShortlisted() },
+                  { category: "Rejected", val: getTotalRejected() },
+                ]}
+                className={classes.pieChart}
+              >
                 <PieSeries
                   valueField="val"
                   argumentField="category"
                   // innerRadius={0.2}
                 />
                 <Animation />
+                
               </Chart>
+             
             </Grid>
 
-            <Grid item xs={5} style={{marginTop:20}}>
+            <Grid item xs={5} style={{ marginTop: 5 }}>
               <Chip
-                icon={<FiberManualRecordIcon style={{color:'#5E60CE'}}/>}
+                icon={<FiberManualRecordIcon style={{ color: "#ff704d" }} />}
                 label="Pending"
                 className={classes.legend}
               />
               <Chip
-                icon={<FiberManualRecordIcon style={{color:"orange"}}/>}
+                icon={<FiberManualRecordIcon style={{ color: "#4da6ff" }} />}
+                label="Reviewing"
+                className={classes.legend}
+              />
+              <Chip
+                icon={<FiberManualRecordIcon style={{ color: "#ffd11a" }} />}
                 label="Shortlisted"
                 className={classes.legend}
               />
               <Chip
-                icon={<FiberManualRecordIcon style={{color:'#32CD32'}}/>}
+                icon={<FiberManualRecordIcon style={{ color: "#99cc00" }} />}
                 label="Rejected"
                 className={classes.legend}
               />
-              
-              
             </Grid>
-   
-        
           </Grid>
-
         </Grid>
-        
-        
       </FloatCard>
     </div>
   );

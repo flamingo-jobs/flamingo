@@ -134,7 +134,7 @@ button {
 }
 
 .ErrorMessage {
-  color: #fff;
+  color: #000;
   position: absolute;
   display: flex;
   justify-content: center;

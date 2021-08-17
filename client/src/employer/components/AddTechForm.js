@@ -2,17 +2,9 @@ import React from "react";
 import { makeStyles, Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import FloatCard from "./FloatCard";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
-import { useState, useEffect } from "react";
-import axios from "axios";
-import BACKEND_URL from "../../Config";
 import Lottie from "react-lottie";
 import WorkingImage from "../lotties/working.json";
-import theme from "../../Theme";
-import MenuBookIcon from "@material-ui/icons/MenuBook";
 import Technologies from "./Technologies";
 
 const useStyles = makeStyles((theme) => ({
@@ -31,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 150,
   },
   comboBox: {
-    marginBottom: 20,
+    marginBottom: -40,
     marginTop: 20,
     marginLeft: 40,
     marginRight: 20,
@@ -90,11 +82,9 @@ const AddTechForm = (props) => {
           <AddIcon className={classes.notificationsIcon} />
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid item xs={12} style={{marginLeft:15}}>
           <Technologies showEdit={true} login={login} employerId={loginId} />
         </Grid>
-
-
 
         <Grid item className={classes.lottie}>
           <Lottie
