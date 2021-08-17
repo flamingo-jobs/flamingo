@@ -23,9 +23,9 @@ const jobseekerSchema = new mongoose.Schema({
   education: {
     type: Array,
   },
-  // university: {
-  //   type: Array,
-  // },
+  certificate: {
+    type: Array,
+  },
   // school: {
   //   type: Array,
   // },

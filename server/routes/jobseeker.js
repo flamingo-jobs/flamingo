@@ -30,6 +30,7 @@ router.put('/jobseeker/updateSkills/:id', jobseekerController.updateSkills);
 router.put('/jobseeker/updateTechnologyStack/:id', jobseekerController.updateTechnologyStack);
 router.put('/jobseeker/updateTechnologyItem/:id', jobseekerController.updateTechnologyItem);
 router.put('/jobseeker/updateEducation/:id', jobseekerController.updateEducation);
+router.put('/jobseeker/updateCertificate/:id', jobseekerController.updateCertificate);
 router.put('/jobseeker/updateCourse/:id', jobseekerController.updateCourse);
 router.put('/jobseeker/updateVolunteer/:id', jobseekerController.updateVolunteer);
 router.put('/jobseeker/updateAward/:id', jobseekerController.updateAward);
@@ -42,9 +43,8 @@ router.patch("/jobseeker/updateFavoriteOrgs/:id", jobseekerController.updateFavo
 router.patch("/jobseeker/resetApplicationDetails", jobseekerController.resetAll);
 
 // add new fields
-// router.put('/jobseeker/addUniversity/:id', jobseekerController.addUniversity);
-// router.put('/jobseeker/addSchool/:id', jobseekerController.addSchool);
 router.put('/jobseeker/addEducation/:id', jobseekerController.addEducation);
+router.put('/jobseeker/addCertificate/:id', jobseekerController.addCertificate);
 router.put('/jobseeker/addCourse/:id', jobseekerController.addCourse);
 router.put('/jobseeker/addAward/:id', jobseekerController.addAward);
 router.put('/jobseeker/addVolunteering/:id', jobseekerController.addVolunteering);
@@ -55,6 +55,7 @@ router.put('/jobseeker/addWork/:id', jobseekerController.addWork);
 
 router.delete('/jobseeker/delete/:id', jobseekerController.remove);
 router.put('/jobseeker/removeEducation/:id', jobseekerController.removeEducation);
+router.put('/jobseeker/removeCertificate/:id', jobseekerController.removeCertificate);
 router.put('/jobseeker/removeCourse/:id', jobseekerController.removeCourse);
 router.put('/jobseeker/removeProject/:id', jobseekerController.removeProject);
 router.put('/jobseeker/removeWork/:id', jobseekerController.removeWork);
