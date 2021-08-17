@@ -6,7 +6,7 @@ import ComputerIcon from "@material-ui/icons/Computer";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import BACKEND_URL from "../../Config";
-import Divider from '@material-ui/core/Divider';
+import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,12 +33,12 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     color: theme.palette.blueJeans,
     float: "left",
-    marginLeft: 10,
+    marginLeft: 40,
   },
   subCategory: {
     color: theme.palette.blueJeans,
     float: "left",
-    marginLeft: 10,
+    marginLeft: 40,
   },
   technology: {
     marginRight: 30,
@@ -89,40 +89,75 @@ const AvailableTechnologies = () => {
               <Typography variant="body1" className={classes.mainCategory}>
                 {mainCategory.name}
               </Typography>
-              
             </Grid>
 
             {Object.keys(mainCategory.stack).map((subCategory, i) => (
               <Grid item container xs={12}>
                 {subCategory != "list" ? (
-                  <Grid item xs={12}>
-                    <Typography variant="body1" className={classes.subCategory}>
-                      {subCategory}
-                    </Typography>
+                  <Grid item container xs={12}>
+                    <Grid item xs={3}>
+                      {subCategory == "frontEnd" ? (
+                        <Typography
+                          variant="body1"
+                          className={classes.subCategory}
+                        >
+                          Front End
+                        </Typography>
+                      ) : (
+                        <Typography
+                          variant="body1"
+                          className={classes.subCategory}
+                        >
+                          Back End
+                        </Typography>
+                      )}
+                    </Grid>
+
+                    <Grid
+                      item
+                      xs={6}
+                      style={{
+                        display: "flex",
+                        justifyContent: "flex-start",
+                        marginLeft: 40,
+                        marginBottom: 10,
+                      }}
+                    >
+                      {Array.from(mainCategory.stack[subCategory]).map(
+                        (tech, i) => (
+                          <Chip
+                            label={tech}
+                            variant="outlined"
+                            className={classes.chip}
+                          />
+                        )
+                      )}
+                    </Grid>
                   </Grid>
                 ) : (
-                  <Typography
-                    variant="body1"
-                    className={classes.subCategory}
-                  ></Typography>
-                )}
-                
-
-                {Object.values(mainCategory.stack).map((subCategory, i) => (
-                  <Grid>
-                    {Array.from(subCategory).map((tech, i) => (
-                      <Chip
-                        label={tech}
-                        variant="outlined"
-                        className={classes.chip}
-                      />
-                    ))}
+                  <Grid
+                    item
+                    xs={12}
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      marginLeft: 40,
+                      marginBottom: 10,
+                    }}
+                  >
+                    {Array.from(mainCategory.stack[subCategory]).map(
+                      (tech, i) => (
+                        <Chip
+                          label={tech}
+                          variant="outlined"
+                          className={classes.chip}
+                        />
+                      )
+                    )}
                   </Grid>
-                ))}
-                
+                )}
               </Grid>
             ))}
-            
           </Grid>
         ))}
       </FloatCard>
