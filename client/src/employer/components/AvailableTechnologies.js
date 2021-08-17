@@ -127,7 +127,7 @@ const AvailableTechnologies = () => {
                         (tech, i) => (
                           <Chip
                             label={tech}
-                            variant="outlined"
+                            // variant="outlined"
                             className={classes.chip}
                           />
                         )
@@ -149,13 +149,14 @@ const AvailableTechnologies = () => {
                       (tech, i) => (
                         <Chip
                           label={tech}
-                          variant="outlined"
+                          // variant="outlined"
                           className={classes.chip}
                         />
                       )
                     )}
                   </Grid>
                 )}
+                <Divider />
               </Grid>
             ))}
           </Grid>
