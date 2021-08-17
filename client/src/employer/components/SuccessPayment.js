@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 import FloatCard from "../../components/FloatCard";
 import Loading from "../../components/Loading";
-import Invoice from "./Invoice";
+import Invoice from "./Invoice/Invoice";
 import BACKEND_URL from "../../Config";
 import axios from "axios";
 
