@@ -110,8 +110,9 @@ function CertificatesSection(props) {
   const classes = useStyles();
   const [fetchedData, setFetchedData] = useState('');
   const [open, setOpen] = useState(false);
-  const [course, setCourse] = useState(null);
-  const [state, setState] = useState({course: null, institute: null, startYear: null, startMonth: null, endYear: null, endMonth: null});
+  const [certificate, setCertificate] = useState(null);
+  const [allCertificates, setAllCertificates] = useState(null);
+  const [state, setState] = useState({issuer: null, title: null, month: null, year: null});
 
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
@@ -169,41 +170,72 @@ function CertificatesSection(props) {
     return allMonths.map((x) => (<option value={x}>{x}</option>));
   }
 
-  function fetchData(){
-    let courseData;
-    axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
+  function fetchCertificates(){
+    axios.get(`${BACKEND_URL}/certifications`)
     .then(res => {
       if(res.data.success){
-        if(res.data.jobseeker.course.length > 0){
-          courseData = res.data.jobseeker.course;
-          if(Object.keys(res.data.jobseeker.course[0]).length === 0){
-            res.data.jobseeker.course.splice(0,1)
-            i++;
-          }else if(courseData[0].course === "" && courseData[0].institute === "" && courseData[0].from === "" && courseData[0].to === ""){
-            res.data.jobseeker.course.splice(0,1)
+        if(res.data.existingData?.length > 0){
+          if(Object.keys(res.data.existingData[0]).length === 0){
+            res.data.existingData.splice(0,1)
             i++;
           }
         }
-        setCourse(courseData)
+        setAllCertificates(res.data.existingData)
       }
     })
     setFetchedData(0)
   }
 
+  function fetchData(){
+    let certificateData;
+    axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
+    .then(res => {
+      if(res.data.success){
+        if(res.data.jobseeker.certificate.length > 0){
+          certificateData = res.data.jobseeker.certificate;
+          if(Object.keys(res.data.jobseeker.certificate[0]).length === 0){
+            res.data.jobseeker.certificate.splice(0,1)
+            i++;
+          }else if(certificateData[0].issuer === "" && certificateData[0].title === ""){
+            res.data.jobseeker.course.splice(0,1)
+            i++;
+          }
+        }
+        setCertificate(certificateData)
+      }
+    })
+    setFetchedData(0)
+  }
+
+  //generate issuer list
+  function getIssuers(){
+    return allCertificates?.map((x) => (<option value={x.issuer}>{x.issuer}</option>));
+  }
+
+  //generate title list
+  function getTitles(){
+      for (let index = 0; index < allCertificates?.length; index++) {
+          if(allCertificates[index].issuer === state.issuer){
+             let titles = allCertificates[index].certificates; 
+            return titles.map((title) => (<option value={title}>{title}</option>));
+          }        
+      }
+  }
+
   function deleteData(index){
-    course.splice(index,1)
-    axios.put(`${BACKEND_URL}/jobseeker/removeCourse/${loginId}`,course)
+    certificate.splice(index,1)
+    axios.put(`${BACKEND_URL}/jobseeker/removeCertificate/${loginId}`,certificate)
     .then(res => {
       if(res.data.success){
         setAlertData({
           severity: "success",
-          msg: "Course deleted successfully!",
+          msg: "Certificate deleted successfully!",
         });
         handleAlert();
       } else {
         setAlertData({
           severity: "error",
-          msg: "Course could not be deleted!",
+          msg: "Certificate could not be deleted!",
         });
         handleAlert();
       }
@@ -213,8 +245,9 @@ function CertificatesSection(props) {
   }
 
   useEffect(()=>{
-    setState({course: null, institute: null, startYear: null, startMonth: null, endYear: null, endMonth: null});
-    setCourse(null);
+    setState({issuer: null, title: null, month: null, year: null});
+    setCertificate(null);
+    fetchCertificates();
     fetchData();
   },[fetchedData])
 
@@ -251,64 +284,52 @@ function CertificatesSection(props) {
   
 
   //---------------------------- text field onChange events
-  function onChangeCourse(e){
+  function onChangeIssuer(e){
     setState(prevState => {
-      return {...prevState, course: e.target.value}
+      return {...prevState, issuer: e.target.value}
+    })
+    getTitles();
+  }
+
+  function onChangeTitle(e){
+    setState(prevState => {
+      return {...prevState, title: e.target.value}
     })
   }
 
-  function onChangeInstitute(e){
+  function onChangeMonth(e){
     setState(prevState => {
-      return {...prevState, institute: e.target.value}
+      return {...prevState, month: e.target.value}
     })
   }
 
-  function onChangestartYear(e){
+  function onChangeYear(e){
     setState(prevState => {
-      return {...prevState, startYear: e.target.value}
-    })
-  }
-
-  function onChangestartMonth(e){
-    setState(prevState => {
-      return {...prevState, startMonth: e.target.value}
-    })
-  }
-
-  function onChangeEndYear(e){
-    setState(prevState => {
-      return {...prevState, endYear: e.target.value}
-    })
-  }
-
-  function onChangeEndMonth(e){
-    setState(prevState => {
-      return {...prevState, endMonth: e.target.value}
+      return {...prevState, year: e.target.value}
     })
   }
 
 
   function onSubmit(e){
     e.preventDefault();
-    const newCourse = {
-        course: state.course,
-        institute: state.institute,
-        from: state.startMonth+"/"+state.startYear,
-        to: state.endMonth+"/"+state.endYear,
+    const newCertificate = {
+        issuer: state.issuer,
+        title: state.title,
+        date: state.month+"/"+state.year,
     }
 
-    axios.put(`${BACKEND_URL}/jobseeker/addCourse/${loginId}`,newCourse)
+    axios.put(`${BACKEND_URL}/jobseeker/addCertificate/${loginId}`,newCertificate)
     .then(res => {
       if(res.data.success){
         setAlertData({
           severity: "success",
-          msg: "Course added successfully!",
+          msg: "Certificate added successfully!",
         });
         handleAlert();
       } else {
         setAlertData({
           severity: "error",
-          msg: "Course could not be added!",
+          msg: "Certificate could not be added!",
         });
         handleAlert();
       }
@@ -318,16 +339,16 @@ function CertificatesSection(props) {
   }
   
   const displayCourseFields = () => {
-    if (course) {
-      if (course.length > 0) {
-        return course.map(awd => (
-            <CertificateItem index={i++} course={awd.course} institute={awd.institute} startDate={awd.from} endDate={awd.to} parentFunction={deleteData} />
+    if (certificate) {
+      if (certificate.length > 0) {
+        return certificate.map(awd => (
+            <CertificateItem index={i++} issuer={awd.issuer} title={awd.title} date={awd.date} allCertificates={allCertificates} parentFunction={deleteData} />
             ))
       }else{
-        return (<Typography variant="body2" color="textSecondary" component="p">Course details not added.</Typography>)
+        return (<Typography variant="body2" color="textSecondary" component="p">Certificates not added.</Typography>)
       }
     }else{
-      return (<Typography variant="body2" color="textSecondary" component="p">Course details not added.</Typography>)
+      return (<Typography variant="body2" color="textSecondary" component="p">Certificates not added.</Typography>)
     }
   }
 
@@ -369,7 +390,7 @@ function CertificatesSection(props) {
                 <Grid container xs={12} direction="row">
                   <Grid item xs={10}>
                     <Typography gutterBottom variant="h5" style={{textAlign:'center',paddingLeft:'50px',color:theme.palette.stateBlue}}>
-                      Add Courses
+                      Add Professional Certificate
                     </Typography>
                     <Divider variant="middle" style={{marginLeft:'100px'}} />
                   </Grid>
@@ -382,38 +403,41 @@ function CertificatesSection(props) {
               </div>
               <form className={classes.form} onSubmit={onSubmit}>
                 <div>
-                <TextField
-                  className={classes.field}
-                    id="outlined-basic"
-                    label="Course Name"
-                    type="text"
-                    variant="outlined"
-                    size="small"
-                    onChange={onChangeCourse}
-                    required
-                  />
-                  <TextField
-                  className={classes.field}
-                    id="outlined-basic"
-                    label="Institute"
-                    type="text"
-                    variant="outlined"
-                    size="small"
-                    onChange={onChangeInstitute}
-                    required
-                  />
+                <FormControl variant="outlined" className={classes.field}>
+                    <InputLabel className={classes.placeholder} htmlFor="outlined-age-native-simple">Select Issuer</InputLabel>
+                    <Select
+                      native
+                      onChange={onChangeIssuer}
+                      className={classes.select}
+                      required
+                    >
+                      <option aria-label="None" value="" />
+                      {getIssuers()}
+                    </Select>
+                  </FormControl>
+                  <FormControl variant="outlined" className={classes.field}>
+                    <InputLabel className={classes.placeholder} htmlFor="outlined-age-native-simple">Select Certification</InputLabel>
+                    <Select
+                      native
+                      onChange={onChangeTitle}
+                      className={classes.select}
+                      required
+                    >
+                      <option aria-label="None" value="" />
+                      {getTitles()}
+                    </Select>
+                  </FormControl>
                   <Grid container direction="row">
                     <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
                       <Grid item xs={12}>
-                        <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px"}}>Start Date</Typography>
+                        <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px"}}>Issued Date</Typography>
                       </Grid>
                       <Grid item xs={6}>
                         <FormControl variant="outlined" className={classes.formControl}>
                           <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
                           <Select
                             native
-                            onChange={onChangestartYear}
-                            label="Start Date"
+                            onChange={onChangeYear}
                             className={classes.selectYear}
                           >
                             <option aria-label="None" value="" />
@@ -426,41 +450,7 @@ function CertificatesSection(props) {
                           <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
                           <Select
                             native
-                            onChange={onChangestartMonth}
-                            label="Start Date"
-                            className={classes.selectMonth}
-                          >
-                            <option aria-label="None" value="" />
-                            {getMonthsFrom()}
-                          </Select>
-                        </FormControl>
-                      </Grid>
-                    </Grid>
-                    <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
-                      <Grid item xs={12}>
-                        <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px"}}>End Date</Typography>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <FormControl variant="outlined" className={classes.formControl}>
-                          <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
-                          <Select
-                            native
-                            onChange={onChangeEndYear}
-                            label="End Date"
-                            className={classes.selectYear}
-                          >
-                            <option aria-label="None" value="" />
-                            {getYearsTo()}
-                          </Select>
-                        </FormControl>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <FormControl variant="outlined" className={classes.formControl}>
-                          <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
-                          <Select
-                            native
-                            onChange={onChangeEndMonth}
-                            label="Start Date"
+                            onChange={onChangeMonth}
                             className={classes.selectMonth}
                           >
                             <option aria-label="None" value="" />

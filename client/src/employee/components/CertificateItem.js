@@ -127,15 +127,12 @@ function CertificateItem(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [styleEdit, setStyleEdit] = useState({display: 'none'});
-  let courseStartDate=[0,0];
-  let courseEndDate=[0,0];
-  if(props.startDate !== 'null/null' && props.startDate !== '0/0'){
-    courseStartDate = props.startDate.split("/");
+  let certificateDate=[0,0];
+  if(props.date !== 'null/null' && props.date !== '0/0'){
+    certificateDate = props.date.split("/");
   }
-  if(props.endDate !== 'null/null' && props.endDate !== '0/0'){
-    courseEndDate = props.endDate.split("/");
-  }
-  const [state, setState] = useState({course: props.course, institute: props.institute, startYear: courseStartDate[1], startMonth: courseStartDate[0], endYear: courseEndDate[1], endMonth: courseEndDate[0]});
+  const [state, setState] = useState({issuer: props.issuer, title: props.title, year: certificateDate[1], month: certificateDate[0]});
+  const [allCertificates, setAllCertificates] = useState(props.allCertificates);
 
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
@@ -195,6 +192,21 @@ function CertificateItem(props) {
   
       return allMonths.map((x) => (<option value={x}>{x}</option>));
     }
+
+    //generate issuer list
+  function getIssuers(){
+    return allCertificates?.map((x) => (<option value={x.issuer}>{x.issuer}</option>));
+  }
+
+  //generate title list
+  function getTitles(){
+      for (let index = 0; index < allCertificates?.length; index++) {
+          if(allCertificates[index].issuer === state.issuer){
+             let titles = allCertificates[index].certificates; 
+            return titles.map((title) => (<option value={title}>{title}</option>));
+          }        
+      }
+  }
   
   useEffect(() => {
     if (deleteSuccess === true) {
@@ -250,64 +262,52 @@ function CertificateItem(props) {
   
 
   //---------------------------- text field onChange events
-  function onChangeCourse(e){
+  function onChangeIssuer(e){
     setState(prevState => {
-      return {...prevState, course: e.target.value}
+      return {...prevState, issuer: e.target.value}
+    })
+    getTitles();
+  }
+
+  function onChangeTitle(e){
+    setState(prevState => {
+      return {...prevState, title: e.target.value}
     })
   }
 
-  function onChangeInstitute(e){
+  function onChangeMonth(e){
     setState(prevState => {
-      return {...prevState, institute: e.target.value}
+      return {...prevState, month: e.target.value}
     })
   }
 
-  function onChangestartYear(e){
+  function onChangeYear(e){
     setState(prevState => {
-      return {...prevState, startYear: e.target.value}
-    })
-  }
-
-  function onChangestartMonth(e){
-    setState(prevState => {
-      return {...prevState, startMonth: e.target.value}
-    })
-  }
-
-  function onChangeEndYear(e){
-    setState(prevState => {
-      return {...prevState, endYear: e.target.value}
-    })
-  }
-
-  function onChangeEndMonth(e){
-    setState(prevState => {
-      return {...prevState, endMonth: e.target.value}
+      return {...prevState, year: e.target.value}
     })
   }
 
 
   function onSubmit(e){
     e.preventDefault();
-    const course = {
-        course: state.course,
-        institute: state.institute,
-        from: state.startMonth+"/"+state.startYear,
-        to: state.endMonth+"/"+state.endYear,
+    const certificate = {
+        issuer: state.issuer,
+        title: state.title,
+        date: state.month+"/"+state.year,
     }
 
-    axios.put(`${BACKEND_URL}/jobseeker/updateCourse/${loginId}`,{index:props.index,course:course})
+    axios.put(`${BACKEND_URL}/jobseeker/updateCertificate/${loginId}`,{index:props.index,certificate:certificate})
     .then(res => {
       if(res.data.success){
         setAlertData({
           severity: "success",
-          msg: "Course updated successfully!",
+          msg: "Certificate updated successfully!",
         });
         handleAlert();
       } else {
         setAlertData({
           severity: "error",
-          msg: "Course could not be updated!",
+          msg: "Certificate could not be updated!",
         });
         handleAlert();
       }
@@ -332,16 +332,13 @@ function CertificateItem(props) {
         </Grid>
         <Grid item xs={9}>
             <Typography gutterBottom style={{textAlign:'left',fontSize:'16px',fontWeight:'bold',color:'#666'}}>
-                {state.course}
+                {state.title}
             </Typography>
             <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'14px',fontWeight:'bold',}}>
-                {state.institute}
+                {state.issuer}
             </Typography>
-            <Typography gutterBottom color="textSecondary" style={{textAlign:'left',fontSize:'15px',marginRight:"-50px"}}>
-                {state.description}
-            </Typography>
-            <Typography variant="body2" color="textSecondary" style={{textAlign:'left'}}>
-                {state.startMonth===0 ? "" : state.startMonth+"/"+state.startYear+ " - " +state.endMonth+"/"+state.endYear}
+            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',paddingTop:'5px'}}>
+                {state.year === 0 && state.month === 0 ? "" : "Issued date : " + state.month+"/"+state.year}
             </Typography>
         </Grid>
         <Grid item xs={2} spacing={2} style={{marginTop:"-5px",padding:"20px 0px 0px 0px"}}>
@@ -394,7 +391,7 @@ function CertificateItem(props) {
                 <Grid container xs={12} direction="row">
                   <Grid item xs={10}>
                     <Typography gutterBottom variant="h5" style={{textAlign:'center',paddingLeft:'50px',color:theme.palette.stateBlue}}>
-                      Edit Course Details
+                      Edit Professional Certificate
                     </Typography>
                     <Divider variant="middle" style={{marginLeft:'100px'}} />
                   </Grid>
@@ -405,43 +402,46 @@ function CertificateItem(props) {
                   </Grid>
                 </Grid>
               </div>
-              <form className={classes.form}  onSubmit={onSubmit}>
+              <form className={classes.form} onSubmit={onSubmit}>
                 <div>
-                <TextField
-                  className={classes.field}
-                    id="outlined-basic"
-                    label="Course Name"
-                    type="text"
-                    variant="outlined"
-                    size="small"
-                    value={state.course}
-                    onChange={onChangeCourse}
-                    required
-                  />
-                  <TextField
-                  className={classes.field}
-                    id="outlined-basic"
-                    label="Institute"
-                    type="text"
-                    variant="outlined"
-                    size="small"
-                    value={state.institute}
-                    onChange={onChangeInstitute}
-                    required
-                  />
+                <FormControl variant="outlined" className={classes.field}>
+                    <InputLabel className={classes.placeholder} htmlFor="outlined-age-native-simple">Select Issuer</InputLabel>
+                    <Select
+                      native
+                      value={state.issuer}
+                      onChange={onChangeIssuer}
+                      className={classes.select}
+                      required
+                    >
+                      <option aria-label="None" value="" />
+                      {getIssuers()}
+                    </Select>
+                  </FormControl>
+                  <FormControl variant="outlined" className={classes.field}>
+                    <InputLabel className={classes.placeholder} htmlFor="outlined-age-native-simple">Select Certification</InputLabel>
+                    <Select
+                      native
+                      value={state.title}
+                      onChange={onChangeTitle}
+                      className={classes.select}
+                      required
+                    >
+                      <option aria-label="None" value="" />
+                      {getTitles()}
+                    </Select>
+                  </FormControl>
                   <Grid container direction="row">
                     <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
                       <Grid item xs={12}>
-                        <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px"}}>Start Date</Typography>
+                        <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px"}}>Issued Date</Typography>
                       </Grid>
                       <Grid item xs={6}>
                         <FormControl variant="outlined" className={classes.formControl}>
                           <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
                           <Select
                             native
-                            onChange={onChangestartYear}
-                            label="Start Date"
-                            value={state.startYear}
+                            value={state.year}
+                            onChange={onChangeYear}
                             className={classes.selectYear}
                           >
                             <option aria-label="None" value="" />
@@ -454,44 +454,8 @@ function CertificateItem(props) {
                           <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
                           <Select
                             native
-                            onChange={onChangestartMonth}
-                            label="Start Date"
-                            value={state.startMonth}
-                            className={classes.selectMonth}
-                          >
-                            <option aria-label="None" value="" />
-                            {getMonthsFrom()}
-                          </Select>
-                        </FormControl>
-                      </Grid>
-                    </Grid>
-                    <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
-                      <Grid item xs={12}>
-                        <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px"}}>End Date</Typography>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <FormControl variant="outlined" className={classes.formControl}>
-                          <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
-                          <Select
-                            native
-                            onChange={onChangeEndYear}
-                            label="End Date"
-                            value={state.endYear}
-                            className={classes.selectYear}
-                          >
-                            <option aria-label="None" value="" />
-                            {getYearsTo()}
-                          </Select>
-                        </FormControl>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <FormControl variant="outlined" className={classes.formControl}>
-                          <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
-                          <Select
-                            native
-                            onChange={onChangeEndMonth}
-                            label="Start Date"
-                            value={state.endMonth}
+                            value={state.month}
+                            onChange={onChangeMonth}
                             className={classes.selectMonth}
                           >
                             <option aria-label="None" value="" />
