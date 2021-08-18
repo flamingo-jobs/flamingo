@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     },
     link: {
         backgroundColor: theme.palette.white,
-        color: "#8e24aa",
+        color: theme.palette.tuftsBlue,
         fontWeight: 800,
         borderRadius: 25,
         paddingLeft: 20,
@@ -227,14 +227,14 @@ function RecommendedJobs(props) {
     }
 
     return (
-            <Grid container direction="column" spacing={2} className={classes.container}>
-                <Grid item sm={12} >
+            <Grid container xs={12} direction="column" spacing={2} className={classes.container}>
+                <Grid item xs={12} >
                     <FloatCard>
                         <Typography variant="h5" className={classes.title}>Recommended Jobs</Typography>
                     </FloatCard>
                 </Grid>
                 {displayJobs()}
-                <Grid item sm={12}>
+                <Grid item xs={12}>
                   <Link to="/recommendations">
                     <FloatCard>
                         <Button
