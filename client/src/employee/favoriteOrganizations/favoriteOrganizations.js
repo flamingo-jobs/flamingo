@@ -69,7 +69,7 @@ const FavoriteOrganizations = () => {
   };
 
   const retrieveEmployers = async () => {
-    if(favoriteOrgIds !== "empty"){
+    if (favoriteOrgIds !== "empty") {
       if (favoriteOrgIds.length) {
         const empIds = favoriteOrgIds.join("$$");
         try {
@@ -96,7 +96,7 @@ const FavoriteOrganizations = () => {
     //     </Grid>
     //   );
     // }
-    if (favoriteOrgs === "empty" || favoriteOrgIds.length===0) {
+    if (favoriteOrgs === "empty" || favoriteOrgIds.length === 0) {
       return (
         <Grid item xs={12}>
           <FloatCard>
@@ -107,27 +107,25 @@ const FavoriteOrganizations = () => {
         </Grid>
       );
     } else {
-      return (
-        <Grid item xs={9}>
-          {favoriteOrgs.map((org) => (
-            <OrganizationCard
-              userId={userId}
-              org={org}
-              favoriteOrgIds={favoriteOrgIds}
-              setFavoriteOrgIds={setFavoriteOrgIds}
-              setAlertData={setAlertData}
-              handleAlert={handleAlert}
-            ></OrganizationCard>
-          ))}
+      return favoriteOrgs.map((org) => (
+        <Grid item xs={6}>
+          <OrganizationCard
+            userId={userId}
+            org={org}
+            favoriteOrgIds={favoriteOrgIds}
+            setFavoriteOrgIds={setFavoriteOrgIds}
+            setAlertData={setAlertData}
+            handleAlert={handleAlert}
+          ></OrganizationCard>
         </Grid>
-      );
+      ));
     }
   };
 
   return (
     <Container className={classes.root}>
       {displayAlert()}
-      <Grid container justify="center">
+      <Grid container spacing={3}>
         {displayFavoriteOrgs()}
       </Grid>
     </Container>

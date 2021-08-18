@@ -1,15 +1,15 @@
 import React from "react";
-import {
-  makeStyles,
-} from "@material-ui/core";
+import theme from "../Theme";
+import { makeStyles, Grid, Typography } from "@material-ui/core";
 import BillingPackageCard from "./components/BillingPackageCard";
+import Payment from "./components/Payment";
 import NoAccess from "../components/NoAccess";
+import FloatCard from "../components/FloatCard";
 const jwt = require("jsonwebtoken");
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundSize: "cover",
-    // minHeight: "100vh",
     marginLeft: 10,
     marginRight: 10,
   },
@@ -18,9 +18,6 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("xs")]: {
       paddingTop: 0,
     },
-  },
-  FeaturedOrganizations: {
-    paddingTop: 25,
   },
   topBarGrid: {
     [theme.breakpoints.down("xs")]: {
@@ -33,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
       display: "none",
     },
   },
+  paymentBox: { color: "white" },
 }));
 
 let haveAccess = false;
@@ -46,19 +44,61 @@ if (sessionStorage.getItem("userToken")) {
   }
 }
 
+const PaymentSection = () => {
+  const classes = useStyles();
+  return (
+    <Grid
+      item
+      container
+      className={classes.mainGrid}
+      sm={12}
+      direction="row"
+      alignItems="center"
+    >
+      <Grid item md={6}></Grid>
+      <Grid item md={6}>
+        <FloatCard backColor="#6772e5">
+          <Grid
+            item
+            container
+            sm={12}
+            direction="row"
+            alignItems="center"
+          >
+            <Grid item xs={12}>
+              <Typography className={classes.paymentBox} variant="h5">
+                Powered by
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Payment />
+            </Grid>
+          </Grid>
+        </FloatCard>
+      </Grid>
+    </Grid>
+  );
+};
+
 const Billing = () => {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
-      {/* <FloatCard> */}
-      {/* <Grid container xs={12} direction="row" spacing={1}>
-          <Grid item xs={12}> */}
-      {haveAccess ? <BillingPackageCard /> : <NoAccess/>}
-      {/* </Grid>
-        </Grid> */}
-      {/* </FloatCard> */}
-    </div>
+    <Grid
+      item
+      container
+      sm={12}
+      spacing={3}
+      direction="row"
+      alignItems="center"
+      justify="center"
+    >
+      <Grid item xs={12}>
+          <div className={classes.root}>
+            {haveAccess ? <BillingPackageCard /> : <NoAccess />}
+          </div>
+      </Grid>
+    </Grid>
   );
 };
 

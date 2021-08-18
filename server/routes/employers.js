@@ -27,6 +27,7 @@ router.get("/employers/favorites/:empIds", employersController.getByIds);
 
 // update employer
 router.put('/employers/update/:id', employersController.update);
+router.patch("/employers/addReview/:empId", employersController.addReview);
 
 // delete employer
 router.post('/employer/delete', employersController.remove);

@@ -34,8 +34,8 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import swal from 'sweetalert';
-import { Alert, AlertTitle } from '@material-ui/lab';
+import swal from "sweetalert";
+import { Alert, AlertTitle } from "@material-ui/lab";
 import { Link } from "react-router-dom";
 
 const jwt = require("jsonwebtoken");
@@ -78,14 +78,8 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 200,
     marginBottom: 15,
   },
-  infoTagsContainer:{
+  infoTagsContainer: {
     marginLeft: theme.spacing(2),
-  },
-  companyDescription: {
-    paddingTop: -25,
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingBottom: 20,
   },
   companyName: {
     fontWeight: 500,
@@ -106,14 +100,14 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
   },
   locationTags: {
-    marginTop: -10,
+    marginTop: -20,
     marginBottom: 10,
     marginLeft: -14,
     marginRight: -20,
   },
   tag: {
-    marginRight: -10,
-    backgroundColor: "white",
+    marginRight: 8,
+    backgroundColor: theme.palette.tagYellow,
   },
   label: {
     alignSelf: "left",
@@ -125,7 +119,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 260,
   },
   rating: {
-    marginTop: -25,
+    marginTop: -15,
   },
   ratingText: {
     marginTop: -35,
@@ -144,7 +138,7 @@ const useStyles = makeStyles((theme) => ({
   },
   editPhoto: {
     marginLeft: 50,
-    marginTop: -35,
+    marginTop: -45,
   },
   textField: {
     fontSize: 14,
@@ -157,17 +151,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function CompanyInfo(props) {
+function CompanyBasicInfo(props) {
   const classes = useStyles();
 
   const fixedOptions = [];
-  const [location, setLocation] = React.useState([
-    ...fixedOptions,
-  ]);
+  const [location, setLocation] = React.useState([...fixedOptions]);
+
+  let loginId;
+  let login = false;
+  const jwt = require("jsonwebtoken");
+  const token = sessionStorage.getItem("userToken");
+  const header = jwt.decode(token, { complete: true });
+  if (token === null) {
+    loginId = props.employerID;
+  } else if (header.payload.userRole === "employer") {
+    login = true;
+    loginId = sessionStorage.getItem("loginId");
+  } else {
+    loginId = props.employerID;
+  }
 
   const [state, setState] = useState({
     name: " ",
-    description: " ",
     technologyStack: Object,
 
     subscription: " ",
@@ -178,7 +183,6 @@ function CompanyInfo(props) {
   });
 
   const name = state.name;
-  const description = state.description;
   const technologyStack = state.technologyStack;
   const links = state.links;
   const subscription = state.subscription;
@@ -190,29 +194,25 @@ function CompanyInfo(props) {
   var successAlert = false;
 
   useEffect(() => {
-    axios
-      .get(`${BACKEND_URL}/employers/` + "60c246913542f942e4c84454")
-      .then((res) => {
-        console.log(res.data.employer);
-        if (res.data.success) {
-          setState({
-            name: res.data.employer.name,
-            description: res.data.employer.description,
-            technologyStack: res.data.employer.technologyStack,
-            links: res.data.employer.links,
-            subscription: res.data.employer.subscription.type,
-            website: res.data.employer.links.website,
-            facebook: res.data.employer.links.facebook,
-            linkedIn: res.data.employer.links.linkedIn,
-            twitter: res.data.employer.links.twitter,
-          });
-        }
-        res.data.employer.locations.forEach(element => {
-          console.log(element)
-          setLocation(location => [...location, { city: element }])
+    axios.get(`${BACKEND_URL}/employers/${loginId}`).then((res) => {
+      console.log(res.data.employer);
+      if (res.data.success) {
+        setState({
+          name: res.data.employer.name,
+          technologyStack: res.data.employer.technologyStack,
+          links: res.data.employer.links,
+          subscription: res.data.employer.subscription.type,
+          website: res.data.employer.links.website,
+          facebook: res.data.employer.links.facebook,
+          linkedIn: res.data.employer.links.linkedIn,
+          twitter: res.data.employer.links.twitter,
         });
-
+      }
+      res.data.employer.locations.forEach((element) => {
+        console.log(element);
+        setLocation((location) => [...location, { city: element }]);
       });
+    });
   }, []);
 
   //Event handlers for the edit detail dialog box
@@ -231,12 +231,6 @@ function CompanyInfo(props) {
   function onChangeName(e) {
     setState((prevState) => {
       return { ...prevState, name: e.target.value };
-    });
-  }
-
-  function onChangeDescription(e) {
-    setState((prevState) => {
-      return { ...prevState, description: e.target.value };
     });
   }
 
@@ -272,7 +266,7 @@ function CompanyInfo(props) {
     });
     const employer = {
       name: name,
-      description: description,
+
       // locations: locations,
 
       links: {
@@ -285,21 +279,16 @@ function CompanyInfo(props) {
     };
 
     axios
-      .put(`${BACKEND_URL}/employers/update/60c246913542f942e4c84454`, employer)
-      .then((res) => 
-      {
-        if(res.status==200){
-          successAlert=true
+      .put(`${BACKEND_URL}/employers/update/${loginId}`, employer)
+      .then((res) => {
+        if (res.status == 200) {
+          successAlert = true;
           // alert(successAlert)
-          
-        }
-        else{
-          successAlert=false
+        } else {
+          successAlert = false;
           // alert(successAlert)
- 
         }
-      }
-      );
+      });
 
     handleClose();
   }
@@ -307,7 +296,7 @@ function CompanyInfo(props) {
   return (
     <div className={classes.root}>
       <FloatCard>
-        <Grid item container direction="row" spacing={1}>
+        <Grid item container direction="row" spacing={3}>
           {/* HEAD PART OF THE COMPANY INFO CARD */}
 
           <Grid
@@ -337,7 +326,7 @@ function CompanyInfo(props) {
             >
               {/* PANEL 01 FOR COMPANY NAME, MEMBERSHIP TYPE AND EDIT BUTTON */}
 
-              <Grid item xs={9} style={{marginBottom:-30}}>
+              <Grid item xs={9} style={{ marginBottom: -30 }}>
                 <Typography variant="h5" className={classes.companyName}>
                   {name}
                 </Typography>
@@ -348,7 +337,7 @@ function CompanyInfo(props) {
                     label={subscription}
                     className={classes.membershipType}
                   />
-                  {props.userRole === "employer" && haveAccess && 
+                  {props.userRole === "employer" && haveAccess && (
                     <IconButton
                       variant="outlined"
                       aria-label="edit"
@@ -357,8 +346,7 @@ function CompanyInfo(props) {
                     >
                       <EditIcon />
                     </IconButton>
-                  }
-                  
+                  )}
 
                   {/* <form onSubmit={onSubmit}> */}
                   <form>
@@ -426,24 +414,6 @@ function CompanyInfo(props) {
                                     variant="outlined"
                                   />
                                 )}
-                              />
-                            </Grid>
-
-                            <Grid item sm={12}>
-                              <TextField
-                                multiline
-                                fullWidth
-                                id="description"
-                                defaultValue={description}
-                                label="Description"
-                                rows={5}
-                                variant="outlined"
-                                InputProps={{
-                                  classes: {
-                                    input: classes.textField,
-                                  },
-                                }}
-                                onChange={onChangeDescription} 
                               />
                             </Grid>
 
@@ -617,10 +587,7 @@ function CompanyInfo(props) {
               >
                 <Grid item xs={1}>
                   <Link to={"https://" + website}>
-                    <IconButton
-                      variant="outlined"
-                      aria-label="website"
-                    >
+                    <IconButton variant="outlined" aria-label="website">
                       <LanguageIcon />
                     </IconButton>
                   </Link>
@@ -628,30 +595,21 @@ function CompanyInfo(props) {
 
                 <Grid item xs={1}>
                   <Link to={"https://" + linkedIn}>
-                    <IconButton
-                      variant="outlined"
-                      aria-label="website"
-                    >
+                    <IconButton variant="outlined" aria-label="website">
                       <LinkedInIcon />
                     </IconButton>
                   </Link>
                 </Grid>
                 <Grid item xs={1}>
                   <Link to={"https://" + twitter}>
-                    <IconButton
-                      variant="outlined"
-                      aria-label="website"
-                    >
+                    <IconButton variant="outlined" aria-label="website">
                       <TwitterIcon />
                     </IconButton>
                   </Link>
                 </Grid>
                 <Grid item xs={1}>
                   <Link to={"https://" + facebook}>
-                    <IconButton
-                      variant="outlined"
-                      aria-label="website"
-                    >
+                    <IconButton variant="outlined" aria-label="website">
                       <FacebookIcon />
                     </IconButton>
                   </Link>
@@ -660,10 +618,9 @@ function CompanyInfo(props) {
             </Grid>
           </Grid>
 
-
           {/* Edit Company Logo */}
 
-          <Grid item container alignItems="center" direction="row" xs={12} >
+          <Grid item container alignItems="center" direction="row" xs={12}>
             <Grid item sm={3} className={classes.editPhoto}>
               <input
                 accept="image/*"
@@ -673,60 +630,22 @@ function CompanyInfo(props) {
               />
 
               <label htmlFor="raised-button-file">
-                {props.userRole === "employer" && 
+                {props.userRole === "employer" && (
                   <IconButton
                     variant="outlined"
-                    component="span"
                     aria-label="edit"
                     className={classes.editPhotoButton}
+                    // onClick={handleClickOpen}
                   >
-                    <PhotoCameraIcon />
+                    <EditIcon />
                   </IconButton>
-                }
+                )}
               </label>
             </Grid>
           </Grid>
         </Grid>
 
-        {/* {successAlert ? (
-            <Alert severity="success">
-            <AlertTitle>Success</AlertTitle>
-            This is a success alert — <strong>check it out!</strong>
-          </Alert>
-        ) : (
-          <Alert severity="error">
-          <AlertTitle>Error</AlertTitle>
-          This is an error alert — <strong>check it out!</strong>
-        </Alert>
-        )} */}
-
-
         <br />
-
-        <Grid container xs={12} direction="row" spacing={3}>
-          {/* BODY PART OF THE COMPANY INFO CARD */}
-
-          <Grid item xs={12}>
-            {/* <div className={classes.infoTags}> */}
-            <div className={classes.infoTagsContainer}>
-              {Object.keys(technologyStack).map((item, i) => (
-                <Chip
-                  icon={<LocalOfferRoundedIcon className={classes.tagIcon} />}
-                  label={technologyStack[i].name}
-                  className={classes.label}
-                />
-              ))}
-            </div>
-          </Grid>
-
-          <Grid item xs={12} className={classes.body}>
-            <div className={classes.companyDescription} >
-              <Typography style={{ whiteSpace: "pre-line" }} variant="body2" align="justify">
-                {description}
-              </Typography>
-            </div>
-          </Grid>
-        </Grid>
       </FloatCard>
     </div>
   );
@@ -753,4 +672,4 @@ const cities = [
   { city: "C" },
 ];
 
-export default CompanyInfo;
+export default CompanyBasicInfo;

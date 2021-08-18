@@ -136,7 +136,7 @@ const useStyles = makeStyles((theme) => ({
   },
   time: {
     padding: "4px 0px",
-    marginLeft: "20px",
+    marginLeft: "10px",
   },
   deleteBtnContainer: {
     height: "100%",
@@ -235,7 +235,7 @@ function JobSummary(props) {
       minimumExperience: props.job.minimumExperience,
     };
 
-    console.log(updateFields);
+    // console.log(updateFields);
     try {
       const response = await axios.put(
         `${BACKEND_URL}/jobs/update/${props.jobId}`,

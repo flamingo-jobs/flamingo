@@ -13,6 +13,7 @@ import Box from "@material-ui/core/Box";
 import Divider from "@material-ui/core/Divider";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import BillingImage from "../lotties/billingImage";
+import { Link } from "react-router-dom";
 
 import Rating from "@material-ui/lab/Rating";
 
@@ -59,39 +60,38 @@ const useStyles = makeStyles((theme) => ({
   firstDivider: {
     marginTop: "12%",
   },
-  topCard:{
-    minWidth: '100%',
+  topCard: {
+    minWidth: "100%",
     borderRadius: 12,
-    boxShadow: 'rgba(83, 144, 217, 0.1) 0px 4px 12px',
-    overflow: 'unset',
-    margin: '0px 10px 20px 5px', 
+    boxShadow: "rgba(83, 144, 217, 0.1) 0px 4px 12px",
+    overflow: "unset",
+    margin: "0px 10px 20px 5px",
   },
-  topCardContent:{
+  topCardContent: {
     padding: 10,
-    justifyContent: 'center',
-    display: 'grid',
-    justifyItems: 'center'
+    justifyContent: "center",
+    display: "grid",
+    justifyItems: "center",
   },
-  topCardText:{
+  topCardText: {
     alignSelf: "center",
     padding: "20px !important",
   },
-  topCardTitle:{
+  topCardTitle: {
     fontWeight: "bolder",
     color: theme.palette.stateBlue,
     marginBottom: 20,
   },
-  topCardTextBody:{
+  topCardTextBody: {
     color: theme.palette.black,
     marginBottom: 20,
   },
-  lottie:{
+  lottie: {
     height: 200,
     [theme.breakpoints.down("xs")]: {
       width: 300,
     },
-  }
-
+  },
 }));
 
 export default function BillingPackageCard() {
@@ -108,61 +108,44 @@ export default function BillingPackageCard() {
 
   return (
     <div>
-     <Card className={classes.topCard}>
-      <CardContent className={classes.topCardContent}>
-        <Grid
-          container
-          direction="row"
-          spacing={3}
-          justify="space-between"
-          alignItems="center"
-          style={{ maxWidth: "100%" }}
-        >
-          <Grid item xs={11} md={9} className={classes.topCardText}>
-            <Typography variant="h4" className={classes.topCardTitle}>
-              
-              With Flamingo, you can advance your recruitment process like never before! 
+      <Card className={classes.topCard}>
+        <CardContent className={classes.topCardContent}>
+          <Grid
+            container
+            direction="row"
+            spacing={3}
+            justify="space-between"
+            alignItems="center"
+            style={{ maxWidth: "100%" }}
+          >
+            <Grid item xs={11} md={9} className={classes.topCardText}>
+              <Typography variant="h4" className={classes.topCardTitle}>
+                With Flamingo, you can advance your recruitment process like
+                never before!
+              </Typography>
 
-            </Typography>
-
-
-            <Typography variant="body1" className={classes.topCardTextBody}>
-          
-            <Box
-                fontWeight={500}
-                fontSize={20}
-                m={1}
-           
-              >
-                Flamingo goes few steps further from a typical job portal 
-                and brings a novel recruitment experience for the Sri Lankan IT 
-                industry by making use of cutting edge technology. 
-
-                Upgrade your account today to experience advanced features!
-              </Box>
-            </Typography>
-
-
+              <Typography variant="body1" className={classes.topCardTextBody}>
+                <Box fontWeight={500} fontSize={20} m={1}>
+                  Flamingo goes few steps further from a typical job portal and
+                  brings a novel recruitment experience for the Sri Lankan IT
+                  industry by making use of cutting edge technology. Upgrade
+                  your account today to experience advanced features!
+                </Box>
+              </Typography>
+            </Grid>
+            <Grid item xs={11} md={3}>
+              <Lottie
+                className={classes.lottie}
+                options={defaultOptions}
+                height={"inherit"}
+                width={"inherit"}
+              />
+            </Grid>
           </Grid>
-          <Grid item xs={11} md={3}>
-            <Lottie
-              className={classes.lottie}
-              options={defaultOptions}
-              height={"inherit"}
-              width={"inherit"}
-            />
-          </Grid>
-        </Grid>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
 
-      <Grid
-        container
-        xs={12}
-        spacing={3}
-        direction="row"
-      >
-
+      <Grid container xs={12} spacing={3} direction="row">
         {/* Basic Package  */}
         <Grid item container xs={4}>
           <FloatCard className={classes.root}>
@@ -205,9 +188,9 @@ export default function BillingPackageCard() {
               />
             </div>
             <div>
-              <Button variant="contained" className={classes.button}>
-                Get Started
-              </Button>
+              <Typography variant="contained" className={classes.Tytpography}>
+                You are currently on this plan
+              </Typography>
             </div>
             <br />
           </FloatCard>
@@ -273,9 +256,11 @@ export default function BillingPackageCard() {
               />
             </div>
             <div>
-              <Button variant="contained" className={classes.button}>
-                Get Started
-              </Button>
+              <Link to="/employer/payment/standard">
+                <Button variant="contained" className={classes.button}>
+                  Get Started
+                </Button>
+              </Link>
             </div>
             <br />
           </FloatCard>
@@ -346,9 +331,10 @@ export default function BillingPackageCard() {
               />
             </div>
             <div>
+            <Link to="/employer/payment/premium">
               <Button variant="contained" className={classes.button}>
                 Get Started
-              </Button>
+              </Button></Link>
             </div>
             <br />
           </FloatCard>

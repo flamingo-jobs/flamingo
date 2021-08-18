@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 40,
     color: theme.palette.stateBlue,
     float: "center",
+    marginLeft:20,
   },
   pieChart:{
     width:90,
@@ -67,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const TopCards = () => {
+const TopCards = (props) => {
 
   const [value, setValue] = React.useState(2);
 
@@ -80,8 +81,7 @@ const TopCards = () => {
   useEffect(() => {
     axios
       .get(
-        `${BACKEND_URL}/jobs/filterAllByOrganization/` +
-          "60c246913542f942e4c84454"
+        `${BACKEND_URL}/jobs/filterAllByOrganization/${props.employerId}`
       )
       .then((res) => {
         console.log(res.data.employerJobs);
@@ -120,6 +120,23 @@ const TopCards = () => {
     }    
     );
     return totalPending;
+  }
+
+  const getTotalReviewing = () => {
+
+    var totalReviewing = 0;
+
+    allJobs.forEach(job => {
+      
+        job.applicationDetails.forEach(jobApplication => { 
+            if(jobApplication.status=="reviewing"){
+              totalReviewing++
+            }
+        }   
+        );
+    }    
+    );
+    return totalReviewing;
   }
 
   const getTotalShortlisted = () => {
@@ -161,7 +178,7 @@ const TopCards = () => {
     return (
     <Grid container direction="row" xs={12} spacing={1} className={classes.root}>
 
-        <Grid item xs={3}>
+        {/* <Grid item xs={3}>
             <FloatCard className={classes.applicationCard}>
                         <Typography variant="body2" className={classes.applicationsTitle}>
                             APPLICATIONS
@@ -170,6 +187,76 @@ const TopCards = () => {
                         <Typography variant="h5" className={classes.applicationsNumber} style={{float:"center"}}>
                             {getTotalApplications()}
                         </Typography>   
+            </FloatCard>
+        </Grid> */}
+
+        
+
+        <Grid item xs={3}>
+        <FloatCard>
+                <Grid container direction="row" xs={12} spacing={2}>
+                    <Grid item xs={1}>
+                        <Typography variant="body2" className={classes.cardTitle}>
+                            PENDING
+                        </Typography>
+                        <Typography variant="h5" className={classes.cardNumber}>
+                        {getTotalPending()}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={10}>
+                  
+                        <Chart
+                            data={[
+                              { category: 'pending', val: getTotalPending() },
+                              { category: 'total', val: getTotalApplications() - getTotalPending()},
+                            ]}
+                            className={classes.pieChart}
+                            >
+                            <PieSeries
+                                valueField="val"
+                                argumentField="category"
+                                innerRadius={0.6}
+                            />
+                            <Animation />
+                        </Chart>
+               
+                    </Grid>
+                </Grid>
+                
+            </FloatCard>
+        </Grid>
+
+        <Grid item xs={3}>
+            <FloatCard>
+                <Grid container direction="row" xs={12} spacing={2}>
+                    <Grid item xs={1}>
+                        <Typography variant="body2" className={classes.cardTitle}>
+                            REVIEWING
+                        </Typography>
+                        <Typography variant="h5" className={classes.cardNumber}>
+                            {getTotalReviewing()}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={10}>
+                  
+                        <Chart
+                            data={[
+                              { category: 'reviewing', val: getTotalReviewing() },
+                              { category: 'total', val: getTotalApplications() - getTotalReviewing()},
+                            ]}
+                            className={classes.pieChart}
+                            >
+                            <PieSeries
+                                valueField="val"
+                                argumentField="category"
+                                innerRadius={0.6}
+                            />
+                            <Animation />
+                        </Chart>
+               
+                    </Grid>
+                </Grid>
+                
             </FloatCard>
         </Grid>
 
@@ -190,40 +277,6 @@ const TopCards = () => {
                             data={[
                               { category: 'shortlisted', val: getTotalShortlisted() },
                               { category: 'total', val: getTotalApplications() - getTotalShortlisted()},
-                            ]}
-                            className={classes.pieChart}
-                            >
-                            <PieSeries
-                                valueField="val"
-                                argumentField="category"
-                                innerRadius={0.6}
-                            />
-                            <Animation />
-                        </Chart>
-               
-                    </Grid>
-                </Grid>
-                
-            </FloatCard>
-        </Grid>
-
-        <Grid item xs={3}>
-        <FloatCard>
-                <Grid container direction="row" xs={12} spacing={2}>
-                    <Grid item xs={1}>
-                        <Typography variant="body2" className={classes.cardTitle}>
-                            PENDING
-                        </Typography>
-                        <Typography variant="h5" className={classes.cardNumber}>
-                        {getTotalPending()}
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={10}>
-                  
-                        <Chart
-                            data={[
-                              { category: 'pending', val: getTotalPending() },
-                              { category: 'total', val: getTotalApplications() - getTotalPending()},
                             ]}
                             className={classes.pieChart}
                             >

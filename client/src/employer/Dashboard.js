@@ -16,6 +16,8 @@ import LineGraph from "./components/Dashboard/components/LineGraph";
 import NewApplicants from "./components/Dashboard/components/NewApplicants";
 import LatestJobs from "./components/Dashboard/components/LatestJobs";
 
+
+
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundSize: "cover",
@@ -30,8 +32,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Dashboard = () => {
+const Dashboard = (props) => {
   const classes = useStyles();
+
+  let loginId;
+  let login = false;
+  const jwt = require("jsonwebtoken");
+  const token = sessionStorage.getItem("userToken");
+  const header = jwt.decode(token, { complete: true });
+  if (token === null) {
+    loginId = props.employerID;
+  } else if (header.payload.userRole === "employer") {
+    login = true;
+    loginId = sessionStorage.getItem("loginId");
+  } else {
+    loginId = props.employerID;
+  }
 
   return (
     <>
@@ -48,12 +64,12 @@ const Dashboard = () => {
             {/* Dashboard Left section */}
             <Grid item containerxs={12} sm={9} spacing={1}>
               <Grid item>
-                <TopCards />
+                <TopCards employerId={loginId} />
               </Grid>
 
               <Grid item container spacing={3}>
                 <Grid item xs={8}>
-                  <LineGraph className={classes.lineGraph} />
+                  <LineGraph className={classes.lineGraph} employerId={loginId} />
                 </Grid>
 
                 <Grid
@@ -66,12 +82,12 @@ const Dashboard = () => {
                 >
                   {/* Aquisitions */}
                   <Grid item>
-                    <Aquisitions />
+                    <Aquisitions employerId={loginId} />
                   </Grid>
 
                   {/* Notifications */}
                   <Grid item>
-                    <NewApplicants />
+                    <NewApplicants employerId={loginId} />
                   </Grid>
                 </Grid>
               </Grid>
@@ -81,19 +97,19 @@ const Dashboard = () => {
             <Grid container direction="column" item xs={12} sm={3} spacing={1}>
               {/* Company Profile and stars */}
               <Grid item>
-                <CompanySummaryCard />
+                <CompanySummaryCard employerId={loginId}/>
               </Grid>
 
               {/* Notifications */}
               <Grid item>
-                <DashboardNotifications />
+                <DashboardNotifications employerId={loginId} />
               </Grid>
             </Grid>
           </Grid>
         </Grid>
 
         <Grid item>
-          <LatestJobs />
+          <LatestJobs employerId={loginId} />
         </Grid>
        
       </Grid>
