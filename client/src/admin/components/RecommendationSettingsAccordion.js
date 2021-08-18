@@ -25,6 +25,7 @@ import ContinousSlider from './ContinousSlider';
 import Alert from '@material-ui/lab/Alert';
 import Loading from '../../components/Loading';
 import SnackBarAlert from '../../components/SnackBarAlert';
+import { Checkbox, Switch } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -132,6 +133,13 @@ export default function RecommendationSettingsAccordion(props) {
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
 
+  const [isMinimumToggle, setMinimumToggle] = React.useState(true);
+
+  const handleMinimumToggleChange = (event) => {
+    setMinimumToggle(event.target.checked);
+    getSettingValues("Minimum", !event.target.checked);
+  };
+
   const handleClose = () => {
     setConfirmDelete(false);
   };
@@ -151,6 +159,9 @@ export default function RecommendationSettingsAccordion(props) {
 
   useEffect(() => {
     displayAccordionDetails();
+    if (settings) {
+      setMinimumToggle(!settings.settings.ignoreMinimum);
+    }
   }, [settings])
 
   useEffect(() => {
@@ -240,7 +251,7 @@ export default function RecommendationSettingsAccordion(props) {
 
   const resetToDefault = () => {
     setConfirmDelete(false);
-    
+
     axios.get(`${BACKEND_URL}/settingsByType/recommendationDefaults`).then(res => {
       if (res.data.success) {
         let data = { settings: res.data.existingData[0].settings };
@@ -256,7 +267,7 @@ export default function RecommendationSettingsAccordion(props) {
             handleUpdateFailed();
           }
         })
-        ;
+          ;
       } else {
         setSettings("empty")
       }
@@ -285,6 +296,12 @@ export default function RecommendationSettingsAccordion(props) {
       case "Certificates":
         newSettings.settings.certifications = value;
         break;
+      case "Courses":
+        newSettings.settings.courses = value;
+        break;
+      case "Minimum":
+        newSettings.settings.ignoreMinimum = value;
+        break;
       default:
         break;
     }
@@ -292,7 +309,8 @@ export default function RecommendationSettingsAccordion(props) {
   }
 
   const calculateTotal = () => {
-    let total = updatedSettings.settings.techStack + updatedSettings.settings.projectTechStack + updatedSettings.settings.skills + updatedSettings.settings.certifications;
+    let total = updatedSettings.settings.techStack + updatedSettings.settings.projectTechStack +
+      updatedSettings.settings.skills + updatedSettings.settings.certifications + updatedSettings.settings.courses;
     if (total === 100) {
       setInvalid(false);
     } else {
@@ -329,7 +347,18 @@ export default function RecommendationSettingsAccordion(props) {
     return <AccordionDetails className={classes.details}>
       <Grid container spacing={1}>
         <Grid item xs={12} style={{ padding: 24 }}>
-          <Typography>These values are considered as the weights for generate recommended jobs for job seekers. <br />Total wights should be 100%.</Typography>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Checkbox
+              checked={isMinimumToggle}
+              onChange={handleMinimumToggleChange}
+              color="primary"
+              inputProps={{ 'aria-label': 'primary checkbox' }}
+            />
+            <Typography className={classes.featuredJobs}>Suggesst jobs only if the minimum requirements are met</Typography>
+          </div>
+        </Grid>
+        <Grid item xs={12} style={{ padding: 24 }}>
+          <Typography>Below values are considered as the weights for generate sugessted jobs for job seekers. <br />Total wights should be 100%.</Typography>
         </Grid>
         {displaySettingOptions()}
       </Grid>
@@ -344,6 +373,7 @@ export default function RecommendationSettingsAccordion(props) {
           <ContinousSlider name={"Project Technology Stack"} value={settings.settings.projectTechStack} passValue={getSettingValues} />
           <ContinousSlider name={"Skills"} value={settings.settings.skills} passValue={getSettingValues} />
           <ContinousSlider name={"Certificates"} value={settings.settings.certifications} passValue={getSettingValues} />
+          <ContinousSlider name={"Courses"} value={settings.settings.courses} passValue={getSettingValues} />
         </Grid>
       )
     } else {
@@ -360,9 +390,9 @@ export default function RecommendationSettingsAccordion(props) {
           aria-controls="panel1c-content"
           id="panel1c-header"
         >
-          <Typography className={classes.heading}>Recommendations</Typography>
+          <Typography className={classes.heading}>Job Suggestions</Typography>
           <Typography className={classes.secondaryHeading}>
-            Change the recommendation criteria weights
+            Change the settings related to job suggestions
           </Typography>
         </AccordionSummary>
         {displayAccordionDetails()}

@@ -133,10 +133,10 @@ function ProjectItem(props) {
   const [styleEdit, setStyleEdit] = useState({display: 'none'});
   let projectStartDate=[0,0];
   let projectEndDate=[0,0];
-  if(props.from !== 'null/null'){
+  if(props.from !== 'null/null' && props.from !== '0/0'){
     projectStartDate = props.from.split("/");
   }
-  if(props.to !== 'null/null'){
+  if(props.to !== 'null/null' && props.to !== '0/0'){
     projectEndDate = props.to.split("/");
   }
   const [state, setState] = useState({name: props.name, link: props.link, description: props.description, startYear: projectStartDate[1], startMonth: projectStartDate[0], endYear: projectEndDate[1], endMonth: projectEndDate[0], usedTech: props.usedTech});

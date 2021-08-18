@@ -70,6 +70,7 @@ export default function AddNewCertificationPopup(props) {
     const [name, setName] = useState("");
 
     const [certificates, setCertificates] = React.useState([]);
+    const [inputCertificates, setInputCertificates] = React.useState([]);
 
 
     const handleCertificates = (list) => {
@@ -83,11 +84,22 @@ export default function AddNewCertificationPopup(props) {
     const onSubmit = (e) => {
         e.preventDefault();
 
+        let array = [];
+        certificates.forEach((item) => {
+            let data = item.split("=");
+            if (data.length === 1) {
+                array.push({ name: data[0], score: 0 });
+            } else {
+                array.push({ name: data[0], score: data[1] });
+            }
+
+        })
+
         let data = {};
 
         data = {
             issuer: name,
-            certificates: certificates
+            certificates: array
         }
 
         axios.post(`${BACKEND_URL}/certifications/create`, data)
@@ -122,12 +134,15 @@ export default function AddNewCertificationPopup(props) {
                         </Grid>
 
                         <Grid item xs={12} lg={6}>
-                            <Typography className={classes.secondaryHeading}>Certificates</Typography>
+                            <Typography className={classes.secondaryHeading}>Certificates<br/><br/></Typography>
+                            <Typography>* If you want to add a score for the certificate use = and mention the score. <br/> eg: Microsoft Certified: Professional=20 <br/>
+                            * Use ; as the delimiter if you add certificates as bulk.<br/><br/></Typography>
                             <Autocomplete
                                 multiple
                                 id={`tags-filled-1`}
                                 options={[]}
                                 value={certificates}
+                                inputValue={inputCertificates}
                                 freeSolo
                                 disableClearable
                                 renderTags={(value, getTagProps) =>
@@ -142,6 +157,20 @@ export default function AddNewCertificationPopup(props) {
                                 classes={{
                                     inputRoot: classes.inputRoot,
                                     input: classes.inputInput,
+                                }}
+                                onInputChange={(event, newInputValue) => {
+                                    const options = newInputValue.split(";");
+
+                                    if (options.length > 1) {
+                                        setCertificates(
+                                            certificates
+                                                .concat(options)
+                                                .map(x => x.trim())
+                                                .filter(x => x)
+                                        );
+                                    } else {
+                                        setInputCertificates(newInputValue);
+                                    }
                                 }}
                             />
                         </Grid>

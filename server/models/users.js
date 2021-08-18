@@ -25,6 +25,12 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: false,
   },
+  googleId: {
+    type: String,
+  },
+  isVerified: {
+    type: Boolean,
+  },
   accessTokens: {
     type: Array,
   },

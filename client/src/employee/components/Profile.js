@@ -12,6 +12,7 @@ import Volunteer from './Volunteer';
 import Course from './Course';
 import TechnologySection from './TechnologySection';
 import Skills from './Skills';
+import CertificatesSection from './CertificatesSection';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -45,6 +46,8 @@ function Profile() {
                 <IntroSection jobseekerID={jobseekerID} />
                 <Space />
                 <EducationSection jobseekerID={jobseekerID} />
+                <Space />
+                <CertificatesSection jobseekerID={jobseekerID} />
                 <Space />
                 <Course jobseekerID={jobseekerID} />
                 <Space />

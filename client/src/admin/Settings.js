@@ -2,6 +2,7 @@ import { Grid, makeStyles, Typography } from '@material-ui/core'
 import React from 'react'
 import FloatCard from '../components/FloatCard'
 import RecommendationSettingsAccordion from './components/RecommendationSettingsAccordion';
+import ShortlistingSettingsAccordion from './components/ShortlistingSettingsAccordion';
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -20,9 +21,10 @@ function Settings() {
         //     alignItems="flex-start">
         //     <Grid item xs={12} style={{ minWidth: '100%' }}>
         //         <FloatCard>
-                    <div style={{ padding: 12, width: '100%', textAlign: 'left' }}>
-                        <RecommendationSettingsAccordion />
-                    </div>
+        <div style={{ padding: 12, width: '100%', textAlign: 'left' }}>
+            <RecommendationSettingsAccordion />
+            <ShortlistingSettingsAccordion />
+        </div>
         //         </FloatCard>
         //     </Grid>
         // </Grid>

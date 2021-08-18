@@ -46,6 +46,12 @@ const useStyles = makeStyles((theme) => ({
           color: 'white',
         }
       },
+      editButton: {
+        backgroundColor: "MintCream",
+        "&:hover": {
+          backgroundColor: "MintCream",
+        }
+      },
       editIcon: {
         padding:'0px',
         margin:'-15px',
@@ -128,10 +134,10 @@ function EduItem(props) {
   const [styleEdit, setStyleEdit] = useState({display: 'none'});
   let startDate=[0,0];
   let endDate=[0,0];
-  if(props.startDate !== 'null/null'){
+  if(props.startDate !== 'null/null' && props.startDate !== '0/0' ){
     startDate = props.startDate.split("/");
   }
-  if(props.endDate !== 'null/null'){
+  if(props.endDate !== 'null/null' && props.endDate !== '0/0' ){
     endDate = props.endDate.split("/");
   }
   const [education, setEducation] = useState({institute: props.institute, type: props.type, fieldOfStudy: props.fieldOfStudy, GPA: props.gpa, startYear: startDate[1], startMonth: startDate[0], endYear: endDate[1], endMonth: endDate[0], societiesAndActivities: props.societiesAndActivities});
@@ -784,10 +790,10 @@ function EduItem(props) {
         {filterFields()}
         <Grid item xs={2} spacing={2} style={{marginTop:"-20px"}}>
         { login ? <>
-          <Button style={{minWidth:'25px',width:'25px',marginRight:"5px"}}>
+          <Button className={classes.editButton} style={{minWidth:'25px',width:'25px',marginRight:"5px"}}>
               <EditIcon style={styleEdit} className={classes.editIcon} size="small" onClick={handleOpen} />
           </Button>
-          <Button style={{minWidth:'25px',width:'25px',marginRight:"-45px"}}>
+          <Button className={classes.editButton} style={{minWidth:'25px',width:'25px',marginRight:"-45px"}}>
               <DeleteIcon style={styleEdit} className={classes.editIcon} size="small"  onClick={handleClickOpen} />
           </Button>
           </> : null }

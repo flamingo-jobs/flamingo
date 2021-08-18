@@ -27,7 +27,9 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from "@material-ui/core/IconButton";
 import Avatar from "@material-ui/core/Avatar";
 import Paper from '@material-ui/core/Paper';
-import { Link } from 'react-router-dom';
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+
 
 const useStyles = makeStyles((theme) => ({
   paperCont: {
@@ -126,6 +128,8 @@ function IntroSection(props) {
     landLine: "",
     email: ""
   });
+  const [isPublic, setIsPublic] = useState(true);
+
   let loginId;
   let login = false;
   const jwt = require("jsonwebtoken");
@@ -149,7 +153,7 @@ function IntroSection(props) {
         setState({
           firstName: nameArr[0],
           lastName: nameArr[1],
-          tagline: res.data.jobseeker.lagline,
+          tagline: res.data.jobseeker.tagline,
           intro: res.data.jobseeker.intro,
           street: res.data.jobseeker.address.street,
           city: res.data.jobseeker.address.city,
@@ -158,6 +162,7 @@ function IntroSection(props) {
           landLine: res.data.jobseeker.contact.phone,
           email: res.data.jobseeker.contact.email
         })
+        setIsPublic(res.data.jobseeker.isPublic)
       }
     })
   },[])
@@ -168,6 +173,10 @@ function IntroSection(props) {
 
   function handleClose(){
     setOpen(false);
+  }
+
+  function onChangeIsPublic(e){
+    setIsPublic(e.target.checked)
   }
 
   function onChangeFirstName(e){
@@ -250,6 +259,15 @@ function IntroSection(props) {
 
     return (
       <FloatCard>
+        <FormControlLabel
+        style={{ float: 'left',marginLeft: '10px',color:theme.palette.tuftsBlue}}
+          value="end"
+          control={<Switch color="primary" />}
+          label="Public"
+          labelPlacement="start"
+          checked={isPublic}
+          onChange={onChangeIsPublic}
+        />
         { login ? <>
         <Button className={classes.defaultButton} style={{ float: 'right',marginRight: '0px',backgroundColor:'white'}} onClick={handleOpen}>
             <EditIcon className={classes.editIcon} style={{color: theme.palette.tuftsBlue,}} />
@@ -400,31 +418,31 @@ function IntroSection(props) {
           />
         </Typography>
           <CardContent>
-            <Typography gutterBottom variant="h5" style={{color: theme.palette.stateBlue,fontWeight:'bold'}}>
+            <Typography gutterBottom variant="h5" style={{color: theme.palette.stateBlue,fontWeight:'bold',marginTop:"-5px"}}>
               {state.firstName+" "+state.lastName}
             </Typography>
-            <Typography gutterBottom style={{color: theme.palette.stateBlue,marginTop:'-5px'}}>
+            <Typography gutterBottom style={{color: theme.palette.stateBlue,marginTop:'-8px'}}>
               {state.tagline}
             </Typography>
-            <Grid container>
-          <Grid item xs style={{ textAlign: 'left',margin:"0px 0px 0px 0px" }}>
-            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',}}>
-              <IconButton>
+            <Grid container xs={12}>
+          <Grid item xs={12} style={{ textAlign: 'center',margin:"0px 0px 0px 0px" }}>
+            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'center',}}>
+              <IconButton style={{paddingLeft:"0px"}}>
                 <PhoneIcon style={{color: '#666',}} />
               </IconButton>
               {state.mobile}
             </Typography>
           </Grid>
-          <Grid item style={{ textAlign: 'right' }}>
-            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',}}>
-              <IconButton>
+          <Grid item xs={12} style={{ textAlign: 'center',marginTop:"-20px" }}>
+            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'center',}}>
+              <IconButton style={{paddingLeft:"0px"}}>
                 <LocationOnIcon style={{color: '#666',}} />
               </IconButton>
               {state.street+", "+state.city}
             </Typography>
           </Grid>
         </Grid>
-        <Paper elevation={0} className={classes.paperCont}>
+        <Paper elevation={0} className={classes.paperCont} style={{backgroundColor: "#ececf9"}}>
             <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',}}>
               {state.intro}
             </Typography>

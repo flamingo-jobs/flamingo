@@ -13,6 +13,7 @@ import FloatCard from "../../../components/FloatCard";
 import Rating from "@material-ui/lab/Rating";
 import BACKEND_URL from "../../../Config";
 import axios from "axios";
+import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,7 +61,9 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 10,
     backgroundColor: "white",
   },
-
+  orgTags:{
+    marginLeft: 10,
+  },
   footerLeft: {
     display: "flex",
     alignItems: "center",
@@ -191,7 +194,9 @@ const OrganizationCard = (props) => {
               />
             </div>
             <div className={classes.footerRight}>
+            <Link to="/employer/company">
               <Button className={classes.applyButton}>View Organization</Button>
+            </Link>
             </div>
           </div>
         </div>

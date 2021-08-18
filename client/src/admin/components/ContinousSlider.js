@@ -13,25 +13,40 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const marks = [
-    {
-        value: 0,
-        label: '0%',
-    },
-    {
-        value: 50,
-        label: '50%',
-    },
-    {
-        value: 100,
-        label: '100%',
-    },
-];
+
 
 export default function ContinousSlider(props) {
     const classes = useStyles();
 
     const [value, setValue] = useState(props.value);
+
+    var marks = [
+        {
+            value: 0,
+            label: '0%',
+        },
+        {
+            value: 50,
+            label: '50%',
+        },
+        {
+            value: 100,
+            label: '100%',
+        },
+    ];
+
+    if(props.max) {
+        marks = [
+            {
+                value: 0,
+                label: '0%',
+            },
+            {
+                value: props.max,
+                label: `${props.max}%`,
+            }
+        ];
+    }
 
     function valuetext(value) {
         setValue(value);
@@ -53,6 +68,7 @@ export default function ContinousSlider(props) {
                     aria-labelledby="discrete-slider-always"
                     marks={marks}
                     valueLabelDisplay="on"
+                    max={props.max}
                 />
             </Grid>
         </Grid>

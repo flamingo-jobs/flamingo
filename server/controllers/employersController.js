@@ -135,6 +135,27 @@ const update = (req, res) => {
   );
 };
 
+const addReview = async (req, res) => {
+  try{
+    const remove = await Employers.findByIdAndUpdate(
+      req.params.empId,
+      {
+        $pull: { reviews: { jobseekerId: req.body.jobseekerId }}
+      },
+    );
+    
+    const result = await Employers.findByIdAndUpdate(
+      req.params.empId,
+      {
+        $push: { reviews: req.body }
+      },
+    );
+    res.status(200).json({ success: true });
+  } catch(error){
+    res.status(400).json({ success: false, error: error });
+  }
+}
+
 const remove = (req, res) => {
   Employers.findByIdAndDelete(req.params.id).exec((err, deletedEmployer) => {
     if (err) {
@@ -156,6 +177,7 @@ module.exports = {
   getById,
   getByIds,
   update,
+  addReview,
   remove,
   getFeaturedEmployers,
   getEmployerCount,

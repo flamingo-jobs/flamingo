@@ -252,6 +252,25 @@ const updateCourse = (req, res) => {
   );
 };
 
+const updateCertificate = (req, res) => {
+  Jobseeker.updateOne(
+    { _id: req.params.id },
+    {
+      $set: { [`certificate.${req.body.index}`]: req.body.certificate },
+    },
+    (err, jobseeker) => {
+      if (err) {
+        return res.status(400).json({
+          error: err,
+        });
+      }
+      return res.status(200).json({
+        success: true,
+      });
+    }
+  );
+};
+
 const updateWork = (req, res) => {
   Jobseeker.updateOne(
     { _id: req.params.id },
@@ -402,6 +421,23 @@ const addCourse = (req, res) => {
   );
 };
 
+const addCertificate = (req, res) => {
+  Jobseeker.findOneAndUpdate(
+    { _id: req.params.id },
+    { $push: { certificate: req.body } },
+    (err, jobseeker) => {
+      if (err) {
+        return res.status(400).json({
+          error: err,
+        });
+      }
+      return res.status(200).json({
+        success: true,
+      });
+    }
+  );
+};
+
 const addAward = (req, res) => {
   Jobseeker.findOneAndUpdate(
     { _id: req.params.id },
@@ -537,30 +573,11 @@ const removeWork = (req, res) => {
   );
 };
 
-const removeUniversity = (req, res) => {
+const removeEducation = (req, res) => {
   Jobseeker.findByIdAndUpdate(
     req.params.id,
     {
-      $set: { university: req.body },
-    },
-    (err, jobseeker) => {
-      if (err) {
-        return res.status(400).json({
-          error: err,
-        });
-      }
-      return res.status(200).json({
-        success: true,
-      });
-    }
-  );
-};
-
-const removeSchool = (req, res) => {
-  Jobseeker.findByIdAndUpdate(
-    req.params.id,
-    {
-      $set: { school: req.body },
+      $set: { education: req.body },
     },
     (err, jobseeker) => {
       if (err) {
@@ -580,6 +597,25 @@ const removeCourse = (req, res) => {
     req.params.id,
     {
       $set: { course: req.body },
+    },
+    (err, jobseeker) => {
+      if (err) {
+        return res.status(400).json({
+          error: err,
+        });
+      }
+      return res.status(200).json({
+        success: true,
+      });
+    }
+  );
+};
+
+const removeCertificate = (req, res) => {
+  Jobseeker.findByIdAndUpdate(
+    req.params.id,
+    {
+      $set: { certificate: req.body },
     },
     (err, jobseeker) => {
       if (err) {
@@ -674,12 +710,14 @@ module.exports = {
   update,
   addEducation,
   addCourse,
+  addCertificate,
   addAward,
   addVolunteering,
   addProject,
   addWork,
   updateEducation,
   updateCourse,
+  updateCertificate,
   updateSkills,
   updateTechnologyItem,
   updateTechnologyStack,
@@ -693,9 +731,9 @@ module.exports = {
   updateFavoriteOrgs,
   resetAll,
   remove,
-  removeUniversity,
-  removeSchool,
+  removeEducation,
   removeCourse,
+  removeCertificate,
   removeProject,
   removeWork,
   removeAward,
