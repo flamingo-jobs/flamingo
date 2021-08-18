@@ -58,6 +58,16 @@ const employerSchema = new mongoose.Schema({
   categories: {
     type: Array,
   },
+  reviews:[
+    {
+      review: {type: String},
+      rating: {type: Number},
+      createdDate: {type: Date},
+      jobseekerId: {type: String},
+      jobseekerName: {type: String},
+
+    }
+  ],
 });
 
 module.exports = mongoose.model("Employers", employerSchema);

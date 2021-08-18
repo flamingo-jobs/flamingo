@@ -6,11 +6,12 @@ import CompanyDescription from "./components/CompanyDescription";
 import Technologies from "./components/Technologies";
 import FloatCard from "./components/FloatCard";
 import ComputerIcon from "@material-ui/icons/Computer";
+import Reviews from "./reviews/Reviews";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundSize: "cover",
-    minHeight: "100vh",
+    // backgroundSize: "cover",
+    // minHeight: "100vh",
   },
   container: {
     paddingTop: 20,
@@ -62,9 +63,9 @@ const Employer = (props) => {
   }
 
   return (
+    <div className={classes.root}>
     <Grid
       container
-      xs={12}
       spacing={3}
       direction="row"
       justify="space-between"
@@ -77,7 +78,7 @@ const Employer = (props) => {
         sm={12}
         md={7}
         spacing={3}
-        style={{ marginLeft: 10, marginTop: -5, marginBottom: 5 }}
+        style={{ marginLeft: 0, marginTop: -5, marginBottom: 5 }}
       >
         <Grid item>
           <CompanyBasicInfo userRole={props.userRole}></CompanyBasicInfo>
@@ -126,7 +127,13 @@ const Employer = (props) => {
           </Grid>
         </FloatCard>
       </Grid>
+
+      <Grid item xs={12} md={7}>
+        <Reviews/>
+      </Grid>
     </Grid>
+    </div>
+    
   );
 };
 
