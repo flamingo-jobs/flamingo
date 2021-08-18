@@ -6,14 +6,15 @@ import FloatCard from '../../../components/FloatCard';
 import JobCard from '../../../jobs/components/JobCard';
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
 import BACKEND_URL from '../../../Config';
+import NoInfo from '../../../components/NoInfo';
+import Loading from '../../../components/Loading';
+import { Link } from 'react-router-dom';
 
 
 const useStyles = makeStyles((theme) => ({
     title: {
         fontWeight: 600,
-        color: "#8e24aa",
-        paddingTop: "17px",
-        fontSize: "28px"
+        color: theme.palette.black
     },
     container: {
         maxWidth: 'unset'
@@ -58,83 +59,183 @@ const useStyles = makeStyles((theme) => ({
 }))
 function RecommendedJobs(props) {
     const classes = useStyles();
-    const userId = sessionStorage.getItem("loginId");
-    const [savedJobIds, setSavedJobIds] = useState("empty");
 
-    const [featuredJobs, setFeaturedJobs] = useState([]);
-
-
-
-    const retrieveFeaturedJobs = () => {
-        axios.get(`${BACKEND_URL}/jobs/featuredJobs`).then(res => {
-            if (res.data.success) {
-                if (props.skip) {
-                    setFeaturedJobs(res.data.featuredJobs.filter((job) => job._id !== props.skip));
-                } else {
-                    setFeaturedJobs(res.data.featuredJobs);
-                }
-            } else {
-                setFeaturedJobs(null)
-            }
-        })
+    let loginId;
+    let login = false;
+    const jwt = require("jsonwebtoken");
+    const token = sessionStorage.getItem("userToken");
+    const header = jwt.decode(token, { complete: true });
+    if(token === null){
+        loginId=props.jobseekerID;
+    }else if (header.payload.userRole === "jobseeker") {
+        login = true;
+        loginId=sessionStorage.getItem("loginId");
+    } else {
+        loginId=props.jobseekerID;
     }
 
+    const urlQuery = new URLSearchParams(window.location.search);
+    const featured = urlQuery.get('featured');
+    const org = urlQuery.get('org');
+
+    const [savedJobIds, setSavedJobIds] = useState("empty");
+
+    const [jobs, setJobs] = useState([]);
+    const [count, setCount] = useState(0);
+    const [filters, setFilters] = useState({});
+    const [search, setSearch] = useState({});
+    const [recommendedIds, setRecommendedIds] = useState([]);
+    const [queryParams, setQueryParams] = useState({});
+
+    const [page, setPage] = React.useState(1);
+
+    // Login modal 
+    const [open, setOpen] = useState(false);
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const changePage = (event, value) => {
+        setPage(value);
+    };
+
     useEffect(() => {
-        retrieveFeaturedJobs();
-    }, [props.skip])
+        console.log(jobs.length)
+        displayJobs();
+    }, [jobs]);
+
+    useEffect(() => {
+        retrieveJobs();
+    }, [queryParams, page, recommendedIds]);
+
+    useEffect(() => {
+        updateQuery();
+    }, [filters, search, recommendedIds]);
 
     useEffect(() => {
         retrieveJobseeker();
     }, []);
 
+    const updateFilters = (filterData) => {
+        setFilters(filterData);
+    }
+
+    const updateSearch = (searchData) => {
+
+        setSearch(searchData);
+    }
+
+    const updateQuery = () => {
+
+        if (Object.keys(filters).length !== 0 && Object.keys(search).length !== 0) {
+            setQueryParams({ $and: [{ $and: [filters, search] }, { "_id": { $in: recommendedIds } }] });
+        } else if (Object.keys(filters).length === 0) {
+            setQueryParams({ $and: [search, { "_id": { $in: recommendedIds } }] });
+        } else if (Object.keys(search).length === 0) {
+            setQueryParams({ $and: [filters, { "_id": { $in: recommendedIds } }] });
+        } else if (featured) {
+            setQueryParams({ $and: [{ isFeatured: true }, { "_id": { $in: recommendedIds } }] });
+        } else {
+            setQueryParams({ "_id": { $in: recommendedIds } });
+        }
+    }
+
+    const delay = ms => new Promise(res => setTimeout(res, ms));
+
+    const retrieveJobs = async () => {
+        if (recommendedIds === "empty") {
+            setJobs("empty");
+            return;
+        }
+        if (JSON.stringify(queryParams) === "{}" || JSON.stringify(queryParams) === `{"$and":[{},{"_id":{"$in":[]}}]}`) {
+            return;
+        }
+        axios.post(`${BACKEND_URL}/jobs/getJobCount`, { queryParams: queryParams }).then(res => {
+            if (res.data.success) {
+                setCount(res.data.jobCount)
+            } else {
+                setCount(0)
+            }
+
+            let start = (page - 1) * 10;
+            axios.post(`${BACKEND_URL}/jobs/recommended`, { queryParams: queryParams, options: { skip: start, limit: 10 } }).then(res => {
+                if (res.data.success) {
+                    setJobs(res.data.existingData.sort(sortJobsBasedOnScore))
+                } else {
+                    setJobs(null)
+                }
+            })
+        })
+
+    }
+
+
+    function sortJobsBasedOnScore(a, b) {
+        return recommendedIds.indexOf(a._id) - recommendedIds.indexOf(b._id);
+    }
+
     const retrieveJobseeker = async () => {
-        if(userId){
+        if (loginId) {
             try {
-              const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
-              if (response.data.success) {
-                setSavedJobIds(response.data.jobseeker.savedJobs);
-              }
+                const response = await axios.get(`${BACKEND_URL}/jobseeker/${loginId}`);
+                if (response.data.success) {
+                    setSavedJobIds(response.data.jobseeker.savedJobs);
+                    if (response.data.jobseeker.recommendedJobs.length !== 0) {
+                        setRecommendedIds(response.data.jobseeker.recommendedJobs.sort(({ score: a }, { score: b }) => b - a).map(job => job.id));
+                    } else {
+                        setRecommendedIds("empty");
+                    }
+                }
             } catch (err) {
-              console.log(err);
+                console.log(err);
             }
         }
     };
 
-    const displayFeaturedJobs = () => {
-        if (featuredJobs && savedJobIds !== "empty") {
-
-            return featuredJobs.map(featuredJob => (
-                <Grid item sm={12} key={featuredJob._id} className={classes.jobGridCard}>
-                    <JobCard 
-                        info={featuredJob}
-                        userId={userId}
-                        userRole={props.userRole}
+    const displayJobs = () => {
+        // await delay(3000);
+        if (jobs === "empty" ) {
+            return (
+                <Grid item sm={12} style={{ marginBottom: 16 }}>
+                    <FloatCard>
+                        <NoInfo message="Sorry, we don't have recommendations for you right now. Complete your profile to get recommendations." />
+                    </FloatCard>
+                </Grid>)
+        } else if (jobs.length === 0) {
+            return (
+                <Grid item sm={12} style={{ marginBottom: 16 }}>
+                    <FloatCard>
+                        <Loading />
+                    </FloatCard>
+                </Grid>)
+        } else if(savedJobIds !== "empty"){
+            return jobs.map(job => (
+                <Grid item key={job._id} xs={12} className={classes.gridCard}>
+                    <JobCard
+                        info={job}
                         savedJobIds={savedJobIds}
                         setSavedJobIds={setSavedJobIds}
+                        handleOpen={handleOpen}
                     />
                 </Grid>
             ))
-        } else {
-            return (
-                <Grid item sm={12}>
-                    <Typography>No jobs near your location</Typography>
-                </Grid>)
         }
     }
 
-    const isEmpty = (obj) => {
-        for (var i in obj) return false;
-        return true;
-    }
-
     return (
-        <FloatCard backColor="#f7e6ff">
             <Grid container direction="column" spacing={2} className={classes.container}>
                 <Grid item sm={12} >
-                    <Typography className={classes.title}>Recommended Jobs</Typography>
+                    <FloatCard>
+                        <Typography variant="h5" className={classes.title}>Recommended Jobs</Typography>
+                    </FloatCard>
                 </Grid>
-                {displayFeaturedJobs()}
+                {displayJobs()}
                 <Grid item sm={12}>
+                  <Link to="/recommendations">
                     <FloatCard>
                         <Button
                             className={classes.link}
@@ -143,9 +244,9 @@ function RecommendedJobs(props) {
                             See All
                         </Button>
                     </FloatCard>
+                  </Link>
                 </Grid>
             </Grid>
-        </FloatCard>
     )
 }
 

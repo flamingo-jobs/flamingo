@@ -30,7 +30,6 @@ import Paper from '@material-ui/core/Paper';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   paperCont: {

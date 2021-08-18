@@ -12,9 +12,7 @@ import { useState, useEffect } from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundSize: "cover",
-    marginLeft: 10,
-    marginRight: 10,
+    maxWidth: "unset"
   },
   cardTitle:{
     fontWeight: "bolder",
@@ -122,7 +120,7 @@ function TopCards(props){
   },[fetchedData])
 
     return (
-    <Grid container direction="row" xs={12} spacing={1} className={classes.root}>
+    <Grid container direction="row" xs={12} spacing={2} className={classes.root}>
 
         <Grid item xs={3}>
             <FloatCard className={classes.applicationCard}>
