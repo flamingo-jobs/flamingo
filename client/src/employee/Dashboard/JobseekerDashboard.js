@@ -17,14 +17,14 @@ function JobseekerDashboard(props) {
                 <TopCards />
                 <Space />
                 <RecommendedJobs userRole={props.userRole}/>
-                <Space />
-                <RecommendedOrganizations userRole={props.userRole}/>
+                {/* <Space />
+                <RecommendedOrganizations userRole={props.userRole}/> */}
             </Grid>
             <Grid item md={12} lg={4} spacing={3}>
                 <ProfileStatus />
                 <Space />
                 <SideMenu />
-            </Grid>                                          
+            </Grid>                       
         </Grid>
     )
 }
