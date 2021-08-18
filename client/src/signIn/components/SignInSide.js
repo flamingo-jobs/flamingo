@@ -31,6 +31,7 @@ import MuiDialogActions from "@material-ui/core/DialogActions";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import GitHubIcon from "@material-ui/icons/GitHub";
+import GoogleIcon from "../images/google.png";
 import ArrowBackRoundedIcon from "@material-ui/icons/ArrowBackRounded";
 import { Link } from "react-router-dom";
 import { useQueryParams } from "../../utils/useQueryparams";
@@ -121,6 +122,9 @@ const useStyles = makeStyles((theme) => ({
   logo: {
     height: 40,
   },
+  iconLogo: {
+    marginRight: 20,
+  },
   textField: {
     margin: 10,
     width: 300,
@@ -174,9 +178,8 @@ export default function SignInSide() {
   const [remember, setRemember] = useState(false);
   const handleRemember = () => setRemember(!remember);
 
-  const [, setToken] = useToken();
   const [googleOauthUrl, setGoogleOauthUrl] = useState("");
-  const { token: oauthToken, loginId, error } = useQueryParams;
+  const { token, loginId, error } = useQueryParams();
 
   const login = (e) => {
     e.preventDefault();
@@ -221,18 +224,16 @@ export default function SignInSide() {
       });
   };
 
-  const history = useHistory();
-
   useEffect(() => {
-    if (oauthToken && loginId) {
-      setToken(oauthToken);
+    if (token) {
+      sessionStorage.setItem("userToken", token);
       sessionStorage.setItem("loginId", loginId);
-      history.push("/home");
+      window.location = "/";
     }
     if (error) {
-
+      handleUserError();
     }
-  }, [oauthToken, loginId, error, setToken, history]);
+  }, [token, loginId, error]);
 
   useEffect(() => {
     const loadOauthUrl = async () => {
@@ -241,7 +242,7 @@ export default function SignInSide() {
         const { url } = response.data;
         setGoogleOauthUrl(url);
       } catch (e) {
-        console.log(e);
+        handleServerError();
       }
     };
     loadOauthUrl();
@@ -252,11 +253,15 @@ export default function SignInSide() {
   // Alert Handler
   const [credentialError, setCredentialError] = useState(false);
   const [serverError, setServerError] = useState(false);
+  const [userError, setUserError] = useState(false);
   const handleCredentialError = () => {
     setCredentialError(true);
   };
   const handleServerError = () => {
     setServerError(true);
+  };
+  const handleUserError = () => {
+    setUserError(true);
   };
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -349,8 +354,7 @@ export default function SignInSide() {
 
                   {/* Social Login */}
                   <div className={classes.socialSection}>
-                    <Typography className={classes.text}>with</Typography>
-                    <div className={classes.icons}>
+                    {/* <div className={classes.icons}>
                       <IconButton>
                         <Avatar className={classes.avatar}>
                           <FacebookIcon />
@@ -366,18 +370,7 @@ export default function SignInSide() {
                           <GitHubIcon />
                         </Avatar>
                       </IconButton>
-                    </div>
-                    <div>
-                      <Button
-                        disable={!googleOauthUrl}
-                        onClick={() => {
-                          window.location.href = googleOauthUrl;
-                        }}
-                      >
-                        Log in with Google
-                      </Button>
-                    </div>
-                    <Typography className={classes.text}>or</Typography>
+                    </div> */}
                   </div>
 
                   {/* Login Form */}
@@ -426,7 +419,27 @@ export default function SignInSide() {
                     >
                       Sign In
                     </Button>
-
+                    <div>
+                      <Typography className={classes.text}>or</Typography>
+                      <Grid className={classes.paper}>
+                        <Button
+                          disable={!googleOauthUrl}
+                          onClick={() => {
+                            window.location.href = googleOauthUrl;
+                          }}
+                        >
+                          <Avatar
+                            className={classes.iconLogo}
+                            src={GoogleIcon}
+                            variant="square"
+                          />
+                          <Typography>
+                            {" "}
+                            Login with Google
+                          </Typography>
+                        </Button>
+                      </Grid>
+                    </div>
                     {/* Forgot Password or Register */}
                     <Grid container>
                       <Grid item xs={12} sm={4} className={classes.forgotPwd}>
@@ -471,6 +484,17 @@ export default function SignInSide() {
             <Alert onClose={handleClose} severity="error">
               Server Error! We can't connect to the server right now. Please try
               again later!
+            </Alert>
+          </Snackbar>
+
+          <Snackbar
+            open={userError}
+            autoHideDuration={6000}
+            onClose={handleClose}
+          >
+            <Alert onClose={handleClose} severity="warning">
+              Looks like you are not an registered user. Please create an
+              account using signup!
             </Alert>
           </Snackbar>
 
