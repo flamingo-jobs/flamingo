@@ -2,8 +2,18 @@ import React from "react";
 import { makeStyles, Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import FloatCard from "../../FloatCard";
-import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteIcon from "@material-ui/icons/Favorite";
 import { useState, useEffect } from "react";
+import {
+  Chart,
+  SeriesTemplate,
+  CommonSeriesSettings,
+  Title,
+  Label,
+  Format,
+  Tooltip,
+  Legend,
+} from "devextreme-react/chart";
 import axios from "axios";
 import BACKEND_URL from "../../../../Config";
 
@@ -23,6 +33,10 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 5,
     marginLeft: 20,
   },
+  barChart: {
+    width: 200,
+    height: 235,
+  },
 }));
 
 const PopularJobs = (props) => {
@@ -33,6 +47,12 @@ const PopularJobs = (props) => {
   });
 
   const allJobs = state.allJobs;
+
+  function customizeTooltip(arg) {
+    return {
+      text: `${arg.seriesName} applications: ${arg.valueText}`,
+    };
+  }
 
   useEffect(() => {
     axios
@@ -47,6 +67,25 @@ const PopularJobs = (props) => {
       });
   }, []);
 
+  const getPopularJobs = () => {
+    var popularJobs = [];
+
+    allJobs.forEach((job) => {
+      popularJobs.push({
+        job: job.title,
+        applicants: job.applicationDetails.length,
+      });
+    });
+
+    popularJobs.sort(function (a, b) {
+      return b.length - a.length;
+    });
+
+    popularJobs.reverse();
+
+    return popularJobs;
+  };
+
   return (
     <div className={classes.root}>
       <FloatCard>
@@ -59,7 +98,35 @@ const PopularJobs = (props) => {
           </Grid>
 
           <Grid item container direction="row" xs={12}>
-            
+            <Chart
+              id="chart"
+            //   palette="#80FFDB, #4EA8DE"
+              rotated={true}
+              dataSource={getPopularJobs()}
+              className={classes.barChart}
+            >
+              <CommonSeriesSettings
+                argumentField="job"
+                valueField="applicants"
+                type="bar"
+                barWidth={10}
+                ignoreEmptyPoints={true}
+                barPadding={0}
+                hoverMode="allArgumentPoints"
+                selectionMode="allArgumentPoints"
+                color="#E366B3"
+              />
+              <Label visible={false}>
+                <Format type="fixedPoint" precision={0} />
+              </Label>
+              <SeriesTemplate nameField="job" />
+              <Tooltip enabled={true} customizeTooltip={customizeTooltip} />
+              <Legend
+                verticalAlignment="bottom"
+                horizontalAlignment="center"
+                itemTextPosition="right"
+              />
+            </Chart>
           </Grid>
         </Grid>
       </FloatCard>

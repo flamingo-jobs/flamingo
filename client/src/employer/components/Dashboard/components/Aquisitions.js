@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     width: 200,
     height: 200,
     padding: "0 0 0 0",
-    marginTop: -10,
+    marginTop: -5,
     marginLeft: 20,
     marginBottom: -8,
     float: "center",
@@ -100,7 +100,7 @@ const Aquisitions = (props) => {
   };
 
   const getTotalShortlisted = () => {
-    var totalShortlisted = 5;
+    var totalShortlisted = 0;
 
     allJobs.forEach((job) => {
       job.applicationDetails.forEach((jobApplication) => {
@@ -113,7 +113,7 @@ const Aquisitions = (props) => {
   };
 
   const getTotalRejected = () => {
-    var totalRejected = 2;
+    var totalRejected = 0;
 
     allJobs.forEach((job) => {
       job.applicationDetails.forEach((jobApplication) => {
