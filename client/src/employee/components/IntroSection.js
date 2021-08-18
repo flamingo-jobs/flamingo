@@ -27,6 +27,9 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from "@material-ui/core/IconButton";
 import Avatar from "@material-ui/core/Avatar";
 import Paper from '@material-ui/core/Paper';
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+
 import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
@@ -126,6 +129,8 @@ function IntroSection(props) {
     landLine: "",
     email: ""
   });
+  const [isPublic, setIsPublic] = useState(true);
+
   let loginId;
   let login = false;
   const jwt = require("jsonwebtoken");
@@ -158,6 +163,7 @@ function IntroSection(props) {
           landLine: res.data.jobseeker.contact.phone,
           email: res.data.jobseeker.contact.email
         })
+        setIsPublic(res.data.jobseeker.isPublic)
       }
     })
   },[])
@@ -168,6 +174,10 @@ function IntroSection(props) {
 
   function handleClose(){
     setOpen(false);
+  }
+
+  function onChangeIsPublic(e){
+    setIsPublic(e.target.checked)
   }
 
   function onChangeFirstName(e){
@@ -250,6 +260,15 @@ function IntroSection(props) {
 
     return (
       <FloatCard>
+        <FormControlLabel
+        style={{ float: 'left',marginLeft: '10px',color:theme.palette.tuftsBlue}}
+          value="end"
+          control={<Switch color="primary" />}
+          label="Public"
+          labelPlacement="start"
+          checked={isPublic}
+          onChange={onChangeIsPublic}
+        />
         { login ? <>
         <Button className={classes.defaultButton} style={{ float: 'right',marginRight: '0px',backgroundColor:'white'}} onClick={handleOpen}>
             <EditIcon className={classes.editIcon} style={{color: theme.palette.tuftsBlue,}} />
