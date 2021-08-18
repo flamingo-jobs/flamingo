@@ -1,35 +1,25 @@
 import React from "react";
 // import { makeStyles, useTheme } from '@material-ui/core/styles';
-import {
-  CssBaseline,
-  Container,
-  ThemeProvider,
-  makeStyles,
-  useTheme,
-  Avatar,
-  Typography,
-  Button,
-} from "@material-ui/core";
+import { makeStyles, Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import FloatCard from "../../FloatCard";
 import AssignmentIcon from "@material-ui/icons/Assignment";
-import {
-  Chart,
-  PieSeries,
-  Title,
+import PieChart, {
   Legend,
-} from "@devexpress/dx-react-chart-material-ui";
-import { Animation } from "@devexpress/dx-react-chart";
+  Export,
+  Series,
+  Label,
+  Font,
+  Connector,
+} from "devextreme-react/pie-chart";
 import { useState, useEffect } from "react";
-import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
-import Chip from "@material-ui/core/Chip";
 import axios from "axios";
 import BACKEND_URL from "../../../../Config";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundSize: "cover",
-    marginRight: -10,
+    marginRight: -12,
   },
   title: {
     fontWeight: "bolder",
@@ -40,21 +30,26 @@ const useStyles = makeStyles((theme) => ({
   notificationsIcon: {
     color: theme.palette.stateBlue,
     marginTop: 5,
-    marginLeft: 70,
+    marginLeft: 80,
   },
   pieChart: {
-    width: 100,
-    height: 100,
+    width: 200,
+    height: 200,
     padding: "0 0 0 0",
-    marginTop: -180,
-    marginLeft: 10,
-    marginBottom: -180,
+    marginTop: -10,
+    marginLeft: 20,
+    marginBottom: -8,
     float: "center",
   },
   legend: {
     backgroundColor: theme.palette.white,
   },
 }));
+
+function customizeText(arg) {
+  // return `${arg.valueText} (${arg.percentText})`;
+  return `(${arg.percentText})`;
+}
 
 const Aquisitions = (props) => {
   const classes = useStyles();
@@ -105,7 +100,7 @@ const Aquisitions = (props) => {
   };
 
   const getTotalShortlisted = () => {
-    var totalShortlisted = 0;
+    var totalShortlisted = 5;
 
     allJobs.forEach((job) => {
       job.applicationDetails.forEach((jobApplication) => {
@@ -118,7 +113,7 @@ const Aquisitions = (props) => {
   };
 
   const getTotalRejected = () => {
-    var totalRejected = 0;
+    var totalRejected = 2;
 
     allJobs.forEach((job) => {
       job.applicationDetails.forEach((jobApplication) => {
@@ -129,6 +124,25 @@ const Aquisitions = (props) => {
     });
     return totalRejected;
   };
+
+  const dataSource = [
+    {
+      category: "Pending",
+      val: getTotalPending(),
+    },
+    {
+      category: "Reviewing",
+      val: getTotalReviewing(),
+    },
+    {
+      category: "Shortlisted",
+      val: getTotalShortlisted(),
+    },
+    {
+      category: "Rejected",
+      val: getTotalRejected(),
+    },
+  ];
 
   return (
     <div className={classes.root}>
@@ -143,47 +157,32 @@ const Aquisitions = (props) => {
 
           <Grid item container direction="row" xs={12}>
             <Grid item xs={6}>
-              <Chart
-                data={[
-                  { category: "Pending", val: getTotalPending() },
-                  { category: "Reviewing", val: getTotalReviewing() },
-                  { category: "Shortlisted", val: getTotalShortlisted() },
-                  { category: "Rejected", val: getTotalRejected() },
-                ]}
+              <PieChart
+                id="pie"
+                palette="Bright"
+                dataSource={dataSource}
                 className={classes.pieChart}
               >
-                <PieSeries
-                  valueField="val"
-                  argumentField="category"
-                  // innerRadius={0.2}
+                <Legend
+                  orientation="horizontal"
+                  itemTextPosition="right"
+                  horizontalAlignment="center"
+                  verticalAlignment="bottom"
+                  columnCount={4}
                 />
-                <Animation />
-                
-              </Chart>
-             
-            </Grid>
+                {/* <Export enabled={true} /> */}
 
-            <Grid item xs={5} style={{ marginTop: 5 }}>
-              <Chip
-                icon={<FiberManualRecordIcon style={{ color: "#ff704d" }} />}
-                label="Pending"
-                className={classes.legend}
-              />
-              <Chip
-                icon={<FiberManualRecordIcon style={{ color: "#4da6ff" }} />}
-                label="Reviewing"
-                className={classes.legend}
-              />
-              <Chip
-                icon={<FiberManualRecordIcon style={{ color: "#ffd11a" }} />}
-                label="Shortlisted"
-                className={classes.legend}
-              />
-              <Chip
-                icon={<FiberManualRecordIcon style={{ color: "#99cc00" }} />}
-                label="Rejected"
-                className={classes.legend}
-              />
+                <Series argumentField="category" valueField="val">
+                  <Label
+                    visible={true}
+                    position="columns"
+                    customizeText={customizeText}
+                  >
+                    <Font size={11} />
+                    <Connector visible={true} width={0.5} />
+                  </Label>
+                </Series>
+              </PieChart>
             </Grid>
           </Grid>
         </Grid>
