@@ -203,6 +203,17 @@ function EducationSection(props) {
 
   function handleClose(){
     setOpen(false);
+    setEducation({
+      institute: null,
+      type: "School",
+      fieldOfStudy: null,
+      GPA: null,
+      startYear: null,
+      startMonth: null,
+      endYear: null,
+      endMonth: null,
+      societiesAndActivities: null
+    })
   }
 
   // Alert stuff

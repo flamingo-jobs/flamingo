@@ -112,7 +112,7 @@ function CertificatesSection(props) {
   const [open, setOpen] = useState(false);
   const [certificate, setCertificate] = useState(null);
   const [allCertificates, setAllCertificates] = useState(null);
-  const [state, setState] = useState({issuer: null, title: null, month: null, year: null});
+  const [state, setState] = useState({issuer: null, title: null, score: null, month: null, year: null});
 
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
@@ -216,8 +216,8 @@ function CertificatesSection(props) {
   function getTitles(){
       for (let index = 0; index < allCertificates?.length; index++) {
           if(allCertificates[index].issuer === state.issuer){
-             let titles = allCertificates[index].certificates; 
-            return titles.map((title) => (<option value={title}>{title}</option>));
+             let titles = allCertificates[index].certificates;
+            return titles.map((title) => (<option value={JSON.stringify(title)}>{title.name}</option>));
           }        
       }
   }
@@ -245,7 +245,7 @@ function CertificatesSection(props) {
   }
 
   useEffect(()=>{
-    setState({issuer: null, title: null, month: null, year: null});
+    setState({issuer: null, title: null, score: null, month: null, year: null});
     setCertificate(null);
     fetchCertificates();
     fetchData();
@@ -292,8 +292,12 @@ function CertificatesSection(props) {
   }
 
   function onChangeTitle(e){
+    let obj = JSON.parse(e.target.value);
     setState(prevState => {
-      return {...prevState, title: e.target.value}
+      return {...prevState, title: obj.name}
+    })
+    setState(prevState => {
+      return {...prevState, score: obj.score}
     })
   }
 
@@ -315,6 +319,7 @@ function CertificatesSection(props) {
     const newCertificate = {
         issuer: state.issuer,
         title: state.title,
+        score: state.score,
         date: state.month+"/"+state.year,
     }
 
@@ -342,7 +347,7 @@ function CertificatesSection(props) {
     if (certificate) {
       if (certificate.length > 0) {
         return certificate.map(awd => (
-            <CertificateItem index={i++} issuer={awd.issuer} title={awd.title} date={awd.date} allCertificates={allCertificates} parentFunction={deleteData} />
+            <CertificateItem index={i++} issuer={awd.issuer} title={awd.title} score={awd.score} date={awd.date} allCertificates={allCertificates} parentFunction={deleteData} />
             ))
       }else{
         return (<Typography variant="body2" color="textSecondary" component="p">Certificates not added.</Typography>)

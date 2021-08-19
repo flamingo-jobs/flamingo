@@ -131,7 +131,7 @@ function CertificateItem(props) {
   if(props.date !== 'null/null' && props.date !== '0/0'){
     certificateDate = props.date.split("/");
   }
-  const [state, setState] = useState({issuer: props.issuer, title: props.title, year: certificateDate[1], month: certificateDate[0]});
+  const [state, setState] = useState({issuer: props.issuer, title: props.title, score: props.score, year: certificateDate[1], month: certificateDate[0]});
   const [allCertificates, setAllCertificates] = useState(props.allCertificates);
 
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -199,14 +199,27 @@ function CertificateItem(props) {
   }
 
   //generate title list
-  function getTitles(){
+  function getTitles(e){
       for (let index = 0; index < allCertificates?.length; index++) {
           if(allCertificates[index].issuer === state.issuer){
-             let titles = allCertificates[index].certificates; 
-            return titles.map((title) => (<option value={title}>{title}</option>));
+             let titles = allCertificates[index].certificates;
+            return titles.map((title) => (<option value={JSON.stringify(title)}>{title.name}</option>));
           }        
       }
   }
+  function setTitle(e){
+    for (let index = 0; index < allCertificates?.length; index++) {
+      if(allCertificates[index].issuer === state.issuer){
+        let titles = allCertificates[index].certificates;
+        for (let index = 0; index < titles?.length; index++) {
+          if(titles[index].name = props.title){
+            e.target.value = JSON.stringify(titles);
+          }
+          
+        }
+      }        
+  }
+}
   
   useEffect(() => {
     if (deleteSuccess === true) {
@@ -270,8 +283,12 @@ function CertificateItem(props) {
   }
 
   function onChangeTitle(e){
+    let obj = JSON.parse(e.target.value);
     setState(prevState => {
-      return {...prevState, title: e.target.value}
+      return {...prevState, title: obj.name}
+    })
+    setState(prevState => {
+      return {...prevState, score: obj.score}
     })
   }
 
@@ -293,6 +310,7 @@ function CertificateItem(props) {
     const certificate = {
         issuer: state.issuer,
         title: state.title,
+        score: state.score,
         date: state.month+"/"+state.year,
     }
 
@@ -421,13 +439,13 @@ function CertificateItem(props) {
                     <InputLabel className={classes.placeholder} htmlFor="outlined-age-native-simple">Select Certification</InputLabel>
                     <Select
                       native
-                      value={state.title}
                       onChange={onChangeTitle}
                       className={classes.select}
                       required
                     >
                       <option aria-label="None" value="" />
                       {getTitles()}
+                      {setTitle}
                     </Select>
                   </FormControl>
                   <Grid container direction="row">
