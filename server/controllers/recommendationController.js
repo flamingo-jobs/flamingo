@@ -88,7 +88,7 @@ const generateRecommendations = (req, res) => {
 
                             var projectArray = [];
                             item.project.forEach((project) => {
-                                if (project.hasOwnProperty("techStack")) {
+                                if (project.hasOwnProperty("usedTech")) {
                                     projectArray.push.apply(projectArray, project.usedTech.split(", "));
                                 }
                             });
@@ -100,10 +100,55 @@ const generateRecommendations = (req, res) => {
                             if (item.skills.length) {
                                 skills = similarity(item.skills.join(' '), job.qualifications);
                             }
-                            console.log(skills);
+
+                            // certificates
+
+
+                            let certificationNameList = [];
+
+                            if (item.certificate.length) {
+                                item.certificate.forEach((cert) => {
+                                    certificationNameList.push(cert.title);
+                                })
+                            }
+
+                            if (certificationNameList.length) {
+                                certificates = similarity(certificationNameList.join(' '), job.technologyStack.concat([job.title, job.description]));
+                            }
+
+                            // courses
+
+                            let courseNameList = [];
+                            let courseRelevence = 0;
+
+                            if (item.course.length) {
+                                item.course.forEach((courseItem) => {
+                                    if (courseItem.course !== "") {
+                                        courseNameList.push(courseItem.course);
+                                    }
+                                })
+                            }
+                            // console.log(courseNameList)
+
+                            if (courseNameList.length) {
+                                courseRelevence = similarity(courseNameList.join(' '), job.technologyStack.concat([job.title, job.description]));
+                            }
+
+                            courses = courseRelevence;
+
+                            // console.log("education: " + education);
+                            // console.log("experience: " + experience);
+                            // console.log("techStack: " + techStack);
+                            // console.log("projectTech: " + projectTech);
+                            // console.log("skills: " + skills);
+                            // console.log("certificates: " + certificates);
+                            // console.log("courses: " + courses);
+
 
                             total = techStack * (recommendationSettings.techStack / 100) + projectTech * (recommendationSettings.projectTechStack / 100)
-                                + skills * (recommendationSettings.skills / 100) + certificates * (recommendationSettings.certifications / 100);
+                                + skills * (recommendationSettings.skills / 100) + certificates * (recommendationSettings.certifications / 100)
+                                + courses * (recommendationSettings.courses / 100);
+
 
                             if (recommendationSettings.ignoreMinimum) {
                                 if (total >= 5) {
@@ -168,7 +213,7 @@ const generateJobSeekerRecommendations = (req, res) => {
                     }
                     if (jobs) {
                         jobs.forEach((job, index) => {
-                            let [education, experience, techStack, projectTech, skills, certificates] = [false, false, 0, 0, 0, 0];
+                            let [education, experience, techStack, projectTech, skills, certificates, courses] = [false, false, 0, 0, 0, 0, 0];
                             let total = 0;
 
                             // education
@@ -237,23 +282,43 @@ const generateJobSeekerRecommendations = (req, res) => {
                             }
 
                             // certificates
-                            
+
 
                             let certificationNameList = [];
 
-                            if (item.certificate.length) {
-                                item.certificate.forEach((cert) => {
+                            if (jobseeker.certificate.length) {
+                                jobseeker.certificate.forEach((cert) => {
                                     certificationNameList.push(cert.title);
                                 })
                             }
-                            
-                            if(certificationNameList.length){
+
+                            if (certificationNameList.length) {
                                 certificates = similarity(certificationNameList.join(' '), job.technologyStack.concat([job.title, job.description]));
                             }
 
+                            // courses
+
+                            let courseNameList = [];
+                            let courseRelevence = 0;
+
+                            if (jobseeker.course.length) {
+                                jobseeker.course.forEach((courseItem) => {
+                                    if (courseItem.course !== "") {
+                                        courseNameList.push(courseItem.course);
+                                    }
+                                })
+                            }
+                            console.log(courseNameList)
+                            if (courseNameList.length) {
+                                courseRelevence = similarity(courseNameList.join(' '), job.technologyStack.concat([job.title, job.description]));
+                            }
+
+                            courses = courseRelevence;
+
 
                             total = techStack * (recommendationSettings.techStack / 100) + projectTech * (recommendationSettings.projectTechStack / 100)
-                                + skills * (recommendationSettings.skills / 100) + certificates * (recommendationSettings.certifications / 100);
+                                + skills * (recommendationSettings.skills / 100) + certificates * (recommendationSettings.certifications / 100)
+                                + courses * (recommendationSettings.courses / 100);
 
                             if (recommendationSettings.ignoreMinimum) {
                                 if (total >= 5) {
@@ -303,10 +368,11 @@ const similarity = (a, b) => {
 
     b.forEach(function (sentance) {
         var matches = sentance.match(r);
+        // console.log(matches)
         output.push((matches) ? (matches.length / count) * 100 : 0);
     });
 
-    return output.reduce((x, y) => x + y)/output.length;
+    return output.reduce((x, y) => x + y) / output.length;
 };
 
 const findPercentage = (first, second) => {

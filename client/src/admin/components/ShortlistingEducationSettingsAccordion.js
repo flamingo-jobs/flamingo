@@ -142,7 +142,12 @@ export default function ShortlistingEducationSettingsAccordion(props) {
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
 
   const [minimum, setMinimum] = React.useState(0);
+  const [gpaToggle, setGpaToggle] = React.useState(false);
 
+  const handleMinimumToggleChange = (event) => {
+    setGpaToggle(event.target.checked);
+    getSettingValues("GPA", event.target.checked);
+  };
 
   const handleClose = () => {
     setConfirmDelete(false);
@@ -165,6 +170,7 @@ export default function ShortlistingEducationSettingsAccordion(props) {
     displayAccordionDetails();
     if (settings) {
       setMinimum(settings.settings.minimum);
+      setGpaToggle(settings.settings.considerGpa);
     }
   }, [settings])
 
@@ -313,6 +319,9 @@ export default function ShortlistingEducationSettingsAccordion(props) {
       case "PhD":
         newSettings.settings.phd = value;
         break;
+      case "GPA":
+        newSettings.settings.considerGpa = value;
+        break;
       default:
         break;
     }
@@ -377,6 +386,18 @@ export default function ShortlistingEducationSettingsAccordion(props) {
           </div>
           <ContinousSlider name={"Diploma"} value={settings.settings.diploma} passValue={getSettingValues} max={100 - minimum} />
           <ContinousSlider name={"Bachelors"} value={settings.settings.bachelors} passValue={getSettingValues} max={100 - minimum} />
+          <Grid item xs={12} style={{ padding: 24 }}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <Checkbox
+                checked={gpaToggle}
+                onChange={handleMinimumToggleChange}
+                color="primary"
+                inputProps={{ 'aria-label': 'primary checkbox' }}
+              />
+              <Typography className={classes.featuredJobs}>Consider GPA. (If checked, the weight for the bachelor's degree would be multiplied by the GPA/4. When the candidate doesn't mention the GPA, default is set to 2.</Typography>
+
+            </div>
+          </Grid>
           <ContinousSlider name={"Masters"} value={settings.settings.masters} passValue={getSettingValues} max={100 - minimum} />
           <ContinousSlider name={"PhD"} value={settings.settings.phd} passValue={getSettingValues} max={100 - minimum} />
         </Grid>
