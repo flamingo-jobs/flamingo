@@ -1,4 +1,7 @@
 const Employers = require("../models/employers");
+const Jobs = require("../models/jobs");
+
+const Jobseeker = require("../models/jobseeker");
 
 const create = (req, res) => {
   let newEmployer = new Employers(req.body);
@@ -162,12 +165,41 @@ const remove = (req, res) => {
       return res.status(400).json({
         error: err,
       });
+
     }
     return res.status(200).json({
       success: "Employer deleted successfully",
       deletedEmployer: deletedEmployer,
     });
   });
+};
+
+const getAllApplications = async (req, res) => {
+  Jobs.find({ "organization.id": req.params.id }, null, { limit: 4 })
+    .exec()
+    .then(async (moreFromJobs) => {
+      let temp = [];
+
+      for (let index = 0; index < moreFromJobs.length; index++) {
+        const job = moreFromJobs[index];
+        for (let jindex = 0; jindex < job.applicationDetails.length; jindex++) {
+          const user = job.applicationDetails[jindex];
+          var a = await Jobseeker.findById(user.userId);
+          temp.push({ job: job.title, name: a.name });
+        }
+      }
+
+      return res.status(200).json({
+        success: true,
+        applications: temp,
+      });
+    })
+    .catch((error) => {
+      res.send({
+        status: false,
+        message: "Something went wrong please try again!!!!",
+      });
+    });
 };
 
 module.exports = {
@@ -182,4 +214,5 @@ module.exports = {
   getFeaturedEmployers,
   getEmployerCount,
   getFiltered,
+  getAllApplications,
 };
