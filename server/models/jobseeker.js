@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const jobseekerSchema = new mongoose.Schema({
+  isPublic: {
+    type: Boolean,
+    required: true,
+  },
   name: {
     type: String,
     required: true,
@@ -79,6 +83,9 @@ const jobseekerSchema = new mongoose.Schema({
   dateRegistered: {
     type: Date,
     required: true,
+  },
+  reach: {
+    type: Array,
   },
 });
 

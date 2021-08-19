@@ -506,6 +506,23 @@ const addWork = (req, res) => {
   );
 };
 
+const addReach = (req, res) => {
+  Jobseeker.findOneAndUpdate(
+    { _id: req.params.id },
+    { $push: { reach: req.body } },
+    (err, jobseeker) => {
+      if (err) {
+        return res.status(400).json({
+          error: err,
+        });
+      }
+      return res.status(200).json({
+        success: true,
+      });
+    }
+  );
+};
+
 // -------- remove -------------------------------
 const remove = (req, res) => {
   Jobseeker.findByIdAndDelete(req.params.id).exec((err, deletedJobseeker) => {
@@ -715,6 +732,7 @@ module.exports = {
   addVolunteering,
   addProject,
   addWork,
+  addReach,
   updateEducation,
   updateCourse,
   updateCertificate,
