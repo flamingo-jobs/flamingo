@@ -104,7 +104,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 10,
     fontWeight: 500,
   },
-  applyButton: {
+  downloadBtn: {
     paddingLeft: "13px",
     paddingRight: "13px",
     borderRadius: 12,
@@ -252,7 +252,7 @@ function ApplicantCard(props) {
             <div className={classes.footerLeft}></div>
             <div className={classes.footerRight}>
               <Button
-                className={classes.applyButton}
+                className={classes.downloadBtn}
                 startIcon={<GetAppIcon />}
                 onClick={handleResumeDownload}
 
@@ -260,7 +260,7 @@ function ApplicantCard(props) {
                 Downlaod Resume
               </Button>
               <Link to="/jobseeker/profile">
-                <Button className={classes.applyButton}>View Profile</Button>
+                <Button className={classes.downloadBtn}>View Profile</Button>
               </Link>
             </div>
           </div>
