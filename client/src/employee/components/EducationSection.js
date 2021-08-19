@@ -129,6 +129,7 @@ function EducationSection(props) {
   const [education, setEducation] = useState({institute: null, type: "School", fieldOfStudy: null, GPA: null, startYear: null, startMonth: null, endYear: null, endMonth: null, societiesAndActivities: null});
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState(null);
+  const [GPAError, setGPAError] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
@@ -247,10 +248,22 @@ function EducationSection(props) {
   }
 
   function onChangeGPA(e){
-    e.preventDefault();
     setEducation(prevState => {
       return {...prevState, GPA: e.target.value}
     })
+
+    const error = <span style={{color:"red",paddingTop:"-30px",fontSize:"13px"}}>GPA can only contain numbers upto 2 decimal places</span>;
+    var regexp = /^\d+(\.\d{1,2})?$/;
+    if(e.target.value !== ""){
+      if(!regexp.test(e.target.value)){
+        setGPAError(error);
+      }else{
+        setGPAError(null);
+      }
+    }else{
+      setGPAError(null);
+    }
+    
   }
 
   function onChangestartYear(e){
@@ -520,16 +533,18 @@ console.log(edu);
         />
         <TextField
         className={classes.field}
-          type="number"
+          type="text"
           id="outlined-basic"
-          pattern="^(\d+)(,\d{1,2}|.\d{1,2})?$"
-          onKeyDown={(event) => event.keyCode === 69 ? event.preventDefault() : true}
           label="GPA" 
           variant="outlined"
           size="small"
           onChange={onChangeGPA}
           style={{width:'30%'}}
         />
+        <div style={{marginTop:"-15px",paddingBottom:"20px"}}>
+        {GPAError}
+        </div>
+        
         <Grid container direction="row">
           <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
             <Grid item xs={12}>
