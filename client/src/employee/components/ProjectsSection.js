@@ -249,6 +249,7 @@ function ProjectsSection(props) {
 
   function handleClose(){
     setOpen(false);
+    setState({name: null, link: null, description: null, startYear: null, startMonth: null, endYear: null, endMonth: null, usedTech: null});
   }
   
   // Alert stuff

@@ -223,6 +223,7 @@ function Course(props) {
 
   function handleClose(){
     setOpen(false);
+    setState({course: null, institute: null, startYear: null, startMonth: null, endYear: null, endMonth: null});
   }
 
     // Alert stuff

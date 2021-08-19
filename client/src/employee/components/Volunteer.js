@@ -223,6 +223,7 @@ function Volunteer(props) {
 
   function handleClose(){
     setOpen(false);
+    setState({title: null, organization: null, startYear: null, startMonth: null, endYear: null, endMonth: null, description: null});
   }
 
     // Alert stuff
