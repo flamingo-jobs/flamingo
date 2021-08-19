@@ -50,6 +50,7 @@ router.put('/jobseeker/addAward/:id', jobseekerController.addAward);
 router.put('/jobseeker/addVolunteering/:id', jobseekerController.addVolunteering);
 router.put('/jobseeker/addProject/:id', jobseekerController.addProject);
 router.put('/jobseeker/addWork/:id', jobseekerController.addWork);
+router.put('/jobseeker/addReach/:id', jobseekerController.addReach);
 
 // delete
 

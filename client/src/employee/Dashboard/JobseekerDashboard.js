@@ -7,6 +7,7 @@ import RecommendedOrganizations from './components/RecommendedOrganizations';
 import SideMenu from './components/SideMenu';
 import TopCards from './components/TopCards';
 import Favourites from './components/Favourites';
+import ReachChart from './components/ReachChart';
 
 
 
@@ -23,6 +24,8 @@ function JobseekerDashboard(props) {
             </Grid>
             <Grid item xs={12} md={12} lg={4} spacing={3}>
                 <ProfileStatus />
+                <Space />
+                <ReachChart />
                 <Space />
                 <Favourites />
                 <Space />
