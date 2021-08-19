@@ -9,14 +9,12 @@ import {
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import CompanySummaryCard from "./components/Dashboard/components/CompanySummaryCard";
-import DashboardNotifications from "./components/Dashboard/components/DashboardNotifications";
+import PopularJobs from "./components/Dashboard/components/PopularJobs";
 import TopCards from "./components/Dashboard/components/TopCards";
 import Aquisitions from "./components/Dashboard/components/Aquisitions";
 import LineGraph from "./components/Dashboard/components/LineGraph";
 import NewApplicants from "./components/Dashboard/components/NewApplicants";
 import LatestJobs from "./components/Dashboard/components/LatestJobs";
-
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -69,7 +67,10 @@ const Dashboard = (props) => {
 
               <Grid item container spacing={3}>
                 <Grid item xs={8}>
-                  <LineGraph className={classes.lineGraph} employerId={loginId} />
+                  <LineGraph
+                    className={classes.lineGraph}
+                    employerId={loginId}
+                  />
                 </Grid>
 
                 <Grid
@@ -87,7 +88,7 @@ const Dashboard = (props) => {
 
                   {/* Notifications */}
                   <Grid item>
-                    <NewApplicants employerId={loginId} />
+                    <PopularJobs employerId={loginId} />
                   </Grid>
                 </Grid>
               </Grid>
@@ -97,12 +98,12 @@ const Dashboard = (props) => {
             <Grid container direction="column" item xs={12} sm={3} spacing={1}>
               {/* Company Profile and stars */}
               <Grid item>
-                <CompanySummaryCard employerId={loginId}/>
+                <CompanySummaryCard employerId={loginId} />
               </Grid>
 
               {/* Notifications */}
               <Grid item>
-                <DashboardNotifications employerId={loginId} />
+                <NewApplicants employerId={loginId} />
               </Grid>
             </Grid>
           </Grid>
@@ -111,10 +112,7 @@ const Dashboard = (props) => {
         <Grid item>
           <LatestJobs employerId={loginId} />
         </Grid>
-       
       </Grid>
-
-    
     </>
   );
 };

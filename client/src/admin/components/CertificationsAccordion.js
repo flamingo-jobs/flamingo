@@ -122,7 +122,8 @@ export default function DetailedAccordion(props) {
   const [certificates, setCertificates] = React.useState(props.info.certificates);
   const [editing, setEditing] = React.useState(false);
 
-  const certificationColumns = [{ field: 'name', headerName: 'Certificates', flex: 1, editable: true }];
+  const certificationColumns = [{ field: 'name', headerName: 'Certificates', flex: 0.7, editable: true },
+  { field: 'score', headerName: 'Score', flex: 0.3, editable: true }];
 
   const handleCertificates = (certificates) => {
     setCertificates(certificates);
@@ -147,7 +148,7 @@ export default function DetailedAccordion(props) {
 
   const displayEditPopup = () => {
     if (editing) {
-      return <EditCertificationIssuer onSuccess={props.onRefresh} open={editing} info={props.info} handleDone={doneEdit} />
+      return <EditCertificationIssuer onClose={doneEdit} onSuccess={props.onRefresh} open={editing} info={props.info} handleDone={doneEdit} />
     }
   }
 

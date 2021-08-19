@@ -89,7 +89,7 @@ const generateRecommendations = (req, res) => {
                             var projectArray = [];
                             item.project.forEach((project) => {
                                 if (project.hasOwnProperty("techStack")) {
-                                    projectArray.push.apply(projectArray, project.techStack);
+                                    projectArray.push.apply(projectArray, project.usedTech.split(", "));
                                 }
                             });
 
@@ -224,7 +224,7 @@ const generateJobSeekerRecommendations = (req, res) => {
                             var projectArray = [];
                             jobseeker.project.forEach((project) => {
                                 if (project.hasOwnProperty("techStack")) {
-                                    projectArray.push.apply(projectArray, project.techStack);
+                                    projectArray.push.apply(projectArray, project.usedTech.split(", "));
                                 }
                             });
 

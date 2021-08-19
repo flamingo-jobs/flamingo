@@ -19,7 +19,8 @@ import { useState, useEffect } from "react";
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundSize: "cover",
-    marginRight: -10,
+    marginLeft: 10,
+    marginRight: 10,
   },
   title: {
     fontWeight: "bolder",
@@ -109,6 +110,38 @@ const NewApplicants = (props) => {
         </Typography>
         <PeopleAltIcon className={classes.peopleIcon}/>
 
+            <Grid container direction="row" xs={12} className={classes.applicantContainer}>
+                <Grid item xs={3} alignContent="right">
+                    <Avatar alt="Remy Sharp" src={ApplicantImage} className={classes.avatar} />
+                </Grid>
+                <Grid item direction="column" container xs={9} >
+                    <Grid item>
+                        <Typography variant="body2" className={classes.applicantName}>
+                            <Box
+                                fontWeight={500}
+                                fontSize={15}
+                                m={1}
+                            >
+                               Anne Shirley
+                            </Box>
+                        </Typography>
+                    </Grid>
+
+                    <Grid item>
+                        <Typography variant="body2" className={classes.applicantBody}>
+                            <Box
+                                fontWeight={400}
+                                fontSize={12}
+                                m={1}
+                            >
+                               Applied for SE
+                            </Box>
+                           
+                        </Typography>
+                    </Grid>
+                    
+                </Grid>
+            </Grid>  
             <Grid container direction="row" xs={12} className={classes.applicantContainer}>
                 <Grid item xs={3} alignContent="right">
                     <Avatar alt="Remy Sharp" src={ApplicantImage} className={classes.avatar} />

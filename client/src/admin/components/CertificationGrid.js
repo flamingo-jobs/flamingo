@@ -113,12 +113,26 @@ function CertificationGrid(props) {
             } else {
                 var newRows = [...updatedRows];
             }
-            let i = rows.findIndex(x => x.id === editRowsModel.id);
-            if (i >= 0) {
-                newRows[i] = { id: i, name: editRowsModel.props.value };
-            } else {
-                newRows.push({ id: editRowsModel.id, name: editRowsModel.props.value });
+            let i = updatedRows.findIndex(x => x.id === editRowsModel.id);
+            let j = rows.findIndex(x => x.id === editRowsModel.id);
+            
+            if(editRowsModel.field === "score"){
+                console.log(i);
+                if (i >= 0) {
+                    newRows[i] = { id: `${i}`, name: updatedRows[i].name, score: editRowsModel.props.value };
+                } else {
+                    newRows.push({ id: editRowsModel.id, name: rows[j].name, score: editRowsModel.props.value });
+                }
             }
+            if(editRowsModel.field === "name"){
+                console.log(i);
+                if (i >= 0) {
+                    newRows[i] = { id: `${i}`, name: editRowsModel.props.value, score: updatedRows[i].score };
+                } else {
+                    newRows.push({ id: editRowsModel.id, name: editRowsModel.props.value, score: rows[j].score });
+                }
+            }
+            console.log(newRows);
             setUpdatedRows(newRows);
             setPendingChanges(true);
         } else if (updatedRows.length === 0) {
@@ -197,7 +211,7 @@ function CertificationGrid(props) {
                 if (typeof (res.data.existingData) === "object") {
                     let array = [];
                     for (var p in res.data.existingData.certificates) {
-                        let certificate = { id: p, name: res.data.existingData.certificates[p] };
+                        let certificate = { id: p, name: res.data.existingData.certificates[p].name, score: res.data.existingData.certificates[p].score };
                         array[p] = certificate;
                     }
                     res.data.existingData = array;
@@ -208,8 +222,10 @@ function CertificationGrid(props) {
                     setHeight(500);
                 }
                 setRows(res.data.existingData)
+                setUpdatedRows(res.data.existingData)
             } else {
                 setRows([])
+                setUpdatedRows([])
             }
             setLoading(false);
         })
@@ -257,7 +273,7 @@ function CertificationGrid(props) {
 
         let array = [];
         newRows.forEach((item) => {
-            array.push(item.name);
+            array.push({ name: item.name, score: item.score });
         })
 
         let data = {
@@ -294,8 +310,10 @@ function CertificationGrid(props) {
     const saveChanges = () => {
         let array = [];
         updatedRows.forEach((item) => {
-            array.push(item.name);
+            array.push({ name: item.name, score: item.score });
         })
+
+        console.log(updatedRows);
 
         let data = {
             certificates: array

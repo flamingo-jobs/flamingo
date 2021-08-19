@@ -16,8 +16,7 @@ router.get('/jobs/generateRecommendations/:id', recommendationController.generat
 router.get('/jobs/generateJobSeekerRecommendations/:id', recommendationController.generateJobSeekerRecommendations);
 
 router.get('/jobs/shortlistApplicants/:id', shortlistController.shortlistApplicants);
-router.get('/jobs/shortlistOnApply/:id', shortlistController.shortlistOnApply);
-router.get('/jobs/shortlistOnApplicantChanges/:id', shortlistController.shortlistOnApplicantChanges);
+router.get('/jobs/shortlistOnApplicantChanges/:jobId/:applicantId', shortlistController.shortlistOnApplicantChanges);
 
 // get specific
 router.get('/jobs/search/:searchString', jobsController.getSearched);

@@ -74,6 +74,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft:15,
     marginTop:5,
     marginRight: -15,
+    marginBottom:5,
   },
   title: {
     fontWeight: "bolder",

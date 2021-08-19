@@ -116,6 +116,9 @@ export default function DetailedAccordion(props) {
   const [list, setList] = React.useState(props.info.stack.list);
   const [frontEnd, setFrontEnd] = React.useState(props.info.stack.frontEnd);
   const [backEnd, setBackEnd] = React.useState(props.info.stack.backEnd);
+  const [inputList, setInputList] = React.useState(props.info.stack.list);
+  const [inputFrontEnd, setInputFrontEnd] = React.useState(props.info.stack.frontEnd);
+  const [inputBackEnd, setInputBackEnd] = React.useState(props.info.stack.backEnd);
   const [editing, setEditing] = React.useState(false);
 
   const handleList = (list) => {
@@ -211,6 +214,7 @@ export default function DetailedAccordion(props) {
                 id={`tags-filled-1-${props.info._id}`}
                 options={[]}
                 value={frontEnd}
+                inputValue={inputFrontEnd}
                 freeSolo
                 disabled={!editing}
                 disableClearable
@@ -227,6 +231,20 @@ export default function DetailedAccordion(props) {
                   inputRoot: classes.inputRoot,
                   input: classes.inputInput,
                 }}
+                onInputChange={(event, newInputValue) => {
+                  const options = newInputValue.split(",");
+  
+                  if (options.length > 1) {
+                    setFrontEnd(
+                      frontEnd
+                        .concat(options)
+                        .map(x => x.trim())
+                        .filter(x => x)
+                    );
+                  } else {
+                    setInputFrontEnd(newInputValue);
+                  }
+                }}
               />
             </Grid>
             <Grid item xs={12} lg={6}>
@@ -236,6 +254,7 @@ export default function DetailedAccordion(props) {
                 id={`tags-filled-2-${props.info._id}`}
                 options={[]}
                 value={backEnd}
+                inputValue={inputBackEnd}
                 freeSolo
                 disabled={!editing}
                 disableClearable
@@ -252,6 +271,20 @@ export default function DetailedAccordion(props) {
                   inputRoot: classes.inputRoot,
                   input: classes.inputInput,
                 }}
+                onInputChange={(event, newInputValue) => {
+                  const options = newInputValue.split(",");
+  
+                  if (options.length > 1) {
+                    setBackEnd(
+                      backEnd
+                        .concat(options)
+                        .map(x => x.trim())
+                        .filter(x => x)
+                    );
+                  } else {
+                    setInputBackEnd(newInputValue);
+                  }
+                }}
               />
             </Grid> </> : <Grid item xs={12}>
             <Typography className={classes.secondaryHeading}>Technologies</Typography>
@@ -260,6 +293,7 @@ export default function DetailedAccordion(props) {
               id={`tags-filled-1-${props.info._id}`}
               options={[]}
               value={list}
+              inputValue={inputList}
               disabled={!editing}
               freeSolo
               disableClearable
@@ -272,6 +306,20 @@ export default function DetailedAccordion(props) {
                 <TextField {...params} id={`text-field-1-${props.info._id}`} variant="standard" placeholder={editing ? "+ Add more" : null} classes={{ root: classes.keywordInput }} />
               )}
               onChange={(event, value) => handleList(value)}
+              onInputChange={(event, newInputValue) => {
+                const options = newInputValue.split(",");
+
+                if (options.length > 1) {
+                  setList(
+                    list
+                      .concat(options)
+                      .map(x => x.trim())
+                      .filter(x => x)
+                  );
+                } else {
+                  setInputList(newInputValue);
+                }
+              }}
               classes={{
                 inputRoot: classes.inputRoot,
                 input: classes.inputInput,
