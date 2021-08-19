@@ -262,9 +262,12 @@ function EducationSection(props) {
     setEducation(prevState => {
       return {...prevState, GPA: e.target.value}
     })
+    validateGPA(e);  
+  }
 
+  function validateGPA(e){
     const error = <span style={{color:"red",paddingTop:"-30px",fontSize:"13px"}}>GPA can only contain numbers upto 2 decimal places</span>;
-    var regexp = /^\d+(\.\d{1,2})?$/;
+    var regexp = /^[0-4](\.\d{1,2})?$/;
     if(e.target.value !== ""){
       if(!regexp.test(e.target.value)){
         setGPAError(error);
@@ -274,7 +277,6 @@ function EducationSection(props) {
     }else{
       setGPAError(null);
     }
-    
   }
 
   function onChangestartYear(e){
@@ -358,6 +360,9 @@ function EducationSection(props) {
     e.preventDefault();
     let edu;
     if(education.type === "Bachelor's"){
+      if(GPAError !== null){
+        return;
+      }
     edu = {
       institute: education.institute,
       type: education.type,

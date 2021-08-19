@@ -149,6 +149,8 @@ function EduItem(props) {
   const [alertShow, setAlertShow] = React.useState(false);
   
   const [form, setForm] = useState(null);
+  const [GPAError, setGPAError] = useState(null);
+
   let loginId;
   let login = false;
   const jwt = require("jsonwebtoken");
@@ -276,10 +278,24 @@ function EduItem(props) {
   }
 
   function onChangeGPA(e){
-    e.preventDefault();
     setEducation(prevState => {
       return {...prevState, GPA: e.target.value}
     })
+    validateGPA(e);
+  }
+
+  function validateGPA(e){
+    const error = <span style={{color:"red",paddingTop:"-30px",fontSize:"13px"}}>GPA can only contain numbers upto 2 decimal places</span>;
+    var regexp = /^[0-4](\.\d{1,2})?$/;
+    if(e.target.value !== ""){
+      if(!regexp.test(e.target.value)){
+        setGPAError(error);
+      }else{
+        setGPAError(null);
+      }
+    }else{
+      setGPAError(null);
+    }
   }
 
   function onChangestartYear(e){
@@ -346,6 +362,9 @@ function EduItem(props) {
     e.preventDefault();
     let edu;
     if(education.type === "Bachelor's"){
+      if(GPAError !== null){
+        return;
+      }
       edu = {
         institute: education.institute,
         type: education.type,
@@ -411,10 +430,8 @@ function EduItem(props) {
         />
         <TextField
         className={classes.field}
-          type="number"
+          type="text"
           id="outlined-basic"
-          pattern="^(\d+)(,\d{1,2}|.\d{1,2})?$"
-          onKeyDown={(event) => event.keyCode === 69 ? event.preventDefault() : true}
           label="GPA" 
           variant="outlined"
           size="small"
@@ -422,6 +439,10 @@ function EduItem(props) {
           onChange={onChangeGPA}
           style={{width:'30%'}}
         />
+        <div style={{marginTop:"-15px",paddingBottom:"20px"}}>
+        {GPAError}
+        </div>
+
         <Grid container direction="row">
           <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
             <Grid item xs={12}>
