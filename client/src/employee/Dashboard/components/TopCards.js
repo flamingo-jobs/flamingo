@@ -97,7 +97,7 @@ function TopCards(props){
     let totalPending = 0;
     let totalShortlisted = 0;
     let totalRejected = 0;
-    let temp = appliedJobs.length;
+    let temp = appliedJobs ? appliedJobs.length : 0;
 
     for (let index = 0; index < temp; index++) {
       if(appliedJobs[index].status==="pending"){
@@ -129,7 +129,7 @@ function TopCards(props){
                         </Typography>
                         
                         <Typography variant="h5" className={classes.applicationsNumber} style={{float:"center"}}>                       
-                            {appliedJobs.length}
+                            {appliedJobs ? appliedJobs.length : 0}
                         </Typography>   
             </FloatCard>
         </Grid>
