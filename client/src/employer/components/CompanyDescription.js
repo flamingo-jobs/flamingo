@@ -238,7 +238,12 @@ function CompanyBasicInfo(props) {
           } else {
             handleClickAlertServerError()
           }
-        });
+        
+        })
+        .catch(()=>{
+          handleClickAlertServerError()
+        })
+
 
       handleClose();
     } else {
@@ -351,21 +356,24 @@ function CompanyBasicInfo(props) {
 
         <br />
 
-        <Snackbar open={openAlertValidationError} autoHideDuration={6000} onClose={handleCloseAlertValidationError}>
+        <Snackbar open={openAlertValidationError} autoHideDuration={6000} onClose={handleCloseAlertValidationError}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left'}}>
           <Alert onClose={handleCloseAlertValidationError} severity="error">
             Company Description cannot be empty!
           </Alert>
         </Snackbar>
 
-        <Snackbar open={openAlertServerError} autoHideDuration={6000} onClose={handleCloseAlertServerError}>
+        <Snackbar open={openAlertServerError} autoHideDuration={6000} onClose={handleCloseAlertServerError} 
+         anchorOrigin={{ vertical: 'bottom', horizontal: 'left'}}>
           <Alert onClose={handleCloseAlertServerError} severity="error">
             Server error! Changes couldn't be saved
           </Alert>
         </Snackbar>
 
-        <Snackbar open={openAlertSuccess} autoHideDuration={6000} onClose={handleCloseAlertSuccess}>
+        <Snackbar open={openAlertSuccess} autoHideDuration={6000} onClose={handleCloseAlertSuccess}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'left'}}>
           <Alert onClose={handleCloseAlertSuccess} severity="success">
-            Changes saved successfully
+            Changes saved successfully!
           </Alert>
         </Snackbar>
 
