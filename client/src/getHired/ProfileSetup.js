@@ -149,8 +149,7 @@ export default function ProfileSetup() {
   const handleNext = () => {
     if (activeStep === steps.length - 1) {
       const jobSeekerData = {
-        university: university,
-        school: college,
+        education: [...university, ...college, ...diploma, ...postgraduate],
         course: course,
         award: award,
         achievement: achievement,
@@ -158,6 +157,7 @@ export default function ProfileSetup() {
         project: project,
         volunteer: volunteer,
         technologyStack: tech,
+        certificate: certificate,
       };
       const loginId = sessionStorage.getItem("loginId");
       axios
@@ -195,12 +195,13 @@ export default function ProfileSetup() {
 
   const [university, setUniversity] = useState([
     {
-      university: "",
-      degree: "",
+      institute: "",
+      type: "Bachelor's",
       fieldOfStudy: "",
       GPA: 0,
       startDate: "",
       endDate: "",
+      societiesAndActivities: "",
     },
   ]);
   const handleUniversityInputChange = (e, index) => {
@@ -218,18 +219,58 @@ export default function ProfileSetup() {
     setUniversity([
       ...university,
       {
-        university: "",
-        degree: "",
+        institute: "",
+        type: "Bachelor's",
         fieldOfStudy: "",
         GPA: 0,
         startDate: "",
         endDate: "",
+        societiesAndActivities: "",
+      },
+    ]);
+  };
+
+  const [postgraduate, setPostgraduate] = useState([
+    {
+      institute: "",
+      type: "MSc",
+      startDate: "",
+      endDate: "",
+      fieldOfStudy: "",
+    },
+  ]);
+  const handlePostgraduateInputChange = (e, index) => {
+    const { name, value } = e.target;
+    const list = [...postgraduate];
+    list[index][name] = value;
+    setPostgraduate(list);
+  };
+  const handlePostgraduateRemoveClick = (index) => {
+    const list = [...postgraduate];
+    list.splice(index, 1);
+    setPostgraduate(list);
+  };
+  const handlePostgraduateAddClick = () => {
+    setPostgraduate([
+      ...postgraduate,
+      {
+        institute: "",
+        type: "MSc",
+        startDate: "",
+        endDate: "",
+        fieldOfStudy: "",
       },
     ]);
   };
 
   const [college, setCollege] = useState([
-    { school: "", startDate: "", endDate: "", description: "" },
+    {
+      institute: "",
+      type: "School",
+      startDate: "",
+      endDate: "",
+      societiesAndActivities: "",
+    },
   ]);
   const handleCollegeInputChange = (e, index) => {
     const { name, value } = e.target;
@@ -245,7 +286,46 @@ export default function ProfileSetup() {
   const handleCollegeAddClick = () => {
     setCollege([
       ...college,
-      { school: "", startDate: "", endDate: "", description: "" },
+      {
+        institute: "",
+        type: "School",
+        startDate: "",
+        endDate: "",
+        societiesAndActivities: "",
+      },
+    ]);
+  };
+
+  const [diploma, setDiploma] = useState([
+    {
+      institute: "",
+      type: "Diploma",
+      startDate: "",
+      endDate: "",
+      fieldOfStudy: "",
+    },
+  ]);
+  const handleDiplomaInputChange = (e, index) => {
+    const { name, value } = e.target;
+    const list = [...diploma];
+    list[index][name] = value;
+    setDiploma(list);
+  };
+  const handleDiplomaRemoveClick = (index) => {
+    const list = [...diploma];
+    list.splice(index, 1);
+    setDiploma(list);
+  };
+  const handleDiplomaAddClick = () => {
+    setDiploma([
+      ...diploma,
+      {
+        institute: "",
+        type: "Diploma",
+        startDate: "",
+        endDate: "",
+        fieldOfStudy: "",
+      },
     ]);
   };
 
@@ -416,6 +496,37 @@ export default function ProfileSetup() {
     ]);
   };
 
+  const [certificate, setCertificate] = useState([
+    {
+      issuer: "",
+      title: "",
+      score: "",
+      date: "",
+    },
+  ]);
+  const handleCertificateInputChange = (e, index) => {
+    const { name, value } = e.target;
+    const list = [...certificate];
+    list[index][name] = value;
+    setCertificate(list);
+  };
+  const handleCertificateRemoveClick = (index) => {
+    const list = [...certificate];
+    list.splice(index, 1);
+    setCertificate(list);
+  };
+  const handleCertificateAddClick = () => {
+    setCertificate([
+      ...certificate,
+      {
+        issuer: "",
+        title: "",
+        score: "",
+        date: "",
+      },
+    ]);
+  };
+
   const [tech, setTech] = useState([]);
   const handleTechAddClick = (techName) => {
     setTech(techName);
@@ -426,14 +537,26 @@ export default function ProfileSetup() {
     handleUniversityInputChange,
     handleUniversityAddClick,
     handleUniversityRemoveClick,
+    postgraduate,
+    handlePostgraduateInputChange,
+    handlePostgraduateAddClick,
+    handlePostgraduateRemoveClick,
     college,
     handleCollegeInputChange,
     handleCollegeAddClick,
     handleCollegeRemoveClick,
+    diploma,
+    handleDiplomaInputChange,
+    handleDiplomaAddClick,
+    handleDiplomaRemoveClick,
     course,
     handleCourseInputChange,
     handleCourseAddClick,
     handleCourseRemoveClick,
+    certificate,
+    handleCertificateInputChange,
+    handleCertificateAddClick,
+    handleCertificateRemoveClick,
     award,
     handleAwardInputChange,
     handleAwardAddClick,
