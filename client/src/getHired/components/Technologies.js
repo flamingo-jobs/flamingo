@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
+import Loading from "../../components/Loading";
 import DetailedAccordion from "./DetailedAccordion";
-import { Typography } from "@material-ui/core";
 import BACKEND_URL from "../../Config";
 import axios from "axios";
 
@@ -29,7 +29,7 @@ function Technologies({ tech, handleTechAddClick }) {
   useEffect(() => {
     if (!!userTech) {
       let newRows = tech;
-      let i = tech.findIndex((x) => x.name === userTech.name);
+      let i = tech.findIndex((x) => x.type === userTech.type);
       if (i >= 0) {
         newRows[i] = userTech;
       } else {
@@ -37,7 +37,7 @@ function Technologies({ tech, handleTechAddClick }) {
       }
       handleTechAddClick(newRows);
     }
-  }, [userTech]);
+  }, [userTech, tech, handleTechAddClick]);
 
   const displayTechnologies = () => {
     if (technologies) {
@@ -54,7 +54,7 @@ function Technologies({ tech, handleTechAddClick }) {
         );
       });
     } else {
-      return <Typography>No featured Jobs</Typography>;
+      return <Loading />;
     }
   };
 
