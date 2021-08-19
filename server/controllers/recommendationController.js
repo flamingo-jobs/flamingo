@@ -98,7 +98,7 @@ const generateRecommendations = (req, res) => {
                             // skills
 
                             if (item.skills.length) {
-                                skills = similarity(item.skills.join(' '), job.qualifications.join(' '));
+                                skills = similarity(item.skills.join(' '), job.qualifications);
                             }
                             console.log(skills);
 
@@ -233,7 +233,22 @@ const generateJobSeekerRecommendations = (req, res) => {
                             // skills
 
                             if (jobseeker.skills.length) {
-                                skills = similarity(jobseeker.skills.join(' '), job.qualifications.join(' '));
+                                skills = similarity(jobseeker.skills.join(' '), job.qualifications);
+                            }
+
+                            // certificates
+                            
+
+                            let certificationNameList = [];
+
+                            if (item.certificate.length) {
+                                item.certificate.forEach((cert) => {
+                                    certificationNameList.push(cert.title);
+                                })
+                            }
+                            
+                            if(certificationNameList.length){
+                                certificates = similarity(certificationNameList.join(' '), job.technologyStack.concat([job.title, job.description]));
                             }
 
 
@@ -268,17 +283,30 @@ const generateJobSeekerRecommendations = (req, res) => {
 }
 
 const similarity = (a, b) => {
-    var equivalency = 0;
-    var minLength = (a.length > b.length) ? b.length : a.length;
-    var maxLength = (a.length < b.length) ? b.length : a.length;
-    for (var i = 0; i < minLength; i++) {
-        if (a[i] === b[i]) {
-            equivalency++;
-        }
-    }
+    // var equivalency = 0;
+    // var minLength = (a.length > b.length) ? b.length : a.length;
+    // var maxLength = (a.length < b.length) ? b.length : a.length;
+    // for (var i = 0; i < minLength; i++) {
+    //     if (a[i] === b[i]) {
+    //         equivalency++;
+    //     }
+    // }
 
-    var weight = equivalency / maxLength;
-    return (weight * 100);
+    // var weight = equivalency / maxLength;
+    // return (weight * 100);
+
+
+    var count = a.split(' ').length;
+    var pattern = a.split(' ').join('|');
+    var r = new RegExp(pattern, 'g');
+    var output = [];
+
+    b.forEach(function (sentance) {
+        var matches = sentance.match(r);
+        output.push((matches) ? (matches.length / count) * 100 : 0);
+    });
+
+    return output.reduce((x, y) => x + y)/output.length;
 };
 
 const findPercentage = (first, second) => {

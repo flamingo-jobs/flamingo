@@ -105,7 +105,10 @@ export default function AddNewCertificationPopup(props) {
         axios.post(`${BACKEND_URL}/certifications/create`, data)
             .then(res => {
                 if (res.data.success) {
+                    setCertificates([]);
+                    setInputCertificates([]);
                     props.onSuccess();
+
                 } else {
                     props.onError();
                 }
@@ -133,7 +136,7 @@ export default function AddNewCertificationPopup(props) {
                             />
                         </Grid>
 
-                        <Grid item xs={12} lg={6}>
+                        <Grid item xs={12}>
                             <Typography className={classes.secondaryHeading}>Certificates<br/><br/></Typography>
                             <Typography>* If you want to add a score for the certificate use = and mention the score. <br/> eg: Microsoft Certified: Professional=20 <br/>
                             * Use ; as the delimiter if you add certificates as bulk.<br/><br/></Typography>

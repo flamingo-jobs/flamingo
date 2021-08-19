@@ -1,6 +1,7 @@
 const Jobs = require('../models/jobs');
 const Jobseeker = require('../models/jobseeker');
 const Settings = require('../models/settings');
+const Certifications = require('../models/certifications');
 const mongoose = require('mongoose');
 
 const shortlistApplicants = (req, res) => {
@@ -8,6 +9,12 @@ const shortlistApplicants = (req, res) => {
     var jobData = null;
     var jobSeekers = null;
     const scoredApplicants = [];
+    var certificationList = [];
+
+    Certifications.find().exec((err, certifications) => {
+        certificationList = certifications
+    });
+
 
     Settings.find({ 'type': { $in: ['shortlistingDefaults', 'shortlistingEducationDefaults', 'shortlistingExperienceDefaults'] } }).exec((err, settings) => {
         if (err) {
@@ -151,8 +158,45 @@ const shortlistApplicants = (req, res) => {
                             // skills
 
                             if (item.skills.length) {
-                                skills = similarity(item.skills.join(' '), job.qualifications.join(' '));
+                                skills = similarity(item.skills.join(' '), job.qualifications);
                             }
+
+                            // certificates
+                            
+
+                            let certificationNameList = [];
+                            let certRelevence = 0;
+                            let certScore = 0;
+                            if (item.certificate.length) {
+                                item.certificate.forEach((cert) => {
+                                    certScore += parseInt(cert.score);
+                                    certificationNameList.push(cert.title);
+                                })
+                            }
+                            
+                            if(certificationNameList.length){
+                                certRelevence = similarity(certificationNameList.join(' '), job.technologyStack.concat([job.title, job.description]));
+                            }
+                            
+                            console.log(certRelevence)
+                           
+                            let certTotal = 0;
+                            
+
+                            if (certificationList.length) {
+                                certificationList.forEach((issuer) => {
+                                    issuer.certificates.forEach((item) => {
+                                        certTotal += parseInt(item.score);
+                                    })
+                                })
+                            }
+
+                            certificates = (certScore / certTotal)*0.5 + certRelevence*0.5;
+
+                            // courses
+
+
+
 
                             total = education * (shortlistingSettings.education / 100) + experience * (shortlistingSettings.experience / 100) +
                                 techStack * (shortlistingSettings.techStack / 100) + projectTech * (shortlistingSettings.projectTechStack / 100)
@@ -184,7 +228,7 @@ const shortlistApplicants = (req, res) => {
                         })
                     }
 
-                    updateJob(scoredApplicants, req.params.id);
+                    // updateJob(scoredApplicants, req.params.id);
 
                     return res.status(200).json({
                         success: true,
@@ -379,7 +423,7 @@ const shortlistOnApplicantChanges = (req, res) => {
 
                     }
 
-                     updateJob(scoredApplicants, req.params.id);
+                    updateJob(scoredApplicants, req.params.id);
 
                     return res.status(200).json({
                         success: true,
@@ -394,17 +438,29 @@ const shortlistOnApplicantChanges = (req, res) => {
 
 
 const similarity = (a, b) => {
-    var equivalency = 0;
-    var minLength = (a.length > b.length) ? b.length : a.length;
-    var maxLength = (a.length < b.length) ? b.length : a.length;
-    for (var i = 0; i < minLength; i++) {
-        if (a[i] === b[i]) {
-            equivalency++;
-        }
-    }
+    // var equivalency = 0;
+    // var minLength = (a.length > b.length) ? b.length : a.length;
+    // var maxLength = (a.length < b.length) ? b.length : a.length;
+    // for (var i = 0; i < minLength; i++) {
+    //     if (a[i] === b[i]) {
+    //         equivalency++;
+    //     }
+    // }
 
-    var weight = equivalency / maxLength;
-    return (weight * 100);
+    // var weight = equivalency / maxLength;
+    // return (weight * 100);
+
+    var count = a.split(' ').length;
+    var pattern = a.split(' ').join('|');
+    var r = new RegExp(pattern, 'g');
+    var output = [];
+
+    b.forEach(function (sentance) {
+        var matches = sentance.match(r);
+        output.push((matches) ? (matches.length / count) * 100 : 0);
+    });
+
+    return output.reduce((x, y) => x + y)/output.length;
 };
 
 const findPercentage = (first, second) => {
