@@ -231,6 +231,7 @@ function WorkExperience(props) {
 
   function handleClose(){
     setOpen(false);
+    setState({place: null, description: null, position: null, startYear: null, startMonth: null, endYear: null, endMonth: null, taskAndResponsibility: null});
   }
   
   // Alert stuff

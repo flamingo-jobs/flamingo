@@ -257,6 +257,7 @@ function CertificatesSection(props) {
 
   function handleClose(){
     setOpen(false);
+    setState({issuer: null, title: null, score: null, month: null, year: null});
   }
 
     // Alert stuff

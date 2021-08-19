@@ -207,19 +207,6 @@ function CertificateItem(props) {
           }        
       }
   }
-  function setTitle(e){
-    for (let index = 0; index < allCertificates?.length; index++) {
-      if(allCertificates[index].issuer === state.issuer){
-        let titles = allCertificates[index].certificates;
-        for (let index = 0; index < titles?.length; index++) {
-          if(titles[index].name = props.title){
-            e.target.value = JSON.stringify(titles);
-          }
-          
-        }
-      }        
-  }
-}
   
   useEffect(() => {
     if (deleteSuccess === true) {
@@ -426,26 +413,26 @@ function CertificateItem(props) {
                     <InputLabel className={classes.placeholder} htmlFor="outlined-age-native-simple">Select Issuer</InputLabel>
                     <Select
                       native
-                      value={state.issuer}
-                      onChange={onChangeIssuer}
+                      value={props.issuer}
                       className={classes.select}
                       required
+                      disabled
                     >
-                      <option aria-label="None" value="" />
-                      {getIssuers()}
+                      <option>{props.issuer}</option>
+                      {/* {getIssuers()} */}
                     </Select>
                   </FormControl>
                   <FormControl variant="outlined" className={classes.field}>
                     <InputLabel className={classes.placeholder} htmlFor="outlined-age-native-simple">Select Certification</InputLabel>
                     <Select
                       native
-                      onChange={onChangeTitle}
+                      value={props.title}
                       className={classes.select}
                       required
+                      disabled
                     >
-                      <option aria-label="None" value="" />
-                      {getTitles()}
-                      {setTitle}
+                      <option>{props.title}</option>
+                      {/* {getTitles()} */}
                     </Select>
                   </FormControl>
                   <Grid container direction="row">
