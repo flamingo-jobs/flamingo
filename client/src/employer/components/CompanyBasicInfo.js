@@ -29,14 +29,13 @@ import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import axios from "axios";
 import BACKEND_URL from "../../Config";
 import { useState, useEffect } from "react";
-import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import swal from "sweetalert";
-import { Alert, AlertTitle } from "@material-ui/lab";
 import { Link } from "react-router-dom";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 
 const jwt = require("jsonwebtoken");
 let haveAccess = false;
@@ -191,7 +190,9 @@ function CompanyBasicInfo(props) {
   const linkedIn = state.linkedIn;
   const twitter = state.twitter;
 
-  var successAlert = false;
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
 
   useEffect(() => {
     axios.get(`${BACKEND_URL}/employers/${loginId}`).then((res) => {
@@ -223,7 +224,11 @@ function CompanyBasicInfo(props) {
   };
 
   const handleClose = () => {
-    setOpen(false);
+    if (state.name != "" && location.length != 0) {
+      setOpen(false);
+    } else {
+      handleClickAlertValidationError();
+    }
   };
 
   //for the company details update form
@@ -258,6 +263,48 @@ function CompanyBasicInfo(props) {
     });
   }
 
+  //alert handling
+  const [openAlertValidationError, setOpenAlertValidationError] =
+    React.useState(false);
+  const [openAlertServerError, setOpenAlertServerError] = React.useState(false);
+  const [openAlertSuccess, setOpenAlertSuccess] = React.useState(false);
+
+  const handleClickAlertValidationError = () => {
+    setOpenAlertValidationError(true);
+  };
+
+  const handleCloseAlertValidationError = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenAlertValidationError(false);
+  };
+
+  const handleClickAlertServerError = () => {
+    setOpenAlertServerError(true);
+  };
+
+  const handleCloseAlertServerError = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenAlertServerError(false);
+  };
+
+  const handleClickAlertSuccess = () => {
+    setOpenAlertSuccess(true);
+  };
+
+  const handleCloseAlertSuccess = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenAlertSuccess(false);
+  };
+
   function onSubmit(e) {
     e.preventDefault();
     var temp = [];
@@ -278,19 +325,27 @@ function CompanyBasicInfo(props) {
       locations: temp,
     };
 
-    axios
-      .put(`${BACKEND_URL}/employers/update/${loginId}`, employer)
-      .then((res) => {
-        if (res.status == 200) {
-          successAlert = true;
-          // alert(successAlert)
-        } else {
-          successAlert = false;
-          // alert(successAlert)
-        }
-      });
 
-    handleClose();
+    if (employer.name != "" && temp.length != 0) {
+      axios
+        .put(`${BACKEND_URL}/employers/update/${loginId}`, employer)
+        .then((res) => {
+          if (res.status == 200) {
+            handleClickAlertSuccess()
+          } else {
+            handleClickAlertServerError()
+          }
+        
+        })
+        .catch(()=>{
+          handleClickAlertServerError()
+        })
+
+
+      handleClose();
+    } else {
+      handleClickAlertValidationError();
+    }
   }
 
   return (
@@ -394,6 +449,7 @@ function CompanyBasicInfo(props) {
                             <Grid item sm={12}>
                               <Autocomplete
                                 multiple
+                                required={true}
                                 id="fixed-tags-demo"
                                 value={location}
                                 onChange={(event, newValue) => {
@@ -412,6 +468,7 @@ function CompanyBasicInfo(props) {
                                     {...params}
                                     label="Location"
                                     variant="outlined"
+                                    required
                                   />
                                 )}
                               />
@@ -540,6 +597,43 @@ function CompanyBasicInfo(props) {
                   </form>
                 </div>
               </Grid>
+
+              {/* Alerts */}
+              <Snackbar
+                open={openAlertValidationError}
+                autoHideDuration={6000}
+                onClose={handleCloseAlertValidationError}
+                anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+              >
+                <Alert
+                  onClose={handleCloseAlertValidationError}
+                  severity="error"
+                >
+                  Required fields cannot be empty!
+                </Alert>
+              </Snackbar>
+
+              <Snackbar
+                open={openAlertServerError}
+                autoHideDuration={6000}
+                onClose={handleCloseAlertServerError}
+                anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+              >
+                <Alert onClose={handleCloseAlertServerError} severity="error">
+                  Server error! Changes couldn't be saved!
+                </Alert>
+              </Snackbar>
+
+              <Snackbar
+                open={openAlertSuccess}
+                autoHideDuration={6000}
+                onClose={handleCloseAlertSuccess}
+                anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+              >
+                <Alert onClose={handleCloseAlertSuccess} severity="success">
+                  Changes saved successfully!
+                </Alert>
+              </Snackbar>
 
               {/* PANEL 02 FOR LOCATION AND JOB TYPE */}
 
