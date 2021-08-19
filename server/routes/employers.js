@@ -32,4 +32,6 @@ router.patch("/employers/addReview/:empId", employersController.addReview);
 // delete employer
 router.post('/employer/delete', employersController.remove);
 
+router.get('/applications/:id', employersController.getAllApplications);
+
 module.exports = router;
