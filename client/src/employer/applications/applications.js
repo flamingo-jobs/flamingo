@@ -63,6 +63,8 @@ const Applications = () => {
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
 
   const [shortlistCount, setShortlistCount] = useState(0);
+  const [shortlistedApplications, setShortlistedApplications] = useState("empty");
+
 
   const handleSliderChange = (e, newCount) => {
     setShortlistCount(newCount);
@@ -208,10 +210,27 @@ const Applications = () => {
     }
   };
 
-  const handleShortlistSubmit = (e) => {
+  const handleShortlistSubmit = async (e) => {
     e.preventDefault();
-    
-  }
+
+    if (jobId && shortlistCount > 0) {
+      try {
+        const response = await axios.get(
+          `${BACKEND_URL}/jobs/shortlistForGivenCount/${jobId}/${shortlistCount}`
+        );
+        if (response.data.success) {
+          handleCloseShortlistModal();
+          setShortlistedApplications(response.data.applications);
+        }
+      } catch (err) {
+        handleCloseShortlistModal();
+        console.log(err);
+      }
+    } else {
+      console.log("Count should be greater than 0");
+    }
+  };
+  console.log(shortlistedApplications)
 
   return (
     <>
