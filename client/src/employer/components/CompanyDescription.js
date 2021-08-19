@@ -7,12 +7,8 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core";
-import Rating from "@material-ui/lab/Rating";
-import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
-import wso2 from "../images/wso2.png";
 import FloatCard from "./FloatCard";
 import EditIcon from "@material-ui/icons/Edit";
-import LoyaltyIcon from "@material-ui/icons/Loyalty";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -20,23 +16,12 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
 import IconButton from "@material-ui/core/IconButton";
-import LanguageIcon from "@material-ui/icons/Language";
-import FacebookIcon from "@material-ui/icons/Facebook";
-import TwitterIcon from "@material-ui/icons/Twitter";
-import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import axios from "axios";
 import BACKEND_URL from "../../Config";
 import { useState, useEffect } from "react";
-import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import swal from "sweetalert";
-import { Alert, AlertTitle } from "@material-ui/lab";
-import { Link } from "react-router-dom";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 
 const jwt = require("jsonwebtoken");
 let haveAccess = false;
@@ -89,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
   editButton: {
     marginTop: 140,
     marginLeft: 110,
-    marginBottom:-30,
+    marginBottom: -30,
     margin: theme.spacing(1),
     padding: theme.spacing(1),
   },
@@ -142,29 +127,64 @@ function CompanyBasicInfo(props) {
   }
 
   const [state, setState] = useState({
-   
     description: " ",
     technologyStack: Object,
-
-   
   });
-
 
   const description = state.description;
   const technologyStack = state.technologyStack;
- 
 
-  var successAlert = false;
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+
+  const [openAlertValidationError, setOpenAlertValidationError] = React.useState(false);
+  const [openAlertServerError, setOpenAlertServerError] = React.useState(false);
+  const [openAlertSuccess, setOpenAlertSuccess] = React.useState(false);
+
+  const handleClickAlertValidationError = () => {
+    setOpenAlertValidationError(true);
+  };
+
+  const handleCloseAlertValidationError = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenAlertValidationError(false);
+  };
+
+  const handleClickAlertServerError = () => {
+    setOpenAlertServerError(true);
+  };
+
+  const handleCloseAlertServerError = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenAlertServerError(false);
+  };
+
+  const handleClickAlertSuccess = () => {
+    setOpenAlertSuccess(true);
+  };
+
+  const handleCloseAlertSuccess = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenAlertSuccess(false);
+  };
 
   useEffect(() => {
     axios.get(`${BACKEND_URL}/employers/${loginId}`).then((res) => {
       console.log(res.data.employer);
       if (res.data.success) {
         setState({
-         
           description: res.data.employer.description,
           technologyStack: res.data.employer.technologyStack,
-         
         });
       }
       res.data.employer.locations.forEach((element) => {
@@ -182,7 +202,13 @@ function CompanyBasicInfo(props) {
   };
 
   const handleClose = () => {
-    setOpen(false);
+    if (description != "") {
+      setOpen(false);
+    }
+    else{
+      handleClickAlertValidationError();
+    }
+    
   };
 
   //for the company details update form
@@ -192,8 +218,6 @@ function CompanyBasicInfo(props) {
       return { ...prevState, description: e.target.value };
     });
   }
-
-
 
   function onSubmit(e) {
     e.preventDefault();
@@ -205,19 +229,21 @@ function CompanyBasicInfo(props) {
       description: description,
     };
 
-    axios
-      .put(`${BACKEND_URL}/employers/update/${loginId}`, employer)
-      .then((res) => {
-        if (res.status == 200) {
-          successAlert = true;
-          // alert(successAlert)
-        } else {
-          successAlert = false;
-          // alert(successAlert)
-        }
-      });
+    if (employer.description != "") {
+      axios
+        .put(`${BACKEND_URL}/employers/update/${loginId}`, employer)
+        .then((res) => {
+          if (res.status == 200) {
+            handleClickAlertSuccess()
+          } else {
+            handleClickAlertServerError()
+          }
+        });
 
-    handleClose();
+      handleClose();
+    } else {
+      handleClickAlertValidationError();
+    }
   }
 
   return (
@@ -324,6 +350,24 @@ function CompanyBasicInfo(props) {
         </Grid>
 
         <br />
+
+        <Snackbar open={openAlertValidationError} autoHideDuration={6000} onClose={handleCloseAlertValidationError}>
+          <Alert onClose={handleCloseAlertValidationError} severity="error">
+            Company Description cannot be empty!
+          </Alert>
+        </Snackbar>
+
+        <Snackbar open={openAlertServerError} autoHideDuration={6000} onClose={handleCloseAlertServerError}>
+          <Alert onClose={handleCloseAlertServerError} severity="error">
+            Server error! Changes couldn't be saved
+          </Alert>
+        </Snackbar>
+
+        <Snackbar open={openAlertSuccess} autoHideDuration={6000} onClose={handleCloseAlertSuccess}>
+          <Alert onClose={handleCloseAlertSuccess} severity="success">
+            Changes saved successfully
+          </Alert>
+        </Snackbar>
 
         <Grid container xs={12} direction="row" spacing={3}>
           {/* BODY PART OF THE COMPANY INFO CARD */}

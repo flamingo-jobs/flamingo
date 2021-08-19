@@ -48,12 +48,12 @@ const Technologies = () => {
       spacing={3}
       className={classes.root}
     >
-      <Grid item xs={12} lg={6}>
+      <Grid item xs={12} lg={12}>
         {haveAccess ? <AddTechForm /> : <NoAccess message="to add/ edit technologies"/>}
       </Grid>
 
       <Grid item xs={12} lg={6}>
-        <AvailableTechnologies />
+        {/* <AvailableTechnologies /> */}
       </Grid>
     </Grid>
   );
