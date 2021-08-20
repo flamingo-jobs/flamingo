@@ -9,6 +9,7 @@ import SnackBarAlert from "../../components/SnackBarAlert";
 import NoAccess from "../../components/NoAccess";
 import PeopleIcon from "@material-ui/icons/People";
 import ShortlistModal from "./components/shortlistModal";
+import NoInfo from '../../components/NoInfo';
 
 const jwt = require("jsonwebtoken");
 
@@ -40,6 +41,9 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
   shortlistBtn: {
+    paddingLeft: "13px",
+    paddingRight: "13px",
+    borderRadius: 12,
     color: theme.palette.white,
     backgroundColor: theme.palette.vividSkyBlue,
     "&:hover": {
@@ -188,7 +192,7 @@ const Applications = () => {
     } else {
       return (
         <FloatCard>
-          <Typography variant="h6">There are no applicants</Typography>
+          <NoInfo message="Sorry, There are no any applications yet." />
         </FloatCard>
       );
     }
@@ -212,7 +216,6 @@ const Applications = () => {
           <div className={classes.shortlistBtnContainer}>
             <Button
               className={classes.shortlistBtn}
-              variant="contained"
               startIcon={<PeopleIcon />}
               onClick={handleOpenShortlistModal}
             >
@@ -243,7 +246,6 @@ const Applications = () => {
               <div className={classes.shortlistBtnContainer}>
                 <Button
                   className={classes.shortlistBtn}
-                  variant="contained"
                   startIcon={<PeopleIcon />}
                   onClick={handleOpenShortlistModal}
                 >

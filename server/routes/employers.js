@@ -9,7 +9,7 @@ router.post('/employers/create', employersController.create);
 // get employers
 
 router.get('/employers', employersController.getAll);
-
+router.get('/employers/toTable', employersController.getForTable);
 // get specific
 router.get('/employers/search/:string', employersController.getSearched);
 

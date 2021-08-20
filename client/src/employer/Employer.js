@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles, Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import CompanyBasicInfo from "./components/CompanyBasicInfo";
@@ -61,6 +61,7 @@ const Employer = (props) => {
   } else {
     loginId = window.location.pathname.split("/")[3];
   }
+  const [empId, setEmpId] = useState(window.location.pathname.split("/")[3]);
 
   return (
     <div className={classes.root}>
@@ -127,9 +128,8 @@ const Employer = (props) => {
           </FloatCard>
         </Grid>
 
-        <Grid item xs={12} md={7}>
-          <Reviews />
-        </Grid>
+      <Grid item xs={12} md={7}>
+        <Reviews empId={empId}/>
       </Grid>
     </div>
   );

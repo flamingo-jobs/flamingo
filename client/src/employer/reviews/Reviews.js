@@ -8,6 +8,9 @@ import axios from "axios";
 import ReviewModal from "./ReviewModal";
 import ReviewCard from "./ReviewCard";
 import SnackBarAlert from "../../components/SnackBarAlert";
+import Lottie from "react-lottie";
+import Rating from "./lotties/rating.json";
+
 const jwt = require("jsonwebtoken");
 
 const useStyles = makeStyles((theme) => ({
@@ -21,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     marginTop: theme.spacing(2),
   },
+  reviewTitle:{
+    color: theme.palette.stateBlue,
+  },
   writeBtn: {
     backgroundColor: theme.palette.white,
     color: theme.palette.stateBlue,
@@ -31,12 +37,17 @@ const useStyles = makeStyles((theme) => ({
     },
     transition: "0.3s",
   },
+  lottieContainer:{
+    marginTop: theme.spacing(2),
+  },
+  reviewText:{
+    fontWeight: 400,
+  },
 }));
 
-const Reviews = () => {
+const Reviews = (props) => {
   const classes = useStyles();
 
-  const empId = "60c246913542f942e4c84454";
   const userId = sessionStorage.getItem("loginId");
   const isSignedIn = sessionStorage.getItem("userToken") ? true : false;
 
@@ -54,6 +65,15 @@ const Reviews = () => {
       ? jwt.decode(token, { complete: true }).payload.userRole
       : null
   );
+
+  const ratingOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: Rating,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
 
   // Error related stuff
   const displayAlert = () => {
@@ -92,7 +112,7 @@ const Reviews = () => {
 
   useEffect(() => {
     retrieveEmployer();
-  }, [empId]);
+  }, [props.empId]);
 
   useEffect(() => {
     retrieveJobseeker();
@@ -100,10 +120,14 @@ const Reviews = () => {
 
   const retrieveEmployer = async () => {
     try {
-      if (empId) {
-        const response = await axios.get(`${BACKEND_URL}/employers/${empId}`);
+      if (props.empId) {
+        const response = await axios.get(
+          `${BACKEND_URL}/employers/${props.empId}`
+        );
         if (response.data.success) {
-          setReviews(response.data.employer.reviews);
+          if (response.data.employer.reviews.length !== 0) {
+            setReviews(response.data.employer.reviews);
+          }
         }
       }
     } catch (err) {
@@ -144,7 +168,7 @@ const Reviews = () => {
         };
         console.log("data", data);
         const response = await axios.patch(
-          `${BACKEND_URL}/employers/addReview/${empId}`,
+          `${BACKEND_URL}/employers/addReview/${props.empId}`,
           data
         );
 
@@ -200,9 +224,15 @@ const Reviews = () => {
         </div>
       );
     } else {
-      return <Typography>No reviews to display</Typography>;
+      return (
+        <div className={classes.lottieContainer} >
+          <Lottie options={ratingOptions} width="400px" />
+          <Typography className={classes.reviewText} variant="subtitle1">There are no reviews yet.</Typography>
+        </div>
+      );
     }
   };
+  // style={{border: "1px solid red"}}
 
   return (
     <FloatCard>
@@ -210,7 +240,7 @@ const Reviews = () => {
       {displayReviewModal()}
       <div className={classes.root}>
         <div className={classes.topBar}>
-          <Typography variant="h6">Reviews</Typography>
+          <Typography className={classes.reviewTitle} variant="h6">Reviews</Typography>
           {isSignedIn && role === "jobseeker" && (
             <Button
               variant="contained"
