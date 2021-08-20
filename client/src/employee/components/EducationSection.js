@@ -124,6 +124,7 @@ function EducationSection(props) {
   const diploma=[];
   const graduateDiploma=[];
   const bachelors=[];
+  const bachelorsHonours=[];
   const mPhil=[];
   const phD=[];
   const [education, setEducation] = useState({institute: null, type: "School", fieldOfStudy: null, GPA: null, startYear: null, startMonth: null, endYear: null, endMonth: null, societiesAndActivities: null});
@@ -322,6 +323,8 @@ function EducationSection(props) {
           graduateDiploma.push({in: index,field: educationFields[index]});
         }else if(educationFields[index].type === "Bachelor's"){
           bachelors.push({in: index,field: educationFields[index]});
+        }else if(educationFields[index].type === "Bachelor's Honours"){
+          bachelorsHonours.push({in: index,field: educationFields[index]});
         }else if(educationFields[index].type === "M.Phil."){
           mPhil.push({in: index,field: educationFields[index]});
         }else if(educationFields[index].type === "PhD"){
@@ -359,7 +362,7 @@ function EducationSection(props) {
   function onSubmitEducation(e){
     e.preventDefault();
     let edu;
-    if(education.type === "Bachelor's"){
+    if(education.type === "Bachelor's" || education.type === "Bachelor's Honours"){
       if(GPAError !== null){
         return;
       }
@@ -472,6 +475,17 @@ console.log(edu);
     }
   }
 
+  const displayBachelorsHonoursFields = () => {
+    if (educationFields) {
+      if (bachelorsHonours) {
+        eduCount=1;
+        return bachelorsHonours.map(edu => (
+              <EduItem index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities}  parentFunction={deleteEducation} />
+              ))
+      }
+    }
+  }
+
   const displayBachelorsFields = () => {
     if (educationFields) {
       if (bachelors) {
@@ -534,7 +548,7 @@ console.log(edu);
 
   useEffect(()=>{
     setForm(null);
-    if(education.type === "Bachelor's"){
+    if(education.type === "Bachelor's" || education.type === "Bachelor's Honours"){
       let temp =
       <>
         <TextField
@@ -835,6 +849,7 @@ console.log(edu);
               {matchFields()}
               {displayPhdFields()}
               {displayMphilFields()}
+              {displayBachelorsHonoursFields()}
               {displayBachelorsFields()}
               {displayGraduateDiplomaFields()}
               {displayDiplomaFields()}
@@ -900,6 +915,7 @@ console.log(edu);
                       <option value="Diploma">Diploma</option>
                       <option value="Graduate Diploma">Graduate Diploma</option>
                       <option value="Bachelor's">Bachelor's</option>
+                      <option value="Bachelor's Honours">Bachelor's Honours</option>
                       <option value="M.Phil.">M.Phil.</option>
                       <option value="PhD">PhD</option>
                     </Select>

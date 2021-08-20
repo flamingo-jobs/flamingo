@@ -361,7 +361,7 @@ function EduItem(props) {
     // handleClose();
     e.preventDefault();
     let edu;
-    if(education.type === "Bachelor's"){
+    if(education.type === "Bachelor's" || education.type === "Bachelor's Honours"){
       if(GPAError !== null){
         return;
       }
@@ -414,7 +414,7 @@ function EduItem(props) {
 
   useEffect(()=>{
     setForm(null);
-    if(props.type === "Bachelor's"){
+    if(props.type === "Bachelor's" || props.type === "Bachelor's Honours"){
       let temp =
       <>
         <TextField
@@ -707,7 +707,7 @@ function EduItem(props) {
   },[open,education])
 
   const filterFields = () => {
-    if(props.type === "Bachelor's"){
+    if(props.type === "Bachelor's" || props.type === "Bachelor's Honours"){
         return (
             <React.Fragment>
                 <Grid item xs={3} style={{marginLeft:"-10px"}}>
@@ -899,6 +899,7 @@ function EduItem(props) {
                       <option value="Diploma">Diploma</option>
                       <option value="Graduate Diploma">Graduate Diploma</option>
                       <option value="Bachelor's">Bachelor's</option>
+                      <option value="Bachelor's Honours">Bachelor's Honours</option>
                       <option value="M.Phil.">M.Phil.</option>
                       <option value="PhD">PhD</option>
                     </Select>

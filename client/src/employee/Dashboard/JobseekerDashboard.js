@@ -28,8 +28,8 @@ function JobseekerDashboard(props) {
                 <ReachChart />
                 <Space />
                 <Favourites />
-                <Space />
-                <SideMenu />
+                {/* <Space />
+                <SideMenu /> */}
             </Grid>      
         </Grid>
     )
