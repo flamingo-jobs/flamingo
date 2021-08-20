@@ -1,4 +1,7 @@
 const Employers = require("../models/employers");
+const Jobs = require("../models/jobs");
+
+const Jobseeker = require("../models/jobseeker");
 
 const create = (req, res) => {
   let newEmployer = new Employers(req.body);
@@ -26,6 +29,49 @@ const getAll = (req, res) => {
     return res.status(200).json({
       success: true,
       existingData: employers,
+    });
+  });
+};
+
+const getForTable = (req, res) => {
+  Employers.find().exec((err, employers) => {
+    if (err) {
+      return res.status(400).json({
+        error: err,
+      });
+    }
+
+    
+    let formattedArray = employers.map(obj => {
+      let ratings = 0;
+
+      if(obj.reviews.length){
+        obj.reviews.forEach(item => {
+          ratings += item.rating
+        });
+
+        ratings = ratings/obj.reviews.length;
+        console.log(ratings)
+      }
+
+      let newObj = {
+        _id: obj._id,
+        name: obj.name,
+        email: obj.email,
+        dateRegistered: obj.dateRegistered,
+        subscription: obj.subscription.type,
+        ratings: ratings,
+        categories: obj.categories,
+        isFeatured: obj.isFeatured,
+        locations: obj.locations
+      };
+
+      return newObj
+    })
+
+    return res.status(200).json({
+      success: true,
+      existingData: formattedArray,
     });
   });
 };
@@ -73,14 +119,14 @@ const getById = (req, res) => {
 
 const getByIds = async (req, res) => {
   const employerIds = req.params.empIds.split("$$");
-  
-  try{
-    const response = await Employers.find({'_id':{$in: employerIds}});
+
+  try {
+    const response = await Employers.find({ '_id': { $in: employerIds } });
     res.status(200).json({
       success: true,
       employers: response
     });
-  }catch(err){
+  } catch (err) {
     res.status(400).json({
       success: false,
       error: err,
@@ -136,14 +182,14 @@ const update = (req, res) => {
 };
 
 const addReview = async (req, res) => {
-  try{
+  try {
     const remove = await Employers.findByIdAndUpdate(
       req.params.empId,
       {
-        $pull: { reviews: { jobseekerId: req.body.jobseekerId }}
+        $pull: { reviews: { jobseekerId: req.body.jobseekerId } }
       },
     );
-    
+
     const result = await Employers.findByIdAndUpdate(
       req.params.empId,
       {
@@ -151,7 +197,7 @@ const addReview = async (req, res) => {
       },
     );
     res.status(200).json({ success: true });
-  } catch(error){
+  } catch (error) {
     res.status(400).json({ success: false, error: error });
   }
 }
@@ -162,12 +208,41 @@ const remove = (req, res) => {
       return res.status(400).json({
         error: err,
       });
+
     }
     return res.status(200).json({
       success: "Employer deleted successfully",
       deletedEmployer: deletedEmployer,
     });
   });
+};
+
+const getAllApplications = async (req, res) => {
+  Jobs.find({ "organization.id": req.params.id }, null, { limit: 4 })
+    .exec()
+    .then(async (moreFromJobs) => {
+      let temp = [];
+
+      for (let index = 0; index < moreFromJobs.length; index++) {
+        const job = moreFromJobs[index];
+        for (let jindex = 0; jindex < job.applicationDetails.length; jindex++) {
+          const user = job.applicationDetails[jindex];
+          var a = await Jobseeker.findById(user.userId);
+          temp.push({ job: job.title, name: a.name });
+        }
+      }
+
+      return res.status(200).json({
+        success: true,
+        applications: temp,
+      });
+    })
+    .catch((error) => {
+      res.send({
+        status: false,
+        message: "Something went wrong please try again!!!!",
+      });
+    });
 };
 
 module.exports = {
@@ -182,4 +257,6 @@ module.exports = {
   getFeaturedEmployers,
   getEmployerCount,
   getFiltered,
+  getAllApplications,
+  getForTable
 };

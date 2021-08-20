@@ -1,15 +1,20 @@
-import { React } from "react";
+import React, { useState, useEffect } from "react";
 import {
   TextField,
   Grid,
   Typography,
   Container,
   IconButton,
+  FormControl,
+  InputLabel,
+  Select,
 } from "@material-ui/core";
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import { makeStyles } from "@material-ui/core/styles";
 import backgroundImage from "../images/background.jpg";
+import BACKEND_URL from "../../Config";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -144,16 +149,80 @@ export const Education = ({
   handleUniversityInputChange,
   handleUniversityAddClick,
   handleUniversityRemoveClick,
+  postgraduate,
+  handlePostgraduateInputChange,
+  handlePostgraduateAddClick,
+  handlePostgraduateRemoveClick,
   college,
   handleCollegeInputChange,
   handleCollegeAddClick,
   handleCollegeRemoveClick,
+  diploma,
+  handleDiplomaInputChange,
+  handleDiplomaAddClick,
+  handleDiplomaRemoveClick,
   course,
   handleCourseInputChange,
   handleCourseAddClick,
   handleCourseRemoveClick,
+  certificate,
+  handleCertificateInputChange,
+  handleCertificateAddClick,
+  handleCertificateRemoveClick,
 }) => {
   const classes = useStyles();
+
+  const [allCertificates, setAllCertificates] = useState(null);
+  const [state, setState] = useState({
+    issuer: null,
+    title: null,
+    score: null,
+    month: null,
+    year: null,
+  });
+  const [fetchedData, setFetchedData] = useState("");
+
+  function fetchCertificates() {
+    axios.get(`${BACKEND_URL}/certifications`).then((res) => {
+      if (res.data.success) {
+        if (res.data.existingData?.length > 0) {
+          if (Object.keys(res.data.existingData[0]).length === 0) {
+            res.data.existingData.splice(0, 1);
+          }
+        }
+        setAllCertificates(res.data.existingData);
+      }
+    });
+    setFetchedData(0);
+  }
+
+  function getIssuers() {
+    return allCertificates?.map((x) => (
+      <option value={x.issuer}>{x.issuer}</option>
+    ));
+  }
+
+  function getTitles() {
+    for (let index = 0; index < allCertificates?.length; index++) {
+      if (allCertificates[index].issuer === state.issuer) {
+        let titles = allCertificates[index].certificates;
+        return titles.map((title) => (
+          <option value={JSON.stringify(title)}>{title.name}</option>
+        ));
+      }
+    }
+  }
+
+  useEffect(() => {
+    setState({
+      issuer: null,
+      title: null,
+      score: null,
+      month: null,
+      year: null,
+    });
+    fetchCertificates();
+  }, [fetchedData]);
 
   return (
     <Container>
@@ -168,7 +237,7 @@ export const Education = ({
           <Grid container alignItems="center" spacing={3}>
             <Grid item xs={12} align="left">
               <Typography component={"span"} className={classes.title}>
-                <h4>Unversity Details</h4>
+                <h4>Bachelor Details</h4>
               </Typography>
             </Grid>
             <Grid item xs={12} align="left">
@@ -183,19 +252,6 @@ export const Education = ({
                   >
                     <Grid item xs={12} md={9} align="center">
                       <Grid container alignItems="center" spacing={2}>
-                        <Grid item xs={12} md={4} align="center">
-                          <TextField
-                            size="small"
-                            className={classes.textField}
-                            variant="outlined"
-                            fullWidth
-                            name="degree"
-                            label="Degree"
-                            helperText="i.e. BSc/ MSc"
-                            value={x.degree}
-                            onChange={(e) => handleUniversityInputChange(e, i)}
-                          />
-                        </Grid>
                         <Grid item xs={12} md={8} align="center">
                           <TextField
                             size="small"
@@ -209,18 +265,6 @@ export const Education = ({
                             onChange={(e) => handleUniversityInputChange(e, i)}
                           />
                         </Grid>
-                        <Grid item xs={12} align="center">
-                          <TextField
-                            size="small"
-                            className={classes.textField}
-                            variant="outlined"
-                            fullWidth
-                            name="university"
-                            label="University Name"
-                            value={x.university}
-                            onChange={(e) => handleUniversityInputChange(e, i)}
-                          />
-                        </Grid>
                         <Grid item xs={12} md={4} align="center">
                           <TextField
                             size="small"
@@ -229,7 +273,20 @@ export const Education = ({
                             fullWidth
                             name="GPA"
                             label="GPA"
+                            helperText="i. e. 3.74"
                             value={x.GPA}
+                            onChange={(e) => handleUniversityInputChange(e, i)}
+                          />
+                        </Grid>
+                        <Grid item xs={12} align="center">
+                          <TextField
+                            size="small"
+                            className={classes.textField}
+                            variant="outlined"
+                            fullWidth
+                            name="institute"
+                            label="University Name"
+                            value={x.institute}
                             onChange={(e) => handleUniversityInputChange(e, i)}
                           />
                         </Grid>
@@ -241,6 +298,7 @@ export const Education = ({
                             fullWidth
                             name="startDate"
                             label="From"
+                            helperText="i. e. mm/yyyy"
                             value={x.startDate}
                             onChange={(e) => handleUniversityInputChange(e, i)}
                           />
@@ -253,7 +311,20 @@ export const Education = ({
                             fullWidth
                             name="endDate"
                             label="To"
+                            helperText="i. e. mm/yyyy"
                             value={x.endDate}
+                            onChange={(e) => handleUniversityInputChange(e, i)}
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={12} align="center">
+                          <TextField
+                            size="small"
+                            className={classes.textField}
+                            variant="outlined"
+                            fullWidth
+                            name="societiesAndActivities"
+                            label="Societies & Activities"
+                            value={x.societiesAndActivities}
                             onChange={(e) => handleUniversityInputChange(e, i)}
                           />
                         </Grid>
@@ -289,7 +360,7 @@ export const Education = ({
           <Grid container alignItems="center" spacing={3}>
             <Grid item xs={12} align="left">
               <Typography component={"span"} className={classes.title}>
-                <h4>School Details</h4>
+                <h4>School/ College Details</h4>
               </Typography>
             </Grid>
             <Grid item xs={12} align="left">
@@ -304,17 +375,41 @@ export const Education = ({
                   >
                     <Grid item xs={12} md={9} align="center">
                       <Grid container alignItems="center" spacing={2}>
-                        <Grid item xs={12} md={12} align="center">
+                        <Grid item xs={12} md={8} align="center">
                           <TextField
                             size="small"
                             className={classes.textField}
                             variant="outlined"
                             fullWidth
-                            name="school"
-                            label="School Name"
-                            value={x.school}
+                            name="institute"
+                            label="School/ College Name"
+                            value={x.institute}
                             onChange={(e) => handleCollegeInputChange(e, i)}
                           />
+                        </Grid>
+                        <Grid item xs={4}>
+                          <FormControl
+                            size="small"
+                            variant="outlined"
+                            className={classes.formControl}
+                          >
+                            <InputLabel
+                              className={classes.placeholderDate}
+                              htmlFor="outlined-age-native-simple"
+                            >
+                              Type
+                            </InputLabel>
+                            <Select
+                              native
+                              value={x.type}
+                              name="type"
+                              onChange={(e) => handleCollegeInputChange(e, i)}
+                              label="Start Date"
+                            >
+                              <option value="School">School</option>
+                              <option value="College">College</option>
+                            </Select>
+                          </FormControl>
                         </Grid>
                         <Grid item xs={12} md={4} align="center">
                           <TextField
@@ -348,9 +443,9 @@ export const Education = ({
                             fullWidth
                             multiline
                             rows={2}
-                            name="description"
-                            label="Description"
-                            value={x.description}
+                            name="societiesAndActivities"
+                            label="Societies And Activities"
+                            value={x.societiesAndActivities}
                             onChange={(e) => handleCollegeInputChange(e, i)}
                           />
                         </Grid>
@@ -368,6 +463,261 @@ export const Education = ({
                       {college.length - 1 === i && (
                         <IconButton
                           onClick={handleCollegeAddClick}
+                          color="primary"
+                        >
+                          <AddCircleOutlineIcon />
+                        </IconButton>
+                      )}
+                    </Grid>
+                  </Grid>
+                );
+              })}
+            </Grid>
+          </Grid>
+        </Grid>
+
+        {/* Postgraduate Details */}
+        <Grid item xs={12} md={6}>
+          <Grid container alignItems="center" spacing={3}>
+            <Grid item xs={12} align="left">
+              <Typography component={"span"} className={classes.title}>
+                <h4>Postgraduate Details</h4>
+              </Typography>
+            </Grid>
+            <Grid item xs={12} align="left">
+              {postgraduate.map((x, i) => {
+                return (
+                  <Grid
+                    container
+                    alignItems="center"
+                    spacing={3}
+                    style={{ marginBottom: 20 }}
+                    key={i}
+                  >
+                    <Grid item xs={12} md={9} align="center">
+                      <Grid container alignItems="center" spacing={2}>
+                        <Grid item xs={12} md={8} align="center">
+                          <TextField
+                            size="small"
+                            className={classes.textField}
+                            variant="outlined"
+                            fullWidth
+                            name="institute"
+                            label="University Name"
+                            value={x.institute}
+                            onChange={(e) =>
+                              handlePostgraduateInputChange(e, i)
+                            }
+                          />
+                        </Grid>
+                        <Grid item xs={4}>
+                          <FormControl
+                            size="small"
+                            variant="outlined"
+                            className={classes.formControl}
+                          >
+                            <InputLabel
+                              className={classes.placeholderDate}
+                              htmlFor="outlined-age-native-simple"
+                            >
+                              Type
+                            </InputLabel>
+                            <Select
+                              native
+                              value={x.type}
+                              name="type"
+                              onChange={(e) =>
+                                handlePostgraduateInputChange(e, i)
+                              }
+                              label="Type"
+                            >
+                              <option value="MSc">MSc</option>
+                              <option value="MPhil">MPhil</option>
+                              <option value="PhD">PhD</option>
+                            </Select>
+                          </FormControl>
+                        </Grid>
+                        <Grid item xs={12} md={4} align="center">
+                          <TextField
+                            size="small"
+                            className={classes.textField}
+                            variant="outlined"
+                            fullWidth
+                            name="startDate"
+                            label="From"
+                            value={x.startDate}
+                            onChange={(e) =>
+                              handlePostgraduateInputChange(e, i)
+                            }
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={4} align="center">
+                          <TextField
+                            size="small"
+                            className={classes.textField}
+                            variant="outlined"
+                            fullWidth
+                            name="endDate"
+                            label="To"
+                            value={x.endDate}
+                            onChange={(e) =>
+                              handlePostgraduateInputChange(e, i)
+                            }
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={12} align="center">
+                          <TextField
+                            size="small"
+                            className={classes.textField}
+                            variant="outlined"
+                            fullWidth
+                            multiline
+                            rows={2}
+                            name="fieldOfStudy"
+                            label="Field of Study"
+                            value={x.fieldOfStudy}
+                            onChange={(e) =>
+                              handlePostgraduateInputChange(e, i)
+                            }
+                          />
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    <Grid item xs={12} md={3} align="left">
+                      {postgraduate.length !== 1 && (
+                        <IconButton
+                          onClick={() => handlePostgraduateRemoveClick(i)}
+                          color="secondary"
+                        >
+                          <RemoveCircleOutlineIcon />
+                        </IconButton>
+                      )}
+                      {postgraduate.length - 1 === i && (
+                        <IconButton
+                          onClick={handlePostgraduateAddClick}
+                          color="primary"
+                        >
+                          <AddCircleOutlineIcon />
+                        </IconButton>
+                      )}
+                    </Grid>
+                  </Grid>
+                );
+              })}
+            </Grid>
+          </Grid>
+        </Grid>
+
+        {/* Diploma Details */}
+        <Grid item xs={12} md={6}>
+          <Grid container alignItems="center" spacing={3}>
+            <Grid item xs={12} align="left">
+              <Typography component={"span"} className={classes.title}>
+                <h4>Diploma Details</h4>
+              </Typography>
+            </Grid>
+            <Grid item xs={12} align="left">
+              {diploma.map((x, i) => {
+                return (
+                  <Grid
+                    container
+                    alignItems="center"
+                    spacing={3}
+                    style={{ marginBottom: 20 }}
+                    key={i}
+                  >
+                    <Grid item xs={12} md={9} align="center">
+                      <Grid container alignItems="center" spacing={2}>
+                        <Grid item xs={12} md={8} align="center">
+                          <TextField
+                            size="small"
+                            className={classes.textField}
+                            variant="outlined"
+                            fullWidth
+                            name="institute"
+                            label="Institute Name"
+                            value={x.institute}
+                            onChange={(e) => handleDiplomaInputChange(e, i)}
+                          />
+                        </Grid>
+                        <Grid item xs={4}>
+                          <FormControl
+                            size="small"
+                            variant="outlined"
+                            className={classes.formControl}
+                          >
+                            <InputLabel
+                              className={classes.placeholderDate}
+                              htmlFor="outlined-age-native-simple"
+                            >
+                              Type
+                            </InputLabel>
+                            <Select
+                              native
+                              value={x.type}
+                              name="type"
+                              onChange={(e) => handleDiplomaInputChange(e, i)}
+                              label="Type"
+                            >
+                              <option value="Diploma">Diploma</option>
+                              <option value="Graduate Diploma">
+                                Graduate Diploma
+                              </option>
+                            </Select>
+                          </FormControl>
+                        </Grid>
+                        <Grid item xs={12} md={4} align="center">
+                          <TextField
+                            size="small"
+                            className={classes.textField}
+                            variant="outlined"
+                            fullWidth
+                            name="startDate"
+                            label="From"
+                            value={x.startDate}
+                            onChange={(e) => handleDiplomaInputChange(e, i)}
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={4} align="center">
+                          <TextField
+                            size="small"
+                            className={classes.textField}
+                            variant="outlined"
+                            fullWidth
+                            name="endDate"
+                            label="To"
+                            value={x.endDate}
+                            onChange={(e) => handleDiplomaInputChange(e, i)}
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={12} align="center">
+                          <TextField
+                            size="small"
+                            className={classes.textField}
+                            variant="outlined"
+                            fullWidth
+                            multiline
+                            rows={2}
+                            name="fieldOfStudy"
+                            label="Field of Study"
+                            value={x.fieldOfStudy}
+                            onChange={(e) => handleDiplomaInputChange(e, i)}
+                          />
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    <Grid item xs={12} md={3} align="left">
+                      {diploma.length !== 1 && (
+                        <IconButton
+                          onClick={() => handleDiplomaRemoveClick(i)}
+                          color="secondary"
+                        >
+                          <RemoveCircleOutlineIcon />
+                        </IconButton>
+                      )}
+                      {diploma.length - 1 === i && (
+                        <IconButton
+                          onClick={handleDiplomaAddClick}
                           color="primary"
                         >
                           <AddCircleOutlineIcon />
@@ -455,6 +805,140 @@ export const Education = ({
                       {course.length !== 1 && (
                         <IconButton
                           onClick={() => handleCourseRemoveClick(i)}
+                          color="secondary"
+                          aria-label="Add new Course"
+                        >
+                          <RemoveCircleOutlineIcon />
+                        </IconButton>
+                      )}
+                      {course.length - 1 === i && (
+                        <IconButton
+                          onClick={handleCourseAddClick}
+                          color="primary"
+                          aria-label="Remobe course"
+                        >
+                          <AddCircleOutlineIcon />
+                        </IconButton>
+                      )}
+                    </Grid>
+                  </Grid>
+                );
+              })}
+            </Grid>
+          </Grid>
+        </Grid>
+
+        {/* Certificate Details */}
+        <Grid item xs={12} lg={6}>
+          <Grid container alignItems="center" spacing={3}>
+            <Grid item xs={12} align="left">
+              <Typography component={"span"} className={classes.title}>
+                <h4>Certificate Details</h4>
+              </Typography>
+            </Grid>
+            <Grid item xs={12} align="left">
+              {certificate.map((x, i) => {
+                return (
+                  <Grid
+                    container
+                    alignItems="center"
+                    spacing={3}
+                    style={{ marginBottom: 20 }}
+                    key={i}
+                  >
+                    <Grid item xs={12} md={9} align="center">
+                      <Grid container alignItems="center" spacing={2}>
+                        <Grid item xs={12} align="center">
+                          <FormControl
+                            size="small"
+                            fullWidth
+                            variant="outlined"
+                            className={classes.formControl}
+                          >
+                            <InputLabel
+                              className={classes.placeholderDate}
+                              htmlFor="outlined-age-native-simple"
+                            >
+                              Issuer
+                            </InputLabel>
+                            <Select
+                              native
+                              label="Issuer"
+                              name="issuer"
+                              onChange={(e) => {
+                                setState({
+                                  issuer: e.target.value,
+                                  title: null,
+                                  score: null,
+                                  month: null,
+                                  year: null,
+                                });
+                                handleCourseInputChange(e, i);
+                              }}
+                              required
+                            >
+                              <option aria-label="None" value="" />
+                              {getIssuers()}
+                            </Select>
+                          </FormControl>
+                        </Grid>
+                        <Grid item xs={12} align="center">
+                          <FormControl
+                            size="small"
+                            fullWidth
+                            variant="outlined"
+                            className={classes.formControl}
+                          >
+                            <InputLabel
+                              className={classes.placeholderDate}
+                              htmlFor="outlined-age-native-simple"
+                            >
+                              Certification
+                            </InputLabel>
+                            <Select
+                              native
+                              name="title"
+                              label="Certification"
+                              onChange={(e) => handleCourseInputChange(e, i)}
+                              required
+                            >
+                              <option aria-label="None" value="" />
+                              {getTitles()}
+                            </Select>
+                          </FormControl>
+                        </Grid>
+                        <Grid item xs={4} align="center">
+                          <TextField
+                            size="small"
+                            className={classes.textField}
+                            variant="outlined"
+                            fullWidth
+                            name="score"
+                            label="Score"
+                            helperText="i.e. 75, 89"
+                            value={x.score}
+                            onChange={(e) => handleCourseInputChange(e, i)}
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={4} align="center">
+                          <TextField
+                            size="small"
+                            className={classes.textField}
+                            variant="outlined"
+                            fullWidth
+                            name="date"
+                            label="Date"
+                            value={x.date}
+                            helperText="i.e. mm/yyyy"
+                            onChange={(e) => handleCertificateInputChange(e, i)}
+                          />
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    <Grid item xs={12} md={3} align="left">
+                      {certificate.length !== 1 && (
+                        <IconButton
+                          onClick={() => handleCertificateRemoveClick(i)}
                           color="secondary"
                           aria-label="Add new Course"
                         >

@@ -264,7 +264,7 @@ function OrganizationCard(props) {
                         <Rating name="read-only" value={getAvgRating(props.info.reviews)} readOnly />
                     </div>
                     <div className={classes.footerRight} >
-                        <Link to="/employer/company">
+                        <Link to={`/employer/company/${props.info._id}`}>
                             <Button className={classes.applyButton}>View Organization</Button>
                         </Link>
                     </div>

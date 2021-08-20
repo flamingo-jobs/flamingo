@@ -123,6 +123,8 @@ const useStyles = makeStyles((theme) => ({
     height: 40,
   },
   iconLogo: {
+    height: 25,
+    width: 25,
     marginRight: 20,
   },
   textField: {
@@ -351,9 +353,29 @@ export default function SignInSide() {
                   >
                     Sign In
                   </Typography>
-
-                  {/* Social Login */}
                   <div className={classes.socialSection}>
+                      <Grid className={classes.paper}>
+                        <Button
+                          disable={!googleOauthUrl}
+                          onClick={() => {
+                            window.location.href = googleOauthUrl;
+                          }}
+                        >
+                          <Avatar
+                            className={classes.iconLogo}
+                            src={GoogleIcon}
+                            variant="square"
+                          />
+                          <Typography>
+                            {" "}
+                            Sign In with Google
+                          </Typography>
+                        </Button>
+                      </Grid>
+                      <Typography className={classes.text} style={{marginBottom: 16}}>or</Typography>
+                    
+                    {/* Social Login */}
+
                     {/* <div className={classes.icons}>
                       <IconButton>
                         <Avatar className={classes.avatar}>
@@ -419,27 +441,7 @@ export default function SignInSide() {
                     >
                       Sign In
                     </Button>
-                    <div>
-                      <Typography className={classes.text}>or</Typography>
-                      <Grid className={classes.paper}>
-                        <Button
-                          disable={!googleOauthUrl}
-                          onClick={() => {
-                            window.location.href = googleOauthUrl;
-                          }}
-                        >
-                          <Avatar
-                            className={classes.iconLogo}
-                            src={GoogleIcon}
-                            variant="square"
-                          />
-                          <Typography>
-                            {" "}
-                            Login with Google
-                          </Typography>
-                        </Button>
-                      </Grid>
-                    </div>
+
                     {/* Forgot Password or Register */}
                     <Grid container>
                       <Grid item xs={12} sm={4} className={classes.forgotPwd}>

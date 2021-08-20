@@ -1,6 +1,7 @@
 const Jobs = require('../models/jobs');
 const Jobseeker = require('../models/jobseeker');
 const Settings = require('../models/settings');
+const Certifications = require('../models/certifications');
 const mongoose = require('mongoose');
 
 const shortlistApplicants = (req, res) => {
@@ -8,6 +9,12 @@ const shortlistApplicants = (req, res) => {
     var jobData = null;
     var jobSeekers = null;
     const scoredApplicants = [];
+    var certificationList = [];
+
+    Certifications.find().exec((err, certifications) => {
+        certificationList = certifications
+    });
+
 
     Settings.find({ 'type': { $in: ['shortlistingDefaults', 'shortlistingEducationDefaults', 'shortlistingExperienceDefaults'] } }).exec((err, settings) => {
         if (err) {
@@ -68,7 +75,15 @@ const shortlistApplicants = (req, res) => {
                                 if (edu.type === "Diploma") {
                                     education += educationShortlistings.diploma;
                                 } else if (edu.type === "Bachelor's") {
-                                    education += educationShortlistings.bachelors;
+                                    if (educationShortlistings.considerGpa) {
+                                        if (edu.GPA) {
+                                            education += educationShortlistings.bachelors * (parseFloat(edu.GPA) / 4);
+                                        } else {
+                                            education += educationShortlistings.bachelors * 0.5;
+                                        }
+                                    } else {
+                                        education += educationShortlistings.bachelors;
+                                    }
                                 } else if (edu.type === "Masters") {
                                     education += educationShortlistings.masters;
                                 } else if (edu.type === "PhD") {
@@ -145,20 +160,75 @@ const shortlistApplicants = (req, res) => {
                                     projectArray.push.apply(projectArray, ProjectItem.usedTech.split(", "));
                                 }
                             });
-                            // console.log(projectArray)
+
                             projectTech += findPercentage(job.technologyStack, projectArray);
 
                             // skills
 
                             if (item.skills.length) {
-                                skills = similarity(item.skills.join(' '), job.qualifications.join(' '));
+                                skills = similarity(item.skills.join(' '), job.qualifications);
                             }
+
+                            // certificates
+
+                            let certificationNameList = [];
+                            let certRelevence = 0;
+                            let certScore = 0;
+                            if (item.certificate.length) {
+                                item.certificate.forEach((cert) => {
+                                    certScore += parseInt(cert.score);
+                                    certificationNameList.push(cert.title);
+                                })
+                            }
+
+                            if (certificationNameList.length) {
+                                certRelevence = similarity(certificationNameList.join(' '), job.technologyStack.concat([job.title, job.description]));
+                            }
+
+                            let certTotal = 0;
+
+                            if (certificationList.length) {
+                                certificationList.forEach((issuer) => {
+                                    issuer.certificates.forEach((item) => {
+                                        certTotal += parseInt(item.score);
+                                    })
+                                })
+                            }
+
+                            certificates = (certScore / certTotal) * 0.5 + certRelevence * 0.5;
+
+                            // courses
+
+                            let courseNameList = [];
+                            let courseRelevence = 0;
+
+                            if (item.course.length) {
+                                item.course.forEach((courseItem) => {
+                                    courseNameList.push(courseItem.course);
+                                })
+                            }
+
+                            if (courseNameList.length) {
+                                courseRelevence = similarity(courseNameList.join(' '), job.technologyStack.concat([job.title, job.description]));
+                            }
+
+                            courses = courseRelevence;
+
+                            //total
+
 
                             total = education * (shortlistingSettings.education / 100) + experience * (shortlistingSettings.experience / 100) +
                                 techStack * (shortlistingSettings.techStack / 100) + projectTech * (shortlistingSettings.projectTechStack / 100)
-                                + skills * (shortlistingSettings.skills / 100) + certificates * (shortlistingSettings.certifications / 100);
-                            // console.log(`name - ${item.name}, education - ${education}, date dif - ${dateDiff},  experience - ${experience},techStack - ${techStack},projectTech - ${projectTech},
-                            // certificates - ${certificates},skills - ${skills},`)
+                                + skills * (shortlistingSettings.skills / 100) + certificates * (shortlistingSettings.certifications / 100)
+                                + courses * (shortlistingSettings.courses / 100);
+
+                            console.log("education: " + education);
+                            console.log("experience: " + experience);
+                            console.log("techStack: " + techStack);
+                            console.log("projectTech: " + projectTech);
+                            console.log("skills: " + skills);
+                            console.log("certificates: " + certificates);
+                            console.log("courses: " + courses);
 
                             let applicationIndex = job.applicationDetails.findIndex(applicant => applicant.userId == item._id);
 
@@ -206,6 +276,11 @@ const shortlistOnApplicantChanges = (req, res) => {
     var jobData = null;
     var jobSeekers = null;
     var scoredApplicants = [];
+    var certificationList = [];
+
+    Certifications.find().exec((err, certifications) => {
+        certificationList = certifications
+    });
 
     Settings.find({ 'type': { $in: ['shortlistingDefaults', 'shortlistingEducationDefaults', 'shortlistingExperienceDefaults'] } }).exec((err, settings) => {
         if (err) {
@@ -261,7 +336,15 @@ const shortlistOnApplicantChanges = (req, res) => {
                             if (edu.type === "Diploma") {
                                 education += educationShortlistings.diploma;
                             } else if (edu.type === "Bachelor's") {
-                                education += educationShortlistings.bachelors;
+                                if (educationShortlistings.considerGpa) {
+                                    if (edu.GPA) {
+                                        education += educationShortlistings.bachelors * (parseFloat(edu.GPA) / 4);
+                                    } else {
+                                        education += educationShortlistings.bachelors * 0.5;
+                                    }
+                                } else {
+                                    education += educationShortlistings.bachelors;
+                                }
                             } else if (edu.type === "Masters") {
                                 education += educationShortlistings.masters;
                             } else if (edu.type === "PhD") {
@@ -344,14 +427,61 @@ const shortlistOnApplicantChanges = (req, res) => {
                         // skills
 
                         if (jobseeker.skills.length) {
-                            skills = similarity(jobseeker.skills.join(' '), job.qualifications.join(' '));
+                            skills = similarity(jobseeker.skills.join(' '), job.qualifications);
                         }
+
+                        // certificates
+
+                        let certificationNameList = [];
+                        let certRelevence = 0;
+                        let certScore = 0;
+                        if (jobseeker.certificate.length) {
+                            jobseeker.certificate.forEach((cert) => {
+                                certScore += parseInt(cert.score);
+                                certificationNameList.push(cert.title);
+                            })
+                        }
+
+                        if (certificationNameList.length) {
+                            certRelevence = similarity(certificationNameList.join(' '), job.technologyStack.concat([job.title, job.description]));
+                        }
+
+                        let certTotal = 0;
+
+                        if (certificationList.length) {
+                            certificationList.forEach((issuer) => {
+                                issuer.certificates.forEach((item) => {
+                                    certTotal += parseInt(item.score);
+                                })
+                            })
+                        }
+
+                        certificates = (certScore / certTotal) * 0.5 + certRelevence * 0.5;
+
+                        // courses
+
+                        let courseNameList = [];
+                        let courseRelevence = 0;
+
+                        if (jobseeker.course.length) {
+                            jobseeker.course.forEach((courseItem) => {
+                                courseNameList.push(courseItem.course);
+                            })
+                        }
+
+                        if (courseNameList.length) {
+                            courseRelevence = similarity(courseNameList.join(' '), job.technologyStack.concat([job.title, job.description]));
+                        }
+
+                        courses = courseRelevence;
+
+                        //total
+
 
                         total = education * (shortlistingSettings.education / 100) + experience * (shortlistingSettings.experience / 100) +
                             techStack * (shortlistingSettings.techStack / 100) + projectTech * (shortlistingSettings.projectTechStack / 100)
-                            + skills * (shortlistingSettings.skills / 100) + certificates * (shortlistingSettings.certifications / 100);
-                        // console.log(`name - ${jobseeker.name}, education - ${education}, date dif - ${dateDiff},  experience - ${experience},techStack - ${techStack},projectTech - ${projectTech},
-                        // certificates - ${certificates},skills - ${skills},`)
+                            + skills * (shortlistingSettings.skills / 100) + certificates * (shortlistingSettings.certifications / 100)
+                            + courses * (shortlistingSettings.courses / 100);
 
                         let applicationIndex = job.applicationDetails.findIndex(applicant => applicant.userId == jobseeker._id);
 
@@ -376,10 +506,9 @@ const shortlistOnApplicantChanges = (req, res) => {
                             scoredApplicants.splice(applicationIndex, 1, scoredItem);
                         }
 
-
                     }
 
-                     updateJob(scoredApplicants, req.params.id);
+                    updateJob(scoredApplicants, req.params.id);
 
                     return res.status(200).json({
                         success: true,
@@ -394,17 +523,29 @@ const shortlistOnApplicantChanges = (req, res) => {
 
 
 const similarity = (a, b) => {
-    var equivalency = 0;
-    var minLength = (a.length > b.length) ? b.length : a.length;
-    var maxLength = (a.length < b.length) ? b.length : a.length;
-    for (var i = 0; i < minLength; i++) {
-        if (a[i] === b[i]) {
-            equivalency++;
-        }
-    }
+    // var equivalency = 0;
+    // var minLength = (a.length > b.length) ? b.length : a.length;
+    // var maxLength = (a.length < b.length) ? b.length : a.length;
+    // for (var i = 0; i < minLength; i++) {
+    //     if (a[i] === b[i]) {
+    //         equivalency++;
+    //     }
+    // }
 
-    var weight = equivalency / maxLength;
-    return (weight * 100);
+    // var weight = equivalency / maxLength;
+    // return (weight * 100);
+
+    var count = a.split(' ').length;
+    var pattern = a.split(' ').join('|');
+    var r = new RegExp(pattern, 'g');
+    var output = [];
+
+    b.forEach(function (sentance) {
+        var matches = sentance.match(r);
+        output.push((matches) ? (matches.length / count) * 100 : 0);
+    });
+
+    return output.reduce((x, y) => x + y) / output.length;
 };
 
 const findPercentage = (first, second) => {

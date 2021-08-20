@@ -127,18 +127,14 @@ export default function DetailedAccordion(props) {
     let data = {};
     if (props.info.stack.list) {
       data = {
-        name: props.info.name,
-        stack: {
-          list: list,
-        },
+        type: props.info.name,
+        list: list,
       };
     } else if (props.info.stack.frontEnd) {
       data = {
-        name: props.info.name,
-        stack: {
-          frontEnd: frontEnd,
-          backEnd: backEnd,
-        },
+        type: props.info.name,
+        frontEnd: frontEnd,
+        backEnd: backEnd,
       };
     }
 

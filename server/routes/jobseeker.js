@@ -12,6 +12,7 @@ router.post('/jobseeker/create', jobseekerController.create);
 // get jobseeker
 
 router.get('/jobseekers', jobseekerController.getAll);
+router.get('/jobseekers/toTable', jobseekerController.getForTable);
 router.get('/jobseekers/search/:string', jobseekerController.getSearched);
 router.post('/jobseekers/filter', jobseekerController.getFiltered);
 router.post('/jobseekers/getJobseekerCount', jobseekerController.getCount);

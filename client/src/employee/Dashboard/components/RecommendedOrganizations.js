@@ -97,7 +97,7 @@ function RecommendedOrganizations(props) {
         <FloatCard backColor="#f7e6ff">
             <Grid container direction="column" spacing={2} className={classes.container}>
                 <Grid item sm={12} >
-                    <Typography variant="h5" className={classes.title}>Recommended Organizations</Typography>
+                    <Typography variant="h5" className={classes.title}>Suggested Organizations</Typography>
                 </Grid>
                 <Grid item container direction="row" spacing={2}>
                     {displayFeaturedOrgs()}

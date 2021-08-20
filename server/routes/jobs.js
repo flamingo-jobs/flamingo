@@ -15,6 +15,7 @@ router.post('/jobs/recommended', jobsController.getAllRecommendedJobs);
 router.get('/jobs/generateRecommendations/:id', recommendationController.generateRecommendations);
 router.get('/jobs/generateJobSeekerRecommendations/:id', recommendationController.generateJobSeekerRecommendations);
 
+router.get("/jobs/shortlistForGivenCount/:jobId/:count", jobsController.shortlistForGivenCount);
 router.get('/jobs/shortlistApplicants/:id', shortlistController.shortlistApplicants);
 router.get('/jobs/shortlistOnApplicantChanges/:jobId/:applicantId', shortlistController.shortlistOnApplicantChanges);
 

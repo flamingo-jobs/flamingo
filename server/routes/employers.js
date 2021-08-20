@@ -9,7 +9,7 @@ router.post('/employers/create', employersController.create);
 // get employers
 
 router.get('/employers', employersController.getAll);
-
+router.get('/employers/toTable', employersController.getForTable);
 // get specific
 router.get('/employers/search/:string', employersController.getSearched);
 
@@ -31,5 +31,7 @@ router.patch("/employers/addReview/:empId", employersController.addReview);
 
 // delete employer
 router.post('/employer/delete', employersController.remove);
+
+router.get('/applications/:id', employersController.getAllApplications);
 
 module.exports = router;

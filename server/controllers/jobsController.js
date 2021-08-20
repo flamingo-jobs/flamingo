@@ -204,6 +204,26 @@ const getFeaturedJobs = (req, res) => {
     });
 }
 
+const shortlistForGivenCount = async (req, res) => {
+    const jobId = req.params.jobId;
+    const count = req.params.count;
+
+    try{
+        const jobs = await Jobs.findById(jobId).select("applicationDetails -_id");
+        var applications = jobs.applicationDetails;
+
+        applications.sort((a, b) => {
+            return b.score - a.score;
+        });
+
+        const applicantIds = applications.slice(0, count).map(obj => obj.userId);
+        res.status(200).json({ success: true, applicantIds: applicantIds });
+    } catch(error){
+        res.status(400).json({ success: false, error: error });
+    }
+
+}
+
 
 const update = (req, res) => {
 
@@ -320,6 +340,7 @@ module.exports = {
     getJobsFromEmployer,
     getAllJobsFromEmployer,
     getAllJobsFromUser,
+    shortlistForGivenCount,
     resetAll,
     getAllRecommendedJobs
 

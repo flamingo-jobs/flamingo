@@ -399,9 +399,9 @@ export default function ShortlistingExperienceSettingsAccordion(props) {
           aria-controls="panel1c-content"
           id="panel1c-header"
         >
-          <Typography className={classes.heading}>Advanced Education Settigns</Typography>
+          <Typography className={classes.heading}>Advanced Experience Settigns</Typography>
           <Typography className={classes.secondaryHeading}>
-            Controll the wieghts given for each education levels
+            Controll the wieghts given for each year levels of experiences
           </Typography>
         </AccordionSummary>
         {displayAccordionDetails()}

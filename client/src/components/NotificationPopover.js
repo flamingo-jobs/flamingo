@@ -34,7 +34,7 @@ const NOTIFICATIONS = [
     },
     {
         id: 2,
-        title: "You have new recommended jobs",
+        title: "You have new suggested jobs",
         description: 'click here to see them',
         avatar: null,
         type: 'job_alert',
