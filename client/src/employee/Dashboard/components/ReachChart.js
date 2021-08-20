@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Typography } from "@material-ui/core";
 import FloatCard from "../../../components/FloatCard";
-import { Bar } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 import Theme from "../../../Theme";
 import axios from "axios";
 import BACKEND_URL from "../../../Config";
@@ -56,7 +56,7 @@ const ReachChart = (props) => {
     console.log(counts);
   }
 
-  const generateBarChart = () => {
+  const generateLineChart = () => {
     return {
       labels: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
       datasets: [
@@ -74,8 +74,8 @@ const ReachChart = (props) => {
   return (
     <div>
       <FloatCard>
-        <Typography>Total Reach Each Month</Typography>
-        <Bar data={generateBarChart()} />
+        <Typography>Monthly Profile Reach</Typography>
+        <Line data={generateLineChart({fill: false})} />
       </FloatCard>
     </div>
   );
