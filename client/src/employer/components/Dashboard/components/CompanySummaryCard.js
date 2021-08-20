@@ -92,13 +92,20 @@ const CompanySummaryCard = (props) => {
     return averageRating;
   };
 
+  const loadLogo = () => {
+    try {
+      return require(`../images/${logo}`).default;
+    } catch (err) {
+      return require(`../images/default_company_logo.png`).default;
+    }
+  };
+
   return (
     <div className={classes.root}>
       <FloatCard>
         {/* LOGO */}
         <div className={classes.logoItem}>
-          {/* <Avatar className={classes.logo} src={require(`../images/${logo}`).default} variant="square" /> */}
-          <Avatar className={classes.logo} src={wso2} variant="square" />
+          <Avatar className={classes.logo} src={loadLogo()} variant="square" />
         </div>
 
         <Typography variant="h5" className={classes.companyName}>
