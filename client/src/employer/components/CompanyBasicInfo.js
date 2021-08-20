@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
   body: {},
   logoItem: {
     marginLeft: 10,
-    marginTop: 10,
+    marginTop: 20,
   },
   logo: {
     borderRadius: 12,
@@ -183,9 +183,11 @@ function CompanyBasicInfo(props) {
     facebook: " ",
     linkedIn: " ",
     twitter: " ",
+    logo: " ",
   });
 
   const name = state.name;
+  const logo = state.logo;
   const reviews = state.reviews;
   const technologyStack = state.technologyStack;
   const links = state.links;
@@ -213,6 +215,7 @@ function CompanyBasicInfo(props) {
           linkedIn: res.data.employer.links.linkedIn,
           twitter: res.data.employer.links.twitter,
           reviews: res.data.employer.reviews,
+          logo: res.data.employer.logo,
         });
       }
       res.data.employer.locations.forEach((element) => {
@@ -366,6 +369,14 @@ function CompanyBasicInfo(props) {
     return averageRating;
   };
 
+  const loadLogo = () => {
+    try {
+      return require(`../images/${logo}`).default;
+    } catch (err) {
+      return require(`../images/default_company_logo.png`).default;
+    }
+  };
+
   return (
     <div className={classes.root}>
       <FloatCard>
@@ -383,8 +394,7 @@ function CompanyBasicInfo(props) {
             {/* LOGO */}
 
             <Grid item xs={3} className={classes.logoItem}>
-              {/* <Avatar className={classes.logo} src={require(`../images/${employer.logo}`).default} variant="square" /> */}
-              <Avatar className={classes.logo} src={wso2} variant="square" />
+              <Avatar className={classes.logo} src={loadLogo()} variant="square" />
             </Grid>
 
             {/* OTHER INFO NEXT TO LOGO */}
