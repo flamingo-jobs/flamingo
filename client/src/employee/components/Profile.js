@@ -87,8 +87,6 @@ function Profile() {
                 <Space />
                 <Course jobseekerID={jobseekerID} />
                 <Space />
-                <Achievements jobseekerID={jobseekerID} />
-                <Space />
                 <Volunteer jobseekerID={jobseekerID} />
             </Grid>
             <Grid item md={12} lg={8} spacing={3}>
@@ -97,6 +95,8 @@ function Profile() {
                 <ProjectsSection jobseekerID={jobseekerID} />
                 <Space />
                 <TechnologySection jobseekerID={jobseekerID} />
+                <Space />
+                <Achievements jobseekerID={jobseekerID} />
                 <Space />
                 <Skills jobseekerID={jobseekerID} />
             </Grid>                                            

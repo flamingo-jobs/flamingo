@@ -351,7 +351,7 @@ function IntroSection(props) {
                     onChange={onChangeMobile}
                     style={{width:'45%',marginRight:'10%'}}
                     />
-                    <TextField
+                    {/* <TextField
                     className={classes.field}
                     id="outlined-basic"
                     label="Land Line"
@@ -360,7 +360,7 @@ function IntroSection(props) {
                     value={state.landLine}
                     onChange={onChangeLandLine}
                     style={{width:'45%'}}
-                    />
+                    /> */}
                   </Grid>
                   <TextField
                     className={classes.field}
@@ -394,7 +394,7 @@ function IntroSection(props) {
                     style={{width:'45%'}}
                     />
                   </Grid>
-                  <TextField
+                  {/* <TextField
                     className={classes.field}
                     id="outlined-basic"
                     label="Zip Code"
@@ -403,7 +403,7 @@ function IntroSection(props) {
                     value={state.zipCode}
                     onChange={onChangeZipCode}
                     style={{width:'35%'}}
-                    />
+                    /> */}
                   <Button type="submit" style={{ width:'100%',marginTop:'5%',backgroundColor:theme.palette.stateBlue,color:'white'}}>Apply Changes</Button>
               </form>
             </div>
