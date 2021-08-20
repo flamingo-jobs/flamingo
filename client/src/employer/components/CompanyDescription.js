@@ -180,7 +180,7 @@ function CompanyBasicInfo(props) {
 
   useEffect(() => {
     axios.get(`${BACKEND_URL}/employers/${loginId}`).then((res) => {
-      console.log(res.data.employer);
+      // console.log(res.data.employer);
       if (res.data.success) {
         setState({
           description: res.data.employer.description,
@@ -188,7 +188,7 @@ function CompanyBasicInfo(props) {
         });
       }
       res.data.employer.locations.forEach((element) => {
-        console.log(element);
+        // console.log(element);
         setLocation((location) => [...location, { city: element }]);
       });
     });

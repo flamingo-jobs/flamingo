@@ -36,6 +36,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import { Link } from "react-router-dom";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import { Route } from "react-router-dom";
 
 const jwt = require("jsonwebtoken");
 let haveAccess = false;
@@ -122,7 +123,7 @@ const useStyles = makeStyles((theme) => ({
   },
   ratingText: {
     marginTop: -35,
-    marginLeft: 130,
+    marginLeft: 115,
   },
   smIcons: {
     marginLeft: -35,
@@ -173,7 +174,7 @@ function CompanyBasicInfo(props) {
   const [state, setState] = useState({
     name: " ",
     technologyStack: Object,
-
+    reviews: [],
     subscription: " ",
     website: " ",
     facebook: " ",
@@ -182,6 +183,7 @@ function CompanyBasicInfo(props) {
   });
 
   const name = state.name;
+  const reviews = state.reviews;
   const technologyStack = state.technologyStack;
   const links = state.links;
   const subscription = state.subscription;
@@ -196,7 +198,7 @@ function CompanyBasicInfo(props) {
 
   useEffect(() => {
     axios.get(`${BACKEND_URL}/employers/${loginId}`).then((res) => {
-      console.log(res.data.employer);
+      // console.log(res.data.employer.reviews);
       if (res.data.success) {
         setState({
           name: res.data.employer.name,
@@ -207,10 +209,11 @@ function CompanyBasicInfo(props) {
           facebook: res.data.employer.links.facebook,
           linkedIn: res.data.employer.links.linkedIn,
           twitter: res.data.employer.links.twitter,
+          reviews: res.data.employer.reviews,
         });
       }
       res.data.employer.locations.forEach((element) => {
-        console.log(element);
+        // console.log(element);
         setLocation((location) => [...location, { city: element }]);
       });
     });
@@ -325,28 +328,40 @@ function CompanyBasicInfo(props) {
       locations: temp,
     };
 
-
     if (employer.name != "" && temp.length != 0) {
       axios
         .put(`${BACKEND_URL}/employers/update/${loginId}`, employer)
         .then((res) => {
           if (res.status == 200) {
-            handleClickAlertSuccess()
+            handleClickAlertSuccess();
           } else {
-            handleClickAlertServerError()
+            handleClickAlertServerError();
           }
-        
         })
-        .catch(()=>{
-          handleClickAlertServerError()
-        })
-
+        .catch(() => {
+          handleClickAlertServerError();
+        });
 
       handleClose();
     } else {
       handleClickAlertValidationError();
     }
   }
+
+  const getAverageRating = () => {
+    var totalRating = 0;
+
+    reviews.forEach((review) => {
+      totalRating += review.rating;
+    });
+
+    var averageRating = totalRating / reviews.length;
+    averageRating = parseInt(averageRating);
+
+    console.log(averageRating);
+
+    return averageRating;
+  };
 
   return (
     <div className={classes.root}>
@@ -651,24 +666,44 @@ function CompanyBasicInfo(props) {
 
               {/* PANEL 03 FOR STAR RATING DISPLAY */}
 
-              <Grid item xs={9}>
-                <div className={classes.rating}>
-                  <Rating
-                    name="half-rating-read"
-                    defaultValue={2.5}
-                    precision={0.5}
-                    readOnly
-                  />
-                </div>
+              {reviews.length > 0 ? (
+                <Grid item xs={9}>
+                  <div className={classes.rating}>
+                    <Rating
+                      name="read-only"
+                      value={getAverageRating()}
+                      precision={0.5}
+                      readOnly
+                    />
+                  </div>
 
-                <div className={classes.ratingText}>
-                  <Typography>
-                    <Box fontSize={14} fontWeight="fontWeightMedium" m={1}>
-                      3.5 stars (124)
-                    </Box>
-                  </Typography>
-                </div>
-              </Grid>
+                  <div className={classes.ratingText}>
+                    <Typography>
+                      <Box fontSize={14} fontWeight="fontWeightMedium" m={1}>
+                        {getAverageRating()} stars ({reviews.length})
+                      </Box>
+                    </Typography>
+                  </div>
+                </Grid>
+              ) : (
+                <Grid item xs={9}>
+                  <div className={classes.rating}>
+                    <Rating
+                      name="read-only"
+                      value={0}
+                      precision={0.5}
+                      readOnly
+                    />
+                  </div>
+                  <div className={classes.ratingText}>
+                    <Typography>
+                      <Box fontSize={14} fontWeight="fontWeightMedium" m={1}>
+                        (no reviews)
+                      </Box>
+                    </Typography>
+                  </div>
+                </Grid>
+              )}
 
               {/* PANEL 04 FOR SOCIAL MEDIA LINKS */}
 
@@ -680,7 +715,7 @@ function CompanyBasicInfo(props) {
                 spacing={5}
               >
                 <Grid item xs={1}>
-                  <Link to={"https://" + website}>
+                  <Link to={{ pathname: website }} target="_blank">
                     <IconButton variant="outlined" aria-label="website">
                       <LanguageIcon />
                     </IconButton>
@@ -688,21 +723,21 @@ function CompanyBasicInfo(props) {
                 </Grid>
 
                 <Grid item xs={1}>
-                  <Link to={"https://" + linkedIn}>
+                  <Link to={{ pathname: linkedIn }} target="_blank">
                     <IconButton variant="outlined" aria-label="website">
                       <LinkedInIcon />
                     </IconButton>
                   </Link>
                 </Grid>
                 <Grid item xs={1}>
-                  <Link to={"https://" + twitter}>
+                  <Link to={{ pathname: twitter }} target="_blank">
                     <IconButton variant="outlined" aria-label="website">
                       <TwitterIcon />
                     </IconButton>
                   </Link>
                 </Grid>
                 <Grid item xs={1}>
-                  <Link to={"https://" + facebook}>
+                  <Link to={{ pathname: facebook }} target="_blank">
                     <IconButton variant="outlined" aria-label="website">
                       <FacebookIcon />
                     </IconButton>

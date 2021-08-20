@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 12,
     width: 125,
     height: 125,
+    marginLeft: 10,
     float: "center",
   },
   companyName: {
@@ -42,8 +43,15 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 20,
     float: "center",
   },
-  ratingContainer:{
+  ratingContainer: {
     marginTop: -30,
+  },
+  rating: {
+    marginLeft: -10,
+    marginTop: 5,
+  },
+  noRating:{
+    marginTop: -20,
   }
 }));
 
@@ -52,24 +60,37 @@ const CompanySummaryCard = (props) => {
 
   const [state, setState] = useState({
     logo: " ",
+    reviews: [],
   });
 
   const name = state.name;
   const logo = state.logo;
+  const reviews = state.reviews;
 
   useEffect(() => {
-    axios
-      .get(`${BACKEND_URL}/employers/${props.employerId}`)
-      .then((res) => {
-        console.log(res.data.employer);
-        if (res.data.success) {
-          setState({
-            name: res.data.employer.name,
-            logo: res.data.employer.logo,
-          });
-        }
-      });
+    axios.get(`${BACKEND_URL}/employers/${props.employerId}`).then((res) => {
+      console.log(res.data.employer);
+      if (res.data.success) {
+        setState({
+          name: res.data.employer.name,
+          logo: res.data.employer.logo,
+          reviews: res.data.employer.reviews,
+        });
+      }
+    });
   }, []);
+
+  const getAverageRating = () => {
+    var totalRating = 0;
+
+    reviews.forEach((review) => {
+      totalRating += review.rating;
+    });
+
+    var averageRating = totalRating / reviews.length;
+
+    return averageRating;
+  };
 
   return (
     <div className={classes.root}>
@@ -84,35 +105,68 @@ const CompanySummaryCard = (props) => {
           {name}
         </Typography>
 
-        <Grid item container spacing={1} justify="center" alignItems="center" className={classes.ratingContainer}>
-          <Grid item xs={3}>
-            <div className={classes.ratingAverage}>
-              <Typography variant="body2">
-                <Box fontWeight={500} fontSize={25} m={1}>
-                  3.5
+        {reviews.length > 0 ? (
+          <Grid
+            item
+            container
+            spacing={1}
+            justify="center"
+            alignItems="center"
+            className={classes.ratingContainer}
+          >
+            <Grid item xs={3}>
+              <div className={classes.ratingAverage}>
+                <Typography variant="body2">
+                  <Box fontWeight={500} fontSize={25} m={1}>
+                    {getAverageRating()}
+                  </Box>
+                </Typography>
+              </div>
+            </Grid>
+
+            <Grid item xs={5}>
+              <div className={classes.rating}>
+                <Rating
+                  name="read-only"
+                  value={getAverageRating()}
+                  precision={0.5}
+                  readOnly
+                />
+              </div>
+            </Grid>
+
+            <Grid item xs={4}>
+              <div className={classes.ratingText}>
+                <Typography variant="body2">({reviews.length})</Typography>
+              </div>
+            </Grid>
+          </Grid>
+        ) : (
+          <Grid
+            item
+            container
+            spacing={1}
+            justify="center"
+            alignItems="center"
+            direction="row"
+            xs={12}
+            className={classes.ratingContainer}
+          >
+            <Grid item>
+              <div className={classes.rating}>
+                <Rating name="read-only" value={0} precision={0.5}  readOnly />
+              </div>
+            </Grid>
+
+            <Grid item>
+              <Typography variant="body2" className={classes.noRating}>
+                <Box fontWeight={500} fontSize={13} m={1}>
+                  (no reviews)
                 </Box>
               </Typography>
-            </div>
+            </Grid>
           </Grid>
-
-          <Grid item xs={5}>
-            <div className={classes.rating}>
-              <Rating
-                name="half-rating-read"
-                size="small"
-                defaultValue={2.5}
-                precision={0.5}
-                readOnly
-              />
-            </div>
-          </Grid>
-
-          <Grid item xs={4}>
-            <div className={classes.ratingText}>
-              <Typography variant="body2">(124)</Typography>
-            </div>
-          </Grid>
-        </Grid>
+        )}
       </FloatCard>
     </div>
   );
