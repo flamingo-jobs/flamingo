@@ -33,6 +33,49 @@ const getAll = (req, res) => {
   });
 };
 
+const getForTable = (req, res) => {
+  Employers.find().exec((err, employers) => {
+    if (err) {
+      return res.status(400).json({
+        error: err,
+      });
+    }
+
+    
+    let formattedArray = employers.map(obj => {
+      let ratings = 0;
+
+      if(obj.reviews.length){
+        obj.reviews.forEach(item => {
+          ratings += item.rating
+        });
+
+        ratings = ratings/obj.reviews.length;
+        console.log(ratings)
+      }
+
+      let newObj = {
+        _id: obj._id,
+        name: obj.name,
+        email: obj.email,
+        dateRegistered: obj.dateRegistered,
+        subscription: obj.subscription.type,
+        ratings: ratings,
+        categories: obj.categories,
+        isFeatured: obj.isFeatured,
+        locations: obj.locations
+      };
+
+      return newObj
+    })
+
+    return res.status(200).json({
+      success: true,
+      existingData: formattedArray,
+    });
+  });
+};
+
 const getSearched = async (req, res) => {
   try {
     const result = await Employers.find({
@@ -76,14 +119,14 @@ const getById = (req, res) => {
 
 const getByIds = async (req, res) => {
   const employerIds = req.params.empIds.split("$$");
-  
-  try{
-    const response = await Employers.find({'_id':{$in: employerIds}});
+
+  try {
+    const response = await Employers.find({ '_id': { $in: employerIds } });
     res.status(200).json({
       success: true,
       employers: response
     });
-  }catch(err){
+  } catch (err) {
     res.status(400).json({
       success: false,
       error: err,
@@ -139,14 +182,14 @@ const update = (req, res) => {
 };
 
 const addReview = async (req, res) => {
-  try{
+  try {
     const remove = await Employers.findByIdAndUpdate(
       req.params.empId,
       {
-        $pull: { reviews: { jobseekerId: req.body.jobseekerId }}
+        $pull: { reviews: { jobseekerId: req.body.jobseekerId } }
       },
     );
-    
+
     const result = await Employers.findByIdAndUpdate(
       req.params.empId,
       {
@@ -154,7 +197,7 @@ const addReview = async (req, res) => {
       },
     );
     res.status(200).json({ success: true });
-  } catch(error){
+  } catch (error) {
     res.status(400).json({ success: false, error: error });
   }
 }
@@ -215,4 +258,5 @@ module.exports = {
   getEmployerCount,
   getFiltered,
   getAllApplications,
+  getForTable
 };

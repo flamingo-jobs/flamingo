@@ -14,17 +14,10 @@ function Employers() {
     { field: 'locations', headerName: 'Locations', width: 250, editable: false },
     { field: 'subscription', headerName: 'Subscription', width: 170, editable: false },
     {
-        field: 'reviews', headerName: 'Ratings', width: 150, editable: false, valueFormatter: (params) => {
-            var valueFormatted = 0;
-            if (params.value) {
-                valueFormatted = params.value.map(item => item.rating).reduce((a, x) => a + x, 0) / params.value.length;
-            }
-            
-            return `${valueFormatted}`;
-        },
+        field: 'ratings', headerName: 'Ratings', width: 150, editable: false
     },
     { field: 'categories', headerName: 'Categories', width: 200, editable: false },
-    { field: 'isFeatured', headerName: 'Is Featured', width: 170, editable: true },
+    { field: 'isFeatured', headerName: 'Is Featured', width: 170, editable: false },
 
 
     ];

@@ -16,6 +16,32 @@ const create = (req, res) => {
   });
 };
 
+const getForTable = (req, res) => {
+  Jobseeker.find().exec((err, jobseeker) => {
+    if (err) {
+      return res.status(400).json({
+        error: err,
+      });
+    }
+
+    let formattedArray = jobseeker.map(obj => {
+      let newObj = {
+        _id: obj._id,
+        name: obj.name,
+        email: obj.contact.email,
+        mobile: obj.contact.mobile
+      };
+
+      return newObj
+    })
+
+    return res.status(200).json({
+      success: true,
+      existingData: formattedArray,
+    });
+  });
+};
+
 const getAll = (req, res) => {
   Jobseeker.find().exec((err, jobseeker) => {
     if (err) {
@@ -87,13 +113,13 @@ const getById = (req, res) => {
 
 const getByIds = async (req, res) => {
   const jobseekers = req.params.ids.split("$$");
-  try{
-    const response = await Jobseeker.find({'_id':{$in: jobseekers}});
+  try {
+    const response = await Jobseeker.find({ '_id': { $in: jobseekers } });
     res.status(200).json({
       success: true,
       jobseekers: response
     });
-  }catch(err){
+  } catch (err) {
     res.status(400).json({
       success: false,
       error: err,
@@ -199,19 +225,19 @@ const updateTechnologyItem = (req, res) => {
   Jobseeker.findByIdAndUpdate(
     req.params.id,
     {
-        $set:req.body
+      $set: req.body
     },
-    (err,technology) =>{
-        if(err){
-            return res.status(400).json({
-                error:err
-            })
-        }
-        return res.status(200).json({
-            success: "Updated successfully"
-        });
+    (err, technology) => {
+      if (err) {
+        return res.status(400).json({
+          error: err
+        })
+      }
+      return res.status(200).json({
+        success: "Updated successfully"
+      });
     }
-);
+  );
 };
 
 const updateEducation = (req, res) => {
@@ -310,79 +336,79 @@ const updateProject = (req, res) => {
 };
 
 const updateResumeStatus = async (req, res) => {
-  try{
+  try {
     const updatedJobseeker = await Jobseeker.updateOne(
-        {_id: req.params.id, "applicationDetails.jobId": req.body.jobId},
-        {
-          $set:{ [`applicationDetails.$.status`]: req.body.status }
-        },
+      { _id: req.params.id, "applicationDetails.jobId": req.body.jobId },
+      {
+        $set: { [`applicationDetails.$.status`]: req.body.status }
+      },
     );
     res.status(200).json({ success: true });
-  }catch(err){
-      res.status(400).json({ success: false, error: err});
+  } catch (err) {
+    res.status(400).json({ success: false, error: err });
   }
 }
 
-const updateResumeDetails =  async (req, res) => {
-    try{
-        const removedArrayElement = await Jobseeker.findByIdAndUpdate(
-            req.params.id,
-            {$pull:{applicationDetails:{resumeName: req.body.resumeName}}},
-            { safe: true, multi:true }
-        );
-    }catch(err){
-        res.status(400).json({ success: false, error: err});
-    }
+const updateResumeDetails = async (req, res) => {
+  try {
+    const removedArrayElement = await Jobseeker.findByIdAndUpdate(
+      req.params.id,
+      { $pull: { applicationDetails: { resumeName: req.body.resumeName } } },
+      { safe: true, multi: true }
+    );
+  } catch (err) {
+    res.status(400).json({ success: false, error: err });
+  }
 
-    try{
-        const updatedJobseeker = await Jobseeker.findByIdAndUpdate(
-            req.params.id,
-            { $push: { applicationDetails: req.body  } },
-        );
-        res.status(200).json({ success: true});
-    } catch(err){
-        res.status(400).json({ success: false, error: err});
-    }
+  try {
+    const updatedJobseeker = await Jobseeker.findByIdAndUpdate(
+      req.params.id,
+      { $push: { applicationDetails: req.body } },
+    );
+    res.status(200).json({ success: true });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err });
+  }
 }
 
 const updateSavedJobs = async (req, res) => {
-  try{
+  try {
     const updatedSavedJobs = await Jobseeker.findByIdAndUpdate(
-        req.params.id,
-        { $set: { savedJobs: req.body  } },
+      req.params.id,
+      { $set: { savedJobs: req.body } },
     );
-    res.status(200).json({ success: true});
-  } catch(err){
-      res.status(400).json({ success: false, error: err});
+    res.status(200).json({ success: true });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err });
   }
 }
 
 const updateFavoriteOrgs = async (req, res) => {
-  try{
+  try {
     const updatedFavoriteOrgs = await Jobseeker.findByIdAndUpdate(
-        req.params.id,
-        { $set: { favoriteOrganizations: req.body  } },
+      req.params.id,
+      { $set: { favoriteOrganizations: req.body } },
     );
-    res.status(200).json({ success: true});
-  } catch(err){
-      res.status(400).json({ success: false, error: err});
+    res.status(200).json({ success: true });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err });
   }
 }
-  
+
 const resetAll = (req, res) => { // To clear the test resume details
   Jobseeker.updateMany(
-      {},
-      { $set: { applicationDetails: [] }},
-      (err, job) => {
-          if (err) {
-              return res.status(400).json({
-                  error: err
-              })
-          }
-          return res.status(200).json({
-              sucess: "Updated successfully"
-          });
+    {},
+    { $set: { applicationDetails: [] } },
+    (err, job) => {
+      if (err) {
+        return res.status(400).json({
+          error: err
+        })
       }
+      return res.status(200).json({
+        sucess: "Updated successfully"
+      });
+    }
   );
 }
 
@@ -760,5 +786,6 @@ module.exports = {
   getFiltered,
   getCount,
   block,
-  getNotifications
+  getNotifications,
+  getForTable
 };

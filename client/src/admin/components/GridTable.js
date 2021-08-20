@@ -187,17 +187,43 @@ function GridTable(props) {
     }, [pendingChanges]);
 
     const retrieveCategories = () => {
-        axios.get(`${BACKEND_URL}/${props.type}`).then(res => {
-            if (res.data.success && res.data.existingData !== 0) {
-                for (var p in res.data.existingData) {
-                    res.data.existingData[p].id = res.data.existingData[p]._id;
+        if (props.type === "jobseekers") {
+            axios.get(`${BACKEND_URL}/jobseekers/toTable`).then(res => {
+                if (res.data.success && res.data.existingData !== 0) {
+                    for (var p in res.data.existingData) {
+                        res.data.existingData[p].id = res.data.existingData[p]._id;
+                    }
+                    setRows(res.data.existingData)
+                } else {
+                    setRows([])
                 }
-                setRows(res.data.existingData)
-            } else {
-                setRows([])
-            }
-            setLoading(false);
-        })
+                setLoading(false);
+            })
+        } else if (props.type === "employers") {
+            axios.get(`${BACKEND_URL}/employers/toTable`).then(res => {
+                if (res.data.success && res.data.existingData !== 0) {
+                    for (var p in res.data.existingData) {
+                        res.data.existingData[p].id = res.data.existingData[p]._id;
+                    }
+                    setRows(res.data.existingData)
+                } else {
+                    setRows([])
+                }
+                setLoading(false);
+            })
+        } else {
+            axios.get(`${BACKEND_URL}/${props.type}`).then(res => {
+                if (res.data.success && res.data.existingData !== 0) {
+                    for (var p in res.data.existingData) {
+                        res.data.existingData[p].id = res.data.existingData[p]._id;
+                    }
+                    setRows(res.data.existingData)
+                } else {
+                    setRows([])
+                }
+                setLoading(false);
+            })
+        }
     }
 
     // alert
@@ -308,7 +334,7 @@ function GridTable(props) {
                 onClose={handleClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
-                classes={{paper: classes.paperRoot}}
+                classes={{ paper: classes.paperRoot }}
             >
                 <DialogTitle id="alert-dialog-title">{"Confirm Delete?"}</DialogTitle>
                 <DialogContent>
