@@ -54,87 +54,84 @@ const Employer = (props) => {
   const token = sessionStorage.getItem("userToken");
   const header = jwt.decode(token, { complete: true });
   if (token === null) {
-    loginId = props.employerID;
+    loginId = window.location.pathname.split("/")[3];
   } else if (header.payload.userRole === "employer") {
     login = true;
     loginId = sessionStorage.getItem("loginId");
   } else {
-    loginId = props.employerID;
+    loginId = window.location.pathname.split("/")[3];
   }
   const [empId, setEmpId] = useState(window.location.pathname.split("/")[3]);
 
   return (
     <div className={classes.root}>
-    <Grid
-      container
-      spacing={3}
-      direction="row"
-      justify="space-between"
-      alignItems="flex-start"
-    >
       <Grid
-        item
         container
-        xs={12}
-        sm={12}
-        md={7}
         spacing={3}
-        style={{ marginLeft: 0, marginTop: -5, marginBottom: 5 }}
+        direction="row"
+        justify="space-between"
+        alignItems="flex-start"
       >
-        <Grid item>
-          <CompanyBasicInfo userRole={props.userRole}></CompanyBasicInfo>
-        </Grid>
-
-        <Grid item>
-          <CompanyDescription userRole={props.userRole}></CompanyDescription>
-        </Grid>
-
-      </Grid>
-
-      <Grid
-        item
-        container
-        xs={12}
-        sm={12}
-        md={5}
-        spacing={1}
-        style={{ marginTop: 5, marginBottom: 5, marginRight: 5 }}
-      >
-        <FloatCard>
-          <Grid
-            item
-            container
-            xs={12}
-            direction="row"
-            style={{ marginTop: 20 }}
-          >
-            <Grid item xs={10}>
-              <Typography variant="h6" className={classes.title}>
-                Company Technology Stack
-              </Typography>
-            </Grid>
-            <Grid item xs={2}>
-              <ComputerIcon className={classes.icon} />
-            </Grid>
+        <Grid
+          item
+          container
+          xs={12}
+          sm={12}
+          md={7}
+          spacing={3}
+          style={{ marginLeft: 0, marginTop: -5, marginBottom: 5 }}
+        >
+          <Grid item>
+            <CompanyBasicInfo userRole={loginId}></CompanyBasicInfo>
           </Grid>
 
-          <Grid item style={{ marginLeft: 15, marginTop: 10 }}>
-            <Technologies
-              showEdit={false}
-              employerId={loginId}
-              login={login}
-              userRole={props.userRole}
-            ></Technologies>
+          <Grid item>
+            <CompanyDescription userRole={loginId}></CompanyDescription>
           </Grid>
-        </FloatCard>
-      </Grid>
+        </Grid>
+
+        <Grid
+          item
+          container
+          xs={12}
+          sm={12}
+          md={5}
+          spacing={1}
+          style={{ marginTop: 5, marginBottom: 5, marginRight: 5 }}
+        >
+          <FloatCard>
+            <Grid
+              item
+              container
+              xs={12}
+              direction="row"
+              style={{ marginTop: 20 }}
+            >
+              <Grid item xs={10}>
+                <Typography variant="h6" className={classes.title}>
+                  Company Technology Stack
+                </Typography>
+              </Grid>
+              <Grid item xs={2}>
+                <ComputerIcon className={classes.icon} />
+              </Grid>
+            </Grid>
+
+            <Grid item style={{ marginLeft: 15, marginTop: 10 }}>
+              <Technologies
+                showEdit={false}
+                employerId={loginId}
+                login={login}
+                userRole={loginId}
+              ></Technologies>
+            </Grid>
+          </FloatCard>
+        </Grid>
 
       <Grid item xs={12} md={7}>
         <Reviews empId={empId}/>
       </Grid>
-    </Grid>
     </div>
-    
   );
 };
 
