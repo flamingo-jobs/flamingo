@@ -106,7 +106,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function CompanyBasicInfo(props) {
+function CompanyDescription(props) {
   const classes = useStyles();
 
   const fixedOptions = [];
@@ -118,12 +118,12 @@ function CompanyBasicInfo(props) {
   const token = sessionStorage.getItem("userToken");
   const header = jwt.decode(token, { complete: true });
   if (token === null) {
-    loginId = props.employerID;
+    loginId = props.userRole;
   } else if (header.payload.userRole === "employer") {
     login = true;
     loginId = sessionStorage.getItem("loginId");
   } else {
-    loginId = props.employerID;
+    loginId = props.userRole;
   }
 
   const [state, setState] = useState({
@@ -138,7 +138,8 @@ function CompanyBasicInfo(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
 
-  const [openAlertValidationError, setOpenAlertValidationError] = React.useState(false);
+  const [openAlertValidationError, setOpenAlertValidationError] =
+    React.useState(false);
   const [openAlertServerError, setOpenAlertServerError] = React.useState(false);
   const [openAlertSuccess, setOpenAlertSuccess] = React.useState(false);
 
@@ -204,11 +205,9 @@ function CompanyBasicInfo(props) {
   const handleClose = () => {
     if (description != "") {
       setOpen(false);
-    }
-    else{
+    } else {
       handleClickAlertValidationError();
     }
-    
   };
 
   //for the company details update form
@@ -234,16 +233,14 @@ function CompanyBasicInfo(props) {
         .put(`${BACKEND_URL}/employers/update/${loginId}`, employer)
         .then((res) => {
           if (res.status == 200) {
-            handleClickAlertSuccess()
+            handleClickAlertSuccess();
           } else {
-            handleClickAlertServerError()
+            handleClickAlertServerError();
           }
-        
         })
-        .catch(()=>{
-          handleClickAlertServerError()
-        })
-
+        .catch(() => {
+          handleClickAlertServerError();
+        });
 
       handleClose();
     } else {
@@ -279,16 +276,17 @@ function CompanyBasicInfo(props) {
 
               <Grid item xs={9}>
                 <div className={classes.headerRight}>
-                  {props.userRole === "employer" && haveAccess && (
-                    <IconButton
-                      variant="outlined"
-                      aria-label="edit"
-                      className={classes.editButton}
-                      onClick={handleClickOpen}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                  )}
+                  {props.userRole === "employer" ||
+                    (haveAccess && (
+                      <IconButton
+                        variant="outlined"
+                        aria-label="edit"
+                        className={classes.editButton}
+                        onClick={handleClickOpen}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    ))}
 
                   {/* <form onSubmit={onSubmit}> */}
                   <form>
@@ -356,22 +354,34 @@ function CompanyBasicInfo(props) {
 
         <br />
 
-        <Snackbar open={openAlertValidationError} autoHideDuration={6000} onClose={handleCloseAlertValidationError}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'left'}}>
+        <Snackbar
+          open={openAlertValidationError}
+          autoHideDuration={6000}
+          onClose={handleCloseAlertValidationError}
+          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+        >
           <Alert onClose={handleCloseAlertValidationError} severity="error">
             Company Description cannot be empty!
           </Alert>
         </Snackbar>
 
-        <Snackbar open={openAlertServerError} autoHideDuration={6000} onClose={handleCloseAlertServerError} 
-         anchorOrigin={{ vertical: 'bottom', horizontal: 'left'}}>
+        <Snackbar
+          open={openAlertServerError}
+          autoHideDuration={6000}
+          onClose={handleCloseAlertServerError}
+          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+        >
           <Alert onClose={handleCloseAlertServerError} severity="error">
             Server error! Changes couldn't be saved
           </Alert>
         </Snackbar>
 
-        <Snackbar open={openAlertSuccess} autoHideDuration={6000} onClose={handleCloseAlertSuccess}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'left'}}>
+        <Snackbar
+          open={openAlertSuccess}
+          autoHideDuration={6000}
+          onClose={handleCloseAlertSuccess}
+          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+        >
           <Alert onClose={handleCloseAlertSuccess} severity="success">
             Changes saved successfully!
           </Alert>
@@ -380,18 +390,29 @@ function CompanyBasicInfo(props) {
         <Grid container xs={12} direction="row" spacing={3}>
           {/* BODY PART OF THE COMPANY INFO CARD */}
 
-          <Grid item xs={12}>
-            {/* <div className={classes.infoTags}> */}
-            <div className={classes.infoTagsContainer}>
-              {Object.keys(technologyStack).map((item, i) => (
-                <Chip
-                  icon={<LocalOfferRoundedIcon className={classes.tagIcon} />}
-                  label={technologyStack[i].type}
-                  className={classes.label}
-                />
-              ))}
-            </div>
-          </Grid>
+          {technologyStack.length > 0 ? (
+            <Grid item xs={12}>
+              <div className={classes.infoTagsContainer}>
+                {Object.keys(technologyStack).map((item, i) => (
+                  <Chip
+                    icon={<LocalOfferRoundedIcon className={classes.tagIcon} />}
+                    label={technologyStack[i].type}
+                    className={classes.label}
+                  />
+                ))}
+              </div>
+            </Grid>
+          ) : (
+            <Grid item xs={12}>
+              <div className={classes.infoTagsContainer}>
+              <Chip
+                    icon={<LocalOfferRoundedIcon className={classes.tagIcon} />}
+                    label="No Technologies"
+                    className={classes.label}
+                  />
+              </div>
+            </Grid>
+          )}
 
           <Grid item xs={12} className={classes.body}>
             <div className={classes.companyDescription}>
@@ -410,25 +431,4 @@ function CompanyBasicInfo(props) {
   );
 }
 
-// list of locations
-
-const mycities = [{ city: "A" }, { city: "B" }, { city: "C" }];
-
-const cities = [
-  { city: "Colombo" },
-  { city: "Gampaha" },
-  { city: "Kandy" },
-  { city: "Mumbai" },
-  { city: "Delhi" },
-  { city: "Bangalore" },
-  { city: "Male" },
-  { city: "New York" },
-  { city: "Uppsala" },
-  { city: "Göteborg" },
-  { city: "Linköping" },
-  { city: "A" },
-  { city: "B" },
-  { city: "C" },
-];
-
-export default CompanyBasicInfo;
+export default CompanyDescription;

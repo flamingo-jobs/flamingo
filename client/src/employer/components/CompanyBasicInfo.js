@@ -149,6 +149,9 @@ const useStyles = makeStyles((theme) => ({
   textFieldColor: {
     color: theme.palette.purple,
   },
+  setMargin:{
+    marginTop:25,
+  }
 }));
 
 function CompanyBasicInfo(props) {
@@ -163,12 +166,12 @@ function CompanyBasicInfo(props) {
   const token = sessionStorage.getItem("userToken");
   const header = jwt.decode(token, { complete: true });
   if (token === null) {
-    loginId = props.employerID;
+    loginId = props.userRole;;
   } else if (header.payload.userRole === "employer") {
     login = true;
     loginId = sessionStorage.getItem("loginId");
   } else {
-    loginId = props.employerID;
+    loginId = props.userRole;;
   }
 
   const [state, setState] = useState({
@@ -407,7 +410,7 @@ function CompanyBasicInfo(props) {
                     label={subscription}
                     className={classes.membershipType}
                   />
-                  {props.userRole === "employer" && haveAccess && (
+                 {props.userRole == "employer" || haveAccess == true ? (
                     <IconButton
                       variant="outlined"
                       aria-label="edit"
@@ -416,6 +419,9 @@ function CompanyBasicInfo(props) {
                     >
                       <EditIcon />
                     </IconButton>
+                  ) : (
+                    <div className={classes.setMargin}>
+                    </div>
                   )}
 
                   {/* <form onSubmit={onSubmit}> */}
