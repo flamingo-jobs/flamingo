@@ -160,7 +160,7 @@ function Base() {
         <Route path="/people">
           <People />
         </Route>
-        <Route path="/employer/company">
+        <Route path="/employer/company/:id">
           <Employer userRole={role} />
         </Route>
         <Route path="/" exact>
