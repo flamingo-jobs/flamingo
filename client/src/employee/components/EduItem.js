@@ -374,7 +374,7 @@ function EduItem(props) {
         endDate: education.endMonth+"/"+education.endYear,
         societiesAndActivities: education.societiesAndActivities
       }
-    }else if(education.type === "Diploma" || education.type === "Graduate Diploma" || education.type === "M.Phil." || education.type === "PhD"){
+    }else if(education.type === "Diploma" || education.type === "Graduate Diploma" || education.type === "Masters" || education.type === "M.Phil." || education.type === "PhD"){
       edu = {
         institute: education.institute,
         type: education.type,
@@ -382,7 +382,7 @@ function EduItem(props) {
         startDate: education.startMonth+"/"+education.startYear,
         endDate: education.endMonth+"/"+education.endYear
       }
-    }else if(education.type === "School" || education.type === "College"){
+    }else if(education.type === "School"){
       edu = {
         institute: education.institute,
         type: education.type,
@@ -528,7 +528,7 @@ function EduItem(props) {
         </>;
       setForm(temp);
       // -----------------------------------School fields ---------------------------------
-    }else if(education.type === "Diploma" || education.type === "Graduate Diploma" || education.type === "M.Phil." || education.type === "PhD"){
+    }else if(education.type === "Diploma" || education.type === "Graduate Diploma" || education.type === "Masters" || education.type === "M.Phil." || education.type === "PhD"){
       let temp =
       <>
         <TextField
@@ -616,7 +616,7 @@ function EduItem(props) {
         </Grid>
         </>;
       setForm(temp);
-    }else if(props.type === "School" || props.type === "College"){
+    }else if(props.type === "School"){
         let temp =
         <>
           <Grid container direction="row">
@@ -740,7 +740,7 @@ function EduItem(props) {
                 </Grid>
             </React.Fragment>
         );
-    }else if(props.type === "Diploma" || props.type === "Graduate Diploma" || props.type === "M.Phil." || props.type === "PhD"){
+    }else if(props.type === "Diploma" || props.type === "Graduate Diploma" || props.type === "Masters" || props.type === "M.Phil." || props.type === "PhD"){
         return (
             <React.Fragment>
                 <Grid item xs={3} style={{marginLeft:"-10px"}}>
@@ -767,7 +767,7 @@ function EduItem(props) {
                 </Grid>
             </React.Fragment>
         );
-    }else if(props.type === "School" || props.type === "College"){
+    }else if(props.type === "School"){
       return (
           <React.Fragment>
               <Grid item xs={3} style={{marginLeft:"-10px"}}>
@@ -895,11 +895,11 @@ function EduItem(props) {
                       disabled
                     >
                       <option value="School">School</option>
-                      <option value="College">College</option>
                       <option value="Diploma">Diploma</option>
                       <option value="Graduate Diploma">Graduate Diploma</option>
                       <option value="Bachelor's">Bachelor's</option>
                       <option value="Bachelor's Honours">Bachelor's Honours</option>
+                      <option value="Masters">Masters</option>
                       <option value="M.Phil.">M.Phil.</option>
                       <option value="PhD">PhD</option>
                     </Select>

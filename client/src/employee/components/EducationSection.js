@@ -120,11 +120,11 @@ function EducationSection(props) {
   const [fetchedData, setFetchedData] = useState('');
   const [educationFields, setEducationFields] = useState(null);
   const school=[];
-  const college=[];
   const diploma=[];
   const graduateDiploma=[];
   const bachelors=[];
   const bachelorsHonours=[];
+  const masters=[];
   const mPhil=[];
   const phD=[];
   const [education, setEducation] = useState({institute: null, type: "School", fieldOfStudy: null, GPA: null, startYear: null, startMonth: null, endYear: null, endMonth: null, societiesAndActivities: null});
@@ -315,8 +315,6 @@ function EducationSection(props) {
       for (let index = 0; index < educationFields.length; index++) {
         if(educationFields[index].type === "School"){
           school.push({in: index,field: educationFields[index]});
-        }else if(educationFields[index].type === "College"){
-          college.push({in: index,field: educationFields[index]});
         }else if(educationFields[index].type === "Diploma"){
           diploma.push({in: index,field: educationFields[index]});
         }else if(educationFields[index].type === "Graduate Diploma"){
@@ -325,6 +323,8 @@ function EducationSection(props) {
           bachelors.push({in: index,field: educationFields[index]});
         }else if(educationFields[index].type === "Bachelor's Honours"){
           bachelorsHonours.push({in: index,field: educationFields[index]});
+        }else if(educationFields[index].type === "Masters"){
+          masters.push({in: index,field: educationFields[index]});
         }else if(educationFields[index].type === "M.Phil."){
           mPhil.push({in: index,field: educationFields[index]});
         }else if(educationFields[index].type === "PhD"){
@@ -375,7 +375,7 @@ function EducationSection(props) {
       endDate: education.endMonth+"/"+education.endYear,
       societiesAndActivities: education.societiesAndActivities
     }
-  }else if(education.type === "Diploma" || education.type === "Graduate Diploma" || education.type === "M.Phil." || education.type === "PhD"){
+  }else if(education.type === "Diploma" || education.type === "Graduate Diploma" || education.type === "Masters" || education.type === "M.Phil." || education.type === "PhD"){
     edu = {
       institute: education.institute,
       type: education.type,
@@ -475,6 +475,17 @@ console.log(edu);
     }
   }
 
+  const displayMastersFields = () => {
+    if (educationFields) {
+      if (masters) {
+        eduCount=1;
+        return masters.map(edu => (
+              <EduItem index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities}  parentFunction={deleteEducation} />
+              ))
+      }
+    }
+  }
+
   const displayBachelorsHonoursFields = () => {
     if (educationFields) {
       if (bachelorsHonours) {
@@ -513,17 +524,6 @@ console.log(edu);
       if (diploma) {
         eduCount=1;
         return diploma.map(edu => (
-              <EduItem index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities}  parentFunction={deleteEducation} />
-              ))
-      }
-    }
-  }
-  
-  const displayCollegeFields = () => {
-    if (educationFields) {
-      if (college) {
-        eduCount=1;
-        return college.map(edu => (
               <EduItem index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities}  parentFunction={deleteEducation} />
               ))
       }
@@ -655,7 +655,7 @@ console.log(edu);
         </>;
       setForm(temp);
       // -----------------------------------School/College fields ---------------------------------
-    }else if(education.type === "Diploma" || education.type === "Graduate Diploma" || education.type === "M.Phil." || education.type === "PhD"){
+    }else if(education.type === "Diploma" || education.type === "Graduate Diploma" || education.type === "Masters" || education.type === "M.Phil." || education.type === "PhD"){
       let temp =
       <>
         <TextField
@@ -849,11 +849,11 @@ console.log(edu);
               {matchFields()}
               {displayPhdFields()}
               {displayMphilFields()}
+              {displayMastersFields()}
               {displayBachelorsHonoursFields()}
               {displayBachelorsFields()}
               {displayGraduateDiplomaFields()}
               {displayDiplomaFields()}
-              {displayCollegeFields()}
               {displaySchoolFields()}
             </Grid>
         </Grid>
@@ -911,11 +911,11 @@ console.log(edu);
                       required
                     >
                       <option value="School">School</option>
-                      <option value="College">College</option>
                       <option value="Diploma">Diploma</option>
                       <option value="Graduate Diploma">Graduate Diploma</option>
                       <option value="Bachelor's">Bachelor's</option>
                       <option value="Bachelor's Honours">Bachelor's Honours</option>
+                      <option value="Masters">Masters</option>
                       <option value="M.Phil.">M.Phil.</option>
                       <option value="PhD">PhD</option>
                     </Select>

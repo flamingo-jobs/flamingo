@@ -8,7 +8,7 @@ import theme from '../../Theme';
 import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
 import Grid from '@material-ui/core/Grid';
 import BACKEND_URL from '../../Config';
-import AddIcon from '@material-ui/icons/Add';
+import EditIcon from '@material-ui/icons/Edit';
 import SnackBarAlert from "../../components/SnackBarAlert";
 import Chip from '@material-ui/core/Chip';
 import Paper from '@material-ui/core/Paper';
@@ -125,8 +125,22 @@ function Skills(props) {
   const [fetchedData, setFetchedData] = useState('');
   const [open, setOpen] = useState(false);
   const [skills, setSkills] = useState([]);
-  const [state, setState] = useState({course: null, institute: null, startYear: null, startMonth: null, endYear: null, endMonth: null});
-  const names =["Angular","jQuery","Java","React",'Vue.js','Strategic Planning','Public Speaking','Analytical Thinking','Object Oriented Programming','Leadership','Web Development','Cloud Computing'];
+  const names =[
+    "Cloud and Distributed Computing",
+    "Statistical Analysis and Data Mining",
+    "SEO/SEM Marketing",
+    "Middleware and Integration Software",
+    'Mobile Development',
+    'Network and Information Security',
+    'Public Speaking',
+    'Analytical Thinking',
+    'Object Oriented Programming',
+    'Leadership',
+    'Web Development',
+    'Data Engineering and Data Warehousing',
+    'Algorithm Design',
+    'Shell Scripting Languages',
+    'Software Modeling and Process Design'];
   const [chipData, setChipData] = useState(names);
   const [newData, setNewData] = useState(null);
   const [show, setShow] = useState(false);
@@ -221,45 +235,12 @@ function Skills(props) {
       }
       setAlertShow(false);
     };
-  
-
-  //---------------------------- text field onChange events
-  function onChangeCourse(e){
-    setState(prevState => {
-      return {...prevState, course: e.target.value}
-    })
-  }
-
-  function onChangeInstitute(e){
-    setState(prevState => {
-      return {...prevState, institute: e.target.value}
-    })
-  }
-
-  function onChangestartYear(e){
-    setState(prevState => {
-      return {...prevState, startYear: e.target.value}
-    })
-  }
-
-  function onChangestartMonth(e){
-    setState(prevState => {
-      return {...prevState, startMonth: e.target.value}
-    })
-  }
-
-  function onChangeEndYear(e){
-    setState(prevState => {
-      return {...prevState, endYear: e.target.value}
-    })
-  }
-
 
   function onSubmit(e){
     e.preventDefault();
 
     var l = skills.length;
-    for (let index = 0; index < newData.length; index++) {
+    for (let index = 0; index < newData?.length; index++) {
       skills[l++]=newData[index];   
     }
 
@@ -363,7 +344,7 @@ function Skills(props) {
         <Grid item style={{ textAlign: 'right' }}>
         { login ? <>
             <Button className={classes.defaultButton} style={{ float: 'right',marginRight: '0px',backgroundColor:'white'}} onClick={showOpen}>
-                <AddIcon style={{color: theme.palette.tuftsBlue,}} className={classes.editIcon} />
+                <EditIcon style={{color: theme.palette.tuftsBlue,}} className={classes.editIcon} />
             </Button>
             </> : null }
         </Grid>       
