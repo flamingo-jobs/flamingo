@@ -1,5 +1,5 @@
 import { React, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import {
   Button,
   TextField,
@@ -7,7 +7,6 @@ import {
   Typography,
   Container,
   CardMedia,
-  Link,
   Chip,
   Box,
 } from "@material-ui/core";
@@ -180,7 +179,7 @@ export const ForgotPassword = () => {
               <div className={classes.paper}>
                 {/* Return Back */}
 
-                <Link to="/signin" className={classes.return}>
+                <Link to="/signIn" className={classes.return}>
                   <Chip
                     clickable
                     icon={<ArrowBackRoundedIcon />}
