@@ -310,8 +310,11 @@ export default function ShortlistingEducationSettingsAccordion(props) {
       case "Diploma":
         newSettings.settings.diploma = value;
         break;
-      case "Bachelors":
+      case "Bachelor's":
         newSettings.settings.bachelors = value;
+        break;
+      case "Bachelor's Honors":
+        newSettings.settings.bachelorsHons = value;
         break;
       case "Masters":
         newSettings.settings.masters = value;
@@ -330,7 +333,7 @@ export default function ShortlistingEducationSettingsAccordion(props) {
 
   const calculateTotal = () => {
     let total = updatedSettings.settings.minimum + updatedSettings.settings.diploma +
-      updatedSettings.settings.bachelors + updatedSettings.settings.masters +
+      updatedSettings.settings.bachelors + updatedSettings.settings.bachelorsHons + updatedSettings.settings.masters +
       updatedSettings.settings.phd;
     if (total === 100) {
       setInvalid(false);
@@ -385,7 +388,8 @@ export default function ShortlistingEducationSettingsAccordion(props) {
             <Typography>Remaining percentage are divided as the weights for each educatation levels. <br />Total wights of below levels should be {100 - minimum}%.</Typography>
           </div>
           <ContinousSlider name={"Diploma"} value={settings.settings.diploma} passValue={getSettingValues} max={100 - minimum} />
-          <ContinousSlider name={"Bachelors"} value={settings.settings.bachelors} passValue={getSettingValues} max={100 - minimum} />
+          <ContinousSlider name={"Bachelor's"} value={settings.settings.bachelors} passValue={getSettingValues} max={100 - minimum} />
+          <ContinousSlider name={"Bachelor's Honours"} value={settings.settings.bachelorsHons} passValue={getSettingValues} max={100 - minimum} />
           <Grid item xs={12} style={{ padding: 24 }}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <Checkbox

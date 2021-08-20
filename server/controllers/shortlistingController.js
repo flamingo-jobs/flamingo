@@ -72,6 +72,12 @@ const shortlistApplicants = (req, res) => {
                                     minEduc = true;
                                 }
 
+                                if (edu.type === "Bachelor's Honours") {
+                                    if (job.minimumEducation.includes("Bachelor's")) {
+                                        minEduc = true;
+                                    }
+                                }
+
                                 if (edu.type === "Diploma") {
                                     education += educationShortlistings.diploma;
                                 } else if (edu.type === "Bachelor's") {
@@ -83,6 +89,17 @@ const shortlistApplicants = (req, res) => {
                                         }
                                     } else {
                                         education += educationShortlistings.bachelors;
+                                    }
+                                } else if (edu.type === "Bachelor's Honours") {
+
+                                    if (educationShortlistings.considerGpa) {
+                                        if (edu.GPA) {
+                                            education += educationShortlistings.bachelorsHons * (parseFloat(edu.GPA) / 4);
+                                        } else {
+                                            education += educationShortlistings.bachelorsHons * 0.5;
+                                        }
+                                    } else {
+                                        education += educationShortlistings.bachelorsHons;
                                     }
                                 } else if (edu.type === "Masters") {
                                     education += educationShortlistings.masters;
@@ -344,6 +361,17 @@ const shortlistOnApplicantChanges = (req, res) => {
                                     }
                                 } else {
                                     education += educationShortlistings.bachelors;
+                                }
+                            } else if (edu.type === "Bachelor's Honours") {
+
+                                if (educationShortlistings.considerGpa) {
+                                    if (edu.GPA) {
+                                        education += educationShortlistings.bachelorsHons * (parseFloat(edu.GPA) / 4);
+                                    } else {
+                                        education += educationShortlistings.bachelorsHons * 0.5;
+                                    }
+                                } else {
+                                    education += educationShortlistings.bachelorsHons;
                                 }
                             } else if (edu.type === "Masters") {
                                 education += educationShortlistings.masters;
