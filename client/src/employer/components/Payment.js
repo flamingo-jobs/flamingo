@@ -5,7 +5,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Chip from "@material-ui/core/Chip";
 import Grid from "@material-ui/core/Grid";
-import { Box, Avatar, TextField } from "@material-ui/core";
+import { Box, Avatar } from "@material-ui/core";
 import Divider from "@material-ui/core/Divider";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import stripeLogo from "./images/stripe-logo-blue.png";
@@ -18,7 +18,6 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 275,
     border: `1px solid #5E60CE`,
     borderRadius: 10,
-    margin: "30px 10px 30px 10px",
     //background: "linear-gradient(45deg, #64DFDF 30%, #FFFFFF 90%)",
   },
   mainGrid: {
@@ -51,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.darkGreen,
   },
   featuresContainer: {
-    marginBottom: "20%",
+    marginBottom: "17%",
   },
   annual: {
     color: theme.palette.stateBlue,
@@ -151,7 +150,7 @@ export default function Payment() {
           <Grid
             container
             className={classes.mainGrid}
-            sm={12}
+            xs={12}
             spacing={2}
             direction="row"
             align="left"
@@ -166,6 +165,54 @@ export default function Payment() {
                 >
                   Payment info
                 </Box>
+                <FloatCard backColor="#eeeeee">
+                  <Grid
+                    container
+                    className={classes.mainGrid}
+                    xs={12}
+                    direction="row"
+                    align="left"
+                  >
+                    <Grid item xs={8}>
+                      <Typography variant="caption">
+                        {subscription.desc === "standard"
+                          ? "Standard"
+                          : "Premium"}{" "}
+                        Package
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={4} align="right">
+                      <Typography variant="caption">LKR {subscription.value}.00</Typography>
+                    </Grid>
+                    <Grid item xs={8}>
+                      <Typography variant="caption">
+                        Remaining Payments
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={4} align="right">
+                      <Typography variant="caption">LKR 0.00</Typography>
+                    </Grid>
+                    <Grid item xs={8}>
+                      <Typography variant="caption">Discounts</Typography>
+                    </Grid>
+                    <Grid item xs={4} align="right">
+                      <Typography variant="caption">LKR 0.00</Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Divider variant="middle" />
+                    </Grid>
+                    <Grid item xs={8}>
+                      <Typography variant="caption">
+                        <b>Total</b>
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={4} align="right">
+                      <Typography variant="caption">
+                        <b>LKR {subscription.value}.00</b>
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                </FloatCard>
               </Typography>
             </Grid>
           </Grid>
