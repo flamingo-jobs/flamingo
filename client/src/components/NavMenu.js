@@ -219,10 +219,10 @@ function NavMenu(props) {
                             <ListItemText className={classes.linkText} primary="Profile" />
                         </ListItem>
                     </Link>
-                    <Link to="/recommendations">
-                        <ListItem button key="recommendations" selected={selectedIndex === "recommendations"} onClick={(event) => handleListItemClick(event, "recommendations")} classes={{ selected: classes.active }} className={classes.listItem}>
+                    <Link to="/suggestedJobs">
+                        <ListItem button key="suggestedJobs" selected={selectedIndex === "suggestedJobs"} onClick={(event) => handleListItemClick(event, "suggestedJobs")} classes={{ selected: classes.active }} className={classes.listItem}>
                             <ListItemIcon className={classes.linkIcon}><OfflineBoltRoundedIcon /></ListItemIcon>
-                            <ListItemText className={classes.linkText} primary="Recommendations" />
+                            <ListItemText className={classes.linkText} primary="Suggested Jobs" />
                         </ListItem>
                     </Link>
                     <Link to="/jobs">
@@ -237,12 +237,12 @@ function NavMenu(props) {
                             <ListItemText className={classes.linkText} primary="Ogranizations" />
                         </ListItem>
                     </Link>
-                    <Link to="/jobseeker/billing">
+                    {/* <Link to="/jobseeker/billing">
                         <ListItem button key="billing" selected={selectedIndex === "billing"} onClick={(event) => handleListItemClick(event, "billing")} classes={{ selected: classes.active }} className={classes.listItem}>
                             <ListItemIcon className={classes.linkIcon}><MonetizationOnIcon /></ListItemIcon>
                             <ListItemText className={classes.linkText} primary="Billing" />
                         </ListItem>
-                    </Link>
+                    </Link> */}
                 </>
             )
         }

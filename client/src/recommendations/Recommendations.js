@@ -187,7 +187,7 @@ function Recommendations(props) {
             return (
                 <Grid item sm={12} style={{ marginBottom: 16 }}>
                     <FloatCard>
-                        <NoInfo message="Sorry, we don't have recommendations for you right now. Complete your profile to get recommendations." />
+                        <NoInfo message="Sorry, we don't have suggestions for you right now. Complete your profile to get suggested jobs." />
                     </FloatCard>
                 </Grid>)
         } else if (jobs.length === 0) {

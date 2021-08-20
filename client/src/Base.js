@@ -177,7 +177,7 @@ function Base() {
           <Route path="/jobseeker/appliedJobs">
             <AppliedJobs />
           </Route>
-          <Route path="/recommendations">
+          <Route path="/suggestedJobs">
             <Recommendations />
           </Route>
           <Route path="/jobseeker/savedJobs">

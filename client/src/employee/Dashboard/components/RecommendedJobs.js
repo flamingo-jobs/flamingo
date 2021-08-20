@@ -202,7 +202,7 @@ function RecommendedJobs(props) {
             return (
                 <Grid item sm={12} style={{ marginBottom: 16 }}>
                     <FloatCard>
-                        <NoInfo message="Sorry, we don't have recommendations for you right now. Complete your profile to get recommendations." />
+                        <NoInfo message="Sorry, we don't have suggestions for you right now. Complete your profile to get suggested jobs." />
                     </FloatCard>
                 </Grid>)
         } else if (jobs.length === 0) {
@@ -230,12 +230,12 @@ function RecommendedJobs(props) {
             <Grid container xs={12} direction="column" spacing={2} className={classes.container}>
                 <Grid item xs={12} >
                     <FloatCard>
-                        <Typography variant="h5" className={classes.title}>Recommended Jobs</Typography>
+                        <Typography variant="h5" className={classes.title}>Suggested Jobs</Typography>
                     </FloatCard>
                 </Grid>
                 {displayJobs()}
                 <Grid item xs={12}>
-                  <Link to="/recommendations">
+                  <Link to="/suggestedJobs">
                     <FloatCard>
                         <Button
                             className={classes.link}
