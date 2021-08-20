@@ -209,15 +209,15 @@ const shortlistForGivenCount = async (req, res) => {
     const count = req.params.count;
 
     try{
-        const jobs = await Jobs.findById(jobId).select("applicationDetails -_id");
-        var applications = jobs.applicationDetails;
+        const job = await Jobs.findById(jobId).select("applicationDetails -_id");
+        var applications = job.applicationDetails;
 
-        applications.sort((a, b) => {
-            return b.score - a.score;
-        });
+        // applications.sort((a, b) => {
+        //     return a.score - b.score;
+        // });
+        // const applicantIds = applications.slice(0, count).map(obj => obj.userId);
 
-        const applicantIds = applications.slice(0, count).map(obj => obj.userId);
-        res.status(200).json({ success: true, applicantIds: applicantIds });
+        res.status(200).json({ success: true, applications: applications });
     } catch(error){
         res.status(400).json({ success: false, error: error });
     }

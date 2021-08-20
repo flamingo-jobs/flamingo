@@ -180,10 +180,12 @@ function JobSummary(props) {
   };
 
   const minEducationList = [
-    "Bachelor's Degree (Undergraduate)",
-    "Bachelor's Degree (Graduated)",
-    "Master's Degree",
     "Diploma",
+    "Graduate Diploma",
+    "Bachelor's",
+    "Bachelor's Honours",
+    "M.Phil.",
+    "PhD",
   ];
 
   const minExperienceList = ["0", "0-1", "1-3", "+3"];

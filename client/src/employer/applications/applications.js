@@ -330,7 +330,13 @@ const Applications = () => {
         if (response.data.success) {
           handleCloseShortlistModal();
           setShortlisted(true);
-          setShortlistedIds(response.data.applicantIds);
+
+          var applications = response.data.applications.sort((a, b) => {
+            return b.score - a.score;
+          });
+          // console.log("sort", applications.slice(0, shortlistCount));
+          var applicantIds = applications.slice(0, shortlistCount).map(obj => obj.userId);
+          setShortlistedIds(applicantIds);
         }
       } catch (err) {
         handleCloseShortlistModal();
