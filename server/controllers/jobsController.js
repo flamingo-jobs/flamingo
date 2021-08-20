@@ -216,7 +216,8 @@ const shortlistForGivenCount = async (req, res) => {
             return b.score - a.score;
         });
 
-        res.status(200).json({ success: true, applications: applications.slice(0, count) });
+        const applicantIds = applications.slice(0, count).map(obj => obj.userId);
+        res.status(200).json({ success: true, applicantIds: applicantIds });
     } catch(error){
         res.status(400).json({ success: false, error: error });
     }

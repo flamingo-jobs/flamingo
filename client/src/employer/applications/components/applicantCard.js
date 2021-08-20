@@ -5,6 +5,7 @@ import {
   Chip,
   makeStyles,
   Typography,
+  Grid,
 } from "@material-ui/core";
 import WorkRoundedIcon from "@material-ui/icons/WorkRounded";
 import FloatCard from "../../components/FloatCard";
@@ -44,7 +45,8 @@ const useStyles = makeStyles((theme) => ({
   },
   headerRight: {
     display: "flex",
-    alignItems: "center",
+    justifyContent: "center",
+    marginTop: theme.spacing(1),
   },
   editButton: {
     "&:hover": {
@@ -205,32 +207,38 @@ function ApplicantCard(props) {
       <FloatCard>
         <div className={classes.root}>
           <div className={classes.header}>
-            <div className={classes.headerLeft}>
-              <Avatar className={classes.logo} variant="square" />
-              <div className={classes.headerInfo}>
-                <Typography variant="h5" className={classes.title}>
-                  {props.jobseeker.name}
-                </Typography>
-                <Typography className={classes.tagline}>
-                  {props.jobseeker.tagline}
-                </Typography>
-              </div>
-            </div>
-            <div className={classes.headerRight} >
-              {status === "pending" && <Status status={status} text={"Pending...."}></Status>}
-              {status === "reviewing" && <Status status={status} text={"Reviewing"}></Status>}
-              {status === "shortlisted" && <Status status={status} text={"Shortlisted"}></Status>}
-              {status === "rejected" && <Status status={status} text={"Rejected"}></Status>}
-              <IconButton aria-label="delete" className={classes.editButton}>
-                <EditIcon className={classes.editIcon} onClick={handleOpen}/>
-              </IconButton>
-            </div>
+            <Grid container>
+              <Grid item xs={12} md={8}>
+                <div className={classes.headerLeft}>
+                  <Avatar className={classes.logo} variant="square" />
+                  <div className={classes.headerInfo}>
+                    <Typography variant="h5" className={classes.title}>
+                      {props.jobseeker.name}
+                    </Typography>
+                    <Typography className={classes.tagline} >
+                      {props.jobseeker.tagline}
+                    </Typography>
+                  </div>
+                </div>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <div className={classes.headerRight}>
+                  {status === "pending" && <Status status={status} text={"Pending...."}></Status>}
+                  {status === "reviewing" && <Status status={status} text={"Reviewing"}></Status>}
+                  {status === "shortlisted" && <Status status={status} text={"Shortlisted"}></Status>}
+                  {status === "rejected" && <Status status={status} text={"Rejected"}></Status>}
+                  <IconButton aria-label="delete" className={classes.editButton}>
+                    <EditIcon className={classes.editIcon} onClick={handleOpen}/>
+                  </IconButton>
+                </div>
+              </Grid>
+            </Grid>
           </div>
           <div className={classes.body}>
             <Typography noWrap className={classes.description}>
               {props.jobseeker.intro}
             </Typography>
-            <div className={classes.infoTags}>
+            {/* <div className={classes.infoTags}>
               {props.jobseeker.education && props.jobseeker.education.length > 0 ? (
                 <Chip
                   icon={<SchoolRoundedIcon />}
@@ -245,7 +253,7 @@ function ApplicantCard(props) {
                   className={classes.tag}
                 />
               ) : null}
-            </div>
+            </div> */}
           </div>
 
           <div className={classes.footer}>

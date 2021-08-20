@@ -9,6 +9,7 @@ import SnackBarAlert from "../../components/SnackBarAlert";
 import NoAccess from "../../components/NoAccess";
 import PeopleIcon from "@material-ui/icons/People";
 import ShortlistModal from "./components/shortlistModal";
+import NoInfo from '../../components/NoInfo';
 
 const jwt = require("jsonwebtoken");
 
@@ -40,11 +41,27 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
   shortlistBtn: {
+    paddingLeft: "13px",
+    paddingRight: "13px",
+    borderRadius: 12,
     color: theme.palette.white,
     backgroundColor: theme.palette.vividSkyBlue,
     "&:hover": {
       backgroundColor: theme.palette.vividSkyBlueHover,
     },
+  },
+  applicantTitle: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(2),
+  },
+  applicantTitleText: {
+    color: theme.palette.vividSkyBlue,
+  },
+  shorlistTitle: {
+    marginBottom: theme.spacing(2),
+  },
+  shorlistTitleText: {
+    color: theme.palette.vividSkyBlue,
   },
 }));
 
@@ -59,12 +76,13 @@ const Applications = () => {
   const [applicantIds, setApplicantIds] = useState([]);
   const [applicants, setApplicants] = useState("empty");
 
-  const [alertShow, setAlertShow] = React.useState(false);
-  const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
+  const [alertShow, setAlertShow] = useState(false);
+  const [alertData, setAlertData] = useState({ severity: "", msg: "" });
 
   const [shortlistCount, setShortlistCount] = useState(0);
-  const [shortlistedApplications, setShortlistedApplications] = useState("empty");
+  const [shortlistedIds, setShortlistedIds] = useState("empty");
 
+  const [shortlisted, setShortlisted] = useState(false);
 
   const handleSliderChange = (e, newCount) => {
     setShortlistCount(newCount);
@@ -78,6 +96,7 @@ const Applications = () => {
   );
 
   const [openShortlistModal, setOpenShortlistModal] = useState(false);
+
   const handleOpenShortlistModal = () => {
     setOpenShortlistModal(true);
   };
@@ -118,7 +137,11 @@ const Applications = () => {
       }
     } catch (err) {
       console.log("Could not retreive job");
-      // console.log(err);
+      setAlertData({
+        severity: "error",
+        msg: "Something Went Wrong, Please Try Again Later.",
+      });
+      handleAlert();
     }
   };
 
@@ -133,23 +156,32 @@ const Applications = () => {
           setApplicants(response.data.jobseekers);
         }
       } catch (err) {
-        console.log(err);
+        setAlertData({
+          severity: "error",
+          msg: "Something Went Wrong, Please Try Again Later.",
+        });
+        handleAlert();
       }
     }
   };
 
-  const displayApplicants = () => {
+  const displayApplicantCards = () => {
     if (applicants !== "empty") {
       if (isSignedIn && role === "employer" && userId) {
-        return applicants.map((user) => (
-          <ApplicantCard
-            key={user.userId}
-            jobseeker={user}
-            jobId={jobId}
-            setAlertData={setAlertData}
-            handleAlert={handleAlert}
-          ></ApplicantCard>
-        ));
+        return (
+          <div>
+            {!shortlisted &&
+              applicants.map((user) => (
+                <ApplicantCard
+                  key={user._id}
+                  jobseeker={user}
+                  jobId={jobId}
+                  setAlertData={setAlertData}
+                  handleAlert={handleAlert}
+                ></ApplicantCard>
+              ))}
+          </div>
+        );
       } else {
         return (
           <FloatCard>
@@ -160,7 +192,7 @@ const Applications = () => {
     } else {
       return (
         <FloatCard>
-          <Typography variant="h6">There are no applicants</Typography>
+          <NoInfo message="Sorry, There are no any applications yet." />
         </FloatCard>
       );
     }
@@ -177,22 +209,99 @@ const Applications = () => {
     );
   };
 
-  const displayShortlistButton = () => {
+  const displayApplicants = () => {
     return (
       <div>
-        <div className={classes.shortlistBtnContainer}>
-          <Button
-            className={classes.shortlistBtn}
-            variant="contained"
-            startIcon={<PeopleIcon />}
-            onClick={handleOpenShortlistModal}
-          >
-            Shortlist the Applicants
-          </Button>
-        </div>
-        {displayApplicants()}
+        {!shortlisted && applicantIds.length !== 0 && (
+          <div className={classes.shortlistBtnContainer}>
+            <Button
+              className={classes.shortlistBtn}
+              startIcon={<PeopleIcon />}
+              onClick={handleOpenShortlistModal}
+            >
+              Shortlist the Applicants
+            </Button>
+          </div>
+        )}
+
+        {displayApplicantCards()}
       </div>
     );
+  };
+
+  const displayShortlistedApplicants = () => {
+    if (applicants !== "empty" && shortlistedIds !== "empty") {
+      const shortlistedJobseekers = applicants.filter((applicant) =>
+        shortlistedIds.includes(applicant._id)
+      );
+
+      const otherJobseekers = applicants.filter(
+        (applicant) => !shortlistedIds.includes(applicant._id)
+      );
+
+      if (isSignedIn && role === "employer" && userId) {
+        return (
+          <div>
+            {shortlisted && (
+              <div className={classes.shortlistBtnContainer}>
+                <Button
+                  className={classes.shortlistBtn}
+                  startIcon={<PeopleIcon />}
+                  onClick={handleOpenShortlistModal}
+                >
+                  Shortlist the Applicants
+                </Button>
+              </div>
+            )}
+            <div className={classes.shorlistTitle}>
+              <FloatCard>
+                <Typography className={classes.shorlistTitleText} variant="h6">
+                  Shortlisted Applicants
+                </Typography>
+              </FloatCard>
+            </div>
+
+            {shortlistedJobseekers.map((user) => (
+              <ApplicantCard
+                key={user._id}
+                jobseeker={user}
+                jobId={jobId}
+                setAlertData={setAlertData}
+                handleAlert={handleAlert}
+              ></ApplicantCard>
+            ))}
+            {otherJobseekers.length !== 0 && (
+              <div className={classes.applicantTitle}>
+                <FloatCard>
+                  <Typography
+                    className={classes.shorlistTitleText}
+                    variant="h6"
+                  >
+                    Other Applicants
+                  </Typography>
+                </FloatCard>
+              </div>
+            )}
+
+            {otherJobseekers.map((user) => (
+              <ApplicantCard
+                key={user._id}
+                jobseeker={user}
+                jobId={jobId}
+                setAlertData={setAlertData}
+                handleAlert={handleAlert}
+              ></ApplicantCard>
+            ))}
+          </div>
+        );
+      } else {
+        return (
+          <FloatCard>
+            <Typography variant="h6">No applicants</Typography>
+          </FloatCard>
+        );
+      }
+    }
   };
 
   const displayShortlistModal = () => {
@@ -220,17 +329,25 @@ const Applications = () => {
         );
         if (response.data.success) {
           handleCloseShortlistModal();
-          setShortlistedApplications(response.data.applications);
+          setShortlisted(true);
+          setShortlistedIds(response.data.applicantIds);
         }
       } catch (err) {
         handleCloseShortlistModal();
-        console.log(err);
+        setAlertData({
+          severity: "error",
+          msg: "Something Went Wrong, Please Try Again Later.",
+        });
+        handleAlert();
       }
     } else {
-      console.log("Count should be greater than 0");
+      setAlertData({
+        severity: "info",
+        msg: "Shortlist count should be greater than 0",
+      });
+      handleAlert();
     }
   };
-  console.log(shortlistedApplications)
 
   return (
     <>
@@ -238,9 +355,14 @@ const Applications = () => {
       {displayShortlistModal()}
 
       <Grid container spacing={3} className={classes.root} justify="center">
-        <Grid item xs={9}>
+        <Grid item xs={12} lg={9}>
           {resumeAccess || singleResumeAccess ? (
-            displayShortlistButton()
+            displayShortlistedApplicants()
+          ) : (
+            <NoAccess />
+          )}
+          {resumeAccess || singleResumeAccess ? (
+            displayApplicants()
           ) : (
             <NoAccess />
           )}
