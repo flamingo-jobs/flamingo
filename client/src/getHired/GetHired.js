@@ -324,57 +324,64 @@ export default function GetHired() {
         phone: formData.landLine,
         mobile: formData.mobile,
       },
+      isPublic: true,
     };
     setProgress(50);
-    axios.post(`${BACKEND_URL}/jobseeker/create`, jobSeekerData).then((res) => {
-      if (res.data.success) {
-        setProgress(60);
-        handleSuccessLogin(userId, res.data.existingData);
-      } else {
-        setProgress(0);
-        setAlertData({
-          severity: "error",
-          msg: "Failed to create job seeker account!",
-        });
-        handleAlert();
-      }
-    }).catch((err) => {
-      if (err) {
-        setAlertData({
-          severity: "error",
-          msg: "There is an error with server! Please contact support",
-        });
-        handleAlert();
-      }
-    });
+    axios
+      .post(`${BACKEND_URL}/jobseeker/create`, jobSeekerData)
+      .then((res) => {
+        if (res.data.success) {
+          setProgress(60);
+          handleSuccessLogin(userId, res.data.existingData);
+        } else {
+          setProgress(0);
+          setAlertData({
+            severity: "error",
+            msg: "Failed to create job seeker account!",
+          });
+          handleAlert();
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          setAlertData({
+            severity: "error",
+            msg: "There is an error with server! Please contact support",
+          });
+          handleAlert();
+        }
+      });
   };
 
   const handleSuccessLogin = (id, loginId) => {
     const linker = { id: id, loginId: loginId };
     setProgress(70);
-    axios.post(`${BACKEND_URL}/api/link-account`, linker).then((res) => {
-      if (res.data.success) {
-        setProgress(85);
-        sessionStorage.setItem("loginId", loginId);
-        setProgress(100);
-        window.location = "/setupprofile";
-      } else {
-        setProgress(0);
-        setAlertData({
-          severity: "error",
-          msg: "Failed to link accounts!",
-        });
-        handleAlert();
-      }
-    }).catch((err) => {
-      if (err) {
-        setAlertData({
-          severity: "error",
-          msg: "There is an error with server! Please contact support",
-        });
-        handleAlert();
-      }
-    });
+    axios
+      .post(`${BACKEND_URL}/api/link-account`, linker)
+      .then((res) => {
+        if (res.data.success) {
+          setProgress(85);
+          sessionStorage.setItem("loginId", loginId);
+          setProgress(100);
+          window.location = "/setupprofile";
+        } else {
+          setProgress(0);
+          setAlertData({
+            severity: "error",
+            msg: "Failed to link accounts!",
+          });
+          handleAlert();
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          setAlertData({
+            severity: "error",
+            msg: "There is an error with server! Please contact support",
+          });
+          handleAlert();
+        }
+      });
   };
   return (
     <div className={classes.background}>
