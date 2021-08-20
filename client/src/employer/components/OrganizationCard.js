@@ -262,7 +262,6 @@ function OrganizationCard(props) {
 
       <LoginModal open={open} handleClose={handleClose}></LoginModal>
 
-
       <div className={classes.root}>
         <div className={classes.header}>
           <div className={classes.headerLeft}>
@@ -280,17 +279,6 @@ function OrganizationCard(props) {
                 label={props.info.locations.join(", ")}
                 className={classes.tag}
               />
-
-                    <div className={classes.footerLeft}>
-                        <Rating name="read-only" value={getAvgRating(props.info.reviews)} readOnly />
-                    </div>
-                    <div className={classes.footerRight} >
-                        <Link to={`/employer/company/${props.info._id}`}>
-                            <Button className={classes.applyButton}>View Organization</Button>
-                        </Link>
-                    </div>
-                </div>
-
             </div>
           </div>
           <div className={classes.headerRight}>{displayFavoriteIcon()}</div>

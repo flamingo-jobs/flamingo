@@ -131,6 +131,7 @@ const Employer = (props) => {
       <Grid item xs={12} md={7}>
         <Reviews empId={empId}/>
       </Grid>
+    </Grid>
     </div>
   );
 };
