@@ -259,7 +259,7 @@ function IntroSection(props) {
 
     return (
       <FloatCard>
-        <FormControlLabel
+        {/* <FormControlLabel
         style={{ float: 'left',marginLeft: '10px',color:theme.palette.tuftsBlue}}
           value="end"
           control={<Switch color="primary" />}
@@ -267,7 +267,7 @@ function IntroSection(props) {
           labelPlacement="start"
           checked={isPublic}
           onChange={onChangeIsPublic}
-        />
+        /> */}
         { login ? <>
         <Button className={classes.defaultButton} style={{ float: 'right',marginRight: '0px',backgroundColor:'white'}} onClick={handleOpen}>
             <EditIcon className={classes.editIcon} style={{color: theme.palette.tuftsBlue,}} />
