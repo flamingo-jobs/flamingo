@@ -725,14 +725,14 @@ function EduItem(props) {
                     </Typography>
                 </Grid>
                 <Grid item xs={7} spacing={2}>
-                    <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'15px',fontWeight:'bold',marginRight:"-45px"}}>
+                    <Typography gutterBottom style={{color: "#666",textAlign:'left',fontSize:'16px',fontWeight:'bold',marginRight:"-60px"}}>
                         {education.institute}
                     </Typography>
-                    <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'15px',}}>
-                    {(education.fieldOfStudy ? "Field of Study : " + education.fieldOfStudy : "")}
+                    <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'15px',fontWeight:"bold"}}>
+                    {(education.fieldOfStudy ? education.fieldOfStudy : "")}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',}}>
-                        {education.GPA ? "GPA : " + education.GPA : ""}
+                        <b>{education.GPA ? "GPA : " : ""}</b>{education.GPA}
                     </Typography>
                     <Typography variant="body2" component="p" style={{textAlign:'left',color: '#666',marginTop:'15px'}}>
                         <b>{education.societiesAndActivities ? "Societies & activities : " : ""}</b>{education.societiesAndActivities}
@@ -758,11 +758,11 @@ function EduItem(props) {
                     </Typography>
                 </Grid>
                 <Grid item xs={7} spacing={2}>
-                    <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'15px',fontWeight:'bold',marginRight:"-45px"}}>
+                    <Typography gutterBottom style={{color: "#666",textAlign:'left',fontSize:'16px',fontWeight:'bold',marginRight:"-60px"}}>
                         {education.institute}
                     </Typography>
-                    <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'15px',}}>
-                    {(education.fieldOfStudy ? "Field of Study : " + education.fieldOfStudy : "")}
+                    <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'15px',fontWeight:"bold"}}>
+                    {(education.fieldOfStudy ? education.fieldOfStudy : "")}
                     </Typography>
                 </Grid>
             </React.Fragment>
@@ -785,7 +785,7 @@ function EduItem(props) {
                   </Typography>
               </Grid>
               <Grid item xs={7} spacing={2}>
-                  <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'15px',fontWeight:'bold',marginRight:"-45px"}}>
+                  <Typography gutterBottom style={{color: "#666",textAlign:'left',fontSize:'16px',fontWeight:'bold',marginRight:"-60px"}}>
                       {education.institute}
                   </Typography>
                   <Typography variant="body2" component="p" style={{textAlign:'left',color: '#666',marginTop:'15px'}}>

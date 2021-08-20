@@ -308,14 +308,14 @@ function AchievementItem(props) {
         <StarIcon style={{color: theme.palette.pinkyRed,}} />
         </Grid>
         <Grid item xs={9}>
-            <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'15px',fontWeight:'bold',paddingTop:'5px'}}>
+            <Typography gutterBottom style={{color: "#666",textAlign:'left',fontSize:'16px',fontWeight:'bold',paddingTop:'5px',marginRight:"-50px"}}>
                 {state.title}
             </Typography>
-            <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'15px',marginRight:"-50px"}}>
-                {state.description}
+            <Typography gutterBottom style={{color: theme.palette.stateBlue,fontSize:'15px',textAlign:'left',marginRight:"-50px"}}>
+                {state.issuedBy ? state.issuedBy : ""}
             </Typography>
-            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',paddingTop:'5px',marginRight:"-50px"}}>
-                {state.issuedBy ? "Issued by : " + state.issuedBy : ""}
+            <Typography gutterBottom style={{color: "#666",textAlign:'left',fontSize:'14px',paddingTop:'5px',marginRight:"-50px"}}>
+                {state.description}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',paddingTop:'5px'}}>
                 {state.year === 0 && state.month === 0 ? "" : "Issued date : " + state.month+"/"+state.year}
