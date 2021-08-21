@@ -8,6 +8,7 @@ import {
   useTheme,
   Avatar,
   Typography,
+  Chip,
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import FloatCard from "../../FloatCard";
@@ -19,10 +20,39 @@ import BACKEND_URL from "../../../../Config";
 import { useState, useEffect } from "react";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundSize: "cover",
-    marginLeft: 10,
-    marginRight: 10,
+  header: {
+    display: 'block',
+    alignItems: 'center',
+    margin: 10,
+    marginTop: 16
+  },
+  headerLogo: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginBottom: 15,
+  },
+  label: {
+    alignSelf: 'left',
+    marginRight: 15,
+    backgroundColor: theme.palette.tagYellow
+  },
+  headerLeft: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  tagIcon: {
+    color: theme.palette.tagIcon
+  },
+  favorite: {
+    display: 'block',
+    color: theme.palette.pinkyRed,
+    minWidth: 36
+  },
+  body: {
+    margin: 10
+  },
+  title: {
+    fontWeight: 500,
   },
   logoItem: {
     marginLeft: 30,
@@ -34,8 +64,6 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 12,
     width: 125,
     height: 125,
-    marginLeft: 10,
-    float: "center",
   },
   companyName: {
     fontWeight: "bolder",
@@ -50,9 +78,13 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: -10,
     marginTop: 5,
   },
-  noRating:{
+  noRating: {
     marginTop: -20,
-  }
+  },
+  reviews: {
+    alignItems: 'center',
+    textAlign: '-webkit-center',
+  },
 }));
 
 const CompanySummaryCard = (props) => {
@@ -89,7 +121,7 @@ const CompanySummaryCard = (props) => {
 
     var averageRating = totalRating / reviews.length;
 
-    return averageRating;
+    return [averageRating, reviews.length];
   };
 
   const loadLogo = () => {
@@ -101,81 +133,19 @@ const CompanySummaryCard = (props) => {
   };
 
   return (
-    <div className={classes.root}>
-      <FloatCard>
-        {/* LOGO */}
-        <div className={classes.logoItem}>
+    <FloatCard >
+      <div className={classes.header}>
+        <div className={classes.headerLogo}>
           <Avatar className={classes.logo} src={loadLogo()} variant="square" />
         </div>
-
-        <Typography variant="h5" className={classes.companyName}>
-          {name}
-        </Typography>
-
-        {reviews.length > 0 ? (
-          <Grid
-            item
-            container
-            spacing={1}
-            justify="center"
-            alignItems="center"
-            className={classes.ratingContainer}
-          >
-            <Grid item xs={3}>
-              <div className={classes.ratingAverage}>
-                <Typography variant="body2">
-                  <Box fontWeight={500} fontSize={25} m={1}>
-                    {getAverageRating()}
-                  </Box>
-                </Typography>
-              </div>
-            </Grid>
-
-            <Grid item xs={5}>
-              <div className={classes.rating}>
-                <Rating
-                  name="read-only"
-                  value={getAverageRating()}
-                  precision={0.5}
-                  readOnly
-                />
-              </div>
-            </Grid>
-
-            <Grid item xs={4}>
-              <div className={classes.ratingText}>
-                <Typography variant="body2">({reviews.length})</Typography>
-              </div>
-            </Grid>
-          </Grid>
-        ) : (
-          <Grid
-            item
-            container
-            spacing={1}
-            justify="center"
-            alignItems="center"
-            direction="row"
-            xs={12}
-            className={classes.ratingContainer}
-          >
-            <Grid item>
-              <div className={classes.rating}>
-                <Rating name="read-only" value={0} precision={0.5}  readOnly />
-              </div>
-            </Grid>
-
-            <Grid item>
-              <Typography variant="body2" className={classes.noRating}>
-                <Box fontWeight={500} fontSize={13} m={1}>
-                  (no reviews)
-                </Box>
-              </Typography>
-            </Grid>
-          </Grid>
-        )}
-      </FloatCard>
-    </div>
+        <div className={classes.headerInfo}>
+          <Typography variant="h5" className={classes.title} >{name}</Typography>
+        </div>
+        <div className={classes.reviews}>
+          <Typography style={{ marginTop: 8 }}>{getAverageRating()[0]}/5 ratings</Typography><Rating name="read-only" style={{ marginTop: 8 }} value={getAverageRating()[0]} readOnly />
+        </div>
+      </div>
+    </FloatCard>
   );
 };
 

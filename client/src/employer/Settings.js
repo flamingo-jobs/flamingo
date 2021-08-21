@@ -2,6 +2,8 @@ import { Grid, makeStyles, Typography } from '@material-ui/core'
 import React from 'react'
 import ShortlistingSettingsAccordion from '../admin/components/ShortlistingSettingsAccordion';
 import FloatCard from '../components/FloatCard'
+import AccountSettingsAccordion from './Settings/AccountSettingsAccordion';
+import UserSettingsAccordion from './Settings/UserSettingsAccordion';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -22,7 +24,9 @@ function Settings() {
         //     <Grid item xs={12} style={{ minWidth: '100%' }}>
         //         <FloatCard>
         <div style={{ padding: 12, width: '100%', textAlign: 'left' }}>
+            <UserSettingsAccordion />
             <ShortlistingSettingsAccordion />
+            <AccountSettingsAccordion />
         </div>
         //         </FloatCard>
         //     </Grid>

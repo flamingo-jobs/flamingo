@@ -214,7 +214,9 @@ export default function ShortlistingSettingsAccordion(props) {
   }, [updateFailed]);
 
   useEffect(() => {
-    props.handleInvalid(invalid);
+    if (props.type === "custom") {
+      props.handleInvalid(invalid);
+    }
   }, [invalid]);
 
   const handleSave = () => {
@@ -310,7 +312,9 @@ export default function ShortlistingSettingsAccordion(props) {
   }
 
   useEffect(() => {
-    props.handleCustomSettings(combinedArray);
+    if (props.type === "custom") {
+      props.handleCustomSettings(combinedArray);
+    }
   }, [combinedArray])
 
 
@@ -322,12 +326,12 @@ export default function ShortlistingSettingsAccordion(props) {
     } else {
       newArray.push(setting)
     }
-    if(newArray.findIndex(x => x.tag === "shortlisting") < 0){
+    if (newArray.findIndex(x => x.tag === "shortlisting") < 0) {
       newArray.push(settings)
     }
 
     setCombinedArray(newArray);
-    
+
 
     // props.handleCustomSettings()
   }
@@ -447,12 +451,12 @@ export default function ShortlistingSettingsAccordion(props) {
         <Grid item xs={12}>
           <ContinousSlider name={"Education"} value={settings.settings.education} passValue={getSettingValues} />
           <div style={{ padding: 20, paddingTop: 0 }}>
-            <ShortlistingEducationSettingsAccordion id={id} type={props.type} passSettings={combineCustomValues} handleInvalid={props.handleInvalid}/>
+            <ShortlistingEducationSettingsAccordion id={id} type={props.type} passSettings={combineCustomValues} handleInvalid={props.handleInvalid} />
 
           </div>
           <ContinousSlider name={"Experience"} value={settings.settings.experience} passValue={getSettingValues} />
           <div style={{ padding: 20, paddingTop: 0 }}>
-            <ShortlistingExperienceSettingsAccordion id={id} type={props.type} passSettings={combineCustomValues} handleInvalid={props.handleInvalid}/>
+            <ShortlistingExperienceSettingsAccordion id={id} type={props.type} passSettings={combineCustomValues} handleInvalid={props.handleInvalid} />
 
           </div>
           <ContinousSlider name={"Technology Stack"} value={settings.settings.techStack} passValue={getSettingValues} />

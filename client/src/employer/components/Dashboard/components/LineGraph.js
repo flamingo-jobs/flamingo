@@ -9,6 +9,7 @@ import {
   Avatar,
   Typography,
   Button,
+  Grid,
 } from "@material-ui/core";
 import FloatCard from "../../FloatCard";
 import {
@@ -29,7 +30,8 @@ import { scalePoint } from 'd3-scale';
 import axios from "axios";
 import BACKEND_URL from "../../../../Config";
 import { useState, useEffect } from "react";
-
+import Theme from "../../../../Theme";
+import { Line } from "react-chartjs-2";
 
 const legendStyles = () => ({
   root: {
@@ -38,6 +40,7 @@ const legendStyles = () => ({
     flexDirection: 'row',
   },
 });
+
 const legendRootBase = ({ classes, ...restProps }) => (
   <Legend.Root {...restProps} className={classes.root} />
 );
@@ -69,37 +72,27 @@ const Area = props => (
 );
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundSize: "cover",
-    marginLeft:15,
-    marginTop:5,
-    marginRight: -15,
-    marginBottom:5,
-  },
+
   title: {
     fontWeight: "bolder",
     color: theme.palette.stateBlue,
     float: "left",
     marginLeft: 10,
   },
-  title2:{
+  title2: {
     color: theme.palette.stateBlue,
     float: "Right",
-    marginRight:10,
+    marginRight: 10,
   },
-  notificationsIcon:{
+  notificationsIcon: {
     color: theme.palette.stateBlue,
     marginTop: 5,
     marginLeft: 50,
   },
-  chart:{
-      height: 300,
-      width: 450,
-      marginLeft: -480,
-      marginTop: -20,
+  chart: {
   },
-  legend:{
-      marginBottom: -20,
+  legend: {
+    marginBottom: -20,
   }
 }));
 
@@ -125,43 +118,43 @@ const LineGraph = (props) => {
 
 
   var dd7 = String(day7.getDate()).padStart(2, '0');
-  var mm7 = String(day7.getMonth() + 1).padStart(2, '0'); 
+  var mm7 = String(day7.getMonth() + 1).padStart(2, '0');
   var yyyy7 = day7.getFullYear();
   day7 = mm7 + '/' + dd7;
   var day7full = yyyy7 + '-' + mm7 + '-' + dd7;
 
   var dd6 = String(day6.getDate()).padStart(2, '0');
-  var mm6 = String(day6.getMonth() + 1).padStart(2, '0'); 
+  var mm6 = String(day6.getMonth() + 1).padStart(2, '0');
   var yyyy6 = day6.getFullYear();
   day6 = mm6 + '/' + dd6;
   var day6full = yyyy6 + '-' + mm6 + '-' + dd6;
 
   var dd5 = String(day5.getDate()).padStart(2, '0');
-  var mm5 = String(day5.getMonth() + 1).padStart(2, '0'); 
+  var mm5 = String(day5.getMonth() + 1).padStart(2, '0');
   var yyyy5 = day5.getFullYear();
   day5 = mm5 + '/' + dd5;
   var day5full = yyyy5 + '-' + mm5 + '-' + dd5;
 
   var dd4 = String(day4.getDate()).padStart(2, '0');
-  var mm4 = String(day4.getMonth() + 1).padStart(2, '0'); 
+  var mm4 = String(day4.getMonth() + 1).padStart(2, '0');
   var yyyy4 = day4.getFullYear();
   day4 = mm4 + '/' + dd4;
   var day4full = yyyy4 + '-' + mm4 + '-' + dd4;
 
   var dd3 = String(day3.getDate()).padStart(2, '0');
-  var mm3 = String(day3.getMonth() + 1).padStart(2, '0'); 
+  var mm3 = String(day3.getMonth() + 1).padStart(2, '0');
   var yyyy3 = day3.getFullYear();
   day3 = mm3 + '/' + dd3;
   var day3full = yyyy3 + '-' + mm3 + '-' + dd3;
 
   var dd2 = String(day2.getDate()).padStart(2, '0');
-  var mm2 = String(day2.getMonth() + 1).padStart(2, '0'); 
+  var mm2 = String(day2.getMonth() + 1).padStart(2, '0');
   var yyyy2 = day2.getFullYear();
   day2 = mm2 + '/' + dd2;
   var day2full = yyyy2 + '-' + mm2 + '-' + dd2;
 
   var dd1 = String(day1.getDate()).padStart(2, '0');
-  var mm1 = String(day1.getMonth() + 1).padStart(2, '0'); 
+  var mm1 = String(day1.getMonth() + 1).padStart(2, '0');
   var yyyy1 = day1.getFullYear();
   day1 = mm1 + '/' + dd1;
   var day1full = yyyy1 + '-' + mm1 + '-' + dd1;
@@ -194,71 +187,53 @@ const LineGraph = (props) => {
     var noOfApplications = 0;
 
     allJobs.forEach(job => {
-      
-      job.applicationDetails.forEach(jobApplication => { 
-          if(jobApplication.appliedDate.slice(0, 10) == date){ 
-              noOfApplications++
-          }
-      }   
+
+      job.applicationDetails.forEach(jobApplication => {
+        if (jobApplication.appliedDate.slice(0, 10) == date) {
+          noOfApplications++
+        }
+      }
       );
-  }    
-  );
+    }
+    );
     return noOfApplications;
   }
 
 
-  const data = [
-    {
-      date: day1, applications: getTotalApplications(day1full),
-    }, {
-      date: day2, applications: getTotalApplications(day2full), 
-    }, {
-      date: day3, applications: getTotalApplications(day3full), 
-    }, {
-      date: day4, applications: getTotalApplications(day4full), 
-    },{
-      date: day5, applications: getTotalApplications(day5full), 
-    },{
-      date: day6, applications: getTotalApplications(day6full),  
-    },{
-      date: day7, applications: getTotalApplications(day7full),  
-    }];
+  const data = [getTotalApplications(day1full), getTotalApplications(day2full), getTotalApplications(day3full),
+  getTotalApplications(day4full), getTotalApplications(day5full), getTotalApplications(day6full),
+  getTotalApplications(day7full)];
+
+  const labels = [day1, day2, day3, day4, day5, day6, day7];
+
+  const generateLineChart = () => {
+    return {
+      labels: labels,
+      datasets: [
+        {
+          label: "Job Count",
+          backgroundColor: Theme.palette.stateBlue,
+          borderColor: Theme.palette.stateBlue,
+          borderWidth: 1,
+          data: data,
+        },
+      ],
+    };
+  };
 
   return (
-    <div className={classes.root}>
-      <FloatCard>
-        <Typography variant="h6" className={classes.title}>
-          Applications
-        </Typography>
-        <Typography variant="body1" className={classes.title2}>
-          This Week
-        </Typography>
+    <FloatCard>
+      <Typography variant="h6" className={classes.title}>
+        Applications
+      </Typography>
+      <Typography variant="body1" className={classes.title2}>
+        This Week
+      </Typography>
 
-        <br />
+      <br />
+      <Line height={120} data={generateLineChart({ fill: false })} />
 
-        <div  style={{marginLeft: "500px", marginTop: "-20px"}}>
-        <Chart
-          data={data}
-          className={classes.chart}
-        >
-          <ArgumentScale factory={scalePoint} />
-          <ArgumentAxis />
-          <ValueAxis />
-
-          <AreaSeries
-            name="Applications"
-            valueField="applications"
-            argumentField="date"
-            seriesComponent={Area}
-          />
-          <Animation />
-          <Legend position="bottom" rootComponent={Root} labelComponent={Label} />
-          <Title text=" " />
-        </Chart>
-        </div>
-
-      </FloatCard>
-    </div>
+    </FloatCard>
   );
 };
 

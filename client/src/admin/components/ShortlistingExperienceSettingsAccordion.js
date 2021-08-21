@@ -203,9 +203,9 @@ export default function ShortlistingExperienceSettingsAccordion(props) {
   }, [updateFailed]);
 
   useEffect(() => {
-    props.handleInvalid(invalid);
+    if (props.type === "custom") { props.handleInvalid(invalid); }
   }, [invalid]);
-  
+
   const handleSave = () => {
     saveChanges();
     if (props.type !== "custom") {

@@ -208,7 +208,9 @@ export default function ShortlistingEducationSettingsAccordion(props) {
   }, [updateFailed]);
 
   useEffect(() => {
-    props.handleInvalid(invalid);
+    if (props.type === "custom") {
+      props.handleInvalid(invalid);
+    }
   }, [invalid]);
 
   const handleSave = () => {

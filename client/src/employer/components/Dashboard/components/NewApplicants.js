@@ -11,11 +11,6 @@ import BACKEND_URL from "../../../../Config";
 import { useState, useEffect } from "react";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundSize: "cover",
-    marginLeft: 10,
-    marginRight: 10,
-  },
   title: {
     fontWeight: "bolder",
     color: theme.palette.stateBlue,

@@ -403,8 +403,8 @@ const Applications = () => {
       {displayAlert()}
       {displayShortlistModal()}
 
-      <Grid container spacing={3} className={classes.root} justify="center">
-        <Grid item xs={12} lg={9}>
+      <Grid item container sm={12} spacing={3} direction="row" justify="space-between" className={classes.mainGrid} alignItems="flex-start">
+        <Grid item xs={12}>
           {resumeAccess || singleResumeAccess ? (
             displayShortlistedApplicants()
           ) : (

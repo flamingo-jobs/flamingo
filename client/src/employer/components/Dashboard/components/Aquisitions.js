@@ -17,15 +17,11 @@ import axios from "axios";
 import BACKEND_URL from "../../../../Config";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundSize: "cover",
-    marginRight: -12,
-  },
+
   title: {
     fontWeight: "bolder",
     color: theme.palette.stateBlue,
     float: "left",
-    marginLeft: 10,
   },
   notificationsIcon: {
     color: theme.palette.stateBlue,
@@ -35,11 +31,6 @@ const useStyles = makeStyles((theme) => ({
   pieChart: {
     width: 200,
     height: 200,
-    padding: "0 0 0 0",
-    marginTop: -5,
-    marginLeft: 20,
-    marginBottom: -8,
-    float: "center",
   },
   legend: {
     backgroundColor: theme.palette.white,

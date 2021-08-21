@@ -27,39 +27,39 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 10,
     marginRight: 10,
   },
-  cardTitle:{
+  cardTitle: {
     fontWeight: "bolder",
     fontSize: 15,
     color: theme.palette.stateBlue,
     marginBottom: 20,
     float: "center",
   },
-  cardNumber:{
+  cardNumber: {
     fontWeight: "bolder",
     fontSize: 40,
     color: theme.palette.stateBlue,
     float: "center",
-    marginLeft:20,
+    marginLeft: 20,
   },
-  pieChart:{
-    width:90,
-    height:90,
+  pieChart: {
+    width: 90,
+    height: 90,
     padding: '0 0 0 0',
     marginTop: -190,
     marginBottom: -200,
     marginLeft: 65,
   },
-  applicationCard:{
-    paddingBottom:20,
+  applicationCard: {
+    paddingBottom: 20,
   },
-  applicationsTitle:{
+  applicationsTitle: {
     fontWeight: "bolder",
     fontSize: 15,
     color: theme.palette.stateBlue,
     marginBottom: 20,
     float: "center",
   },
-  applicationsNumber:{
+  applicationsNumber: {
     fontWeight: "bolder",
     fontSize: 51,
     color: theme.palette.stateBlue,
@@ -99,8 +99,8 @@ const TopCards = (props) => {
     var noOfApplications = 0;
 
     allJobs.forEach(job => {
-        noOfApplications = noOfApplications+job.applicationDetails.length;
-    }      
+      noOfApplications = noOfApplications + job.applicationDetails.length;
+    }
     );
     return noOfApplications;
   }
@@ -110,14 +110,14 @@ const TopCards = (props) => {
     var totalPending = 0;
 
     allJobs.forEach(job => {
-      
-        job.applicationDetails.forEach(jobApplication => { 
-            if(jobApplication.status=="pending"){
-                totalPending++
-            }
-        }   
-        );
-    }    
+
+      job.applicationDetails.forEach(jobApplication => {
+        if (jobApplication.status == "pending") {
+          totalPending++
+        }
+      }
+      );
+    }
     );
     return totalPending;
   }
@@ -127,14 +127,14 @@ const TopCards = (props) => {
     var totalReviewing = 0;
 
     allJobs.forEach(job => {
-      
-        job.applicationDetails.forEach(jobApplication => { 
-            if(jobApplication.status=="reviewing"){
-              totalReviewing++
-            }
-        }   
-        );
-    }    
+
+      job.applicationDetails.forEach(jobApplication => {
+        if (jobApplication.status == "reviewing") {
+          totalReviewing++
+        }
+      }
+      );
+    }
     );
     return totalReviewing;
   }
@@ -144,14 +144,14 @@ const TopCards = (props) => {
     var totalShortlisted = 0;
 
     allJobs.forEach(job => {
-      
-        job.applicationDetails.forEach(jobApplication => { 
-            if(jobApplication.status=="shortlisted"){
-                totalShortlisted++
-            }
-        }   
-        );
-    }    
+
+      job.applicationDetails.forEach(jobApplication => {
+        if (jobApplication.status == "shortlisted") {
+          totalShortlisted++
+        }
+      }
+      );
+    }
     );
     return totalShortlisted;
   }
@@ -161,22 +161,57 @@ const TopCards = (props) => {
     var totalRejected = 0;
 
     allJobs.forEach(job => {
-      
-        job.applicationDetails.forEach(jobApplication => { 
-            if(jobApplication.status=="rejected"){
-                totalRejected++
-            }
-        }   
-        );
-    }    
+
+      job.applicationDetails.forEach(jobApplication => {
+        if (jobApplication.status == "rejected") {
+          totalRejected++
+        }
+      }
+      );
+    }
     );
     return totalRejected;
   }
 
-    const classes = useStyles();
+  const classes = useStyles();
 
-    return (
-    <Grid container direction="row" xs={12} spacing={1} className={classes.root}>
+  return (
+    <Grid item container spacing={3}>
+      <Grid item xs={12} sm={6}>
+        <FloatCard>
+          <Grid container direction="row" xs={12} spacing={2}>
+            <Grid item xs={6}>
+              <Typography variant="body2" className={classes.cardTitle}>
+                TOTAL JOBS
+              </Typography>
+              <Typography variant="h5" className={classes.cardNumber}>
+                {getTotalRejected()}
+              </Typography>
+            </Grid>
+            <Grid item xs={6}>
+
+              <Chart
+                data={[
+                  { category: 'rejected', val: getTotalRejected() },
+                  { category: 'total', val: getTotalApplications() - getTotalRejected() },
+                ]}
+                className={classes.pieChart}
+              >
+                <PieSeries
+                  valueField="val"
+                  argumentField="category"
+                  innerRadius={0.6}
+                />
+                <Animation />
+              </Chart>
+
+            </Grid>
+          </Grid>
+
+        </FloatCard>
+      </Grid>
+
+      <Grid item xs={12} sm={6}>
 
         {/* <Grid item xs={3}>
             <FloatCard className={classes.applicationCard}>
@@ -190,145 +225,142 @@ const TopCards = (props) => {
             </FloatCard>
         </Grid> */}
 
-        
-
-        <Grid item xs={3}>
         <FloatCard>
-                <Grid container direction="row" xs={12} spacing={2}>
-                    <Grid item xs={1}>
-                        <Typography variant="body2" className={classes.cardTitle}>
-                            PENDING
-                        </Typography>
-                        <Typography variant="h5" className={classes.cardNumber}>
-                        {getTotalPending()}
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={10}>
-                  
-                        <Chart
-                            data={[
-                              { category: 'pending', val: getTotalPending() },
-                              { category: 'total', val: getTotalApplications() - getTotalPending()},
-                            ]}
-                            className={classes.pieChart}
-                            >
-                            <PieSeries
-                                valueField="val"
-                                argumentField="category"
-                                innerRadius={0.6}
-                            />
-                            <Animation />
-                        </Chart>
-               
-                    </Grid>
-                </Grid>
-                
-            </FloatCard>
-        </Grid>
+          <Grid container direction="row" xs={12} spacing={2}>
+            <Grid item xs={1}>
+              <Typography variant="body2" className={classes.cardTitle}>
+                PENDING
+              </Typography>
+              <Typography variant="h5" className={classes.cardNumber}>
+                {getTotalPending()}
+              </Typography>
+            </Grid>
+            <Grid item xs={10}>
 
-        <Grid item xs={3}>
-            <FloatCard>
-                <Grid container direction="row" xs={12} spacing={2}>
-                    <Grid item xs={1}>
-                        <Typography variant="body2" className={classes.cardTitle}>
-                            REVIEWING
-                        </Typography>
-                        <Typography variant="h5" className={classes.cardNumber}>
-                            {getTotalReviewing()}
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={10}>
-                  
-                        <Chart
-                            data={[
-                              { category: 'reviewing', val: getTotalReviewing() },
-                              { category: 'total', val: getTotalApplications() - getTotalReviewing()},
-                            ]}
-                            className={classes.pieChart}
-                            >
-                            <PieSeries
-                                valueField="val"
-                                argumentField="category"
-                                innerRadius={0.6}
-                            />
-                            <Animation />
-                        </Chart>
-               
-                    </Grid>
-                </Grid>
-                
-            </FloatCard>
-        </Grid>
+              <Chart
+                data={[
+                  { category: 'pending', val: getTotalPending() },
+                  { category: 'total', val: getTotalApplications() - getTotalPending() },
+                ]}
+                className={classes.pieChart}
+              >
+                <PieSeries
+                  valueField="val"
+                  argumentField="category"
+                  innerRadius={0.6}
+                />
+                <Animation />
+              </Chart>
 
-        <Grid item xs={3}>
-            <FloatCard>
-                <Grid container direction="row" xs={12} spacing={2}>
-                    <Grid item xs={1}>
-                        <Typography variant="body2" className={classes.cardTitle}>
-                            SHORTLISTED
-                        </Typography>
-                        <Typography variant="h5" className={classes.cardNumber}>
-                            {getTotalShortlisted()}
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={10}>
-                  
-                        <Chart
-                            data={[
-                              { category: 'shortlisted', val: getTotalShortlisted() },
-                              { category: 'total', val: getTotalApplications() - getTotalShortlisted()},
-                            ]}
-                            className={classes.pieChart}
-                            >
-                            <PieSeries
-                                valueField="val"
-                                argumentField="category"
-                                innerRadius={0.6}
-                            />
-                            <Animation />
-                        </Chart>
-               
-                    </Grid>
-                </Grid>
-                
-            </FloatCard>
-        </Grid>
+            </Grid>
+          </Grid>
 
-        <Grid item xs={3}>
+        </FloatCard>
+      </Grid>
+
+      <Grid item xs={12} sm={6}>
         <FloatCard>
-                <Grid container direction="row" xs={12} spacing={2}>
-                    <Grid item xs={1}>
-                        <Typography variant="body2" className={classes.cardTitle}>
-                            REJECTED
-                        </Typography>
-                        <Typography variant="h5" className={classes.cardNumber}>
-                            {getTotalRejected()}
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={10}>
-                  
-                        <Chart
-                            data={[
-                              { category: 'rejected', val: getTotalRejected() },
-                              { category: 'total', val: getTotalApplications() - getTotalRejected()},
-                            ]}
-                            className={classes.pieChart}
-                            >
-                            <PieSeries
-                                valueField="val"
-                                argumentField="category"
-                                innerRadius={0.6}
-                            />
-                            <Animation />
-                        </Chart>
-               
-                    </Grid>
-                </Grid>
-                
-            </FloatCard>
-        </Grid>
-     
-      
+          <Grid container direction="row" xs={12} spacing={2}>
+            <Grid item xs={1}>
+              <Typography variant="body2" className={classes.cardTitle}>
+                REVIEWING
+              </Typography>
+              <Typography variant="h5" className={classes.cardNumber}>
+                {getTotalReviewing()}
+              </Typography>
+            </Grid>
+            <Grid item xs={10}>
+
+              <Chart
+                data={[
+                  { category: 'reviewing', val: getTotalReviewing() },
+                  { category: 'total', val: getTotalApplications() - getTotalReviewing() },
+                ]}
+                className={classes.pieChart}
+              >
+                <PieSeries
+                  valueField="val"
+                  argumentField="category"
+                  innerRadius={0.6}
+                />
+                <Animation />
+              </Chart>
+
+            </Grid>
+          </Grid>
+
+        </FloatCard>
+      </Grid>
+
+      {/* <Grid item xs={12} sm={6} md={3}>
+        <FloatCard>
+          <Grid container direction="row" xs={12} spacing={2}>
+            <Grid item xs={1}>
+              <Typography variant="body2" className={classes.cardTitle}>
+                SHORTLISTED
+              </Typography>
+              <Typography variant="h5" className={classes.cardNumber}>
+                {getTotalShortlisted()}
+              </Typography>
+            </Grid>
+            <Grid item xs={10}>
+
+              <Chart
+                data={[
+                  { category: 'shortlisted', val: getTotalShortlisted() },
+                  { category: 'total', val: getTotalApplications() - getTotalShortlisted() },
+                ]}
+                className={classes.pieChart}
+              >
+                <PieSeries
+                  valueField="val"
+                  argumentField="category"
+                  innerRadius={0.6}
+                />
+                <Animation />
+              </Chart>
+
+            </Grid>
+          </Grid>
+
+        </FloatCard>
+      </Grid> */}
+
+      <Grid item xs={12} sm={6}>
+        <FloatCard>
+          <Grid container direction="row" xs={12} spacing={2}>
+            <Grid item xs={1}>
+              <Typography variant="body2" className={classes.cardTitle}>
+                REJECTED
+              </Typography>
+              <Typography variant="h5" className={classes.cardNumber}>
+                {getTotalRejected()}
+              </Typography>
+            </Grid>
+            <Grid item xs={10}>
+
+              <Chart
+                data={[
+                  { category: 'rejected', val: getTotalRejected() },
+                  { category: 'total', val: getTotalApplications() - getTotalRejected() },
+                ]}
+                className={classes.pieChart}
+              >
+                <PieSeries
+                  valueField="val"
+                  argumentField="category"
+                  innerRadius={0.6}
+                />
+                <Animation />
+              </Chart>
+
+            </Grid>
+          </Grid>
+
+        </FloatCard>
+      </Grid>
+
+
     </Grid>
   );
 };

@@ -48,11 +48,6 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundSize: "cover",
-    marginRight: 15,
-    marginLeft: 15,
-  },
   title: {
     fontWeight: "bolder",
     color: theme.palette.stateBlue,

@@ -49,7 +49,7 @@ const Dashboard = (props) => {
 
   return (
     <>
-      <Grid container xs={12} spacing={1} direction="column">
+      {/* <Grid container xs={12} spacing={1} direction="column">
         <Grid item>
           <Grid
             container
@@ -59,7 +59,7 @@ const Dashboard = (props) => {
             justify="space-between"
             alignItems="flex-start"
           >
-            {/* Dashboard Left section */}
+
             <Grid item containerxs={12} sm={9} spacing={1}>
               <Grid item>
                 <TopCards employerId={loginId} />
@@ -81,12 +81,12 @@ const Dashboard = (props) => {
                   spacing={1}
                   className={classes.aquisitions}
                 >
-                  {/* Aquisitions */}
+                   Aquisitions 
                   <Grid item>
                     <Aquisitions employerId={loginId} />
                   </Grid>
 
-                  {/* Notifications */}
+                   Notifications 
                   <Grid item>
                     <PopularJobs employerId={loginId} />
                   </Grid>
@@ -94,14 +94,14 @@ const Dashboard = (props) => {
               </Grid>
             </Grid>
 
-            {/* Dashboard Right Section */}
+             Dashboard Right Section 
             <Grid container direction="column" item xs={12} sm={3} spacing={1}>
-              {/* Company Profile and stars */}
+               Company Profile and stars 
               <Grid item>
                 <CompanySummaryCard employerId={loginId} />
               </Grid>
 
-              {/* Notifications */}
+               Notifications 
               <Grid item>
                 <NewApplicants employerId={loginId} />
               </Grid>
@@ -110,6 +110,32 @@ const Dashboard = (props) => {
         </Grid>
 
         <Grid item>
+          <LatestJobs employerId={loginId} />
+        </Grid>
+      </Grid> */}
+
+      <Grid item container xs={12} spacing={3} direction="row"
+        justify="space-between"
+        alignItems="streched">
+        <Grid item xs={12} md={6}>
+          <TopCards employerId={loginId} />
+        </Grid>
+        <Grid item xs={12} md={3}>
+          <Aquisitions employerId={loginId} />
+        </Grid>
+        <Grid item xs={12} md={3} >
+          <CompanySummaryCard employerId={loginId} />
+        </Grid>
+        <Grid item xs={8}>
+          <LineGraph
+            className={classes.lineGraph}
+            employerId={loginId}
+          />
+        </Grid>
+        <Grid item xs={4}>
+          <NewApplicants employerId={loginId} />
+        </Grid>
+        <Grid item xs={12}>
           <LatestJobs employerId={loginId} />
         </Grid>
       </Grid>
