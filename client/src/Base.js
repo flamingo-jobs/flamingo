@@ -16,7 +16,7 @@ import Categories from "./admin/Categories";
 import People from "./people/People";
 import Employer from "./employer/Employer";
 import EmployerBilling from "./employer/Billing";
-import EmployerSettings from "./employer/Settings/Settings";
+import EmployerSettings from "./employer/Settings";
 import EmployerDashboard from "./employer/Dashboard";
 import EmployerTechnologies from "./employer/Technologies";
 import EmployerJobList from "./employer/EmployerJobList";

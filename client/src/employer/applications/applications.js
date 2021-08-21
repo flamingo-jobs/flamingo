@@ -85,6 +85,8 @@ const Applications = () => {
 
   const [shortlisted, setShortlisted] = useState(false);
 
+  const [customSettings, setCustomSettings] = useState([]);
+
   const handleSliderChange = (e, newCount) => {
     setShortlistCount(newCount);
   };
@@ -207,6 +209,14 @@ const Applications = () => {
     }
   };
 
+  useEffect(() => {
+    console.log(customSettings);
+  }, [customSettings])
+
+  const updateCustomCriterias = (criterias) => {
+    setCustomSettings(criterias);
+  }
+
   const displayAlert = () => {
     return (
       <SnackBarAlert
@@ -324,6 +334,7 @@ const Applications = () => {
           handleSliderChange={handleSliderChange}
           max={applicants.length}
           handleShortlistSubmit={handleShortlistSubmit}
+          updateCustomCriterias={updateCustomCriterias}
         ></ShortlistModal>
       );
     }
@@ -332,30 +343,34 @@ const Applications = () => {
   const handleShortlistSubmit = async (e) => {
     e.preventDefault();
 
-    if (jobId && shortlistCount > 0) {
-      try {
-        const response = await axios.get(
-          `${BACKEND_URL}/jobs/shortlistForGivenCount/${jobId}/${shortlistCount}`
-        );
-        if (response.data.success) {
+    if (customSettings.length !== 3) {
+      if (jobId && shortlistCount > 0) {
+        try {
+          const response = await axios.get(
+            `${BACKEND_URL}/jobs/shortlistForGivenCount/${jobId}/${shortlistCount}`
+          );
+          if (response.data.success) {
+            handleCloseShortlistModal();
+            setShortlisted(true);
+            setShortlistedIds(response.data.applicantIds);
+          }
+        } catch (err) {
           handleCloseShortlistModal();
-          setShortlisted(true);
-          setShortlistedIds(response.data.applicantIds);
+          setAlertData({
+            severity: "error",
+            msg: "Something Went Wrong, Please Try Again Later.",
+          });
+          handleAlert();
         }
-      } catch (err) {
-        handleCloseShortlistModal();
+      } else {
         setAlertData({
-          severity: "error",
-          msg: "Something Went Wrong, Please Try Again Later.",
+          severity: "info",
+          msg: "Shortlist count should be greater than 0",
         });
         handleAlert();
       }
     } else {
-      setAlertData({
-        severity: "info",
-        msg: "Shortlist count should be greater than 0",
-      });
-      handleAlert();
+      // post request will be sent with custom settings
     }
   };
 

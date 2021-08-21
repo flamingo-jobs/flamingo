@@ -128,6 +128,7 @@ const useStyles = makeStyles((theme) => ({
 export default function ShortlistingExperienceSettingsAccordion(props) {
   const classes = useStyles();
 
+  const id = props.id;
   const [editing, setEditing] = React.useState(false);
   const [settings, setSettings] = React.useState(false);
   const [updatedSettings, setUpdatedSettings] = React.useState(false);
@@ -201,9 +202,15 @@ export default function ShortlistingExperienceSettingsAccordion(props) {
     setUpdateFailed(false);
   }, [updateFailed]);
 
+  useEffect(() => {
+    props.handleInvalid(invalid);
+  }, [invalid]);
+  
   const handleSave = () => {
     saveChanges();
-    setRefreshRequired(true);
+    if (props.type !== "custom") {
+      setRefreshRequired(true);
+    }
   }
 
   const handleCancel = () => {
@@ -235,7 +242,7 @@ export default function ShortlistingExperienceSettingsAccordion(props) {
   };
 
   const retrieveRecommendationSettings = () => {
-    axios.get(`${BACKEND_URL}/settingsByType/shortlistingExperience`).then(res => {
+    axios.get(`${BACKEND_URL}/settingsByType/shortlistingExperience${id}`).then(res => {
       if (res.data.success) {
         setSettings(res.data.existingData[0]);
       } else {
@@ -248,24 +255,28 @@ export default function ShortlistingExperienceSettingsAccordion(props) {
   const saveChanges = () => {
     let data = { settings: updatedSettings.settings };
 
-    axios.put(`${BACKEND_URL}/settings/update/${settings._id}`, data).then(res => {
-      if (res.data.success) {
-        setRefreshRequired(true);
-        setSettings(false);
-        setUpdatedSettings(false);
-        retrieveRecommendationSettings();
-        handleUpdatesuccess();
-      } else {
-        handleUpdateFailed();
-      }
-    })
-    setRefreshRequired(true);
+    if (props.type === "custom") {
+      props.passSettings(updatedSettings);
+    } else {
+      axios.put(`${BACKEND_URL}/settings/update/${settings._id}`, data).then(res => {
+        if (res.data.success) {
+          setRefreshRequired(true);
+          setSettings(false);
+          setUpdatedSettings(false);
+          retrieveRecommendationSettings();
+          handleUpdatesuccess();
+        } else {
+          handleUpdateFailed();
+        }
+      })
+      setRefreshRequired(true);
+    }
   }
 
   const resetToDefault = () => {
     setConfirmDelete(false);
 
-    axios.get(`${BACKEND_URL}/settingsByType/shortlistingExperiencenDefaults`).then(res => {
+    axios.get(`${BACKEND_URL}/settingsByType/shortlistingExperienceDefaults`).then(res => {
       if (res.data.success) {
         let data = { settings: res.data.existingData[0].settings };
 
@@ -328,6 +339,9 @@ export default function ShortlistingExperienceSettingsAccordion(props) {
       updatedSettings.settings["3-5"] + updatedSettings.settings["5+"];
     if (total === 100) {
       setInvalid(false);
+      if (props.type === "custom") {
+        saveChanges();
+      }
     } else {
       setInvalid(true);
     }
@@ -378,11 +392,11 @@ export default function ShortlistingExperienceSettingsAccordion(props) {
           <div style={{ padding: 24 }}>
             <Typography>Remaining percentage are divided as the weights for each years of experience levels. <br />Total wights of below levels should be {100 - minimum}%.</Typography>
           </div>
-          <ContinousSlider name={"0 years"} value={settings.settings["0"]} passValue={getSettingValues} max={100 - minimum}/>
-          <ContinousSlider name={"0-1 years"} value={settings.settings["0-1"]} passValue={getSettingValues} max={100 - minimum}/>
-          <ContinousSlider name={"1-3 years"} value={settings.settings["1-3"]} passValue={getSettingValues} max={100 - minimum}/>
-          <ContinousSlider name={"3-5 years"} value={settings.settings["3-5"]} passValue={getSettingValues} max={100 - minimum}/>
-          <ContinousSlider name={"5+ years"} value={settings.settings["5+"]} passValue={getSettingValues} max={100 - minimum}/>
+          <ContinousSlider name={"0 years"} value={settings.settings["0"]} passValue={getSettingValues} max={100 - minimum} />
+          <ContinousSlider name={"0-1 years"} value={settings.settings["0-1"]} passValue={getSettingValues} max={100 - minimum} />
+          <ContinousSlider name={"1-3 years"} value={settings.settings["1-3"]} passValue={getSettingValues} max={100 - minimum} />
+          <ContinousSlider name={"3-5 years"} value={settings.settings["3-5"]} passValue={getSettingValues} max={100 - minimum} />
+          <ContinousSlider name={"5+ years"} value={settings.settings["5+"]} passValue={getSettingValues} max={100 - minimum} />
         </Grid>
       )
     } else {
@@ -409,8 +423,9 @@ export default function ShortlistingExperienceSettingsAccordion(props) {
         <Divider />
         <AccordionActions style={{ minHeight: 65 }}>
           {invalid ? <Alert severity="error">Invalid settings - Weight total should be 100%!</Alert> : null}
-          {editing ? <Button size="small" onClick={handleCancel}>Cancel</Button> : <> <Button size="small" color="secondary" onClick={handleDelete}>Reset to Default</Button></>}
-          {editing && !invalid ? <Button size="small" color="primary" onClick={handleSave}>Save</Button> : null}
+          {editing && props.type !== "custom" ? <Button size="small" onClick={handleCancel}>Cancel</Button> : null}
+          {!editing && props.id !== "Defaults" && props.type !== "custom" ? <> <Button size="small" color="secondary" onClick={handleDelete}>Reset to Default</Button></> : null}
+          {editing && !invalid && props.type !== "custom" ? <Button size="small" color="primary" onClick={handleSave}>Save</Button> : null}
         </AccordionActions>
       </Accordion>
     </div>

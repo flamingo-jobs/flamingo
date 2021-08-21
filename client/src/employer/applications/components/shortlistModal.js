@@ -8,22 +8,24 @@ import {
   Modal,
   Button,
   IconButton,
+  Checkbox,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 // import Flamingo from "../lotties/flamingo.json";
 import Lottie from "react-lottie";
 import { Link } from "react-router-dom";
 import Slider from "@material-ui/core/Slider";
+import ShortlistingSettingsAccordion from "../../../admin/components/ShortlistingSettingsAccordion";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "500px",
+    width: "70%",
     padding: `0px 30px`,
     paddingBottom: "20px",
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     borderRadius: 10,
-    maxHeight: "98vh",
+    maxHeight: "90vh",
     overflowY: "auto",
   },
   modal: {
@@ -105,12 +107,40 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 // style={{border: "1px solid red"}}
 const ShortlistModal = (props) => {
   const classes = useStyles();
+  const [isDefault, setIsDefault] = useState(true);
+  const [invalid, setInvalid] = useState(false);
 
-  {
-    /* style={{border: "1px solid red"}} */
+  useEffect(() => {
+    if (isDefault) {
+      props.updateCustomCriterias([]);
+    }
+  }, [isDefault]);
+  
+  const handleCustomSettings = (settings) => {
+    props.updateCustomCriterias(settings);
+  }
+  const handleMinimumToggleChange = (event) => {
+    setIsDefault(event.target.checked);
+  };
+
+  const handleInvalid = (status) => {
+    setInvalid(status);
+  }
+
+  const displayCustomCriterias = () => {
+    if (!isDefault) {
+      return (
+        <>
+          <Typography>NOTE: Changes you make to below settings will not be stored anywhere and will be applied for this shortlisting only.</Typography>
+
+          <ShortlistingSettingsAccordion type="custom" handleCustomSettings={handleCustomSettings} handleInvalid={handleInvalid} />
+        </>
+      )
+    }
   }
   return (
     <>
@@ -123,56 +153,66 @@ const ShortlistModal = (props) => {
       >
         <Card className={classes.root}>
           <CardContent className={classes.cardContent}>
-            <Grid container xs={12}>
-              <div className={classes.closeBtnContainer}>
-                <IconButton
-                  onClick={props.handleCloseShortlistModal}
-                  className={classes.closeButton}
-                >
-                  <CloseIcon className={classes.closeIcon} />
-                </IconButton>
-              </div>
-              <form onSubmit={props.handleShortlistSubmit}>
-                <div className={classes.shortlistContent}>
-                  <Typography className={classes.text}>
-                    Select the amount of applicants needed from below.
-                  </Typography>
-                  <Typography className={classes.countText}>
-                    No. of Applicants: {props.shortlistCount}
-                  </Typography>
-                  <div className={classes.sliderContainer}>
-                    <Slider
-                      className={classes.slider}
-                      value={
-                        typeof props.shortlistCount === "number"
-                          ? props.shortlistCount
-                          : 0
-                      }
-                      onChange={props.handleSliderChange}
-                      valueLabelDisplay="auto"
-                      min={0}
-                      max={props.max}
-                    />
-                  </div>
-                  <div className={classes.btnContainer}>
-                    <Button
-                      variant="contained"
-                      className={classes.cancelBtn}
-                      onClick={props.handleCloseShortlistModal}
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      variant="contained"
-                      type="submit"
-                      className={classes.submitBtn}
-                    >
-                      Submit
-                    </Button>
-                  </div>
+
+            <div className={classes.closeBtnContainer}>
+              <IconButton
+                onClick={props.handleCloseShortlistModal}
+                className={classes.closeButton}
+              >
+                <CloseIcon className={classes.closeIcon} />
+              </IconButton>
+            </div>
+            <form onSubmit={props.handleShortlistSubmit}>
+              <div className={classes.shortlistContent}>
+                <Typography className={classes.text}>
+                  Select the amount of applicants needed from below.
+                </Typography>
+                <Typography className={classes.countText}>
+                  No. of Applicants: {props.shortlistCount}
+                </Typography>
+                <div className={classes.sliderContainer}>
+                  <Slider
+                    className={classes.slider}
+                    value={
+                      typeof props.shortlistCount === "number"
+                        ? props.shortlistCount
+                        : 0
+                    }
+                    onChange={props.handleSliderChange}
+                    valueLabelDisplay="auto"
+                    min={0}
+                    max={props.max}
+                  />
                 </div>
-              </form>
-            </Grid>
+                <div style={{ display: 'flex', alignItems: 'center', marginTop: 16, marginBottom: 16 }}>
+                  <Checkbox
+                    checked={isDefault}
+                    onChange={handleMinimumToggleChange}
+                    color="primary"
+                    inputProps={{ 'aria-label': 'primary checkbox' }}
+                  />
+                  <Typography className={classes.featuredJobs}>Use company default shortlisting criterias.</Typography>
+                </div>
+                {displayCustomCriterias()}
+
+                <div className={classes.btnContainer}>
+                  <Button
+                    variant="contained"
+                    className={classes.cancelBtn}
+                    onClick={props.handleCloseShortlistModal}
+                  >
+                    Cancel
+                  </Button>
+                  {!invalid ? <Button
+                    variant="contained"
+                    type="submit"
+                    className={classes.submitBtn}
+                  >
+                    Shortlist
+                  </Button> : null}
+                </div>
+              </div>
+            </form>
           </CardContent>
         </Card>
       </Modal>

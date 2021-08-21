@@ -127,7 +127,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ShortlistingEducationSettingsAccordion(props) {
   const classes = useStyles();
-
+  const id = props.id;
   const [editing, setEditing] = React.useState(false);
   const [settings, setSettings] = React.useState(false);
   const [updatedSettings, setUpdatedSettings] = React.useState(false);
@@ -207,9 +207,15 @@ export default function ShortlistingEducationSettingsAccordion(props) {
     setUpdateFailed(false);
   }, [updateFailed]);
 
+  useEffect(() => {
+    props.handleInvalid(invalid);
+  }, [invalid]);
+
   const handleSave = () => {
     saveChanges();
-    setRefreshRequired(true);
+    if (props.type !== "custom") {
+      setRefreshRequired(true);
+    }
   }
 
   const handleCancel = () => {
@@ -241,7 +247,7 @@ export default function ShortlistingEducationSettingsAccordion(props) {
   };
 
   const retrieveRecommendationSettings = () => {
-    axios.get(`${BACKEND_URL}/settingsByType/shortlistingEducation`).then(res => {
+    axios.get(`${BACKEND_URL}/settingsByType/shortlistingEducation${id}`).then(res => {
       if (res.data.success) {
         setSettings(res.data.existingData[0]);
       } else {
@@ -253,19 +259,22 @@ export default function ShortlistingEducationSettingsAccordion(props) {
 
   const saveChanges = () => {
     let data = { settings: updatedSettings.settings };
-
-    axios.put(`${BACKEND_URL}/settings/update/${settings._id}`, data).then(res => {
-      if (res.data.success) {
-        setRefreshRequired(true);
-        setSettings(false);
-        setUpdatedSettings(false);
-        retrieveRecommendationSettings();
-        handleUpdatesuccess();
-      } else {
-        handleUpdateFailed();
-      }
-    })
-    setRefreshRequired(true);
+    if (props.type === "custom") {
+      props.passSettings(updatedSettings);
+    } else {
+      axios.put(`${BACKEND_URL}/settings/update/${settings._id}`, data).then(res => {
+        if (res.data.success) {
+          setRefreshRequired(true);
+          setSettings(false);
+          setUpdatedSettings(false);
+          retrieveRecommendationSettings();
+          handleUpdatesuccess();
+        } else {
+          handleUpdateFailed();
+        }
+      })
+      setRefreshRequired(true);
+    }
   }
 
   const resetToDefault = () => {
@@ -337,6 +346,9 @@ export default function ShortlistingEducationSettingsAccordion(props) {
       updatedSettings.settings.phd;
     if (total === 100) {
       setInvalid(false);
+      if (props.type === "custom") {
+        saveChanges();
+      }
     } else {
       setInvalid(true);
     }
@@ -430,8 +442,9 @@ export default function ShortlistingEducationSettingsAccordion(props) {
         <Divider />
         <AccordionActions style={{ minHeight: 65 }}>
           {invalid ? <Alert severity="error">Invalid settings - Weight total should be 100%!</Alert> : null}
-          {editing ? <Button size="small" onClick={handleCancel}>Cancel</Button> : <> <Button size="small" color="secondary" onClick={handleDelete}>Reset to Default</Button></>}
-          {editing && !invalid ? <Button size="small" color="primary" onClick={handleSave}>Save</Button> : null}
+          {editing && props.type !== "custom" ? <Button size="small" onClick={handleCancel}>Cancel</Button> : null}
+          {!editing && props.id !== "Defaults" && props.type !== "custom" ? <> <Button size="small" color="secondary" onClick={handleDelete}>Reset to Default</Button></> : null}
+          {editing && !invalid && props.type !== "custom" ? <Button size="small" color="primary" onClick={handleSave}>Save</Button> : null}
         </AccordionActions>
       </Accordion>
     </div>

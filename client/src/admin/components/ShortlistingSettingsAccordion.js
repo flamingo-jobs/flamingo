@@ -128,6 +128,16 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ShortlistingSettingsAccordion(props) {
   const classes = useStyles();
+  var id = false;
+  const jwt = require("jsonwebtoken");
+  const token = sessionStorage.getItem("userToken");
+  const header = jwt.decode(token, { complete: true });
+
+  if (token !== null && header.payload.userRole === "employer") {
+    id = `-${sessionStorage.getItem("loginId")}`;
+  } else if (token !== null && header.payload.userRole === "admin") {
+    id = "Defaults";
+  }
 
   const [editing, setEditing] = React.useState(false);
   const [settings, setSettings] = React.useState(false);
@@ -143,6 +153,8 @@ export default function ShortlistingSettingsAccordion(props) {
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
 
   const [isMinimumToggle, setMinimumToggle] = React.useState(false);
+
+  const [combinedArray, setCombinedArray] = React.useState([]);
 
   const handleMinimumToggleChange = (event) => {
     setMinimumToggle(event.target.checked);
@@ -201,9 +213,15 @@ export default function ShortlistingSettingsAccordion(props) {
     setUpdateFailed(false);
   }, [updateFailed]);
 
+  useEffect(() => {
+    props.handleInvalid(invalid);
+  }, [invalid]);
+
   const handleSave = () => {
     saveChanges();
-    setRefreshRequired(true);
+    if (props.type !== "custom") {
+      setRefreshRequired(true);
+    }
   }
 
   const handleCancel = () => {
@@ -235,7 +253,7 @@ export default function ShortlistingSettingsAccordion(props) {
   };
 
   const retrieveRecommendationSettings = () => {
-    axios.get(`${BACKEND_URL}/settingsByType/shortlisting`).then(res => {
+    axios.get(`${BACKEND_URL}/settingsByType/shortlisting${id}`).then(res => {
       if (res.data.success) {
         setSettings(res.data.existingData[0])
       } else {
@@ -248,18 +266,22 @@ export default function ShortlistingSettingsAccordion(props) {
   const saveChanges = () => {
     let data = { settings: updatedSettings.settings };
 
-    axios.put(`${BACKEND_URL}/settings/update/${settings._id}`, data).then(res => {
-      if (res.data.success) {
-        setRefreshRequired(true);
-        setSettings(false);
-        setUpdatedSettings(false);
-        retrieveRecommendationSettings();
-        handleUpdatesuccess();
-      } else {
-        handleUpdateFailed();
-      }
-    })
-    setRefreshRequired(true);
+    if (props.type === "custom") {
+      combineCustomValues(updatedSettings);
+    } else {
+      axios.put(`${BACKEND_URL}/settings/update/${settings._id}`, data).then(res => {
+        if (res.data.success) {
+          setRefreshRequired(true);
+          setSettings(false);
+          setUpdatedSettings(false);
+          retrieveRecommendationSettings();
+          handleUpdatesuccess();
+        } else {
+          handleUpdateFailed();
+        }
+      })
+      setRefreshRequired(true);
+    }
   }
 
   const resetToDefault = () => {
@@ -285,6 +307,29 @@ export default function ShortlistingSettingsAccordion(props) {
         setSettings("empty")
       }
     });
+  }
+
+  useEffect(() => {
+    props.handleCustomSettings(combinedArray);
+  }, [combinedArray])
+
+
+  const combineCustomValues = (setting) => {
+    let newArray = [...combinedArray];
+    let index = newArray.findIndex(x => x.tag === setting.tag);
+    if (index >= 0) {
+      newArray.splice(index, 1, setting)
+    } else {
+      newArray.push(setting)
+    }
+    if(newArray.findIndex(x => x.tag === "shortlisting") < 0){
+      newArray.push(settings)
+    }
+
+    setCombinedArray(newArray);
+    
+
+    // props.handleCustomSettings()
   }
 
   const getSettingValues = (name, value) => {
@@ -340,6 +385,9 @@ export default function ShortlistingSettingsAccordion(props) {
       updatedSettings.settings.courses + updatedSettings.settings.awards + updatedSettings.settings.extraCurricular;
     if (total === 100) {
       setInvalid(false);
+      if (props.type === "custom") {
+        saveChanges();
+      }
     } else {
       setInvalid(true);
     }
@@ -398,13 +446,13 @@ export default function ShortlistingSettingsAccordion(props) {
       return (
         <Grid item xs={12}>
           <ContinousSlider name={"Education"} value={settings.settings.education} passValue={getSettingValues} />
-          <div style={{padding: 20, paddingTop: 0}}>
-          <ShortlistingEducationSettingsAccordion />
+          <div style={{ padding: 20, paddingTop: 0 }}>
+            <ShortlistingEducationSettingsAccordion id={id} type={props.type} passSettings={combineCustomValues} handleInvalid={props.handleInvalid}/>
 
           </div>
           <ContinousSlider name={"Experience"} value={settings.settings.experience} passValue={getSettingValues} />
-          <div style={{padding: 20, paddingTop: 0}}>
-          <ShortlistingExperienceSettingsAccordion />
+          <div style={{ padding: 20, paddingTop: 0 }}>
+            <ShortlistingExperienceSettingsAccordion id={id} type={props.type} passSettings={combineCustomValues} handleInvalid={props.handleInvalid}/>
 
           </div>
           <ContinousSlider name={"Technology Stack"} value={settings.settings.techStack} passValue={getSettingValues} />
@@ -440,8 +488,9 @@ export default function ShortlistingSettingsAccordion(props) {
         <Divider />
         <AccordionActions style={{ minHeight: 65 }}>
           {invalid ? <Alert severity="error">Invalid settings - Weight total should be 100%!</Alert> : null}
-          {editing ? <Button size="small" onClick={handleCancel}>Cancel</Button> : <> <Button size="small" color="secondary" onClick={handleDelete}>Reset to Default</Button></>}
-          {editing && !invalid ? <Button size="small" color="primary" onClick={handleSave}>Save</Button> : null}
+          {editing && props.type !== "custom" ? <Button size="small" onClick={handleCancel}>Cancel</Button> : null}
+          {!editing && id !== "Defaults" && props.type !== "custom" ? <> <Button size="small" color="secondary" onClick={handleDelete}>Reset to Default</Button></> : null}
+          {editing && !invalid && props.type !== "custom" ? <Button size="small" color="primary" onClick={handleSave}>Save</Button> : null}
         </AccordionActions>
       </Accordion>
     </div>

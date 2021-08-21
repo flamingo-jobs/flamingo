@@ -10,34 +10,47 @@ const shortlistApplicants = (req, res) => {
     var jobSeekers = null;
     const scoredApplicants = [];
     var certificationList = [];
+    var settingsList = [];
 
     Certifications.find().exec((err, certifications) => {
         certificationList = certifications
     });
 
+    if(req.params.settingId !== "defaults"){
+        settingsList.push(`shortlisting-${req.params.settingId}`);
+        settingsList.push(`shortlistingEducation-${req.params.settingId}`);
+        settingsList.push(`shortlistingExperience-${req.params.settingId}`);
+    } else{
+        settingsList.push(`shortlistingDefaults`);
+        settingsList.push(`shortlistingEducationDefaults`);
+        settingsList.push(`shortlistingExperienceDefaults`);
+    }
 
-    Settings.find({ 'type': { $in: ['shortlistingDefaults', 'shortlistingEducationDefaults', 'shortlistingExperienceDefaults'] } }).exec((err, settings) => {
+    // console.log(settingsList)
+
+    Settings.find({ 'type': { $in: settingsList } }).exec((err, settings) => {
         if (err) {
             return res.status(400).json({
                 error: err
             })
         }
-
+// console.log(settings)
         if (settings) {
 
             let shortlistingSettings, educationShortlistings, experienceShortlistings;
 
             settings.forEach((setting) => {
-                if (setting.type === "shortlistingDefaults") {
+                if (setting.tag === 'shortlisting') {
                     shortlistingSettings = setting.settings;
-                } else if (setting.type === "shortlistingEducationDefaults") {
+                } else if (setting.tag === 'shortlistingEducation') {
                     educationShortlistings = setting.settings;
-                } else if (setting.type === "shortlistingExperienceDefaults") {
+                } else if (setting.tag === 'shortlistingExperience') {
                     experienceShortlistings = setting.settings;
                 }
             })
 
-            Jobs.findById(req.params.id).exec((err, job) => {
+
+            Jobs.findById(req.params.jobId).exec((err, job) => {
                 if (err) {
                     return res.status(400).json({
                         error: err
