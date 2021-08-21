@@ -212,12 +212,12 @@ const shortlistForGivenCount = async (req, res) => {
         const job = await Jobs.findById(jobId).select("applicationDetails -_id");
         var applications = job.applicationDetails;
 
-        // applications.sort((a, b) => {
-        //     return a.score - b.score;
-        // });
-        // const applicantIds = applications.slice(0, count).map(obj => obj.userId);
+        applications.sort((a, b) => {
+            return b.score - a.score;
+        });
+        const applicantIds = applications.slice(0, count).map(obj => obj.userId);
 
-        res.status(200).json({ success: true, applications: applications });
+        res.status(200).json({ success: true, applicantIds: applicantIds });
     } catch(error){
         res.status(400).json({ success: false, error: error });
     }

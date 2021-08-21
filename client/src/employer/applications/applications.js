@@ -9,7 +9,7 @@ import SnackBarAlert from "../../components/SnackBarAlert";
 import NoAccess from "../../components/NoAccess";
 import PeopleIcon from "@material-ui/icons/People";
 import ShortlistModal from "./components/shortlistModal";
-import NoInfo from '../../components/NoInfo';
+import NoInfo from "../../components/NoInfo";
 
 const jwt = require("jsonwebtoken");
 
@@ -73,6 +73,7 @@ const Applications = () => {
   const isSignedIn = sessionStorage.getItem("userToken") ? true : false;
   const [jobId, setJobId] = useState(window.location.pathname.split("/")[3]);
   const [job, setJob] = useState("empty");
+
   const [applicantIds, setApplicantIds] = useState([]);
   const [applicants, setApplicants] = useState("empty");
 
@@ -153,6 +154,14 @@ const Applications = () => {
           `${BACKEND_URL}/jobseeker/applicants/${ids}`
         );
         if (response.data.success) {
+          // var jobseekers = response.data.jobseekers;
+
+          // jobseekers.map((user) => {
+          //   const score = job.applicationDetails.filter(
+          //     (obj) => obj.userId == user._id
+          //   )[0].score;
+          //   user.score = score;
+          // });
           setApplicants(response.data.jobseekers);
         }
       } catch (err) {
@@ -270,6 +279,7 @@ const Applications = () => {
                 handleAlert={handleAlert}
               ></ApplicantCard>
             ))}
+
             {otherJobseekers.length !== 0 && (
               <div className={classes.applicantTitle}>
                 <FloatCard>
@@ -330,13 +340,7 @@ const Applications = () => {
         if (response.data.success) {
           handleCloseShortlistModal();
           setShortlisted(true);
-
-          var applications = response.data.applications.sort((a, b) => {
-            return b.score - a.score;
-          });
-          // console.log("sort", applications.slice(0, shortlistCount));
-          var applicantIds = applications.slice(0, shortlistCount).map(obj => obj.userId);
-          setShortlistedIds(applicantIds);
+          setShortlistedIds(response.data.applicantIds);
         }
       } catch (err) {
         handleCloseShortlistModal();
