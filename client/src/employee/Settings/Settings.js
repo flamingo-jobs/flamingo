@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useForm } from "react-hooks-helper";
 import PropTypes from "prop-types";
 import {
   makeStyles,
@@ -316,109 +315,101 @@ const Settings = () => {
               >
                 <form onSubmit={handleChangePassword}>
                   <Grid item xs={12}>
-                    <Grid item xs={12} md={12} lg={6} align="left">
-                      <Grid container spacing={3}>
-                        <Grid item xs={12} align="left">
-                          <Typography variant="h5">Change Password</Typography>
-                          <Typography>
-                            Please provide your previous password to change the
-                            password.
-                          </Typography>
-                          <Typography variant="caption" display="block">
-                                Please make sure that your password contains at
-                                least,
-                                <ul>
-                                  <li>8 characters</li>
-                                  <li>1 uppercase letter</li>
-                                  <li>1 lowercase letter</li>
-                                  <li>1 number and 1 special character</li>
-                                </ul>
-                              </Typography>
-                        </Grid>
-                        <Grid item xs={12} align="left">
-                          <TextField
-                            label="Old Password"
-                            name="oldPassword"
-                            type="password"
-                            value={oldPassword}
-                            onChange={(e) => setOldPassword(e.target.value)}
-                            size="small"
-                            variant="outlined"
-                            required
-                          />
-                        </Grid>
-                        <Grid item xs={6} align="left">
-                          <TextField
-                            label="New Password"
-                            name="newPassword"
-                            type="password"
-                            value={newPassword}
-                            onChange={(e) => setNewPassword(e.target.value)}
-                            size="small"
-                            variant="outlined"
-                            required
-                          />
-                        </Grid>
-                        <Grid item xs={6} align="left">
-                          <TextField
-                            label="Confirm New Password"
-                            name="confirmNewPassword"
-                            type="password"
-                            value={confirmNewPassword}
-                            onChange={(e) =>
-                              setConfirmNewPassword(e.target.value)
-                            }
-                            size="small"
-                            variant="outlined"
-                            required
-                          />
-                        </Grid>
+                    <Grid container spacing={3} diection="column">
+                      <Grid item xs={12} align="left">
+                        <Typography variant="h5">Change Password</Typography>
                       </Grid>
-                    </Grid>
-                    {/* Submit Buttons */}
-                    <Grid item xs={12}>
-                      <Grid
-                        item
-                        container
-                        xs={12}
-                        className={classes.footer}
-                        alignItems="left"
-                        justify="left"
-                        spacing={3}
-                      >
-                        <Grid
-                          item
-                          container
-                          md={6}
-                          className={classes.actions}
-                          spacing={2}
-                        >
-                          <Grid item>
-                            <Button
-                              fullWidth
-                              type="submit"
-                              variant="contained"
-                              className={classes.button}
-                            >
-                              Change Password
-                            </Button>
+                      <Grid item xs={12} md={12} lg={6} align="left">
+                        <Typography>
+                          Please provide your previous password to change the
+                          password.
+                        </Typography>
+                        <Typography variant="caption" display="block">
+                          Please make sure that your password contains at least,
+                          <ul>
+                            <li>8 characters</li>
+                            <li>1 uppercase letter</li>
+                            <li>1 lowercase letter</li>
+                            <li>1 number and 1 special character</li>
+                          </ul>
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={12} md={12} lg={6}>
+                        <Grid container spacing={2}>
+                          <Grid item xs={12} align="left">
+                            <TextField
+                              label="Old Password"
+                              name="oldPassword"
+                              type="password"
+                              value={oldPassword}
+                              onChange={(e) => setOldPassword(e.target.value)}
+                              size="small"
+                              variant="outlined"
+                              required
+                            />
                           </Grid>
-                          <Grid item>
-                            <Link to="/">
+                          <Grid item xs={6} align="left">
+                            <TextField
+                              label="New Password"
+                              name="newPassword"
+                              type="password"
+                              value={newPassword}
+                              onChange={(e) => setNewPassword(e.target.value)}
+                              size="small"
+                              variant="outlined"
+                              required
+                            />
+                          </Grid>
+                          <Grid item xs={6} align="left">
+                            <TextField
+                              label="Confirm New Password"
+                              name="confirmNewPassword"
+                              type="password"
+                              value={confirmNewPassword}
+                              onChange={(e) =>
+                                setConfirmNewPassword(e.target.value)
+                              }
+                              size="small"
+                              variant="outlined"
+                              required
+                            />
+                          </Grid>
+
+                          <Grid
+                            item
+                            container
+                            xs={12}
+                            className={classes.actions}
+                            spacing={2}
+                          >
+                            <Grid item>
                               <Button
                                 fullWidth
+                                type="submit"
                                 variant="contained"
-                                className={classes.cancel}
+                                className={classes.button}
                               >
-                                Cancel
+                                Change Password
                               </Button>
-                            </Link>
+                            </Grid>
+                            <Grid item>
+                              <Link to="/">
+                                <Button
+                                  fullWidth
+                                  variant="contained"
+                                  className={classes.cancel}
+                                >
+                                  Cancel
+                                </Button>
+                              </Link>
+                            </Grid>
                           </Grid>
                         </Grid>
                       </Grid>
                     </Grid>
                   </Grid>
                 </form>
+                <Box mt={5} />
                 <form onSubmit={handleClickOpen}>
                   <Grid item xs={12}>
                     <Grid item xs={12} md={12} lg={6} align="left">
