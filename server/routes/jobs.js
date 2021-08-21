@@ -20,6 +20,8 @@ router.get("/jobs/shortlistForGivenCount/:jobId/:count", jobsController.shortlis
 router.get('/jobs/shortlistApplicants/:jobId/:settingId', shortlistController.shortlistApplicants);
 router.get('/jobs/shortlistOnApplicantChanges/:jobId/:applicantId', shortlistController.shortlistOnApplicantChanges);
 
+router.post('/jobs/customShortlisting', shortlistController.shortlistApplicantsCustoms);
+
 // get specific
 router.get('/jobs/search/:searchString', jobsController.getSearched);
 

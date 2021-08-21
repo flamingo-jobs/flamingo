@@ -370,7 +370,31 @@ const Applications = () => {
         handleAlert();
       }
     } else {
-      // post request will be sent with custom settings
+      if (jobId && shortlistCount > 0) {
+        try {
+          const response = await axios.post(
+            `${BACKEND_URL}/jobs/customShortlisting`, {jobId: jobId, settings: customSettings}
+          );
+          if (response.data.success) {
+            handleCloseShortlistModal();
+            setShortlisted(true);
+            setShortlistedIds(response.data.applicantIds);
+          }
+        } catch (err) {
+          handleCloseShortlistModal();
+          setAlertData({
+            severity: "error",
+            msg: "Something Went Wrong, Please Try Again Later.",
+          });
+          handleAlert();
+        }
+      } else {
+        setAlertData({
+          severity: "info",
+          msg: "Shortlist count should be greater than 0",
+        });
+        handleAlert();
+      }
     }
   };
 
