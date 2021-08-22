@@ -127,16 +127,24 @@ const Dashboard = (props) => {
           <CompanySummaryCard employerId={loginId} />
         </Grid>
         <Grid item xs={8}>
-          <LineGraph
-            className={classes.lineGraph}
-            employerId={loginId}
-          />
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <LineGraph
+                className={classes.lineGraph}
+                employerId={loginId}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <LatestJobs employerId={loginId} />
+            </Grid>
+
+          </Grid>
         </Grid>
         <Grid item xs={4}>
           <NewApplicants employerId={loginId} />
         </Grid>
-        <Grid item xs={12}>
-          <LatestJobs employerId={loginId} />
+        <Grid item xs={8}>
+
         </Grid>
       </Grid>
     </>

@@ -223,16 +223,17 @@ const LineGraph = (props) => {
 
   return (
     <FloatCard>
-      <Typography variant="h6" className={classes.title}>
-        Applications
-      </Typography>
-      <Typography variant="body1" className={classes.title2}>
-        This Week
-      </Typography>
+      <div style={{ padding: 10 }}>
+        <Typography variant="h6" className={classes.title}>
+          Applications
+        </Typography>
+        <Typography variant="body1" className={classes.title2}>
+          This Week
+        </Typography>
 
-      <br />
-      <Line height={120} data={generateLineChart({ fill: false })} />
-
+        <br />
+        <Line height={120} data={generateLineChart({ fill: false })} />
+      </div>
     </FloatCard>
   );
 };

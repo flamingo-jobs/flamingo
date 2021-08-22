@@ -11,7 +11,7 @@ import {
   Chip,
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
-import FloatCard from "../../FloatCard";
+import FloatCard from "../../../../components/FloatCard";
 import wso2 from "../images/wso2.png";
 import Box from "@material-ui/core/Box";
 import Rating from "@material-ui/lab/Rating";
@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 16
   },
   headerLogo: {
+    marginTop: 10,
     display: 'flex',
     justifyContent: 'center',
     marginBottom: 15,
@@ -61,6 +62,8 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 10,
   },
   logo: {
+    marginTop: 10,
+
     borderRadius: 12,
     width: 125,
     height: 125,

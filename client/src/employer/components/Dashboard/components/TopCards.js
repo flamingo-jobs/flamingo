@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
-import FloatCard from "../../FloatCard";
+import FloatCard from "../../../../components/FloatCard";
 import {
   Chart,
   PieSeries,
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bolder",
     fontSize: 15,
     color: theme.palette.stateBlue,
-    marginBottom: 20,
+    marginBottom: 10,
     float: "center",
   },
   cardNumber: {
@@ -39,7 +39,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 40,
     color: theme.palette.stateBlue,
     float: "center",
-    marginLeft: 20,
   },
   pieChart: {
     width: 90,
@@ -65,7 +64,11 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.stateBlue,
     float: "center",
   },
-
+  maintitle: {
+    fontWeight: "bolder",
+    fontSize: 20,
+    color: theme.palette.stateBlue,
+  }
 }));
 
 const TopCards = (props) => {
@@ -176,38 +179,24 @@ const TopCards = (props) => {
   const classes = useStyles();
 
   return (
-    <Grid item container spacing={3}>
+    <Grid container spacing={3}
+      direction="row"
+      justifyContent="space-between"
+      alignItems="stretch">
+      <Grid item xs={12}>
+        <FloatCard>
+          <Typography className={classes.maintitle}>Hi, Welcome back!</Typography>
+        </FloatCard>
+        </Grid>
+
       <Grid item xs={12} sm={6}>
         <FloatCard>
-          <Grid container direction="row" xs={12} spacing={2}>
-            <Grid item xs={6}>
-              <Typography variant="body2" className={classes.cardTitle}>
-                TOTAL JOBS
-              </Typography>
-              <Typography variant="h5" className={classes.cardNumber}>
-                {getTotalRejected()}
-              </Typography>
-            </Grid>
-            <Grid item xs={6}>
-
-              <Chart
-                data={[
-                  { category: 'rejected', val: getTotalRejected() },
-                  { category: 'total', val: getTotalApplications() - getTotalRejected() },
-                ]}
-                className={classes.pieChart}
-              >
-                <PieSeries
-                  valueField="val"
-                  argumentField="category"
-                  innerRadius={0.6}
-                />
-                <Animation />
-              </Chart>
-
-            </Grid>
-          </Grid>
-
+          <Typography variant="body2" className={classes.cardTitle}>
+            TOTAL JOBS
+          </Typography>
+          <Typography variant="h5" className={classes.cardNumber}>
+            {getTotalRejected()}
+          </Typography>
         </FloatCard>
       </Grid>
 
@@ -226,16 +215,13 @@ const TopCards = (props) => {
         </Grid> */}
 
         <FloatCard>
-          <Grid container direction="row" xs={12} spacing={2}>
-            <Grid item xs={1}>
               <Typography variant="body2" className={classes.cardTitle}>
-                PENDING
+                TOTAL APPLICATIONS
               </Typography>
               <Typography variant="h5" className={classes.cardNumber}>
                 {getTotalPending()}
               </Typography>
-            </Grid>
-            <Grid item xs={10}>
+            {/* <Grid item xs={10}>
 
               <Chart
                 data={[
@@ -252,24 +238,20 @@ const TopCards = (props) => {
                 <Animation />
               </Chart>
 
-            </Grid>
-          </Grid>
+            </Grid> */}
 
         </FloatCard>
       </Grid>
 
       <Grid item xs={12} sm={6}>
         <FloatCard>
-          <Grid container direction="row" xs={12} spacing={2}>
-            <Grid item xs={1}>
               <Typography variant="body2" className={classes.cardTitle}>
-                REVIEWING
+                DUE JOBS
               </Typography>
               <Typography variant="h5" className={classes.cardNumber}>
                 {getTotalReviewing()}
               </Typography>
-            </Grid>
-            <Grid item xs={10}>
+            {/* <Grid item xs={10}>
 
               <Chart
                 data={[
@@ -286,9 +268,7 @@ const TopCards = (props) => {
                 <Animation />
               </Chart>
 
-            </Grid>
-          </Grid>
-
+            </Grid> */}
         </FloatCard>
       </Grid>
 
@@ -328,16 +308,13 @@ const TopCards = (props) => {
 
       <Grid item xs={12} sm={6}>
         <FloatCard>
-          <Grid container direction="row" xs={12} spacing={2}>
-            <Grid item xs={1}>
               <Typography variant="body2" className={classes.cardTitle}>
-                REJECTED
+                INACTIVE JOBS
               </Typography>
               <Typography variant="h5" className={classes.cardNumber}>
                 {getTotalRejected()}
               </Typography>
-            </Grid>
-            <Grid item xs={10}>
+            {/* <Grid item xs={10}>
 
               <Chart
                 data={[
@@ -354,9 +331,7 @@ const TopCards = (props) => {
                 <Animation />
               </Chart>
 
-            </Grid>
-          </Grid>
-
+            </Grid> */}
         </FloatCard>
       </Grid>
 

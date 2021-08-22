@@ -28,6 +28,8 @@ import TableRow from "@material-ui/core/TableRow";
 import axios from "axios";
 import BACKEND_URL from "../../../../Config";
 import { useState, useEffect } from "react";
+import EmployerJobCard from "./EmployerJobCard";
+import theme from "../../../../Theme";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -48,6 +50,9 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    padding: 10
+  },
   title: {
     fontWeight: "bolder",
     color: theme.palette.stateBlue,
@@ -60,15 +65,13 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "80%",
   },
   button: {
-    backgroundColor: theme.palette.blueJeans,
-    color: "white",
-    margin: 27,
-    borderRadius: 25,
+    backgroundColor: theme.palette.lightSkyBlueHover,
+    color: theme.palette.blueJeans,
+    borderRadius: 12,
     paddingLeft: 20,
     paddingRight: 20,
     "&:hover": {
-      backgroundColor: theme.palette.blueJeansHover,
-      color: "white",
+      backgroundColor: theme.palette.lightSkyBlue,
     },
   },
   activeChip: {
@@ -166,15 +169,58 @@ const LatestJobs = (props) => {
     return rejected;
   };
 
+  const getMerged = (row) => {
+    let mergedArray = [];
+    let pending = getPending(row);
+    let reviewing = getReviewing(row);
+    let shortlisted = getShortlisted(row);
+    let rejected = getRejected(row);
+
+    if (pending) {
+      mergedArray.push({
+        label: "Pending",
+        value: pending,
+        color: "#ffce63"
+      })
+    }
+
+    if (reviewing) {
+      mergedArray.push({
+        label: "Reviewing",
+        value: reviewing,
+        color: "#eb78ff"
+      })
+    }
+
+    if (shortlisted) {
+      mergedArray.push({
+        label: "Shortlisted",
+        value: shortlisted,
+        color: "#52ff52"
+      })
+    }
+
+    if (rejected) {
+      mergedArray.push({
+        label: "Rejected",
+        value: rejected,
+        color: "#f52560"
+      })
+    }
+
+    return mergedArray;
+  }
+
   return (
-    <div className={classes.root}>
-      <FloatCard>
+
+    <FloatCard backColor={theme.palette.lightyPurple}>
+      <div className={classes.root}>
         <Typography variant="h6" className={classes.title}>
           Latest Jobs
         </Typography>
         <WorkIcon className={classes.peopleIcon} />
 
-        <TableContainer component={Paper} className={classes.tableContainer}>
+        {/* <TableContainer component={Paper} className={classes.tableContainer}>
           <Table className={classes.table} aria-label="customized table">
             <colgroup>
               <col style={{ width: "20%" }} />
@@ -199,69 +245,77 @@ const LatestJobs = (props) => {
                 <StyledTableCell align="center">Rejected</StyledTableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
-              {allJobs.map((row) => (
-                <StyledTableRow key={row.name}>
-                  <StyledTableCell component="th" scope="row">
-                    {row.title}
-                  </StyledTableCell>
-                  <StyledTableCell align="left">
-                    <Chip
-                      icon={<LocalOfferRoundedIcon />}
-                      label={row.category}
-                      className={classes.category}
-                    />
-                  </StyledTableCell>
+            <TableBody> */}
+        <Grid container spacing={2}>
+          {allJobs.map((row) => (
+            // <StyledTableRow key={row.name}>
+            //   <StyledTableCell component="th" scope="row">
+            //     {row.title}
+            //   </StyledTableCell>
+            //   <StyledTableCell align="left">
+            //     <Chip
+            //       icon={<LocalOfferRoundedIcon />}
+            //       label={row.category}
+            //       className={classes.category}
+            //     />
+            //   </StyledTableCell>
 
-                  <StyledTableCell align="center">
-                    {row.isPublished ? (
-                      <Chip
-                        icon={<CheckCircleIcon />}
-                        label="Active"
-                        className={classes.activeChip}
-                      />
-                    ) : (
-                      <Chip
-                        icon={<CancelIcon />}
-                        label="Inactive"
-                        className={classes.inactiveChip}
-                      />
-                    )}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    {row.applicationDetails.length}
-                  </StyledTableCell>
+            //   <StyledTableCell align="center">
+            //     {row.isPublished ? (
+            //       <Chip
+            //         icon={<CheckCircleIcon />}
+            //         label="Active"
+            //         className={classes.activeChip}
+            //       />
+            //     ) : (
+            //       <Chip
+            //         icon={<CancelIcon />}
+            //         label="Inactive"
+            //         className={classes.inactiveChip}
+            //       />
+            //     )}
+            //   </StyledTableCell>
+            //   <StyledTableCell align="center">
+            //     {row.applicationDetails.length}
+            //   </StyledTableCell>
 
-                  {/* Pending */}
-                  <StyledTableCell align="center">
-                    {getPending(row)}
-                  </StyledTableCell>
+            //   {/* Pending */}
+            //   <StyledTableCell align="center">
+            //     {getPending(row)}
+            //   </StyledTableCell>
 
-                  {/* Reviewing */}
-                  <StyledTableCell align="center">
-                    {getReviewing(row)}
-                  </StyledTableCell>
+            //   {/* Reviewing */}
+            //   <StyledTableCell align="center">
+            //     {getReviewing(row)}
+            //   </StyledTableCell>
 
-                  {/* Shortlisted  */}
-                  <StyledTableCell align="center">
-                    {getShortlisted(row)}
-                  </StyledTableCell>
+            //   {/* Shortlisted  */}
+            //   <StyledTableCell align="center">
+            //     {getShortlisted(row)}
+            //   </StyledTableCell>
 
-                  {/* Rejected */}
-                  <StyledTableCell align="center">
-                    {getRejected(row)}
-                  </StyledTableCell>
-                </StyledTableRow>
-              ))}
-            </TableBody>
+            //   {/* Rejected */}
+            //   <StyledTableCell align="center">
+            //     {getRejected(row)}
+            //   </StyledTableCell>
+            // </StyledTableRow>
+            <Grid item xs={12}>
+              <EmployerJobCard info={row} values={getMerged(row)} />
+            </Grid>
+          ))}
+          {/* </TableBody>
           </Table>
-        </TableContainer>
+        </TableContainer> */}
+          <Grid item xs={12}>
+            <Link to={`/employer/jobs`}>
+              <Button className={classes.button}>View All</Button>
+            </Link>
+          </Grid>
+        </Grid>
 
-        <Link to={`/employer/jobs`}>
-          <Button className={classes.button}>View All</Button>
-        </Link>
-      </FloatCard>
-    </div>
+      </div>
+    </FloatCard >
+
   );
 };
 

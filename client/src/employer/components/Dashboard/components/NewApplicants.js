@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles, Avatar, Typography, Button } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
-import FloatCard from "../../FloatCard";
+import FloatCard from "../../../../components/FloatCard";
 import Box from "@material-ui/core/Box";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import ApplicantImage from "../images/1.jpg";
@@ -9,34 +9,27 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import BACKEND_URL from "../../../../Config";
 import { useState, useEffect } from "react";
+import theme from "../../../../Theme";
 
 const useStyles = makeStyles((theme) => ({
   title: {
     fontWeight: "bolder",
     color: theme.palette.stateBlue,
     float: "left",
-    marginLeft: 10,
-  },
-  peopleIcon: {
-    color: theme.palette.stateBlue,
-    marginTop: 5,
-    marginLeft: 20,
-  },
-  applicantContainer: {
-    marginTop: 10,
-    padding: 5,
-    marginBottom: -10,
   },
   applicantName: {
-    float: "left",
-    marginTop: -5,
+    textAlign: 'left',
+    fontSize: 14,
+    fontWeight: 500
   },
   avatar: {
-    marginLeft: 5,
+    borderRadius: 12
   },
   applicantBody: {
-    marginTop: -15,
-    marginLeft: -2,
+    textAlign: 'left',
+    fontSize: 11,
+    fontWeight: 400
+
   },
   button: {
     backgroundColor: theme.palette.blueJeans,
@@ -66,7 +59,7 @@ const NewApplicants = (props) => {
   const getUserData = (userId) => {
     axios.get(`${BACKEND_URL}/jobseeker/${userId}`).then((res) => {
       if (res.data.success) {
-        return res.data.jobseeker.slice(0,3);
+        return res.data.jobseeker.slice(0, 3);
       }
 
       return "hi";
@@ -84,49 +77,50 @@ const NewApplicants = (props) => {
     });
   }, []);
 
-
+  const loadProfilePic = () => {
+    try {
+      return require(`../../../../employee/images/`).default
+    } catch (err) {
+      return require(`../../../../employee/images/profilePic.jpg`).default
+    }
+  }
   return (
     <div className={classes.root}>
       <FloatCard>
-        <Typography variant="h6" className={classes.title}>
-          New Applicants
-        </Typography>
-        <PeopleAltIcon className={classes.peopleIcon} />
-
-        {Array.from(allJobs).map((job, i) => (
-          <Grid
-            container
-            direction="row"
-            xs={12}
-            className={classes.applicantContainer}
-          >
-            <Grid item xs={3} alignContent="right" style={{marginTop:-5}}>
-              <Avatar
-                alt={job.name}
-                src={ApplicantImage}
-                className={classes.avatar}
-              />
-            </Grid>
-            <Grid item direction="column" container xs={9} style={{marginTop:-5}}>
-              <Grid item>
-                <Typography variant="body2" className={classes.applicantName}>
-                  <Box fontWeight={500} fontSize={12} m={1}>
-                    {job.name}
-                  </Box>
-                </Typography>
-              </Grid>
-
-              <Grid item>
-                <Typography variant="body2" className={classes.applicantBody}>
-                  <Box fontWeight={400} fontSize={10} m={1}>
-                    Applied for {job.job}
-                  </Box>
-                </Typography>
-              </Grid>
-            </Grid>
+        <Grid
+          container
+          spacing={2}
+          direction="row"
+          justifyContent="flex-start"
+          alignItems="stretch" style={{padding: 8}}>
+          <Grid item xs={12}>
+            <Typography variant="h6" className={classes.title}>
+              New Applicants
+            </Typography>
           </Grid>
-        ))}
+          {Array.from(allJobs).map((job, i) => (
+            <Grid item xs={12}>
+              <FloatCard backColor={theme.palette.lightSkyBlueHover}>
+                <Grid item container direction="row"
+                  justifyContent="space-between"
+                  alignItems="center">
+                  <Grid item xs={3} lg={2}>
+                    <Avatar className={classes.avatar} src={loadProfilePic()} variant="square" />
+                  </Grid>
+                  <Grid item xs={9} lg={10}>
+                    <Typography variant="body2" className={classes.applicantName}>
+                      {job.name}
+                    </Typography>
+                    <Typography variant="body2" className={classes.applicantBody}>
+                      Applied for <strong>{job.job}</strong>
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </FloatCard>
+            </Grid>
 
+          ))}
+        </Grid>
         <Link to={`/employer/resumes`}>
           <Button className={classes.button}>View All</Button>
         </Link>

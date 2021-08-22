@@ -2,7 +2,7 @@ import React from "react";
 // import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { makeStyles, Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
-import FloatCard from "../../FloatCard";
+import FloatCard from "../../../../components/FloatCard";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import PieChart, {
   Legend,
@@ -15,6 +15,8 @@ import PieChart, {
 import { useState, useEffect } from "react";
 import axios from "axios";
 import BACKEND_URL from "../../../../Config";
+import { Pie } from "react-chartjs-2";
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -120,25 +122,41 @@ const Aquisitions = (props) => {
     {
       category: "Pending",
       val: getTotalPending(),
+      color: "#ffce63"
     },
     {
       category: "Reviewing",
       val: getTotalReviewing(),
+      color: "#eb78ff"
     },
     {
       category: "Shortlisted",
       val: getTotalShortlisted(),
+      color: "#52ff52"
     },
     {
       category: "Rejected",
       val: getTotalRejected(),
+      color: "#f52560"
     },
   ];
 
+  const genPieData = () => {
+    return {
+      datasets: [
+        {
+          data: dataSource.filter(y => y.val !== 0).map(x => x.val),
+          backgroundColor: dataSource.filter(y => y.val !== 0).map(x => x.color),
+          label: "Categories",
+        },
+      ],
+      labels: dataSource.filter(y => y.val !== 0).map(x => x.category),
+    };
+  };
+
   return (
-    <div className={classes.root}>
-      <FloatCard>
-        <Grid container direction="row" xs={12}>
+    <FloatCard>
+      {/* <Grid container direction="row" xs={12}>
           <Grid item>
             <Typography variant="h6" className={classes.title}>
               Aquisitions
@@ -154,6 +172,7 @@ const Aquisitions = (props) => {
                 dataSource={dataSource}
                 className={classes.pieChart}
               >
+
                 <Legend
                   orientation="horizontal"
                   itemTextPosition="right"
@@ -161,7 +180,6 @@ const Aquisitions = (props) => {
                   verticalAlignment="bottom"
                   columnCount={4}
                 />
-                {/* <Export enabled={true} /> */}
 
                 <Series argumentField="category" valueField="val">
                   <Label
@@ -176,9 +194,27 @@ const Aquisitions = (props) => {
               </PieChart>
             </Grid>
           </Grid>
-        </Grid>
-      </FloatCard>
-    </div>
+        </Grid> */}
+
+      <Typography>Aquisitions</Typography>
+      <Pie data={genPieData()} options={{
+        plugins: {
+          datalabels: {
+            display: true,
+            anchor: 'center',
+            clam: true,
+            formatter: (val, ctx) => {
+              return val + " - " + ctx.chart.data.labels[ctx.dataIndex];
+            },
+            font: {
+              weight: 'bold',
+            },
+            color: 'white'
+
+          }
+        },
+      }} plugins={[ChartDataLabels]} />
+    </FloatCard>
   );
 };
 
