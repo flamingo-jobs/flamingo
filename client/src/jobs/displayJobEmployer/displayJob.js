@@ -64,6 +64,8 @@ const DisplayJob = () => {
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
 
+  const [errors, setErrors] = useState({ tasks: [], requirements:[] });
+
   useEffect(() => {
     retrieveJob();
     retrieveCategories();
@@ -94,6 +96,16 @@ const DisplayJob = () => {
     }
     setAlertShow(false);
   };
+
+  const createErrorArray = () => {
+    const newErrors = {...errors};
+    if(job !== "empty"){
+      job.qualifications.map(q => {
+        newErrors.requirements = [...newErrors.requirements, ""];
+      });
+      setErrors(newErrors);
+    }
+  }
 
   const retrieveJob = async () => {
     try {
@@ -173,6 +185,8 @@ const DisplayJob = () => {
           locations={employer.locations}
           setAlertData={setAlertData}
           handleAlert={handleAlert}
+          errors={errors}
+          setErrors={setErrors}
         ></JobSummary>
       );
     }
@@ -193,6 +207,8 @@ const DisplayJob = () => {
           setJob={setJob}
           setAlertData={setAlertData}
           handleAlert={handleAlert}
+          errors={errors}
+          setErrors={setErrors}
         ></Qualifications>
       );
     }

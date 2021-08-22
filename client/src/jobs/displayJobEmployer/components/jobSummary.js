@@ -200,16 +200,44 @@ function JobSummary(props) {
     setOpenDeleteModal(false);
   };
 
-  const handleSummaryChange = (event) => {
+  const handleSummaryChange = (e) => {
     const newJob = { ...props.job };
-    if (event.target.name === "min" || event.target.name === "max") {
-      newJob.salaryRange[event.target.name] = event.target.value;
-    } else if (event.target.name === "isPublished") {
-      newJob[event.target.name] = event.target.checked;
-    } else {
-      // console.log("changed value", event.target.value);
-      newJob[event.target.name] = event.target.value;
+    const newErrors = {...props.errors};
+
+    if (e.target.name === "min" || e.target.name === "max") {
+      const regex = new RegExp('^[0-9]+$');
+      const name = e.target.name;
+      const value = e.target.value;
+
+      if(value.trim() === ""){
+        newErrors[name] = "Salary cannot be empty.";
+      } else {
+        if(regex.test(value.trim().replace(/\s/g, ''))){
+          delete newErrors[name];
+        } else {
+          newErrors[name] = "Salary can only contain numbers.";
+        }
+      }
+      newJob.salaryRange[e.target.name] = value;
+    } 
+    else if (e.target.name === "isPublished") {
+      newJob[e.target.name] = e.target.checked;
+    } 
+    else if(e.target.name === "title" || e.target.name === "description"){
+      const name = e.target.name;
+      const value = e.target.value;
+
+      if(value.trim() === ""){
+        newErrors[name] = `${name.charAt(0).toUpperCase() + name.slice(1)} cannot be empty.`;
+      } else{
+        delete newErrors[name];
+      }
+      newJob[e.target.name] = value;
+    } 
+    else {
+      newJob[e.target.name] = e.target.value;
     }
+    props.setErrors(newErrors);
     props.setJob(newJob);
   };
 
@@ -221,23 +249,29 @@ function JobSummary(props) {
 
   const handleSummarySubmit = async (e) => {
     e.preventDefault();
+
+    if(props.errors.hasOwnProperty("title") || 
+      props.errors.hasOwnProperty("description") ||
+      props.errors.hasOwnProperty("min") ||
+      props.errors.hasOwnProperty("max")){
+      return;
+    }
     const updateFields = {
-      title: props.job.title,
+      title: props.job.title.trim(),
       category: props.job.category,
       type: props.job.type,
-      description: props.job.description,
+      description: props.job.description.trim(),
       location: props.job.location,
       dueDate: props.job.dueDate,
       salaryRange: {
-        min: props.job.salaryRange.min,
-        max: props.job.salaryRange.max,
+        min: props.job.salaryRange.min.trim(),
+        max: props.job.salaryRange.max.trim(),
       },
       isPublished: props.job.isPublished,
       minimumEducation: props.job.minimumEducation,
       minimumExperience: props.job.minimumExperience,
     };
 
-    // console.log(updateFields);
     try {
       const response = await axios.put(
         `${BACKEND_URL}/jobs/update/${props.jobId}`,
@@ -245,14 +279,13 @@ function JobSummary(props) {
       );
 
       if(response.data.success){
-        await axios.get(`${BACKEND_URL}/jobs/generateRecommendations/${props.jobId}`);
-
         handleClose();
         props.setAlertData({
           severity: "success",
           msg: "Changes saved successfully!",
         });
         props.handleAlert();
+        await axios.get(`${BACKEND_URL}/jobs/generateRecommendations/${props.jobId}`);
       }
       // console.log(response);
     } catch (err) {
@@ -315,6 +348,7 @@ function JobSummary(props) {
         handleDueDateChange={handleDueDateChange}
         minEducationList={minEducationList}
         minExperienceList={minExperienceList}
+        errors={props.errors}
       ></JobSummaryModal>
 
       <FloatCard>

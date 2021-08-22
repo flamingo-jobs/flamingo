@@ -63,12 +63,12 @@ const Qualifications = (props) => {
     setOpen(false);
   };
 
-  const handleQualificationsChange = (event, index) => {
+  const handleQualificationsChange = (e, index) => {
     const newJob = { ...props.job };
 
     const newQualifications = newJob.qualifications.map((qualification, i) => {
       if (index === i) {
-        qualification = event.target.value;
+        qualification = e.target.value;
       }
       return qualification;
     });
@@ -87,7 +87,7 @@ const Qualifications = (props) => {
 
   const handleQualificationAdd = () => {
     const newJob = { ...props.job };
-    newJob.qualifications = [...newJob.qualifications, [""]];
+    newJob.qualifications = [...newJob.qualifications, ""];
     props.setJob(newJob);
   };
 

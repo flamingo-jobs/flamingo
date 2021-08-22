@@ -175,7 +175,6 @@ const JobSummaryModal = (props) => {
                   <Grid container xs={12}>
                     <Grid item xs={12}>
                       <StateBlueTextField
-                        required
                         id="title"
                         name="title"
                         label="Title"
@@ -185,6 +184,8 @@ const JobSummaryModal = (props) => {
                         value={props.job.title}
                         className={classes.textField}
                         onChange={props.handleSummaryChange}
+                        error={props.errors.hasOwnProperty("title")}
+                        helperText={props.errors["title"]}
                       />
                     </Grid>
 
@@ -234,7 +235,6 @@ const JobSummaryModal = (props) => {
 
                     {/* Description */}
                     <StateBlueTextField
-                      required
                       id="description"
                       name="description"
                       label="Description of the job"
@@ -244,6 +244,8 @@ const JobSummaryModal = (props) => {
                       className={classes.textField}
                       value={props.job.description}
                       onChange={props.handleSummaryChange}
+                      error={props.errors.hasOwnProperty("description")}
+                      helperText={props.errors["description"]}
                     />
 
                     {/* Location & Due date */}
@@ -349,6 +351,8 @@ const JobSummaryModal = (props) => {
                           fullWidth
                           size="small"
                           value={props.job.salaryRange.min}
+                          error={props.errors.hasOwnProperty("min")}
+                          helperText={props.errors["min"]}
                         ></StateBlueTextField>
                       </Grid>
 
@@ -362,6 +366,8 @@ const JobSummaryModal = (props) => {
                           fullWidth
                           size="small"
                           value={props.job.salaryRange.max}
+                          error={props.errors.hasOwnProperty("max")}
+                          helperText={props.errors["max"]}
                         ></StateBlueTextField>
                       </Grid>
                     </Grid>
