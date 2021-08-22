@@ -17,6 +17,7 @@ import Keywords from "./components/keywords";
 import TechStack from "./components/techStack";
 import BACKEND_URL from "../../Config";
 import SnackBarAlert from "../../components/SnackBarAlert";
+import { validate } from "@material-ui/pickers";
 const jwt = require("jsonwebtoken");
 
 const useStyles = makeStyles((theme) => ({
@@ -94,11 +95,15 @@ export default function CreateJobSetup() {
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
 
-  const handleNext = () => {
+  const handleNext = (index) => {
     if (activeStep === steps.length - 1) {
       handleSubmit();
     } else {
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      var validation = validateStep(index);
+      
+      if(validation){
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      }
     }
   };
 
@@ -110,7 +115,60 @@ export default function CreateJobSetup() {
     setActiveStep(0);
   };
 
+  const validateStep = (index) => {
+    const newErrors = {...errors};
 
+    if(index === 0){
+      if(title === ""){
+        newErrors["title"] = `Title cannot be empty.`;
+        setErrors(newErrors);
+        return false;
+      } else if(description === ""){
+        newErrors["description"] = `Description cannot be empty.`;
+        setErrors(newErrors);
+        return false;
+      } else if(minSalary === ""){
+        newErrors["minSalary"] = `Minimum salary cannot be empty.`;
+        setErrors(newErrors);
+        return false;
+      } else if(errors.hasOwnProperty("minSalary")){
+        return false;
+      } else if(maxSalary === ""){
+        newErrors["maxSalary"] = `Maximum salary cannot be empty.`;
+        setErrors(newErrors);
+        return false;
+      } else if(errors.hasOwnProperty("maxSalary")){
+        return false;
+      }
+    } else if(index === 1){
+      var emptyFieldFound = false;
+      tasksFields.map((task, index) => {
+        console.log("out", index, task.length, task)
+        if(task === ""){
+          console.log("in", index)
+          emptyFieldFound = true;
+          newErrors.tasks[index] = `This field cannot be empty.`;
+        }
+      });
+      setErrors(newErrors);
+      if(emptyFieldFound){
+        return false;
+      }
+    } else if(index === 2){
+      var emptyFieldFound = false;
+      qualificationsFields.map((q, index) => {
+        if(q === ""){
+          emptyFieldFound = true;
+          newErrors.requirements[index] = `This field cannot be empty.`;
+        }
+      });
+      setErrors(newErrors);
+      if(emptyFieldFound){
+        return false;
+      }
+    }
+    return true;
+  };
 
   const keywords = [
     { name: "Devops" },
@@ -160,11 +218,11 @@ export default function CreateJobSetup() {
   });
   const [location, setLocation] = useState("");
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [dueDate, setDueDate] = useState(null);
+  const [dueDate, setDueDate] = useState(new Date());
   const [minEducation, setMinEducation] = useState(minEducationList[0]);
   const [minExperience, setMinExperience] = useState(minExperienceList[0]);
-  const [minSalary, setMinSalary] = useState(0);
-  const [maxSalary, setMaxSalary] = useState(0);
+  const [minSalary, setMinSalary] = useState("");
+  const [maxSalary, setMaxSalary] = useState("");
   const [tasksFields, setTasksFields] = useState([""]);
   const [qualificationsFields, setQualificationsFields] = useState([""]);
   const [techStackState, setTechStack] = useState([]);
@@ -175,6 +233,8 @@ export default function CreateJobSetup() {
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
 
+  const [errors, setErrors] = useState({ tasks: [""], requirements:[""] });
+
   useEffect(() => {
     retrieveCategories();
     retrieveJobTypes();
@@ -183,17 +243,29 @@ export default function CreateJobSetup() {
   }, []);
 
   // Job basic details
-  const handleTitleChange = (event) => {
-    setTitle(event.target.value);
+  const handleTextFieldChange = (e) => {
+    const newErrors = {...errors};
+    // const regex = new RegExp('^[a-zA-Z0-9\)\(\\ ]+$');
+    const name = e.target.name;
+    const value = e.target.value.trim();
+
+    if(value === ""){
+      newErrors[name] = `${name.charAt(0).toUpperCase() + name.slice(1)} cannot be empty.`;
+    } else{
+      delete newErrors[name];
+    }
+    setErrors(newErrors);
+    if(name === "title"){
+      setTitle(value);
+    } else if(name === "description"){
+      setDescription(value);
+    }
   };
   const handleCategoryChange = (event) => {
     setCategory(event.target.value);
   };
   const handleJobTypeChange = (event) => {
     setJobType(event.target.value);
-  };
-  const handleDescriptionChange = (event) => {
-    setDescription(event.target.value);
   };
   const handleLocationChange = (event) => {
     setLocation(event.target.value);
@@ -202,12 +274,31 @@ export default function CreateJobSetup() {
     // setDueDate(getFormattedDate(date));
     setDueDate(date);
   };
-  const handleMinSalaryChange = (event) => {
-    setMinSalary(parseFloat(event.target.value, 10));
+
+  const handleSalaryChange = (e) => {
+    const newErrors = {...errors};
+    const regex = new RegExp('^[0-9]+$');
+    const name = e.target.name;
+    const value = e.target.value.trim().replace(/\s/g, '');
+
+    if(value === ""){
+      newErrors[name] = "Salary cannot be empty.";
+    } else {
+      if(regex.test(value)){
+        delete newErrors[name];
+      } else {
+        newErrors[name] = "Salary can only contain numbers.";
+      }
+    }
+    setErrors(newErrors);
+    if(name === "minSalary"){
+      setMinSalary(value);
+    } else if(name === "maxSalary"){
+      setMaxSalary(value);
+    }
+    
   };
-  const handleMaxSalaryChange = (event) => {
-    setMaxSalary(parseFloat(event.target.value, 10));
-  };
+
   const handleMinEducationChange = (event) => {
     setMinEducation(event.target.value);
   };
@@ -216,10 +307,20 @@ export default function CreateJobSetup() {
   };
 
   // ***** Tasks & Responsibilites *****
-  const handleTaskChange = (event, index) => {
+  const handleTaskChange = (e, index) => {
+    const newErrors = {...errors};
+    const value = e.target.value.trim();
+
+    if(value === ""){
+      newErrors.tasks[index] = "This field cannot be empty.";
+    } else {
+      newErrors.tasks[index] = "";
+    }
+    setErrors(newErrors);
+
     const newTasksFields = tasksFields.map((taskField, i) => {
       if (index === i) {
-        taskField = event.target.value;
+        taskField = value;
       }
       return taskField;
     });
@@ -234,18 +335,39 @@ export default function CreateJobSetup() {
       1
     );
     setTasksFields(newTasksFields);
+
+    var newErrors = {...errors};
+    newErrors.tasks.splice(
+      newErrors.tasks.findIndex((taskErr, i) => index === i),
+      1
+    );
+    setErrors(newErrors);
   };
 
   const handleTaskAdd = () => {
-    setTasksFields([...tasksFields, [""]]);
+    setTasksFields([...tasksFields, ""]);
+    // Add element to errors task array
+    var newErrors = {...errors};
+    newErrors.tasks = [...newErrors.tasks, ""];
+    setErrors(newErrors);
   };
 
   // ***** Qualifications *****
-  const handleQualificationChange = (event, index) => {
+  const handleQualificationChange = (e, index) => {
+    const newErrors = {...errors};
+    const value = e.target.value.trim();
+
+    if(value === ""){
+      newErrors.requirements[index] = "This field cannot be empty.";
+    } else {
+      newErrors.requirements[index] = "";
+    }
+    setErrors(newErrors);
+
     const newQualificationsFields = qualificationsFields.map(
       (qualificationField, i) => {
         if (index === i) {
-          qualificationField = event.target.value;
+          qualificationField = value;
         }
         return qualificationField;
       }
@@ -261,10 +383,20 @@ export default function CreateJobSetup() {
       1
     );
     setQualificationsFields(newQualificationsFields);
+
+    var newErrors = {...errors};
+    newErrors.requirements.splice(
+      newErrors.requirements.findIndex((requirementsErr, i) => index === i),
+      1
+    );
+    setErrors(newErrors);
   };
 
   const handleQualificationAdd = () => {
-    setQualificationsFields([...qualificationsFields, [""]]);
+    setQualificationsFields([...qualificationsFields, ""]);
+    var newErrors = {...errors};
+    newErrors.requirements = [...newErrors.requirements, ""];
+    setErrors(newErrors);
   };
 
   // Technology Stack
@@ -350,6 +482,7 @@ export default function CreateJobSetup() {
       handleAlert();
       // console.log(err);
     }
+    
   };
 
   const displaySummary = () => {
@@ -358,10 +491,12 @@ export default function CreateJobSetup() {
     } else {
       return (
         <SummaryForm
+          title={title}
           location={location}
           empLocations={employer.locations}
           types={types}
           jobType={jobType}
+          description={description}
           category={category}
           categories={categories}
           dueDate={dueDate}
@@ -369,16 +504,17 @@ export default function CreateJobSetup() {
           minExperience={minExperience}
           minEducationList={minEducationList}
           minExperienceList={minExperienceList}
-          handleTitleChange={handleTitleChange}
+          minSalary={minSalary}
+          maxSalary={maxSalary}
+          handleTextFieldChange={handleTextFieldChange}
           handleCategoryChange={handleCategoryChange}
           handleJobTypeChange={handleJobTypeChange}
-          handleDescriptionChange={handleDescriptionChange}
           handleLocationChange={handleLocationChange}
           handleDateChange={handleDateChange}
-          handleMinSalaryChange={handleMinSalaryChange}
-          handleMaxSalaryChange={handleMaxSalaryChange}
+          handleSalaryChange={handleSalaryChange}
           handleMinEducationChange={handleMinEducationChange}
           handleMinExperienceChange={handleMinExperienceChange}
+          errors={errors}
         ></SummaryForm>
       );
     }
@@ -389,6 +525,7 @@ export default function CreateJobSetup() {
     } else {
       return (
         <TechStack
+          techStackState={techStackState}
           technologies={technologies}
           handleTechStack={handleTechStack}
         ></TechStack>
@@ -402,6 +539,7 @@ export default function CreateJobSetup() {
     } else {
       return (
         <Keywords
+          keywordsState={keywordsState}
           keywords={keywords}
           handleKeywordsChange={handleKeywordsChange}
         ></Keywords>
@@ -436,6 +574,7 @@ export default function CreateJobSetup() {
       const response = await axios.get(`${BACKEND_URL}/employers/${empId}`);
       if (response.data.success) {
         setEmployer(response.data.employer);
+        setLocation(response.data.employer.locations[0]);
         setOrganization({
           id: response.data.employer._id,
           name: response.data.employer.name,
@@ -467,13 +606,17 @@ export default function CreateJobSetup() {
           tasksFields={tasksFields}
           handleTaskChange={handleTaskChange}
           handleTaskRemove={handleTaskRemove}
-          handleTaskAdd={handleTaskAdd} />;
+          handleTaskAdd={handleTaskAdd} 
+          errors={errors}
+          />;
       case 2:
         return <QualificationsForm
           qualificationsFields={qualificationsFields}
           handleQualificationChange={handleQualificationChange}
           handleQualificationRemove={handleQualificationRemove}
-          handleQualificationAdd={handleQualificationAdd} />;
+          handleQualificationAdd={handleQualificationAdd} 
+          errors={errors}
+          />;
       case 3:
         return displayTechStack();
       case 4:
@@ -482,6 +625,8 @@ export default function CreateJobSetup() {
         return "Unknown step";
     }
   };
+
+  
 
   return (
     <>
@@ -544,7 +689,7 @@ export default function CreateJobSetup() {
                             <Button
                               variant="contained"
                               color="primary"
-                              onClick={handleNext}
+                              onClick={() => handleNext(index)}
                               className={classes.next}
                             >
                               {activeStep === steps.length - 1

@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TechStack = ({ technologies, handleTechStack }) => {
+const TechStack = ({ techStackState, technologies, handleTechStack }) => {
   const classes = useStyles();
 
   const options = technologies
@@ -51,7 +51,7 @@ const TechStack = ({ technologies, handleTechStack }) => {
               multiple
               id="techStack"
               options={options}
-              defaultValue={undefined}
+              defaultValue={techStackState}
               freeSolo
               onChange={(event, values) => handleTechStack(values)}
               renderTags={(value, getTagProps) =>

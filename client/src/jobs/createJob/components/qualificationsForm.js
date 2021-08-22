@@ -39,6 +39,7 @@ const QualificationForm = ({
   handleQualificationChange,
   handleQualificationRemove,
   handleQualificationAdd,
+  errors,
 }) => {
   const classes = useStyles();
 
@@ -61,6 +62,8 @@ const QualificationForm = ({
                       onChange={(event) =>
                         handleQualificationChange(event, index)
                       }
+                      error={errors.requirements[index].length !== 0}
+                      helperText={errors.requirements[index].length !== 0 && errors.requirements[index]}
                     />
                   </Grid>
                   <Grid item xs={2}>

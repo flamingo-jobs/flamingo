@@ -71,9 +71,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SummaryForm = ({
+  title,
   location,
   empLocations,
   jobType,
+  description,
   types,
   category,
   categories,
@@ -82,19 +84,19 @@ const SummaryForm = ({
   minExperience,
   minEducationList,
   minExperienceList,
-  handleTitleChange,
+  minSalary,
+  maxSalary,
+  handleTextFieldChange,
   handleCategoryChange,
   handleJobTypeChange,
-  handleDescriptionChange,
   handleLocationChange,
   handleDateChange,
-  handleMinSalaryChange,
-  handleMaxSalaryChange,
+  handleSalaryChange,
   handleMinEducationChange,
   handleMinExperienceChange,
+  errors
 }) => {
   const classes = useStyles();
-
   // style={{border: "1px solid red"}}
   return (
     <Grid item xs={12} className={classes.card}>
@@ -105,12 +107,16 @@ const SummaryForm = ({
             <StateBlueTextField
               required
               id="title"
+              name="title"
               label="Title"
               variant="outlined"
               size="small"
               fullWidth
+              value={title}
               className={classes.textField}
-              onChange={handleTitleChange}
+              onChange={handleTextFieldChange}
+              error={errors.hasOwnProperty("title")}
+              helperText={errors["title"]}
             />
           </Grid>
           {/* Category    */}
@@ -158,13 +164,17 @@ const SummaryForm = ({
             <StateBlueTextField
               required
               id="description"
+              name="description"
               label="Descriptionof the job opportunity"
               variant="outlined"
               fullWidth
               size="small"
               multiline
+              value={description}
               className={classes.textField}
-              onChange={handleDescriptionChange}
+              onChange={handleTextFieldChange}
+              error={errors.hasOwnProperty("description")}
+              helperText={errors["description"]}
             />
           </Grid>
 
@@ -252,23 +262,31 @@ const SummaryForm = ({
           <Grid item xs={6}>
             <StateBlueTextField
               id="minSalary"
+              name="minSalary"
               label="Minimum Salary"
-              onChange={handleMinSalaryChange}
+              onChange={handleSalaryChange}
               variant="outlined"
               placeholder=""
               fullWidth
               size="small"
+              value={minSalary}
+              error={errors.hasOwnProperty("minSalary")}
+              helperText={errors["minSalary"]}
             ></StateBlueTextField>
           </Grid>
 
           <Grid item xs={6}>
             <StateBlueTextField
               id="maxSalary"
+              name="maxSalary"
               label="Maximum Salary"
-              onChange={handleMaxSalaryChange}
+              onChange={handleSalaryChange}
               variant="outlined"
               fullWidth
               size="small"
+              value={maxSalary}
+              error={errors.hasOwnProperty("maxSalary")}
+              helperText={errors["maxSalary"]}
             ></StateBlueTextField>
           </Grid>
         </Grid>

@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Keywords = ({ keywords, handleKeywordsChange }) => {
+const Keywords = ({ keywordsState, keywords, handleKeywordsChange }) => {
   const classes = useStyles();
 
   return (
@@ -57,7 +57,7 @@ const Keywords = ({ keywords, handleKeywordsChange }) => {
             multiple
             id="keywords"
             options={keywords.map((keyword) => keyword.name)}
-            defaultValue={undefined}
+            defaultValue={keywordsState}
             freeSolo
             onChange={(event, values) => handleKeywordsChange(values)}
             renderTags={(value, getTagProps) =>
