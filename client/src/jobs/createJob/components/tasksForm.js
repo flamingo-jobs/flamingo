@@ -39,6 +39,7 @@ const TasksForm = ({
   handleTaskChange,
   handleTaskRemove,
   handleTaskAdd,
+  errors,
 }) => {
   const classes = useStyles();
   return (
@@ -58,6 +59,8 @@ const TasksForm = ({
                       multiline
                       size="small"
                       onChange={(event) => handleTaskChange(event, index)}
+                      error={errors.tasks[index].length !== 0}
+                      helperText={errors.tasks[index].length !== 0 && errors.tasks[index]}
                     />
                   </Grid>
                   <Grid item xs={2}>
