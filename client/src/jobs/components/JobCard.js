@@ -130,7 +130,7 @@ function JobCard(props) {
     useEffect(() => {
         if(!role){
             setIsSaved(false);
-        } else{
+        } else if(role && role === "jobseeker"){
             setIsSaved(props.savedJobIds?.includes(props.info._id));
         }
     }, [props.favoriteOrgs, props.info]);

@@ -119,21 +119,21 @@ export default function CreateJobSetup() {
     const newErrors = {...errors};
 
     if(index === 0){
-      if(title === ""){
+      if(title.trim() === ""){
         newErrors["title"] = `Title cannot be empty.`;
         setErrors(newErrors);
         return false;
-      } else if(description === ""){
+      } else if(description.trim() === ""){
         newErrors["description"] = `Description cannot be empty.`;
         setErrors(newErrors);
         return false;
-      } else if(minSalary === ""){
+      } else if(minSalary.trim() === ""){
         newErrors["minSalary"] = `Minimum salary cannot be empty.`;
         setErrors(newErrors);
         return false;
       } else if(errors.hasOwnProperty("minSalary")){
         return false;
-      } else if(maxSalary === ""){
+      } else if(maxSalary.trim() === ""){
         newErrors["maxSalary"] = `Maximum salary cannot be empty.`;
         setErrors(newErrors);
         return false;
@@ -247,9 +247,9 @@ export default function CreateJobSetup() {
     const newErrors = {...errors};
     // const regex = new RegExp('^[a-zA-Z0-9\)\(\\ ]+$');
     const name = e.target.name;
-    const value = e.target.value.trim();
+    const value = e.target.value;
 
-    if(value === ""){
+    if(value.trim() === ""){
       newErrors[name] = `${name.charAt(0).toUpperCase() + name.slice(1)} cannot be empty.`;
     } else{
       delete newErrors[name];
@@ -279,12 +279,12 @@ export default function CreateJobSetup() {
     const newErrors = {...errors};
     const regex = new RegExp('^[0-9]+$');
     const name = e.target.name;
-    const value = e.target.value.trim().replace(/\s/g, '');
+    const value = e.target.value;
 
     if(value === ""){
       newErrors[name] = "Salary cannot be empty.";
     } else {
-      if(regex.test(value)){
+      if(regex.test(value.trim().replace(/\s/g, ''))){
         delete newErrors[name];
       } else {
         newErrors[name] = "Salary can only contain numbers.";
@@ -309,9 +309,9 @@ export default function CreateJobSetup() {
   // ***** Tasks & Responsibilites *****
   const handleTaskChange = (e, index) => {
     const newErrors = {...errors};
-    const value = e.target.value.trim();
+    const value = e.target.value;
 
-    if(value === ""){
+    if(value.trim() === ""){
       newErrors.tasks[index] = "This field cannot be empty.";
     } else {
       newErrors.tasks[index] = "";
@@ -355,9 +355,9 @@ export default function CreateJobSetup() {
   // ***** Qualifications *****
   const handleQualificationChange = (e, index) => {
     const newErrors = {...errors};
-    const value = e.target.value.trim();
+    const value = e.target.value;
 
-    if(value === ""){
+    if(value.trim() === ""){
       newErrors.requirements[index] = "This field cannot be empty.";
     } else {
       newErrors.requirements[index] = "";
