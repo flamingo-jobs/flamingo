@@ -14,6 +14,8 @@ import MoreFromJobs from "./components/MoreFromJobs";
 import RelatedJobs from "./components/RelatedJobs";
 import CompanySummary from "./components/companySummary";
 import Loading from "../components/Loading";
+import TechStack from "./components/techStack";
+import AdditionalSkills from "./components/additionalSkills";
 
 const useStyles = makeStyles((theme) => ({
   border: {
@@ -169,6 +171,37 @@ function JobDescription(props) {
     }
   };
 
+  const displayTechStack = () => {
+    if (job !== "empty") {
+
+      return (
+        <Grid
+          item
+          xs={12}
+          lg={12}
+          className={isSignedIn === false ? "" : classes.container}
+        >
+          <TechStack techStack={job.technologyStack}></TechStack>
+        </Grid>
+      );
+    }
+  };
+
+  const displayAdditionalSkills = () => {
+    if (job !== "empty" && job.additionalSkills.length > 0) {
+      return (
+        <Grid
+          item
+          xs={12}
+          lg={12}
+          className={isSignedIn === false ? "" : classes.container}
+        >
+          <AdditionalSkills skills={job.additionalSkills}></AdditionalSkills>
+        </Grid>
+      );
+    }
+  };
+
   const displayApplyForm = () => {
     if(props.userRole !== "employer" && props.userRole !== "admin"){
       if (isSignedIn === true && userId !== "empty" && !isApplied) {
@@ -265,6 +298,12 @@ function JobDescription(props) {
               </Grid>
               <Grid item xs={12}>
                 {displayRequirements()}
+              </Grid>
+              <Grid item xs={12}>
+                {displayTechStack()}
+              </Grid>
+              <Grid item xs={12}>
+                {displayAdditionalSkills()}
               </Grid>
             </FloatCard>
             <Grid item xs={12}>

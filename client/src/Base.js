@@ -214,7 +214,7 @@ function Base() {
           <Route path="/employer/jobs/create">
             <CreateJobSetup />
           </Route>
-          <Route path="/employer/jobs/update">
+          <Route path="/employer/jobs/update/:jobId">
             <DisplayJob />
           </Route>
           <Route exact path="/employer/jobs">
