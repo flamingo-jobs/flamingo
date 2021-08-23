@@ -151,7 +151,7 @@ function EmployerJobCard(props) {
                         </div>
                         <div className={classes.footer} >
                             <div className={classes.footerRight} >
-                                <Link to={`/jobDescription/${props.info._id}`}><Button className={classes.applyButton}>View Job</Button></Link>
+                                <Link to={`/employer/jobs/update/${props.info._id}`}><Button className={classes.applyButton}>View Job</Button></Link>
                                 {props.info.applicationDetails.length ? <Link to={`/jobDescription/${props.info._id}`}><Button className={classes.applicantButton}>View Applicants</Button></Link> : null}
                             </div>
                         </div>
