@@ -76,7 +76,7 @@ const EmployerJobList = () => {
 
   const history = useHistory();
   const handleClick = () => history.push("../jobs/createJob/createJobSetup");
-
+  const categoryColumns = [{ field: 'name', headerName: 'Name', flex: 1, editable: true }];
   return (
     <Grid
       container
@@ -101,7 +101,7 @@ const EmployerJobList = () => {
             </Link>
           </Grid>
           <Grid item container xs={12} spacing={3} className={classes.Table}>
-            <JobTable singleJobAccess={singleJobAccess}/>
+            <JobTable singleJobAccess={singleJobAccess} columns={categoryColumns} type="categories"/>
           </Grid>
 
           <Grid item xs={12} spacing={3}></Grid>

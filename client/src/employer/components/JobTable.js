@@ -1,206 +1,381 @@
-import React from "react";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import Chip from "@material-ui/core/Chip";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import CancelIcon from "@material-ui/icons/Cancel";
-import Button from "@material-ui/core/Button";
-import NavigateNextIcon from "@material-ui/icons/NavigateNext";
-import LocalOfferRoundedIcon from "@material-ui/icons/LocalOfferRounded";
-import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
-import axios from "axios";
-import BACKEND_URL from "../../Config";
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-const jwt = require("jsonwebtoken");
-
-const StyledTableCell = withStyles((theme) => ({
-  head: {
-    backgroundColor: theme.palette.tuftsBlue,
-    color: theme.palette.common.white,
-  },
-  body: {
-    fontSize: 14,
-  },
-}))(TableCell);
-
-const StyledTableRow = withStyles((theme) => ({
-  root: {
-    "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.whiteHover,
-    },
-  },
-}))(TableRow);
+import React, { useState, useEffect, createRef } from 'react'
+import { DataGrid, GridToolbar } from '@material-ui/data-grid';
+import { Grid, Button, IconButton, makeStyles } from '@material-ui/core';
+import BACKEND_URL from '../../Config';
+import axios from 'axios';
+import NoRowGridOverlay from '../../admin/components/NoRowGridOverlay';
+import CustomLoadingOverlay from '../../admin/components/CustomLoadingOverlay';
+import AddIcon from '@material-ui/icons/Add';
+import RefreshRoundedIcon from '@material-ui/icons/RefreshRounded';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
+import SaveRoundedIcon from '@material-ui/icons/SaveRounded';
+import SnackBarAlert from '../../components/SnackBarAlert';
+import FloatCard from '../../components/FloatCard';
 
 const useStyles = makeStyles((theme) => ({
-  activeChip: {
-    backgroundColor: theme.palette.green,
-    color: theme.palette.black,
-  },
-  inactiveChip: {
-    backgroundColor: theme.palette.lightRed,
-    color: theme.palette.black,
-  },
-  button: {
-    backgroundColor: theme.palette.blueJeans,
-    color: "white",
-    margin: 10,
-    borderRadius: 25,
-    paddingLeft: 10,
-    paddingRight: 10,
-    "&:hover": {
-      backgroundColor: theme.palette.blueJeansHover,
-      color: "white",
+    table: {
+        '& .MuiDataGrid-columnHeader:focus, .MuiDataGrid-cell:focus, .MuiDataGrid-columnHeader:focus-within, .MuiDataGrid-cell:focus-within': {
+            outline: 'none'
+        },
     },
-  },
-  category: {
-    alignSelf: "left",
-    backgroundColor: theme.palette.tagYellow,
-  },
-  location: {
-    backgroundColor: theme.palette.tagYellow,
-  },
-}));
+    addBtn: {
+        backgroundColor: 'transparent',
+        color: theme.palette.tuftsBlue,
+        borderRadius: 6,
+        marginRight: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
+        marginBottom: 10,
+        "&:hover": {
+            backgroundColor: theme.palette.lightSkyBlue,
+        }
+    },
+    delBtn: {
+        backgroundColor: 'transparent',
+        color: theme.palette.red,
+        borderRadius: 6,
+        marginRight: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
+        marginBottom: 10,
+        "&:hover": {
+            backgroundColor: theme.palette.lightyPink,
+        }
+    },
+    paperRoot: {
+        padding: 20,
+    },
+    confrimDelete: {
+        boxShadow: "none",
+        color: theme.palette.red,
+        backgroundColor: theme.palette.lightyPink,
+        borderRadius: 12,
+        marginLeft: "16px !important",
+        padding: "10px",
+        "&:hover": {
+            backgroundColor: theme.palette.lightyPinkHover,
+            boxShadow: "none",
+        },
+    },
 
-export default function CustomizedTables(props) {
-  const classes = useStyles();
+}))
 
-  const [value, setValue] = React.useState(2);
 
-  const [state, setState] = useState({
-    allJobs: [],
-  });
 
-  const allJobs = state.allJobs;
+function JobTable(props) {
 
-  const loginId = sessionStorage.getItem("loginId");
-  const userId = jwt.decode(sessionStorage.getItem("userToken"), {
-    complete: true,
-  }).payload.userId;
-  
-  const generateURL = () => {
-    return props.singleJobAccess
-      ? `${BACKEND_URL}/jobs/filterAllByUser/${loginId}/${userId}`
-      : `${BACKEND_URL}/jobs/filterAllByOrganization/${loginId}`;
-  };
+    const classes = useStyles();
 
-  useEffect(() => {
-    axios.get(generateURL()).then((res) => {
-      console.log(res.data.employerJobs);
-      if (res.data.success) {
-        setState({
-          allJobs: res.data.employerJobs,
-        });
-      }
-    });
-  }, []);
+    const [openAddNewPopup, setOpenAddNewPopup] = React.useState(false);
 
-  return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="customized table">
-        <colgroup>
-          <col style={{ width: "20%" }} />
-          <col style={{ width: "10%" }} />
-          <col style={{ width: "10%" }} />
-          <col style={{ width: "10%" }} />
-          <col style={{ width: "10%" }} />
-          <col style={{ width: "10%" }} />
-          <col style={{ width: "5%" }} />
-          <col style={{ width: "10%" }} />
-        </colgroup>
-        <TableHead>
-          <TableRow>
-            <StyledTableCell align="center">Job Title</StyledTableCell>
-            <StyledTableCell align="center">Category</StyledTableCell>
-            <StyledTableCell align="center">Location</StyledTableCell>
-            {/* <StyledTableCell align="center">Posted Date</StyledTableCell> */}
-            <StyledTableCell align="center">Due Date</StyledTableCell>
-            <StyledTableCell align="center">Active</StyledTableCell>
-            <StyledTableCell align="center">No of Resumes</StyledTableCell>
-            <StyledTableCell align="center"></StyledTableCell>
-            <StyledTableCell align="right"></StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {allJobs.map((row) => (
-            <StyledTableRow key={row.name}>
-              <StyledTableCell component="th" scope="row">
-                {row.title}
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <Chip
-                  icon={<LocalOfferRoundedIcon />}
-                  label={row.category}
-                  className={classes.category}
-                />
-              </StyledTableCell>
+    const [confirmCreate, setConfirmCreate] = React.useState(false);
+    const [createSuccess, setCreateSuccess] = React.useState(false);
+    const [createFailed, setCreateFailed] = React.useState(false);
 
-              <StyledTableCell align="center">
-                <Chip
-                  icon={<LocationOnRoundedIcon />}
-                  label={row.location}
-                  className={classes.location}
-                />
-              </StyledTableCell>
+    const [confirmUpdate, setConfirmUpdate] = React.useState(false);
+    const [updateSuccess, setUpdateSuccess] = React.useState(false);
+    const [updateFailed, setUpdateFailed] = React.useState(false);
 
-              {/* <StyledTableCell align="center">{row.postedDate.slice(0, 10)}</StyledTableCell> */}
-              <StyledTableCell align="center">
-                {row.dueDate.slice(0, 10)}
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                {row.isPublished ? (
-                  <Chip
-                    icon={<CheckCircleIcon />}
-                    label="Active"
-                    className={classes.activeChip}
-                  />
-                ) : (
-                  <Chip
-                    icon={<CancelIcon />}
-                    label="Inactive"
-                    className={classes.inactiveChip}
-                  />
-                )}
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                {row.applicationDetails.length}
-              </StyledTableCell>
+    const [confirmDelete, setConfirmDelete] = React.useState(false);
+    const [deleteSuccess, setDeleteSuccess] = React.useState(false);
+    const [deleteFailed, setDeleteFailed] = React.useState(false);
 
-              <StyledTableCell align="right">
-                <Link to={`/employer/resumes/${row._id}`}>
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    className={classes.button}
-                    endIcon={<NavigateNextIcon />}
-                  >
-                    Resumes
-                  </Button>
-                </Link>
-              </StyledTableCell>
+    const [alertShow, setAlertShow] = React.useState(false);
+    const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
 
-              <StyledTableCell align="right">
-                <Link to={`/employer/jobs/update/${row._id}`}>
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    className={classes.button}
-                    endIcon={<NavigateNextIcon />}
-                  >
-                    View
-                  </Button>
-                </Link>
-              </StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
+    const [loading, setLoading] = React.useState(true);
+    const [selectionModel, setSelectionModel] = React.useState([]);
+
+    const [pendingChanges, setPendingChanges] = React.useState(false);
+    const [editRowsModel, setEditRowsModel] = React.useState({});
+    const [updatedRows, setUpdatedRows] = React.useState([]);
+
+
+
+    const [rows, setRows] = useState([]);
+    const columns = props.columns;
+
+    const handleEditRowModelChange = React.useCallback((id, field, props) => {
+        setEditRowsModel(id);
+    }, []);
+
+    useEffect(() => {
+        if (JSON.stringify(editRowsModel) !== "{}") {
+            let newRows = updatedRows;
+            let i = updatedRows.findIndex(x => x.id === editRowsModel.id);
+            if (i >= 0) {
+                newRows[i] = editRowsModel;
+            } else {
+                newRows.push(editRowsModel);
+            }
+            setUpdatedRows(newRows);
+            setPendingChanges(true);
+        } else if (updatedRows.length === 0) {
+            setUpdatedRows([]);
+        }
+    }, [editRowsModel])
+
+    const handleRefresh = () => {
+        setLoading(true);
+        retrieveCategories();
+        setUpdatedRows([]);
+    };
+
+    useEffect(() => {
+        if (deleteSuccess === true) {
+            setAlertData({ severity: "success", msg: "Item deleted successfully!" });
+            handleAlert();
+        }
+        setLoading(true);
+        retrieveCategories();
+        setDeleteSuccess(false);
+    }, [deleteSuccess]);
+
+    useEffect(() => {
+        if (updateSuccess === true) {
+            setAlertData({ severity: "success", msg: "Changes saved successfully!" });
+            handleAlert();
+        }
+        setLoading(true);
+        retrieveCategories();
+        setUpdateSuccess(false);
+    }, [updateSuccess]);
+
+    useEffect(() => {
+        if (createSuccess === true) {
+            setAlertData({ severity: "success", msg: "Item added successfully!" });
+            handleAlert();
+        }
+        setLoading(true);
+        retrieveCategories();
+        setCreateSuccess(false);
+    }, [createSuccess]);
+
+    useEffect(() => {
+        if (createFailed === true) {
+            setAlertData({ severity: "error", msg: "Failed to add item!" });
+            handleAlert();
+        }
+        setLoading(true);
+        retrieveCategories();
+        setCreateFailed(false);
+    }, [createFailed]);
+
+
+    useEffect(() => {
+        if (updateFailed === true) {
+            setAlertData({ severity: "error", msg: "Failed to save changes!" });
+            handleAlert();
+        }
+        setUpdateFailed(false);
+    }, [updateFailed]);
+
+    useEffect(() => {
+        if (selectionModel.length > 0) {
+            showDeleteButton();
+        }
+    }, [selectionModel]);
+
+    useEffect(() => {
+        showSaveChangesButton();
+    }, [pendingChanges]);
+
+    const retrieveCategories = () => {
+        if (props.type === "jobseekers") {
+            axios.get(`${BACKEND_URL}/jobseekers/toTable`).then(res => {
+                if (res.data.success && res.data.existingData !== 0) {
+                    for (var p in res.data.existingData) {
+                        res.data.existingData[p].id = res.data.existingData[p]._id;
+                    }
+                    setRows(res.data.existingData)
+                } else {
+                    setRows([])
+                }
+                setLoading(false);
+            })
+        } else if (props.type === "employers") {
+            axios.get(`${BACKEND_URL}/employers/toTable`).then(res => {
+                if (res.data.success && res.data.existingData !== 0) {
+                    for (var p in res.data.existingData) {
+                        res.data.existingData[p].id = res.data.existingData[p]._id;
+                    }
+                    setRows(res.data.existingData)
+                } else {
+                    setRows([])
+                }
+                setLoading(false);
+            })
+        } else {
+            axios.get(`${BACKEND_URL}/${props.type}`).then(res => {
+                if (res.data.success && res.data.existingData !== 0) {
+                    for (var p in res.data.existingData) {
+                        res.data.existingData[p].id = res.data.existingData[p]._id;
+                    }
+                    setRows(res.data.existingData)
+                } else {
+                    setRows([])
+                }
+                setLoading(false);
+            })
+        }
+    }
+
+    // alert
+
+    const handleAlert = () => {
+        setAlertShow(true);
+    };
+
+    const handleAlertClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setAlertShow(false);
+    };
+
+    // deletion
+
+    const handleClickOpen = () => {
+        setConfirmDelete(true);
+    };
+
+    const handleClose = () => {
+        setConfirmDelete(false);
+    };
+
+    const deleteRow = () => {
+        deleteRecord();
+        setConfirmDelete(false);
+        setSelectionModel([]);
+    };
+
+    const deleteRecord = () => {
+        axios.post(`${BACKEND_URL}/${props.type}/delete`, { _id: { $in: selectionModel } }).then(res => {
+            if (res.data.success) {
+                setDeleteSuccess(true);
+            } else {
+                setDeleteFailed(true);
+            }
+        })
+    }
+
+    const showDeleteButton = () => {
+        if (selectionModel.length > 0) {
+            return <Button className={classes.delBtn} onClick={handleClickOpen}>
+                <DeleteRoundedIcon /> Delete
+            </Button>
+        }
+    }
+
+    // updates
+
+    const showSaveChangesButton = () => {
+        if (pendingChanges) {
+            return <Button className={classes.addBtn} onClick={saveChanges}>
+                <SaveRoundedIcon /> Save Changes
+            </Button>
+        }
+    }
+
+    const saveChanges = () => {
+        updatedRows.forEach((item) => {
+            let data = {
+                name: item.props.value
+            }
+            axios.put(`${BACKEND_URL}/${props.type}/update/${item.id}`, data).then(res => {
+                if (res.data.success) {
+                    setUpdateSuccess(true);
+                } else {
+                    setUpdateFailed(true);
+                }
+            })
+        })
+        setPendingChanges(false);
+        setEditRowsModel({});
+        setUpdatedRows([]);
+    }
+
+    const displayAlert = () => {
+        return <SnackBarAlert open={alertShow} onClose={handleAlertClose} severity={alertData.severity} msg={alertData.msg} />
+    }
+
+    const handleAddNewPopup = () => {
+        setOpenAddNewPopup(true);
+    }
+
+    const handleCreateError = () => {
+        setCreateFailed(true);
+    }
+
+    const handleCreateSuccess = () => {
+        setCreateSuccess(true);
+    }
+
+    const closeAddNewPopup = () => {
+        setOpenAddNewPopup(false);
+    }
+
+    return (
+        <Grid item container xs={12} spacing={3} direction="column"
+            justify="space-between"
+            alignItems="flex-start">
+            <Dialog
+                open={confirmDelete}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+                classes={{ paper: classes.paperRoot }}
+            >
+                <DialogTitle id="alert-dialog-title">{"Confirm Delete?"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Are you sure that you want to delete the selected item? <b>This cannot be undone.</b>
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} color="primary">
+                        No
+                    </Button>
+                    <Button onClick={deleteRow} color="primary" className={classes.confrimDelete} autoFocus>
+                        Yes
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            <Grid item xs={12} style={{ minWidth: '100%' }}>
+                <FloatCard >
+                    <div style={{ height: 550, width: '100%', textAlign: 'right' }}>
+                        {showDeleteButton()}
+                        {props.addable !== false ? <Button className={classes.addBtn} onClick={handleAddNewPopup}>
+                            <AddIcon /> Add New {props.label}
+                        </Button> : null}
+                        <Button className={classes.addBtn} onClick={handleRefresh}>
+                            <RefreshRoundedIcon /> Refresh
+                        </Button>
+
+                        {showSaveChangesButton()}
+                        <div style={{ height: 500, width: '100%' }}>
+                            <DataGrid className={classes.table} columns={columns} rows={rows} editRowsModel={editRowsModel}
+                                onEditCellChangeCommitted={handleEditRowModelChange} components={{
+                                    Toolbar: GridToolbar,
+                                    NoRowsOverlay: NoRowGridOverlay,
+                                    LoadingOverlay: CustomLoadingOverlay,
+                                }} loading={loading} checkboxSelection disableSelectionOnClick onSelectionModelChange={(newSelection) => {
+                                    setSelectionModel(newSelection.selectionModel);
+                                }}
+                                selectionModel={selectionModel} />
+                        </div>
+                    </div>
+                </FloatCard>
+            </Grid>
+            {displayAlert()}
+        </Grid >
+    )
 }
+
+export default JobTable

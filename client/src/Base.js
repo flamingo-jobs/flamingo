@@ -26,6 +26,7 @@ import Organizations from "./employer/Organizations";
 import DisplayJob from "./jobs/displayJobEmployer/displayJob";
 import JobSeekers from "./admin/JobSeekers";
 import Employers from "./admin/Employers";
+import EmployerJobs from "./employer/Jobs";
 import AppliedJobs from "./employee/appliedJobs/appliedJobs";
 import JobseekerDashboard from "./employee/Dashboard/JobseekerDashboard";
 import JobSeekerSettings from "./employee/Settings/Settings";
@@ -217,7 +218,7 @@ function Base() {
             <DisplayJob />
           </Route>
           <Route exact path="/employer/jobs">
-            <EmployerJobList />
+            <EmployerJobs />
           </Route>
           <Route path="/employer/company">
             <Employer userRole={role} />
