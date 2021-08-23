@@ -80,7 +80,6 @@ function Jobs() {
     const [isGrid, setIsGrid] = useState(true);
     const [refreshRequired, setRefreshRequired] = useState(false);
 
-    const categoryColumns = [{ field: 'name', headerName: 'Name', flex: 1, editable: true }];
 
     let jobAccess = false;
     let singleJobAccess = false;
@@ -142,7 +141,7 @@ function Jobs() {
                             </ToggleButtonGroup>
                         </Grid>
                     </Grid>
-                    {isGrid ? <JobGrid refreshRequired={refreshRequired} unsetRefresh={unsetRefresh} /> : <JobTable singleJobAccess={singleJobAccess} columns={categoryColumns} type="categories" />}
+                    {isGrid ? <JobGrid refreshRequired={refreshRequired} unsetRefresh={unsetRefresh} singleJobAccess={singleJobAccess}/> : <JobTable singleJobAccess={singleJobAccess} refreshRequired={refreshRequired} unsetRefresh={unsetRefresh}/>}
                 </>
             ) : (
                 <NoAccess />
