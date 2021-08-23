@@ -13,7 +13,7 @@ import FloatCard from "../../components/FloatCard";
 import SummaryForm from "./components/summaryForm";
 import TaskForm from "./components/tasksForm";
 import QualificationsForm from "./components/qualificationsForm";
-import Keywords from "./components/keywords";
+import AdditionalSkills from "./components/additionalSkills";
 import TechStack from "./components/techStack";
 import BACKEND_URL from "../../Config";
 import SnackBarAlert from "../../components/SnackBarAlert";
@@ -86,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-  return ["Basic Details", "Tasks and Responsibilites", "Qualifications and Requirements", "Technology Stack", "Keywords"];
+  return ["Basic Details", "Tasks and Responsibilites", "Qualifications and Requirements", "Technology Stack", "Additional Skills"];
 }
 
 export default function CreateJobSetup() {
@@ -119,21 +119,21 @@ export default function CreateJobSetup() {
     const newErrors = {...errors};
 
     if(index === 0){
-      if(title === ""){
+      if(title.trim() === ""){
         newErrors["title"] = `Title cannot be empty.`;
         setErrors(newErrors);
         return false;
-      } else if(description === ""){
+      } else if(description.trim() === ""){
         newErrors["description"] = `Description cannot be empty.`;
         setErrors(newErrors);
         return false;
-      } else if(minSalary === ""){
+      } else if(minSalary.trim() === ""){
         newErrors["minSalary"] = `Minimum salary cannot be empty.`;
         setErrors(newErrors);
         return false;
       } else if(errors.hasOwnProperty("minSalary")){
         return false;
-      } else if(maxSalary === ""){
+      } else if(maxSalary.trim() === ""){
         newErrors["maxSalary"] = `Maximum salary cannot be empty.`;
         setErrors(newErrors);
         return false;
@@ -226,7 +226,7 @@ export default function CreateJobSetup() {
   const [tasksFields, setTasksFields] = useState([""]);
   const [qualificationsFields, setQualificationsFields] = useState([""]);
   const [techStackState, setTechStack] = useState([]);
-  const [keywordsState, setKeywords] = useState([]);
+  const [additionalSkillsState, setAdditionalSkills] = useState([]);
   const [isFeatured, setIsFeatured] = useState(false);
   const [isPublished, setIsPublished] = useState(true);
 
@@ -247,9 +247,9 @@ export default function CreateJobSetup() {
     const newErrors = {...errors};
     // const regex = new RegExp('^[a-zA-Z0-9\)\(\\ ]+$');
     const name = e.target.name;
-    const value = e.target.value.trim();
+    const value = e.target.value;
 
-    if(value === ""){
+    if(value.trim() === ""){
       newErrors[name] = `${name.charAt(0).toUpperCase() + name.slice(1)} cannot be empty.`;
     } else{
       delete newErrors[name];
@@ -279,12 +279,12 @@ export default function CreateJobSetup() {
     const newErrors = {...errors};
     const regex = new RegExp('^[0-9]+$');
     const name = e.target.name;
-    const value = e.target.value.trim().replace(/\s/g, '');
+    const value = e.target.value;
 
     if(value === ""){
       newErrors[name] = "Salary cannot be empty.";
     } else {
-      if(regex.test(value)){
+      if(regex.test(value.trim().replace(/\s/g, ''))){
         delete newErrors[name];
       } else {
         newErrors[name] = "Salary can only contain numbers.";
@@ -309,9 +309,9 @@ export default function CreateJobSetup() {
   // ***** Tasks & Responsibilites *****
   const handleTaskChange = (e, index) => {
     const newErrors = {...errors};
-    const value = e.target.value.trim();
+    const value = e.target.value;
 
-    if(value === ""){
+    if(value.trim() === ""){
       newErrors.tasks[index] = "This field cannot be empty.";
     } else {
       newErrors.tasks[index] = "";
@@ -355,9 +355,9 @@ export default function CreateJobSetup() {
   // ***** Qualifications *****
   const handleQualificationChange = (e, index) => {
     const newErrors = {...errors};
-    const value = e.target.value.trim();
+    const value = e.target.value;
 
-    if(value === ""){
+    if(value.trim() === ""){
       newErrors.requirements[index] = "This field cannot be empty.";
     } else {
       newErrors.requirements[index] = "";
@@ -404,9 +404,9 @@ export default function CreateJobSetup() {
     setTechStack(values);
   };
 
-  // Keywords
-  const handleKeywordsChange = (values) => {
-    setKeywords(values);
+  // Additional Skills
+  const handleAdditionalSkillsChange = (values) => {
+    setAdditionalSkills(values);
   };
 
   // Alert stuff
@@ -451,7 +451,7 @@ export default function CreateJobSetup() {
       tasksAndResponsibilities: tasksFields,
       qualifications: qualificationsFields,
       technologyStack: techStackState,
-      keywords: keywordsState,
+      additionalSkills: additionalSkillsState,
       isPublished: isPublished,
       isFeatured: isFeatured,
       createdBy: userId,
@@ -533,16 +533,15 @@ export default function CreateJobSetup() {
     }
   };
 
-  const displayKeywords = () => {
+  const displayAdditionalSkills = () => {
     if (technologies === "empty" || technologies === undefined) {
       return null;
     } else {
       return (
-        <Keywords
-          keywordsState={keywordsState}
-          keywords={keywords}
-          handleKeywordsChange={handleKeywordsChange}
-        ></Keywords>
+        <AdditionalSkills
+          additionalSkillsState={additionalSkillsState}
+          handleAdditionalSkillsChange={handleAdditionalSkillsChange}
+        ></AdditionalSkills>
       );
     }
   };
@@ -620,7 +619,7 @@ export default function CreateJobSetup() {
       case 3:
         return displayTechStack();
       case 4:
-        return displayKeywords();
+        return displayAdditionalSkills();
       default:
         return "Unknown step";
     }

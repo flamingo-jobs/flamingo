@@ -1,55 +1,41 @@
-import React, { useState } from "react";
-import { Container, Typography } from "@material-ui/core";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { Grid, Typography, Container, Chip } from "@material-ui/core";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
 import FiberManualRecordRoundedIcon from '@material-ui/icons/FiberManualRecordRounded';
 
 const useStyles = makeStyles((theme) => ({
-  border: {
-    border: "1px solid red",
-  },
-
-  req: {
+  root: {
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(3),
     position: "relative",
   },
-
-  reqTitle: {
+  skillsTitle: {
     textAlign: "left",
     color: theme.palette.black,
-
-  },
-
-  readMoreBtn: {
-    cursor: "pointer",
-    color: theme.palette.stateBlue,
-    "&:hover": {
-      color: theme.palette.stateBlueHover,
-    },
   },
 }));
 
-const Requirements = (props) => {
+// style={{border: "1px solid red"}}
+const AdditionalSkills = (props) => {
   const classes = useStyles();
 
-  const [reqs, setReqs] = useState(props.requirements);
-
   return (
-    <Container className={classes.req}>
-      <Typography variant="h6" className={classes.reqTitle}>
-        Skills and Requirements
+    <Container className={classes.root}>
+      <Typography variant="h6" className={classes.skillsTitle}>
+        Additional Skills
       </Typography>
       <List dense={true}>
-        {reqs.map((dutie, index) => (
+
+        {props.skills.map((skill, index) => (
           <ListItem key={index}>
-            <ListItemIcon style={{minWidth: 24}}>
+            <ListItemIcon style={{ minWidth: 24 }}>
               <FiberManualRecordRoundedIcon fontSize="inherit" />
             </ListItemIcon>
-            <ListItemText primary={dutie} />
+            <ListItemText primary={skill} />
           </ListItem>
         ))}
       </List>
@@ -57,4 +43,4 @@ const Requirements = (props) => {
   );
 };
 
-export default Requirements;
+export default AdditionalSkills;

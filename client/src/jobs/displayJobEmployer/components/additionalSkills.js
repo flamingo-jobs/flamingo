@@ -9,16 +9,16 @@ import {
 } from "@material-ui/core";
 import FloatCard from "../../../components/FloatCard";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
-import KeywordsModal from "./keywordsModal";
+import AdditionalSkillsModal from "./additionalSkillsModal";
 import axios from "axios";
 import BACKEND_URL from "../../../Config";
 
 const useStyles = makeStyles((theme) => ({
-  keywordsContainer: {
+  additionalSkillsContainer: {
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
   },
-  keywordsTitle: {
+  additionalSkillsTitle: {
     textAlign: "left",
     color: theme.palette.black,
   },
@@ -57,14 +57,14 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
   },
-  keywordsEmpty:{
+  additionalSkillsEmpty:{
     color: "#888",
     fontSize: "15px",
   },
 }));
 
 // style={{ border: "1px solid red" }}
-const Keywords = (props) => {
+const AdditionalSkills = (props) => {
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
@@ -77,17 +77,17 @@ const Keywords = (props) => {
     setOpen(false);
   };
 
-  const handleKeywordsChange = (values) => {
+  const handleAdditionalSkillsChange = (values) => {
     const newJob = { ...props.job };
-    newJob.keywords = values;
+    newJob.additionalSkills = values;
     props.setJob(newJob);
   };
 
-  const handleKeywordsSubmit = async (e) => {
+  const handleAdditionalSkillsSubmit = async (e) => {
     e.preventDefault();
 
     const updateFields = {
-      keywords: props.job.keywords,
+      additionalSkills: props.job.additionalSkills,
     };
 
     try {
@@ -116,20 +116,20 @@ const Keywords = (props) => {
 
   return (
     <>
-      <KeywordsModal
+      <AdditionalSkillsModal
         open={open}
         handleClose={handleClose}
-        keywords={props.job.keywords}
-        handleKeywordsChange={handleKeywordsChange}
-        handleKeywordsSubmit={handleKeywordsSubmit}
-      ></KeywordsModal>
+        additionalSkills={props.job.additionalSkills}
+        handleAdditionalSkillsChange={handleAdditionalSkillsChange}
+        handleAdditionalSkillsSubmit={handleAdditionalSkillsSubmit}
+      ></AdditionalSkillsModal>
 
       <FloatCard>
-        <Container className={classes.keywordsContainer}>
+        <Container className={classes.additionalSkillsContainer}>
           <Grid container>
             <Grid item xs={11}>
-              <Typography variant="h6" className={classes.keywordsTitle}>
-                Keywords
+              <Typography variant="h6" className={classes.additionalSkillsTitle}>
+                Additional Skills
               </Typography>
             </Grid>
             <Grid item xs={1} className={classes.iconGridItem}>
@@ -139,12 +139,12 @@ const Keywords = (props) => {
             </Grid>
           </Grid>
           <Container className={classes.chipContainer}>
-            {props.job.keywords.length === 0 && (
-              <Typography className={classes.keywordsEmpty}>
-                There are no keywords
+            {props.job.additionalSkills.length === 0 && (
+              <Typography className={classes.additionalSkillsEmpty}>
+                There are no additional skills.
               </Typography>
             )}
-            {props.job.keywords.map((item) => (
+            {props.job.additionalSkills.map((item) => (
               <Chip
                 key={item}
                 size="medium"
@@ -159,4 +159,4 @@ const Keywords = (props) => {
   );
 };
 
-export default Keywords;
+export default AdditionalSkills;

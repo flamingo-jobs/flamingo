@@ -8,7 +8,7 @@ import JobSummary from "./components/jobSummary";
 import Qualifications from "./components/qualifications";
 import Responsibilities from "./components/responsibilities";
 import TechStack from "./components/techStack";
-import Keywords from "./components/keywords";
+import AdditionalSkills from "./components/additionalSkills";
 import SnackBarAlert from "../../components/SnackBarAlert";
 
 const useStyles = makeStyles((theme) => ({
@@ -64,6 +64,8 @@ const DisplayJob = () => {
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
 
+  const [errors, setErrors] = useState({ tasks: [], requirements:[] });
+
   useEffect(() => {
     retrieveJob();
     retrieveCategories();
@@ -95,11 +97,22 @@ const DisplayJob = () => {
     setAlertShow(false);
   };
 
+  const createErrorArray = () => {
+    const newErrors = {...errors};
+    if(job !== "empty"){
+      job.qualifications.map(q => {
+        newErrors.requirements = [...newErrors.requirements, ""];
+      });
+      setErrors(newErrors);
+    }
+  }
+
   const retrieveJob = async () => {
     try {
       const response = await axios.get(`${BACKEND_URL}/jobs/${jobId}`);
       if (response.data.success) {
         setJob(response.data.job);
+        console.log("add skills", response.data.job)
       }
     } catch (err) {
       console.error(err);
@@ -173,6 +186,8 @@ const DisplayJob = () => {
           locations={employer.locations}
           setAlertData={setAlertData}
           handleAlert={handleAlert}
+          errors={errors}
+          setErrors={setErrors}
         ></JobSummary>
       );
     }
@@ -193,6 +208,8 @@ const DisplayJob = () => {
           setJob={setJob}
           setAlertData={setAlertData}
           handleAlert={handleAlert}
+          errors={errors}
+          setErrors={setErrors}
         ></Qualifications>
       );
     }
@@ -239,7 +256,7 @@ const DisplayJob = () => {
     }
   };
 
-  const displayKeywords = () => {
+  const displayAdditionalSkills = () => {
     if (job === "empty") {
       return (
         <FloatCard>
@@ -248,13 +265,13 @@ const DisplayJob = () => {
       );
     } else {
       return (
-        <Keywords
+        <AdditionalSkills
           jobId={jobId}
           job={job}
           setJob={setJob}
           setAlertData={setAlertData}
           handleAlert={handleAlert}
-        ></Keywords>
+        ></AdditionalSkills>
       );
     }
   };
@@ -283,7 +300,7 @@ const DisplayJob = () => {
               {displayTechStack()}
             </Grid>
             <Grid item xs={12} className={classes.containerGridItem}>
-              {displayKeywords()}
+              {displayAdditionalSkills()}
             </Grid>
             <Grid item xs={12} className={classes.containerGridLastItem}>
               {displayResponsibilities()}

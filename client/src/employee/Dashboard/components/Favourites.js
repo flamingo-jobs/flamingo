@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
 import axios from 'axios';
 import BACKEND_URL from '../../../Config';
+import SnackBarAlert from "../../../components/SnackBarAlert";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -35,6 +36,10 @@ function FeaturedOrganizations(props) {
     const classes = useStyles();
     const [favoriteOrgIds, setFavoriteOrgIds] = useState([]);
     const [favoriteOrgs, setFavoriteOrgs] = useState([]);
+
+    const [alertShow, setAlertShow] = useState(false);
+    const [alertData, setAlertData] = useState({ severity: "", msg: "" });
+
     let loginId;
     let login = false;
     const jwt = require("jsonwebtoken");
@@ -48,6 +53,17 @@ function FeaturedOrganizations(props) {
     } else {
         loginId=props.jobseekerID;
     }
+
+    const handleAlert = () => {
+        setAlertShow(true);
+      };
+    
+    const handleAlertClose = (event, reason) => {
+        if (reason === "clickaway") {
+            return;
+        }
+        setAlertShow(false);
+    };
 
     useEffect(() => {
         retrieveFavoriteOrgIds()
@@ -90,7 +106,13 @@ function FeaturedOrganizations(props) {
         if (favoriteOrgs) {
             return favoriteOrgs?.map(favoriteOrg => (
                 <Grid item xs={12} key={favoriteOrg._id}>
-                    <Organization info={favoriteOrg} />
+                    <Organization 
+                        info={favoriteOrg} 
+                        favoriteOrgs={favoriteOrgIds} 
+                        setFavoriteOrgs={setFavoriteOrgIds}
+                        setAlertData={setAlertData}
+                        handleAlert={handleAlert}
+                    />
                 </Grid>
             ))
         } else {
@@ -101,8 +123,21 @@ function FeaturedOrganizations(props) {
         }
     }
 
+    const displayAlert = () => {
+        return (
+          <SnackBarAlert
+            open={alertShow}
+            onClose={handleAlertClose}
+            severity={alertData.severity}
+            msg={alertData.msg}
+          />
+        );
+      };
+
     return (
         <div>
+            {displayAlert()}
+
             <Grid container direction="column" spacing={2} className={classes.container}>
                 <Grid item sm={12} >
                     <FloatCard>

@@ -9,7 +9,7 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import BACKEND_URL from "../../Config";
 import axios from "axios";
 import LoginModal from './loginModal';
-import SnackBarAlert from "../../components/SnackBarAlert";
+const jwt = require("jsonwebtoken");
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -93,6 +93,15 @@ function Organization(props) {
     const [alertShow, setAlertShow] = useState(false);
     const [alertData, setAlertData] = useState({ severity: "", msg: "" });
 
+    const isSignedIn = sessionStorage.getItem("userToken") ? true : false;
+    const token = sessionStorage.getItem("userToken");
+    const [role, setRole] = useState(
+      jwt.decode(token, { complete: true })
+        ? jwt.decode(token, { complete: true }).payload.userRole
+        : null
+    );
+    const userId = sessionStorage.getItem("loginId");
+
     // Login modal 
     const [open, setOpen] = useState(false);
 
@@ -106,21 +115,10 @@ function Organization(props) {
         handleOpen();
     }
 
-    const handleAlert = () => {
-        setAlertShow(true);
-      };
-    
-    const handleAlertClose = (event, reason) => {
-        if (reason === "clickaway") {
-            return;
-        }
-        setAlertShow(false);
-    };
-
     useEffect(() => {
-        if(!props.userRole){
+        if(!role){
             setIsSaved(false);
-        } else{
+        } else if(role && role === "jobseeker"){
             setIsSaved(props.favoriteOrgs.includes(props.info._id));
         }
     }, [props.favoriteOrgs, props.info]);
@@ -133,21 +131,21 @@ function Organization(props) {
 
             try {
                 const response = await axios.patch(
-                    `${BACKEND_URL}/jobseeker/updateFavoriteOrgs/${props.userId}`, newFavoriteOrgs);
+                    `${BACKEND_URL}/jobseeker/updateFavoriteOrgs/${userId}`, newFavoriteOrgs);
 
                 if (response.data.success) {
-                    setAlertData({
+                    props.setAlertData({
                         severity: "success",
-                        msg: "Organization Removed From Favorite Organizations",
+                        msg: "Organization Removed From Favorites",
                     });
-                    handleAlert();
+                    props.handleAlert();
                 }
             } catch (err) {
-                setAlertData({
+                props.setAlertData({
                     severity: "error",
                     msg: "Something Went Wrong. Please Try Again Later.",
                 });
-                handleAlert();
+                props.handleAlert();
             }
 
         } else{ // Save
@@ -157,53 +155,43 @@ function Organization(props) {
       
             try {
                 const response = await axios.patch(
-                    `${BACKEND_URL}/jobseeker/updateFavoriteOrgs/${props.userId}`, newFavoriteOrgs);
+                    `${BACKEND_URL}/jobseeker/updateFavoriteOrgs/${userId}`, newFavoriteOrgs);
                 if (response.data.success) {
-                    setAlertData({
+                    props.setAlertData({
                         severity: "success",
-                        msg: "Organization Removed From Favorite Organizations",
+                        msg: "Organization Removed From Favorites",
                     });
-                    handleAlert();
+                    props.handleAlert();
                 }
             } catch (err) {
-                setAlertData({
+                props.setAlertData({
                     severity: "error",
                     msg: "Something Went Wrong. Please Try Again Later.",
                 });
-                handleAlert();
+                props.handleAlert();
             }
         }
     }
 
     const displaySaveIcon = () => {
-        if(!props.userRole){
+        if(!isSignedIn){
             // When user is not signed in
             return <FavoriteBorderIcon className={classes.favorite} onClick={handleLoginModal} />;
         } else {
-            if(isSaved){
+            if(role === "jobseeker" && isSaved){
                 // When user is signed in && org is in favoriteOrgs 
                 return <FavoriteRounded className={classes.favorite} onClick={handleSavingOrg} />;
-            } else {
+            } else if(role === "jobseeker" && !isSaved){
                 // When user is signed in but org is not in favoriteOrgs
                 return <FavoriteBorderIcon className={classes.favorite} onClick={handleSavingOrg}/>;
             }
         }
     }
 
-    const displayAlert = () => {
-        return (
-          <SnackBarAlert
-            open={alertShow}
-            onClose={handleAlertClose}
-            severity={alertData.severity}
-            msg={alertData.msg}
-          />
-        );
-      };
+    
 
     return (
         <FloatCard >
-            {displayAlert()}
 
             {/* Works only when user is not signed in */}
             <LoginModal 
