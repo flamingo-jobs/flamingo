@@ -7,21 +7,22 @@ import { Typography } from '@material-ui/core'
 import BACKEND_URL from '../../Config';
 import axios from 'axios'
 import SnackBarAlert from '../../components/SnackBarAlert'
+import FloatCard from '../../components/FloatCard';
 
 const useStyles = makeStyles((theme) => ({
     paperCont: {
-      backgroundColor: theme.palette.lightyPink, 
-      paddingLeft: 10,
-      paddingRight: 10,
-      marginBottom: 25,
-      borderRadius: 10,
-      "&:hover": {
-          defaultButton: {
-              display: 'block'
-          }
+        backgroundColor: theme.palette.lightyPink,
+        paddingLeft: 10,
+        paddingRight: 10,
+        marginBottom: 25,
+        borderRadius: 10,
+        "&:hover": {
+            defaultButton: {
+                display: 'block'
+            }
         }
     },
-  }));
+}));
 
 function Technologies(props) {
     const classes = useStyles();
@@ -34,14 +35,14 @@ function Technologies(props) {
     const [updateFailed, setUpdateFailed] = React.useState(false);
 
     const [alertShow, setAlertShow] = React.useState(false);
-    const [alertData, setAlertData] = React.useState({severity: "", msg: ""});
+    const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
 
-    let i=0;
+    let i = 0;
     let loginId;
-    
+
 
     useEffect(() => {
-            retrieveTechnoliges();
+        retrieveTechnoliges();
     }, [])
 
     const handleUpdatesuccess = () => {
@@ -54,7 +55,7 @@ function Technologies(props) {
 
     useEffect(() => {
         if (updateSuccess === true) {
-            setAlertData({severity: "success", msg: "Changes saved successfully!"});
+            setAlertData({ severity: "success", msg: "Changes saved successfully!" });
             handleAlert();
         }
         setUpdateSuccess(false);
@@ -62,7 +63,7 @@ function Technologies(props) {
 
     useEffect(() => {
         if (updateFailed === true) {
-            setAlertData({severity: "error", msg: "Failed to save changes!"});
+            setAlertData({ severity: "error", msg: "Failed to save changes!" });
             handleAlert();
         }
         setUpdateFailed(false);
@@ -84,30 +85,30 @@ function Technologies(props) {
         // console.log("inside fetchData"+"60c246913542f942e4c84454")
         let technologyStackData;
         axios.get(`${BACKEND_URL}/employers/${props.employerId}`)
-        .then(res => {
-            if(res.data.success){
-            if(res.data.employer.technologyStack.length > 0){
-                technologyStackData = res.data.employer.technologyStack;
-                if(Object.keys(res.data.employer.technologyStack[0]).length === 0){
-                    res.data.employer.technologyStack.splice(0,1)
-                    i++;
-                }else if(technologyStackData[0].technologyStack == "" && technologyStackData[0].institute == "" && technologyStackData[0].from == "" && technologyStackData[0].to == ""){
-                    res.data.employer.technologyStack.splice(0,1)
-                    i++;
-                }
-            }
-            setTechnologyStack(technologyStackData)
-            console.log(res.data.employer.technologyStack)
+            .then(res => {
+                if (res.data.success) {
+                    if (res.data.employer.technologyStack.length > 0) {
+                        technologyStackData = res.data.employer.technologyStack;
+                        if (Object.keys(res.data.employer.technologyStack[0]).length === 0) {
+                            res.data.employer.technologyStack.splice(0, 1)
+                            i++;
+                        } else if (technologyStackData[0].technologyStack == "" && technologyStackData[0].institute == "" && technologyStackData[0].from == "" && technologyStackData[0].to == "") {
+                            res.data.employer.technologyStack.splice(0, 1)
+                            i++;
+                        }
+                    }
+                    setTechnologyStack(technologyStackData)
+                    console.log(res.data.employer.technologyStack)
 
-            }
-        })
+                }
+            })
     }
 
 
     const displayTechnologies = () => {
         if (technologies) {
             return technologies.map(technology => (
-                <DetailedAccordion  showEdit={props.showEdit} login={props.login} employerId={props.employerId} key={technology._id} info={technology} techno={technologyStack} onRefresh={handleRefresh} onSuccessUpdate={handleUpdatesuccess} onFailedUpdate={handleUpdateFailed} />
+                <DetailedAccordion showEdit={props.showEdit} login={props.login} employerId={props.employerId} key={technology._id} info={technology} techno={technologyStack} onRefresh={handleRefresh} onSuccessUpdate={handleUpdatesuccess} onFailedUpdate={handleUpdateFailed} />
             ))
         } else {
             return (
@@ -132,18 +133,23 @@ function Technologies(props) {
     };
 
     return (
-        <Grid item container xs={12} spacing={3} direction="column"
-            justify="space-between"
-            alignItems="flex-start">
-            <Grid item xs={12} style={{ minWidth: '100%' }}>
-                <Paper elevation={0} className={classes.paperCont}>
-                    <div style={{ padding: 20, width: '100%', textAlign: 'left' }}>
-                        {displayTechnologies()}
-                    </div>
-                </Paper>
-            </Grid>
-            {displayAlert()}
-        </Grid >
+        <FloatCard>
+            <Typography variant="h6" className={classes.title}>
+                Company Technology Stack
+            </Typography>
+            <Grid item container xs={12} spacing={3} direction="column"
+                justify="space-between"
+                alignItems="flex-start">
+                <Grid item xs={12} style={{ minWidth: '100%' }}>
+                    <Paper elevation={0} className={classes.paperCont}>
+                        <div style={{ padding: 20, width: '100%', textAlign: 'left' }}>
+                            {displayTechnologies()}
+                        </div>
+                    </Paper>
+                </Grid>
+                {displayAlert()}
+            </Grid >
+        </FloatCard>
     )
 }
 

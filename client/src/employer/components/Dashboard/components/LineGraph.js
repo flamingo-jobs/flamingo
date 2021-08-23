@@ -11,7 +11,7 @@ import {
   Button,
   Grid,
 } from "@material-ui/core";
-import FloatCard from "../../FloatCard";
+import FloatCard from "../../../../components/FloatCard";
 import {
   Chart,
   ArgumentAxis,

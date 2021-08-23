@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import FloatCard from "./FloatCard";
+import FloatCard from '../../components/FloatCard';
 import Lottie from "react-lottie";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";

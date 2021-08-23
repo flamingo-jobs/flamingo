@@ -1,7 +1,7 @@
 import React from 'react'
 import { Avatar, Button, Chip, makeStyles, Typography } from '@material-ui/core';
 import { FavoriteRounded } from '@material-ui/icons';
-import FloatCard from './FloatCard';
+import FloatCard from '../../components/FloatCard';
 import Rating from '@material-ui/lab/Rating';
 import Grid from '@material-ui/core/Grid';
 import Timeline from '@material-ui/lab/Timeline';

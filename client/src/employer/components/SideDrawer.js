@@ -8,7 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import Lottie from 'react-lottie';
 import WorkImage from '../lotties/work.json';
 import Flamingo from '../lotties/flamingo.json';
-import FloatCard from './FloatCard';
+import FloatCard from '../../components/FloatCard';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import WorkIcon from '@material-ui/icons/Work';

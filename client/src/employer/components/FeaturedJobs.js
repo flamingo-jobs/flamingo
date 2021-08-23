@@ -1,6 +1,6 @@
 import { Grid, makeStyles, Typography, Button } from '@material-ui/core';
 import React from 'react'
-import FloatCard from './FloatCard';
+import FloatCard from '../../components/FloatCard';
 import JobCard from './JobCard';
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
 import theme from '../../Theme';

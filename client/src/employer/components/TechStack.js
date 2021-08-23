@@ -5,7 +5,7 @@ import {
   Typography,
   withStyles,
 } from "@material-ui/core";
-import FloatCard from "./FloatCard";
+import FloatCard from '../../components/FloatCard';
 import Grid from "@material-ui/core/Grid";
 import TechCategory from "./TechCategory";
 import IconButton from "@material-ui/core/IconButton";

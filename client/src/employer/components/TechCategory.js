@@ -13,7 +13,7 @@ import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import { purple } from "@material-ui/core/colors";
-import FloatCard from "./FloatCard";
+import FloatCard from '../../components/FloatCard';
 import TechCard from "./TechCard";
 import EditIcon from '@material-ui/icons/Edit';
 
