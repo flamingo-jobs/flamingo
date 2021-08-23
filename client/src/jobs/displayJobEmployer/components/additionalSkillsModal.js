@@ -99,6 +99,24 @@ const useStyles = makeStyles((theme) => ({
 const JobSummaryModal = (props) => {
   const classes = useStyles();
 
+  const skills = [
+    "Cloud and Distributed Computing",
+    "Statistical Analysis and Data Mining",
+    "SEO/SEM Marketing",
+    "Middleware and Integration Software",
+    "Mobile Development",
+    "Network and Information Security",
+    "Public Speaking",
+    "Analytical Thinking",
+    "Object Oriented Programming",
+    "Leadership",
+    "Web Development",
+    "Data Engineering and Data Warehousing",
+    "Algorithm Design",
+    "Shell Scripting Languages",
+    "Software Modeling and Process Design",
+  ];
+
   return (
     <>
       <Modal
@@ -122,16 +140,16 @@ const JobSummaryModal = (props) => {
 
               <Grid item xs={12} className={classes.formContainer}>
                 <Typography align="center" className={classes.title}>
-                  Keywords
+                  Additional Skills
                 </Typography>
-                <form onSubmit={props.handleKeywordsSubmit}>
+                <form onSubmit={props.handleAdditionalSkillsSubmit}>
                   <Autocomplete
                     multiple
-                    id="keywords"
-                    options={props.keywords.map((item) => item)}
-                    defaultValue={props.keywords.map((item) => item)}
+                    id="additionalSkills"
+                    options={skills}
+                    defaultValue={props.additionalSkills}
                     freeSolo
-                    onChange={(event, values) => props.handleKeywordsChange(values)}
+                    onChange={(event, values) => props.handleAdditionalSkillsChange(values)}
                     renderTags={(value, getTagProps) =>
                       value.map((option, index) => (
                         <Chip
@@ -149,7 +167,7 @@ const JobSummaryModal = (props) => {
                       <StateBlueTextField
                         {...params}
                         variant="outlined"
-                        placeholder="Add a new keyword..."
+                        placeholder="Add a new skills..."
                       />
                     )}
                   />

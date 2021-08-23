@@ -1,11 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  Grid,
-  Container,
-  Typography,
-  Button,
-} from "@material-ui/core";
+import { Grid, Container, Typography, Button } from "@material-ui/core";
 import Chip from "@material-ui/core/Chip";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
@@ -18,12 +13,12 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
     // border: "1px solid red",
   },
-  keywordsTitle: {
+  additionalSkillsTitle: {
     fontSize: "15px",
     textAlign: "left",
     color: theme.palette.stateBlue,
   },
-  keywordsContainer: {
+  additionalSkillsContainer: {
     padding: theme.spacing(3),
   },
   buttonContainer: {
@@ -46,8 +41,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Keywords = ({ keywordsState, keywords, handleKeywordsChange }) => {
+const AdditionalSkills = ({
+  additionalSkillsState,
+  handleAdditionalSkillsChange,
+}) => {
   const classes = useStyles();
+
+  const skills = [
+    "Cloud and Distributed Computing",
+    "Statistical Analysis and Data Mining",
+    "SEO/SEM Marketing",
+    "Middleware and Integration Software",
+    "Mobile Development",
+    "Network and Information Security",
+    "Public Speaking",
+    "Analytical Thinking",
+    "Object Oriented Programming",
+    "Leadership",
+    "Web Development",
+    "Data Engineering and Data Warehousing",
+    "Algorithm Design",
+    "Shell Scripting Languages",
+    "Software Modeling and Process Design",
+  ];
 
   return (
     <Grid item xs={12} className={classes.card}>
@@ -55,11 +71,11 @@ const Keywords = ({ keywordsState, keywords, handleKeywordsChange }) => {
         <Grid item xs={12}>
           <Autocomplete
             multiple
-            id="keywords"
-            options={keywords.map((keyword) => keyword.name)}
-            defaultValue={keywordsState}
+            id="additionalSkills"
+            options={skills.map((skill) => skill)}
+            defaultValue={additionalSkillsState}
             freeSolo
-            onChange={(event, values) => handleKeywordsChange(values)}
+            onChange={(event, values) => handleAdditionalSkillsChange(values)}
             renderTags={(value, getTagProps) =>
               value.map((option, index) => (
                 <Chip
@@ -74,7 +90,7 @@ const Keywords = ({ keywordsState, keywords, handleKeywordsChange }) => {
               <StateBlueTextField
                 {...params}
                 variant="outlined"
-                placeholder="Add Keyword..."
+                placeholder="Add additional skills..."
                 size="small"
               />
             )}
@@ -85,4 +101,4 @@ const Keywords = ({ keywordsState, keywords, handleKeywordsChange }) => {
   );
 };
 
-export default Keywords;
+export default AdditionalSkills;

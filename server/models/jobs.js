@@ -52,7 +52,7 @@ const jobSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  keywords: {
+  additionalSkills: {
     type: Array,
   },
   postedDate: {
