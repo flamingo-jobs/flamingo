@@ -5,6 +5,9 @@ const jobseekerSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
+  profilePic: {
+    type: String,
+  },
   name: {
     type: String,
     required: true,

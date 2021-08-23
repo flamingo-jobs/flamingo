@@ -29,6 +29,11 @@ import Avatar from "@material-ui/core/Avatar";
 import Paper from '@material-ui/core/Paper';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -115,6 +120,7 @@ function IntroSection(props) {
 
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const [openImageDialog, setOpenImageDialog] = React.useState(false);
   const [state, setState] = useState({
     firstName: "",
     lastName: "",
@@ -129,6 +135,7 @@ function IntroSection(props) {
     email: ""
   });
   const [isPublic, setIsPublic] = useState(true);
+  const [profilePic, setProfilePic] = useState("empty");
 
   let loginId;
   let login = false;
@@ -175,8 +182,66 @@ function IntroSection(props) {
     setOpen(false);
   }
 
+  const handleOpenImageDialog = () => {
+    setOpenImageDialog(true);
+  };
+
+  const handleCloseImageDialog = () => {
+    setOpenImageDialog(false);
+  };
+
   function onChangeIsPublic(e){
     setIsPublic(e.target.checked)
+  }
+
+  const onChangeProfilePic = (e) => {
+    setProfilePic("empty");
+
+    if(e.target.files[0]){
+      let nameSplit = e.target.files[0].name.split(".");
+      // console.log("file extention", nameSplit[nameSplit.length - 1]);
+      if (nameSplit[nameSplit.length - 1] !== "jpg") {
+        console.log("type invalid");
+        // setAlertData({
+        //   severity: "error",
+        //   msg: "Invalid file type, only jpg file type is allowed",
+        // });
+        // handleAlert();
+      } else {
+        setProfilePic(e.target.files[0]);
+      }
+    }
+  };
+
+  function onSubmitProfilePic(e){
+
+    e.preventDefault();
+
+    const data = new FormData();
+    data.append("userId", loginId);
+    data.append("photo", profilePic);
+
+    const imageExt = "." + profilePic.name.split(".")[profilePic.name.split(".").length - 1];
+
+    const image = {
+      profilePic : loginId + "--" + profilePic.name,
+    };
+
+    axios.post(`${BACKEND_URL}/jobseeker/updateProfilePic/${loginId}`,data,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then(res=>{
+        console.log(res);
+    })
+
+    axios.put(`${BACKEND_URL}/jobseeker/update/${loginId}`,image)
+    .then(res=>{
+        console.log(res);
+    })
+    
   }
 
   function onChangeFirstName(e){
@@ -409,14 +474,52 @@ function IntroSection(props) {
             </div>
           </Fade>
         </Modal>
-        <Typography component="div">
+        <Typography component="div" onClick={handleOpenImageDialog}>
         <CardMedia
               className={classes.media}
               image={cardImage}
               alt="profile image"
-              zIndex="background"
-          />
+              zIndex="background"             
+          />        
         </Typography>
+        {/* Profile picture change dialog */}
+        <Dialog open={openImageDialog} onClose={handleCloseImageDialog} aria-labelledby="form-dialog-title">
+            <DialogTitle id="form-dialog-title">Change Profile Picture</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                To subscribe to this website, please enter your email address here. We will send updates
+                occasionally.
+              </DialogContentText>
+              <form onSubmit={onSubmitProfilePic} encType="multipart/form-data">
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="photo"
+                  label="Photo"
+                  type="file"
+                  fullWidth
+                  onChange={onChangeProfilePic}
+                />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.defaultButton}
+                  type="submit"
+                  >
+                    Save
+                </Button>
+              </form>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={handleClose} color="primary">
+                Subscribe
+              </Button>
+            </DialogActions>
+          </Dialog>
+
           <CardContent>
             <Typography gutterBottom variant="h5" style={{color: theme.palette.stateBlue,fontWeight:'bold',marginTop:"-5px"}}>
               {state.firstName+" "+state.lastName}
