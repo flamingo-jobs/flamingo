@@ -13,7 +13,7 @@ import FloatCard from "../../components/FloatCard";
 import SummaryForm from "./components/summaryForm";
 import TaskForm from "./components/tasksForm";
 import QualificationsForm from "./components/qualificationsForm";
-import Keywords from "./components/keywords";
+import AdditionalSkills from "./components/additionalSkills";
 import TechStack from "./components/techStack";
 import BACKEND_URL from "../../Config";
 import SnackBarAlert from "../../components/SnackBarAlert";
@@ -86,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-  return ["Basic Details", "Tasks and Responsibilites", "Qualifications and Requirements", "Technology Stack", "Keywords"];
+  return ["Basic Details", "Tasks and Responsibilites", "Qualifications and Requirements", "Technology Stack", "Additional Skills"];
 }
 
 export default function CreateJobSetup() {
@@ -226,7 +226,7 @@ export default function CreateJobSetup() {
   const [tasksFields, setTasksFields] = useState([""]);
   const [qualificationsFields, setQualificationsFields] = useState([""]);
   const [techStackState, setTechStack] = useState([]);
-  const [keywordsState, setKeywords] = useState([]);
+  const [additionalSkillsState, setAdditionalSkills] = useState([]);
   const [isFeatured, setIsFeatured] = useState(false);
   const [isPublished, setIsPublished] = useState(true);
 
@@ -404,9 +404,9 @@ export default function CreateJobSetup() {
     setTechStack(values);
   };
 
-  // Keywords
-  const handleKeywordsChange = (values) => {
-    setKeywords(values);
+  // Additional Skills
+  const handleAdditionalSkillsChange = (values) => {
+    setAdditionalSkills(values);
   };
 
   // Alert stuff
@@ -451,7 +451,7 @@ export default function CreateJobSetup() {
       tasksAndResponsibilities: tasksFields,
       qualifications: qualificationsFields,
       technologyStack: techStackState,
-      keywords: keywordsState,
+      additionalSkills: additionalSkillsState,
       isPublished: isPublished,
       isFeatured: isFeatured,
       createdBy: userId,
@@ -533,16 +533,15 @@ export default function CreateJobSetup() {
     }
   };
 
-  const displayKeywords = () => {
+  const displayAdditionalSkills = () => {
     if (technologies === "empty" || technologies === undefined) {
       return null;
     } else {
       return (
-        <Keywords
-          keywordsState={keywordsState}
-          keywords={keywords}
-          handleKeywordsChange={handleKeywordsChange}
-        ></Keywords>
+        <AdditionalSkills
+          additionalSkillsState={additionalSkillsState}
+          handleAdditionalSkillsChange={handleAdditionalSkillsChange}
+        ></AdditionalSkills>
       );
     }
   };
@@ -620,7 +619,7 @@ export default function CreateJobSetup() {
       case 3:
         return displayTechStack();
       case 4:
-        return displayKeywords();
+        return displayAdditionalSkills();
       default:
         return "Unknown step";
     }
