@@ -1,4 +1,8 @@
 const Jobseeker = require("../models/jobseeker");
+var multer  = require('multer');
+var path = require('path');
+const fs = require("fs");
+
 
 const create = (req, res) => {
   let newJobseeker = new Jobseeker(req.body);
@@ -145,6 +149,47 @@ const update = (req, res) => {
       });
     }
   );
+};
+//--------------------------------------------
+
+let fileName = "";
+
+var storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, "../profilePictures/"));
+  },
+  filename: (req, file, cb) => {
+    fileName = req.body.company + path.extname(file.originalname);
+    fileName.replace(/:/g, "-");
+    cb(null, fileName);
+  },
+});
+
+const uploadPic = multer({ storage: storage }).single("photo");
+
+const fileFilter=(req, file, cb)=>{
+  console.log("inside fileFilter")
+ if(file.mimetype ==='image/jpeg' || file.mimetype ==='image/jpg' || file.mimetype ==='image/png'){
+     cb(null,true);
+ }else{
+     cb(null, false);
+ }
+
+}
+
+const updateProfilePic = (req, res) => {
+
+  uploadPic(req, res, (err) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        error: err,
+      });
+    }
+    return res.status(200).json({
+      success: true,
+    });
+  });
 };
 
 const updateSkills = (req, res) => {
@@ -763,6 +808,7 @@ module.exports = {
   updateCourse,
   updateCertificate,
   updateSkills,
+  updateProfilePic,
   updateTechnologyItem,
   updateTechnologyStack,
   updateVolunteer,
