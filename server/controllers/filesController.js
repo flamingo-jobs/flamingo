@@ -12,7 +12,8 @@ const resumeStorageEngine = multer.diskStorage({
     cb(null, path.join(__dirname, "../resumes/"));
   },
   filename: (req, file, cb) => {
-    fileName = req.body.jobId + "--" + req.body.userId + path.extname(file.originalname);
+    fileName =
+      req.body.jobId + "--" + req.body.userId + path.extname(file.originalname);
     fileName.replace(/:/g, "-");
     cb(null, fileName);
   },
@@ -30,7 +31,6 @@ const logoStorageEngine = multer.diskStorage({
 
 const uploadLogo = multer({ storage: logoStorageEngine }).single("logo");
 const uploadResume = multer({ storage: resumeStorageEngine }).single("resume");
-
 
 const uploadResumeToServer = (req, res) => {
   uploadResume(req, res, (err) => {
@@ -62,21 +62,32 @@ const uploadLogoToServer = (req, res) => {
   // console.log(req.file);
 };
 
+const downloadLogo = async (req, res) => {
+  try {
+    const logoName = req.params.logoName;
+    const logoPath = path.join(__dirname, "..", "logos", logoName);
+    var file = fs.createReadStream(logoPath);
+    file.pipe(res);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const downloadResume = async (req, res) => {
   try {
     const resumeName = req.params.jobId + "--" + req.params.userId + ".pdf";
-    const resumePath = path.join(__dirname, '..', "resumes" , resumeName);
+    const resumePath = path.join(__dirname, "..", "resumes", resumeName);
 
     var file = fs.createReadStream(resumePath);
     file.pipe(res);
-
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
 module.exports = {
   uploadResumeToServer,
   uploadLogoToServer,
   downloadResume,
+  downloadLogo,
 };

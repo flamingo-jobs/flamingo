@@ -1,20 +1,21 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const settingsController = require('../controllers/settingsController');
+const settingsController = require("../controllers/settingsController");
 
+// get settings
 
-// get categories
+router.get("/settings", settingsController.getAll);
 
-router.get('/settings', settingsController.getAll);
+router.get("/settings/:id", settingsController.getById);
 
+router.get("/settingsByType/:typeString", settingsController.getByType);
 
-router.get('/settings/:id', settingsController.getById);
+// post settings
 
-router.get('/settingsByType/:typeString', settingsController.getByType);
+router.post("/settings/create", settingsController.create);
 
-// update category
+// update setting
 
-router.put('/settings/update/:id', settingsController.update);
-
+router.put("/settings/update/:id", settingsController.update);
 
 module.exports = router;
