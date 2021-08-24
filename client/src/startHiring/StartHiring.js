@@ -258,7 +258,7 @@ export default function StartHiring() {
   };
 
   const sendData = (userId) => {
-    const filename=handleUploads();
+    const filename=handleUploads(userId);
     const employerData = {
       name: formData.name,
       logo: formData.logo,
@@ -304,13 +304,13 @@ export default function StartHiring() {
   const changeHandler = (event) => {
     setSelectedFile(event.target.files[0]);
   };
-  const handleUploads = () => {
+  const handleUploads = (userId) => {
     formData.logo = selectedFile ? selectedFile.name : "";
 
     if (selectedFile) {
       const data = new FormData();
       const image = selectedFile;
-      data.append("company", formData.name);
+      data.append("company", userId);
       data.append("logo", image);
       axios
         .post(`${BACKEND_URL}/logo`, data, {

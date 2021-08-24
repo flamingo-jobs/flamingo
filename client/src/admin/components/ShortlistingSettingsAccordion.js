@@ -449,23 +449,23 @@ export default function ShortlistingSettingsAccordion(props) {
     if (settings !== false) {
       return (
         <Grid item xs={12}>
-          <ContinousSlider name={"Education"} value={settings.settings.education} passValue={getSettingValues} />
+          <ContinousSlider name={"Education"} value={settings?.settings.education} passValue={getSettingValues} />
           <div style={{ padding: 20, paddingTop: 0 }}>
             <ShortlistingEducationSettingsAccordion id={id} type={props.type} passSettings={combineCustomValues} handleInvalid={props.handleInvalid} />
 
           </div>
-          <ContinousSlider name={"Experience"} value={settings.settings.experience} passValue={getSettingValues} />
+          <ContinousSlider name={"Experience"} value={settings?.settings.experience} passValue={getSettingValues} />
           <div style={{ padding: 20, paddingTop: 0 }}>
             <ShortlistingExperienceSettingsAccordion id={id} type={props.type} passSettings={combineCustomValues} handleInvalid={props.handleInvalid} />
 
           </div>
-          <ContinousSlider name={"Technology Stack"} value={settings.settings.techStack} passValue={getSettingValues} />
-          <ContinousSlider name={"Project Technology Stack"} value={settings.settings.projectTechStack} passValue={getSettingValues} />
-          <ContinousSlider name={"Skills"} value={settings.settings.skills} passValue={getSettingValues} />
-          <ContinousSlider name={"Certificates"} value={settings.settings.certifications} passValue={getSettingValues} />
-          <ContinousSlider name={"Courses"} value={settings.settings.courses} passValue={getSettingValues} />
-          <ContinousSlider name={"Extra Curricular"} value={settings.settings.extraCurricular} passValue={getSettingValues} />
-          <ContinousSlider name={"Awards"} value={settings.settings.awards} passValue={getSettingValues} />
+          <ContinousSlider name={"Technology Stack"} value={settings?.settings.techStack} passValue={getSettingValues} />
+          <ContinousSlider name={"Project Technology Stack"} value={settings?.settings.projectTechStack} passValue={getSettingValues} />
+          <ContinousSlider name={"Skills"} value={settings?.settings.skills} passValue={getSettingValues} />
+          <ContinousSlider name={"Certificates"} value={settings?.settings.certifications} passValue={getSettingValues} />
+          <ContinousSlider name={"Courses"} value={settings?.settings.courses} passValue={getSettingValues} />
+          <ContinousSlider name={"Extra Curricular"} value={settings?.settings.extraCurricular} passValue={getSettingValues} />
+          <ContinousSlider name={"Awards"} value={settings?.settings.awards} passValue={getSettingValues} />
         </Grid>
       )
     } else {

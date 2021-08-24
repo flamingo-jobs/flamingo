@@ -23,8 +23,7 @@ const logoStorageEngine = multer.diskStorage({
     cb(null, path.join(__dirname, "../logos/"));
   },
   filename: (req, file, cb) => {
-    fileName = req.body.company + path.extname(file.originalname);
-    fileName.replace(/:/g, "-");
+    fileName = "" + req.body.company + path.extname(file.originalname);
     cb(null, fileName);
   },
 });
