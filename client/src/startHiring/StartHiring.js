@@ -272,7 +272,7 @@ export default function StartHiring() {
   const sendData = async (userId) => {
     const employerData = {
       name: formData.name,
-      logo: "" + userId + path.extname(selectedFile.name),
+      logo: selectedFile ? "" + userId + path.extname(selectedFile.name) : "",
       description: formData.description,
       locations: locations,
       email: formData.email,
@@ -345,8 +345,6 @@ export default function StartHiring() {
     setSelectedFile(event.target.files[0]);
   };
   const handleUploads = (loginId) => {
-    formData.logo = selectedFile ? selectedFile.name : "";
-
     if (selectedFile) {
       const data = new FormData();
       const image = selectedFile;
