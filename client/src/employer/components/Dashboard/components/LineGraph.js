@@ -101,6 +101,7 @@ const LineGraph = (props) => {
   const classes = useStyles();
 
   // Get dates for the graph
+  
   var day1 = new Date();
   var day2 = new Date();
   var day3 = new Date();
@@ -108,15 +109,70 @@ const LineGraph = (props) => {
   var day5 = new Date();
   var day6 = new Date();
   var day7 = new Date();
+  var day8 = new Date();
+  var day9 = new Date();
+  var day10 = new Date();
+  var day11 = new Date();
+  var day12 = new Date();
+  var day13 = new Date();
+  var day14 = new Date();
 
-  day6.setDate(day7.getDate() - 1);
-  day5.setDate(day7.getDate() - 2);
-  day4.setDate(day7.getDate() - 3);
-  day3.setDate(day7.getDate() - 4);
-  day2.setDate(day7.getDate() - 5);
-  day1.setDate(day7.getDate() - 6);
+  day13.setDate(day7.getDate() - 1);
+  day12.setDate(day7.getDate() - 2);
+  day11.setDate(day7.getDate() - 3);
+  day10.setDate(day7.getDate() - 4);
+  day9.setDate(day7.getDate() - 5);
+  day8.setDate(day7.getDate() - 6);
+  day7.setDate(day7.getDate() - 7);
+  day6.setDate(day7.getDate() - 8);
+  day5.setDate(day7.getDate() - 9);
+  day4.setDate(day7.getDate() - 10);
+  day3.setDate(day7.getDate() - 11);
+  day2.setDate(day7.getDate() - 12);
+  day1.setDate(day7.getDate() - 13);
 
+  var dd14 = String(day14.getDate()).padStart(2, '0');
+  var mm14 = String(day14.getMonth() + 1).padStart(2, '0');
+  var yyyy14 = day14.getFullYear();
+  day14 = mm14 + '/' + dd14;
+  var day14full = yyyy14 + '-' + mm14 + '-' + dd14;
 
+  var dd13 = String(day13.getDate()).padStart(2, '0');
+  var mm13 = String(day13.getMonth() + 1).padStart(2, '0');
+  var yyyy13 = day13.getFullYear();
+  day13 = mm13 + '/' + dd13;
+  var day13full = yyyy13 + '-' + mm13 + '-' + dd13;
+  
+  var dd12 = String(day12.getDate()).padStart(2, '0');
+  var mm12 = String(day12.getMonth() + 1).padStart(2, '0');
+  var yyyy12 = day12.getFullYear();
+  day12 = mm12 + '/' + dd12;
+  var day12full = yyyy12 + '-' + mm12 + '-' + dd12;
+  
+  var dd11 = String(day11.getDate()).padStart(2, '0');
+  var mm11 = String(day11.getMonth() + 1).padStart(2, '0');
+  var yyyy11 = day11.getFullYear();
+  day11 = mm11 + '/' + dd11;
+  var day11full = yyyy11 + '-' + mm11 + '-' + dd11;
+  
+  var dd10 = String(day10.getDate()).padStart(2, '0');
+  var mm10 = String(day10.getMonth() + 1).padStart(2, '0');
+  var yyyy10 = day10.getFullYear();
+  day10 = mm10 + '/' + dd10;
+  var day10full = yyyy10 + '-' + mm10 + '-' + dd10;
+  
+  var dd9 = String(day9.getDate()).padStart(2, '0');
+  var mm9 = String(day9.getMonth() + 1).padStart(2, '0');
+  var yyyy9 = day9.getFullYear();
+  day9 = mm9 + '/' + dd9;
+  var day9full = yyyy9 + '-' + mm9 + '-' + dd9;
+  
+  var dd8 = String(day8.getDate()).padStart(2, '0');
+  var mm8 = String(day8.getMonth() + 1).padStart(2, '0');
+  var yyyy8 = day8.getFullYear();
+  day8 = mm8 + '/' + dd8;
+  var day8full = yyyy8 + '-' + mm8 + '-' + dd8;
+  
   var dd7 = String(day7.getDate()).padStart(2, '0');
   var mm7 = String(day7.getMonth() + 1).padStart(2, '0');
   var yyyy7 = day7.getFullYear();
@@ -202,9 +258,11 @@ const LineGraph = (props) => {
 
   const data = [getTotalApplications(day1full), getTotalApplications(day2full), getTotalApplications(day3full),
   getTotalApplications(day4full), getTotalApplications(day5full), getTotalApplications(day6full),
-  getTotalApplications(day7full)];
+  getTotalApplications(day7full), getTotalApplications(day8full), getTotalApplications(day9full), 
+  getTotalApplications(day10full), getTotalApplications(day11full), getTotalApplications(day12full), 
+  getTotalApplications(day13full), getTotalApplications(day14full)];
 
-  const labels = [day1, day2, day3, day4, day5, day6, day7];
+  const labels = [day1, day2, day3, day4, day5, day6, day7, day8, day9, day10, day11, day12, day13, day14];
 
   const generateLineChart = () => {
     return {
@@ -228,7 +286,7 @@ const LineGraph = (props) => {
           Applications
         </Typography>
         <Typography variant="body1" className={classes.title2}>
-          This Week
+          Last 2 Weeks
         </Typography>
 
         <br />
