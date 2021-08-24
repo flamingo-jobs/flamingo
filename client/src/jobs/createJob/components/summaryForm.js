@@ -86,12 +86,14 @@ const SummaryForm = ({
   minExperienceList,
   minSalary,
   maxSalary,
+  numberOfVacancies,
   handleTextFieldChange,
   handleCategoryChange,
   handleJobTypeChange,
   handleLocationChange,
   handleDateChange,
   handleSalaryChange,
+  handleVacanciesChange,
   handleMinEducationChange,
   handleMinExperienceChange,
   errors
@@ -287,6 +289,21 @@ const SummaryForm = ({
               value={maxSalary}
               error={errors.hasOwnProperty("maxSalary")}
               helperText={errors["maxSalary"]}
+            ></StateBlueTextField>
+          </Grid>
+
+          <Grid item xs={6}>
+            <StateBlueTextField
+              id="numberOfVacancies"
+              name="numberOfVacancies"
+              label="Number of Vacancies"
+              onChange={handleVacanciesChange}
+              variant="outlined"
+              fullWidth
+              size="small"
+              value={numberOfVacancies}
+              error={errors.hasOwnProperty("numberOfVacancies")}
+              helperText={errors["numberOfVacancies"]}
             ></StateBlueTextField>
           </Grid>
         </Grid>

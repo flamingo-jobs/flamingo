@@ -83,6 +83,9 @@ const jobSchema = new mongoose.Schema({
   recommendedJobs: {
     type: Array,
   },
+  numberOfVacancies:{
+    type: String,
+  },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
   },

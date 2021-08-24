@@ -4,6 +4,6 @@ const filesController = require('../controllers/filesController');
 
 router.post("/logo", filesController.uploadLogoToServer);
  
-//router.get("/logo/:loginId", filesController.downloadLogo);
+router.get("/logo/:logoName", filesController.downloadLogo);
 
 module.exports = router;

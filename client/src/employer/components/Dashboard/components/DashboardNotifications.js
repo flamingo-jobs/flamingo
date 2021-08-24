@@ -11,7 +11,7 @@ import {
   Button,
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
-import FloatCard from "../../FloatCard";
+import FloatCard from "../../../../FloatCard";
 import Box from "@material-ui/core/Box";
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import Card from '@material-ui/core/Card';

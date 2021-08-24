@@ -233,20 +233,32 @@ export default function StartHiring() {
       handleAlert();
     } else {
       if (formData.password === formData.confirmPassword) {
-        axios.post(`${BACKEND_URL}/api/signup`, signupData).then((res) => {
-          if (res.data.success) {
-            sessionStorage.setItem("userToken", res.data.token);
-            const userId = jwt.decode(res.data.token, { complete: true })
-              .payload.userId;
-            sendData(userId);
-          } else {
-            setAlertData({
-              severity: "error",
-              msg: "User account creation failed!",
-            });
-            handleAlert();
-          }
-        });
+        axios
+          .post(`${BACKEND_URL}/api/signup`, signupData)
+          .then((res) => {
+            if (res.data.success) {
+              sessionStorage.setItem("userToken", res.data.token);
+              const userId = jwt.decode(res.data.token, { complete: true })
+                .payload.userId;
+              sendData(userId);
+            } else {
+              setAlertData({
+                severity: "error",
+                msg: "User account creation failed!",
+              });
+              handleAlert();
+            }
+          })
+          .catch((err) => {
+            if (err) {
+              console.log(err);
+              setAlertData({
+                severity: "error",
+                msg: "User account creation failed!",
+              });
+              handleAlert();
+            }
+          });
       } else {
         setAlertData({
           severity: "error",
@@ -257,11 +269,10 @@ export default function StartHiring() {
     }
   };
 
-  const sendData = (userId) => {
-    const filename=handleUploads();
+  const sendData = async (userId) => {
     const employerData = {
       name: formData.name,
-      logo: formData.logo,
+      logo: "" + userId + path.extname(selectedFile.name),
       description: formData.description,
       locations: locations,
       email: formData.email,
@@ -283,11 +294,11 @@ export default function StartHiring() {
   };
 
   const handleSuccessLogin = (id, loginId) => {
+    handleUploads(loginId);
     const linker = { id: id, loginId: loginId };
     axios.post(`${BACKEND_URL}/api/link-account`, linker).then((res) => {
       if (res.data.success) {
-        sessionStorage.setItem("loginId", loginId);
-        window.location = "/";
+        handleShorlistingSettings(loginId);
       } else {
         setAlertData({
           severity: "error",
@@ -298,19 +309,48 @@ export default function StartHiring() {
     });
   };
 
+  const handleShorlistingSettings = (loginId) => {
+    const shortlistData = {
+      loginId: loginId,
+    };
+    axios
+      .post(`${BACKEND_URL}/settings/create`, shortlistData)
+      .then((res) => {
+        if (res.data.success) {
+          sessionStorage.setItem("loginId", loginId);
+          window.location = "/";
+        } else {
+          setAlertData({
+            severity: "error",
+            msg: "Account creation failed! Please contact support",
+          });
+          handleAlert();
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          setAlertData({
+            severity: "error",
+            msg: "Account creation failed! Please contact support",
+          });
+          handleAlert();
+        }
+      });
+  };
+
   // File upload handler
   const fileInput = useRef();
   const [selectedFile, setSelectedFile] = useState();
   const changeHandler = (event) => {
     setSelectedFile(event.target.files[0]);
   };
-  const handleUploads = () => {
+  const handleUploads = (loginId) => {
     formData.logo = selectedFile ? selectedFile.name : "";
 
     if (selectedFile) {
       const data = new FormData();
       const image = selectedFile;
-      data.append("company", formData.name);
+      data.append("company", loginId);
       data.append("logo", image);
       axios
         .post(`${BACKEND_URL}/logo`, data, {
@@ -320,13 +360,29 @@ export default function StartHiring() {
         })
         .then((res) => {
           if (res.data.success) {
-            return res.data;
+            setAlertData({
+              severity: "success",
+              msg: "Almost there...",
+            });
+            handleAlert();
+            return "";
           } else {
             setAlertData({
               severity: "error",
               msg: "Image upload failed!",
             });
             handleAlert();
+            return "";
+          }
+        })
+        .catch((err) => {
+          if (err) {
+            setAlertData({
+              severity: "error",
+              msg: "Image upload failed!",
+            });
+            handleAlert();
+            return "";
           }
         });
     }

@@ -176,6 +176,34 @@ const TopCards = (props) => {
     return totalRejected;
   }
 
+  const getTotalActiveJobs = () => {
+
+    var totalActive = 0;
+
+    allJobs.forEach(job => {
+
+      if(job.isPublished == true){
+        totalActive++
+      }
+    }
+    );
+    return totalActive;
+  }
+
+  const getTotalInactiveJobs = () => {
+
+    var totalInactive = 0;
+
+    allJobs.forEach(job => {
+
+      if(job.isPublished == false){
+        totalInactive++
+      }
+    }
+    );
+    return totalInactive;
+  }
+
   const classes = useStyles();
 
   return (
@@ -195,7 +223,7 @@ const TopCards = (props) => {
             TOTAL JOBS
           </Typography>
           <Typography variant="h5" className={classes.cardNumber}>
-            {getTotalRejected()}
+            {allJobs.length}
           </Typography>
         </FloatCard>
       </Grid>
@@ -219,7 +247,7 @@ const TopCards = (props) => {
                 TOTAL APPLICATIONS
               </Typography>
               <Typography variant="h5" className={classes.cardNumber}>
-                {getTotalPending()}
+                {getTotalApplications()}
               </Typography>
             {/* <Grid item xs={10}>
 
@@ -249,7 +277,7 @@ const TopCards = (props) => {
                 DUE JOBS
               </Typography>
               <Typography variant="h5" className={classes.cardNumber}>
-                {getTotalReviewing()}
+                {getTotalActiveJobs()}
               </Typography>
             {/* <Grid item xs={10}>
 
@@ -312,7 +340,7 @@ const TopCards = (props) => {
                 INACTIVE JOBS
               </Typography>
               <Typography variant="h5" className={classes.cardNumber}>
-                {getTotalRejected()}
+                {getTotalInactiveJobs()}
               </Typography>
             {/* <Grid item xs={10}>
 

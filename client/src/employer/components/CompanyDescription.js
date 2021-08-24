@@ -7,7 +7,7 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core";
-import FloatCard from "./FloatCard";
+import FloatCard from '../../components/FloatCard';
 import EditIcon from "@material-ui/icons/Edit";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -39,71 +39,29 @@ const useStyles = makeStyles((theme) => ({
   root: {
     textAlign: "left",
   },
-  header: {},
-  body: {},
-  logoItem: {
-    marginLeft: 10,
-    marginTop: 10,
-  },
-  info: {
-    marginLeft: 150,
-    marginTop: -130,
-  },
-  infoTags: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    margin: 10,
-    marginTop: -10,
-    maxWidth: 200,
-    marginBottom: 15,
-  },
-  infoTagsContainer: {
-    marginLeft: theme.spacing(2),
-  },
-  companyDescription: {
-    paddingTop: -25,
+  body: {
     paddingLeft: 20,
     paddingRight: 20,
-    paddingBottom: 20,
+    marginBottom: 16
   },
-  listItem: {
-    paddingTop: 0,
-    paddingBottom: 0,
+  infoTagsContainer: {
+
   },
   editButton: {
-    marginTop: 140,
-    marginLeft: 110,
-    marginBottom: -30,
-    margin: theme.spacing(1),
-    padding: theme.spacing(1),
+    position: 'relative',
+    right: '-45%'
   },
   tag: {
-    marginRight: -10,
-    backgroundColor: "white",
+    marginRight: 10,
+    marginLeft: 10,
+    marginBottom: 10,
+    backgroundColor: theme.palette.lightSkyBlue,
   },
   label: {
-    alignSelf: "left",
-    marginRight: 15,
-    marginBottom: 5,
+
     backgroundColor: theme.palette.tagYellow,
   },
-  headerRight: {
-    marginLeft: 260,
-  },
-  dialogbuttons: {
-    color: theme.palette.purple,
-  },
-  dialogBox: {
-    minHeight: "100vh",
-    maxHeight: "100vh",
-  },
-  textField: {
-    fontSize: 14,
-  },
-  textFieldColor: {
-    color: theme.palette.purple,
-  },
+
 }));
 
 function CompanyDescription(props) {
@@ -248,174 +206,114 @@ function CompanyDescription(props) {
     }
   }
 
-  return (
-    <div className={classes.root}>
-      <FloatCard>
-        <Grid item container direction="row" spacing={3}>
-          {/* HEAD PART OF THE COMPANY INFO CARD */}
+  const displayEditForm = () => {
+    return (
+      <form>
+        {/* Dialog box for the edit details */}
 
-          <Grid
-            xs={12}
-            item
-            container
-            direction="column"
-            spacing={1}
-            className={classes.header}
-          >
-            {/* OTHER INFO NEXT TO LOGO */}
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="edit-details-form"
+          fullWidth
+          className={classes.dialogBox}
+        >
+          <DialogTitle id="edit-details-form">
+            Company Description
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText>*Required Fields</DialogContentText>
 
-            <Grid
-              item
-              container
-              xs={9}
-              direction="row"
-              spacing={1}
-              className={classes.info}
+            {/* input fields */}
+
+            <div>
+              <Grid item sm={12}>
+                <TextField
+                  multiline
+                  fullWidth
+                  id="description"
+                  defaultValue={description}
+                  label="Description"
+                  rows={5}
+                  variant="outlined"
+                  InputProps={{
+                    classes: {
+                      input: classes.textField,
+                    },
+                  }}
+                  onChange={onChangeDescription}
+                />
+              </Grid>
+            </div>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={handleClose}
+              color="primary"
+              className={classes.dialogbuttons}
             >
-              {/* EDIT BUTTON */}
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              onClick={onSubmit}
+              color="primary"
+              className={classes.dialogbuttons}
+            >
+              Save
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </form>
 
-              <Grid item xs={9}>
-                <div className={classes.headerRight}>
-                  {props.userRole === "employer" ||
-                    (haveAccess && (
-                      <IconButton
-                        variant="outlined"
-                        aria-label="edit"
-                        className={classes.editButton}
-                        onClick={handleClickOpen}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                    ))}
+    )
+  }
 
-                  {/* <form onSubmit={onSubmit}> */}
-                  <form>
-                    {/* Dialog box for the edit details */}
+  return (
+    <>
+      <FloatCard>
+        {props.userRole == "employer" || haveAccess == true ?
+          <IconButton
+            variant="outlined"
+            aria-label="edit"
+            className={classes.editButton}
+            onClick={handleClickOpen}
+          >
+            <EditIcon />
+          </IconButton>
+          : null
+        }
+        <Grid container spacing={3} direction="row">
 
-                    <Dialog
-                      open={open}
-                      onClose={handleClose}
-                      aria-labelledby="edit-details-form"
-                      fullWidth
-                      className={classes.dialogBox}
-                    >
-                      <DialogTitle id="edit-details-form">
-                        Company Description
-                      </DialogTitle>
-                      <DialogContent>
-                        <DialogContentText>*Required Fields</DialogContentText>
-
-                        {/* input fields */}
-
-                        <div>
-                          <Grid item sm={12}>
-                            <TextField
-                              multiline
-                              fullWidth
-                              id="description"
-                              defaultValue={description}
-                              label="Description"
-                              rows={5}
-                              variant="outlined"
-                              InputProps={{
-                                classes: {
-                                  input: classes.textField,
-                                },
-                              }}
-                              onChange={onChangeDescription}
-                            />
-                          </Grid>
-                        </div>
-                      </DialogContent>
-                      <DialogActions>
-                        <Button
-                          onClick={handleClose}
-                          color="primary"
-                          className={classes.dialogbuttons}
-                        >
-                          Cancel
-                        </Button>
-                        <Button
-                          type="submit"
-                          onClick={onSubmit}
-                          color="primary"
-                          className={classes.dialogbuttons}
-                        >
-                          Save
-                        </Button>
-                      </DialogActions>
-                    </Dialog>
-                  </form>
+          <Grid item container spacing={3} xs={12}>
+            {technologyStack.length > 0 ? (
+              <Grid item xs={12}>
+                <div className={classes.infoTags}>
+                  {Object.keys(technologyStack).map((item, i) => (
+                    <Chip
+                      icon={<LocalOfferRoundedIcon />} className={classes.tag}
+                      label={technologyStack[i].type}
+                    />
+                  ))}
                 </div>
               </Grid>
+            ) : (
+              <Grid item xs={12}>
+                <div className={classes.infoTags}>
+                  <Chip
+                    icon={<LocalOfferRoundedIcon />} className={classes.tag}
+                    label="No Technologies"
+                  />
+                </div>
+              </Grid>
+            )}
+            <Grid item xs={12} className={classes.headerInfo}>
+
             </Grid>
           </Grid>
-        </Grid>
 
-        <br />
-
-        <Snackbar
-          open={openAlertValidationError}
-          autoHideDuration={6000}
-          onClose={handleCloseAlertValidationError}
-          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-        >
-          <Alert onClose={handleCloseAlertValidationError} severity="error">
-            Company Description cannot be empty!
-          </Alert>
-        </Snackbar>
-
-        <Snackbar
-          open={openAlertServerError}
-          autoHideDuration={6000}
-          onClose={handleCloseAlertServerError}
-          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-        >
-          <Alert onClose={handleCloseAlertServerError} severity="error">
-            Server error! Changes couldn't be saved
-          </Alert>
-        </Snackbar>
-
-        <Snackbar
-          open={openAlertSuccess}
-          autoHideDuration={6000}
-          onClose={handleCloseAlertSuccess}
-          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-        >
-          <Alert onClose={handleCloseAlertSuccess} severity="success">
-            Changes saved successfully!
-          </Alert>
-        </Snackbar>
-
-        <Grid container xs={12} direction="row" spacing={3}>
-          {/* BODY PART OF THE COMPANY INFO CARD */}
-
-          {technologyStack.length > 0 ? (
-            <Grid item xs={12}>
-              <div className={classes.infoTagsContainer}>
-                {Object.keys(technologyStack).map((item, i) => (
-                  <Chip
-                    icon={<LocalOfferRoundedIcon className={classes.tagIcon} />}
-                    label={technologyStack[i].type}
-                    className={classes.label}
-                  />
-                ))}
-              </div>
-            </Grid>
-          ) : (
-            <Grid item xs={12}>
-              <div className={classes.infoTagsContainer}>
-              <Chip
-                    icon={<LocalOfferRoundedIcon className={classes.tagIcon} />}
-                    label="No Technologies"
-                    className={classes.label}
-                  />
-              </div>
-            </Grid>
-          )}
-
-          <Grid item xs={12} className={classes.body}>
-            <div className={classes.companyDescription}>
+          <Grid item xs={12} >
+            <div className={classes.body}>
               <Typography
                 style={{ whiteSpace: "pre-line" }}
                 variant="body2"
@@ -425,9 +323,44 @@ function CompanyDescription(props) {
               </Typography>
             </div>
           </Grid>
+
         </Grid>
-      </FloatCard>
-    </div>
+
+      </FloatCard >
+      {displayEditForm()}
+      <Snackbar
+        open={openAlertValidationError}
+        autoHideDuration={6000}
+        onClose={handleCloseAlertValidationError}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      >
+        <Alert onClose={handleCloseAlertValidationError} severity="error">
+          Company Description cannot be empty!
+        </Alert>
+      </Snackbar>
+
+      <Snackbar
+        open={openAlertServerError}
+        autoHideDuration={6000}
+        onClose={handleCloseAlertServerError}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      >
+        <Alert onClose={handleCloseAlertServerError} severity="error">
+          Server error! Changes couldn't be saved
+        </Alert>
+      </Snackbar>
+
+      <Snackbar
+        open={openAlertSuccess}
+        autoHideDuration={6000}
+        onClose={handleCloseAlertSuccess}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      >
+        <Alert onClose={handleCloseAlertSuccess} severity="success">
+          Changes saved successfully!
+        </Alert>
+      </Snackbar>
+    </>
   );
 }
 

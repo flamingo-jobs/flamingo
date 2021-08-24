@@ -117,16 +117,16 @@ const Dashboard = (props) => {
       <Grid item container xs={12} spacing={3} direction="row"
         justify="space-between"
         alignItems="streched">
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} lg={6}>
           <TopCards employerId={loginId} />
         </Grid>
-        <Grid item xs={12} md={3}>
+        <Grid item xs={12} md={6} lg={3}>
           <Aquisitions employerId={loginId} />
         </Grid>
-        <Grid item xs={12} md={3} >
+        <Grid item xs={12} md={6} lg={3} >
           <CompanySummaryCard employerId={loginId} />
         </Grid>
-        <Grid item xs={8}>
+        <Grid item xs={12} lg={8}>
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <LineGraph
@@ -140,12 +140,10 @@ const Dashboard = (props) => {
 
           </Grid>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} lg={4}>
           <NewApplicants employerId={loginId} />
         </Grid>
-        <Grid item xs={8}>
 
-        </Grid>
       </Grid>
     </>
   );

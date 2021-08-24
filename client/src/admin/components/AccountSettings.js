@@ -16,6 +16,7 @@ import {
 import SnackBarAlert from "../../components/SnackBarAlert";
 import axios from "axios";
 import BACKEND_URL from "../../Config";
+import FloatCard from "../../components/FloatCard";
 const jwt = require("jsonwebtoken");
 const passwordRegexp =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})/;
@@ -25,17 +26,6 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 10,
     margin: "30px 10px 30px 10px",
     flexGrow: 1,
-  },
-  mainGrid: {
-    paddingLeft: 12,
-    [theme.breakpoints.down("sm")]: {
-      flexDirection: "column",
-      alignItems: "stretch",
-    },
-    [theme.breakpoints.down("xs")]: {
-      paddingRight: 12,
-      paddingLeft: 12,
-    },
   },
   button: {
     backgroundColor: theme.palette.stateBlue,
@@ -52,6 +42,17 @@ const useStyles = makeStyles((theme) => ({
     overflow: "unset",
     margin: "0px 10px 20px 5px",
     flexGrow: 1,
+  },
+  mainGrid: {
+    padding: 20,
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+      alignItems: "stretch",
+    },
+    [theme.breakpoints.down("xs")]: {
+      paddingRight: 12,
+      paddingLeft: 12,
+    },
   },
   dialogbuttons: {
     color: "red",
@@ -85,7 +86,7 @@ const AccountSettings = () => {
   };
 
   const [deletePassword, setDeletePassword] = useState("");
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleClickOpen = (e) => {
     e.preventDefault();
     const userId = jwt.decode(sessionStorage.getItem("userToken"), {
@@ -111,8 +112,7 @@ const AccountSettings = () => {
   const handleClose = () => {
     setOpen(false);
   };
-  const deleteUser = async (e) => {
-    e.preventDefault();
+  const deleteUser = async () => {
     const userData = jwt.decode(sessionStorage.getItem("userToken"), {
       complete: true,
     }).payload;
@@ -122,6 +122,7 @@ const AccountSettings = () => {
       role: userData.userRole,
       accessTokens: userData.accessTokens,
     };
+    console.log(deleteUserData);
     axios
       .post(`${BACKEND_URL}/api/remove-user`, deleteUserData)
       .then((res) => {
@@ -225,7 +226,6 @@ const AccountSettings = () => {
           })
           .catch((err) => {
             if (err) {
-              console.log(err)
               setAlertData({
                 severity: "error",
                 msg: "Cannot connect right now. Please check again later!",
@@ -254,79 +254,154 @@ const AccountSettings = () => {
       alignItems="flex-start"
     >
       <Grid item xs={12}>
-        {displayAlert()}
-        <Grid
-          container
-          justify="left"
-          alignItems="left"
-          className={classes.mainGrid}
-          spacing={2}
-          direction="column"
-        >
-          <form onSubmit={handleChangePassword}>
-            <Grid item xs={12}>
-              <Grid container spacing={3} diection="column">
-                <Grid item xs={12} align="left">
-                  <Typography variant="h5">Change Password</Typography>
+        <FloatCard>
+          {displayAlert()}
+          <Grid
+            container
+            justify="center"
+            alignItems="center"
+            className={classes.mainGrid}
+            spacing={2}
+            direction="column"
+          >
+            <form onSubmit={handleChangePassword}>
+              <Grid item xs={12}>
+                <Grid container spacing={3} diection="column">
+                  <Grid item xs={12} align="left">
+                    <Typography variant="h5">Change Password</Typography>
+                  </Grid>
+                  <Grid item xs={12} md={12} lg={6} align="left">
+                    <Typography>
+                      Please provide your previous password to change the
+                      password.
+                    </Typography>
+                    <Typography variant="caption" display="block">
+                      Please make sure that your password contains at least,
+                      <ul>
+                        <li>8 characters</li>
+                        <li>1 uppercase letter</li>
+                        <li>1 lowercase letter</li>
+                        <li>1 number and 1 special character</li>
+                      </ul>
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12} md={12} lg={6}>
+                    <Grid container spacing={2}>
+                      <Grid item xs={12} align="left">
+                        <TextField
+                          label="Old Password"
+                          name="oldPassword"
+                          type="password"
+                          value={oldPassword}
+                          onChange={(e) => setOldPassword(e.target.value)}
+                          size="small"
+                          variant="outlined"
+                          required
+                        />
+                      </Grid>
+                      <Grid item xs={6} align="left">
+                        <TextField
+                          label="New Password"
+                          name="newPassword"
+                          type="password"
+                          value={newPassword}
+                          onChange={(e) => setNewPassword(e.target.value)}
+                          size="small"
+                          variant="outlined"
+                          required
+                        />
+                      </Grid>
+                      <Grid item xs={6} align="left">
+                        <TextField
+                          label="Confirm New Password"
+                          name="confirmNewPassword"
+                          type="password"
+                          value={confirmNewPassword}
+                          onChange={(e) =>
+                            setConfirmNewPassword(e.target.value)
+                          }
+                          size="small"
+                          variant="outlined"
+                          required
+                        />
+                      </Grid>
+
+                      <Grid
+                        item
+                        container
+                        xs={12}
+                        className={classes.actions}
+                        spacing={2}
+                      >
+                        <Grid item>
+                          <Button
+                            fullWidth
+                            type="submit"
+                            variant="contained"
+                            className={classes.button}
+                          >
+                            Change Password
+                          </Button>
+                        </Grid>
+                        <Grid item>
+                          <Link to="/">
+                            <Button
+                              fullWidth
+                              variant="contained"
+                              className={classes.cancel}
+                            >
+                              Cancel
+                            </Button>
+                          </Link>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </Grid>
                 </Grid>
+              </Grid>
+            </form>
+            <Box mt={5} />
+            <form onSubmit={handleClickOpen}>
+              <Grid item xs={12}>
                 <Grid item xs={12} md={12} lg={6} align="left">
-                  <Typography>
-                    Please provide your previous password to change the
-                    password.
-                  </Typography>
-                  <Typography variant="caption" display="block">
-                    Please make sure that your password contains at least,
-                    <ul>
-                      <li>8 characters</li>
-                      <li>1 uppercase letter</li>
-                      <li>1 lowercase letter</li>
-                      <li>1 number and 1 special character</li>
-                    </ul>
-                  </Typography>
-                </Grid>
-                <Grid item xs={12} md={12} lg={6}>
-                  <Grid container spacing={2}>
+                  <Grid container spacing={3}>
+                    <Grid item xs={12} align="left">
+                      <Typography variant="h5">Delete Account</Typography>
+                      <Typography>
+                        Please provide your password to delete your account. All
+                        the data regarding to your account (except payment
+                        history) will be deleted from Flamingo.com
+                      </Typography>
+                    </Grid>
                     <Grid item xs={12} align="left">
                       <TextField
-                        label="Old Password"
-                        name="oldPassword"
+                        label="Password"
+                        name="deletePassword"
                         type="password"
-                        value={oldPassword}
-                        onChange={(e) => setOldPassword(e.target.value)}
+                        value={deletePassword}
+                        onChange={(e) => setDeletePassword(e.target.value)}
                         size="small"
                         variant="outlined"
                         required
                       />
                     </Grid>
-                    <Grid item xs={6} align="left">
-                      <TextField
-                        label="New Password"
-                        name="newPassword"
-                        type="password"
-                        value={newPassword}
-                        onChange={(e) => setNewPassword(e.target.value)}
-                        size="small"
-                        variant="outlined"
-                        required
-                      />
-                    </Grid>
-                    <Grid item xs={6} align="left">
-                      <TextField
-                        label="Confirm New Password"
-                        name="confirmNewPassword"
-                        type="password"
-                        value={confirmNewPassword}
-                        onChange={(e) => setConfirmNewPassword(e.target.value)}
-                        size="small"
-                        variant="outlined"
-                        required
-                      />
-                    </Grid>
-
+                  </Grid>
+                </Grid>
+                {/* Submit Buttons */}
+                <Grid item xs={12}>
+                  <Grid
+                    item
+                    container
+                    xs={12}
+                    className={classes.footer}
+                    alignItems="left"
+                    justify="left"
+                    spacing={3}
+                  >
                     <Grid
                       item
                       container
-                      xs={12}
+                      md={6}
                       className={classes.actions}
                       spacing={2}
                     >
@@ -337,7 +412,7 @@ const AccountSettings = () => {
                           variant="contained"
                           className={classes.button}
                         >
-                          Change Password
+                          Delete Account
                         </Button>
                       </Grid>
                       <Grid item>
@@ -355,80 +430,9 @@ const AccountSettings = () => {
                   </Grid>
                 </Grid>
               </Grid>
-            </Grid>
-          </form>
-          <Box mt={5} />
-          <form onSubmit={handleClickOpen}>
-            <Grid item xs={12}>
-              <Grid item xs={12} md={12} lg={6} align="left">
-                <Grid container spacing={3}>
-                  <Grid item xs={12} align="left">
-                    <Typography variant="h5">Delete Account</Typography>
-                    <Typography>
-                      Please provide your password to delete your account. All
-                      the data regarding to your account (except payment
-                      history) will be deleted from Flamingo.com
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={12} align="left">
-                    <TextField
-                      label="Password"
-                      name="deletePassword"
-                      type="password"
-                      value={deletePassword}
-                      onChange={(e) => setDeletePassword(e.target.value)}
-                      size="small"
-                      variant="outlined"
-                      required
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-              {/* Submit Buttons */}
-              <Grid item xs={12}>
-                <Grid
-                  item
-                  container
-                  xs={12}
-                  className={classes.footer}
-                  alignItems="left"
-                  justify="left"
-                  spacing={3}
-                >
-                  <Grid
-                    item
-                    container
-                    md={6}
-                    className={classes.actions}
-                    spacing={2}
-                  >
-                    <Grid item>
-                      <Button
-                        fullWidth
-                        type="submit"
-                        variant="contained"
-                        className={classes.button}
-                      >
-                        Delete Account
-                      </Button>
-                    </Grid>
-                    <Grid item>
-                      <Link to="/">
-                        <Button
-                          fullWidth
-                          variant="contained"
-                          className={classes.cancel}
-                        >
-                          Cancel
-                        </Button>
-                      </Link>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
-          </form>
-        </Grid>
+            </form>
+          </Grid>
+        </FloatCard>
         <Dialog
           open={open}
           onClose={handleClose}

@@ -115,13 +115,13 @@ function Organization(props) {
         handleOpen();
     }
 
-    useEffect(() => {
-        if(!role){
-            setIsSaved(false);
-        } else if(role && role === "jobseeker"){
-            setIsSaved(props.favoriteOrgs.includes(props.info._id));
-        }
-    }, [props.favoriteOrgs, props.info]);
+    // useEffect(() => {
+    //     if(!role){
+    //         setIsSaved(false);
+    //     } else if(role && role === "jobseeker"){
+    //         setIsSaved(props.favoriteOrgs.includes(props.info._id));
+    //     }
+    // }, [props.favoriteOrgs, props.info]);
 
     const handleSavingOrg = async () => {
         if(isSaved){ // Unsave

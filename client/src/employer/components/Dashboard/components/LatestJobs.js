@@ -8,7 +8,7 @@ import {
   Button,
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
-import FloatCard from "../../FloatCard";
+import FloatCard from "../../../../components/FloatCard";
 import Box from "@material-ui/core/Box";
 import WorkIcon from "@material-ui/icons/Work";
 import { Link } from "react-router-dom";
@@ -218,7 +218,6 @@ const LatestJobs = (props) => {
         <Typography variant="h6" className={classes.title}>
           Latest Jobs
         </Typography>
-        <WorkIcon className={classes.peopleIcon} />
 
         {/* <TableContainer component={Paper} className={classes.tableContainer}>
           <Table className={classes.table} aria-label="customized table">

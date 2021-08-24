@@ -3,6 +3,8 @@ import React from 'react'
 import FloatCard from '../components/FloatCard'
 import RecommendationSettingsAccordion from './components/RecommendationSettingsAccordion';
 import ShortlistingSettingsAccordion from './components/ShortlistingSettingsAccordion';
+import AccountSettings from './components/AccountSettings';
+import AccountSettingsAccordion from './components/AccountSettingsAccordion';
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -24,6 +26,7 @@ function Settings() {
         <div style={{ padding: 12, width: '100%', textAlign: 'left' }}>
             <RecommendationSettingsAccordion />
             <ShortlistingSettingsAccordion />
+            <AccountSettingsAccordion />
         </div>
         //         </FloatCard>
         //     </Grid>

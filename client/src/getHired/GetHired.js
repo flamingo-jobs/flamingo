@@ -188,9 +188,7 @@ const defaultData = {
   description: "",
   street: "",
   city: "",
-  zipcode: "",
   mobile: "",
-  landLine: "",
   email: "",
   password: "",
   condirmPassword: "",
@@ -317,11 +315,9 @@ export default function GetHired() {
       address: {
         street: formData.street,
         city: formData.city,
-        zipCode: formData.zipcode,
       },
       contact: {
         email: formData.email,
-        phone: formData.landLine,
         mobile: formData.mobile,
       },
       isPublic: true,
@@ -512,10 +508,10 @@ export default function GetHired() {
                         <Grid container alignItems="center" spacing={3}>
                           <Grid item xs={12} md={12} align="left">
                             <Typography className={classes.title}>
-                              Address
+                              Location
                             </Typography>
                           </Grid>
-                          <Grid item xs={12} align="center">
+                          <Grid item xs={12} md={6} align="center">
                             <TextField
                               label="Street"
                               name="street"
@@ -525,7 +521,6 @@ export default function GetHired() {
                               className={classes.textField}
                               size="small"
                               fullWidth
-                              required
                             />
                           </Grid>
                           <Grid item xs={12} md={6} align="center">
@@ -538,20 +533,6 @@ export default function GetHired() {
                               className={classes.textField}
                               size="small"
                               fullWidth
-                              required
-                            />
-                          </Grid>
-                          <Grid item xs={12} md={6} align="center">
-                            <TextField
-                              label="Zip Code"
-                              name="zipcode"
-                              value={formData.zipcode}
-                              onChange={setForm}
-                              variant="outlined"
-                              className={classes.textField}
-                              size="small"
-                              fullWidth
-                              required
                             />
                           </Grid>
 
@@ -560,25 +541,6 @@ export default function GetHired() {
                             <Typography className={classes.title}>
                               Contact Details
                             </Typography>
-                          </Grid>
-                          <Grid item xs={12} align="left">
-                            <TextField
-                              label="Phone"
-                              name="landLine"
-                              value={formData.landLine}
-                              onChange={setForm}
-                              variant="outlined"
-                              className={classes.textField}
-                              size="small"
-                              fullWidth
-                              InputProps={{
-                                startAdornment: (
-                                  <InputAdornment position="start">
-                                    +94
-                                  </InputAdornment>
-                                ),
-                              }}
-                            />
                           </Grid>
                           <Grid item xs={12} align="center">
                             <TextField

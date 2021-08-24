@@ -10,12 +10,11 @@ import SnackBarAlert from '../../components/SnackBarAlert'
 import FloatCard from '../../components/FloatCard';
 import TechDisplay from './TechDisplay';
 import Loading from '../../components/Loading';
-import NoInfo from '../../components/NoInfo';
 const useStyles = makeStyles((theme) => ({
 
 }));
 
-function Technologies(props) {
+function TechnologiesStackEdit(props) {
     const classes = useStyles();
     const [technologyStack, setTechnologyStack] = useState([]);
     const [tech, setTech] = useState([]);
@@ -65,38 +64,45 @@ function Technologies(props) {
     }
 
     const retrieveTechnoliges = () => {
+        axios.get(`${BACKEND_URL}/technologies`).then(res => {
+            if (res.data.success) {
+                setTechnologies(res.data.existingData)
+            } else {
+                setTechnologies([])
+            }
+        })
+
         let technologyStackData;
         axios.get(`${BACKEND_URL}/employers/${props.employerId}`)
             .then(res => {
                 if (res.data.success) {
                     if (res.data.employer.technologyStack.length > 0) {
-                        setTechnologyStack(res.data.employer.technologyStack)
+                        technologyStackData = res.data.employer.technologyStack;
+                        if (Object.keys(res.data.employer.technologyStack[0]).length === 0) {
+                            res.data.employer.technologyStack.splice(0, 1)
+                            i++;
+                        } else if (technologyStackData[0].technologyStack == "" && technologyStackData[0].institute == "" && technologyStackData[0].from == "" && technologyStackData[0].to == "") {
+                            res.data.employer.technologyStack.splice(0, 1)
+                            i++;
+                        }
                     }
+                    setTechnologyStack(technologyStackData)
                 }
             })
     }
 
 
     const displayTechnologies = () => {
-        if (technologyStack.length) {
-            return technologyStack.map(technology => {
-                return (
-                    <Grid item xs={12}>
-                        <TechDisplay info={technology} />
-                    </Grid>
-                )
-            })
-        } else if (technologyStack.length === 0) {
+        if (technologies.length) {
+            return technologies.map(technology => (
+                <DetailedAccordion showEdit={props.showEdit} login={props.login} employerId={props.employerId} key={technology._id} info={technology} techno={technologyStack} onRefresh={handleRefresh} onSuccessUpdate={handleUpdatesuccess} onFailedUpdate={handleUpdateFailed} />
+            ))
+        } else {
             return (
                 <Grid item xs={12}>
                     <Loading />
                 </Grid>
             )
-        } else {
-            <Grid item xs={12}>
-                <NoInfo message="No information on technology stack has been added" />
-            </Grid>
-
         }
     }
 
@@ -134,4 +140,4 @@ function Technologies(props) {
     )
 }
 
-export default Technologies
+export default TechnologiesStackEdit

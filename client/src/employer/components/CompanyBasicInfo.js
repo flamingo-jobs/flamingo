@@ -10,7 +10,7 @@ import {
 import Rating from "@material-ui/lab/Rating";
 import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
 import wso2 from "../images/wso2.png";
-import FloatCard from "./FloatCard";
+import FloatCard from '../../components/FloatCard';
 import EditIcon from "@material-ui/icons/Edit";
 import LoyaltyIcon from "@material-ui/icons/Loyalty";
 import TextField from "@material-ui/core/TextField";
@@ -37,7 +37,7 @@ import { Link } from "react-router-dom";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import { Route } from "react-router-dom";
-
+import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 const jwt = require("jsonwebtoken");
 let haveAccess = false;
 
@@ -52,105 +52,95 @@ if (sessionStorage.getItem("userToken")) {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    textAlign: "left",
   },
-  header: {},
+  headerInfo: {
+    marginTop: -25
+  },
   body: {},
   logoItem: {
-    marginLeft: 10,
-    marginTop: 20,
   },
   logo: {
     borderRadius: 12,
-    width: 125,
-    height: 125,
+    width: 150,
+    height: 150,
+    margin: '0px auto'
   },
-  info: {
-    marginLeft: 150,
-    marginTop: -130,
+  title: {
+    fontWeight: 700
   },
   infoTags: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    margin: 10,
-    marginTop: -10,
-    maxWidth: 200,
-    marginBottom: 15,
+
   },
   infoTagsContainer: {
-    marginLeft: theme.spacing(2),
+
   },
   companyName: {
-    fontWeight: 500,
-    marginBottom: 5,
+
   },
   membershipType: {
-    marginTop: -55,
-    backgroundColor: theme.palette.gold,
+
   },
   listItem: {
-    paddingTop: 0,
-    paddingBottom: 0,
+
   },
   editButton: {
-    marginTop: -90,
-    marginLeft: 110,
-    margin: theme.spacing(1),
-    padding: theme.spacing(1),
+    position: 'relative',
+    right: '-45%'
   },
   locationTags: {
-    marginTop: -20,
-    marginBottom: 10,
-    marginLeft: -14,
-    marginRight: -20,
+    marginTop: 16
   },
   tag: {
-    marginRight: 8,
+    marginRight: 10,
     backgroundColor: theme.palette.tagYellow,
   },
   label: {
-    alignSelf: "left",
-    marginRight: 15,
-    marginBottom: 5,
+
     backgroundColor: theme.palette.tagYellow,
   },
-  headerRight: {
-    marginLeft: 260,
-  },
   rating: {
-    marginTop: -15,
+    margin: 10
   },
   ratingText: {
-    marginTop: -35,
-    marginLeft: 115,
+
   },
   smIcons: {
-    marginLeft: -35,
-    marginTop: -40,
+
   },
   dialogbuttons: {
-    color: theme.palette.purple,
+
   },
   dialogBox: {
-    minHeight: "100vh",
-    maxHeight: "100vh",
+
   },
   editPhoto: {
-    marginLeft: 50,
-    marginTop: -45,
+
   },
   textField: {
-    fontSize: 14,
+
   },
   locations: {
-    width: 500,
+
   },
   textFieldColor: {
-    color: theme.palette.purple,
+
   },
-  setMargin:{
-    marginTop:25,
+  setMargin: {
+
+  },
+  link: {
+    marginLeft: 5,
+    marginRight: 5
+  },
+  editPhotoButton: {
+    position: 'relative',
+    top: '-25px',
+    backgroundColor: 'rgba(0,0,0,0.2)',
+    color: theme.palette.white,
+    "&:hover": {
+      backgroundColor: 'rgba(0,0,0,0.5)',
+
+    }
   }
 }));
 
@@ -184,6 +174,7 @@ function CompanyBasicInfo(props) {
     linkedIn: " ",
     twitter: " ",
     logo: " ",
+    locations: []
   });
 
   const name = state.name;
@@ -196,6 +187,7 @@ function CompanyBasicInfo(props) {
   const facebook = state.facebook;
   const linkedIn = state.linkedIn;
   const twitter = state.twitter;
+  const locations = state.locations;
 
   function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -216,6 +208,7 @@ function CompanyBasicInfo(props) {
           twitter: res.data.employer.links.twitter,
           reviews: res.data.employer.reviews,
           logo: res.data.employer.logo,
+          locations: res.data.employer.locations,
         });
       }
       res.data.employer.locations.forEach((element) => {
@@ -377,422 +370,318 @@ function CompanyBasicInfo(props) {
     }
   };
 
-  return (
-    <div className={classes.root}>
-      <FloatCard>
-        <Grid item container direction="row" spacing={3}>
-          {/* HEAD PART OF THE COMPANY INFO CARD */}
+  const displayEditForm = () => {
+    return (
+      <form>
+        {/* Dialog box for the edit details */}
 
-          <Grid
-            xs={12}
-            item
-            container
-            direction="column"
-            spacing={1}
-            className={classes.header}
-          >
-            {/* LOGO */}
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="edit-details-form"
+          fullWidth
+          className={classes.dialogBox}
+        >
+          <DialogTitle id="edit-details-form">
+            Company Profile
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText>*Required Fields</DialogContentText>
 
-            <Grid item xs={3} className={classes.logoItem}>
-              <Avatar className={classes.logo} src={loadLogo()} variant="square" />
-            </Grid>
+            {/* input fields */}
 
-            {/* OTHER INFO NEXT TO LOGO */}
-
-            <Grid
-              item
-              container
-              xs={9}
-              direction="row"
-              spacing={1}
-              className={classes.info}
-            >
-              {/* PANEL 01 FOR COMPANY NAME, MEMBERSHIP TYPE AND EDIT BUTTON */}
-
-              <Grid item xs={9} style={{ marginBottom: -30 }}>
-                <Typography variant="h5" className={classes.companyName}>
-                  {name}
-                </Typography>
-
-                <div className={classes.headerRight}>
-                  <Chip
-                    icon={<LoyaltyIcon />}
-                    label={subscription}
-                    className={classes.membershipType}
-                  />
-                 {props.userRole == "employer" || haveAccess == true ? (
-                    <IconButton
-                      variant="outlined"
-                      aria-label="edit"
-                      className={classes.editButton}
-                      onClick={handleClickOpen}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                  ) : (
-                    <div className={classes.setMargin}>
-                    </div>
-                  )}
-
-                  {/* <form onSubmit={onSubmit}> */}
-                  <form>
-                    {/* Dialog box for the edit details */}
-
-                    <Dialog
-                      open={open}
-                      onClose={handleClose}
-                      aria-labelledby="edit-details-form"
-                      fullWidth
-                      className={classes.dialogBox}
-                    >
-                      <DialogTitle id="edit-details-form">
-                        Company Profile
-                      </DialogTitle>
-                      <DialogContent>
-                        <DialogContentText>*Required Fields</DialogContentText>
-
-                        {/* input fields */}
-
-                        <div>
-                          <Grid
-                            container
-                            xs={12}
-                            direction="column"
-                            spacing={2}
-                          >
-                            <Grid item sm={12}>
-                              <TextField
-                                required
-                                fullWidth
-                                id="name"
-                                label="Company Name"
-                                variant="outlined"
-                                defaultValue={name}
-                                InputProps={{
-                                  classes: {
-                                    input: classes.textField,
-                                  },
-                                }}
-                                onChange={onChangeName}
-                              />
-                            </Grid>
-
-                            <Grid item sm={12}>
-                              <Autocomplete
-                                multiple
-                                required={true}
-                                id="fixed-tags-demo"
-                                value={location}
-                                onChange={(event, newValue) => {
-                                  setLocation([
-                                    ...fixedOptions,
-                                    ...newValue.filter(
-                                      (option) =>
-                                        fixedOptions.indexOf(option) === -1
-                                    ),
-                                  ]);
-                                }}
-                                options={cities}
-                                getOptionLabel={(option) => option.city}
-                                renderInput={(params) => (
-                                  <TextField
-                                    {...params}
-                                    label="Location"
-                                    variant="outlined"
-                                    required
-                                  />
-                                )}
-                              />
-                            </Grid>
-
-                            <Grid
-                              item
-                              container
-                              direction="row"
-                              sm={12}
-                              spacing={1}
-                            >
-                              <Grid item sm={6}>
-                                <InputLabel htmlFor="linkedIn">
-                                  LinkedIn
-                                </InputLabel>
-                                <Input
-                                  id="linkedIn"
-                                  startAdornment={
-                                    <InputAdornment position="start">
-                                      <LinkedInIcon />
-                                    </InputAdornment>
-                                  }
-                                  defaultValue={linkedIn}
-                                  InputProps={{
-                                    classes: {
-                                      input: classes.textField,
-                                    },
-                                  }}
-                                  onChange={onChangeLinkedIn}
-                                />
-                              </Grid>
-
-                              <Grid item sm={6}>
-                                <InputLabel htmlFor="website">
-                                  Website
-                                </InputLabel>
-                                <Input
-                                  id="website"
-                                  startAdornment={
-                                    <InputAdornment position="start">
-                                      <LanguageIcon />
-                                    </InputAdornment>
-                                  }
-                                  defaultValue={website}
-                                  InputProps={{
-                                    classes: {
-                                      input: classes.textField,
-                                    },
-                                  }}
-                                  onChange={onChangeWebsite}
-                                />
-                              </Grid>
-                            </Grid>
-
-                            <Grid
-                              item
-                              container
-                              direction="row"
-                              sm={12}
-                              spacing={1}
-                            >
-                              <Grid item sm={6}>
-                                <InputLabel htmlFor="facebook">
-                                  Facebook
-                                </InputLabel>
-                                <Input
-                                  id="facebook"
-                                  startAdornment={
-                                    <InputAdornment position="start">
-                                      <FacebookIcon />
-                                    </InputAdornment>
-                                  }
-                                  defaultValue={facebook}
-                                  InputProps={{
-                                    classes: {
-                                      input: classes.textField,
-                                    },
-                                  }}
-                                  onChange={onChangeFacebook}
-                                />
-                              </Grid>
-
-                              <Grid item sm={6}>
-                                <InputLabel htmlFor="twitter">
-                                  Twitter
-                                </InputLabel>
-                                <Input
-                                  id="twitter"
-                                  startAdornment={
-                                    <InputAdornment position="start">
-                                      <TwitterIcon />
-                                    </InputAdornment>
-                                  }
-                                  defaultValue={twitter}
-                                  InputProps={{
-                                    classes: {
-                                      input: classes.textField,
-                                    },
-                                  }}
-                                  onChange={onChangeTwitter}
-                                />
-                              </Grid>
-                            </Grid>
-                          </Grid>
-                        </div>
-                      </DialogContent>
-                      <DialogActions>
-                        <Button
-                          onClick={handleClose}
-                          color="primary"
-                          className={classes.dialogbuttons}
-                        >
-                          Cancel
-                        </Button>
-                        <Button
-                          type="submit"
-                          onClick={onSubmit}
-                          color="primary"
-                          className={classes.dialogbuttons}
-                        >
-                          Save
-                        </Button>
-                      </DialogActions>
-                    </Dialog>
-                  </form>
-                </div>
-              </Grid>
-
-              {/* Alerts */}
-              <Snackbar
-                open={openAlertValidationError}
-                autoHideDuration={6000}
-                onClose={handleCloseAlertValidationError}
-                anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-              >
-                <Alert
-                  onClose={handleCloseAlertValidationError}
-                  severity="error"
-                >
-                  Required fields cannot be empty!
-                </Alert>
-              </Snackbar>
-
-              <Snackbar
-                open={openAlertServerError}
-                autoHideDuration={6000}
-                onClose={handleCloseAlertServerError}
-                anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-              >
-                <Alert onClose={handleCloseAlertServerError} severity="error">
-                  Server error! Changes couldn't be saved!
-                </Alert>
-              </Snackbar>
-
-              <Snackbar
-                open={openAlertSuccess}
-                autoHideDuration={6000}
-                onClose={handleCloseAlertSuccess}
-                anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-              >
-                <Alert onClose={handleCloseAlertSuccess} severity="success">
-                  Changes saved successfully!
-                </Alert>
-              </Snackbar>
-
-              {/* PANEL 02 FOR LOCATION AND JOB TYPE */}
-
-              <Grid item xs={9}>
-                <div className={classes.locationTags}>
-                  {Array.from(location).map((item, i) => (
-                    <Chip
-                      icon={<LocationOnRoundedIcon />}
-                      label={item.city}
-                      className={classes.tag}
-                    />
-                  ))}
-                </div>
-              </Grid>
-
-              {/* PANEL 03 FOR STAR RATING DISPLAY */}
-
-              {reviews.length > 0 ? (
-                <Grid item xs={9}>
-                  <div className={classes.rating}>
-                    <Rating
-                      name="read-only"
-                      value={getAverageRating()}
-                      precision={0.5}
-                      readOnly
-                    />
-                  </div>
-
-                  <div className={classes.ratingText}>
-                    <Typography>
-                      <Box fontSize={14} fontWeight="fontWeightMedium" m={1}>
-                        {getAverageRating()} stars ({reviews.length})
-                      </Box>
-                    </Typography>
-                  </div>
-                </Grid>
-              ) : (
-                <Grid item xs={9}>
-                  <div className={classes.rating}>
-                    <Rating
-                      name="read-only"
-                      value={0}
-                      precision={0.5}
-                      readOnly
-                    />
-                  </div>
-                  <div className={classes.ratingText}>
-                    <Typography>
-                      <Box fontSize={14} fontWeight="fontWeightMedium" m={1}>
-                        (no reviews)
-                      </Box>
-                    </Typography>
-                  </div>
-                </Grid>
-              )}
-
-              {/* PANEL 04 FOR SOCIAL MEDIA LINKS */}
-
+            <div>
               <Grid
                 container
-                item
-                xs={9}
-                className={classes.smIcons}
-                spacing={5}
+                xs={12}
+                direction="column"
+                spacing={2}
               >
-                <Grid item xs={1}>
-                  <Link to={{ pathname: website }} target="_blank">
-                    <IconButton variant="outlined" aria-label="website">
-                      <LanguageIcon />
-                    </IconButton>
-                  </Link>
+                <Grid item sm={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    id="name"
+                    label="Company Name"
+                    variant="outlined"
+                    defaultValue={name}
+                    InputProps={{
+                      classes: {
+                        input: classes.textField,
+                      },
+                    }}
+                    onChange={onChangeName}
+                  />
                 </Grid>
 
-                <Grid item xs={1}>
-                  <Link to={{ pathname: linkedIn }} target="_blank">
-                    <IconButton variant="outlined" aria-label="website">
-                      <LinkedInIcon />
-                    </IconButton>
-                  </Link>
+                <Grid item sm={12}>
+                  <Autocomplete
+                    multiple
+                    required={true}
+                    id="fixed-tags-demo"
+                    value={location}
+                    onChange={(event, newValue) => {
+                      setLocation([
+                        ...fixedOptions,
+                        ...newValue.filter(
+                          (option) =>
+                            fixedOptions.indexOf(option) === -1
+                        ),
+                      ]);
+                    }}
+                    options={cities}
+                    getOptionLabel={(option) => option.city}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Location"
+                        variant="outlined"
+                        required
+                      />
+                    )}
+                  />
                 </Grid>
-                <Grid item xs={1}>
-                  <Link to={{ pathname: twitter }} target="_blank">
-                    <IconButton variant="outlined" aria-label="website">
-                      <TwitterIcon />
-                    </IconButton>
-                  </Link>
+
+                <Grid
+                  item
+                  container
+                  direction="row"
+                  sm={12}
+                  spacing={1}
+                >
+                  <Grid item sm={6}>
+                    <InputLabel htmlFor="linkedIn">
+                      LinkedIn
+                    </InputLabel>
+                    <Input
+                      id="linkedIn"
+                      startAdornment={
+                        <InputAdornment position="start">
+                          <LinkedInIcon />
+                        </InputAdornment>
+                      }
+                      defaultValue={linkedIn}
+                      InputProps={{
+                        classes: {
+                          input: classes.textField,
+                        },
+                      }}
+                      onChange={onChangeLinkedIn}
+                    />
+                  </Grid>
+
+                  <Grid item sm={6}>
+                    <InputLabel htmlFor="website">
+                      Website
+                    </InputLabel>
+                    <Input
+                      id="website"
+                      startAdornment={
+                        <InputAdornment position="start">
+                          <LanguageIcon />
+                        </InputAdornment>
+                      }
+                      defaultValue={website}
+                      InputProps={{
+                        classes: {
+                          input: classes.textField,
+                        },
+                      }}
+                      onChange={onChangeWebsite}
+                    />
+                  </Grid>
                 </Grid>
-                <Grid item xs={1}>
-                  <Link to={{ pathname: facebook }} target="_blank">
-                    <IconButton variant="outlined" aria-label="website">
-                      <FacebookIcon />
-                    </IconButton>
-                  </Link>
+
+                <Grid
+                  item
+                  container
+                  direction="row"
+                  sm={12}
+                  spacing={1}
+                >
+                  <Grid item sm={6}>
+                    <InputLabel htmlFor="facebook">
+                      Facebook
+                    </InputLabel>
+                    <Input
+                      id="facebook"
+                      startAdornment={
+                        <InputAdornment position="start">
+                          <FacebookIcon />
+                        </InputAdornment>
+                      }
+                      defaultValue={facebook}
+                      InputProps={{
+                        classes: {
+                          input: classes.textField,
+                        },
+                      }}
+                      onChange={onChangeFacebook}
+                    />
+                  </Grid>
+
+                  <Grid item sm={6}>
+                    <InputLabel htmlFor="twitter">
+                      Twitter
+                    </InputLabel>
+                    <Input
+                      id="twitter"
+                      startAdornment={
+                        <InputAdornment position="start">
+                          <TwitterIcon />
+                        </InputAdornment>
+                      }
+                      defaultValue={twitter}
+                      InputProps={{
+                        classes: {
+                          input: classes.textField,
+                        },
+                      }}
+                      onChange={onChangeTwitter}
+                    />
+                  </Grid>
                 </Grid>
               </Grid>
+            </div>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={handleClose}
+              color="primary"
+              className={classes.dialogbuttons}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              onClick={onSubmit}
+              color="primary"
+              className={classes.dialogbuttons}
+            >
+              Save
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </form>
+
+    )
+  }
+
+  return (
+    <>
+      <FloatCard>
+        {props.userRole == "employer" || haveAccess == true ?
+          <IconButton
+            variant="outlined"
+            aria-label="edit"
+            className={classes.editButton}
+            onClick={handleClickOpen}
+          >
+            <EditIcon />
+          </IconButton>
+          : null
+        }
+        <Grid container spacing={3} direction="row">
+
+          <Grid item container spacing={3} xs={12}>
+            <Grid item xs={12}>
+              <Avatar className={classes.logo} src={loadLogo()} variant="square" />
+              {props.userRole == "employer" || haveAccess == true && (
+                <IconButton
+                  variant="outlined"
+                  aria-label="edit"
+                  className={classes.editPhotoButton}
+                // onClick={handleClickOpen}
+                >
+                  <PhotoCameraIcon />
+                </IconButton>
+              )}
             </Grid>
-          </Grid>
-
-          {/* Edit Company Logo */}
-
-          <Grid item container alignItems="center" direction="row" xs={12}>
-            <Grid item sm={3} className={classes.editPhoto}>
-              <input
-                accept="image/*"
-                style={{ display: "none" }}
-                id="raised-button-file"
-                type="file"
-              />
-
-              <label htmlFor="raised-button-file">
-                {props.userRole === "employer" && (
-                  <IconButton
-                    variant="outlined"
-                    aria-label="edit"
-                    className={classes.editPhotoButton}
-                    // onClick={handleClickOpen}
-                  >
-                    <EditIcon />
+            <Grid item xs={12} className={classes.headerInfo}>
+              <Typography variant="h5" className={classes.title}>
+                {name}
+              </Typography>
+              <div className={classes.locationTags}>
+                {locations.map((item, i) => (
+                  <Chip
+                    icon={<LocationOnRoundedIcon />}
+                    label={item}
+                    className={classes.tag}
+                  />
+                ))}
+              </div>
+              <div className={classes.rating}>
+                {/* <Typography style={{ marginTop: 8 }}>{getAverageRating()}/5 ratings</Typography> */}
+                <Rating name="read-only" style={{ marginTop: 8 }} value={getAverageRating()} readOnly />
+              </div>
+              <div className={classes.links}>
+                <Link to={{ pathname: website }} target="_blank">
+                  <IconButton variant="outlined" aria-label="website" className={classes.link}>
+                    <LanguageIcon />
                   </IconButton>
-                )}
-              </label>
+                </Link>
+                <Link to={{ pathname: linkedIn }} target="_blank">
+                  <IconButton variant="outlined" aria-label="website" className={classes.link}>
+                    <LinkedInIcon />
+                  </IconButton>
+                </Link>
+
+                <Link to={{ pathname: twitter }} target="_blank">
+                  <IconButton variant="outlined" aria-label="website" className={classes.link}>
+                    <TwitterIcon />
+                  </IconButton>
+                </Link>
+
+                <Link to={{ pathname: facebook }} target="_blank">
+                  <IconButton variant="outlined" aria-label="website" className={classes.link}>
+                    <FacebookIcon />
+                  </IconButton>
+                </Link>
+
+              </div>
             </Grid>
           </Grid>
+
         </Grid>
 
-        <br />
-      </FloatCard>
-    </div>
+      </FloatCard >
+      {displayEditForm()}
+      <Snackbar
+        open={openAlertValidationError}
+        autoHideDuration={6000}
+        onClose={handleCloseAlertValidationError}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      >
+        <Alert
+          onClose={handleCloseAlertValidationError}
+          severity="error"
+        >
+          Required fields cannot be empty!
+        </Alert>
+      </Snackbar>
+
+      <Snackbar
+        open={openAlertServerError}
+        autoHideDuration={6000}
+        onClose={handleCloseAlertServerError}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      >
+        <Alert onClose={handleCloseAlertServerError} severity="error">
+          Server error! Changes couldn't be saved!
+        </Alert>
+      </Snackbar>
+
+      <Snackbar
+        open={openAlertSuccess}
+        autoHideDuration={6000}
+        onClose={handleCloseAlertSuccess}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      >
+        <Alert onClose={handleCloseAlertSuccess} severity="success">
+          Changes saved successfully!
+        </Alert>
+      </Snackbar>
+    </>
   );
 }
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles, Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
-import FloatCard from "../../FloatCard";
+import FloatCard from "../../../../components/FloatCard";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import { useState, useEffect } from "react";
 import {
