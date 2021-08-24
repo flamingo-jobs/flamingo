@@ -134,11 +134,7 @@ export default function TechnologyList(props) {
             props.onChange(0);
         } else {
             stack.map(item => {
-                if (item.type === "list") {
-                    list.push({ "technologyStack.stack.list": { $in: item.stack } })
-                } else {
-                    list.push({ $or: [{ "technologyStack.stack.frontEnd": { $in: item.stack } }, { "technologyStack.stack.backEnd": { $in: item.stack } }] })
-                }
+                    list.push({ "technologyStack": { $in: item.stack } });
             })
 
             props.onChange(list);
