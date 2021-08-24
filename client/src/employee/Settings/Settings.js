@@ -243,11 +243,15 @@ const Settings = () => {
       handleAlert();
     } else {
       if (newPassword === confirmNewPassword) {
+        const userId = jwt.decode(sessionStorage.getItem("userToken"), {
+          complete: true,
+        }).payload.userId;
         const newPasswordData = {
           newPassword: newPassword,
+          userId: userId,
         };
         axios
-          .post(`${BACKEND_URL}/change-password`, newPasswordData)
+          .post(`${BACKEND_URL}/api/change-password`, newPasswordData)
           .then((res) => {
             if (res.data.success) {
               setOldPassword("");
