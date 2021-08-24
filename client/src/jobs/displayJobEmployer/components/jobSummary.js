@@ -104,6 +104,9 @@ const useStyles = makeStyles((theme) => ({
   salary: {
     fontWeight: 600,
   },
+  numOfVacancies: {
+    fontWeight: 600,
+  },
   description: {
     marginTop: theme.spacing(2),
     color: theme.palette.black,
@@ -204,21 +207,38 @@ function JobSummary(props) {
     const newJob = { ...props.job };
     const newErrors = {...props.errors};
 
-    if (e.target.name === "min" || e.target.name === "max") {
+    if (e.target.name === "min" || e.target.name === "max" || e.target.name === "numberOfVacancies") {
       const regex = new RegExp('^[0-9]+$');
       const name = e.target.name;
       const value = e.target.value;
 
       if(value.trim() === ""){
-        newErrors[name] = "Salary cannot be empty.";
+        if(name === "min" || name === "max"){
+          newErrors[name] = "Salary cannot be empty.";
+        }
+        else if(name === "numberOfVacancies"){
+          newErrors[name] = "Number of vacancies cannot be empty.";
+        }
       } else {
         if(regex.test(value.trim().replace(/\s/g, ''))){
           delete newErrors[name];
         } else {
-          newErrors[name] = "Salary can only contain numbers.";
+          if(name === "min" || name === "max"){
+            newErrors[name] = "Salary can only contain numbers.";
+          }
+          else if(name === "numberOfVacancies"){
+            newErrors[name] = "Number of vacancies cannot contain numbers.";
+          }
+          
         }
       }
-      newJob.salaryRange[e.target.name] = value;
+      if(name === "min" || name === "max"){
+        newJob.salaryRange[e.target.name] = value;
+      }
+      else if(name === "numberOfVacancies"){
+        newJob.numberOfVacancies = value;
+      }
+      
     } 
     else if (e.target.name === "isPublished") {
       newJob[e.target.name] = e.target.checked;
@@ -253,9 +273,11 @@ function JobSummary(props) {
     if(props.errors.hasOwnProperty("title") || 
       props.errors.hasOwnProperty("description") ||
       props.errors.hasOwnProperty("min") ||
-      props.errors.hasOwnProperty("max")){
+      props.errors.hasOwnProperty("max") ||
+      props.errors.hasOwnProperty("numberOfVacancies")){
       return;
     }
+    
     const updateFields = {
       title: props.job.title.trim(),
       category: props.job.category,
@@ -270,6 +292,7 @@ function JobSummary(props) {
       isPublished: props.job.isPublished,
       minimumEducation: props.job.minimumEducation,
       minimumExperience: props.job.minimumExperience,
+      numberOfVacancies: props.job.numberOfVacancies
     };
 
     try {
@@ -474,6 +497,14 @@ function JobSummary(props) {
                 <Typography align="left" className={classes.description}>
                   <span className={classes.salary}>Salary: </span>Rs.
                   {props.job.salaryRange.min} - Rs.{props.job.salaryRange.max}
+                </Typography>
+              </div>
+              <div>
+                <Typography align="left" className={classes.description}>
+                  <span className={classes.numOfVacancies}>
+                    Number of vacancies:{" "}
+                  </span>
+                  {props.job.numberOfVacancies}
                 </Typography>
               </div>
             </Grid>

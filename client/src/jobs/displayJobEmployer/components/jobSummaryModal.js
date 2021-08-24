@@ -82,6 +82,9 @@ const useStyles = makeStyles((theme) => ({
   textField: {
     marginBottom: theme.spacing(3),
   },
+  numberOfVacancies: {
+    marginTop: theme.spacing(2),
+  },
   publishBtnContainer:{
     marginTop: theme.spacing(1),
   },
@@ -338,6 +341,7 @@ const JobSummaryModal = (props) => {
                         </StateBlueTextField>
                       </Grid>
                     </Grid>
+
                     {/* Salary range */}
                     <Grid container spacing={1}>
                       <Grid item xs={6}>
@@ -368,6 +372,22 @@ const JobSummaryModal = (props) => {
                           value={props.job.salaryRange.max}
                           error={props.errors.hasOwnProperty("max")}
                           helperText={props.errors["max"]}
+                        ></StateBlueTextField>
+                      </Grid>
+
+                      <Grid item xs={6}>
+                        <StateBlueTextField
+                          id="numberOfVacancies"
+                          name="numberOfVacancies"
+                          label="Number of Vacancies"
+                          onChange={props.handleSummaryChange}
+                          variant="outlined"
+                          fullWidth
+                          size="small"
+                          className={classes.numberOfVacancies}
+                          value={props.job.numberOfVacancies}
+                          error={props.errors.hasOwnProperty("numberOfVacancies")}
+                          helperText={props.errors["numberOfVacancies"]}
                         ></StateBlueTextField>
                       </Grid>
                     </Grid>
