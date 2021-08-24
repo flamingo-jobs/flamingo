@@ -82,7 +82,7 @@ function ProfileStatus(props) {
     let complete = 0;
     let nextComplete = "";
     const [percentage, setPercentage] = useState(0);
-    const [state, setState] = useState({universities: 0, schools: 0,courses: 0, awards: 0, volunteerings:0, works:0, projects:0, skills: 0});
+    const [state, setState] = useState({education: 0,certificate: 0, courses: 0, awards: 0, volunteerings:0, works:0, projects:0, skills: 0});
 
 
     let loginId;
@@ -100,27 +100,27 @@ function ProfileStatus(props) {
         axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
         .then(res => {
           if(res.data.success){
-            if(res.data.jobseeker.university?.length > 0){
-                if(Object.keys(res.data.jobseeker.university[0]).length === 0){
-                    res.data.jobseeker.university.splice(0,1)
-                }else if(res.data.jobseeker.university[0].university === "" && res.data.jobseeker.university[0].degree === "" && res.data.jobseeker.university[0].fieldOfStudy === "" && res.data.jobseeker.university[0].startDate === "" && res.data.jobseeker.university[0].endDate === ""){
-                    res.data.jobseeker.university.splice(0,1)
+            if(res.data.jobseeker.education?.length > 0){
+                if(Object.keys(res.data.jobseeker.education[0]).length === 0){
+                    res.data.jobseeker.education.splice(0,1)
+                }else if(res.data.jobseeker.education[0].institute === "" && res.data.jobseeker.university[0].type === ""){
+                    res.data.jobseeker.education.splice(0,1)
                 }
-                if(res.data.jobseeker.university.length > 0){
+                if(res.data.jobseeker.education.length > 0){
                     setState(prevState => {
-                        return {...prevState, universities: 1}
+                        return {...prevState, education: 1}
                     })
                 }                    
             }
-            if(res.data.jobseeker.school?.length > 0){
-                if(Object.keys(res.data.jobseeker.school[0]).length === 0){
-                    res.data.jobseeker.school.splice(0,1)
-                }else if(res.data.jobseeker.school[0].school === ""){
-                    res.data.jobseeker.school.splice(0,1)
+            if(res.data.jobseeker.certificate?.length > 0){
+                if(Object.keys(res.data.jobseeker.certificate[0]).length === 0){
+                    res.data.jobseeker.certificate.splice(0,1)
+                }else if(res.data.jobseeker.certificate[0].issuer === "" && res.data.jobseeker.certificate[0].title === ""){
+                    res.data.jobseeker.certificate.splice(0,1)
                 }
-                if(res.data.jobseeker.school.length > 0){
+                if(res.data.jobseeker.certificate.length > 0){
                     setState(prevState => {
-                        return {...prevState, schools: 1}
+                        return {...prevState, certificate: 1}
                     })
                 }                    
             }
@@ -201,14 +201,14 @@ function ProfileStatus(props) {
     },[])
 
     const displayStatus = () => {
-        let temp = state.universities + state.schools + state.courses + state.awards + state.volunteerings + state.works + state.projects + state.skills;
+        let temp = state.education + state.certificate + state.courses + state.awards + state.volunteerings + state.works + state.projects + state.skills;
         temp = temp/8*100; 
         if(temp < 100){
           return (
             <Grid item sm={12} style={{alignItems:"center",display: "flex"}}>
                 <div style={{width:"60%"}}>
-                    <Typography  variant="body2" component="p" sx={{ opacity: 0.72 }} style={{fontSize:"16px",textAlign:"left", fontWeight:"bold",color:"#1976d2"}}>
-                        Next : Add {state.works===0 ? "Work Experience" : state.universities===0 ? "University" : state.schools===0 ? "School" : state.projects===0 ? "Projects" : state.courses===0 ? "Courses" : state.awards===0 ? "Awards" : state.volunteerings===0 ? "Volunteering" : state.skills===0 ? "Skills" : ""}
+                    <Typography  variant="body2" component="p" style={{fontSize:"16px",textAlign:"left", fontWeight:"bold",color:"#1976d2"}}>
+                        Next : Add {state.works===0 ? "Work Experience" : state.education===0 ? "Education" : state.certificate===0 ? "Certificates" : state.projects===0 ? "Projects" : state.courses===0 ? "Courses" : state.awards===0 ? "Awards" : state.volunteerings===0 ? "Volunteering" : state.skills===0 ? "Skills" : ""}
                     </Typography>
                 </div>
                 <div style={{width:"40%"}}>
@@ -218,8 +218,7 @@ function ProfileStatus(props) {
                 </div>
             </Grid>
           );
-        }
-      
+        }     
     }
 
     return (
@@ -237,10 +236,10 @@ function ProfileStatus(props) {
                 </Grid>
                 <Grid item md={12} lg={9} style={{alignItems:"center",display: "flex",paddingLeft:"40px",paddingRight:"0px"}}>
                     <div>
-                        <Typography sx={{ opacity: 0.72 }} style={{fontSize:"25px",fontWeight:"bold",color: theme.palette.stateBlue}}>
+                        <Typography style={{fontSize:"25px",fontWeight:"bold",color: theme.palette.stateBlue}}>
                             Anne Shirley
                         </Typography>
-                        <Typography variant="body2" component="p" sx={{ opacity: 0.72 }} style={{fontSize:"16px",textAlign:"left",}}>
+                        <Typography variant="body2" component="p" style={{fontSize:"16px",textAlign:"left",}}>
                             <Link to="/jobseeker" style={{display: 'flex',alignItems: 'center',flexWrap: 'wrap',color: theme.palette.tuftsBlue}}>
                                 <span>View Profile</span><ChevronRightTwoToneIcon style={{marginTop:"-1px"}} />
                             </Link>
@@ -249,23 +248,13 @@ function ProfileStatus(props) {
                 </Grid>
                 <Grid item sm={12} style={{alignItems:"center",display: "flex"}}>
                     <div style={{width:"100%"}}>
-                        <Typography  variant="body2" component="p" sx={{ opacity: 0.72 }} style={{fontSize:"16px",textAlign:"left", fontWeight:"bold", paddingBottom:"5px",color:"#666"}}>
-                            Your profile is {(state.universities + state.schools + state.courses + state.awards + state.volunteerings + state.works + state.projects + state.skills)/8*100}% complete
+                        <Typography  variant="body2" component="p" style={{fontSize:"16px",textAlign:"left", fontWeight:"bold", paddingBottom:"5px",color:"#666"}}>
+                            Your profile is {(state.education + state.certificate + state.courses + state.awards + state.volunteerings + state.works + state.projects + state.skills)/8*100}% complete
                         </Typography>
-                        <BorderLinearProgress variant="determinate" value={(state.universities + state.schools + state.courses + state.awards + state.volunteerings + state.works + state.projects + state.skills)/8*100} />
+                        <BorderLinearProgress variant="determinate" value={(state.education + state.certificate + state.courses + state.awards + state.volunteerings + state.works + state.projects + state.skills)/8*100} />
                     </div>
                 </Grid>
                 {displayStatus()}
-                {/* <Grid item sm={12} style={{alignItems:"center",display: "flex"}}>
-                    <div style={{width:"60%"}}>
-                        <Typography  variant="body2" component="p" sx={{ opacity: 0.72 }} style={{fontSize:"16px",textAlign:"left", fontWeight:"bold",color:"#1976d2"}}>
-                            Next : Add {state.works===0 ? "Work Experience" : state.universities===0 ? "University" : state.schools===0 ? "School" : state.projects===0 ? "Projects" : state.courses===0 ? "Courses" : state.awards===0 ? "Awards" : state.volunteerings===0 ? "Volunteering" : state.skills===0 ? "Skills" : ""}
-                        </Typography>
-                    </div>
-                    <div style={{width:"40%"}}>
-                        <Button className={classes.defaultButton} style={{padding:"10px 15px 10px 15px",textTransform: 'none',backgroundColor:theme.palette.tuftsBlue}}>Finish Your Profile</Button>
-                    </div>
-                </Grid> */}
             </Grid>
         </FloatCard>
     )
