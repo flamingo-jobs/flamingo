@@ -6,6 +6,7 @@ import ComputerIcon from "@material-ui/icons/Computer";
 import Lottie from "react-lottie";
 import WorkingImage from "../lotties/working.json";
 import Technologies from "./Technologies";
+import TechnologiesStackEdit from "./TechnologiesStackEdit";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -90,7 +91,7 @@ const AddTechForm = (props) => {
             </Grid>
 
             <Grid item style={{ marginLeft: 15 }}>
-              <Technologies
+              <TechnologiesStackEdit
                 showEdit={true}
                 login={login}
                 employerId={loginId}
