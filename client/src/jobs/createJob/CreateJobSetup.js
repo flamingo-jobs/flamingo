@@ -139,13 +139,17 @@ export default function CreateJobSetup() {
         return false;
       } else if(errors.hasOwnProperty("maxSalary")){
         return false;
+      } else if(numberOfVacancies.trim() === ""){
+        newErrors["numberOfVacancies"] = `Number of vacancies cannot be empty.`;
+        setErrors(newErrors);
+        return false;
+      } else if(errors.hasOwnProperty("numberOfVacancies")){
+        return false;
       }
     } else if(index === 1){
       var emptyFieldFound = false;
       tasksFields.map((task, index) => {
-        console.log("out", index, task.length, task)
         if(task === ""){
-          console.log("in", index)
           emptyFieldFound = true;
           newErrors.tasks[index] = `This field cannot be empty.`;
         }
@@ -164,6 +168,12 @@ export default function CreateJobSetup() {
       });
       setErrors(newErrors);
       if(emptyFieldFound){
+        return false;
+      }
+    } else if(index === 3){
+      if(techStackState.length === 0){
+        newErrors["techStack"] = `Technology stack cannot be empty.`;
+        setErrors(newErrors);
         return false;
       }
     }
@@ -229,6 +239,7 @@ export default function CreateJobSetup() {
   const [additionalSkillsState, setAdditionalSkills] = useState([]);
   const [isFeatured, setIsFeatured] = useState(false);
   const [isPublished, setIsPublished] = useState(true);
+  const [numberOfVacancies, setNumberOfVacancies] = useState("");
 
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
@@ -281,7 +292,7 @@ export default function CreateJobSetup() {
     const name = e.target.name;
     const value = e.target.value;
 
-    if(value === ""){
+    if(value.trim() === ""){
       newErrors[name] = "Salary cannot be empty.";
     } else {
       if(regex.test(value.trim().replace(/\s/g, ''))){
@@ -297,6 +308,26 @@ export default function CreateJobSetup() {
       setMaxSalary(value);
     }
     
+  };
+
+  const handleVacanciesChange = (e) => {
+    const newErrors = {...errors};
+    const regex = new RegExp('^[0-9]+$');
+    const name = e.target.name;
+    const value = e.target.value;
+
+    if(value.trim() === ""){
+      newErrors[name] = "Number of vacancies cannot be empty.";
+    } else {
+      if(regex.test(value.trim().replace(/\s/g, ''))){
+        delete newErrors[name];
+      } else {
+        newErrors[name] = "Number of vacancies can only contain numbers.";
+      }
+    }
+    setErrors(newErrors);
+
+    setNumberOfVacancies(value);
   };
 
   const handleMinEducationChange = (event) => {
@@ -401,6 +432,15 @@ export default function CreateJobSetup() {
 
   // Technology Stack
   const handleTechStack = (values) => {
+    const newErrors = {...errors};
+
+    if(values.length === 0){
+      newErrors["techStack"] = `Technology stack cannot be empty.`;
+    } else if(errors.hasOwnProperty("techStack")){
+      delete newErrors["techStack"];
+    }
+    setErrors(newErrors);
+
     setTechStack(values);
   };
 
@@ -454,6 +494,7 @@ export default function CreateJobSetup() {
       additionalSkills: additionalSkillsState,
       isPublished: isPublished,
       isFeatured: isFeatured,
+      numberOfVacancies: numberOfVacancies,
       createdBy: userId,
     };
 
@@ -506,12 +547,14 @@ export default function CreateJobSetup() {
           minExperienceList={minExperienceList}
           minSalary={minSalary}
           maxSalary={maxSalary}
+          numberOfVacancies={numberOfVacancies}
           handleTextFieldChange={handleTextFieldChange}
           handleCategoryChange={handleCategoryChange}
           handleJobTypeChange={handleJobTypeChange}
           handleLocationChange={handleLocationChange}
           handleDateChange={handleDateChange}
           handleSalaryChange={handleSalaryChange}
+          handleVacanciesChange={handleVacanciesChange}
           handleMinEducationChange={handleMinEducationChange}
           handleMinExperienceChange={handleMinExperienceChange}
           errors={errors}
@@ -528,6 +571,7 @@ export default function CreateJobSetup() {
           techStackState={techStackState}
           technologies={technologies}
           handleTechStack={handleTechStack}
+          errors={errors}
         ></TechStack>
       );
     }

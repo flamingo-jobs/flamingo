@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TechStack = ({ techStackState, technologies, handleTechStack }) => {
+const TechStack = ({ techStackState, technologies, handleTechStack, errors }) => {
   const classes = useStyles();
 
   const options = technologies
@@ -71,6 +71,8 @@ const TechStack = ({ techStackState, technologies, handleTechStack }) => {
                   variant="outlined"
                   placeholder="Add a new technology..."
                   size="small"
+                  error={errors.hasOwnProperty("techStack")}
+                  helperText={errors["techStack"]}
                 />
               )}
             />
