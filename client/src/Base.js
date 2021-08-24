@@ -190,7 +190,7 @@ function Base() {
           <Route path="/jobseeker" exact>
             <Profile />
           </Route>
-          <Route path="/jobseekerDashboard" exact>
+          <Route path="/jobseeker/dashboard" exact>
             <JobseekerDashboard userRole={role} />
           </Route>
           <Route path="/jobseeker/settings">
@@ -208,7 +208,7 @@ function Base() {
     if (role === "employer") {
       return (
         <>
-          <Route path="/employer/home">
+          <Route path="/employer/dashboard">
             <EmployerDashboard />
           </Route>
           <Route path="/employer/jobs/create">
@@ -250,7 +250,7 @@ function Base() {
     if (role === "admin") {
       return (
         <>
-          <Route path="/admin" exact>
+          <Route path="/admin/dashboard">
             <Dashboard />
           </Route>
           <Route path="/admin/categories">

@@ -210,13 +210,15 @@ export default function SignInSide() {
             if (redirect) {
               window.location = `/jobDescription/${redirect}#applyJob`;
             } else {
-              window.location = "/jobseekerDashboard";
+              window.location = "/jobseeker/dashboard";
             }
+          } else if (header.payload.userRole === "employer") {
+            window.location = "/employer/dashboard";
+          } else if (header.payload.userRole === "admin") {
+            window.location = "/admin/dashboard";
           } else {
-            window.location = "/";
+            handleCredentialError();
           }
-        } else {
-          handleCredentialError();
         }
       })
       .catch((err) => {
@@ -354,26 +356,26 @@ export default function SignInSide() {
                     Sign In
                   </Typography>
                   <div className={classes.socialSection}>
-                      <Grid className={classes.paper}>
-                        <Button
-                          disable={!googleOauthUrl}
-                          onClick={() => {
-                            window.location.href = googleOauthUrl;
-                          }}
-                        >
-                          <Avatar
-                            className={classes.iconLogo}
-                            src={GoogleIcon}
-                            variant="square"
-                          />
-                          <Typography>
-                            {" "}
-                            Sign In with Google
-                          </Typography>
-                        </Button>
-                      </Grid>
-                      <Typography className={classes.text} style={{marginBottom: 16}}>or</Typography>
-                    
+                    <Grid className={classes.paper}>
+                      <Button
+                        disable={!googleOauthUrl}
+                        onClick={() => {
+                          window.location.href = googleOauthUrl;
+                        }}
+                      >
+                        <Avatar
+                          className={classes.iconLogo}
+                          src={GoogleIcon}
+                          variant="square"
+                        />
+                        <Typography>
+                          {" "}
+                          Sign In with Google
+                        </Typography>
+                      </Button>
+                    </Grid>
+                    <Typography className={classes.text} style={{ marginBottom: 16 }}>or</Typography>
+
                     {/* Social Login */}
 
                     {/* <div className={classes.icons}>

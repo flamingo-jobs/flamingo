@@ -22,7 +22,7 @@ import ComputerIcon from '@material-ui/icons/Computer';
 import FileCopyRoundedIcon from '@material-ui/icons/FileCopyRounded';
 import TuneRoundedIcon from '@material-ui/icons/TuneRounded';
 import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
-
+import PostAddRoundedIcon from '@material-ui/icons/PostAddRounded';
 const useStyles = makeStyles((theme) => ({
     root: {
         [theme.breakpoints.down('xs')]: {
@@ -172,7 +172,12 @@ function NavMenu(props) {
                             <ListItemText className={classes.linkText} primary="Technologies" />
                         </ListItem>
                     </Link>
-                    
+                    <Link to="/employer/jobs/create">
+                        <ListItem button key="addJob" selected={selectedIndex === "addJob"} onClick={(event) => handleListItemClick(event, "addJob")} classes={{ selected: classes.active }} className={classes.listItem}>
+                            <ListItemIcon className={classes.linkIcon}><PostAddRoundedIcon /></ListItemIcon>
+                            <ListItemText className={classes.linkText} primary="Post a Job" />
+                        </ListItem>
+                    </Link>
                     <Link to="/employer/jobs">
                         <ListItem button key="jobs" selected={selectedIndex === "jobs"} onClick={(event) => handleListItemClick(event, "jobs")} classes={{ selected: classes.active }} className={classes.listItem}>
                             <ListItemIcon className={classes.linkIcon}><WorkRoundedIcon /></ListItemIcon>
