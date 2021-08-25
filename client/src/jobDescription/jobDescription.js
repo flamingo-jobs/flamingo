@@ -38,6 +38,9 @@ const useStyles = makeStyles((theme) => ({
   container: {
     marginBottom: theme.spacing(1),
   },
+  loadingContainer: {
+    maxWidth: 'unset'
+  },
 }));
 
 // style={{border: "1px solid red"}}
@@ -57,13 +60,13 @@ function JobDescription(props) {
   }
 
   const userId = sessionStorage.getItem("loginId");
-  
+
   let { id } = useParams();
   const [jobId, setJobId] = useState(window.location.pathname.split("/")[2]);
 
   useEffect(() => {
     setJobId(window.location.pathname.split("/")[2]);
-  }, [window.location.pathname]); 
+  }, [window.location.pathname]);
 
   const checkApplied = () => {
     if (job !== "empty" && job.hasOwnProperty("applicationDetails")) {
@@ -100,11 +103,11 @@ function JobDescription(props) {
 
   const retrieveJobseeker = async () => {
     try {
-      if(userId){
+      if (userId) {
         const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
         if (response.data.success) {
           setSavedJobIds(response.data.jobseeker.savedJobs);
-  
+
           if (response.data.jobseeker.savedJobs.includes(jobId)) {
             setIsSaved(true);
           }
@@ -118,13 +121,13 @@ function JobDescription(props) {
   const displaySummary = () => {
     if (job === "empty") {
       return (
-        <Grid item sm={12}>
+        <Grid item xs={12}>
           <Loading />
         </Grid>
       );
     } else {
       return (
-        <Grid item sm={12} className={classes.container}>
+        <Grid item xs={12} className={classes.container}>
           <JobSummary
             userId={userId}
             job={job}
@@ -203,11 +206,11 @@ function JobDescription(props) {
   };
 
   const displayApplyForm = () => {
-    if(props.userRole !== "employer" && props.userRole !== "admin"){
+    if (props.userRole !== "employer" && props.userRole !== "admin") {
       if (isSignedIn === true && userId !== "empty" && !isApplied) {
         if (job === "empty") {
           return (
-            <Grid item sm={12} className={classes.container} style={{ marginTop: 16 }}>
+            <Grid item xs={12} className={classes.container} style={{ marginTop: 16 }}>
               <FloatCard >
                 <Loading />
               </FloatCard>
@@ -215,7 +218,7 @@ function JobDescription(props) {
           );
         } else {
           return (
-            <Grid item sm={12}>
+            <Grid item xs={12}>
               <ApplyForm userId={userId} jobId={jobId}></ApplyForm>
             </Grid>
           );
@@ -228,7 +231,7 @@ function JobDescription(props) {
   const displayCompanySummary = () => {
     if (job === "empty") {
       return (
-        <Grid item container spacing={3} sm={12}>
+        <Grid item container spacing={3} xs={12} className={classes.loadingContainer}>
           <Grid item xs={12}>
             <FloatCard>
               <Loading />
@@ -236,7 +239,7 @@ function JobDescription(props) {
           </Grid>
         </Grid>
       );
-    } else { 
+    } else {
       return (
         <CompanySummary 
           job={job}
@@ -249,7 +252,7 @@ function JobDescription(props) {
   const displayMoreFromJobs = () => {
     if (job === "empty") {
       return (
-        <Grid item container spacing={3} sm={12}>
+        <Grid item container spacing={3} xs={12} className={classes.loadingContainer}>
           <Grid item xs={12}>
             <FloatCard>
               <Loading />
@@ -265,7 +268,7 @@ function JobDescription(props) {
   const displayRelatedJobs = () => {
     if (job === "empty") {
       return (
-        <Grid item container spacing={3} sm={12}>
+        <Grid item container spacing={3} xs={12} className={classes.loadingContainer}>
           <Grid item xs={12}>
             <FloatCard>
               <Loading />
@@ -287,7 +290,7 @@ function JobDescription(props) {
         xs={12}
         spacing={3}
       >
-        <Grid item xs={12} lg={7} spacing={0}>
+        <Grid item xs={12} lg={7}>
           <Grid item container xs={12}>
             <FloatCard>
               <Grid item xs={12}>
@@ -313,7 +316,7 @@ function JobDescription(props) {
 
         </Grid>
 
-        <Grid item md={12} lg={5}>
+        <Grid item xs={12} lg={5}>
           {displayCompanySummary()}
           {displayMoreFromJobs()}
           {displayRelatedJobs()}

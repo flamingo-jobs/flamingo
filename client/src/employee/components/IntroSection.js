@@ -355,7 +355,7 @@ function IntroSection(props) {
           <Fade in={open}>
             <div className={classes.paper}>
             <div style={{paddingTop:'40px'}}>
-                <Grid container xs={12} direction="row">
+                <Grid container direction="row">
                   <Grid item xs={10}>
                     <Typography gutterBottom variant="h5" style={{textAlign:'center',paddingLeft:'50px',color:theme.palette.stateBlue}}>
                       Edit Profile
@@ -527,7 +527,7 @@ function IntroSection(props) {
             <Typography gutterBottom style={{color: theme.palette.stateBlue,marginTop:'-8px'}}>
               {state.tagline}
             </Typography>
-            <Grid container xs={12}>
+            <Grid container>
           <Grid item xs={12} style={{ textAlign: 'center',margin:"0px 0px 0px 0px" }}>
             <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'center',}}>
               <IconButton style={{paddingLeft:"0px"}}>

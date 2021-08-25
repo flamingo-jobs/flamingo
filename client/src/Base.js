@@ -19,7 +19,6 @@ import EmployerBilling from "./employer/Billing";
 import EmployerSettings from "./employer/Settings";
 import EmployerDashboard from "./employer/Dashboard";
 import EmployerTechnologies from "./employer/Technologies";
-import EmployerJobList from "./employer/EmployerJobList";
 import Technologies from "./admin/Technologies";
 import { Switch } from "react-router-dom";
 import Organizations from "./employer/Organizations";
@@ -36,8 +35,6 @@ import FavoriteOrganizations from "./employee/favoriteOrganizations/favoriteOrga
 import Applications from "./employer/applications/applications";
 import SearchResult from "./searchResults/searchResult";
 import Recommendations from "./recommendations/Recommendations";
-import BACKEND_URL from "./Config";
-import axios from "axios";
 import CreateJobSetup from "./jobs/createJob/CreateJobSetup";
 import Billing from "./employee/Billing";
 import { env } from "process";
@@ -324,7 +321,6 @@ function Base() {
               </Grid>
               <Grid
                 container
-                xs={12}
                 spacing={0}
                 direction="column"
                 alignItems="center"

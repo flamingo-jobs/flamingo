@@ -31,7 +31,17 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.down('sm')]: {
             display: 'none'
         },
-    }
+    },
+    // mainGrid: {
+    //     [theme.breakpoints.down('sm')]: {
+    //         flexDirection: 'column',
+    //         alignItems: "stretch"
+    //     },
+    //     [theme.breakpoints.down('xs')]: {
+    //         paddingRight: 12,
+    //         paddingLeft: 12
+    //     },
+    // },
 }));
 
 function Profile() {
@@ -77,8 +87,8 @@ function Profile() {
   },[])
 
     return (
-        <Grid item container sm={12} spacing={3} direction="row" justify="space-between" alignItems="flex-start">
-            <Grid item md={12} lg={4} spacing={3}>
+        <Grid item container xs={12} spacing={3} direction="row" justify="space-between" className={classes.mainGrid} alignItems="flex-start">
+            <Grid item xs={12} lg={4}>
                 <IntroSection jobseekerID={jobseekerID} />
                 <Space />
                 <EducationSection jobseekerID={jobseekerID} />
@@ -89,7 +99,7 @@ function Profile() {
                 <Space />
                 <Volunteer jobseekerID={jobseekerID} />
             </Grid>
-            <Grid item md={12} lg={8} spacing={3}>
+            <Grid item xs={12} lg={8}>
                 <WorkExperience jobseekerID={jobseekerID} />
                 <Space />
                 <ProjectsSection jobseekerID={jobseekerID} />

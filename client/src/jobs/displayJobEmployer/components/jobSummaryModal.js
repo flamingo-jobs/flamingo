@@ -160,7 +160,7 @@ const JobSummaryModal = (props) => {
       >
         <Card className={classes.root}>
           <CardContent className={classes.cardContent}>
-            <Grid container xs={12}>
+            <Grid container>
               <div className={classes.closeBtnContainer}>
                 <IconButton
                   onClick={props.handleClose}
@@ -175,7 +175,7 @@ const JobSummaryModal = (props) => {
                   Basic details
                 </Typography>
                 <form onSubmit={props.handleSummarySubmit}>
-                  <Grid container xs={12}>
+                  <Grid container>
                     <Grid item xs={12}>
                       <StateBlueTextField
                         id="title"

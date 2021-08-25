@@ -339,12 +339,12 @@ function WorkExpItem(props) {
           setStyleEdit({display: 'none'});
     }}>
         <Grid container spacing={3}>
-        <Grid item xs={2} spacing={2} style={{marginTop:"-2px"}}>
+        <Grid item xs={2} style={{marginTop:"-2px"}}>
             <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',marginLeft: "5px"}}>
                 {state.startYear ? state.startMonth+"/"+state.startYear+ " - " +state.endMonth+"/"+state.endYear : ""}
             </Typography>
           </Grid>
-          <Grid item xs={8} spacing={2} style={{marginTop:"-5px"}}>
+          <Grid item xs={8} style={{marginTop:"-5px"}}>
             <Typography gutterBottom style={{textAlign:'justify',fontSize:'16px',fontWeight:'bold',color:'#666'}}>
                 {state.position}
             </Typography>
@@ -408,7 +408,7 @@ function WorkExpItem(props) {
               <Fade in={open}>
                 <div className={classes.paper}>
                   <div style={{paddingTop:'40px'}}>
-                    <Grid container xs={12} direction="row">
+                    <Grid container direction="row">
                       <Grid item xs={10}>
                         <Typography gutterBottom variant="h5" style={{textAlign:'center',paddingLeft:'50px',color:theme.palette.stateBlue}}>
                           Edit Work Experience

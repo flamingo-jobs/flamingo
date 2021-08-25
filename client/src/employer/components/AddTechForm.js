@@ -82,7 +82,7 @@ const AddTechForm = (props) => {
       style={{ marginRight: -10 }}
     >
       <FloatCard>
-        <Grid container xs={12} direction="row">
+        <Grid container direction="row">
           <Grid item container direction="column" xs={7}>
             <Grid item className={classes.comboBox}>
               <Typography variant="h6" className={classes.title}>

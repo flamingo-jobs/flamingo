@@ -280,10 +280,10 @@ const DisplayJob = () => {
   return (
     <>
       {displayAlert()}
-      <Grid container xs={12} spacing={3}>
+      <Grid container spacing={3}>
         {/* Left column */}
         <Grid item xs={12} lg={6}>
-          <Grid container xs={12}>
+          <Grid container>
             <Grid item xs={12} className={classes.containerGridItem}>
               {displaySummary()}
             </Grid>
@@ -295,7 +295,7 @@ const DisplayJob = () => {
 
         {/* Right Column */}
         <Grid item xs={12} lg={6}>
-          <Grid container xs={12}>
+          <Grid container>
             <Grid item xs={12} className={classes.containerGridItem}>
               {displayTechStack()}
             </Grid>

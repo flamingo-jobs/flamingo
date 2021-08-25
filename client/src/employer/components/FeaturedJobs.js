@@ -98,7 +98,7 @@ function FeaturedJobs() {
 
     return (
         <div>
-            <Grid container xs={12} direction="column" spacing={1} className={classes.container}>
+            <Grid container direction="column" spacing={1} className={classes.container}>
                 <Grid item sm={12} >
                     <FloatCard>
                         <Typography variant="h5" className={classes.title}>Featured Jobs</Typography>

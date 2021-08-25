@@ -145,7 +145,7 @@ export default function BillingPackageCard() {
         </CardContent>
       </Card>
 
-      <Grid container xs={12} spacing={3} direction="row">
+      <Grid container spacing={3} direction="row">
         {/* Basic Package  */}
         <Grid item container xs={4}>
           <FloatCard className={classes.root}>

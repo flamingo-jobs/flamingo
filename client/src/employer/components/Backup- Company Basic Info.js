@@ -555,7 +555,7 @@ const old = () => {
           </Alert>
         </Snackbar>
 
-        <Grid container xs={12} direction="row" spacing={3}>
+        <Grid container direction="row" spacing={3}>
           {/* BODY PART OF THE COMPANY INFO CARD */}
 
           {technologyStack.length > 0 ? (

@@ -27,7 +27,7 @@ function Reviews() {
             
 
             {/* <FloatCard> */}
-                <Grid container xs={12} direction="column" spacing={1}>
+                <Grid container direction="column" spacing={1}>
 
                     <Grid item sm={12}>
                         <ReviewCard></ReviewCard>
