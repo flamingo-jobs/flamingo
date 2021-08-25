@@ -22,10 +22,6 @@ const useStyles = makeStyles((theme) => ({
   },
   mainGrid: {
     paddingLeft: 12,
-    [theme.breakpoints.down("sm")]: {
-      flexDirection: "column",
-      alignItems: "stretch",
-    },
     [theme.breakpoints.down("xs")]: {
       paddingRight: 12,
       paddingLeft: 20,

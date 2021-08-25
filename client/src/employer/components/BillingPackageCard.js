@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import FloatCard from '../../components/FloatCard';
+import FloatCard from "../../components/FloatCard";
 import Lottie from "react-lottie";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -12,6 +12,7 @@ import Card from "@material-ui/core/Card";
 import Box from "@material-ui/core/Box";
 import Divider from "@material-ui/core/Divider";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import CancelIcon from '@material-ui/icons/Cancel';
 import BillingImage from "../lotties/billingImage";
 import { Link } from "react-router-dom";
 
@@ -36,13 +37,16 @@ const useStyles = makeStyles((theme) => ({
   features: {
     backgroundColor: theme.palette.white,
     float: "left",
-    marginLeft: "15%",
+    marginLeft: "18%",
   },
   icon: {
     color: theme.palette.darkGreen,
   },
+  cancelIcon: {
+    color: theme.palette.lightRed,
+  },
   featuresContainer: {
-    marginBottom: "70%",
+    //marginBottom: "70%",
   },
   annual: {
     color: theme.palette.stateBlue,
@@ -147,7 +151,7 @@ export default function BillingPackageCard() {
 
       <Grid container spacing={3} direction="row">
         {/* Basic Package  */}
-        <Grid item container xs={4}>
+        <Grid item container xs={12} lg={4}>
           <FloatCard className={classes.root}>
             <Typography variant="h4" gutterBottom>
               <Box
@@ -167,28 +171,68 @@ export default function BillingPackageCard() {
               >
                 FREE
               </Box>
-              <Divider variant="middle" className={classes.firstDivider} />
+              <Box
+                fontWeight={400}
+                fontSize={12}
+                m={1}
+                className={classes.annual}
+              >
+                Enjoy Flamingo Jobs for FREE
+              </Box>
+              <Divider variant="middle"/>
             </Typography>
 
-            <div className={classes.featuresContainer}>
-              <Chip
-                icon={<CheckCircleIcon className={classes.icon} />}
-                label="Post upto 5 jobs"
-                className={classes.features}
-              />
-              <Chip
-                icon={<CheckCircleIcon className={classes.icon} />}
-                label="Receive upto 25 resumes"
-                className={classes.features}
-              />
-              <Chip
-                icon={<CheckCircleIcon className={classes.icon} />}
-                label="Applicant Tracking"
-                className={classes.features}
-              />
-            </div>
+            <Grid
+              container
+              direction="column"
+              className={classes.featuresContainer}
+            >
+              <Grid item xs={12}>
+                <Chip
+                  icon={<CheckCircleIcon className={classes.icon} />}
+                  label="Post upto 5 jobs"
+                  className={classes.features}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Chip
+                  icon={<CheckCircleIcon className={classes.icon} />}
+                  label="Receive upto 25 resumes"
+                  className={classes.features}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Chip
+                  icon={<CheckCircleIcon className={classes.icon} />}
+                  label="Applicant Tracking"
+                  className={classes.features}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Chip
+                  icon={<CancelIcon className={classes.cancelIcon} />}
+                  label="Resume Shortlisting"
+                  className={classes.features}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Chip
+                  icon={<CancelIcon className={classes.cancelIcon} />}
+                  label="Personalized Recommendations"
+                  className={classes.features}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Chip
+                  icon={<CancelIcon className={classes.cancelIcon} />}
+                  label="Advanced Analytics"
+                  className={classes.features}
+                />
+              </Grid>
+            </Grid>
+            <br />
             <div>
-              <Typography variant="contained" className={classes.Tytpography}>
+              <Typography variant="button" className={classes.Tytpography}>
                 You are currently on this plan
               </Typography>
             </div>
@@ -197,7 +241,7 @@ export default function BillingPackageCard() {
         </Grid>
 
         {/* Standard Package */}
-        <Grid item container xs={4}>
+        <Grid item container xs={12} lg={4}>
           <FloatCard className={classes.root}>
             <Typography variant="h4" gutterBottom>
               <Box
@@ -228,46 +272,68 @@ export default function BillingPackageCard() {
               <Divider variant="middle" />
             </Typography>
 
-            <div className={classes.featuresContainer}>
-              <Chip
-                icon={<CheckCircleIcon className={classes.icon} />}
-                label="Post upto 25 jobs"
-                className={classes.features}
-              />
-              <Chip
-                icon={<CheckCircleIcon className={classes.icon} />}
-                label="Receive upto 100 resumes"
-                className={classes.features}
-              />
-              <Chip
-                icon={<CheckCircleIcon className={classes.icon} />}
-                label="Applicant Tracking"
-                className={classes.features}
-              />
-              <Chip
-                icon={<CheckCircleIcon className={classes.icon} />}
-                label="Resume Shortlisting"
-                className={classes.features}
-              />
-              <Chip
-                icon={<CheckCircleIcon className={classes.icon} />}
-                label="Personalized Recommendations"
-                className={classes.features}
-              />
-            </div>
-            <div>
-              <Link to="/employer/payment/standard">
-                <Button variant="contained" className={classes.button}>
-                  Get Started
-                </Button>
-              </Link>
-            </div>
+            <Grid
+              container
+              direction="column"
+              className={classes.featuresContainer}
+            >
+              <Grid item xs={12}>
+                <Chip
+                  icon={<CheckCircleIcon className={classes.icon} />}
+                  label="Post upto 25 jobs"
+                  className={classes.features}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Chip
+                  icon={<CheckCircleIcon className={classes.icon} />}
+                  label="Receive upto 100 resumes"
+                  className={classes.features}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Chip
+                  icon={<CheckCircleIcon className={classes.icon} />}
+                  label="Applicant Tracking"
+                  className={classes.features}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Chip
+                  icon={<CheckCircleIcon className={classes.icon} />}
+                  label="Resume Shortlisting"
+                  className={classes.features}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Chip
+                  icon={<CheckCircleIcon className={classes.icon} />}
+                  label="Personalized Recommendations"
+                  className={classes.features}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Chip
+                  icon={<CancelIcon className={classes.cancelIcon} />}
+                  label="Advanced Analytics"
+                  className={classes.features}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <br />
+                <Link to="/employer/payment/standard">
+                  <Button variant="contained" className={classes.button}>
+                    Get Started
+                  </Button>
+                </Link>
+              </Grid>
+            </Grid>
             <br />
           </FloatCard>
         </Grid>
 
         {/* Premium Package */}
-        <Grid item container xs={4}>
+        <Grid item container xs={12} lg={4}>
           <FloatCard className={classes.root}>
             <Typography variant="h4" gutterBottom>
               <Box
@@ -298,44 +364,62 @@ export default function BillingPackageCard() {
               <Divider variant="middle" />
             </Typography>
 
-            <div className={classes.featuresContainer}>
-              <Chip
-                icon={<CheckCircleIcon className={classes.icon} />}
-                label="Post any number of jobs"
-                className={classes.features}
-              />
-              <Chip
-                icon={<CheckCircleIcon className={classes.icon} />}
-                label="Receive any number of resumes"
-                className={classes.features}
-              />
-              <Chip
-                icon={<CheckCircleIcon className={classes.icon} />}
-                label="Applicant Tracking"
-                className={classes.features}
-              />
-              <Chip
-                icon={<CheckCircleIcon className={classes.icon} />}
-                label="Resume Shortlisting"
-                className={classes.features}
-              />
-              <Chip
-                icon={<CheckCircleIcon className={classes.icon} />}
-                label="Personalized Recommendations"
-                className={classes.features}
-              />
-              <Chip
-                icon={<CheckCircleIcon className={classes.icon} />}
-                label="Advanced Analytics"
-                className={classes.features}
-              />
-            </div>
-            <div>
-            <Link to="/employer/payment/premium">
-              <Button variant="contained" className={classes.button}>
-                Get Started
-              </Button></Link>
-            </div>
+            <Grid
+              container
+              direction="column"
+              className={classes.featuresContainer}
+            >
+              <Grid item xs={12}>
+                <Chip
+                  icon={<CheckCircleIcon className={classes.icon} />}
+                  label="Post any number of jobs"
+                  className={classes.features}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Chip
+                  icon={<CheckCircleIcon className={classes.icon} />}
+                  label="Receive any number of resumes"
+                  className={classes.features}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Chip
+                  icon={<CheckCircleIcon className={classes.icon} />}
+                  label="Applicant Tracking"
+                  className={classes.features}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Chip
+                  icon={<CheckCircleIcon className={classes.icon} />}
+                  label="Resume Shortlisting"
+                  className={classes.features}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Chip
+                  icon={<CheckCircleIcon className={classes.icon} />}
+                  label="Personalized Recommendations"
+                  className={classes.features}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Chip
+                  icon={<CheckCircleIcon className={classes.icon} />}
+                  label="Advanced Analytics"
+                  className={classes.features}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <br />
+                <Link to="/employer/payment/premium">
+                  <Button variant="contained" className={classes.button}>
+                    Get Started
+                  </Button>
+                </Link>
+              </Grid>
+            </Grid>
             <br />
           </FloatCard>
         </Grid>
