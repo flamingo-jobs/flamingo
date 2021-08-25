@@ -352,7 +352,7 @@ const Settings = () => {
                               required
                             />
                           </Grid>
-                          <Grid item xs={6} align="left">
+                          <Grid item xs={12} md={6} align="left">
                             <TextField
                               label="New Password"
                               name="newPassword"
@@ -364,7 +364,7 @@ const Settings = () => {
                               required
                             />
                           </Grid>
-                          <Grid item xs={6} align="left">
+                          <Grid item xs={12} md={6} align="left">
                             <TextField
                               label="Confirm New Password"
                               name="confirmNewPassword"
