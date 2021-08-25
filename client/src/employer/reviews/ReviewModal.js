@@ -70,6 +70,14 @@ const useStyles = makeStyles((theme) => ({
   ratingText: {
     marginRight: theme.spacing(1),
   },
+  reviewErrorContainer:{
+    padding:"0px",
+    fontSize: "12px",
+  },
+  reviewError:{
+    margin:"0px",
+    color: "#f44336 ",
+  },
   btnContainer: {
     display: "flex",
     justifyContent: "flex-end",
@@ -128,7 +136,6 @@ const ReviewModal = (props) => {
               </Typography>
               <form onSubmit={props.handleReviewSubmit}>
                 <StateBlueTextField
-                  required
                   id="review"
                   name="review"
                   label="Review"
@@ -136,7 +143,9 @@ const ReviewModal = (props) => {
                   fullWidth
                   multiline
                   value={props.review}
-                  onChange={(e) => props.setReview(e.target.value)}
+                  onChange={props.handleReviewChange}
+                  error={props.errors.hasOwnProperty("review")}
+                  helperText={props.errors["review"]}
                 />
                 <div className={classes.rating}>
                   <Typography className={classes.ratingText}>
@@ -146,8 +155,11 @@ const ReviewModal = (props) => {
                     id="rating"
                     name="rating"
                     value={props.rating}
-                    onChange={(e, newRating) => props.setRating(newRating)}
+                    onChange={(e, newRating) => props.handleRatingChange(e, newRating)}
                   />
+                </div>
+                <div className={classes.reviewErrorContainer}>
+                  <p className={classes.reviewError}>{props.errors["rating"]}</p>
                 </div>
 
                 <div className={classes.btnContainer}>
