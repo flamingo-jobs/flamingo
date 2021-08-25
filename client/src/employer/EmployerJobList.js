@@ -89,7 +89,7 @@ const EmployerJobList = () => {
       {jobAccess || singleJobAccess ? (
         <>
           <Grid item container xs={12} spacing={3}>
-            <Link to="/employer/jobs/create">
+            <Link to="/employer/postAJob">
               <Button
                 variant="contained"
                 className={classes.button}

@@ -178,7 +178,7 @@ function Base() {
           <Route path="/jobseeker/appliedJobs">
             <AppliedJobs />
           </Route>
-          <Route path="/suggestedJobs">
+          <Route path="/jobseeker/suggestedJobs">
             <Recommendations />
           </Route>
           <Route path="/jobseeker/savedJobs">
@@ -187,7 +187,7 @@ function Base() {
           <Route path="/jobseeker/favoriteOrganizations">
             <FavoriteOrganizations />
           </Route>
-          <Route path="/jobseeker" exact>
+          <Route path="/jobseeker/profile" exact>
             <Profile />
           </Route>
           <Route path="/jobseeker/dashboard" exact>
@@ -211,7 +211,7 @@ function Base() {
           <Route path="/employer/dashboard">
             <EmployerDashboard />
           </Route>
-          <Route path="/employer/jobs/create">
+          <Route path="/employer/postAJob">
             <CreateJobSetup />
           </Route>
           <Route path="/employer/jobs/update/:jobId">

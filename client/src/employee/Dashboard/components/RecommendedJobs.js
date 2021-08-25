@@ -235,7 +235,7 @@ function RecommendedJobs(props) {
                 </Grid>
                 {displayJobs()}
                 <Grid item xs={12}>
-                  <Link to="/suggestedJobs">
+                  <Link to="/jobseeker/suggestedJobs">
                     <FloatCard>
                         <Button
                             className={classes.link}

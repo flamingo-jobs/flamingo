@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -11,7 +11,7 @@ import BusinessRoundedIcon from '@material-ui/icons/BusinessRounded';
 import PeopleAltRoundedIcon from '@material-ui/icons/PeopleAltRounded';
 import PhoneRoundedIcon from '@material-ui/icons/PhoneRounded';
 import ThumbsUpDownRoundedIcon from '@material-ui/icons/ThumbsUpDownRounded';
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import OfflineBoltRoundedIcon from '@material-ui/icons/OfflineBoltRounded';
 import CategoryRoundedIcon from '@material-ui/icons/CategoryRounded';
 import CodeRoundedIcon from '@material-ui/icons/CodeRounded';
@@ -72,17 +72,40 @@ const useStyles = makeStyles((theme) => ({
 function NavMenu(props) {
     const classes = useStyles();
     const theme = useTheme();
-    var defaultPage;
-    const path = window.location.pathname.split("/");
-    if (path.length === 1) {
-        defaultPage = "home";
-    } else if (path.length === 2 && path[1] === "admin") {
-        defaultPage = "dashboard";
-    } else if (path.length > 2 && path[1] === "admin") {
-        defaultPage = path[2];
+    var loadingPage;
+    const loadingPath = window.location.pathname.split("/");
+    const [defaultPage, setDefaultPage] = useState("/");
+    const history = useHistory();
+    if (window.location.pathname === "/") {
+        loadingPage = "home";
+    } else if (loadingPath.length > 2 && (loadingPath[1] === "admin" || loadingPath[1] === "jobseeker" || loadingPath[1] === "employer")) {
+        loadingPage = loadingPath[2];
     } else {
-        defaultPage = path[1];
+        loadingPage = loadingPath[1];
     }
+
+
+    useEffect(() => {
+        history.listen((location) => {
+            const path = location.pathname.split("/");
+            if (location.pathname === "/") {
+                setDefaultPage("home");
+            } else if (path.length > 2 && (loadingPath[1] === "admin" || loadingPath[1] === "jobseeker" || loadingPath[1] === "employer")) {
+                setDefaultPage(path[2]);
+            } else {
+                setDefaultPage(path[1]);
+            }
+        })
+    }, [history]);
+
+    useEffect(() => {
+        setSelectedIndex(defaultPage);
+    }, [defaultPage])
+
+    useEffect(() => {
+        setSelectedIndex(loadingPage);
+    }, [])
+
     const [selectedIndex, setSelectedIndex] = React.useState(defaultPage);
 
     const handleListItemClick = (event, index) => {
@@ -96,7 +119,7 @@ function NavMenu(props) {
         displayEmployerLinks()
     }, [props])
 
-    
+
 
     const displayAdminLinks = () => {
         if (props.user === "admin") {
@@ -153,7 +176,7 @@ function NavMenu(props) {
         if (props.user === "employer") {
             return (
                 <>
-                    <Link to="/employer/home">
+                    <Link to="/employer/dashboard">
                         <ListItem button key="dashboard" selected={selectedIndex === "dashboard"} onClick={(event) => handleListItemClick(event, "dashboard")} classes={{ selected: classes.active }} className={classes.listItem}>
                             <ListItemIcon className={classes.linkIcon}><DashboardRoundedIcon /></ListItemIcon>
                             <ListItemText className={classes.linkText} primary="Dashboard" />
@@ -172,8 +195,8 @@ function NavMenu(props) {
                             <ListItemText className={classes.linkText} primary="Technologies" />
                         </ListItem>
                     </Link>
-                    <Link to="/employer/jobs/create">
-                        <ListItem button key="addJob" selected={selectedIndex === "addJob"} onClick={(event) => handleListItemClick(event, "addJob")} classes={{ selected: classes.active }} className={classes.listItem}>
+                    <Link to="/employer/postAJob">
+                        <ListItem button key="postAJob" selected={selectedIndex === "postAJob"} onClick={(event) => handleListItemClick(event, "postAJob")} classes={{ selected: classes.active }} className={classes.listItem}>
                             <ListItemIcon className={classes.linkIcon}><PostAddRoundedIcon /></ListItemIcon>
                             <ListItemText className={classes.linkText} primary="Post a Job" />
                         </ListItem>
@@ -198,7 +221,7 @@ function NavMenu(props) {
                             <ListItemText className={classes.linkText} primary="Billing" />
                         </ListItem>
                     </Link>
- 
+
                     {/* <ListItem button key="contactUs" selected={selectedIndex === "contactUs"} onClick={(event) => handleListItemClick(event, "contactUs")} classes={{ selected: classes.active }} className={classes.listItem}>
                         <ListItemIcon className={classes.linkIcon}><PhoneRoundedIcon /></ListItemIcon>
                         <ListItemText className={classes.linkText} primary="Contact Us" />
@@ -218,19 +241,19 @@ function NavMenu(props) {
         if (props.user === "jobseeker") {
             return (
                 <>
-                    <Link to="/jobseekerDashboard">
+                    <Link to="/jobseeker/dashboard">
                         <ListItem button key="dashboard" selected={selectedIndex === "dashboard"} onClick={(event) => handleListItemClick(event, "dashboard")} classes={{ selected: classes.active }} className={classes.listItem}>
                             <ListItemIcon className={classes.linkIcon}><DashboardRoundedIcon /></ListItemIcon>
                             <ListItemText className={classes.linkText} primary="Dashboard" />
                         </ListItem>
                     </Link>
-                    <Link to="/jobseeker">
+                    <Link to="/jobseeker/profile">
                         <ListItem button key="profile" selected={selectedIndex === "profile"} onClick={(event) => handleListItemClick(event, "profile")} classes={{ selected: classes.active }} className={classes.listItem}>
                             <ListItemIcon className={classes.linkIcon}><PeopleAltRoundedIcon /></ListItemIcon>
                             <ListItemText className={classes.linkText} primary="Profile" />
                         </ListItem>
                     </Link>
-                    <Link to="/suggestedJobs">
+                    <Link to="/jobseeker/suggestedJobs">
                         <ListItem button key="suggestedJobs" selected={selectedIndex === "suggestedJobs"} onClick={(event) => handleListItemClick(event, "suggestedJobs")} classes={{ selected: classes.active }} className={classes.listItem}>
                             <ListItemIcon className={classes.linkIcon}><OfflineBoltRoundedIcon /></ListItemIcon>
                             <ListItemText className={classes.linkText} primary="Suggested Jobs" />

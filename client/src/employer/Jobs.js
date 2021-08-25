@@ -115,7 +115,7 @@ function Jobs() {
                 <>
                     <Grid item container sm={12} spacing={3} direction="row" justify="space-between" className={classes.mainGrid} alignItems="flex-start">
                         <Grid item xs={6} style={{ textAlign: 'left', marginBottom: 24 }}>
-                            <Link to="/employer/jobs/create">
+                            <Link to="/employer/postAJob">
                                 <Button
                                     className={classes.addButton}
                                     startIcon={<AddIcon />}
