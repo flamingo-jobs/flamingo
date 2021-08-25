@@ -114,6 +114,17 @@ const ShortlistModal = (props) => {
   const [isDefault, setIsDefault] = useState(true);
   const [invalid, setInvalid] = useState(false);
 
+  const marks = [
+    {
+      value: 0,
+      label: '0',
+    },
+    {
+      value: props.max,
+      label: `${props.max}`,
+    },
+  ];
+
   useEffect(() => {
     if (isDefault) {
       props.updateCustomCriterias([]);
@@ -182,6 +193,7 @@ const ShortlistModal = (props) => {
                     valueLabelDisplay="auto"
                     min={0}
                     max={props.max}
+                    marks={marks}
                   />
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', marginTop: 16, marginBottom: 16 }}>

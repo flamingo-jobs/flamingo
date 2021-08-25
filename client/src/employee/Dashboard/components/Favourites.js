@@ -34,8 +34,8 @@ const useStyles = makeStyles((theme) => ({
 
 function FeaturedOrganizations(props) {
     const classes = useStyles();
-    const [favoriteOrgIds, setFavoriteOrgIds] = useState([]);
-    const [favoriteOrgs, setFavoriteOrgs] = useState([]);
+    const [favoriteOrgIds, setFavoriteOrgIds] = useState("empty");
+    const [favoriteOrgs, setFavoriteOrgs] = useState("empty");
 
     const [alertShow, setAlertShow] = useState(false);
     const [alertData, setAlertData] = useState({ severity: "", msg: "" });
@@ -53,6 +53,7 @@ function FeaturedOrganizations(props) {
     } else {
         loginId=props.jobseekerID;
     }
+    const userId = sessionStorage.getItem("loginId");
 
     const handleAlert = () => {
         setAlertShow(true);
@@ -74,7 +75,7 @@ function FeaturedOrganizations(props) {
       }, [favoriteOrgIds]);
 
     const retrieveFavoriteOrgIds = () => {
-        axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
+        axios.get(`${BACKEND_URL}/jobseeker/${userId}`)
         .then(res => {
             if(res.data.success){
                 if(res.data.jobseeker.favoriteOrganizations.length > 0){
@@ -103,13 +104,13 @@ function FeaturedOrganizations(props) {
       };
 
     const displayFavoriteOrgs = () => {
-        if (favoriteOrgs) {
-            return favoriteOrgs?.map(favoriteOrg => (
+        if (favoriteOrgs !== "empty") {
+            return favoriteOrgs.map(favoriteOrg => (
                 <Grid item xs={12} key={favoriteOrg._id}>
                     <Organization 
                         info={favoriteOrg} 
-                        favoriteOrgs={favoriteOrgIds} 
-                        setFavoriteOrgs={setFavoriteOrgIds}
+                        favoriteOrgIds={favoriteOrgIds} 
+                        setFavoriteOrgIds={setFavoriteOrgIds}
                         setAlertData={setAlertData}
                         handleAlert={handleAlert}
                     />
