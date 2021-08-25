@@ -30,7 +30,7 @@ const employerSchema = new mongoose.Schema({
   },
   subscription: {
     type: { type: String },
-    startDate: { type: Date }
+    startDate: { type: Date },
   },
   scale: {
     type: String,
@@ -39,34 +39,19 @@ const employerSchema = new mongoose.Schema({
     type: Boolean,
   },
   links: {
-    website: {
-      type: String,
-    },
-    facebook: {
-      type: String,
-    },
-    linkedIn: {
-      type: String,
-    },
-    twitter: {
-      type: String,
-    },
-    blog: {
-      type: String,
-    },
+    type: Array,
   },
   categories: {
     type: Array,
   },
-  reviews:[
+  reviews: [
     {
-      review: {type: String},
-      rating: {type: Number},
-      createdDate: {type: Date},
-      jobseekerId: {type: String},
-      jobseekerName: {type: String},
-
-    }
+      review: { type: String },
+      rating: { type: Number },
+      createdDate: { type: Date },
+      jobseekerId: { type: String },
+      jobseekerName: { type: String },
+    },
   ],
 });
 

@@ -199,6 +199,7 @@ export default function StartHiring() {
     logo: "",
     description: "",
     openings: "",
+    website: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -270,6 +271,7 @@ export default function StartHiring() {
   };
 
   const sendData = async (userId) => {
+    social.push({ platform: "Website", link: formData.website });
     const employerData = {
       name: formData.name,
       logo: selectedFile ? "" + userId + path.extname(selectedFile.name) : "",
@@ -387,7 +389,7 @@ export default function StartHiring() {
   };
 
   // Dinamic Inputs
-  const [social, setSocial] = useState([{ platform: "", link: "" }]);
+  const [social, setSocial] = useState([{ platform: "Facebook", link: "" }]);
   const handleSocialInputChange = (e, index) => {
     const { name, value } = e.target;
     const list = [...social];
@@ -421,7 +423,6 @@ export default function StartHiring() {
 
   // Autocomplete arrays
   const socialMediaPlatforms = [
-    { title: "Website" },
     { title: "Facebook" },
     { title: "LinkedIn" },
     { title: "Twitter" },
@@ -458,7 +459,7 @@ export default function StartHiring() {
                         </Typography>
                       </Grid>
 
-                      <Grid item xs={12} md={5} lg={5}>
+                      <Grid item xs={12} md={6} lg={6}>
                         <Grid container alignItems="center" spacing={3}>
                           {/* Basic Details */}
                           <Grid item xs={12} align="left">
@@ -564,14 +565,29 @@ export default function StartHiring() {
                               Basic Details
                             </Typography>
                           </Grid>
-                          <Grid item xs={12} align="left">
+
+                          <Grid item xs={12} md={5} align="left">
                             <TextField
                               label="Company Name"
                               name="name"
                               value={formData.name}
                               onChange={setForm}
                               variant="outlined"
-                              className={classes.shortTextField}
+                              className={classes.textField}
+                              fullWidth
+                              required
+                              size="small"
+                            />
+                          </Grid>
+                          <Grid item xs={12} md={7} align="left">
+                            <TextField
+                              label="Website"
+                              name="website"
+                              value={formData.website}
+                              onChange={setForm}
+                              variant="outlined"
+                              className={classes.textField}
+                              fullWidth
                               required
                               size="small"
                             />
@@ -589,7 +605,6 @@ export default function StartHiring() {
                               multiline
                             />
                           </Grid>
-
                           {locations.map((x, i) => {
                             return (
                               <Grid
