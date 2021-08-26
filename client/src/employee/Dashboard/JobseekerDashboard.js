@@ -14,22 +14,18 @@ import ReachChart from './components/ReachChart';
 function JobseekerDashboard(props) {
 
     return (
-        <Grid item container sm={12} spacing={3} direction="row" justify="space-between" alignItems="flex-start">
-            <Grid item xs={12} md={12} lg={8} spacing={3}>
-                <TopCards />
+        <Grid item container xs={12} spacing={3} direction="row" justify="space-between" alignItems="flex-start">
+            <Grid item xs={12} lg={8}>
+                <TopCards userRole={props.userRole} />
                 <Space />
                 <RecommendedJobs userRole={props.userRole}/>
-                {/* <Space />
-                <RecommendedOrganizations userRole={props.userRole}/> */}
             </Grid>
-            <Grid item xs={12} md={12} lg={4} spacing={3}>
-                <ProfileStatus />
+            <Grid item xs={12} lg={4}>
+                <ProfileStatus userRole={props.userRole} />
                 <Space />
-                <ReachChart />
+                <ReachChart userRole={props.userRole} />
                 <Space />
-                <Favourites />
-                {/* <Space />
-                <SideMenu /> */}
+                <Favourites userRole={props.userRole} />
             </Grid>      
         </Grid>
     )

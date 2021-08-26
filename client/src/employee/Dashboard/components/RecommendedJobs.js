@@ -200,21 +200,21 @@ function RecommendedJobs(props) {
         // await delay(3000);
         if (jobs === "empty" ) {
             return (
-                <Grid item sm={12} style={{ marginBottom: 16 }}>
+                <Grid item xs={12} style={{ marginBottom: 16 }}>
                     <FloatCard>
                         <NoInfo message="Sorry, we don't have suggestions for you right now. Complete your profile to get suggested jobs." />
                     </FloatCard>
                 </Grid>)
         } else if (jobs.length === 0) {
             return (
-                <Grid item sm={12} style={{ marginBottom: 16 }}>
+                <Grid item xs={12} style={{ marginBottom: 16 }}>
                     <FloatCard>
                         <Loading />
                     </FloatCard>
                 </Grid>)
         } else if(savedJobIds !== "empty"){
             return jobs.map(job => (
-                <Grid item key={job._id} xs={12} className={classes.gridCard}>
+                <Grid item key={job._id} xs={12} className={classes.jobGridCard}>
                     <JobCard
                         info={job}
                         savedJobIds={savedJobIds}
