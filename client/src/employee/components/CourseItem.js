@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import theme from '../../Theme';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import BACKEND_URL from '../../Config';
 import Fade from '@material-ui/core/Fade';
 import Divider from '@material-ui/core/Divider';
@@ -19,6 +20,8 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import ImportContactsIcon from '@material-ui/icons/ImportContacts';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -142,6 +145,7 @@ function CourseItem(props) {
   const [loading, setLoading] = useState(true);
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const index = props.index;
   let loginId;
   let login = false;
@@ -211,6 +215,7 @@ function CourseItem(props) {
 
   const handleClickOpen = () => {
     setConfirmDelete(true);
+    handleMenuClose();
   };
 
   const handleClickClose = () => {
@@ -219,11 +224,20 @@ function CourseItem(props) {
 
   function handleOpen(){
     setOpen(true);
+    handleMenuClose();
   }
 
   function handleClose(){
     setOpen(false);
   }
+
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
 
     // Alert stuff
     const displayAlert = () => {
@@ -330,7 +344,7 @@ function CourseItem(props) {
         <Grid item xs={1}>
         <ImportContactsIcon style={{color: "#cc99ff",}} />
         </Grid>
-        <Grid item xs={9}>
+        <Grid item xs={10}>
             <Typography gutterBottom style={{textAlign:'left',fontSize:'16px',fontWeight:'bold',color:'#666'}}>
                 {state.course}
             </Typography>
@@ -344,14 +358,21 @@ function CourseItem(props) {
                 {state.startMonth===0 ? "" : state.startMonth+"/"+state.startYear+ " - " +state.endMonth+"/"+state.endYear}
             </Typography>
         </Grid>
-        <Grid item xs={2} spacing={2} style={{marginTop:"-5px",padding:"20px 0px 0px 0px"}}>
-        { login ? <>
-          <Button style={{minWidth:'25px',width:'25px',marginRight:"10px"}}>
-              <EditIcon style={styleEdit} className={classes.editIcon} size="small" onClick={handleOpen} />
+        <Grid item xs={1} spacing={2} style={{padding:"15px 0px 0px 0px"}}>
+          { login ? <>
+            <Button style={{minWidth:'25px',width:'25px'}}>
+              <MoreVertIcon className={classes.editIcon} size="small" style={{color:"#999"}} onClick={handleMenuClick} />
           </Button>
-          <Button style={{minWidth:'25px',width:'25px'}}>
-              <DeleteIcon style={styleEdit} className={classes.editIcon} size="small"  onClick={handleClickOpen} />
-          </Button>
+          <Menu
+            id="simple-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleMenuClose}
+          >
+            <MenuItem onClick={handleOpen}><EditIcon />Change</MenuItem>
+            <MenuItem onClick={handleClickOpen}><DeleteIcon />Remove</MenuItem>
+          </Menu>
           </> : null }
           <Dialog
               open={confirmDelete}

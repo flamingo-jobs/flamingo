@@ -78,12 +78,9 @@ function Profile() {
                 <Space />
                 <TechnologySection jobseekerID={jobseekerID} />
                 <Space />
-                {/* 
-                
-                
                 <Achievements jobseekerID={jobseekerID} />
                 <Space />
-                <Skills jobseekerID={jobseekerID} /> */}
+                <Skills jobseekerID={jobseekerID} />
             </Grid>                                            
         </Grid>
     )

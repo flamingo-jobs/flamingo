@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import theme from '../../Theme';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import BACKEND_URL from '../../Config';
 import Fade from '@material-ui/core/Fade';
 import Divider from '@material-ui/core/Divider';
@@ -18,6 +19,8 @@ import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -145,6 +148,7 @@ function EduItem(props) {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
   const [alertData, setAlertData] = useState({severity: "", msg: ""});
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const [loading, setLoading] = useState(true);
   const [alertShow, setAlertShow] = React.useState(false);
   
@@ -219,6 +223,7 @@ function EduItem(props) {
 
   const handleClickOpen = () => {
     setConfirmDelete(true);
+    handleMenuClose();
   };
 
   const handleClickClose = () => {
@@ -227,11 +232,20 @@ function EduItem(props) {
 
   function handleOpen(){
     setOpen(true);
+    handleMenuClose();
   }
 
   function handleClose(){
     setOpen(false);
   }
+
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
 
   
   // Alert stuff
@@ -330,35 +344,6 @@ function EduItem(props) {
   //----------------------------------
 
   function onSubmit(e){
-    // console.log("update function");
-    // e.preventDefault();
-    // const uni = {
-    //     university: university.university,
-    //     degree: university.degree,
-    //     fieldOfStudy: university.fieldOfStudy,
-    //     GPA: university.GPA,
-    //     startDate: university.startMonth+"/"+university.startYear,
-    //     endDate: university.endMonth+"/"+university.endYear,
-    //     societiesAndActivities: university.societiesAndActivities
-    // }
-
-    // axios.put(`${BACKEND_URL}/jobseeker/updateUniversity/${loginId}`,{index:props.index,university:uni})
-    // .then(res => {
-    //   if(res.data.success){
-    //     setAlertData({
-    //       severity: "success",
-    //       msg: "University updated successfully!",
-    //     });
-    //     handleAlert();
-    //   } else {
-    //     setAlertData({
-    //       severity: "error",
-    //       msg: "University could not be updated!",
-    //     });
-    //     handleAlert();
-    //   }
-    // });
-    // handleClose();
     e.preventDefault();
     let edu;
     if(education.type === "Bachelor's" || education.type === "Bachelor's Honours"){
@@ -724,8 +709,8 @@ function EduItem(props) {
                         {education.type}
                     </Typography>
                 </Grid>
-                <Grid item xs={7} spacing={2}>
-                    <Typography gutterBottom style={{color: "#666",textAlign:'left',fontSize:'16px',fontWeight:'bold',marginRight:"-60px"}}>
+                <Grid item xs={8} spacing={2}>
+                    <Typography gutterBottom style={{color: "#666",textAlign:'left',fontSize:'16px',fontWeight:'bold'}}>
                         {education.institute}
                     </Typography>
                     <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'15px',fontWeight:"bold"}}>
@@ -757,8 +742,8 @@ function EduItem(props) {
                         {education.type}
                     </Typography>
                 </Grid>
-                <Grid item xs={7} spacing={2}>
-                    <Typography gutterBottom style={{color: "#666",textAlign:'left',fontSize:'16px',fontWeight:'bold',marginRight:"-60px"}}>
+                <Grid item xs={8} spacing={2}>
+                    <Typography gutterBottom style={{color: "#666",textAlign:'left',fontSize:'16px',fontWeight:'bold'}}>
                         {education.institute}
                     </Typography>
                     <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'15px',fontWeight:"bold"}}>
@@ -784,8 +769,8 @@ function EduItem(props) {
                       {education.type}
                   </Typography>
               </Grid>
-              <Grid item xs={7} spacing={2}>
-                  <Typography gutterBottom style={{color: "#666",textAlign:'left',fontSize:'16px',fontWeight:'bold',marginRight:"-60px"}}>
+              <Grid item xs={8} spacing={2}>
+                  <Typography gutterBottom style={{color: "#666",textAlign:'left',fontSize:'16px',fontWeight:'bold'}}>
                       {education.institute}
                   </Typography>
                   <Typography variant="body2" component="p" style={{textAlign:'left',color: '#666',marginTop:'15px'}}>
@@ -809,14 +794,21 @@ function EduItem(props) {
     }}>
        <Grid container style={{paddingTop:"10px"}}>      
         {filterFields()}
-        <Grid item xs={2} spacing={2} style={{marginTop:"-20px"}}>
-        { login ? <>
-          <Button className={classes.editButton} style={{minWidth:'25px',width:'25px',marginRight:"5px"}}>
-              <EditIcon style={styleEdit} className={classes.editIcon} size="small" onClick={handleOpen} />
+        <Grid item xs={1} spacing={2}>
+          { login ? <>
+            <Button style={{minWidth:'25px',width:'25px'}}>
+              <MoreVertIcon className={classes.editIcon} size="small" style={{color:"#999"}} onClick={handleMenuClick} />
           </Button>
-          <Button className={classes.editButton} style={{minWidth:'25px',width:'25px',marginRight:"-45px"}}>
-              <DeleteIcon style={styleEdit} className={classes.editIcon} size="small"  onClick={handleClickOpen} />
-          </Button>
+          <Menu
+            id="simple-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleMenuClose}
+          >
+            <MenuItem onClick={handleOpen}><EditIcon />Change</MenuItem>
+            <MenuItem onClick={handleClickOpen}><DeleteIcon />Remove</MenuItem>
+          </Menu>
           </> : null }
           <Dialog
               open={confirmDelete}

@@ -9,6 +9,7 @@ import theme from '../../Theme';
 import StarIcon from '@material-ui/icons/Star';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import BACKEND_URL from '../../Config';
 import Fade from '@material-ui/core/Fade';
 import Divider from '@material-ui/core/Divider';
@@ -19,6 +20,8 @@ import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -138,6 +141,8 @@ function AchievementItem(props) {
   const [loading, setLoading] = useState(true);
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
   const index = props.index;
   let loginId;
   let login = false;
@@ -195,6 +200,7 @@ function AchievementItem(props) {
 
   const handleClickOpen = () => {
     setConfirmDelete(true);
+    handleMenuClose();
   };
 
   const handleClickClose = () => {
@@ -203,11 +209,20 @@ function AchievementItem(props) {
 
   function handleOpen(){
     setOpen(true);
+    handleMenuClose();
   }
 
   function handleClose(){
     setOpen(false);
   }
+
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
 
     // Alert stuff
     const displayAlert = () => {
@@ -307,28 +322,41 @@ function AchievementItem(props) {
         <Grid item xs={1}>
         <StarIcon style={{color: theme.palette.pinkyRed,}} />
         </Grid>
-        <Grid item xs={9}>
-            <Typography gutterBottom style={{color: "#666",textAlign:'left',fontSize:'16px',fontWeight:'bold',paddingTop:'5px',marginRight:"-50px"}}>
+        <Grid item xs={10}>
+            <Typography gutterBottom style={{color: "#666",textAlign:'left',fontSize:'16px',fontWeight:'bold',paddingTop:'5px'}}>
                 {state.title}
             </Typography>
-            <Typography gutterBottom style={{color: theme.palette.stateBlue,fontSize:'15px',textAlign:'left',marginRight:"-50px"}}>
+            <Typography gutterBottom style={{color: theme.palette.stateBlue,fontSize:'15px',textAlign:'left'}}>
                 {state.issuedBy ? state.issuedBy : ""}
             </Typography>
-            <Typography gutterBottom style={{color: "#666",textAlign:'left',fontSize:'14px',paddingTop:'5px',marginRight:"-50px"}}>
+            <Typography gutterBottom style={{color: "#666",textAlign:'left',fontSize:'14px',paddingTop:'5px'}}>
                 {state.description}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',paddingTop:'5px'}}>
                 {state.year === 0 && state.month === 0 ? "" : "Issued date : " + state.month+"/"+state.year}
             </Typography>
         </Grid>
-        <Grid item xs={2} spacing={2} style={{marginTop:"-5px",padding:"20px 0px 0px 0px"}}>
+        <Grid item xs={1} spacing={2} style={{padding:"15px 0px 0px 0px"}}>
           { login ? <>
-          <Button style={{minWidth:'25px',width:'25px',marginRight:"10px"}}>
+            <Button style={{minWidth:'25px',width:'25px'}}>
+              <MoreVertIcon className={classes.editIcon} size="small" style={{color:"#999"}} onClick={handleMenuClick} />
+          </Button>
+          <Menu
+            id="simple-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleMenuClose}
+          >
+            <MenuItem onClick={handleOpen}><EditIcon />Change</MenuItem>
+            <MenuItem onClick={handleClickOpen}><DeleteIcon />Remove</MenuItem>
+          </Menu>
+          {/* <Button style={{minWidth:'25px',width:'25px',marginRight:"10px"}}>
               <EditIcon style={styleEdit} className={classes.editIcon} size="small" onClick={handleOpen} />
           </Button>
           <Button style={{minWidth:'25px',width:'25px'}}>
               <DeleteIcon style={styleEdit} className={classes.editIcon} size="small"  onClick={handleClickOpen} />
-          </Button>
+          </Button> */}
           </> : null }
           <Dialog
               open={confirmDelete}
