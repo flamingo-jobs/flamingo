@@ -82,6 +82,13 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     color: theme.palette.tuftsBlue,
   },
+  searchButton:{
+    color: theme.palette.tuftsBlue,
+
+    "&:hover":{
+      backgroundColor: "transparent",
+    },
+  },
   inputRoot: {
     color: theme.palette.tuftsBlue,
   },
@@ -492,13 +499,26 @@ export default function Topbar(props) {
   }
 
   const handleSearchSubmit = (e) => {
-    if (e.key === 'Enter' && searchString.length !== 0) {
+    if (e.key === 'Enter' && searchString.trim().length !== 0) {
       // console.log("enter pressed", searchString);
       history.push({
         pathname: '/searchResults',
         searchString: searchString,
       });
     }
+  }
+
+  const displaySearchButton = () => {
+    if(searchString.trim().length > 0){
+      return <Button className={classes.searchButton} onClick={handleSearchBtnClick}>Search</Button>
+    }
+  }
+
+  const handleSearchBtnClick = () => {
+    history.push({
+      pathname: '/searchResults',
+      searchString: searchString,
+    });
   }
 
   return (
@@ -523,6 +543,7 @@ export default function Topbar(props) {
                   onChange={handleSearchChange}
                   onKeyPress={(e) => handleSearchSubmit(e)}
                 />
+                {displaySearchButton()}
               </div>
               <div className={classes.grow} />
               <div className={classes.sectionDesktop}>

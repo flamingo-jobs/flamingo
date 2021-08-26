@@ -13,8 +13,8 @@ import SnackBarAlert from "../../components/SnackBarAlert";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    margin: "0px",
-    padding: "0px",
+    paddingLeft: theme.spacing(1.5),
+    paddingRight: theme.spacing(1.5),
   },
   containerGridItem: {
     marginBottom: theme.spacing(3),
@@ -280,7 +280,7 @@ const DisplayJob = () => {
   return (
     <>
       {displayAlert()}
-      <Grid container spacing={3}>
+      <Grid container spacing={3} className={classes.root}>
         {/* Left column */}
         <Grid item xs={12} lg={6}>
           <Grid container>

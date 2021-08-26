@@ -14,7 +14,7 @@ import FloatCard from "../../../components/FloatCard";
 import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
 import WorkRoundedIcon from "@material-ui/icons/WorkRounded";
 import GetAppIcon from "@material-ui/icons/GetApp";
-import PublishIcon from "@material-ui/icons/Publish";
+import DescriptionIcon from '@material-ui/icons/Description';
 import Status from "./status";
 import download from "downloadjs";
 import UploadModal from "./uploadModal";
@@ -341,7 +341,7 @@ const Job = (props) => {
                       variant="contained"
                       className={classes.downloadBtn}
                       onClick={handleOpen}
-                      startIcon={<PublishIcon />}
+                      startIcon={<DescriptionIcon />}
                     >
                       Change the Resume
                     </Button>
@@ -364,11 +364,11 @@ const Job = (props) => {
         </FloatCard>
       );
     } else {
-      return (
-        <FloatCard>
-          <Typography>No information to display</Typography>
-        </FloatCard>
-      );
+      // return (
+      //   <FloatCard>
+      //     <Typography>No information to display</Typography>
+      //   </FloatCard>
+      // );
     }
   };
 

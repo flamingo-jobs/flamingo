@@ -25,12 +25,30 @@ const useStyles = makeStyles((theme) => ({
   },
   mainContainer: {
     padding: theme.spacing(5),
+    [theme.breakpoints.down("sm")]: {
+      paddingLeft: "0px",
+      paddingRight: "0px",
+    },
+  },
+  buttonGridItem:{
+    display: "flex",
+    flexDirection :"column",
+    justifyContent: "center",
   },
   removeIcon: {
     color: theme.palette.stateBlue,
   },
   addIcon: {
     color: theme.palette.stateBlue,
+  },
+  addRemoveButton:{
+    padding: "12px",
+    [theme.breakpoints.down("sm")]: {
+      padding: "5px",
+    },
+    [theme.breakpoints.down("xs")]: {
+      padding: "2px",
+    }
   },
 }));
 
@@ -49,7 +67,7 @@ const TasksForm = ({
             <Grid container spacing={2}>
               {tasksFields.map((field, index) => (
                 <Grid item container key={index}>
-                  <Grid item xs={10}>
+                  <Grid item xs={9}>
                     <StateBlueTextField
                       name="task"
                       label="Responsibility"
@@ -63,21 +81,27 @@ const TasksForm = ({
                       helperText={errors.tasks[index].length !== 0 && errors.tasks[index]}
                     />
                   </Grid>
-                  <Grid item xs={2}>
-                    <IconButton
-                      disabled={tasksFields.length === 1}
-                      onClick={() => handleTaskRemove(index)}
-                    >
-                      <RemoveIcon
-                        className={classes.removeIcon}
-                        style={{
-                          color: tasksFields.length === 1 ? "#bbb" : null,
-                        }}
-                      />
-                    </IconButton>
-                    <IconButton onClick={handleTaskAdd}>
-                      <AddIcon className={classes.addIcon} />
-                    </IconButton>
+                  <Grid item xs={2} className={classes.buttonGridItem}>
+                    <div>
+                      <IconButton
+                        className={classes.addRemoveButton}
+                        disabled={tasksFields.length === 1}
+                        onClick={() => handleTaskRemove(index)}
+                      >
+                        <RemoveIcon
+                          className={classes.removeIcon}
+                          style={{
+                            color: tasksFields.length === 1 ? "#bbb" : null,
+                          }}
+                        />
+                      </IconButton>
+                      <IconButton 
+                        className={classes.addRemoveButton} 
+                        onClick={handleTaskAdd}
+                      >
+                        <AddIcon className={classes.addIcon} />
+                      </IconButton>
+                    </div>
                   </Grid>
                 </Grid>
               ))}

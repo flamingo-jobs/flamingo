@@ -5,6 +5,8 @@ import axios from "axios";
 import BACKEND_URL from "../../Config";
 import FloatCard from "../../components/FloatCard";
 import Job from "./components/job";
+import Loading from '../../components/Loading';
+import NoInfo from '../../components/NoInfo';
 
 const useStyles = makeStyles((theme) => ({
   border: {
@@ -58,7 +60,14 @@ function AppliedJobs() {
   };
 
   const displayAppliedJobs = () => {
-    if (jobseeker !== "empty") {
+    if(jobseeker === "empty"){
+      return (
+        <FloatCard>
+          <Loading />
+        </FloatCard>
+      );
+    }
+    else if (jobseeker !== "empty") {
       if (jobseeker.applicationDetails.length > 0) {
         return jobseeker.applicationDetails.map((item, index) => (
           <Grid item key={index + "grid"} xs={12} className={classes.gridCard}>
@@ -73,18 +82,10 @@ function AppliedJobs() {
       } else {
         return (
           <FloatCard>
-            <Typography variant="h6">
-              You haven't applied for any jobs
-            </Typography>
+            <NoInfo message=" You haven't applied for any jobs" />
           </FloatCard>
         );
       }
-    } else {
-      return (
-        <FloatCard>
-          <Typography variant="h6">You must log in first</Typography>
-        </FloatCard>
-      );
     }
   };
 

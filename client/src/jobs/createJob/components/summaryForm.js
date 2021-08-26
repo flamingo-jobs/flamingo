@@ -62,11 +62,16 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(5),
   },
   dateWrapper: {
-    marginLeft: theme.spacing(2),
+    // marginLeft: theme.spacing(2),
     width: "50%",
     display: "flex",
     flexDirection: "column",
     justify: "flex-end",
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+      justify: "center",
+
+    },
   },
 }));
 
@@ -121,8 +126,9 @@ const SummaryForm = ({
               helperText={errors["title"]}
             />
           </Grid>
+
           {/* Category    */}
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <StateBlueTextField
               id="category"
               select
@@ -142,7 +148,7 @@ const SummaryForm = ({
           </Grid>
 
           {/* Job type */}
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <StateBlueTextField
               id="jobType"
               select
@@ -181,7 +187,7 @@ const SummaryForm = ({
           </Grid>
 
           {/* Location & Due date */}
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <StateBlueTextField
               id="location"
               select
@@ -200,7 +206,7 @@ const SummaryForm = ({
             </StateBlueTextField>
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <div className={classes.dateWrapper}>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <ThemeProvider theme={materialTheme}>
@@ -222,7 +228,7 @@ const SummaryForm = ({
           </Grid>
 
           {/* Requried Degrees & Experience */}
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <StateBlueTextField
               id="minEducation"
               select
@@ -241,7 +247,7 @@ const SummaryForm = ({
             </StateBlueTextField>
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <StateBlueTextField
               id="minExperience"
               select
@@ -261,7 +267,7 @@ const SummaryForm = ({
           </Grid>
 
           {/* Salary range */}
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <StateBlueTextField
               id="minSalary"
               name="minSalary"
@@ -277,7 +283,7 @@ const SummaryForm = ({
             ></StateBlueTextField>
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <StateBlueTextField
               id="maxSalary"
               name="maxSalary"
@@ -292,7 +298,7 @@ const SummaryForm = ({
             ></StateBlueTextField>
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <StateBlueTextField
               id="numberOfVacancies"
               name="numberOfVacancies"

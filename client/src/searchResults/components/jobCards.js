@@ -27,7 +27,7 @@ const JobCards = (props) => {
   const displayJobs = () => {
     if (props.jobs.length === 0) {
       return (
-        <Grid item xs={9}>
+        <Grid item xs={12}>
           <FloatCard>
             <SearchNotFound></SearchNotFound>
           </FloatCard>
@@ -35,7 +35,7 @@ const JobCards = (props) => {
       );
     } else {
       return (
-        <Grid item xs={9}>
+        <Grid item xs={12}>
           {props.jobs.map((job) => (
             <div className={classes.jobCardWrapper} key={job._id} >
               <JobCard 
