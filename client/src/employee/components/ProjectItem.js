@@ -26,6 +26,8 @@ import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -37,7 +39,7 @@ import SnackBarAlert from "../../components/SnackBarAlert";
 const useStyles = makeStyles((theme) => ({
     paperCont: {
         backgroundColor: '#E6E6FA',
-        padding: '20px 0px 20px 20px',
+        padding: '20px',
         borderRadius: 10,
         "&:hover": {
             defaultButton: {
@@ -145,6 +147,7 @@ function ProjectItem(props) {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
   const [alertData, setAlertData] = useState({severity: "", msg: ""});
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const [loading, setLoading] = useState(true);
   const [alertShow, setAlertShow] = React.useState(false);
   const index = props.index;
@@ -215,21 +218,31 @@ const handleDelete = () => {
   props.parentFunction(index)
 }
 
-  const handleClickOpen = () => {
-    setConfirmDelete(true);
-  };
+const handleClickOpen = () => {
+  setConfirmDelete(true);
+  handleMenuClose();
+};
 
-  const handleClickClose = () => {
-    setConfirmDelete(false);
-  };
- 
-  function handleOpen(){
-    setOpen(true);
-  }
+const handleClickClose = () => {
+  setConfirmDelete(false);
+};
+
+function handleOpen(){
+  setOpen(true);
+  handleMenuClose();
+}
 
   function handleClose(){
     setOpen(false);
   }
+
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
   
   // Alert stuff
   const displayAlert = () => {
@@ -358,7 +371,7 @@ const handleDelete = () => {
                 setStyleEdit({display: 'none'});
         }}>
             <Grid container spacing={3}>
-              <Grid item xs={9} style={{marginTop:"-5px",padding:"20px 0px 0px 20px"}}>
+              <Grid item xs={11} style={{marginTop:"-5px"}}>
                 <Typography gutterBottom style={{textAlign:'left',fontSize:'16px',fontWeight:'bold',color:'#666'}}>
                     {state.name}
                 </Typography>
@@ -372,17 +385,21 @@ const handleDelete = () => {
                     {state.link === null ? "" : "Link : "+state.link}
                 </Typography>
               </Grid>
-              <Grid item xs={3} style={{marginTop:"-5px",padding:"20px 0px 0px 0px"}}>
-              { login ? <>
-                <Button style={{minWidth:'25px',width:'25px'}}>
-                  <MoreVertIcon className={classes.editIcon} size="small" style={{color:"#999"}} />
-                </Button>
-                    {/* <Button style={{minWidth:'25px',width:'25px',marginRight:"10px"}}>
-                        <EditIcon style={styleEdit} className={classes.editIcon} size="small" onClick={handleOpen} />
-                    </Button>
+              <Grid item xs={1} style={{padding:"10px 0px 0px 0px",textAlign:'right'}}>
+                  { login ? <>
                     <Button style={{minWidth:'25px',width:'25px'}}>
-                        <DeleteIcon style={styleEdit} className={classes.editIcon} size="small"  onClick={handleClickOpen} />
-                    </Button> */}
+                      <MoreVertIcon className={classes.editIcon} size="small" style={{color:"#999"}} onClick={handleMenuClick} />
+                    </Button>
+                    <Menu
+                      id="simple-menu"
+                      anchorEl={anchorEl}
+                      keepMounted
+                      open={Boolean(anchorEl)}
+                      onClose={handleMenuClose}
+                    >
+                      <MenuItem onClick={handleOpen}><EditIcon />Change</MenuItem>
+                      <MenuItem onClick={handleClickOpen}><DeleteIcon />Remove</MenuItem>
+                    </Menu>
                     </> : null }
                     <Dialog
                         open={confirmDelete}

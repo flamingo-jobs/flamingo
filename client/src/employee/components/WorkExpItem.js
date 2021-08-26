@@ -19,6 +19,8 @@ import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -140,6 +142,7 @@ function WorkExpItem(props) {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
   const [alertData, setAlertData] = useState({severity: "", msg: ""});
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const [loading, setLoading] = useState(true);
   const [alertShow, setAlertShow] = React.useState(false);
   const index = props.index;
@@ -211,6 +214,7 @@ function WorkExpItem(props) {
 
   const handleClickOpen = () => {
     setConfirmDelete(true);
+    handleMenuClose();
   };
 
   const handleClickClose = () => {
@@ -219,11 +223,20 @@ function WorkExpItem(props) {
 
   function handleOpen(){
     setOpen(true);
+    handleMenuClose();
   }
 
   function handleClose(){
     setOpen(false);
   }
+
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
   
   // Alert stuff
   const displayAlert = () => {
@@ -352,26 +365,28 @@ function WorkExpItem(props) {
             <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'14px',fontWeight:'bold',}}>
                 {state.place}
             </Typography>
-            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',paddingTop:'10px',marginRight:"-60px"}}>
+            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',paddingTop:'10px'}}>
                 {state.description}
             </Typography>
-            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',paddingTop:'10px',marginRight:"-60px"}}>
-              {state.taskAndResponsibility ? "Tasks & Responsibilities : " + state.taskAndResponsibility : ""}
+            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',paddingTop:'10px'}}>
+              <b>{state.taskAndResponsibility ? "Tasks & Responsibilities : " : ""}</b>{state.taskAndResponsibility}
             </Typography>
           </Grid>
-          <Grid item xs={1} style={{marginTop:"-5px",padding:"20px 0px 0px 0px"}}>
-            {
-            login===true ?
-              <>
-              <Button style={{minWidth:'25px',width:'25px'}}>
-                <MoreVertIcon className={classes.editIcon} size="small" style={{color:"#999"}} />
-              </Button>
-            {/* <Button style={{minWidth:'25px',width:'25px',marginRight:"10px"}}>
-                <EditIcon style={styleEdit} className={classes.editIcon} size="small" onClick={handleOpen} />
-            </Button>
-            <Button style={{minWidth:'25px',width:'25px',marginRight:'-50px'}}>
-                <DeleteIcon style={styleEdit} className={classes.editIcon} size="small"  onClick={handleClickOpen} />
-            </Button> */}
+          <Grid item xs={1} spacing={2} style={{padding:"10px 0px 0px 0px"}}>
+          { login ? <>
+            <Button style={{minWidth:'25px',width:'25px'}}>
+              <MoreVertIcon className={classes.editIcon} size="small" style={{color:"#999"}} onClick={handleMenuClick} />
+          </Button>
+          <Menu
+            id="simple-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleMenuClose}
+          >
+            <MenuItem onClick={handleOpen}><EditIcon />Change</MenuItem>
+            <MenuItem onClick={handleClickOpen}><DeleteIcon />Remove</MenuItem>
+          </Menu>
             </> : null
             }
             <Dialog
