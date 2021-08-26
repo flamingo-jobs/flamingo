@@ -15,6 +15,7 @@ import LaptopMacIcon from '@material-ui/icons/LaptopMac';
 import theme from '../../Theme';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import BACKEND_URL from '../../Config';
 import Fade from '@material-ui/core/Fade';
 import Divider from '@material-ui/core/Divider';
@@ -337,7 +338,7 @@ const handleDelete = () => {
     <>
     {displayAlert()} 
     <TimelineItem>
-        <TimelineOppositeContent style={{flex:'0.2'}}>
+        <TimelineOppositeContent style={{flex:'0.2',paddingLeft:"0px"}}>
             <Typography variant="body2" color="textSecondary">
               {state.startMonth===0 ? "" : state.startMonth+"/"+state.startYear+ " - " +state.endMonth+"/"+state.endYear}
             </Typography>
@@ -348,7 +349,7 @@ const handleDelete = () => {
             </TimelineDot>
             <TimelineConnector />
         </TimelineSeparator>
-        <TimelineContent>
+        <TimelineContent style={{paddingRight:"0px"}}>
         <Paper elevation={0} className={classes.paperCont}
             onMouseEnter={e => {
                 setStyleEdit({display: 'block'});
@@ -357,28 +358,31 @@ const handleDelete = () => {
                 setStyleEdit({display: 'none'});
         }}>
             <Grid container spacing={3}>
-              <Grid item xs={10} spacing={2} style={{marginTop:"-5px",padding:"20px 0px 0px 20px"}}>
-                <Typography gutterBottom style={{textAlign:'justify',fontSize:'16px',fontWeight:'bold',color:'#666'}}>
+              <Grid item xs={9} style={{marginTop:"-5px",padding:"20px 0px 0px 20px"}}>
+                <Typography gutterBottom style={{textAlign:'left',fontSize:'16px',fontWeight:'bold',color:'#666'}}>
                     {state.name}
                 </Typography>
-                <Typography variant="body2" color="textSecondary" style={{textAlign:'left',marginRight:"-60px"}}>
+                <Typography variant="body2" color="textSecondary" style={{textAlign:'left'}}>
                     {state.description}
                 </Typography>
-                <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'14px',fontWeight:'bold',paddingTop:'5px'}}>
+                <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'14px',fontWeight:'bold',paddingTop:'5px'}}>
                     {state.usedTech ? "Tech Stack : " + state.usedTech : ""}
                 </Typography>
                 <Typography variant="body2" color="textSecondary" style={{textAlign:'left',paddingTop:'10px'}}>
                     {state.link === null ? "" : "Link : "+state.link}
                 </Typography>
               </Grid>
-              <Grid item xs={2} spacing={2} style={{marginTop:"-5px",padding:"20px 0px 0px 0px"}}>
+              <Grid item xs={3} style={{marginTop:"-5px",padding:"20px 0px 0px 0px"}}>
               { login ? <>
-                    <Button style={{minWidth:'25px',width:'25px',marginRight:"10px"}}>
+                <Button style={{minWidth:'25px',width:'25px'}}>
+                  <MoreVertIcon className={classes.editIcon} size="small" style={{color:"#999"}} />
+                </Button>
+                    {/* <Button style={{minWidth:'25px',width:'25px',marginRight:"10px"}}>
                         <EditIcon style={styleEdit} className={classes.editIcon} size="small" onClick={handleOpen} />
                     </Button>
                     <Button style={{minWidth:'25px',width:'25px'}}>
                         <DeleteIcon style={styleEdit} className={classes.editIcon} size="small"  onClick={handleClickOpen} />
-                    </Button>
+                    </Button> */}
                     </> : null }
                     <Dialog
                         open={confirmDelete}

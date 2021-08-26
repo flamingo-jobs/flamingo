@@ -16,36 +16,8 @@ import CertificatesSection from './CertificatesSection';
 import axios from 'axios';
 import BACKEND_URL from '../../Config';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        backgroundSize: 'cover',
-        minHeight: '100vh'
-    },
-    container: {
-        paddingTop: 20,
-        [theme.breakpoints.down('sm')]: {
-            paddingTop: 0,
-        },
-    },
-    sideDrawerGrid: {
-        [theme.breakpoints.down('sm')]: {
-            display: 'none'
-        },
-    },
-    // mainGrid: {
-    //     [theme.breakpoints.down('sm')]: {
-    //         flexDirection: 'column',
-    //         alignItems: "stretch"
-    //     },
-    //     [theme.breakpoints.down('xs')]: {
-    //         paddingRight: 12,
-    //         paddingLeft: 12
-    //     },
-    // },
-}));
 
 function Profile() {
-    const classes = useStyles();
     const [jobseekerID, setJobseekerID] = useState(window.location.pathname.split("/")[3]);
 
     let loginId;
@@ -87,12 +59,12 @@ function Profile() {
   },[])
 
     return (
-        <Grid item container xs={12} spacing={3} direction="row" justify="space-between" className={classes.mainGrid} alignItems="flex-start">
+        <Grid item container xs={12} spacing={3} direction="row" justify="space-between" alignItems="flex-start">
             <Grid item xs={12} lg={4}>
                 <IntroSection jobseekerID={jobseekerID} />
                 <Space />
                 <EducationSection jobseekerID={jobseekerID} />
-                <Space />
+                <Space />    
                 <CertificatesSection jobseekerID={jobseekerID} />
                 <Space />
                 <Course jobseekerID={jobseekerID} />
@@ -106,9 +78,12 @@ function Profile() {
                 <Space />
                 <TechnologySection jobseekerID={jobseekerID} />
                 <Space />
+                {/* 
+                
+                
                 <Achievements jobseekerID={jobseekerID} />
                 <Space />
-                <Skills jobseekerID={jobseekerID} />
+                <Skills jobseekerID={jobseekerID} /> */}
             </Grid>                                            
         </Grid>
     )

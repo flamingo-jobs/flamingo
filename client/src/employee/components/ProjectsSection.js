@@ -45,8 +45,6 @@ const useStyles = makeStyles({
   },
   paperCont: {
     backgroundColor: 'MintCream',
-    paddingLeft: 10,
-    paddingRight: 10,
     marginBottom: 25,
     borderRadius: 10,
     width:"100%",
@@ -538,15 +536,11 @@ function ProjectsSection(props) {
         </Modal>
         
       </Grid>
-      <Grid container spacing={3} style={{padding:'0px 15px 10px 15px'}}>
         <Paper elevation={0} className={classes.paperCont}>
-          <Grid item xs={12}>
             <Timeline align="left">
               {displayProjectFields()}
             </Timeline>
-          </Grid>
         </Paper>
-      </Grid>
     </FloatCard>
     </>
   );

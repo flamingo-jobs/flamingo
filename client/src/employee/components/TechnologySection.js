@@ -48,11 +48,9 @@ function TechnologySection(props) {
         </Grid>
         
       </Grid>
-      <Grid container spacing={3}>
-            <Grid item xs={12}>
-                <Technologies jobseekerID={props.jobseekerID} />
-            </Grid>
-        </Grid>
+
+      <Technologies jobseekerID={props.jobseekerID} />
+
     </FloatCard>
   );
 }

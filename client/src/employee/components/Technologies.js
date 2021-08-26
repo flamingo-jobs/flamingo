@@ -143,18 +143,14 @@ function Technologies(props) {
     };
 
     return (
-        <Grid item container xs={12} spacing={3} direction="column"
-            justify="space-between"
-            alignItems="flex-start">
-            <Grid item xs={12} style={{ minWidth: '100%' }}>
-                <Paper elevation={0} className={classes.paperCont}>
-                    <div style={{ padding: 20, width: '100%', textAlign: 'left' }}>
-                        {displayTechnologies()}
-                    </div>
-                </Paper>
-            </Grid>
-            {displayAlert()}
-        </Grid >
+        <>
+        <Paper elevation={0} className={classes.paperCont}>
+            <div style={{ padding: 20, width: '100%', textAlign: 'left' }}>
+                {displayTechnologies()}
+            </div>
+        </Paper>
+        {displayAlert()}
+        </>
     )
 }
 

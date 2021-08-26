@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import theme from '../../Theme';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import BACKEND_URL from '../../Config';
 import Fade from '@material-ui/core/Fade';
 import Divider from '@material-ui/core/Divider';
@@ -339,35 +340,38 @@ function WorkExpItem(props) {
           setStyleEdit({display: 'none'});
     }}>
         <Grid container spacing={3}>
-        <Grid item xs={2} style={{marginTop:"-2px"}}>
+          <Grid item xs={3} style={{marginTop:"-2px"}}>
             <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',marginLeft: "5px"}}>
                 {state.startYear ? state.startMonth+"/"+state.startYear+ " - " +state.endMonth+"/"+state.endYear : ""}
             </Typography>
           </Grid>
           <Grid item xs={8} style={{marginTop:"-5px"}}>
-            <Typography gutterBottom style={{textAlign:'justify',fontSize:'16px',fontWeight:'bold',color:'#666'}}>
+            <Typography gutterBottom style={{textAlign:'left',fontSize:'16px',fontWeight:'bold',color:'#666'}}>
                 {state.position}
             </Typography>
-            <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'justify',fontSize:'14px',fontWeight:'bold',}}>
+            <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'14px',fontWeight:'bold',}}>
                 {state.place}
             </Typography>
-            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',paddingTop:'10px',marginRight:"-60px"}}>
+            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',paddingTop:'10px',marginRight:"-60px"}}>
                 {state.description}
             </Typography>
-            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'justify',paddingTop:'10px',marginRight:"-60px"}}>
+            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',paddingTop:'10px',marginRight:"-60px"}}>
               {state.taskAndResponsibility ? "Tasks & Responsibilities : " + state.taskAndResponsibility : ""}
             </Typography>
           </Grid>
-          <Grid item xs={2} spacing={2} style={{marginTop:"-5px",padding:"20px 0px 0px 0px"}}>
+          <Grid item xs={1} style={{marginTop:"-5px",padding:"20px 0px 0px 0px"}}>
             {
             login===true ?
               <>
-            <Button style={{minWidth:'25px',width:'25px',marginRight:"10px"}}>
+              <Button style={{minWidth:'25px',width:'25px'}}>
+                <MoreVertIcon className={classes.editIcon} size="small" style={{color:"#999"}} />
+              </Button>
+            {/* <Button style={{minWidth:'25px',width:'25px',marginRight:"10px"}}>
                 <EditIcon style={styleEdit} className={classes.editIcon} size="small" onClick={handleOpen} />
             </Button>
             <Button style={{minWidth:'25px',width:'25px',marginRight:'-50px'}}>
                 <DeleteIcon style={styleEdit} className={classes.editIcon} size="small"  onClick={handleClickOpen} />
-            </Button>
+            </Button> */}
             </> : null
             }
             <Dialog
