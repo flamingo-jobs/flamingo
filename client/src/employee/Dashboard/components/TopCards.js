@@ -122,7 +122,7 @@ function TopCards(props){
     return (
     <Grid container direction="row" xs={12} spacing={2} className={classes.root}>
 
-        <Grid item xs={3}>
+        <Grid item xs={6} md={3}>
             <FloatCard className={classes.applicationCard}>
                         <Typography variant="body2" className={classes.applicationsTitle}>
                             APPLIED
@@ -134,7 +134,7 @@ function TopCards(props){
             </FloatCard>
         </Grid>
 
-        <Grid item xs={3}>
+        <Grid item xs={6} md={3}>
             <FloatCard className={classes.applicationCard}>
                         <Typography variant="body2" className={classes.applicationsTitle}>
                             SHORTLISTED
@@ -147,7 +147,7 @@ function TopCards(props){
             </FloatCard>
         </Grid>
 
-        <Grid item xs={3}>
+        <Grid item xs={6} md={3}>
             <FloatCard className={classes.applicationCard}>
                         <Typography variant="body2" className={classes.applicationsTitle}>
                             PENDING
@@ -159,7 +159,7 @@ function TopCards(props){
             </FloatCard>
         </Grid>
 
-        <Grid item xs={3}>
+        <Grid item xs={6} md={3}>
             <FloatCard className={classes.applicationCard}>
                         <Typography variant="body2" className={classes.applicationsTitle}>
                             REJECTED

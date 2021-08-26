@@ -55,6 +55,10 @@ const useStyles = makeStyles((theme) => ({
     padding:'0px',
     margin:'-15px',
     color: theme.palette.tuftsBlue,
+    "&:hover": {
+      backgroundColor: theme.palette.lightSkyBlue,
+      borderRadius: "100%"
+    }
   },
   closeIcon: {
     "&:hover": {
@@ -123,6 +127,10 @@ const useStyles = makeStyles((theme) => ({
     color: "#777",
     fontSize: '14px',
     marginTop:"12px",
+  },
+  item: {
+    color: "#666",
+    padding: "10px 20px"
   }
 }));
 
@@ -370,8 +378,8 @@ function CourseItem(props) {
             open={Boolean(anchorEl)}
             onClose={handleMenuClose}
           >
-            <MenuItem onClick={handleOpen}><EditIcon />Change</MenuItem>
-            <MenuItem onClick={handleClickOpen}><DeleteIcon />Remove</MenuItem>
+            <MenuItem className={classes.item} onClick={handleOpen}><EditIcon style={{marginRight:"7px"}} />Change</MenuItem>
+            <MenuItem className={classes.item} onClick={handleClickOpen}><DeleteIcon style={{marginRight:"7px"}} />Remove</MenuItem>
           </Menu>
           </> : null }
           <Dialog
