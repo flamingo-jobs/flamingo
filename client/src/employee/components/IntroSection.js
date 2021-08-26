@@ -553,8 +553,8 @@ function IntroSection(props) {
         </CardContent>
   
         <CardActions style={{marginBottom:"-10px"}}>
-        <Grid container>
-          <Grid item xs style={{ textAlign: 'center',margin:"-15px 0px 0px 0px" }}>
+        <Grid container xs={12}>
+          <Grid item xs={12} style={{ textAlign: 'center',margin:"-15px 0px 0px 0px" }}>
               <a href={`mailto:${state.email}`}>
                 <IconButton>
                   <Avatar className={classes.avatar}>

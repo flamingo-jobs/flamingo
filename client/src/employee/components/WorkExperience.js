@@ -518,16 +518,11 @@ function WorkExperience(props) {
               
             </div>
           </Fade>
-        </Modal>
-        
+        </Modal>     
       </Grid>
-      <Grid container spacing={3}>
-            <Grid item xs={12}>
-              {displayWork()}
-                {/* <WorkExpItem startYear="2019" endYear="2022" role="Intern Software Engineer" companyName="Company XYZ" description="This is a brief description on what work you have done and what responsibilities were given to you." />
-                <WorkExpItem startYear="2019" endYear="2022" role="Volunteer" companyName="Programme Name" description="This is a brief description on what work you have done and what responsibilities were given to you." /> */}
-            </Grid>
-        </Grid>
+
+      {displayWork()}
+
     </FloatCard>
     </>
   );
