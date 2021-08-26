@@ -357,7 +357,7 @@ function VolunteerItem(props) {
           </Typography>
         </Grid>
 
-        <Grid item xs={8} spacing={2} style={{marginTop:"-5px"}}>
+        <Grid item xs={8} style={{marginTop:"-5px"}}>
             <Typography gutterBottom style={{textAlign:'left',fontSize:'16px',fontWeight:'bold',color:'#666',marginTop:"5px"}}>
                 {state.title}
             </Typography>
@@ -369,7 +369,7 @@ function VolunteerItem(props) {
             </Typography>
         </Grid>
 
-        <Grid item xs={1} spacing={2} style={{padding:"15px 0px 0px 0px"}}>
+        <Grid item xs={1} style={{padding:"15px 0px 0px 0px"}}>
           { login ? <>
             <Button style={{minWidth:'25px',width:'25px'}}>
               <MoreVertIcon className={classes.editIcon} size="small" style={{color:"#999"}} onClick={handleMenuClick} />

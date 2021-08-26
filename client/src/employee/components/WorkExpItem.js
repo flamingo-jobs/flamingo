@@ -353,12 +353,12 @@ function WorkExpItem(props) {
           setStyleEdit({display: 'none'});
     }}>
         <Grid container spacing={3}>
-          <Grid item xs={3} style={{marginTop:"-2px"}}>
+          <Grid item xs={2} style={{marginTop:"-2px"}}>
             <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',marginLeft: "5px"}}>
                 {state.startYear ? state.startMonth+"/"+state.startYear+ " - " +state.endMonth+"/"+state.endYear : ""}
             </Typography>
           </Grid>
-          <Grid item xs={8} style={{marginTop:"-5px"}}>
+          <Grid item xs={9} style={{marginTop:"-5px",paddingLeft:"30px"}}>
             <Typography gutterBottom style={{textAlign:'left',fontSize:'16px',fontWeight:'bold',color:'#666'}}>
                 {state.position}
             </Typography>
@@ -372,7 +372,7 @@ function WorkExpItem(props) {
               <b>{state.taskAndResponsibility ? "Tasks & Responsibilities : " : ""}</b>{state.taskAndResponsibility}
             </Typography>
           </Grid>
-          <Grid item xs={1} spacing={2} style={{padding:"10px 0px 0px 0px"}}>
+          <Grid item xs={1} style={{padding:"10px 0px 0px 0px"}}>
           { login ? <>
             <Button style={{minWidth:'25px',width:'25px'}}>
               <MoreVertIcon className={classes.editIcon} size="small" style={{color:"#999"}} onClick={handleMenuClick} />

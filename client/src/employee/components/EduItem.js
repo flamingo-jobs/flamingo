@@ -794,7 +794,7 @@ function EduItem(props) {
     }}>
        <Grid container style={{paddingTop:"10px"}}>      
         {filterFields()}
-        <Grid item xs={1} spacing={2}>
+        <Grid item xs={1}>
           { login ? <>
             <Button style={{minWidth:'25px',width:'25px'}}>
               <MoreVertIcon className={classes.editIcon} size="small" style={{color:"#999"}} onClick={handleMenuClick} />
