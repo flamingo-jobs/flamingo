@@ -115,23 +115,23 @@ function Organization(props) {
         handleOpen();
     }
 
-    // useEffect(() => {
-    //     if(!role){
-    //         setIsSaved(false);
-    //     } else if(role && role === "jobseeker"){
-    //         setIsSaved(props.favoriteOrgs.includes(props.info._id));
-    //     }
-    // }, [props.favoriteOrgs, props.info]);
+    useEffect(() => {
+        if(!role){
+            setIsSaved(false);
+        } else if(role && role === "jobseeker"){
+            setIsSaved(props.favoriteOrgIds.includes(props.info._id));
+        }
+    }, [props.favoriteOrgIds, props.info]);
 
     const handleSavingOrg = async () => {
         if(isSaved){ // Unsave
             setIsSaved(!isSaved);
-            const newFavoriteOrgs = props.favoriteOrgs.filter((id) => id !== props.info._id);
-            props.setFavoriteOrgs(newFavoriteOrgs);
+            const newFavoriteOrgIds = props.favoriteOrgIds.filter((id) => id !== props.info._id);
+            props.setFavoriteOrgIds(newFavoriteOrgIds);
 
             try {
                 const response = await axios.patch(
-                    `${BACKEND_URL}/jobseeker/updateFavoriteOrgs/${userId}`, newFavoriteOrgs);
+                    `${BACKEND_URL}/jobseeker/updateFavoriteOrgs/${userId}`, newFavoriteOrgIds);
 
                 if (response.data.success) {
                     props.setAlertData({
@@ -150,12 +150,12 @@ function Organization(props) {
 
         } else{ // Save
             setIsSaved(!isSaved);
-            const newFavoriteOrgs = [...props.favoriteOrgs, props.info._id];
-            props.setFavoriteOrgs(newFavoriteOrgs);
+            const newFavoriteOrgIds = [...props.favoriteOrgIds, props.info._id];
+            props.setFavoriteOrgIds(newFavoriteOrgIds);
       
             try {
                 const response = await axios.patch(
-                    `${BACKEND_URL}/jobseeker/updateFavoriteOrgs/${userId}`, newFavoriteOrgs);
+                    `${BACKEND_URL}/jobseeker/updateFavoriteOrgs/${userId}`, newFavoriteOrgIds);
                 if (response.data.success) {
                     props.setAlertData({
                         severity: "success",

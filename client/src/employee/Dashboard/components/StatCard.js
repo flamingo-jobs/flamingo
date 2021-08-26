@@ -90,7 +90,7 @@ function StatCard(props) {
                 </Grid>
                 <Grid item xs={6}>
                     <Paper elevation={0} className={classes.paperCont}>  
-                        <Grid container xs={12}>
+                        <Grid container>
                             <Grid item sm={12} md={6}>
                                 <CardMedia
                                 image={statImage2}
@@ -117,7 +117,7 @@ function StatCard(props) {
                 </Grid>
                 <Grid item xs={6}>
                     <Paper elevation={0} className={classes.paperCont}>  
-                        <Grid container xs={12}>
+                        <Grid container>
                             <Grid item sm={12} md={6}>
                                 <CardMedia
                                 image={statImage1}

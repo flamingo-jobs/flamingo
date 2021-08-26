@@ -363,11 +363,10 @@ exports.deleteUser = async (req, res) => {
   } else if (role === "employer") {
     if (accessTokens[0] === "all") {
       //If admin-employer deletes whole company
+      let errorList = [];
       User.deleteMany(loginId).exec((err, deletedUser) => {
         if (err) {
-          return res.status(400).json({
-            error: err,
-          });
+          errorList.push(err);
         }
       });
       Employer.findByIdAndDelete(loginId).exec((err, deletedEmployer) => {
@@ -377,6 +376,9 @@ exports.deleteUser = async (req, res) => {
           });
         }
       });
+      if (errorList.length) {
+        return res.status(400).json({ errors: errorList });
+      }
       return res.status(200).json({
         success: "User deleted successfully",
       });

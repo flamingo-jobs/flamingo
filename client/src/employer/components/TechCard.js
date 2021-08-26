@@ -102,7 +102,7 @@ export default function TechCard(props) {
   return (
     <Card className={classes.root}>
       <CardContent>
-        <Grid container xs={12} direction="column" spacing={1}>
+        <Grid container direction="column" spacing={1}>
           <Grid item container sm={12} direction="row" spacing={1}>
             {/* TECHNOLOGY CATEGORY NAME */}
 

@@ -376,7 +376,7 @@ function JobSummary(props) {
 
       <FloatCard>
         <Container className={classes.summaryContainer}>
-          <Grid container xs={12}>
+          <Grid container>
             <Grid item container>
               <Grid item container xs={10}>
                 <Chip

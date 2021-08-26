@@ -131,6 +131,12 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 10,
     backgroundColor: 'white',
   },
+  vacanciyContainer:{
+    textAlign: 'left',
+  },
+  numOfVacancies: {
+    fontWeight: 500,
+  },
   headerInfo: {
     display: 'block',
     marginLeft: 10
@@ -318,6 +324,15 @@ function JobSummary(props) {
               <div className={classes.infoTags}>
                 <Chip icon={<LocationOnRoundedIcon />} label={props.job.location} className={classes.tag} />
                 <Chip icon={<WorkRoundedIcon />} label={props.job.type} className={classes.tag} />
+              </div>
+
+              <div className={classes.vacanciyContainer}>
+                <Typography>
+                  <span className={classes.numOfVacancies}>
+                    Number of vacancies:<span>&nbsp;&nbsp;</span>
+                  </span>
+                  {props.job.numberOfVacancies}
+                </Typography>
               </div>
             </div>
           </Grid>

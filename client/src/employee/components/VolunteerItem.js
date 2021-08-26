@@ -402,7 +402,7 @@ function VolunteerItem(props) {
           <Fade in={open}>
             <div className={classes.paper}>
               <div style={{paddingTop:'40px'}}>
-                <Grid container xs={12} direction="row">
+                <Grid container direction="row">
                   <Grid item xs={10}>
                     <Typography gutterBottom variant="h5" style={{textAlign:'center',paddingLeft:'50px',color:theme.palette.stateBlue}}>
                       Edit Volunteer Project

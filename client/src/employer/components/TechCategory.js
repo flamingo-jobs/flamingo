@@ -181,7 +181,7 @@ function TechCategory(props) {
           </Grid>
         </Grid>
 
-        <Grid container xs={12} direction="column" spacing={1}>
+        <Grid container direction="column" spacing={1}>
           {Array.from(subArray).map((object, i) => (
             <Grid item sm={12}>
               <TechCard

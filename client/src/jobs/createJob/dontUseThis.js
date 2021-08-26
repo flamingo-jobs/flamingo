@@ -396,7 +396,7 @@ const CreateJobForm = () => {
 
         <Grid item xs={12}>
           <form onSubmit={handleSubmit}>
-            <Grid container xs={12}>
+            <Grid container>
               {displaySummary()}
 
               {/* Tasks and Responsibilities card */}

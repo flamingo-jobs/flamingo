@@ -104,7 +104,7 @@ const ResponsibilitiesModal = (props) => {
       >
         <Card className={classes.root}>
           <CardContent className={classes.cardContent}>
-            <Grid container xs={12}>
+            <Grid container>
               <div className={classes.closeBtnContainer}>
                 <IconButton
                   onClick={props.handleClose}

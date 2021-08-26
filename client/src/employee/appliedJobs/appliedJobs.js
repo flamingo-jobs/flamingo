@@ -10,10 +10,27 @@ const useStyles = makeStyles((theme) => ({
   border: {
     border: "1px solid red",
   },
-  root: {
-    paddingLeft: theme.spacing(1.5),
-    paddingRight: theme.spacing(1.5),
+  jobsGrid: {
+    [theme.breakpoints.down('sm')]: {
+      maxWidth: 'unset',
+      flexDirection: 'column',
+      alignItems: "stretch",
+      order: 3
+    },
   },
+  mainGrid: {
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+      alignItems: "stretch"
+    },
+  },
+  pagination: {
+    justifyContent: 'center',
+  },
+  gridCard: {
+    display: "grid",
+    marginBottom: 12
+  }
 }));
 
 // style={{border: "1px solid red"}}
@@ -44,12 +61,14 @@ function AppliedJobs() {
     if (jobseeker !== "empty") {
       if (jobseeker.applicationDetails.length > 0) {
         return jobseeker.applicationDetails.map((item, index) => (
-          <Job
-            key={item.jobId}
-            userId={userId}
-            jobId={item.jobId}
-            applicationDetails={jobseeker.applicationDetails[index]}
-          ></Job>
+          <Grid item key={index + "grid"} xs={12} className={classes.gridCard}>
+            <Job
+              key={item.jobId}
+              userId={userId}
+              jobId={item.jobId}
+              applicationDetails={jobseeker.applicationDetails[index]}
+            ></Job>
+          </Grid>
         ));
       } else {
         return (
@@ -71,8 +90,12 @@ function AppliedJobs() {
 
   return (
     <>
-      <Grid container spacing={3} className={classes.root}>
-        <Grid item xs={12}>
+      <Grid item container xs={12} spacing={3} direction="row"
+        justify="space-between"
+        alignItems="flex-start" className={classes.mainGrid}>
+        <Grid item container xs={12} spacing={0} direction="row"
+          justify="space-between"
+          alignItems="flex-start" className={classes.jobsGrid}>
           {displayAppliedJobs()}
         </Grid>
       </Grid>

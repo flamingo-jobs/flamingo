@@ -212,7 +212,7 @@ const PayHereCheckoutForm = () => {
         <Grid item xs={12}>
           <Typography variane="h6">Billing Details</Typography>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} md={6}>
           <TextField
             className={classes.textField}
             variant="outlined"
@@ -230,7 +230,7 @@ const PayHereCheckoutForm = () => {
             required
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} md={6}>
           <TextField
             className={classes.textField}
             variant="outlined"
@@ -303,7 +303,7 @@ const PayHereCheckoutForm = () => {
             required
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} md={6}>
           <TextField
             className={classes.textField}
             variant="outlined"
@@ -321,7 +321,7 @@ const PayHereCheckoutForm = () => {
             required
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} md={6}>
           <TextField
             className={classes.textField}
             variant="outlined"

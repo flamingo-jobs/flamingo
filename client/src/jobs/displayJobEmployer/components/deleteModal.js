@@ -76,7 +76,7 @@ const DeleteModal = (props) => {
       >
         <Card className={classes.root}>
           <CardContent className={classes.cardContent}>
-            <Grid container xs={12}>
+            <Grid container>
               <div className={classes.deleteContainer}>
                 <Typography className={classes.deleteText}>
                   Are you sure you want to delete?

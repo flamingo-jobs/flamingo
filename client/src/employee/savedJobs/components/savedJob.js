@@ -155,7 +155,6 @@ const SavedJob = (props) => {
     if (job === "empty") return null;
 
     return (
-      <div className={classes.jobContainer}>
         <FloatCard>
           <div className={classes.root}>
             <div className={classes.header}>
@@ -215,7 +214,7 @@ const SavedJob = (props) => {
             </div>
           </div>
         </FloatCard>
-      </div>
+
     );
   };
 

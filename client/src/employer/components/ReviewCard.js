@@ -27,7 +27,7 @@ export default function SimpleCard() {
     <Card className={classes.root}>
 
         <CardContent>
-            <Grid container xs={12} direction="column" spacing={1} alignItems="center">
+            <Grid container direction="column" spacing={1} alignItems="center">
                 <Grid item sm={12}>
                     
                     <Typography variant="body2">

@@ -134,7 +134,7 @@ function TechStack(props) {
 
   return (
     <div className={classes.root}>
-      <Grid container xs={12} direction="column" spacing={1}>
+      <Grid container direction="column" spacing={1}>
         <Grid item sm={12} className={classes.topBar}>
           {/* Floatcard for the top bar */}
 
@@ -220,7 +220,7 @@ function TechStack(props) {
         </Grid>
 
         <Grid item sm={12}>
-          <Grid container xs={12} direction="column" spacing={1}>
+          <Grid container direction="column" spacing={1}>
             
             {Array.from(theArray).map((object, i) => (
               

@@ -199,9 +199,11 @@ export default function StartHiring() {
     logo: "",
     description: "",
     openings: "",
+    website: "",
     email: "",
     password: "",
     confirmPassword: "",
+    mainLocation: "",
   };
   const [formData, setForm] = useForm(defaultData);
 
@@ -270,11 +272,15 @@ export default function StartHiring() {
   };
 
   const sendData = async (userId) => {
+    social.push({ platform: "Website", link: formData.website });
+    locations.push({ name: formData.mainLocation });
     const employerData = {
       name: formData.name,
-      logo: "" + userId + path.extname(selectedFile.name),
+      logo: selectedFile ? "" + userId + path.extname(selectedFile.name) : "",
       description: formData.description,
-      locations: locations,
+      locations: locations.map((x) => {
+        return x.name;
+      }),
       email: formData.email,
       dateRegistered: new Date(),
       links: social,
@@ -345,8 +351,6 @@ export default function StartHiring() {
     setSelectedFile(event.target.files[0]);
   };
   const handleUploads = (loginId) => {
-    formData.logo = selectedFile ? selectedFile.name : "";
-
     if (selectedFile) {
       const data = new FormData();
       const image = selectedFile;
@@ -423,7 +427,6 @@ export default function StartHiring() {
 
   // Autocomplete arrays
   const socialMediaPlatforms = [
-    { title: "Website" },
     { title: "Facebook" },
     { title: "LinkedIn" },
     { title: "Twitter" },
@@ -460,7 +463,7 @@ export default function StartHiring() {
                         </Typography>
                       </Grid>
 
-                      <Grid item xs={12} md={5} lg={5}>
+                      <Grid item xs={12} md={6} lg={6}>
                         <Grid container alignItems="center" spacing={3}>
                           {/* Basic Details */}
                           <Grid item xs={12} align="left">
@@ -566,14 +569,29 @@ export default function StartHiring() {
                               Basic Details
                             </Typography>
                           </Grid>
-                          <Grid item xs={12} align="left">
+
+                          <Grid item xs={12} md={5} align="left">
                             <TextField
                               label="Company Name"
                               name="name"
                               value={formData.name}
                               onChange={setForm}
                               variant="outlined"
-                              className={classes.shortTextField}
+                              className={classes.textField}
+                              fullWidth
+                              required
+                              size="small"
+                            />
+                          </Grid>
+                          <Grid item xs={12} md={7} align="left">
+                            <TextField
+                              label="Website"
+                              name="website"
+                              value={formData.website}
+                              onChange={setForm}
+                              variant="outlined"
+                              className={classes.textField}
+                              fullWidth
                               required
                               size="small"
                             />
@@ -591,54 +609,63 @@ export default function StartHiring() {
                               multiline
                             />
                           </Grid>
-
-                          {locations.map((x, i) => {
-                            return (
-                              <Grid
-                                item
-                                container
-                                alignItems="flex-start"
-                                spacing={1}
-                              >
-                                <Grid item xs={12} md={8} align="left">
-                                  <TextField
-                                    className={classes.textField}
-                                    variant="outlined"
-                                    fullWidth
-                                    name="name"
-                                    label="Location"
-                                    size="small"
-                                    value={x.name}
-                                    onChange={(e) =>
-                                      handleLocationInputChange(e, i)
-                                    }
-                                  />
-                                </Grid>
-                                <Grid item xs={12} md={4} align="left">
-                                  {locations.length !== 1 && (
-                                    <IconButton
-                                      onClick={() =>
-                                        handleLocationRemoveClick(i)
+                          <Grid item xs={12} md={4} align="left">
+                            <TextField
+                              label="Location"
+                              name="mainLocation"
+                              value={formData.mainLocation}
+                              onChange={setForm}
+                              variant="outlined"
+                              className={classes.textField}
+                              size="small"
+                              fullWidth
+                              required
+                            />
+                          </Grid>
+                          <Grid item xs={12} md={8} align="left">
+                            {locations.map((x, i) => {
+                              return (
+                                <Grid container spacing={1}>
+                                  <Grid item xs={12} md={8} align="left">
+                                    <TextField
+                                      className={classes.textField}
+                                      variant="outlined"
+                                      fullWidth
+                                      name="name"
+                                      label="Other Locations (optional)"
+                                      size="small"
+                                      value={x.name}
+                                      onChange={(e) =>
+                                        handleLocationInputChange(e, i)
                                       }
-                                      color="secondary"
-                                      aria-label="Add new location"
-                                    >
-                                      <RemoveCircleOutlineIcon />
-                                    </IconButton>
-                                  )}
-                                  {locations.length - 1 === i && (
-                                    <IconButton
-                                      onClick={handleLocationAddClick}
-                                      color="primary"
-                                      aria-label="Remove location"
-                                    >
-                                      <AddCircleOutlineIcon />
-                                    </IconButton>
-                                  )}
+                                    />
+                                  </Grid>
+                                  <Grid item xs={12} md={4} align="left">
+                                    {locations.length !== 1 && (
+                                      <IconButton
+                                        onClick={() =>
+                                          handleLocationRemoveClick(i)
+                                        }
+                                        color="secondary"
+                                        aria-label="Add new location"
+                                      >
+                                        <RemoveCircleOutlineIcon />
+                                      </IconButton>
+                                    )}
+                                    {locations.length - 1 === i && (
+                                      <IconButton
+                                        onClick={handleLocationAddClick}
+                                        color="primary"
+                                        aria-label="Remove location"
+                                      >
+                                        <AddCircleOutlineIcon />
+                                      </IconButton>
+                                    )}
+                                  </Grid>
                                 </Grid>
-                              </Grid>
-                            );
-                          })}
+                              );
+                            })}
+                          </Grid>
                           {/* Social Media Links */}
                           <Grid item xs={12} align="left">
                             <Typography className={classes.title}>

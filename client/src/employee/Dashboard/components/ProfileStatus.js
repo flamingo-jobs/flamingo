@@ -212,7 +212,7 @@ function ProfileStatus(props) {
                     </Typography>
                 </div>
                 <div style={{width:"40%"}}>
-                    <Link to="/jobseeker">
+                    <Link to="/jobseeker/profile">
                         <Button className={classes.defaultButton} style={{padding:"10px 15px 10px 15px",textTransform: 'none',backgroundColor:theme.palette.tuftsBlue}}>Finish Your Profile</Button>
                     </Link>
                 </div>
@@ -240,7 +240,7 @@ function ProfileStatus(props) {
                             Anne Shirley
                         </Typography>
                         <Typography variant="body2" component="p" style={{fontSize:"16px",textAlign:"left",}}>
-                            <Link to="/jobseeker" style={{display: 'flex',alignItems: 'center',flexWrap: 'wrap',color: theme.palette.tuftsBlue}}>
+                            <Link to="/jobseeker/profile" style={{display: 'flex',alignItems: 'center',flexWrap: 'wrap',color: theme.palette.tuftsBlue}}>
                                 <span>View Profile</span><ChevronRightTwoToneIcon style={{marginTop:"-1px"}} />
                             </Link>
                         </Typography>

@@ -14,10 +14,27 @@ import SnackBarAlert from "../../components/SnackBarAlert";
 import Loading from "../../components/Loading";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    paddingLeft: theme.spacing(1.5),
-    paddingRight: theme.spacing(1.5),
+  jobsGrid: {
+    [theme.breakpoints.down('sm')]: {
+      maxWidth: 'unset',
+      flexDirection: 'column',
+      alignItems: "stretch",
+      order: 3
+    },
   },
+  mainGrid: {
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+      alignItems: "stretch"
+    },
+  },
+  pagination: {
+    justifyContent: 'center',
+  },
+  gridCard: {
+    display: "grid",
+    marginBottom: 12
+  }
 }));
 
 // style={{border: "1px solid red"}}
@@ -86,28 +103,32 @@ const SavedJobs = () => {
       );
     }
     return (
-        savedJobIds.map((jobId) => (
-          <Grid item xs={12} lg={6}>
-            <SavedJob
-              key={jobId}
-              jobId={jobId}
-              userId={userId}
-              savedJobIds={savedJobIds}
-              setSavedJobIds={setSavedJobIds}
-              setAlertData={setAlertData}
-              handleAlert={handleAlert}
-            ></SavedJob>
-          </Grid>
-        ))
+      savedJobIds.map((jobId) => (
+        <Grid item key={jobId + "grid"} xs={12} className={classes.gridCard}>
+          <SavedJob
+            key={jobId}
+            jobId={jobId}
+            userId={userId}
+            savedJobIds={savedJobIds}
+            setSavedJobIds={setSavedJobIds}
+            setAlertData={setAlertData}
+            handleAlert={handleAlert}
+          ></SavedJob>
+        </Grid>
+      ))
     );
   };
 
   return (
-    <Grid container spacing={3} className={classes.root} >
+    <Grid item container xs={12} spacing={3} direction="row"
+      justify="space-between"
+      alignItems="flex-start" className={classes.mainGrid}>
       {displayAlert()}
-      {/* <Grid item container spacing={3} direction="column" xs={12}> */}
+      <Grid item container xs={12} spacing={0} direction="row"
+        justify="space-between"
+        alignItems="flex-start" className={classes.jobsGrid}>
         {displaySavedJobs()}
-      {/* </Grid> */}
+      </Grid>
     </Grid>
   );
 };

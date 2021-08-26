@@ -68,7 +68,6 @@ const ReviewCard = (props) => {
     "November",
     "December",
   ];
-  console.log("date", new Date(props.review.createdDate).getMonth());
 
   const date = new Date(props.review.createdDate);
   // style={{border: "1px solid red"}}

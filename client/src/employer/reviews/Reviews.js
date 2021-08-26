@@ -59,12 +59,16 @@ const Reviews = (props) => {
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
 
+  const [errors, setErrors] = useState({});
+
   const token = sessionStorage.getItem("userToken");
   const [role, setRole] = useState(
     jwt.decode(token, { complete: true })
       ? jwt.decode(token, { complete: true }).payload.userRole
       : null
   );
+
+  const empId = window.location.pathname.split("/")[3];
 
   const ratingOptions = {
     loop: true,
@@ -112,17 +116,45 @@ const Reviews = (props) => {
 
   useEffect(() => {
     retrieveEmployer();
-  }, [props.empId]);
+  }, [empId]);
 
   useEffect(() => {
     retrieveJobseeker();
   }, []);
 
+  const handleReviewChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    const newErrors = {...errors};
+
+    if(value.trim() === ""){
+      newErrors[name] = "Review cannot be empty."
+    }
+    else {
+      delete newErrors[name];
+    }
+    setErrors(newErrors);
+    setReview(value);
+  }
+
+  const handleRatingChange = (e, newRating) => {
+    const name = e.target.name;
+    const value = newRating;
+
+    const newErrors = {...errors};
+
+    if(value !== 0){
+      delete newErrors[name];
+    }
+    setErrors(newErrors);
+    setRating(value);
+  }
+
   const retrieveEmployer = async () => {
     try {
-      if (props.empId) {
+      if (empId) {
         const response = await axios.get(
-          `${BACKEND_URL}/employers/${props.empId}`
+          `${BACKEND_URL}/employers/${empId}`
         );
         if (response.data.success) {
           if (response.data.employer.reviews.length !== 0) {
@@ -146,17 +178,31 @@ const Reviews = (props) => {
     }
   };
 
+  const validateFields = () => {
+    const newErrors = {...errors};
+
+    if(review.trim() === ""){
+      newErrors["review"] = `Review cannot be empty.`;
+      setErrors(newErrors);
+      return false;
+    }
+    else if(rating === 0){
+      newErrors["rating"] = `Rating cannot be 0.`;
+      setErrors(newErrors);
+      return false;
+    }
+    return true;
+  }
+
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
 
-    const data = {
-      review: review,
-      rating: rating,
-      createdDate: new Date(),
-      jobseekerId: jobseeker._id,
-      jobseekerName: jobseeker.name,
-    };
-
+    const validation = validateFields();
+    
+    if(!validation){
+      return;
+    }
+    
     try {
       if (jobseeker !== "empty") {
         const data = {
@@ -166,9 +212,9 @@ const Reviews = (props) => {
           jobseekerId: jobseeker._id,
           jobseekerName: jobseeker.name,
         };
-        console.log("data", data);
+
         const response = await axios.patch(
-          `${BACKEND_URL}/employers/addReview/${props.empId}`,
+          `${BACKEND_URL}/employers/addReview/${empId}`,
           data
         );
 
@@ -188,7 +234,6 @@ const Reviews = (props) => {
         msg: "Review could not be posted",
       });
       handleAlert();
-      console.log(err);
     }
   };
 
@@ -200,10 +245,11 @@ const Reviews = (props) => {
           handleClose={handleClose}
           review={review}
           rating={rating}
-          setReview={setReview}
-          setRating={setRating}
+          handleReviewChange={handleReviewChange}
+          handleRatingChange={handleRatingChange}
           handleReviewSubmit={handleReviewSubmit}
           jobseeker={jobseeker}
+          errors={errors}
         ></ReviewModal>
       );
     }

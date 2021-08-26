@@ -71,7 +71,7 @@ function SideMenu() {
                         <div style={{width:"100%"}}>
                             <Typography variant="body2" component="p" style={{fontSize:"20px",textAlign:"left"}}>
                                 <Link to="jobseeker/savedJobs" style={{display: 'flex',alignItems: 'center',color: indigo[600]}}>
-                                    <Grid container xs={12}>
+                                    <Grid container>
                                         <Grid item xs={2}>
                                             <BookmarkTwoToneIcon style={{marginTop:"5px"}} />
                                         </Grid>
@@ -92,7 +92,7 @@ function SideMenu() {
                         <div style={{width:"100%"}}>
                             <Typography variant="body2" component="p" style={{fontSize:"20px",textAlign:"left"}}>
                                 <Link to="jobseeker/favoriteOrganizations" style={{display: 'flex',alignItems: 'center',color: indigo[600]}}>
-                                    <Grid container xs={12}>
+                                    <Grid container>
                                         <Grid item xs={2}>
                                             <BookmarkTwoToneIcon style={{marginTop:"5px"}} />
                                         </Grid>
@@ -113,7 +113,7 @@ function SideMenu() {
                         <div style={{width:"100%"}}>
                             <Typography variant="body2" component="p" style={{fontSize:"20px",textAlign:"left"}}>
                                 <Link style={{display: 'flex',alignItems: 'center',color: indigo[600]}}>
-                                    <Grid container xs={12}>
+                                    <Grid container>
                                         <Grid item xs={2}>
                                             <WorkTwoToneIcon style={{marginTop:"5px"}} />
                                         </Grid>
