@@ -90,9 +90,6 @@ function Organization(props) {
     const classes = useStyles();
     const [isSaved, setIsSaved] = useState(false);
 
-    const [alertShow, setAlertShow] = useState(false);
-    const [alertData, setAlertData] = useState({ severity: "", msg: "" });
-
     const isSignedIn = sessionStorage.getItem("userToken") ? true : false;
     const token = sessionStorage.getItem("userToken");
     const [role, setRole] = useState(

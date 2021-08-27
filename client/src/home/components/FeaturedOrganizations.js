@@ -126,18 +126,16 @@ function FeaturedOrganizations() {
                     </FloatCard>
                 </Grid>)
         } else {
-            if (featuredOrgs && favoriteOrgIds !== "empty") {
-                return featuredOrgs.map(featuredOrg => (
-                    <Grid item xs={12} lg={6} key={featuredOrg._id}>
-                        <Organization info={featuredOrg}
-                            favoriteOrgIds={favoriteOrgIds}
-                            setFavoriteOrgIds={setFavoriteOrgIds}
-                            setAlertData={setAlertData}
-                            handleAlert={handleAlert}
-                        />
-                    </Grid>
-                ))
-            }
+            return featuredOrgs.map(featuredOrg => (
+                <Grid item xs={12} lg={6} key={featuredOrg._id}>
+                    <Organization info={featuredOrg}
+                        favoriteOrgIds={favoriteOrgIds}
+                        setFavoriteOrgIds={setFavoriteOrgIds}
+                        setAlertData={setAlertData}
+                        handleAlert={handleAlert}
+                    />
+                </Grid>
+            ))
         }
     }
 

@@ -95,6 +95,7 @@ function JobCard(props) {
     const { loading = false } = props;
     const [isSaved, setIsSaved] = useState(false);
 
+    const isSignedIn = sessionStorage.getItem("userToken") ? true : false;
     const userId = sessionStorage.getItem("loginId");
     const token = sessionStorage.getItem("userToken");
     const [role, setRole] = useState(
@@ -214,16 +215,18 @@ function JobCard(props) {
       };
 
     const displaySaveIcon = () => {
-        if(!role){
+        if(!isSignedIn){
             // When user is not signed in
             return <BookmarkBorderRoundedIcon className={classes.favorite} onClick={handleLoginModal} />;
-        } else if(role === "jobseeker"){
-            if(isSaved){
-                // When user is signed in && Job is in savedjobs 
-                return <BookmarkIcon className={classes.favorite} onClick={handleSavingJob} />;
-            } else {
-                // When user is signed in but Job is not in savedJobs
-                return <BookmarkBorderRoundedIcon className={classes.favorite} onClick={handleSavingJob}/>;
+        } else {
+            if(role === "jobseeker"){
+                if(isSaved){
+                    // When user is signed in && Job is in savedjobs 
+                    return <BookmarkIcon className={classes.favorite} onClick={handleSavingJob} />;
+                } else {
+                    // When user is signed in but Job is not in savedJobs
+                    return <BookmarkBorderRoundedIcon className={classes.favorite} onClick={handleSavingJob}/>;
+                }
             }
         }
     }
