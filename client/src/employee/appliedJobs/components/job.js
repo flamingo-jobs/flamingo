@@ -338,7 +338,6 @@ const Job = (props) => {
                 {applicationDetails.status === "pending" && (
                   <div className={classes.downloadContainer}>
                     <Button
-                      variant="contained"
                       className={classes.downloadBtn}
                       onClick={handleOpen}
                       startIcon={<DescriptionIcon />}
@@ -350,7 +349,6 @@ const Job = (props) => {
 
                 <div className={classes.downloadContainer}>
                   <Button
-                    variant="contained"
                     className={classes.downloadBtn}
                     startIcon={<GetAppIcon />}
                     onClick={handleResumeDownload}
