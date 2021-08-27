@@ -7,7 +7,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import FloatCard from '../../components/FloatCard';
-import cardImage from '../images/profilePic.jpg';
+import PublishIcon from '@material-ui/icons/Publish';
 import defaultImage from '../images/defaultProfilePic.jpg';
 import theme from '../../Theme';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
@@ -112,6 +112,21 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.lightSkyBlue,
     color: theme.palette.stateBlue,
   },
+  uploadBtnWrapper: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  uploadButton: {
+    width: "200px",
+    marginLeft: "60px",
+    marginRight: "60px",
+    color: theme.palette.stateBlue,
+    borderColor: theme.palette.stateBlue,
+    "&:hover": {
+      borderColor: theme.palette.stateBlue,
+    },
+  },
 }));
 
 
@@ -137,7 +152,7 @@ function IntroSection(props) {
   const [isPublic, setIsPublic] = useState(true);
   const [profilePic, setProfilePic] = useState("empty");
   const [profilePicPreview, setProfilePicPreview] = useState(defaultImage);
-  const [savedPic, setSavedPic] = useState(cardImage);
+  const [savedPic, setSavedPic] = useState(defaultImage);
 
   let loginId;
   let login = false;
@@ -172,6 +187,11 @@ function IntroSection(props) {
           email: res.data.jobseeker.contact.email
         })
         setIsPublic(res.data.jobseeker.isPublic)
+        
+        const images = require.context('../../../../server/profilePictures', true);
+        let img = images(`./${res.data.jobseeker._id}.jpg`);
+        setSavedPic(img.default);
+        setProfilePicPreview(img.default)
       }
     })
   },[])
@@ -231,7 +251,7 @@ function IntroSection(props) {
     data.append("userId", loginId);
     data.append("photo", profilePic);
 
-    const imageExt = "." + profilePic.name.split(".")[profilePic.name.split(".").length - 1];
+   // const imageExt = "." + profilePic.name.split(".")[profilePic.name.split(".").length - 1];
 
     const image = {
       profilePic : loginId + "--" + profilePic.name,
@@ -245,13 +265,14 @@ function IntroSection(props) {
     })
     .then(res=>{
         console.log(res);
-    })
-
-    axios.put(`${BACKEND_URL}/jobseeker/update/${loginId}`,image)
-    .then(res=>{
-        console.log(res);
         setSavedPic(profilePicPreview);
     })
+
+    // axios.put(`${BACKEND_URL}/jobseeker/update/${loginId}`,image)
+    // .then(res=>{
+    //     console.log(res);
+        
+    // })
 
     handleCloseImageDialog();
     
@@ -497,39 +518,43 @@ function IntroSection(props) {
         </Typography>
         {/* Profile picture change dialog */}
         <Dialog open={openImageDialog} onClose={handleCloseImageDialog} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">Change Profile Picture</DialogTitle>
-            
+            <DialogTitle id="form-dialog-title" style={{textAlign:'center',paddingLeft:'35px',color:theme.palette.stateBlue}}>Change Profile Picture</DialogTitle>      
               <form onSubmit={onSubmitProfilePic} encType="multipart/form-data">
-                <DialogContent>
-                  <Grid container xs={12} spacing={2}>
-                    <Grid item xs={12}>
-                      <Typography component="div">
-                        <CardMedia
-                              className={classes.media}
-                              image={profilePicPreview}
-                              alt="profile image"
-                              zIndex="background"             
-                          /> 
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <FormLabel className={classes.defaultButton} style={{padding:"10px"}}>
-                        <input
-                          autoFocus
-                          margin="dense"
-                          id="photo"
-                          label="Photo"
-                          type="file"
-                          onChange={onChangeProfilePic}
-                          style={{display:"none"}}
-                        />
-                        Upload image
-                      </FormLabel>
-                    </Grid>
-                  </Grid>
+                <DialogContent style={{paddingTop:"0px"}}>
+                  <Typography component="div">
+                    <CardMedia
+                          className={classes.media}
+                          image={profilePicPreview}
+                          alt="profile image"
+                          zIndex="background"
+                          style={{marginTop:"0px",marginBottom:"20px"}}          
+                      /> 
+                  </Typography>
+                  <div className={classes.uploadBtnWrapper} style={{ color: "#fff" }}>
+                    <input
+                      autoFocus
+                      margin="dense"
+                      id="photo"
+                      label="Photo"
+                      type="file"
+                      onChange={onChangeProfilePic}
+                      style={{display:"none"}}
+                    />
+                    <label htmlFor="photo">
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        component="span"
+                        startIcon={<PublishIcon />}
+                        className={classes.uploadButton}
+                      >
+                        Upload Image
+                      </Button>
+                    </label>
+                  </div>
                 </DialogContent>
                 <DialogActions>
-                  <Button color="primary">
+                  <Button onClick={handleCloseImageDialog} style={{color:"#999"}}>
                     Cancel
                   </Button>
                   <Button type="submit" color="primary">
