@@ -9,6 +9,9 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import BACKEND_URL from "../../Config";
 import axios from "axios";
 import LoginModal from './loginModal';
+import { useDispatch } from "react-redux";
+import { setFavoriteOrgCount } from "../../redux/actions";
+
 const jwt = require("jsonwebtoken");
 
 const useStyles = makeStyles((theme) => ({
@@ -88,6 +91,8 @@ const useStyles = makeStyles((theme) => ({
 function Organization(props) {
 
     const classes = useStyles();
+    const dispatch = useDispatch();
+
     const [isSaved, setIsSaved] = useState(false);
 
     const isSignedIn = sessionStorage.getItem("userToken") ? true : false;
@@ -131,6 +136,7 @@ function Organization(props) {
                     `${BACKEND_URL}/jobseeker/updateFavoriteOrgs/${userId}`, newFavoriteOrgIds);
 
                 if (response.data.success) {
+                    dispatch(setFavoriteOrgCount(newFavoriteOrgIds.length));
                     props.setAlertData({
                         severity: "success",
                         msg: "Organization Removed From Favorites",
@@ -154,6 +160,7 @@ function Organization(props) {
                 const response = await axios.patch(
                     `${BACKEND_URL}/jobseeker/updateFavoriteOrgs/${userId}`, newFavoriteOrgIds);
                 if (response.data.success) {
+                    dispatch(setFavoriteOrgCount(newFavoriteOrgIds.length));
                     props.setAlertData({
                         severity: "success",
                         msg: "Organization Removed From Favorites",

@@ -37,6 +37,7 @@
     "react-height": "^3.0.1",
     "react-hooks-helper": "^1.6.0",
     "react-lottie": "^1.2.3",
+    "react-redux": "^7.2.4",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
@@ -45,6 +46,7 @@
     "react-time-ago": "^6.2.2",
     "react-vertical-timeline-component": "^3.3.3",
     "react-year-month-selector": "0.0.8",
+    "redux": "^4.1.1",
     "sweetalert": "^2.1.2",
     "web-vitals": "^1.1.2"
   },

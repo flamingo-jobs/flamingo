@@ -131,14 +131,32 @@ const useStyles = makeStyles((theme) => ({
       justifyContent: "center",
     },
   },
+  changeBtn: {
+    paddingLeft: "13px",
+    paddingRight: "13px",
+    borderRadius: 50,
+    backgroundColor: theme.palette.tuftsBlue,
+    color: theme.palette.white,
+    transition: "0.3s",
+    "&:hover": {
+      border: `2px solid ${theme.palette.tuftsBlue}`,
+      backgroundColor: theme.palette.white,
+      color: theme.palette.tuftsBlue,
+      transition: "0.3s",
+    },
+  },
   downloadBtn: {
     paddingLeft: "13px",
     paddingRight: "13px",
-    borderRadius: 12,
-    backgroundColor: theme.palette.vividSkyBlue,
-    color: theme.palette.white,
+    borderRadius: 50,
+    border: `2px solid ${theme.palette.tuftsBlue}`,
+    backgroundColor: theme.palette.white,
+    color: theme.palette.tuftsBlue,
+    transition: "0.3s",
     "&:hover": {
-      backgroundColor: theme.palette.vividSkyBlueHover,
+      backgroundColor: theme.palette.tuftsBlue,
+      color: theme.palette.white,
+      transition: "0.3s",
     },
   },
 }));
@@ -338,8 +356,7 @@ const Job = (props) => {
                 {applicationDetails.status === "pending" && (
                   <div className={classes.downloadContainer}>
                     <Button
-                      variant="contained"
-                      className={classes.downloadBtn}
+                      className={classes.changeBtn}
                       onClick={handleOpen}
                       startIcon={<DescriptionIcon />}
                     >
@@ -350,7 +367,6 @@ const Job = (props) => {
 
                 <div className={classes.downloadContainer}>
                   <Button
-                    variant="contained"
                     className={classes.downloadBtn}
                     startIcon={<GetAppIcon />}
                     onClick={handleResumeDownload}

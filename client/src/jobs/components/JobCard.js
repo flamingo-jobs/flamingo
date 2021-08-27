@@ -14,6 +14,9 @@ import BACKEND_URL from "../../Config";
 import axios from "axios";
 import LoginModal from './loginModal';
 import SnackBarAlert from "../../components/SnackBarAlert";
+import { useDispatch } from "react-redux";
+import { setSavedJobCount } from "../../redux/actions";
+
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
@@ -92,6 +95,8 @@ const useStyles = makeStyles((theme) => ({
 function JobCard(props) {
 
     const classes = useStyles();
+    const dispatch = useDispatch();
+
     const { loading = false } = props;
     const [isSaved, setIsSaved] = useState(false);
 
@@ -165,11 +170,13 @@ function JobCard(props) {
             try {
                 const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateSavedJobs/${userId}`, newSavedJobIds);
                 if (response.data.success) {
+                    dispatch(setSavedJobCount(newSavedJobIds.length));
                     setAlertData({
                         severity: "success",
                         msg: "Job Removed From Saved Jobs",
                     });
                     handleAlert();
+
                 }
             } catch (err) {
                 setAlertData({
@@ -187,6 +194,7 @@ function JobCard(props) {
             try {
               const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateSavedJobs/${userId}`, newSavedJobIds);
               if (response.data.success) {
+                dispatch(setSavedJobCount(newSavedJobIds.length));
                 setAlertData({
                     severity: "success",
                     msg: "Job Saved, Successfully!",
