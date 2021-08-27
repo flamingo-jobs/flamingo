@@ -159,9 +159,10 @@ var storage = multer.diskStorage({
     cb(null, path.join(__dirname, "../profilePictures/"));
   },
   filename: (req, file, cb) => {
-    fileName = req.body.company + path.extname(file.originalname);
+    fileName = req.body.userId + path.extname(file.originalname);
     fileName.replace(/:/g, "-");
     cb(null, fileName);
+    console.log(fileName);
   },
 });
 

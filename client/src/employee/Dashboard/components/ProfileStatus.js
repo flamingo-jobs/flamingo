@@ -81,7 +81,7 @@ function ProfileStatus(props) {
     const classes = useStyles();
     let complete = 0;
     let nextComplete = "";
-    const [percentage, setPercentage] = useState(0);
+    const [name, setName] = useState("User");
     const [state, setState] = useState({education: 0,certificate: 0, courses: 0, awards: 0, volunteerings:0, works:0, projects:0, skills: 0});
 
 
@@ -100,6 +100,9 @@ function ProfileStatus(props) {
         axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
         .then(res => {
           if(res.data.success){
+            if(res.data.jobseeker.name){
+                setName(res.data.jobseeker.name);                 
+            }
             if(res.data.jobseeker.education?.length > 0){
                 if(Object.keys(res.data.jobseeker.education[0]).length === 0){
                     res.data.jobseeker.education.splice(0,1)
@@ -237,7 +240,7 @@ function ProfileStatus(props) {
                 <Grid item md={12} lg={9} style={{alignItems:"center",display: "flex",paddingLeft:"40px",paddingRight:"0px"}}>
                     <div>
                         <Typography style={{fontSize:"25px",fontWeight:"bold",color: theme.palette.stateBlue}}>
-                            Anne Shirley
+                            {name}
                         </Typography>
                         <Typography variant="body2" component="p" style={{fontSize:"16px",textAlign:"left",}}>
                             <Link to="/jobseeker/profile" style={{display: 'flex',alignItems: 'center',flexWrap: 'wrap',color: theme.palette.tuftsBlue}}>
