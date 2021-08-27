@@ -134,7 +134,7 @@ function JobCard(props) {
         } else if(role && role === "jobseeker"){
             setIsSaved(props.savedJobIds?.includes(props.info._id));
         }
-    }, [props.favoriteOrgs, props.info]);
+    }, [props.savedJobIds, props.info]);
 
     const loadLogo = () => {
         try {
