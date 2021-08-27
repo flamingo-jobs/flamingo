@@ -280,6 +280,8 @@ export default function Topbar(props) {
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const isNotificationMenuOpen = Boolean(notificationAnchorEl);
 
+  const loginId =sessionStorage.getItem("loginId");
+
   const handleNotificationClose = () => {
     setNotificationAnchorEl(null);
   };
@@ -335,7 +337,7 @@ export default function Topbar(props) {
       if (header.payload.userRole === "employer") {
         return require(`../employer/images/${header.payload.userId}`).default
       } else if (header.payload.userRole === "jobseeker") {
-        return require(`../employee/images/${header.payload.userId}`).default
+        return require(`../../../server/profilePictures/${loginId}.jpg`).default
       } else if (header.payload.userRole === "admin") {
         return require(`../admin/images/profilepic.jpg`).default
       }
