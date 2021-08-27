@@ -189,9 +189,14 @@ function IntroSection(props) {
         setIsPublic(res.data.jobseeker.isPublic)
         
         const images = require.context('../../../../server/profilePictures', true);
-        let img = images(`./${res.data.jobseeker._id}.jpg`);
-        setSavedPic(img.default);
-        setProfilePicPreview(img.default)
+        try{
+          let img = images(`./${res.data.jobseeker._id}.jpg`);
+          setSavedPic(img.default);
+          setProfilePicPreview(img.default)
+        }catch{
+          console.log("Profile picture not added.")
+        }
+        
       }
     })
   },[])
