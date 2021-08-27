@@ -88,20 +88,9 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-function JobSearchBar(props) {
+function OrgSearchBar(props) {
 
     const classes = useStyles();
-
-    const commonKeywords = [
-        { title: 'The Shawshank Redemption', year: 1994 },
-        { title: 'The Godfather', year: 1972 },
-        { title: 'The Godfather: Part II', year: 1974 },
-        { title: 'The Dark Knight', year: 2008 },
-        { title: '12 Angry Men', year: 1957 },
-        { title: "Schindler's List", year: 1993 },
-        { title: 'Pulp Fiction', year: 1994 },
-
-    ];
 
     const [keywords, setKeyword] = useState([]);
     const [locations, setLocations] = useState([]);
@@ -148,7 +137,7 @@ function JobSearchBar(props) {
                                 multiple
                                 limitTags={2}
                                 id="tags-filled"
-                                options={commonKeywords.map((option) => option.title)}
+                                options={[]}
                                 defaultValue={undefined}
                                 freeSolo
                                 renderTags={(value, getTagProps) =>
@@ -177,7 +166,7 @@ function JobSearchBar(props) {
                                 multiple
                                 limitTags={1}
                                 id="locationFilter"
-                                options={commonKeywords.map((option) => option.title)}
+                                options={[]}
                                 defaultValue={undefined}
                                 freeSolo
                                 renderTags={(value, getTagProps) =>
@@ -207,4 +196,4 @@ function JobSearchBar(props) {
     )
 }
 
-export default JobSearchBar
+export default OrgSearchBar

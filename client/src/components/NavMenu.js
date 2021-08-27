@@ -125,7 +125,7 @@ function NavMenu(props) {
         if (props.user === "admin") {
             return (
                 <>
-                    <Link to="/admin">
+                    <Link to="/admin/dashboard">
                         <ListItem button key="dashboard" selected={selectedIndex === "dashboard"} onClick={(event) => handleListItemClick(event, "dashboard")} classes={{ selected: classes.active }} className={classes.listItem}>
                             <ListItemIcon className={classes.linkIcon}><DashboardRoundedIcon /></ListItemIcon>
                             <ListItemText className={classes.linkText} primary="Dashboard" />
