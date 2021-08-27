@@ -34,6 +34,9 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: "30px",
     maxHeight: "98vh",
     overflowY: "auto",
+    [theme.breakpoints.down("sm")]: {
+      width: "95%"
+    },
   },
   modal: {
     display: "flex",
@@ -61,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "1px solid #ddd",
   },
   location: {
-    paddingTop: "6px",
+    // paddingTop: "6px",
   },
   closeButton: {
     width: "20px",
@@ -83,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(3),
   },
   numberOfVacancies: {
-    marginTop: theme.spacing(2),
+    // marginTop: theme.spacing(2),
   },
   publishBtnContainer:{
     marginTop: theme.spacing(1),
@@ -93,6 +96,10 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "flex-end",
     paddingTop: theme.spacing(3),
+    [theme.breakpoints.down("xs")]: {
+      flexDirection: "column-reverse",
+      justifyContent: "center",
+    },
   },
   submitBtn: {
     background: theme.palette.stateBlue,
@@ -101,6 +108,21 @@ const useStyles = makeStyles((theme) => ({
       background: theme.palette.stateBlue,
       color: theme.palette.white,
     },
+    [theme.breakpoints.down("xs")]: {
+      width: "100%"
+    },
+    [theme.breakpoints.up("sm")]: {
+      marginLeft: theme.spacing(1)
+    },
+    [theme.breakpoints.down("sm")]: {
+      marginBottom: theme.spacing(1)
+    },
+  },
+  cancelBtn: {
+    [theme.breakpoints.down("xs")]: {
+      width: "100%"
+    },
+    
   },
   date: {
     width: "100%",
@@ -193,8 +215,8 @@ const JobSummaryModal = (props) => {
                     </Grid>
 
                     {/* Category    */}
-                    <Grid container spacing={1} className={classes.textField}>
-                      <Grid item xs={6}>
+                    <Grid container spacing={1}>
+                      <Grid item xs={12} sm={6}>
                         <StateBlueTextField
                           id="category"
                           name="category"
@@ -205,6 +227,7 @@ const JobSummaryModal = (props) => {
                           variant="outlined"
                           fullWidth
                           size="small"
+                          className={classes.textField}
                         >
                           {props.categories.map((category) => (
                             <MenuItem key={category.id} value={category.name}>
@@ -215,7 +238,7 @@ const JobSummaryModal = (props) => {
                       </Grid>
 
                       {/* Job type */}
-                      <Grid item xs={6}>
+                      <Grid item xs={12} sm={6}>
                         <StateBlueTextField
                           id="jobType"
                           name="type"
@@ -226,6 +249,7 @@ const JobSummaryModal = (props) => {
                           variant="outlined"
                           fullWidth
                           size="small"
+                          className={classes.textField}
                         >
                           {props.types.map((type) => (
                             <MenuItem key={type.id} value={type.name}>
@@ -253,7 +277,7 @@ const JobSummaryModal = (props) => {
 
                     {/* Location & Due date */}
                     <Grid container spacing={1} className={classes.textField}>
-                      <Grid item xs={6}>
+                      <Grid item xs={12} sm={6}>
                         <StateBlueTextField
                           id="location"
                           name="location"
@@ -274,7 +298,7 @@ const JobSummaryModal = (props) => {
                         </StateBlueTextField>
                       </Grid>
 
-                      <Grid item xs={6}>
+                      <Grid item xs={12} sm={6}>
                         <Grid container>
                           <div className={classes.date}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -300,7 +324,7 @@ const JobSummaryModal = (props) => {
 
                     {/* Requried Degrees & Experience */}
                     <Grid container spacing={1}>
-                      <Grid item xs={6}>
+                      <Grid item xs={12} sm={6}>
                         <StateBlueTextField
                           id="minEducation"
                           name="minimumEducation"
@@ -321,12 +345,13 @@ const JobSummaryModal = (props) => {
                         </StateBlueTextField>
                       </Grid>
 
-                      <Grid item xs={6}>
+                      <Grid item xs={12} sm={6}>
                         <StateBlueTextField
                           id="minExperience"
                           name="minimumExperience"
                           select
                           label="Minimum Experience Required"
+                          className={classes.textField}
                           value={props.job.minimumExperience}
                           onChange={props.handleSummaryChange}
                           variant="outlined"
@@ -344,12 +369,13 @@ const JobSummaryModal = (props) => {
 
                     {/* Salary range */}
                     <Grid container spacing={1}>
-                      <Grid item xs={6}>
+                      <Grid item xs={12} sm={6}>
                         <StateBlueTextField
                           id="minSalary"
                           name="min"
                           label="Minimum Salary"
                           onChange={props.handleSummaryChange}
+                          className={classes.textField}
                           variant="outlined"
                           placeholder=""
                           fullWidth
@@ -360,7 +386,7 @@ const JobSummaryModal = (props) => {
                         ></StateBlueTextField>
                       </Grid>
 
-                      <Grid item xs={6}>
+                      <Grid item xs={12} sm={6}>
                         <StateBlueTextField
                           id="maxSalary"
                           name="max"
@@ -369,13 +395,14 @@ const JobSummaryModal = (props) => {
                           variant="outlined"
                           fullWidth
                           size="small"
+                          className={classes.textField}
                           value={props.job.salaryRange.max}
                           error={props.errors.hasOwnProperty("max")}
                           helperText={props.errors["max"]}
                         ></StateBlueTextField>
                       </Grid>
 
-                      <Grid item xs={6}>
+                      <Grid item xs={12} sm={6}>
                         <StateBlueTextField
                           id="numberOfVacancies"
                           name="numberOfVacancies"
@@ -411,6 +438,13 @@ const JobSummaryModal = (props) => {
                     </FormControl>
 
                     <div className={classes.submitBtnContainer}>
+                      <Button
+                        variant="contained"
+                        className={classes.cancelBtn}
+                        onClick={props.handleClose}
+                      >
+                        Cancel
+                      </Button>
                       <Button
                         variant="contained"
                         type="submit"

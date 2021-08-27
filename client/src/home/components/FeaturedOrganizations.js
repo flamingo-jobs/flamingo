@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom'
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
 import axios from 'axios';
 import BACKEND_URL from '../../Config';
+import SnackBarAlert from '../../components/SnackBarAlert';
+const jwt = require("jsonwebtoken");
 
 
 const useStyles = makeStyles((theme) => ({
@@ -33,9 +35,22 @@ const useStyles = makeStyles((theme) => ({
 
 function FeaturedOrganizations() {
     const classes = useStyles();
+    
+    const [alertShow, setAlertShow] = useState(false);
+    const [alertData, setAlertData] = useState({ severity: "", msg: "" });
 
     const [featuredOrgs, setFeaturedOrgs] = useState([]);
-
+    const [favoriteOrgIds, setFavoriteOrgIds] = useState("empty");
+    
+    const userId = sessionStorage.getItem("loginId");
+    const isSignedIn = sessionStorage.getItem("userToken") ? true : false;
+    const token = sessionStorage.getItem("userToken");
+    const [role, setRole] = useState(
+        jwt.decode(token, { complete: true })
+        ? jwt.decode(token, { complete: true }).payload.userRole
+        : null
+    );
+    
     useEffect(() => {
         retrieveFeaturedOrgs()
     }, [])
@@ -50,12 +65,56 @@ function FeaturedOrganizations() {
         })
     }
 
+    const displayAlert = () => {
+        return (
+          <SnackBarAlert
+            open={alertShow}
+            onClose={handleAlertClose}
+            severity={alertData.severity}
+            msg={alertData.msg}
+          />
+        );
+      };
+    
+      const handleAlert = () => {
+        setAlertShow(true);
+      };
+    
+      const handleAlertClose = (event, reason) => {
+        if (reason === "clickaway") {
+          return;
+        }
+        setAlertShow(false);
+      };
+
+    useEffect(() => {
+        retrieveJobseeker();
+    }, []);
+
+    const retrieveJobseeker = async () => {
+        if(isSignedIn && userId && role === "jobseeker"){
+            try {
+              const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
+              if (response.data.success) {
+                setFavoriteOrgIds(response.data.jobseeker.favoriteOrganizations);
+              }
+            } catch (err) {
+              console.log(err);
+            }
+        }
+    };
+
     const displayFeaturedOrgs = () => {
-        if (featuredOrgs) {
+        if (featuredOrgs && favoriteOrgIds !== "empty") {
 
             return featuredOrgs.map(featuredOrg => (
                 <Grid item xs={12} lg={6} key={featuredOrg._id}>
-                    <Organization info={featuredOrg} />
+                    <Organization info={featuredOrg} 
+                        favoriteOrgIds={favoriteOrgIds}
+                        setFavoriteOrgIds={setFavoriteOrgIds}
+                        setAlertData={setAlertData}
+                        handleAlert={handleAlert}
+                    />
                 </Grid>
             ))
         } else {
@@ -68,6 +127,7 @@ function FeaturedOrganizations() {
 
     return (
         <div>
+            {displayAlert()}
             <Grid container direction="column" spacing={2} className={classes.container}>
                 <Grid item sm={12} >
                     <FloatCard>

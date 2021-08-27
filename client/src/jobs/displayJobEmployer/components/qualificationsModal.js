@@ -25,7 +25,10 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: "30px",
     minHeight: "50vh",
     maxHeight: "80vh",
-    overflowY: "auto"
+    overflowY: "auto",
+    [theme.breakpoints.down("sm")]: {
+      width: "95%"
+    },
   },
   modal: {
     display: "flex",
@@ -68,8 +71,31 @@ const useStyles = makeStyles((theme) => ({
   formContainer: {
     marginBottom: "24px",
   },
+  textFieldContainer:{
+    display: "flex",
+    flexDirection :"column",
+    justifyContent: "center",
+    gap: theme.spacing(1)
+  },
   textField: {
     marginBottom: theme.spacing(3),
+  },
+  buttonGridItem:{
+    display: "flex",
+    flexDirection :"column",
+    justifyContent: "center",
+  },
+  buttonContainer:{
+    marginBottom: theme.spacing(3),
+  },
+  addRemoveButton:{
+    padding: "12px",
+    [theme.breakpoints.down("sm")]: {
+      padding: "5px",
+    },
+    [theme.breakpoints.down("xs")]: {
+      padding: "2px",
+    }
   },
   submitBtnContainer: {
     width: "100%",
@@ -121,7 +147,7 @@ const QualificationsModal = (props) => {
                   <Grid container>
                     {props.qualifications.map((field, index) => (
                       <Grid item container key={index}>
-                        <Grid item xs={10} > 
+                        <Grid item xs={10}> 
                           <StateBlueTextField
                             label="Qualification"
                             variant="outlined"
@@ -134,26 +160,30 @@ const QualificationsModal = (props) => {
                             }
                           />
                         </Grid>
-                        <Grid item  xs={2} justify="space-around" >
-                          <IconButton
-                            disabled={props.qualifications.length === 1}
-                            onClick={() => props.handleQualificationRemove(index)}
-                          >
-                            <RemoveIcon
-                              className={classes.removeIcon}
-                              style={{
-                                color:
-                                props.qualifications.length === 1
-                                    ? "#bbb"
-                                    : null,
-                              }}
-                            />
-                          </IconButton>
-                          <IconButton 
-                            onClick={props.handleQualificationAdd}
-                          >
-                            <AddIcon className={classes.addIcon} />
-                          </IconButton>
+                        <Grid item xs={2} className={classes.buttonGridItem}>
+                          <div className={classes.buttonContainer}>
+                            <IconButton
+                              disabled={props.qualifications.length === 1}
+                              onClick={() => props.handleQualificationRemove(index)}
+                              className={classes.addRemoveButton}
+                            >
+                              <RemoveIcon
+                                className={classes.removeIcon}
+                                style={{
+                                  color:
+                                  props.qualifications.length === 1
+                                      ? "#bbb"
+                                      : null,
+                                }}
+                              />
+                            </IconButton>
+                            <IconButton 
+                              onClick={props.handleQualificationAdd}
+                              className={classes.addRemoveButton}
+                            >
+                              <AddIcon className={classes.addIcon} />
+                            </IconButton>
+                          </div>
                         </Grid>
                       </Grid>
                     ))}
