@@ -20,6 +20,7 @@ import OndemandVideoRoundedIcon from '@material-ui/icons/OndemandVideoRounded';
 import ErrorRoundedIcon from '@material-ui/icons/ErrorRounded';
 import PolicyRoundedIcon from '@material-ui/icons/PolicyRounded';
 import ContactSupportRoundedIcon from '@material-ui/icons/ContactSupportRounded';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -71,57 +72,79 @@ function Footer() {
                             Flamingo
                         </Typography>
                         <List component="nav" aria-label="main mailbox folders">
-                            <ListItem button className={classes.listItem}>
-                                <ListItemIcon className={classes.linkIcon}><WorkRoundedIcon /></ListItemIcon>
-                                <ListItemText className={classes.linkText} primary="Jobs" />
-                            </ListItem>
-                            <ListItem button className={classes.listItem}>
-                                <ListItemIcon className={classes.linkIcon}><BusinessRoundedIcon /></ListItemIcon>
-                                <ListItemText className={classes.linkText} primary="Ogranizations" />
-                            </ListItem>
-                            <ListItem button className={classes.listItem}>
-                                <ListItemIcon className={classes.linkIcon}><PeopleAltRoundedIcon /></ListItemIcon>
-                                <ListItemText className={classes.linkText} primary="People" />
-                            </ListItem>
-                            <ListItem button className={classes.listItem}>
-                                <ListItemIcon className={classes.linkIcon}><ThumbsUpDownRoundedIcon /></ListItemIcon>
-                                <ListItemText className={classes.linkText} primary="Services" />
-                            </ListItem>
-                            <ListItem button className={classes.listItem}>
-                                <ListItemIcon className={classes.linkIcon}><RateReviewRoundedIcon /></ListItemIcon>
-                                <ListItemText className={classes.linkText} primary="Reviews" />
-                            </ListItem>
+                            <Link to="/jobs" >
+                                <ListItem button className={classes.listItem}>
+                                    <ListItemIcon className={classes.linkIcon}><WorkRoundedIcon /></ListItemIcon>
+                                    <ListItemText className={classes.linkText} primary="Jobs" />
+                                </ListItem>
+                            </Link>
+                            <Link to="/organizations" >
+                                <ListItem button className={classes.listItem}>
+                                    <ListItemIcon className={classes.linkIcon}><BusinessRoundedIcon /></ListItemIcon>
+                                    <ListItemText className={classes.linkText} primary="Ogranizations" />
+                                </ListItem>
+                            </Link>
+                            <Link to="/people" >
+                                <ListItem button className={classes.listItem}>
+                                    <ListItemIcon className={classes.linkIcon}><PeopleAltRoundedIcon /></ListItemIcon>
+                                    <ListItemText className={classes.linkText} primary="People" />
+                                </ListItem>
+                            </Link>
+                            <Link to="/services" >
+                                <ListItem button className={classes.listItem}>
+                                    <ListItemIcon className={classes.linkIcon}><ThumbsUpDownRoundedIcon /></ListItemIcon>
+                                    <ListItemText className={classes.linkText} primary="Services" />
+                                </ListItem>
+                            </Link>
+                            <Link to="/reviews" >
+                                <ListItem button className={classes.listItem}>
+                                    <ListItemIcon className={classes.linkIcon}><RateReviewRoundedIcon /></ListItemIcon>
+                                    <ListItemText className={classes.linkText} primary="Reviews" />
+                                </ListItem>
+                            </Link>
                         </List>
                     </Grid>
                     <Grid item sm={12} md={4}>
                         <Typography variant="h6" className={classes.title} >
-                            Enterprice
+                            Enterprise
                         </Typography>
                         <List component="nav" aria-label="main mailbox folders">
-                            <ListItem button className={classes.listItem}>
-                                <ListItemIcon className={classes.linkIcon}><BusinessCenterRoundedIcon /></ListItemIcon>
-                                <ListItemText className={classes.linkText} primary="Enterprice overview" />
-                            </ListItem>
-                            <ListItem button className={classes.listItem}>
-                                <ListItemIcon className={classes.linkIcon}><HelpRoundedIcon /></ListItemIcon>
-                                <ListItemText className={classes.linkText} primary="How it works" />
-                            </ListItem>
-                            <ListItem button className={classes.listItem}>
-                                <ListItemIcon className={classes.linkIcon}><MonetizationOnRoundedIcon /></ListItemIcon>
-                                <ListItemText className={classes.linkText} primary="Pricing" />
-                            </ListItem>
-                            <ListItem button className={classes.listItem}>
-                                <ListItemIcon className={classes.linkIcon}><ListRoundedIcon /></ListItemIcon>
-                                <ListItemText className={classes.linkText} primary="Features" />
-                            </ListItem>
-                            <ListItem button className={classes.listItem}>
-                                <ListItemIcon className={classes.linkIcon}><QuestionAnswerRoundedIcon /></ListItemIcon>
-                                <ListItemText className={classes.linkText} primary="FAQs" />
-                            </ListItem>
-                            <ListItem button className={classes.listItem}>
-                                <ListItemIcon className={classes.linkIcon}><OndemandVideoRoundedIcon /></ListItemIcon>
-                                <ListItemText className={classes.linkText} primary="Request Demo" />
-                            </ListItem>
+                            <Link to="/enterpriseOverview" >
+                                <ListItem button className={classes.listItem}>
+                                    <ListItemIcon className={classes.linkIcon}><BusinessCenterRoundedIcon /></ListItemIcon>
+                                    <ListItemText className={classes.linkText} primary="Enterprise overview" />
+                                </ListItem>
+                            </Link>
+                            <Link to="/howItWorks" >
+                                <ListItem button className={classes.listItem}>
+                                    <ListItemIcon className={classes.linkIcon}><HelpRoundedIcon /></ListItemIcon>
+                                    <ListItemText className={classes.linkText} primary="How it works" />
+                                </ListItem>
+                            </Link>
+                            <Link to="/pricings" >
+                                <ListItem button className={classes.listItem}>
+                                    <ListItemIcon className={classes.linkIcon}><MonetizationOnRoundedIcon /></ListItemIcon>
+                                    <ListItemText className={classes.linkText} primary="Pricing" />
+                                </ListItem>
+                            </Link>
+                            <Link to="/features" >
+                                <ListItem button className={classes.listItem}>
+                                    <ListItemIcon className={classes.linkIcon}><ListRoundedIcon /></ListItemIcon>
+                                    <ListItemText className={classes.linkText} primary="Features" />
+                                </ListItem>
+                            </Link>
+                            <Link to="/faqs" >
+                                <ListItem button className={classes.listItem}>
+                                    <ListItemIcon className={classes.linkIcon}><QuestionAnswerRoundedIcon /></ListItemIcon>
+                                    <ListItemText className={classes.linkText} primary="FAQs" />
+                                </ListItem>
+                            </Link>
+                            <Link to="/requestDemo" >
+                                <ListItem button className={classes.listItem}>
+                                    <ListItemIcon className={classes.linkIcon}><OndemandVideoRoundedIcon /></ListItemIcon>
+                                    <ListItemText className={classes.linkText} primary="Request Demo" />
+                                </ListItem>
+                            </Link>
                         </List>
                     </Grid>
                     <Grid item sm={12} md={4}>
@@ -129,19 +152,24 @@ function Footer() {
                             Legal and Support
                         </Typography>
                         <List component="nav" aria-label="main mailbox folders">
-                            <ListItem button className={classes.listItem}>
-                                <ListItemIcon className={classes.linkIcon}><ErrorRoundedIcon /></ListItemIcon>
-                                <ListItemText className={classes.linkText} primary="Terms of service" />
-                            </ListItem>
-                            <ListItem button className={classes.listItem}>
-                                <ListItemIcon className={classes.linkIcon}><PolicyRoundedIcon /></ListItemIcon>
-                                <ListItemText className={classes.linkText} primary="Privacy policy" />
-                            </ListItem>
-                            <ListItem button className={classes.listItem}>
-                                <ListItemIcon className={classes.linkIcon}><ContactSupportRoundedIcon /></ListItemIcon>
-                                <ListItemText className={classes.linkText} primary="Customer Support" />
-                            </ListItem>
-
+                            <Link to="/termsOfService" >
+                                <ListItem button className={classes.listItem}>
+                                    <ListItemIcon className={classes.linkIcon}><ErrorRoundedIcon /></ListItemIcon>
+                                    <ListItemText className={classes.linkText} primary="Terms of service" />
+                                </ListItem>
+                            </Link>
+                            <Link to="/privacy" >
+                                <ListItem button className={classes.listItem}>
+                                    <ListItemIcon className={classes.linkIcon}><PolicyRoundedIcon /></ListItemIcon>
+                                    <ListItemText className={classes.linkText} primary="Privacy policy" />
+                                </ListItem>
+                            </Link>
+                            <Link to="/support" >
+                                <ListItem button className={classes.listItem}>
+                                    <ListItemIcon className={classes.linkIcon}><ContactSupportRoundedIcon /></ListItemIcon>
+                                    <ListItemText className={classes.linkText} primary="Customer Support" />
+                                </ListItem>
+                            </Link>
                         </List>
                     </Grid>
                 </Grid>

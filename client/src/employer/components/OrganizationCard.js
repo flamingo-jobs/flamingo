@@ -25,21 +25,53 @@ require("dotenv").config();
 const useStyles = makeStyles((theme) => ({
   root: {
     textAlign: "left",
+    [theme.breakpoints.down('sm')]: {
+      textAlign: 'center'
+    }
   },
   header: {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
     margin: 10,
+    [theme.breakpoints.down('sm')]: {
+      display: "block",
+      alignItems: "flex-start",
+      textAlign: 'center',
+      margin: 0,
+      marginBottom: 10
+    }
   },
   label: {
     alignSelf: "left",
     marginRight: 15,
     backgroundColor: theme.palette.tagYellow,
+    [theme.breakpoints.down('sm')]: {
+      display: 'block',
+      textAlign: 'center',
+      margin: 0,
+      marginBottom: 10
+    }
   },
   headerLeft: {
     display: "flex",
     alignItems: "center",
+    [theme.breakpoints.down('sm')]: {
+      display: 'block',
+      textAlign: 'center',
+      margin: 0,
+      marginBottom: 10,
+      order: 2
+    }
+  },
+  headerRight: {
+    order: 1,
+    [theme.breakpoints.down('sm')]: {
+      position: 'relative',
+      left: "90%",
+      width: 'fit-content',
+      order: 1
+    }
   },
   tagIcon: {
     color: theme.palette.tagIcon,
@@ -69,17 +101,29 @@ const useStyles = makeStyles((theme) => ({
   footerLeft: {
     display: "flex",
     alignItems: "center",
+    [theme.breakpoints.down('sm')]: {
+      display: 'block',
+      textAlign: 'center',
+      marginBottom: 10
+    }
   },
   footer: {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
     margin: 10,
+    [theme.breakpoints.down('sm')]: {
+      display: 'block',
+      textAlign: 'center'
+    }
   },
   logo: {
     borderRadius: 12,
     width: 70,
     height: 70,
+    [theme.breakpoints.down('sm')]: {
+     display: 'inline-block'
+    }
   },
   company: {
     marginLeft: 10,
@@ -264,6 +308,7 @@ function OrganizationCard(props) {
 
       <div className={classes.root}>
         <div className={classes.header}>
+        <div className={classes.headerRight}>{displayFavoriteIcon()}</div>
           <div className={classes.headerLeft}>
             <Avatar
               className={classes.logo}
@@ -281,7 +326,7 @@ function OrganizationCard(props) {
               />
             </div>
           </div>
-          <div className={classes.headerRight}>{displayFavoriteIcon()}</div>
+          
         </div>
         <div className={classes.body}>
           <Typography noWrap className={classes.description}>

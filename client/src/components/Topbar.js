@@ -82,10 +82,10 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     color: theme.palette.tuftsBlue,
   },
-  searchButton:{
+  searchButton: {
     color: theme.palette.tuftsBlue,
 
-    "&:hover":{
+    "&:hover": {
       backgroundColor: "transparent",
     },
   },
@@ -388,7 +388,7 @@ export default function Topbar(props) {
           <Typography className={classes.menuText} >Profile</Typography>
         </MenuItem>
 
-        <MenuItem className={classes.menuItem} onClick={()=>{history.push(`/${props.user}/settings`)}}>
+        <MenuItem className={classes.menuItem} onClick={() => { history.push(`/${props.user}/settings`) }}>
           <div className={classes.menuIcon}>
             <SettingsRoundedIcon />
           </div>
@@ -509,7 +509,7 @@ export default function Topbar(props) {
   }
 
   const displaySearchButton = () => {
-    if(searchString.trim().length > 0){
+    if (searchString.trim().length > 0) {
       return <Button className={classes.searchButton} onClick={handleSearchBtnClick}>Search</Button>
     }
   }
@@ -527,8 +527,9 @@ export default function Topbar(props) {
         <div className={classes.grow}>
           <AppBar position="sticky">
             <Toolbar>
-              <img src={logo} className={classes.logo} />
-
+              <Link to="/" >
+                <img src={logo} className={classes.logo} />
+              </Link>
               <div className={classes.search}>
                 <div className={classes.searchIcon}>
                   <SearchIcon />
