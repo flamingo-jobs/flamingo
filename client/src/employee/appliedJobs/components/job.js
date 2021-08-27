@@ -131,7 +131,7 @@ const useStyles = makeStyles((theme) => ({
       justifyContent: "center",
     },
   },
-  changeBtn: {
+  downloadBtn: {
     paddingLeft: "13px",
     paddingRight: "13px",
     borderRadius: 50,
@@ -145,7 +145,7 @@ const useStyles = makeStyles((theme) => ({
       transition: "0.3s",
     },
   },
-  downloadBtn: {
+  changeBtn: {
     paddingLeft: "13px",
     paddingRight: "13px",
     borderRadius: 50,
