@@ -393,38 +393,18 @@ function ProjectsSection(props) {
             </Button>
             </> : null }
         </Grid>
-
-        <Modal
-          aria-labelledby="transition-modal-title"
-          aria-describedby="transition-modal-description"
-          className={classes.modal}
+        <Dialog
           open={open}
           onClose={handleClose}
-          onChange={fetchData}
-          closeAfterTransition
-          BackdropComponent={Backdrop}
-          BackdropProps={{
-            timeout: 500,
-          }}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
         >
-          <Fade in={open}>
-            <div className={classes.paperModal}>
-              <div style={{paddingTop:'40px'}}>
-                <Grid container direction="row">
-                  <Grid item xs={10}>
-                    <Typography gutterBottom variant="h5" style={{textAlign:'center',paddingLeft:'50px',color:theme.palette.stateBlue}}>
-                      Add Project
-                    </Typography>
-                    <Divider variant="middle" style={{marginLeft:'100px'}} />
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button className={classes.defaultButton} style={{ float: 'right',marginRight:'10px',marginTop:'-20px',backgroundColor:'white'}} onClick={handleClose}>
-                      <CloseIcon className={classes.closeIcon} style={{color: '#666',}} />
-                    </Button>
-                  </Grid>
-                </Grid>
-              </div>
-              <form className={classes.form} onSubmit={onSubmit}>
+          <DialogTitle id="alert-dialog-title" style={{color:theme.palette.stateBlue}}>
+          Add Project
+          </DialogTitle>
+          <Divider variant="middle" />
+          <DialogContent>
+            <form className={classes.form}>
                 <div>
                 <TextField
                   className={classes.field}
@@ -534,12 +514,17 @@ function ProjectsSection(props) {
                     required
                   />
                   </div>
-                  <Button type="submit" className={classes.defaultButton} style={{ width:'100%',marginTop:'5%'}}>Apply Changes</Button>
               </form>
-              
-            </div>
-          </Fade>
-        </Modal>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} style={{color:"#999"}}>
+              Cancel
+            </Button>
+            <Button onClick={onSubmit} color="primary" autoFocus>
+              Apply Changes
+            </Button>
+          </DialogActions>
+        </Dialog>
         
       </Grid>
         <Paper elevation={0} className={classes.paperCont}>
