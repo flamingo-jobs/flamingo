@@ -31,10 +31,22 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   button: {
+    paddingLeft: 16,
+    paddingRight: 16,
     backgroundColor: theme.palette.stateBlue,
     color: theme.palette.white,
     "&:hover": {
       backgroundColor: theme.palette.stateBlueHover,
+    },
+    float: "center",
+  },
+  DeleteButton: {
+    paddingLeft: 16,
+    paddingRight: 16,
+    backgroundColor: theme.palette.red,
+    color: theme.palette.white,
+    "&:hover": {
+      backgroundColor: theme.palette.redHover,
     },
     float: "center",
   },
@@ -47,18 +59,22 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   mainGrid: {
-    paddingLeft: 12,
     [theme.breakpoints.down("sm")]: {
       flexDirection: "column",
       alignItems: "stretch",
     },
-    [theme.breakpoints.down("xs")]: {
-      paddingRight: 12,
-      paddingLeft: 12,
-    },
   },
   dialogbuttons: {
     color: "red",
+  },
+  gridCard: {
+    display: "grid",
+  },
+  jobsGrid: {
+    maxWidth: 'unset',
+    flexDirection: 'column',
+    alignItems: "stretch",
+    order: 3
   },
 }));
 
@@ -284,105 +300,172 @@ const Settings = () => {
   };
 
   return (
-    <Grid
-      item
-      container
-      sm={12}
-      spacing={3}
-      direction="row"
-      className={classes.mainGrid}
-      alignItems="flex-start"
-    >
-      <Grid item xs={12}>
-        <FloatCard>
-          {displayAlert()}
-          <div className={classes.tabRoot}>
-            <Tabs
-              orientation="horizontal"
-              variant="scrollable"
-              value={value}
-              onChange={handleChange}
-              aria-label="Vertical tabs example"
-              className={classes.tabs}
-            >
-              <Tab label="Account" {...a11yProps(0)} />
-            </Tabs>
-
-            <TabPanel value={value} index={0}>
-              <Grid
-                container
-                justify="center"
-                alignItems="center"
-                className={classes.mainGrid}
-                spacing={2}
-                direction="column"
+    <Grid item container xs={12} spacing={3} direction="column"
+      justify="space-between"
+      alignItems="flex-start" className={classes.mainGrid}>
+      <Grid item container xs={12} md={8} lg={9} spacing={0} direction="row"
+        justify="space-between"
+        alignItems="flex-start" className={classes.jobsGrid}>
+        <Grid item xs={12} className={classes.gridCard}>
+          <FloatCard>
+            {displayAlert()}
+            <div className={classes.tabRoot}>
+              <Tabs
+                orientation="horizontal"
+                variant="scrollable"
+                value={value}
+                onChange={handleChange}
+                aria-label="Vertical tabs example"
+                className={classes.tabs}
               >
-                <form onSubmit={handleChangePassword}>
-                  <Grid item xs={12}>
-                    <Grid container spacing={3} diection="column">
-                      <Grid item xs={12} align="left">
-                        <Typography variant="h5">Change Password</Typography>
+                <Tab label="Account" {...a11yProps(0)} />
+              </Tabs>
+
+              <TabPanel value={value} index={0}>
+                <Grid
+                  container
+                  justify="center"
+                  alignItems="center"
+                  className={classes.mainGrid}
+                  spacing={2}
+                  direction="column"
+                >
+                  <form onSubmit={handleChangePassword}>
+                    <Grid item xs={12}>
+                      <Grid container spacing={3} diection="column">
+                        <Grid item xs={12} align="left">
+                          <Typography variant="h5">Change Password</Typography>
+                        </Grid>
+                        <Grid item xs={12} md={12} lg={6} align="left">
+                          <Typography>
+                            Please provide your previous password to change the
+                            password.
+                          </Typography>
+                          <Typography variant="caption" display="block">
+                            Please make sure that your password contains at least,
+                            <ul>
+                              <li>8 characters</li>
+                              <li>1 uppercase letter</li>
+                              <li>1 lowercase letter</li>
+                              <li>1 number and 1 special character</li>
+                            </ul>
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={12} md={12} lg={6}>
+                          <Grid container spacing={2}>
+                            <Grid item xs={12} align="left">
+                              <TextField
+                                label="Old Password"
+                                name="oldPassword"
+                                type="password"
+                                value={oldPassword}
+                                onChange={(e) => setOldPassword(e.target.value)}
+                                size="small"
+                                variant="outlined"
+                                required
+                              />
+                            </Grid>
+                            <Grid item xs={12} md={6} align="left">
+                              <TextField
+                                label="New Password"
+                                name="newPassword"
+                                type="password"
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                                size="small"
+                                variant="outlined"
+                                required
+                              />
+                            </Grid>
+                            <Grid item xs={12} md={6} align="left">
+                              <TextField
+                                label="Confirm New Password"
+                                name="confirmNewPassword"
+                                type="password"
+                                value={confirmNewPassword}
+                                onChange={(e) =>
+                                  setConfirmNewPassword(e.target.value)
+                                }
+                                size="small"
+                                variant="outlined"
+                                required
+                              />
+                            </Grid>
+
+                            <Grid
+                              item
+                              container
+                              xs={12}
+                              className={classes.actions}
+                              spacing={2}
+                            >
+                              <Grid item>
+                                <Button
+                                  fullWidth
+                                  type="submit"
+                                  className={classes.button}
+                                >
+                                  Change Password
+                                </Button>
+                              </Grid>
+                              <Grid item>
+                                <Link to="/">
+                                  <Button
+                                    fullWidth
+                                    className={classes.cancelButton}
+                                  >
+                                    Cancel
+                                  </Button>
+                                </Link>
+                              </Grid>
+                            </Grid>
+                          </Grid>
+                        </Grid>
                       </Grid>
+                    </Grid>
+                  </form>
+                  <Box mt={5} />
+                  <form onSubmit={handleClickOpen}>
+                    <Grid item xs={12}>
                       <Grid item xs={12} md={12} lg={6} align="left">
-                        <Typography>
-                          Please provide your previous password to change the
-                          password.
-                        </Typography>
-                        <Typography variant="caption" display="block">
-                          Please make sure that your password contains at least,
-                          <ul>
-                            <li>8 characters</li>
-                            <li>1 uppercase letter</li>
-                            <li>1 lowercase letter</li>
-                            <li>1 number and 1 special character</li>
-                          </ul>
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={12} md={12} lg={6}>
-                        <Grid container spacing={2}>
+                        <Grid container spacing={3}>
+                          <Grid item xs={12} align="left">
+                            <Typography variant="h5">Delete Account</Typography>
+                            <Typography>
+                              Please provide your password to delete your account.
+                              All the data regarding to your account (except
+                              payment history) will be deleted from Flamingo.com
+                            </Typography>
+                          </Grid>
                           <Grid item xs={12} align="left">
                             <TextField
-                              label="Old Password"
-                              name="oldPassword"
+                              label="Password"
+                              name="deletePassword"
                               type="password"
-                              value={oldPassword}
-                              onChange={(e) => setOldPassword(e.target.value)}
+                              value={deletePassword}
+                              onChange={(e) => setDeletePassword(e.target.value)}
                               size="small"
                               variant="outlined"
                               required
                             />
                           </Grid>
-                          <Grid item xs={12} md={6} align="left">
-                            <TextField
-                              label="New Password"
-                              name="newPassword"
-                              type="password"
-                              value={newPassword}
-                              onChange={(e) => setNewPassword(e.target.value)}
-                              size="small"
-                              variant="outlined"
-                              required
-                            />
-                          </Grid>
-                          <Grid item xs={12} md={6} align="left">
-                            <TextField
-                              label="Confirm New Password"
-                              name="confirmNewPassword"
-                              type="password"
-                              value={confirmNewPassword}
-                              onChange={(e) =>
-                                setConfirmNewPassword(e.target.value)
-                              }
-                              size="small"
-                              variant="outlined"
-                              required
-                            />
-                          </Grid>
-
+                        </Grid>
+                      </Grid>
+                      {/* Submit Buttons */}
+                      <Grid item xs={12}>
+                        <Grid
+                          item
+                          container
+                          xs={12}
+                          className={classes.footer}
+                          alignItems="left"
+                          justify="left"
+                          spacing={3}
+                        >
                           <Grid
                             item
                             container
-                            xs={12}
+                            md={6}
                             className={classes.actions}
                             spacing={2}
                           >
@@ -390,18 +473,16 @@ const Settings = () => {
                               <Button
                                 fullWidth
                                 type="submit"
-                                variant="contained"
-                                className={classes.button}
+                                className={classes.DeleteButton}
                               >
-                                Change Password
+                                Delete Account
                               </Button>
                             </Grid>
                             <Grid item>
                               <Link to="/">
                                 <Button
                                   fullWidth
-                                  variant="contained"
-                                  className={classes.cancel}
+                                  className={classes.cancelButton}
                                 >
                                   Cancel
                                 </Button>
@@ -411,111 +492,40 @@ const Settings = () => {
                         </Grid>
                       </Grid>
                     </Grid>
-                  </Grid>
-                </form>
-                <Box mt={5} />
-                <form onSubmit={handleClickOpen}>
-                  <Grid item xs={12}>
-                    <Grid item xs={12} md={12} lg={6} align="left">
-                      <Grid container spacing={3}>
-                        <Grid item xs={12} align="left">
-                          <Typography variant="h5">Delete Account</Typography>
-                          <Typography>
-                            Please provide your password to delete your account.
-                            All the data regarding to your account (except
-                            payment history) will be deleted from Flamingo.com
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={12} align="left">
-                          <TextField
-                            label="Password"
-                            name="deletePassword"
-                            type="password"
-                            value={deletePassword}
-                            onChange={(e) => setDeletePassword(e.target.value)}
-                            size="small"
-                            variant="outlined"
-                            required
-                          />
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                    {/* Submit Buttons */}
-                    <Grid item xs={12}>
-                      <Grid
-                        item
-                        container
-                        xs={12}
-                        className={classes.footer}
-                        alignItems="left"
-                        justify="left"
-                        spacing={3}
-                      >
-                        <Grid
-                          item
-                          container
-                          md={6}
-                          className={classes.actions}
-                          spacing={2}
-                        >
-                          <Grid item>
-                            <Button
-                              fullWidth
-                              type="submit"
-                              variant="contained"
-                              className={classes.button}
-                            >
-                              Delete Account
-                            </Button>
-                          </Grid>
-                          <Grid item>
-                            <Link to="/">
-                              <Button
-                                fullWidth
-                                variant="contained"
-                                className={classes.cancel}
-                              >
-                                Cancel
-                              </Button>
-                            </Link>
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </form>
-              </Grid>
-            </TabPanel>
-          </div>
-        </FloatCard>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="edit-details-form"
-          fullWidth
-          className={classes.dialogBox}
-        >
-          <DialogTitle id="edit-details-form">Are you sure?</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              You are going to permanently delete your account from
-              Flamingo.com. Please confirm to delete your account.
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} color="primary">
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              onClick={deleteUser}
-              color="primary"
-              className={classes.dialogbuttons}
-            >
-              Confirm and Delete
-            </Button>
-          </DialogActions>
-        </Dialog>
+                  </form>
+                </Grid>
+              </TabPanel>
+            </div>
+          </FloatCard>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="edit-details-form"
+            fullWidth
+            className={classes.dialogBox}
+          >
+            <DialogTitle id="edit-details-form">Are you sure?</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                You are going to permanently delete your account from
+                Flamingo.com. Please confirm to delete your account.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} color="primary">
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                onClick={deleteUser}
+                color="primary"
+                className={classes.dialogbuttons}
+              >
+                Confirm and Delete
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </Grid>
       </Grid>
     </Grid>
   );

@@ -56,7 +56,8 @@ const theme = createMuiTheme({
     darkGreen: '#32CD32',
     lightRed: '#ff4c4c',
     red: "#cf1515",
-    lightyPurple: '#f5f5ff'
+    lightyPurple: '#f5f5ff',
+    redHover: "#a60000"
   },
   typography: {
     fontSize: 14,
