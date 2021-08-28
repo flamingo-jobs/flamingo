@@ -79,7 +79,8 @@ const useStyles = makeStyles((theme) => ({
       form: {
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '5% 15% 5% 15%'
+        paddingLeft: '20px',
+        paddingRight: '20px',
       },
       field: {
         margin: "25px 0px 20px 0px",
@@ -835,7 +836,65 @@ function EduItem(props) {
               </DialogActions>
           </Dialog>
             {/*-------------- update award field popup content ------------------- */}
-        <Modal
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title" style={{color:theme.palette.stateBlue}}>
+                Edit Education Details
+              </DialogTitle>
+              <Divider variant="middle" />
+              <DialogContent>
+                <form className={classes.form}>
+                  <div>
+                    <TextField
+                      className={classes.field}
+                      id="outlined-basic"
+                      label="University/School/Institute"
+                      type="text"
+                      variant="outlined"
+                      size="small"
+                      value={education.institute}
+                      onChange={onChangeInstitute}
+                      required
+                    />
+                    <FormControl variant="outlined" className={classes.formControl}>
+                      <InputLabel className={classes.placeholder} htmlFor="outlined-age-native-simple">Select Type</InputLabel>
+                      <Select
+                        native
+                        value={education.type}
+                        onChange={onChangeType}
+                        label="Select Type"
+                        className={classes.select}
+                        required
+                        disabled
+                      >
+                        <option value="School">School</option>
+                        <option value="Diploma">Diploma</option>
+                        <option value="Graduate Diploma">Graduate Diploma</option>
+                        <option value="Bachelor's">Bachelor's</option>
+                        <option value="Bachelor's Honours">Bachelor's Honours</option>
+                        <option value="Masters">Masters</option>
+                        <option value="M.Phil.">M.Phil.</option>
+                        <option value="PhD">PhD</option>
+                      </Select>
+                    </FormControl>
+                    {form}
+                  </div>
+                </form>
+              </DialogContent>
+              <DialogActions>
+                  <Button onClick={handleClose} style={{color:"#999"}}>
+                      Cancel
+                  </Button>
+                  <Button onClick={onSubmit} color="primary" autoFocus>
+                      Apply Changes
+                  </Button>
+              </DialogActions>
+          </Dialog>
+        {/* <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
           className={classes.modal}
@@ -904,7 +963,7 @@ function EduItem(props) {
               </form>   
             </div>
           </Fade>
-        </Modal>
+        </Modal> */}
         </Grid>
        </Grid>
       </Paper>
