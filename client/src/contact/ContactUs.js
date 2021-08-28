@@ -1,4 +1,4 @@
-import { Button, Grid, InputAdornment, makeStyles, TextField, Typography } from '@material-ui/core'
+import { Button, Chip, Grid, InputAdornment, makeStyles, TextField, Typography } from '@material-ui/core'
 import axios from 'axios';
 import React from 'react'
 import { useForm } from 'react-hooks-helper';
@@ -6,6 +6,8 @@ import Lottie from 'react-lottie';
 import FloatCard from '../components/FloatCard';
 import BACKEND_URL from '../Config';
 import ContactImage from './lotties/contact-us.json';
+import PhoneRoundedIcon from '@material-ui/icons/PhoneRounded';
+import MailRoundedIcon from '@material-ui/icons/MailRounded';
 
 const useStyles = makeStyles((theme) => ({
     mainGrid: {
@@ -15,9 +17,8 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     lottie: {
-        height: 150,
-        [theme.breakpoints.down("xs")]: {
-            width: 300,
+        [theme.breakpoints.down("sm")]: {
+            width: '200px !important',
         },
     },
     form: {
@@ -68,7 +69,19 @@ const useStyles = makeStyles((theme) => ({
     },
     actions: {
         marginTop: 20
-    }
+    },
+    chip: {
+        backgroundColor: theme.palette.lightSkyBlue,
+        height: 40,
+        margin: 3,
+        marginRight: 5,
+        "&.MuiChip-root" : {
+            padding: 8,
+        },
+        "& span.MuiChip-label" : {
+            fontSize: 16
+        }
+    },
 }))
 
 function ContactUs() {
@@ -98,6 +111,7 @@ function ContactUs() {
         const newMessagerData = {
             name: formData.name,
             email: formData.email,
+            mobile: formData.mobile,
             message: formData.message,
         };
         // axios.post(`${BACKEND_URL}/api/signup`, newUserData).then((res) => {
@@ -123,17 +137,40 @@ function ContactUs() {
                 <FloatCard >
                     <Grid item container spacing={3} direction="row">
                         <Grid item xs={12} lg={6}>
-                            <Lottie
-                                className={classes.lottie}
-                                options={defaultOptions}
-                                height={"inherit"}
-                                width={"inherit"}
-                            />
+                            <Grid item container spacing={3} direction="row">
+                                <Grid container spacing={3} direction="row" xs={12} style={{ marginTop: 40 }}>
+                                    <Grid item xs={12} lg={6}>
+                                        <Chip
+                                            icon={<PhoneRoundedIcon />}
+                                            label="+94 112 345 678"
+                                            className={classes.chip}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} lg={6}>
+
+                                        <Chip
+                                            icon={<MailRoundedIcon />}
+                                            label="info@flamingo.jobs"
+                                            className={classes.chip}
+                                        />
+                                    </Grid>
+
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Lottie
+                                        className={classes.lottie}
+                                        options={defaultOptions}
+                                        height={300}
+                                        width={300}
+                                    />
+                                </Grid>
+                            </Grid>
                         </Grid>
                         <Grid item xs={12} lg={5} style={{ padding: 24 }}>
-                            <Typography style={{ textAlign: 'left', marginTop: 24, marginBottom: 24, fontSize: 24, fontWeight: 600 }}>
+                            <Typography style={{ textAlign: 'left', marginTop: 24, marginBottom: 16, fontSize: 24, fontWeight: 600 }}>
                                 Contact Us
                             </Typography>
+                            <Typography style={{ textAlign: 'left', marginTop: 16, marginBottom: 24, }}>Any questions or remarks? Just write us a message.</Typography>
                             <form onSubmit={sendMessage}>
                                 <Grid
                                     item
