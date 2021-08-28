@@ -112,7 +112,7 @@ const SearchResult = (props) => {
   return (
     <div className={classes.root}>
       <Grid container justify="center">
-        <Grid item xs={9}>
+        <Grid item xs={12}>
           <AppBar position="static" className={classes.appBar}>
             <StyledTabs
               value={tabIndex}

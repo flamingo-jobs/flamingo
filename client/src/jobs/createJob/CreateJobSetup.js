@@ -21,6 +21,10 @@ import { validate } from "@material-ui/pickers";
 const jwt = require("jsonwebtoken");
 
 const useStyles = makeStyles((theme) => ({
+  root:{
+    paddingLeft: theme.spacing(1.5),
+    paddingRight: theme.spacing(1.5),
+  },
   button: {
     marginTop: theme.spacing(1),
     marginRight: theme.spacing(1),
@@ -670,13 +674,14 @@ export default function CreateJobSetup() {
   };
 
   
-
+// style={{border: "1px solid red"}}
   return (
     <>
       {displayAlert()}
-      <Grid item container sm={12} spacing={3} direction="row" justify="space-between" className={classes.mainGrid} alignItems="flex-start">
+      <Grid item container sm={12} className={classes.root}>
 
         <Grid item xs={12} align="center">
+          <div className={classes.floatCardWrapper}>
           <FloatCard>
             <Container>
               <Grid
@@ -764,7 +769,7 @@ export default function CreateJobSetup() {
                 )}
               </Grid>
             </Container>
-          </FloatCard>
+          </FloatCard></div>
         </Grid>
       </Grid>
     </>

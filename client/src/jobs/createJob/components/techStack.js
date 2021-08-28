@@ -19,6 +19,10 @@ const useStyles = makeStyles((theme) => ({
   },
   mainContainer: {
     padding: theme.spacing(5),
+    [theme.breakpoints.down("sm")]: {
+      paddingLeft: "0px",
+      paddingRight: "0px",
+    },
   },
   techStackContainer: {
     padding: theme.spacing(3),

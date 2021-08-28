@@ -14,7 +14,7 @@ import FloatCard from "../../../components/FloatCard";
 import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
 import WorkRoundedIcon from "@material-ui/icons/WorkRounded";
 import GetAppIcon from "@material-ui/icons/GetApp";
-import PublishIcon from "@material-ui/icons/Publish";
+import DescriptionIcon from '@material-ui/icons/Description';
 import Status from "./status";
 import download from "downloadjs";
 import UploadModal from "./uploadModal";
@@ -134,11 +134,29 @@ const useStyles = makeStyles((theme) => ({
   downloadBtn: {
     paddingLeft: "13px",
     paddingRight: "13px",
-    borderRadius: 12,
-    backgroundColor: theme.palette.vividSkyBlue,
+    borderRadius: 50,
+    backgroundColor: theme.palette.tuftsBlue,
     color: theme.palette.white,
+    transition: "0.3s",
     "&:hover": {
-      backgroundColor: theme.palette.vividSkyBlueHover,
+      border: `2px solid ${theme.palette.tuftsBlue}`,
+      backgroundColor: theme.palette.white,
+      color: theme.palette.tuftsBlue,
+      transition: "0.3s",
+    },
+  },
+  changeBtn: {
+    paddingLeft: "13px",
+    paddingRight: "13px",
+    borderRadius: 50,
+    border: `2px solid ${theme.palette.tuftsBlue}`,
+    backgroundColor: theme.palette.white,
+    color: theme.palette.tuftsBlue,
+    transition: "0.3s",
+    "&:hover": {
+      backgroundColor: theme.palette.tuftsBlue,
+      color: theme.palette.white,
+      transition: "0.3s",
     },
   },
 }));
@@ -338,10 +356,9 @@ const Job = (props) => {
                 {applicationDetails.status === "pending" && (
                   <div className={classes.downloadContainer}>
                     <Button
-                      variant="contained"
-                      className={classes.downloadBtn}
+                      className={classes.changeBtn}
                       onClick={handleOpen}
-                      startIcon={<PublishIcon />}
+                      startIcon={<DescriptionIcon />}
                     >
                       Change the Resume
                     </Button>
@@ -350,7 +367,6 @@ const Job = (props) => {
 
                 <div className={classes.downloadContainer}>
                   <Button
-                    variant="contained"
                     className={classes.downloadBtn}
                     startIcon={<GetAppIcon />}
                     onClick={handleResumeDownload}
@@ -364,11 +380,11 @@ const Job = (props) => {
         </FloatCard>
       );
     } else {
-      return (
-        <FloatCard>
-          <Typography>No information to display</Typography>
-        </FloatCard>
-      );
+      // return (
+      //   <FloatCard>
+      //     <Typography>No information to display</Typography>
+      //   </FloatCard>
+      // );
     }
   };
 

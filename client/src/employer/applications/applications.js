@@ -76,6 +76,7 @@ const Applications = () => {
 
   const [applicantIds, setApplicantIds] = useState([]);
   const [applicants, setApplicants] = useState("empty");
+  const [scoredApplicants, setScoredApplicants] = useState("empty");
 
   const [alertShow, setAlertShow] = useState(false);
   const [alertData, setAlertData] = useState({ severity: "", msg: "" });
@@ -209,9 +210,9 @@ const Applications = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(customSettings);
-  }, [customSettings])
+  // useEffect(() => {
+  //   console.log(customSettings);
+  // }, [customSettings])
 
   const updateCustomCriterias = (criterias) => {
     setCustomSettings(criterias);
@@ -249,14 +250,10 @@ const Applications = () => {
   };
 
   const displayShortlistedApplicants = () => {
-    if (applicants !== "empty" && shortlistedIds !== "empty") {
-      const shortlistedJobseekers = applicants.filter((applicant) =>
-        shortlistedIds.includes(applicant._id)
-      );
+    if (scoredApplicants !== "empty" && shortlisted) {
+      const shortlistedJobseekers = scoredApplicants.slice(0, shortlistCount);
 
-      const otherJobseekers = applicants.filter(
-        (applicant) => !shortlistedIds.includes(applicant._id)
-      );
+      const otherJobseekers = scoredApplicants.slice(shortlistCount);
 
       if (isSignedIn && role === "employer" && userId) {
         return (
@@ -340,19 +337,43 @@ const Applications = () => {
     }
   };
 
+
   const handleShortlistSubmit = async (e) => {
     e.preventDefault();
 
+    if(shortlistCount === 0){
+      setAlertData({
+        severity: "info",
+        msg: "Shortlist count should be greater than 0",
+      });
+      handleAlert();
+      return;
+    }
+    
     if (customSettings.length !== 3) {
-      if (jobId && shortlistCount > 0) {
+      if (jobId && userId && applicants !== "empty") {
         try {
           const response = await axios.get(
-            `${BACKEND_URL}/jobs/shortlistForGivenCount/${jobId}/${shortlistCount}`
+            `${BACKEND_URL}/jobs/shortlistApplicants/${jobId}/${userId}`
           );
           if (response.data.success) {
             handleCloseShortlistModal();
             setShortlisted(true);
-            setShortlistedIds(response.data.applicantIds);
+            const newApplicants = [...applicants];
+
+            response.data.exsitingData.map((applicant) => {
+              newApplicants.map((jobseeker) => {
+                if(jobseeker._id === applicant.userId){
+                  jobseeker.score = applicant.score;
+                }
+              }); 
+            });
+
+            newApplicants.sort((a,b) => {
+              return b.score - a.score; 
+            });
+            
+            setScoredApplicants(newApplicants);
           }
         } catch (err) {
           handleCloseShortlistModal();
@@ -362,12 +383,6 @@ const Applications = () => {
           });
           handleAlert();
         }
-      } else {
-        setAlertData({
-          severity: "info",
-          msg: "Shortlist count should be greater than 0",
-        });
-        handleAlert();
       }
     } else {
       if (jobId && shortlistCount > 0) {
@@ -388,12 +403,6 @@ const Applications = () => {
           });
           handleAlert();
         }
-      } else {
-        setAlertData({
-          severity: "info",
-          msg: "Shortlist count should be greater than 0",
-        });
-        handleAlert();
       }
     }
   };

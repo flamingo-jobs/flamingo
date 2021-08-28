@@ -15,6 +15,8 @@ import ReactTimeAgo from "react-time-ago";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import BACKEND_URL from "../../../Config";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setSavedJobCount } from "../../../redux/actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -95,6 +97,8 @@ const SavedJob = (props) => {
   const classes = useStyles();
   const [job, setJob] = useState("empty");
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     retrieveJob();
   }, []);
@@ -139,6 +143,7 @@ const SavedJob = (props) => {
       if (response.data.success) {
         props.setAlertData({ severity: "success", msg: "Job removed successfully!"});
         props.handleAlert();
+        dispatch(setSavedJobCount(newSavedJobIds.length));
         props.setSavedJobIds(newSavedJobIds);
       }
     } catch (err) {

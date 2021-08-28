@@ -7,6 +7,8 @@ import axios from "axios";
 import OrganizationCard from "./components/organizationCard";
 import { CircularProgress } from "@material-ui/core";
 import SnackBarAlert from "../../components/SnackBarAlert";
+import NoInfo from "../../components/NoInfo";
+import Loading from "../../components/Loading";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,7 +22,7 @@ const FavoriteOrganizations = () => {
   const classes = useStyles();
   const [favoriteOrgIds, setFavoriteOrgIds] = useState([]);
   const userId = sessionStorage.getItem("loginId");
-  const [favoriteOrgs, setFavoriteOrgs] = useState("empty");
+  const [favoriteOrgs, setFavoriteOrgs] = useState([]);
 
   // Alert related states
   const [alertShow, setAlertShow] = useState(false);
@@ -87,22 +89,19 @@ const FavoriteOrganizations = () => {
   };
 
   const displayFavoriteOrgs = () => {
-    // if (!favoriteOrgs.length) {
-    //   return (
-    //     <Grid item xs={12}>
-    //       <FloatCard>
-    //         <CircularProgress />
-    //       </FloatCard>
-    //     </Grid>
-    //   );
-    // }
-    if (favoriteOrgs === "empty" || favoriteOrgIds.length === 0) {
+
+    if (favoriteOrgs.length === 0) {
       return (
-        <Grid item xs={12}>
+        <Grid item sm={12} style={{ marginBottom: 16 }}>
           <FloatCard>
-            <Typography>
-              You haven't added any favorite organizations yet.
-            </Typography>
+            <Loading />
+          </FloatCard>
+        </Grid>)
+    } else if (favoriteOrgs === "empty" || favoriteOrgIds.length === 0) {
+      return (
+        <Grid item sm={12} style={{ marginBottom: 16 }}>
+          <FloatCard>
+            <NoInfo message="You haven't added any favorite organizations yet." />
           </FloatCard>
         </Grid>
       );

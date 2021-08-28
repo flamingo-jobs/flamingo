@@ -7,6 +7,7 @@ import Organization from '../../../employer/components/Organization';
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
 import axios from 'axios';
 import BACKEND_URL from '../../../Config';
+const jwt = require("jsonwebtoken");
 
 
 const useStyles = makeStyles((theme) => ({
@@ -35,10 +36,18 @@ const useStyles = makeStyles((theme) => ({
 
 function RecommendedOrganizations(props) {
     const classes = useStyles();
-    const userId = sessionStorage.getItem("loginId");
     const [favoriteOrgs, setFavoriteOrgs] = useState("empty");
-
+    
     const [featuredOrgs, setFeaturedOrgs] = useState([]);
+    
+    const userId = sessionStorage.getItem("loginId");
+    const isSignedIn = sessionStorage.getItem("userToken") ? true : false;
+    const token = sessionStorage.getItem("userToken");
+    const [role, setRole] = useState(
+        jwt.decode(token, { complete: true })
+        ? jwt.decode(token, { complete: true }).payload.userRole
+        : null
+    );
 
     useEffect(() => {
         retrieveFeaturedOrgs()
@@ -59,7 +68,7 @@ function RecommendedOrganizations(props) {
     }, []);
 
     const retrieveJobseeker = async () => {
-        if(userId){
+        if(isSignedIn && userId && role === "jobseeker"){
             try {
               const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
               if (response.data.success) {
@@ -78,8 +87,6 @@ function RecommendedOrganizations(props) {
                 <Grid item xs={12} lg={6} key={featuredOrg._id}>
                         <Organization 
                             info={featuredOrg}
-                            userId={userId}
-                            userRole={props.userRole}
                             favoriteOrgs={favoriteOrgs}
                             setFavoriteOrgs={setFavoriteOrgs}
                         />

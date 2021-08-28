@@ -20,6 +20,15 @@ const useStyles = makeStyles((theme) => ({
   },
   mainContainer: {
     padding: theme.spacing(5),
+    [theme.breakpoints.down("sm")]: {
+      paddingLeft: "0px",
+      paddingRight: "0px",
+    },
+  },
+  buttonGridItem:{
+    display: "flex",
+    flexDirection :"column",
+    justifyContent: "center",
   },
   qualificationsTitle: {
     fontSize: "15px",
@@ -31,6 +40,15 @@ const useStyles = makeStyles((theme) => ({
   },
   addIcon: {
     color: theme.palette.stateBlue,
+  },
+  addRemoveButton:{
+    padding: "12px",
+    [theme.breakpoints.down("sm")]: {
+      padding: "5px",
+    },
+    [theme.breakpoints.down("xs")]: {
+      padding: "2px",
+    }
   },
 }));
 
@@ -50,7 +68,7 @@ const QualificationForm = ({
             <Grid container spacing={2}>
               {qualificationsFields.map((field, index) => (
                 <Grid item container key={index}>
-                  <Grid item xs={10}>
+                  <Grid item xs={9}>
                     <StateBlueTextField
                       name="qualification"
                       label="Qualification"
@@ -66,22 +84,28 @@ const QualificationForm = ({
                       helperText={errors.requirements[index].length !== 0 && errors.requirements[index]}
                     />
                   </Grid>
-                  <Grid item xs={2}>
-                    <IconButton
-                      disabled={qualificationsFields.length === 1}
-                      onClick={() => handleQualificationRemove(index)}
-                    >
-                      <RemoveIcon
-                        className={classes.removeIcon}
-                        style={{
-                          color:
-                            qualificationsFields.length === 1 ? "#bbb" : null,
-                        }}
-                      />
-                    </IconButton>
-                    <IconButton onClick={handleQualificationAdd}>
-                      <AddIcon className={classes.addIcon} />
-                    </IconButton>
+                  <Grid item xs={3} className={classes.buttonGridItem}>
+                    <div>
+                      <IconButton
+                        disabled={qualificationsFields.length === 1}
+                        onClick={() => handleQualificationRemove(index)}
+                        className={classes.addRemoveButton}
+                      >
+                        <RemoveIcon
+                          className={classes.removeIcon}
+                          style={{
+                            color:
+                              qualificationsFields.length === 1 ? "#bbb" : null,
+                          }}
+                        />
+                      </IconButton>
+                      <IconButton 
+                        onClick={handleQualificationAdd}
+                        className={classes.addRemoveButton}
+                      >
+                        <AddIcon className={classes.addIcon} />
+                      </IconButton>
+                    </div>
                   </Grid>
                 </Grid>
               ))}

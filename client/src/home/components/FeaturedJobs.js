@@ -8,6 +8,8 @@ import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
 import theme from '../../Theme';
 import BACKEND_URL from '../../Config';
 import { Link } from 'react-router-dom'
+import NoInfo from '../../components/NoInfo';
+import Loading from '../../components/Loading';
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -65,13 +67,17 @@ function FeaturedJobs(props) {
     const retrieveFeaturedJobs = () => {
         axios.get(`${BACKEND_URL}/jobs/featuredJobs`).then(res => {
             if (res.data.success) {
-                if (props.skip) {
-                    setFeaturedJobs(res.data.featuredJobs.filter((job) => job._id !== props.skip));
+                if (res.data.featuredJobs.length !== 0) {
+                    if (props.skip) {
+                        setFeaturedJobs(res.data.featuredJobs.filter((job) => job._id !== props.skip));
+                    } else {
+                        setFeaturedJobs(res.data.featuredJobs);
+                    }
                 } else {
-                    setFeaturedJobs(res.data.featuredJobs);
+                    setFeaturedJobs("empty");
                 }
             } else {
-                setFeaturedJobs(null)
+                setFeaturedJobs("empty")
             }
         })
     }
@@ -85,37 +91,46 @@ function FeaturedJobs(props) {
     }, []);
 
     const retrieveJobseeker = async () => {
-        if(userId){
+        if (userId) {
             try {
-              const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
-              if (response.data.success) {
-                setSavedJobIds(response.data.jobseeker.savedJobs);
-              }
+                const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
+                if (response.data.success) {
+                    setSavedJobIds(response.data.jobseeker.savedJobs);
+                }
             } catch (err) {
-              console.log(err);
+                console.log(err);
             }
         }
     };
 
     const displayFeaturedJobs = () => {
-        if (featuredJobs) {
+        if (featuredJobs === "empty") {
+            return (
+                <Grid item sm={12} style={{ marginBottom: 16 }}>
+                    <FloatCard>
+                        <NoInfo message="No featured jobs right now!" />
+                    </FloatCard>
+                </Grid>)
+        } else if (featuredJobs.length === 0) {
+            return (
+                <Grid item sm={12} style={{ marginBottom: 16 }}>
+                    <FloatCard>
+                        <Loading />
+                    </FloatCard>
+                </Grid>)
+        } else {
 
             return featuredJobs.map(featuredJob => (
                 <Grid item sm={12} key={featuredJob._id} className={classes.jobGridCard}>
-                    <JobCard 
+                    <JobCard
                         userId={userId}
-                        userRole={props.userRole} 
+                        userRole={props.userRole}
                         info={featuredJob}
-                        savedJobIds={savedJobIds} 
+                        savedJobIds={savedJobIds}
                         setSavedJobIds={setSavedJobIds}
                     />
                 </Grid>
             ))
-        } else {
-            return (
-                <Grid item sm={12}>
-                    <Typography>No featured Jobs</Typography>
-                </Grid>)
         }
     }
 
@@ -133,18 +148,19 @@ function FeaturedJobs(props) {
                     </FloatCard>
                 </Grid>
                 {displayFeaturedJobs()}
-                <Grid item sm={12}>
-                    <FloatCard>
-                        <Link to="/jobs?featured=true">
-                            <Button
-                                className={classes.link}
-                                endIcon={<ArrowForwardRoundedIcon />}
-                            >
-                                See All Featured Jobs
-                            </Button>
-                        </Link>
-                    </FloatCard>
-                </Grid>
+                {featuredJobs.length > 0 && featuredJobs !== "empty" ?
+                    <Grid item sm={12}>
+                        <FloatCard>
+                            <Link to="/jobs?featured=true">
+                                <Button
+                                    className={classes.link}
+                                    endIcon={<ArrowForwardRoundedIcon />}
+                                >
+                                    See All Featured Jobs
+                                </Button>
+                            </Link>
+                        </FloatCard>
+                    </Grid> : null}
                 <Grid item sm={12}>
                     <FloatCard backColor={theme.palette.tuftsBlue}>
                         <Grid item container direction="row" sm={12} className={classes.allJobs}>

@@ -28,6 +28,10 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import { Link, useHistory } from 'react-router-dom';
 import BACKEND_URL from "../Config";
 import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
+import { setFavoriteOrgCount } from "../redux/actions";
+import { setSavedJobCount } from "../redux/actions";
+
 
 const jwt = require("jsonwebtoken");
 const token = sessionStorage.getItem("userToken");
@@ -81,6 +85,15 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
     color: theme.palette.tuftsBlue,
+  },
+  searchButton: {
+    color: theme.palette.tuftsBlue,
+    [theme.breakpoints.down("md")]: {
+      display: "none",
+    },
+    "&:hover": {
+      backgroundColor: "transparent",
+    },
   },
   inputRoot: {
     color: theme.palette.tuftsBlue,
@@ -258,12 +271,17 @@ export default function Topbar(props) {
   const classes = useStyles();
   const history = useHistory();
 
+  // redux state
+  const favoriteOrgCount = useSelector(state => state.favoriteOrgCounter);
+  const savedJobCount = useSelector(state => state.savedJobCounter);
+  const dispatch = useDispatch();
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [notificationAnchorEl, setNotificationAnchorEl] = React.useState(null);
 
-  const [favourites, setFavourites] = React.useState(null);
-  const [savedJobs, setSavedJobs] = React.useState(null);
+  // const [favourites, setFavourites] = React.useState(null);
+  // const [savedJobs, setSavedJobs] = React.useState(null);
   const [appliedJobs, setAppliedJobs] = React.useState(null);
   const [notifications, setNotifications] = React.useState(null);
 
@@ -272,6 +290,8 @@ export default function Topbar(props) {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const isNotificationMenuOpen = Boolean(notificationAnchorEl);
+
+  const loginId =sessionStorage.getItem("loginId");
 
   const handleNotificationClose = () => {
     setNotificationAnchorEl(null);
@@ -306,10 +326,12 @@ export default function Topbar(props) {
             setNotifications(res.data.jobseeker.notifications.length);
           }
           if (res.data.jobseeker.hasOwnProperty("favoriteOrganizations")) {
-            setFavourites(res.data.jobseeker.favoriteOrganizations.length);
+            dispatch(setFavoriteOrgCount(res.data.jobseeker.favoriteOrganizations.length));
+            // setFavourites(res.data.jobseeker.favoriteOrganizations.length);
           }
           if (res.data.jobseeker.hasOwnProperty("savedJobs")) {
-            setSavedJobs(res.data.jobseeker.savedJobs.length);
+            dispatch(setSavedJobCount(res.data.jobseeker.savedJobs.length));
+            // setSavedJobs(res.data.jobseeker.savedJobs.length);
           }
           if (res.data.jobseeker.hasOwnProperty("applicationDetails")) {
             setAppliedJobs(res.data.jobseeker.applicationDetails.length);
@@ -390,7 +412,7 @@ export default function Topbar(props) {
           <Typography className={classes.menuText} >Profile</Typography>
         </MenuItem>
 
-        <MenuItem className={classes.menuItem} onClick={()=>{history.push(`/${props.user}/settings`)}}>
+        <MenuItem className={classes.menuItem} onClick={() => { history.push(`/${props.user}/settings`) }}>
           <div className={classes.menuIcon}>
             <SettingsRoundedIcon />
           </div>
@@ -448,14 +470,14 @@ export default function Topbar(props) {
               <>
                 <Link to="/jobseeker/savedJobs">
                   <IconButton aria-label="" className={classes.topBarIcon}>
-                    <Badge badgeContent={savedJobs} color="secondary">
+                    <Badge badgeContent={savedJobCount} color="secondary">
                       <BookmarksIcon />
                     </Badge>
                   </IconButton>
                 </Link>
                 <Link to="/jobseeker/favoriteOrganizations">
-                  <IconButton aria-label="" className={classes.topBarIcon}>
-                    <Badge badgeContent={favourites} color="secondary">
+                  <IconButton aria-label="" className={classes.topBarIcon} style={{border: "1px solid red"}}>
+                    <Badge badgeContent={favoriteOrgCount} color="secondary">
                       <FavoriteIcon />
                     </Badge>
                   </IconButton>
@@ -501,7 +523,7 @@ export default function Topbar(props) {
   }
 
   const handleSearchSubmit = (e) => {
-    if (e.key === 'Enter' && searchString.length !== 0) {
+    if (e.key === 'Enter' && searchString.trim().length !== 0) {
       // console.log("enter pressed", searchString);
       history.push({
         pathname: '/searchResults',
@@ -510,14 +532,28 @@ export default function Topbar(props) {
     }
   }
 
+  const displaySearchButton = () => {
+    if (searchString.trim().length > 0) {
+      return <Button className={classes.searchButton} onClick={handleSearchBtnClick}>Search</Button>
+    }
+  }
+
+  const handleSearchBtnClick = () => {
+    history.push({
+      pathname: '/searchResults',
+      searchString: searchString,
+    });
+  }
+
   return (
     <Card className={classes.root}>
       <CardContent className={classes.content}>
         <div className={classes.grow}>
           <AppBar position="sticky">
             <Toolbar>
-              <img src={logo} className={classes.logo} />
-
+              <Link to="/" >
+                <img src={logo} className={classes.logo} />
+              </Link>
               <div className={classes.search}>
                 <div className={classes.searchIcon}>
                   <SearchIcon />
@@ -532,6 +568,7 @@ export default function Topbar(props) {
                   onChange={handleSearchChange}
                   onKeyPress={(e) => handleSearchSubmit(e)}
                 />
+                {displaySearchButton()}
               </div>
               <div className={classes.grow} />
               <div className={classes.sectionDesktop}>
@@ -542,14 +579,14 @@ export default function Topbar(props) {
                       <>
                         <Link to="/jobseeker/savedJobs">
                           <IconButton aria-label="" className={classes.topBarIcon}>
-                            <Badge badgeContent={savedJobs} color="secondary">
+                            <Badge badgeContent={savedJobCount} color="secondary">
                               <BookmarksIcon />
                             </Badge>
                           </IconButton>
                         </Link>
                         <Link to="/jobseeker/favoriteOrganizations">
                           <IconButton aria-label="" className={classes.topBarIcon}>
-                            <Badge badgeContent={favourites} color="secondary">
+                            <Badge badgeContent={favoriteOrgCount} color="secondary">
                               <FavoriteIcon />
                             </Badge>
                           </IconButton>

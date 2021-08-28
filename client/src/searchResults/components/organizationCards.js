@@ -37,7 +37,7 @@ const OrganizationCards = (props) => {
   const displayOrganizations = () => {
     if (props.organizations.length === 0) {
       return (
-        <Grid item xs={9}>
+        <Grid item xs={12}>
           <FloatCard>
             <SearchNotFound></SearchNotFound>
           </FloatCard>
@@ -45,7 +45,7 @@ const OrganizationCards = (props) => {
       );
     } else{
       return (
-        <Grid item xs={9}>
+        <Grid item xs={12}>
           {props.organizations.map((organization) => (
             <div className={classes.orgCardWrapper} key={organization._id}>
               <OrganizationCard

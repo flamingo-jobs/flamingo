@@ -14,6 +14,9 @@ import BACKEND_URL from "../../Config";
 import axios from "axios";
 import LoginModal from './loginModal';
 import SnackBarAlert from "../../components/SnackBarAlert";
+import { useDispatch } from "react-redux";
+import { setSavedJobCount } from "../../redux/actions";
+
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
@@ -92,9 +95,12 @@ const useStyles = makeStyles((theme) => ({
 function JobCard(props) {
 
     const classes = useStyles();
+    const dispatch = useDispatch();
+
     const { loading = false } = props;
     const [isSaved, setIsSaved] = useState(false);
 
+    const isSignedIn = sessionStorage.getItem("userToken") ? true : false;
     const userId = sessionStorage.getItem("loginId");
     const token = sessionStorage.getItem("userToken");
     const [role, setRole] = useState(
@@ -133,7 +139,7 @@ function JobCard(props) {
         } else if(role && role === "jobseeker"){
             setIsSaved(props.savedJobIds?.includes(props.info._id));
         }
-    }, [props.favoriteOrgs, props.info]);
+    }, [props.savedJobIds, props.info]);
 
     const loadLogo = () => {
         try {
@@ -164,11 +170,13 @@ function JobCard(props) {
             try {
                 const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateSavedJobs/${userId}`, newSavedJobIds);
                 if (response.data.success) {
+                    dispatch(setSavedJobCount(newSavedJobIds.length));
                     setAlertData({
                         severity: "success",
                         msg: "Job Removed From Saved Jobs",
                     });
                     handleAlert();
+
                 }
             } catch (err) {
                 setAlertData({
@@ -186,6 +194,7 @@ function JobCard(props) {
             try {
               const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateSavedJobs/${userId}`, newSavedJobIds);
               if (response.data.success) {
+                dispatch(setSavedJobCount(newSavedJobIds.length));
                 setAlertData({
                     severity: "success",
                     msg: "Job Saved, Successfully!",
@@ -214,16 +223,18 @@ function JobCard(props) {
       };
 
     const displaySaveIcon = () => {
-        if(!role){
+        if(!isSignedIn){
             // When user is not signed in
             return <BookmarkBorderRoundedIcon className={classes.favorite} onClick={handleLoginModal} />;
-        } else if(role === "jobseeker"){
-            if(isSaved){
-                // When user is signed in && Job is in savedjobs 
-                return <BookmarkIcon className={classes.favorite} onClick={handleSavingJob} />;
-            } else {
-                // When user is signed in but Job is not in savedJobs
-                return <BookmarkBorderRoundedIcon className={classes.favorite} onClick={handleSavingJob}/>;
+        } else {
+            if(role === "jobseeker"){
+                if(isSaved){
+                    // When user is signed in && Job is in savedjobs 
+                    return <BookmarkIcon className={classes.favorite} onClick={handleSavingJob} />;
+                } else {
+                    // When user is signed in but Job is not in savedJobs
+                    return <BookmarkBorderRoundedIcon className={classes.favorite} onClick={handleSavingJob}/>;
+                }
             }
         }
     }

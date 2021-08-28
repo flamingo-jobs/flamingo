@@ -14,13 +14,16 @@ import Rating from "@material-ui/lab/Rating";
 import BACKEND_URL from "../../../Config";
 import axios from "axios";
 import { Link } from 'react-router-dom'
+import { useDispatch } from "react-redux";
+import { setFavoriteOrgCount } from "../../../redux/actions";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
     textAlign: "left",
   },
   orgContainer: {
-    marginBottom: theme.spacing(3),
+    // marginBottom: theme.spacing(3),
   },
   header: {
     display: "flex",
@@ -100,6 +103,7 @@ const OrganizationCard = (props) => {
   const classes = useStyles();
 
   const [isSaved, setIsSaved] = useState(true);
+  const dispatch = useDispatch();
 
   const getAvgRating = (arr = []) => {
     return (
@@ -129,6 +133,7 @@ const OrganizationCard = (props) => {
           msg: "Organization removed successfully!",
         });
         props.handleAlert();
+        dispatch(setFavoriteOrgCount(newFavoriteOrgs.length));
         props.setFavoriteOrgIds(newFavoriteOrgs);
       }
     } catch (err) {

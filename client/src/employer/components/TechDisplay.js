@@ -149,7 +149,7 @@ export default function TechDisplay(props) {
       <Grid container spacing={3}>
         {props.info.frontEnd ? (
           <>
-            <Grid item xs={12}>
+            <Grid item xs={12} lg={6}>
               <Typography className={classes.secondaryHeading}>
                 Front-end
               </Typography>
@@ -163,7 +163,7 @@ export default function TechDisplay(props) {
                 ))
               }
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} lg={6}>
               <Typography className={classes.secondaryHeading}>
                 Back-end
               </Typography>

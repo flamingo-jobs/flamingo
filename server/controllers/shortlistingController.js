@@ -562,12 +562,12 @@ const shortlistApplicantsCustoms = (req, res) => {
                     })
                 }
 
-                // updateJob(scoredApplicants, req.params.id);
+                updateJob(scoredApplicants, req.params.id);
 
-                let scoredIds = scoredApplicants.map(x => x.userId);
+                // let scoredIds = scoredApplicants.map(x => x.userId);
                 return res.status(200).json({
                     success: true,
-                    applicantIds: scoredIds
+                    applicantIds: scoredApplicants
                 });
             });
 

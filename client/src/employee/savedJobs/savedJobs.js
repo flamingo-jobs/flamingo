@@ -89,7 +89,9 @@ const SavedJobs = () => {
     if (!savedJobIds.length) {
       return (
         <Grid item xs={12}>
-          <Loading />
+          <FloatCard>
+            <Loading />
+          </FloatCard>
         </Grid>
       );
     }

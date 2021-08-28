@@ -18,7 +18,7 @@ import NoInfo from '../components/NoInfo';
 import Loading from '../components/Loading';
 
 const useStyles = makeStyles((theme) => ({
-    organizationsGrid: {
+    jobsGrid: {
         [theme.breakpoints.down('sm')]: {
             maxWidth: 'unset',
             flexDirection: 'column',
@@ -30,10 +30,6 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.down('sm')]: {
             flexDirection: 'column',
             alignItems: "stretch"
-        },
-        [theme.breakpoints.down('xs')]: {
-            paddingRight: 12,
-            paddingLeft: 12
         },
     },
     filterGrid: {
@@ -50,7 +46,8 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center',
     },
     gridCard: {
-        display: "grid"
+        display: "grid",
+        marginBottom: 12
     }
 
 }));
@@ -192,12 +189,15 @@ function Organizations(props) {
                 open={open}
                 handleClose={handleClose}
             ></LoginModal>
-
-            <Grid item container sm={12} spacing={3} direction="row" justify="space-between" className={classes.mainGrid} alignItems="flex-start">
-                <Grid item sm={12} className={classes.searchGrid}>
+            <Grid item container xs={12} spacing={3} direction="row"
+                justify="space-between"
+                alignItems="flex-start" className={classes.mainGrid}>
+                <Grid item xs={12} className={classes.searchGrid}>
                     <OrgSearchBar onChange={updateSearch} />
                 </Grid>
-                <Grid item container xs={12} sm={12} md={8} lg={9} spacing={2} direction="row" className={classes.organizationsGrid} justify="flex-start" alignItems="flex-start">
+                <Grid item container xs={12} md={8} lg={9} spacing={0} direction="row"
+                    justify="space-between"
+                    alignItems="flex-start" className={classes.jobsGrid}>
                     {displayOrganizations()}
                     <Grid item sm={12}>
                         {organizations !== "empty" ?
