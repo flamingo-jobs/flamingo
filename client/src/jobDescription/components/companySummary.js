@@ -9,6 +9,7 @@ import FloatCard from '../../components/FloatCard';
 import SnackBarAlert from "../../components/SnackBarAlert";
 import BACKEND_URL from '../../Config';
 import LoginModal from "./loginModal";
+import { Link } from 'react-router-dom';
 
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -302,7 +303,9 @@ function CompanySummary(props) {
                     <Typography className={classes.description} >{summary.description}</Typography>
                 </div>
                 <div className={classes.footer} >
-                    <Button className={classes.applyButton}>View Full Profile</Button>
+                    <Link to={`/employer/company/${props.job.organization.id}`}>
+                        <Button className={classes.applyButton}>View Full Profile</Button>
+                    </Link>
                 </div>
             </>
             );

@@ -107,7 +107,7 @@ const FavoriteOrganizations = () => {
       );
     } else {
       return favoriteOrgs.map((org) => (
-        <Grid item xs={6}>
+        <Grid item xs={12} md={6}>
           <OrganizationCard
             userId={userId}
             org={org}

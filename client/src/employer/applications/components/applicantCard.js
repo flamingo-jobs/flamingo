@@ -16,7 +16,7 @@ import axios from "axios";
 import BACKEND_URL from "../../../Config";
 import download from 'downloadjs';
 import { Link } from 'react-router-dom';
-
+import PersonIcon from '@material-ui/icons/Person';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -106,11 +106,31 @@ const useStyles = makeStyles((theme) => ({
   downloadBtn: {
     paddingLeft: "13px",
     paddingRight: "13px",
-    borderRadius: 12,
+    borderRadius: 50,
+    border: `2px solid ${theme.palette.vividSkyBlue}`,
     backgroundColor: theme.palette.vividSkyBlue,
     color: theme.palette.white,
+    transition: "0.3s",
     "&:hover": {
-      backgroundColor: theme.palette.vividSkyBlueHover,
+      border: `2px solid ${theme.palette.vividSkyBlue}`,
+      backgroundColor: theme.palette.white,
+      color: theme.palette.vividSkyBlue,
+      transition: "0.3s",
+    },
+  },
+
+  profileBtn: {
+    paddingLeft: "13px",
+    paddingRight: "13px",
+    borderRadius: 50,
+    border: `2px solid ${theme.palette.vividSkyBlue}`,
+    backgroundColor: theme.palette.white,
+    color: theme.palette.vividSkyBlue,
+    transition: "0.3s",
+    "&:hover": {
+      backgroundColor: theme.palette.vividSkyBlue,
+      color: theme.palette.white,
+      transition: "0.3s",
     },
   },
   headerInfo: {
@@ -256,17 +276,21 @@ function ApplicantCard(props) {
           <div className={classes.footer}>
             <div className={classes.footerLeft}></div>
             <div className={classes.footerRight}>
+              <Link to="/jobseeker/profile">
+                <Button 
+                  className={classes.profileBtn} 
+                  startIcon={<PersonIcon/>}
+                >
+                  View Profile
+                </Button>
+              </Link>
               <Button
                 className={classes.downloadBtn}
                 startIcon={<GetAppIcon />}
                 onClick={handleResumeDownload}
-
               >
                 Downlaod Resume
               </Button>
-              <Link to="/jobseeker/profile">
-                <Button className={classes.downloadBtn}>View Profile</Button>
-              </Link>
             </div>
           </div>
         </div>
