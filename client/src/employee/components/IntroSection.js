@@ -34,7 +34,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import SnackBarAlert from "../../components/SnackBarAlert";
-import CircularProgress from '@material-ui/core/CircularProgress';
+//import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -116,7 +116,8 @@ const useStyles = makeStyles((theme) => ({
   form: {
     alignItems: 'center',
     justifyContent: 'center',
-    padding: '5% 15% 5% 15%'
+    paddingLeft: '20px',
+    paddingRight: '20px'
   },
   field: {
     margin: "10px 0px 20px 0px",
@@ -408,7 +409,21 @@ function IntroSection(props) {
     }
 
     axios.put(`${BACKEND_URL}/jobseeker/update/${loginId}`,jobseeker)
-    .then(res => console.log(jobseeker));
+    .then(res => {
+      if(res.data.success){
+        setAlertData({
+          severity: "success",
+          msg: "Updated successfully!",
+        });
+        handleAlert();
+      } else {
+        setAlertData({
+          severity: "error",
+          msg: "Details could not be updated!",
+        });
+        handleAlert();
+      }
+    });
     handleClose();
   }
 
@@ -432,37 +447,19 @@ function IntroSection(props) {
         </> : null }
   
         {/* ----- edit popup content */}
-        <Modal
-          aria-labelledby="transition-modal-title"
-          aria-describedby="transition-modal-description"
-          className={classes.modal}
-          open={open}
-          onClose={handleClose}
-          closeAfterTransition
-          BackdropComponent={Backdrop}
-          BackdropProps={{
-            timeout: 500,
-          }}
-        >
-          <Fade in={open}>
-            <div className={classes.paper}>
-            <div style={{paddingTop:'40px'}}>
-                <Grid container direction="row">
-                  <Grid item xs={10}>
-                    <Typography gutterBottom variant="h5" style={{textAlign:'center',paddingLeft:'50px',color:theme.palette.stateBlue}}>
-                      Edit Profile
-                    </Typography>
-                    <Divider variant="middle" style={{marginLeft:'100px'}} />
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button className={classes.defaultButton} style={{ float: 'right',marginRight:'10px',marginTop:'-20px',backgroundColor:'white'}} onClick={handleClose}>
-                      <CloseIcon className={classes.closeIcon} style={{color: '#666',}} />
-                    </Button>
-                  </Grid>
-                </Grid>
-              </div>
-              <form className={classes.form} onSubmit={onSubmit}>
-                  <Grid container direction="row" style={{marginTop:'-18px'}}>
+          <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title" style={{color:theme.palette.stateBlue}}>
+                Edit Profile
+              </DialogTitle>
+              <Divider variant="middle" />
+              <DialogContent>
+                <form className={classes.form}>
+                  <Grid container direction="row">
                     <TextField
                     className={classes.field}
                     id="outlined-basic"
@@ -541,11 +538,18 @@ function IntroSection(props) {
                     style={{width:'45%'}}
                     />
                   </Grid>
-                  <Button type="submit" style={{ width:'100%',marginTop:'5%',backgroundColor:theme.palette.stateBlue,color:'white'}}>Apply Changes</Button>
-              </form>
-            </div>
-          </Fade>
-        </Modal>
+                </form>
+              </DialogContent>
+              <DialogActions>
+                  <Button onClick={handleClose} style={{color:"#999"}}>
+                      Cancel
+                  </Button>
+                  <Button onClick={onSubmit} color="primary" autoFocus>
+                      Apply Changes
+                  </Button>
+              </DialogActions>
+          </Dialog>
+        
         <Typography component="div">
           <CardMedia
               className={classes.media}
