@@ -349,13 +349,22 @@ export default function Topbar(props) {
     try {
       if (header.payload.userRole === "employer") {
         return require(`../employer/images/${header.payload.userId}`).default
+
       } else if (header.payload.userRole === "jobseeker") {
-        return require(`../../../server/profilePictures/${loginId}.jpg`).default
+          const images = require.context('../../../server/profilePictures', true);
+          try{
+            let loginId=sessionStorage.getItem("loginId");
+            let image = images(`./${loginId}.jpg`).default;
+            return image;
+          }catch (error) {
+            return require('../employee/images/defaultProfilePic.jpg').default
+          }
+          
       } else if (header.payload.userRole === "admin") {
         return require(`../admin/images/profilepic.jpg`).default
       }
     } catch (err) {
-      return require(`../employee/images/profilePic.jpg`).default
+      return require('../employee/images/defaultProfilePic.jpg').default
     }
   }
 

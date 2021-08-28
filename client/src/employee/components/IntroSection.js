@@ -14,6 +14,7 @@ import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import MailRoundedIcon from '@material-ui/icons/MailRounded';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import EditIcon from '@material-ui/icons/Edit';
 import Grid from '@material-ui/core/Grid';
 import Modal from '@material-ui/core/Modal';
@@ -31,9 +32,9 @@ import Paper from '@material-ui/core/Paper';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { FormLabel } from '@material-ui/core';
+import SnackBarAlert from "../../components/SnackBarAlert";
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -50,6 +51,17 @@ const useStyles = makeStyles((theme) => ({
     margin: 'auto',
     borderRadius: 30,
     marginTop: 15,
+    "&:hover": {
+      boxShadow: "inset 0 0 0 1000px rgba(0,0,0,.5)",
+      cursor: "pointer"
+    }   
+  },
+  mediaPreview: {
+    height: '150px',
+    width: '150px',
+    margin: 'auto',
+    borderRadius: 30,
+    marginTop: 15  
   },
   defaultButton: {
     backgroundColor: theme.palette.tuftsBlue,
@@ -67,6 +79,13 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       fontSize: "30px",
     }
+  },
+  overlayIcon: {
+    fontSize: "35px",
+    color: "white",
+    marginTop: "60px",
+    marginLeft: "60px",
+    position: "absolute"
   },
   changePicture: {
       width: '0px',
@@ -127,6 +146,9 @@ const useStyles = makeStyles((theme) => ({
       borderColor: theme.palette.stateBlue,
     },
   },
+  placeholder: {
+    height: 30,
+  },
 }));
 
 
@@ -134,8 +156,18 @@ const useStyles = makeStyles((theme) => ({
 function IntroSection(props) {
 
   const classes = useStyles();
+  const [style, setStyle] = useState({display: 'none'});
+  const [disabled, setDisabled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [query, setQuery] = React.useState('idle');
+  const timerRef = React.useRef();
+
+  const [alertShow, setAlertShow] = React.useState(false);
+  const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
+
   const [openImageDialog, setOpenImageDialog] = React.useState(false);
+
   const [state, setState] = useState({
     firstName: "",
     lastName: "",
@@ -149,6 +181,7 @@ function IntroSection(props) {
     landLine: "",
     email: ""
   });
+
   const [isPublic, setIsPublic] = useState(true);
   const [profilePic, setProfilePic] = useState("empty");
   const [profilePicPreview, setProfilePicPreview] = useState(defaultImage);
@@ -168,6 +201,28 @@ function IntroSection(props) {
     loginId=props.jobseekerID;
   }
 
+  // Alert stuff
+  const displayAlert = () => {
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
+
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertShow(false);
+  };
 
   useEffect(()=>{
     axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
@@ -195,8 +250,7 @@ function IntroSection(props) {
           setProfilePicPreview(img.default)
         }catch{
           console.log("Profile picture not added.")
-        }
-        
+        }        
       }
     })
   },[])
@@ -221,46 +275,51 @@ function IntroSection(props) {
     setIsPublic(e.target.checked)
   }
 
-  // const getImages = (base64Image, fileImage) => {
-	// 	console.log(base64Image);
-	// 	console.log(fileImage);
-  //   setProfilePic(fileImage);
-	// };
-
   const onChangeProfilePic = (e) => {
     setProfilePic("empty");
     setProfilePicPreview(defaultImage);
+
+     if (!loading && e.target.files[0] !== null) {
+      // setQuery('progress');
+      setLoading(true);
+      setDisabled(true);
+     }
 
     if(e.target.files[0]){
       let nameSplit = e.target.files[0].name.split(".");
       // console.log("file extention", nameSplit[nameSplit.length - 1]);
       if (nameSplit[nameSplit.length - 1] !== "jpg") {
         console.log("type invalid");
-        // setAlertData({
-        //   severity: "error",
-        //   msg: "Invalid file type, only jpg file type is allowed",
-        // });
-        // handleAlert();
+        setAlertData({
+          severity: "error",
+          msg: "Invalid file type, only jpg file type is allowed",
+        });
+        handleAlert();
       } else {
         setProfilePic(e.target.files[0]);
         setProfilePicPreview(URL.createObjectURL(e.target.files[0]));
       }
     }
+    // setQuery('success')
+    setLoading(false);
+    setDisabled(false);
   };
 
   function onSubmitProfilePic(e){
-
     e.preventDefault();
+
+    if (profilePic === "empty") {
+      setAlertData({
+        severity: "error",
+        msg: "You should select an image first",
+      });
+      handleAlert();
+      return;
+    }
 
     const data = new FormData();
     data.append("userId", loginId);
     data.append("photo", profilePic);
-
-   // const imageExt = "." + profilePic.name.split(".")[profilePic.name.split(".").length - 1];
-
-    const image = {
-      profilePic : loginId + "--" + profilePic.name,
-    };
 
     axios.post(`${BACKEND_URL}/jobseeker/updateProfilePic/${loginId}`,data,
     {
@@ -269,18 +328,22 @@ function IntroSection(props) {
       },
     })
     .then(res=>{
-        console.log(res);
+      if(res.data.success){
         setSavedPic(profilePicPreview);
-    })
-
-    // axios.put(`${BACKEND_URL}/jobseeker/update/${loginId}`,image)
-    // .then(res=>{
-    //     console.log(res);
-        
-    // })
-
-    handleCloseImageDialog();
-    
+        setAlertData({
+          severity: "success",
+          msg: "Profile picture updated successfully!",
+        });
+        handleAlert();
+      } else {
+        setAlertData({
+          severity: "error",
+          msg: "Couldn't update profile picture!",
+        });
+        handleAlert();
+      }
+    });
+    handleCloseImageDialog();   
   }
 
   function onChangeFirstName(e){
@@ -307,12 +370,6 @@ function IntroSection(props) {
     })
   }
 
-  function onChangeLandLine(e){
-    setState(prevState => {
-      return {...prevState, landLine: e.target.value}
-    })
-  }
-
   function onChangeEmail(e){
     setState(prevState => {
       return {...prevState, email: e.target.value}
@@ -328,12 +385,6 @@ function IntroSection(props) {
   function onChangeCity(e){
     setState(prevState => {
       return {...prevState, city: e.target.value}
-    })
-  }
-
-  function onChangeZipCode(e){
-    setState(prevState => {
-      return {...prevState, zipCode: e.target.value}
     })
   }
 
@@ -362,6 +413,8 @@ function IntroSection(props) {
   }
 
     return (
+      <>
+      {displayAlert()}
       <FloatCard>
         {/* <FormControlLabel
         style={{ float: 'left',marginLeft: '10px',color:theme.palette.tuftsBlue}}
@@ -378,7 +431,7 @@ function IntroSection(props) {
         </Button>
         </> : null }
   
-        {/* edit popup content */}
+        {/* ----- edit popup content */}
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
@@ -455,16 +508,6 @@ function IntroSection(props) {
                     onChange={onChangeMobile}
                     style={{width:'45%',marginRight:'10%'}}
                     />
-                    {/* <TextField
-                    className={classes.field}
-                    id="outlined-basic"
-                    label="Land Line"
-                    variant="outlined"
-                    size="small"
-                    value={state.landLine}
-                    onChange={onChangeLandLine}
-                    style={{width:'45%'}}
-                    /> */}
                   </Grid>
                   <TextField
                     className={classes.field}
@@ -498,28 +541,27 @@ function IntroSection(props) {
                     style={{width:'45%'}}
                     />
                   </Grid>
-                  {/* <TextField
-                    className={classes.field}
-                    id="outlined-basic"
-                    label="Zip Code"
-                    variant="outlined"
-                    size="small"
-                    value={state.zipCode}
-                    onChange={onChangeZipCode}
-                    style={{width:'35%'}}
-                    /> */}
                   <Button type="submit" style={{ width:'100%',marginTop:'5%',backgroundColor:theme.palette.stateBlue,color:'white'}}>Apply Changes</Button>
               </form>
             </div>
           </Fade>
         </Modal>
-        <Typography component="div" onClick={handleOpenImageDialog}>
-        <CardMedia
+        <Typography component="div">
+          <CardMedia
               className={classes.media}
               image={savedPic}
               alt="profile image"
-              zIndex="background"             
-          />        
+              zIndex="background" 
+              onClick={handleOpenImageDialog}
+              onMouseEnter={e => {
+                setStyle({display: 'block'});
+              }}
+              onMouseLeave={e => {
+                setStyle({display: 'none'})
+              }}            
+          >
+            <EditIcon className={classes.overlayIcon} style={style} />
+          </CardMedia>        
         </Typography>
         {/* Profile picture change dialog */}
         <Dialog open={openImageDialog} onClose={handleCloseImageDialog} aria-labelledby="form-dialog-title">
@@ -528,7 +570,7 @@ function IntroSection(props) {
                 <DialogContent style={{paddingTop:"0px"}}>
                   <Typography component="div">
                     <CardMedia
-                          className={classes.media}
+                          className={classes.mediaPreview}
                           image={profilePicPreview}
                           alt="profile image"
                           zIndex="background"
@@ -552,17 +594,32 @@ function IntroSection(props) {
                         component="span"
                         startIcon={<PublishIcon />}
                         className={classes.uploadButton}
+                        disabled={disabled}
                       >
                         Upload Image
                       </Button>
+                      {/* {query === 'success' ? (
+                        <CheckCircleIcon style={{color:"green"}} />
+                      ) : (
+                        <Fade
+                          in={query === 'progress'}
+                          style={{
+                            transitionDelay: query === 'progress' ? '800ms' : '0ms',
+                          }}
+                          unmountOnExit
+                        >
+                          <CircularProgress />
+                        </Fade>
+                      )} */}
                     </label>
+
                   </div>
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={handleCloseImageDialog} style={{color:"#999"}}>
                     Cancel
                   </Button>
-                  <Button type="submit" color="primary">
+                  <Button type="submit" color="primary" disabled={disabled}>
                     Save
                   </Button>
                 </DialogActions>
@@ -634,6 +691,7 @@ function IntroSection(props) {
           
         </CardActions>
       </FloatCard>
+      </>
     );
   }
 

@@ -4,7 +4,7 @@ import FloatCard from '../../../components/FloatCard';
 import { Grid, Typography, Button } from '@material-ui/core';
 import { indigo } from '@material-ui/core/colors';
 import CardMedia from '@material-ui/core/CardMedia';
-import cardImage from '../images/profilePic.jpg';
+import defaultImage from '../../images/defaultProfilePic.jpg';
 import theme from '../../../Theme';
 import ChevronRightTwoToneIcon from '@material-ui/icons/ChevronRightTwoTone';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -79,8 +79,7 @@ const BorderLinearProgress = withStyles((theme) => ({
 
 function ProfileStatus(props) {
     const classes = useStyles();
-    let complete = 0;
-    let nextComplete = "";
+    const [savedPic, setSavedPic] = useState(defaultImage);
     const [name, setName] = useState("User");
     const [state, setState] = useState({education: 0,certificate: 0, courses: 0, awards: 0, volunteerings:0, works:0, projects:0, skills: 0});
 
@@ -100,9 +99,19 @@ function ProfileStatus(props) {
         axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
         .then(res => {
           if(res.data.success){
+            const images = require.context('../../../../../server/profilePictures', true);
+            try{
+              let img = images(`./${res.data.jobseeker._id}.jpg`);
+              setSavedPic(img.default);
+            }catch{
+              console.log("Profile picture not added.")
+            }
+
             if(res.data.jobseeker.name){
                 setName(res.data.jobseeker.name);                 
             }
+
+            // ----- data to get profile completeness
             if(res.data.jobseeker.education?.length > 0){
                 if(Object.keys(res.data.jobseeker.education[0]).length === 0){
                     res.data.jobseeker.education.splice(0,1)
@@ -231,7 +240,7 @@ function ProfileStatus(props) {
                     <Typography component="div">
                         <CardMedia
                             className={classes.media}
-                            image={cardImage}
+                            image={savedPic}
                             alt="profile image"
                             zIndex="background"
                         />
