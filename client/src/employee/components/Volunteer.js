@@ -20,6 +20,11 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import SnackBarAlert from "../../components/SnackBarAlert";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const useStyles = makeStyles({
   defaultButton: {
@@ -56,7 +61,8 @@ const useStyles = makeStyles({
   form: {
     alignItems: 'center',
     justifyContent: 'center',
-    padding: '5% 15% 5% 15%'
+    paddingLeft: '20px',
+    paddingRight: '20px'
   },
   field: {
     margin: "20px 0px 20px 0px",

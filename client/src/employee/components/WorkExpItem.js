@@ -80,7 +80,8 @@ const useStyles = makeStyles((theme) => ({
   form: {
     alignItems: 'center',
     justifyContent: 'center',
-    padding: '5% 15% 5% 15%'
+    paddingLeft: '20px',
+    paddingRight: '20px'
   },
   field: {
     margin: "20px 0px 20px 0px",

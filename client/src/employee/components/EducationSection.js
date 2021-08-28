@@ -8,9 +8,6 @@ import theme from '../../Theme';
 import SchoolIcon from '@material-ui/icons/School';
 import Grid from '@material-ui/core/Grid';
 import EduItem from './EduItem';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
 import TextField from '@material-ui/core/TextField';
 import CloseIcon from '@material-ui/icons/Close';
 import AddIcon from '@material-ui/icons/Add';
@@ -22,6 +19,11 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import SnackBarAlert from "../../components/SnackBarAlert";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 
 const useStyles = makeStyles({
@@ -66,7 +68,8 @@ const useStyles = makeStyles({
   form: {
     alignItems: 'center',
     justifyContent: 'center',
-    padding: '5% 15% 5% 15%'
+    paddingLeft: '20px',
+    paddingRight: '20px'
   },
   field: {
     margin: "20px 0px 20px 0px",
@@ -859,36 +862,18 @@ console.log(edu);
         </Grid>
 
         {/*-------------- add new edu field popup content ------------------- */}
-        <Modal
-          aria-labelledby="transition-modal-title"
-          aria-describedby="transition-modal-description"
-          className={classes.modal}
+        <Dialog
           open={open}
           onClose={handleClose}
-          closeAfterTransition
-          BackdropComponent={Backdrop}
-          BackdropProps={{
-            timeout: 500,
-          }}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
         >
-          <Fade in={open}>
-            <div className={classes.paper}>
-              <div style={{paddingTop:'40px'}}>
-                <Grid container direction="row">
-                  <Grid item xs={10}>
-                    <Typography gutterBottom variant="h5" style={{textAlign:'center',paddingLeft:'50px',color:theme.palette.stateBlue}}>
-                      Add Education
-                    </Typography>
-                    <Divider variant="middle" style={{marginLeft:'100px'}} />
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button className={classes.defaultButton} style={{ float: 'right',marginRight:'10px',marginTop:'-20px',backgroundColor:'white'}} onClick={handleClose}>
-                      <CloseIcon className={classes.closeIcon} style={{color: '#666',}} />
-                    </Button>
-                  </Grid>
-                </Grid>
-              </div>
-              <form className={classes.form} onSubmit={onSubmitEducation}>
+          <DialogTitle id="alert-dialog-title" style={{color:theme.palette.stateBlue}}>
+          Add Education
+          </DialogTitle>
+          <Divider variant="middle" />
+          <DialogContent>
+              <form className={classes.form}>
                 <div>
                   <TextField
                     className={classes.field}
@@ -922,11 +907,17 @@ console.log(edu);
                   </FormControl>
                   {form}
                 </div>
-                <Button type="submit" className={classes.defaultButton} style={{ width:'100%',marginTop:'5%'}}>Apply Changes</Button>
-              </form>         
-            </div>
-          </Fade>
-        </Modal>
+              </form>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} style={{color:"#999"}}>
+              Cancel
+            </Button>
+            <Button onClick={onSubmitEducation} color="primary" autoFocus>
+              Apply Changes
+            </Button>
+          </DialogActions>
+        </Dialog>
     </FloatCard>
     </>
   );
