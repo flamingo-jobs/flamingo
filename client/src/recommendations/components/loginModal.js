@@ -24,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: "30px",
     maxHeight: "98vh",
     overflowY: "auto",
+    [theme.breakpoints.down("sm")]: {
+      width: "350px",
+    },
   },
   modal: {
     display: "flex",
@@ -122,17 +125,15 @@ const LoginModal = (props) => {
               </div>
               {/* style={{border: "1px solid red"}} */}
               <Grid container>
-                <Grid item xs={4}>
+                <Grid item xs={12} md={4}>
                   <div className={classes.animation}>
                     <Lottie
                       className={classes.lottie}
                       options={defaultOptions}
-                      height="300px"
-                      width="300px"
                     />
                   </div>
                 </Grid>
-                <Grid item xs={8}>
+                <Grid item xs={12} md={8}>
                   <div className={classes.loginContent}>
                     <Typography className={classes.text}>
                       To save a job opportunity for later,

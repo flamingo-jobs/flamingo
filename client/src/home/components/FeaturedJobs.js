@@ -61,8 +61,17 @@ function FeaturedJobs(props) {
     const classes = useStyles();
 
     const [featuredJobs, setFeaturedJobs] = useState([]);
-    const userId = sessionStorage.getItem("loginId");
     const [savedJobIds, setSavedJobIds] = useState("empty");
+
+    const jwt = require("jsonwebtoken");
+    const isSignedIn = sessionStorage.getItem("userToken") ? true : false;
+    const userId = sessionStorage.getItem("loginId");
+    const token = sessionStorage.getItem("userToken");
+    const [role, setRole] = useState(
+      jwt.decode(token, { complete: true })
+      ? jwt.decode(token, { complete: true }).payload.userRole
+      : null
+    );
 
     const retrieveFeaturedJobs = () => {
         axios.get(`${BACKEND_URL}/jobs/featuredJobs`).then(res => {
@@ -91,7 +100,7 @@ function FeaturedJobs(props) {
     }, []);
 
     const retrieveJobseeker = async () => {
-        if (userId) {
+        if (isSignedIn && role === "jobseeker" && userId) {
             try {
                 const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
                 if (response.data.success) {

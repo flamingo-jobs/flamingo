@@ -51,13 +51,22 @@ const SearchResult = (props) => {
 
   const [searchString, setSearchString] = useState("");
   const [tabIndex, setTabIndex] = useState(0);
-  const userId = sessionStorage.getItem("loginId");
   const [savedJobIds, setSavedJobIds] = useState("empty");
 
   // Search results
   const [jobMatches, setJobMatches] = useState(0);
   const [orgMatches, setOrgMatches] = useState(0);
   const [userMatches, setUserMatches] = useState(0);
+
+  const jwt = require("jsonwebtoken");
+  const isSignedIn = sessionStorage.getItem("userToken") ? true : false;
+  const userId = sessionStorage.getItem("loginId");
+  const token = sessionStorage.getItem("userToken");
+  const [role, setRole] = useState(
+    jwt.decode(token, { complete: true })
+    ? jwt.decode(token, { complete: true }).payload.userRole
+    : null
+  );
 
   useEffect(() => {
     setSearchString(location.searchString);
@@ -72,7 +81,7 @@ const SearchResult = (props) => {
   }, []);
   
   const retrieveJobseeker = async () => {
-    if(userId){
+    if(isSignedIn && role === "jobseeker" && userId){
       try {
         const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
         if (response.data.success) {
