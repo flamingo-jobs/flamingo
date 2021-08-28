@@ -432,37 +432,19 @@ function handleOpen(){
                             </Button>
                         </DialogActions>
                     </Dialog>
-                    {/*-------------- add new project field popup content ------------------- */}
-                    <Modal
-                    aria-labelledby="transition-modal-title"
-                    aria-describedby="transition-modal-description"
-                    className={classes.modal}
-                    open={open}
-                    onClose={handleClose}
-                    closeAfterTransition
-                    BackdropComponent={Backdrop}
-                    BackdropProps={{
-                        timeout: 500,
-                    }}
+                    {/*-------------- update project field popup content ------------------- */}
+                    <Dialog
+                      open={open}
+                      onClose={handleClose}
+                      aria-labelledby="alert-dialog-title"
+                      aria-describedby="alert-dialog-description"
                     >
-                    <Fade in={open}>
-                        <div className={classes.paper}>
-                        <div style={{paddingTop:'40px'}}>
-                            <Grid container direction="row">
-                            <Grid item xs={10}>
-                                <Typography gutterBottom variant="h5" style={{textAlign:'center',paddingLeft:'50px',color:theme.palette.stateBlue}}>
-                                Edit Work Experience
-                                </Typography>
-                                <Divider variant="middle" style={{marginLeft:'100px'}} />
-                            </Grid>
-                            <Grid item xs={2}>
-                                <Button className={classes.defaultButton} style={{ float: 'right',marginRight:'10px',marginTop:'-20px',backgroundColor:'white'}} onClick={handleClose}>
-                                <CloseIcon className={classes.closeIcon} style={{color: '#666',}} />
-                                </Button>
-                            </Grid>
-                            </Grid>
-                        </div>
-                        <form className={classes.form}  onSubmit={onSubmit}>
+                      <DialogTitle id="alert-dialog-title" style={{color:theme.palette.stateBlue}}>
+                      Edit Project Details
+                      </DialogTitle>
+                      <Divider variant="middle" />
+                      <DialogContent>
+                        <form className={classes.form}>
                             <div>
                             <TextField
                                 className={classes.field}
@@ -580,11 +562,17 @@ function handleOpen(){
                             required
                             />
                             </div>
-                            <Button type="submit" className={classes.defaultButton} style={{ width:'100%',marginTop:'5%'}}>Apply Changes</Button>
-                        </form>        
-                      </div>
-                    </Fade>
-                  </Modal>
+                        </form>
+                      </DialogContent>
+                      <DialogActions>
+                        <Button onClick={handleClose} style={{color:"#999"}}>
+                          Cancel
+                        </Button>
+                        <Button onClick={onSubmit} color="primary" autoFocus>
+                          Apply Changes
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
                 </Grid>
             </Grid>
           </Paper>
