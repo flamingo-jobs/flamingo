@@ -41,7 +41,8 @@ import { env } from "process";
 import Certifications from "./admin/Certifications";
 import Settings from "./admin/Settings";
 import Payment from "./employer/components/Payment";
-import SuccessPayment from"./employer/components/SuccessPayment"
+import SuccessPayment from "./employer/components/SuccessPayment"
+import ContactUs from "./contact/ContactUs";
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
@@ -163,6 +164,9 @@ function Base() {
         </Route>
         <Route path="/" exact>
           <Home userRole={role} />
+        </Route>
+        <Route path="/contactUs" exact>
+          <ContactUs />
         </Route>
       </>
     );

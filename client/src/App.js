@@ -19,7 +19,7 @@ function App() {
       <BrowserRouter>
         <ScrollToTop />
         <ThemeProvider theme={theme}>
-          <Route path='(/|/jobs|/employer|/jobseeker|/jobDescription|/createJob|/admin|/organizations|/people|/job|/searchResults|/suggestedJobs)'>
+          <Route path='(/|/jobs|/employer|/jobseeker|/jobDescription|/createJob|/admin|/organizations|/people|/job|/searchResults|/suggestedJobs|/contactUs)'>
             <Base />
           </Route>
           <Route path="/signIn">

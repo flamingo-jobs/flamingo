@@ -310,14 +310,18 @@ function NavMenu(props) {
                             <ListItemText className={classes.linkText} primary="People" />
                         </ListItem>
                     </Link>
-                    <ListItem button key="services" selected={selectedIndex === "services"} onClick={(event) => handleListItemClick(event, "services")} classes={{ selected: classes.active }} className={classes.listItem}>
-                        <ListItemIcon className={classes.linkIcon}><ThumbsUpDownRoundedIcon /></ListItemIcon>
-                        <ListItemText className={classes.linkText} primary="Services" />
-                    </ListItem>
-                    <ListItem button key="contactUs" selected={selectedIndex === "contactUs"} onClick={(event) => handleListItemClick(event, "contactUs")} classes={{ selected: classes.active }} className={classes.listItem}>
-                        <ListItemIcon className={classes.linkIcon}><PhoneRoundedIcon /></ListItemIcon>
-                        <ListItemText className={classes.linkText} primary="Contact Us" />
-                    </ListItem>
+                    <Link to="/services">
+                        <ListItem button key="services" selected={selectedIndex === "services"} onClick={(event) => handleListItemClick(event, "services")} classes={{ selected: classes.active }} className={classes.listItem}>
+                            <ListItemIcon className={classes.linkIcon}><ThumbsUpDownRoundedIcon /></ListItemIcon>
+                            <ListItemText className={classes.linkText} primary="Services" />
+                        </ListItem>
+                    </Link>
+                    <Link to="/contactUs">
+                        <ListItem button key="contactUs" selected={selectedIndex === "contactUs"} onClick={(event) => handleListItemClick(event, "contactUs")} classes={{ selected: classes.active }} className={classes.listItem}>
+                            <ListItemIcon className={classes.linkIcon}><PhoneRoundedIcon /></ListItemIcon>
+                            <ListItemText className={classes.linkText} primary="Contact Us" />
+                        </ListItem>
+                    </Link>
                 </>
             )
         }
