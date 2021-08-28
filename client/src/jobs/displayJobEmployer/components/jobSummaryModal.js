@@ -1,28 +1,21 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import {
-  Grid,
-  Typography,
-  Card,
-  CardContent,
-  Modal,
-  Button,
-  IconButton,
-  MenuItem,
-} from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
-import { StateBlueTextField } from "./customTextField";
-import { createMuiTheme } from "@material-ui/core";
-import { ThemeProvider } from "@material-ui/styles";
 import DateFnsUtils from "@date-io/date-fns";
 import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
+  Button, Card,
+  CardContent, createMuiTheme, Grid, IconButton,
+  MenuItem, Modal, Typography
+} from "@material-ui/core";
 import FormControl from "@material-ui/core/FormControl";
-import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormGroup from "@material-ui/core/FormGroup";
+import { makeStyles } from "@material-ui/core/styles";
 import Switch from '@material-ui/core/Switch';
+import CloseIcon from "@material-ui/icons/Close";
+import {
+  KeyboardDatePicker, MuiPickersUtilsProvider
+} from "@material-ui/pickers";
+import { ThemeProvider } from "@material-ui/styles";
+import React from "react";
+import { StateBlueTextField } from "./customTextField";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -439,14 +432,14 @@ const JobSummaryModal = (props) => {
 
                     <div className={classes.submitBtnContainer}>
                       <Button
-                        variant="contained"
+                        
                         className={classes.cancelBtn}
                         onClick={props.handleClose}
                       >
                         Cancel
                       </Button>
                       <Button
-                        variant="contained"
+                        
                         type="submit"
                         className={classes.submitBtn}
                       >

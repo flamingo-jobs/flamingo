@@ -1,19 +1,13 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import {
-  Grid,
-  Typography,
-  Card,
-  CardContent,
-  Modal,
-  Button,
-  IconButton,
-  Chip,
+  Button, Card,
+  CardContent, Chip, Grid, IconButton, Modal, Typography
 } from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
-import { StateBlueTextField } from "./customTextField";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+import { makeStyles } from "@material-ui/core/styles";
 import CancelIcon from "@material-ui/icons/Cancel";
+import CloseIcon from "@material-ui/icons/Close";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import React from "react";
+import { StateBlueTextField } from "./customTextField";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -164,7 +158,7 @@ const JobSummaryModal = (props) => {
                   />
                   <div className={classes.submitBtnContainer}>
                     <Button
-                      variant="contained"
+                      
                       type="submit"
                       className={classes.submitBtn}
                     >

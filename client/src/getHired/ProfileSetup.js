@@ -1,23 +1,23 @@
-import { React, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Stepper from "@material-ui/core/Stepper";
-import Step from "@material-ui/core/Step";
-import StepLabel from "@material-ui/core/StepLabel";
-import StepContent from "@material-ui/core/StepContent";
+import { Container, Grid } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
+import Step from "@material-ui/core/Step";
+import StepContent from "@material-ui/core/StepContent";
+import StepLabel from "@material-ui/core/StepLabel";
+import Stepper from "@material-ui/core/Stepper";
+import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import { Container, Grid } from "@material-ui/core";
+import axios from "axios";
+import { React, useState } from "react";
+import { Link } from "react-router-dom";
 import FloatCard from "../components/FloatCard";
 import SnackBarAlert from "../components/SnackBarAlert";
-import backgroundImage from "./images/background.jpg";
-import { Experience } from "./components/Experience";
-import { Education } from "./components/Education";
-import { Volunteering } from "./components/Volunteering";
-import { TechnologyStack } from "./components/TechnologyStack";
 import BACKEND_URL from "../Config";
-import axios from "axios";
-import { Link } from "react-router-dom";
+import { Education } from "./components/Education";
+import { Experience } from "./components/Experience";
+import { TechnologyStack } from "./components/TechnologyStack";
+import { Volunteering } from "./components/Volunteering";
+import backgroundImage from "./images/background.jpg";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -674,7 +674,7 @@ export default function ProfileSetup() {
                                     </Button>
                                   )}
                                   <Button
-                                    variant="contained"
+                                    
                                     color="primary"
                                     onClick={handleNext}
                                     className={classes.next}

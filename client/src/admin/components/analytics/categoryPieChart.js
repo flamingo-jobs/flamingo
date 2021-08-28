@@ -2,10 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Pie } from "react-chartjs-2";
 import { Typography } from "@material-ui/core";
 import FloatCard from "../../../components/FloatCard";
-import Theme from "../../../Theme";
 import axios from "axios";
 import BACKEND_URL from "../../../Config";
-import { makeStyles } from "@material-ui/core/styles";
 
 const CategoryPieChart = () => {
   const [categoryNames, setCategoryNames] = useState([]);

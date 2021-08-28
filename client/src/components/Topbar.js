@@ -23,7 +23,6 @@ import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 import NotificationsPopover from "./NotificationPopover";
 import BookmarksIcon from '@material-ui/icons/Bookmarks';
-import WorkIcon from '@material-ui/icons/Work';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import { Link, useHistory } from 'react-router-dom';
 import BACKEND_URL from "../Config";
@@ -349,13 +348,22 @@ export default function Topbar(props) {
     try {
       if (header.payload.userRole === "employer") {
         return require(`../employer/images/${header.payload.userId}`).default
+
       } else if (header.payload.userRole === "jobseeker") {
-        return require(`../../../server/profilePictures/${loginId}.jpg`).default
+          const images = require.context('../../../server/profilePictures', true);
+          try{
+            let loginId=sessionStorage.getItem("loginId");
+            let image = images(`./${loginId}.jpg`).default;
+            return image;
+          }catch (error) {
+            return require('../employee/images/defaultProfilePic.jpg').default
+          }
+          
       } else if (header.payload.userRole === "admin") {
         return require(`../admin/images/profilepic.jpg`).default
       }
     } catch (err) {
-      return require(`../employee/images/profilePic.jpg`).default
+      return require('../employee/images/defaultProfilePic.jpg').default
     }
   }
 

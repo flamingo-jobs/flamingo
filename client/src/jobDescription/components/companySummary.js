@@ -1,18 +1,14 @@
-import React, { useState, useEffect } from 'react'
-import { Grid, makeStyles } from '@material-ui/core'
-import { Typography } from '@material-ui/core'
-import FloatCard from '../../components/FloatCard'
-import LocalOfferRoundedIcon from '@material-ui/icons/LocalOfferRounded';
-import { Avatar, Button, Chip } from '@material-ui/core';
+import { Avatar, Button, Chip, Grid, makeStyles, Typography } from '@material-ui/core';
 import { FavoriteRounded } from '@material-ui/icons';
-import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
-import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
-import Rating from '@material-ui/lab/Rating';
-import BACKEND_URL from '../../Config';
-import axios from 'axios';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import LoginModal from "./loginModal";
+import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
+import Rating from '@material-ui/lab/Rating';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import FloatCard from '../../components/FloatCard';
 import SnackBarAlert from "../../components/SnackBarAlert";
+import BACKEND_URL from '../../Config';
+import LoginModal from "./loginModal";
 import { Link } from 'react-router-dom';
 
 const jwt = require("jsonwebtoken");

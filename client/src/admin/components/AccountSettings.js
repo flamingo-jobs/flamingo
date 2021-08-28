@@ -16,7 +16,6 @@ import {
 import SnackBarAlert from "../../components/SnackBarAlert";
 import axios from "axios";
 import BACKEND_URL from "../../Config";
-import FloatCard from "../../components/FloatCard";
 const jwt = require("jsonwebtoken");
 const passwordRegexp =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})/;
@@ -254,7 +253,6 @@ const AccountSettings = () => {
       alignItems="flex-start"
     >
       <Grid item xs={12}>
-        <FloatCard>
           {displayAlert()}
           <Grid
             container
@@ -337,7 +335,7 @@ const AccountSettings = () => {
                           <Button
                             fullWidth
                             type="submit"
-                            variant="contained"
+                            
                             className={classes.button}
                           >
                             Change Password
@@ -347,7 +345,7 @@ const AccountSettings = () => {
                           <Link to="/">
                             <Button
                               fullWidth
-                              variant="contained"
+                              
                               className={classes.cancel}
                             >
                               Cancel
@@ -409,7 +407,7 @@ const AccountSettings = () => {
                         <Button
                           fullWidth
                           type="submit"
-                          variant="contained"
+                          
                           className={classes.button}
                         >
                           Delete Account
@@ -419,7 +417,7 @@ const AccountSettings = () => {
                         <Link to="/">
                           <Button
                             fullWidth
-                            variant="contained"
+                            
                             className={classes.cancel}
                           >
                             Cancel
@@ -432,7 +430,6 @@ const AccountSettings = () => {
               </Grid>
             </form>
           </Grid>
-        </FloatCard>
         <Dialog
           open={open}
           onClose={handleClose}

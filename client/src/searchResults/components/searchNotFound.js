@@ -1,8 +1,7 @@
+import { makeStyles, Typography } from "@material-ui/core";
 import React from "react";
-import { makeStyles, Grid, Typography } from "@material-ui/core";
-import FloatCard from "../../components/FloatCard";
-import Search from "../lotties/search.json";
 import Lottie from "react-lottie";
+import Search from "../lotties/search.json";
 
 const useStyles = makeStyles((theme) => ({
   textContainer: {

@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
-import FloatCard from "../../components/FloatCard";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import { Typography, Grid } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import Rating from "@material-ui/lab/Rating";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import StarIcon from "@material-ui/icons/Star";
+import Rating from "@material-ui/lab/Rating";
+import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {

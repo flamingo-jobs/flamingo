@@ -253,7 +253,7 @@ function ContactUs() {
                                         <Button
                                             fullWidth
                                             type="submit"
-                                            variant="contained"
+                                            
                                             className={classes.submit}
                                         >
                                             Send

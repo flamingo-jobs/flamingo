@@ -1,22 +1,15 @@
-import { React, useState } from "react";
-import { useParams } from "react-router-dom";
 import {
-  Typography,
-  Container,
-  CardMedia,
-  Link,
-  Grid,
-  TextField,
-  Button,
-  Box,
+  Box, Button, CardMedia, Container, Grid, Link, TextField, Typography
 } from "@material-ui/core";
-import SnackBarAlert from "../../components/SnackBarAlert";
-import cardImage from "../../signIn/images/flamingo.gif";
-import FloatCard from "../../components/FloatCard";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
+import { React, useState } from "react";
+import { useParams } from "react-router-dom";
+import FloatCard from "../../components/FloatCard";
+import SnackBarAlert from "../../components/SnackBarAlert";
 import BACKEND_URL from "../../Config";
+import cardImage from "../../signIn/images/flamingo.gif";
 import { PasswordResetFailure } from "./PasswordResetFailure";
 import { PasswordResetSuccess } from "./PasswordResetSuccess";
 
@@ -305,7 +298,7 @@ export const ResetPassword = () => {
                     }
                     type="submit"
                     fullWidth
-                    variant="contained"
+                    
                     className={classes.submit}
                   >
                     Reset

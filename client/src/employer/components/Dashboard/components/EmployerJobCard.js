@@ -1,16 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import LocalOfferRoundedIcon from '@material-ui/icons/LocalOfferRounded';
-import { Avatar, Button, Chip, Grid, makeStyles, Typography } from '@material-ui/core';
-import { FavoriteRounded } from '@material-ui/icons';
+import { Button, Chip, Grid, makeStyles, Typography } from '@material-ui/core';
 import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 import FloatCard from '../../../../components/FloatCard';
 import { Link } from 'react-router-dom';
 import ReactTimeAgo from 'react-time-ago'
-import BookmarkIcon from '@material-ui/icons/Bookmark';
-import BookmarkBorderRoundedIcon from '@material-ui/icons/BookmarkBorderRounded';
-import BookmarksIcon from '@material-ui/icons/Bookmarks';
-import { Doughnut, Pie } from 'react-chartjs-2';
+
+import { Doughnut } from 'react-chartjs-2';
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import CancelIcon from "@material-ui/icons/Cancel";
 import ChartDataLabels from 'chartjs-plugin-datalabels';

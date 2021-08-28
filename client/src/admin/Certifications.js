@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Grid, Button } from '@material-ui/core'
 import FloatCard from '../components/FloatCard'
 import CertificationsAccordion from './components/CertificationsAccordion'
-import { Typography } from '@material-ui/core'
 import BACKEND_URL from '../Config'
 import axios from 'axios'
 import SnackBarAlert from '../components/SnackBarAlert'
@@ -10,7 +9,6 @@ import { makeStyles } from '@material-ui/core'
 import RefreshRoundedIcon from '@material-ui/icons/RefreshRounded';
 import AddIcon from '@material-ui/icons/Add';
 import AddNewCertificationPopup from './components/AddNewCertificationPopup'
-import GridTable from './components/GridTable'
 import NoInfo from '../components/NoInfo'
 import Loading from '../components/Loading'
 

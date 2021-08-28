@@ -1,27 +1,23 @@
-import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import WorkIcon from "@material-ui/icons/Work";
-import CreateIcon from "@material-ui/icons/Create";
-import LocalOfferRoundedIcon from "@material-ui/icons/LocalOfferRounded";
-import axios from "axios";
-import BACKEND_URL from "../../../Config";
-import LocationOnIcon from "@material-ui/icons/LocationOn";
-import ReactTimeAgo from "react-time-ago";
-import DeleteIcon from "@material-ui/icons/Delete";
 import {
-  Typography,
-  Grid,
-  Container,
-  IconButton,
   Avatar,
-  Chip,
+  Chip, Container, Grid, IconButton, Typography
 } from "@material-ui/core";
-import FloatCard from "../../../components/FloatCard";
-import JobSummaryModal from "./jobSummaryModal";
-import TodayIcon from "@material-ui/icons/Today";
-import DeleteModal from "./deleteModal";
+import { makeStyles } from "@material-ui/core/styles";
 import CancelIcon from '@material-ui/icons/Cancel';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import CreateIcon from "@material-ui/icons/Create";
+import DeleteIcon from "@material-ui/icons/Delete";
+import LocalOfferRoundedIcon from "@material-ui/icons/LocalOfferRounded";
+import LocationOnIcon from "@material-ui/icons/LocationOn";
+import TodayIcon from "@material-ui/icons/Today";
+import WorkIcon from "@material-ui/icons/Work";
+import axios from "axios";
+import React, { useState } from "react";
+import ReactTimeAgo from "react-time-ago";
+import FloatCard from "../../../components/FloatCard";
+import BACKEND_URL from "../../../Config";
+import DeleteModal from "./deleteModal";
+import JobSummaryModal from "./jobSummaryModal";
 
 const useStyles = makeStyles((theme) => ({
   summaryContainer: {

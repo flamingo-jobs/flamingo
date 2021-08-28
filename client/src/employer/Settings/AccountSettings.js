@@ -1,20 +1,14 @@
-import React, { useState } from "react";
 import {
-  makeStyles,
-  Grid,
-  Typography,
   Box,
-  Button,
-  Link,
-  TextField,
-  Dialog,
+  Button, Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
+  DialogTitle, Grid, Link, makeStyles, TextField, Typography
 } from "@material-ui/core";
-import SnackBarAlert from "../../components/SnackBarAlert";
 import axios from "axios";
+import React, { useState } from "react";
+import SnackBarAlert from "../../components/SnackBarAlert";
 import BACKEND_URL from "../../Config";
 const jwt = require("jsonwebtoken");
 const passwordRegexp =
@@ -334,7 +328,7 @@ const AccountSettings = () => {
                         <Button
                           fullWidth
                           type="submit"
-                          variant="contained"
+                          
                           className={classes.button}
                         >
                           Change Password
@@ -344,7 +338,7 @@ const AccountSettings = () => {
                         <Link to="/">
                           <Button
                             fullWidth
-                            variant="contained"
+                            
                             className={classes.cancel}
                           >
                             Cancel
@@ -406,7 +400,7 @@ const AccountSettings = () => {
                       <Button
                         fullWidth
                         type="submit"
-                        variant="contained"
+                        
                         className={classes.button}
                       >
                         Delete Account
@@ -416,7 +410,7 @@ const AccountSettings = () => {
                       <Link to="/">
                         <Button
                           fullWidth
-                          variant="contained"
+                          
                           className={classes.cancel}
                         >
                           Cancel

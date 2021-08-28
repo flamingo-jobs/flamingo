@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { makeStyles, Grid } from "@material-ui/core";
-import JobCard from "../../jobs/components/JobCard";
+import { Grid, makeStyles } from "@material-ui/core";
+import React, { useState } from "react";
 import FloatCard from "../../components/FloatCard";
+import JobCard from "../../jobs/components/JobCard";
 import SearchNotFound from "./searchNotFound";
 const jwt = require("jsonwebtoken");
 require("dotenv").config();

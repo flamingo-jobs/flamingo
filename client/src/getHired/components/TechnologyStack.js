@@ -1,6 +1,6 @@
-import React from "react";
-import { Grid, Container } from "@material-ui/core";
+import { Container, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import React from "react";
 import backgroundImage from "../images/background.jpg";
 import Technologies from "./Technologies";
 

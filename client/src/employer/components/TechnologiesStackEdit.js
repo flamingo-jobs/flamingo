@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core'
-import Paper from '@material-ui/core/Paper';
 import DetailedAccordion from './DetailedAccordion'
 import { Typography } from '@material-ui/core'
 import BACKEND_URL from '../../Config';
 import axios from 'axios'
 import SnackBarAlert from '../../components/SnackBarAlert'
 import FloatCard from '../../components/FloatCard';
-import TechDisplay from './TechDisplay';
 import Loading from '../../components/Loading';
 const useStyles = makeStyles((theme) => ({
 

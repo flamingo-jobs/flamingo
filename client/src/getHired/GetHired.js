@@ -1,27 +1,16 @@
-import { React, useState } from "react";
-import { useForm } from "react-hooks-helper";
 import {
-  Button,
-  TextField,
-  Grid,
-  Typography,
-  Container,
-  Box,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  InputAdornment,
-  LinearProgress,
+  Box, Button, Container, FormControl, Grid, InputAdornment, InputLabel, LinearProgress, MenuItem, Select, TextField, Typography
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import PropTypes from "prop-types";
-import FloatCard from "../components/FloatCard";
-import backgroundImage from "./images/background.jpg";
-import SnackBarAlert from "../components/SnackBarAlert";
 import axios from "axios";
-import BACKEND_URL from "../Config";
+import PropTypes from "prop-types";
+import { React, useState } from "react";
+import { useForm } from "react-hooks-helper";
 import { Link } from "react-router-dom";
+import FloatCard from "../components/FloatCard";
+import SnackBarAlert from "../components/SnackBarAlert";
+import BACKEND_URL from "../Config";
+import backgroundImage from "./images/background.jpg";
 
 const jwt = require("jsonwebtoken");
 const passwordRegexp =
@@ -663,7 +652,7 @@ export default function GetHired() {
                               <Button
                                 fullWidth
                                 type="submit"
-                                variant="contained"
+                                
                                 className={classes.submit}
                                 disabled={progress !== 0}
                               >
@@ -674,7 +663,7 @@ export default function GetHired() {
                               <Link to="/">
                                 <Button
                                   fullWidth
-                                  variant="contained"
+                                  
                                   className={classes.cancel}
                                   disabled={progress !== 0}
                                 >

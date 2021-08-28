@@ -1,43 +1,34 @@
-import { React, useState, useEffect } from "react";
-import { useForm } from "react-hooks-helper";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Box from "@material-ui/core/Box";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import theme from "../../Theme";
-import backgroundImage from "../images/background.jpg";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import cardImage from "../../signIn/images/flamingo.gif";
-import FloatCard from "../../components/FloatCard";
 import {
-  Chip,
-  Container,
-  IconButton,
-  CardMedia,
-  Snackbar,
-  Dialog,
-  ListItem,
+  CardMedia, Chip,
+  Container, Dialog,
+  ListItem, Snackbar
 } from "@material-ui/core";
-import { Redirect, useHistory } from "react-router-dom";
-import MuiAlert from "@material-ui/lab/Alert";
-import MuiDialogTitle from "@material-ui/core/DialogTitle";
-import MuiDialogContent from "@material-ui/core/DialogContent";
+import Avatar from "@material-ui/core/Avatar";
+import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
+import Checkbox from "@material-ui/core/Checkbox";
+import CssBaseline from "@material-ui/core/CssBaseline";
 import MuiDialogActions from "@material-ui/core/DialogActions";
-import FacebookIcon from "@material-ui/icons/Facebook";
-import LinkedInIcon from "@material-ui/icons/LinkedIn";
-import GitHubIcon from "@material-ui/icons/GitHub";
-import GoogleIcon from "../images/google.png";
+import MuiDialogContent from "@material-ui/core/DialogContent";
+import MuiDialogTitle from "@material-ui/core/DialogTitle";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Grid from "@material-ui/core/Grid";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
 import ArrowBackRoundedIcon from "@material-ui/icons/ArrowBackRounded";
-import { Link } from "react-router-dom";
-import { useQueryParams } from "../../utils/useQueryparams";
-import { useToken } from "./useToken";
+import MuiAlert from "@material-ui/lab/Alert";
 import axios from "axios";
+import { React, useEffect, useState } from "react";
+import { useForm } from "react-hooks-helper";
+import { Link, Redirect } from "react-router-dom";
+import FloatCard from "../../components/FloatCard";
 import BACKEND_URL from "../../Config";
+import cardImage from "../../signIn/images/flamingo.gif";
+import theme from "../../Theme";
+import { useQueryParams } from "../../utils/useQueryparams";
+import backgroundImage from "../images/background.jpg";
+import GoogleIcon from "../images/google.png";
 
 function Copyright() {
   return (
@@ -438,7 +429,7 @@ export default function SignInSide() {
                     <Button
                       type="submit"
                       fullWidth
-                      variant="contained"
+                      
                       className={classes.submit}
                     >
                       Sign In

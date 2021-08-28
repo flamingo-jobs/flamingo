@@ -1,6 +1,6 @@
-import React, { useState, useEffect, createRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { DataGrid, GridToolbar } from '@material-ui/data-grid';
-import { Grid, Button, IconButton, makeStyles } from '@material-ui/core';
+import { Grid, Button, makeStyles } from '@material-ui/core';
 import BACKEND_URL from '../../Config';
 import axios from 'axios';
 import NoRowGridOverlay from './NoRowGridOverlay';
@@ -15,8 +15,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
 import SaveRoundedIcon from '@material-ui/icons/SaveRounded';
 import SnackBarAlert from '../../components/SnackBarAlert';
-import AddNewCatePopup from './AddNewCatePopup';
-import FloatCard from '../../components/FloatCard';
 import AddNewCertificatesPopup from './AddNewCertificatesPopup copy';
 
 const useStyles = makeStyles((theme) => ({

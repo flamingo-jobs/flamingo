@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
-  Grid,
   Typography,
   Card,
   CardContent,
@@ -11,9 +10,6 @@ import {
   Checkbox,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
-// import Flamingo from "../lotties/flamingo.json";
-import Lottie from "react-lottie";
-import { Link } from "react-router-dom";
 import Slider from "@material-ui/core/Slider";
 import ShortlistingSettingsAccordion from "../../../admin/components/ShortlistingSettingsAccordion";
 
@@ -209,14 +205,14 @@ const ShortlistModal = (props) => {
 
                 <div className={classes.btnContainer}>
                   <Button
-                    variant="contained"
+                    
                     className={classes.cancelBtn}
                     onClick={props.handleCloseShortlistModal}
                   >
                     Cancel
                   </Button>
                   {!invalid ? <Button
-                    variant="contained"
+                    
                     type="submit"
                     className={classes.submitBtn}
                   >

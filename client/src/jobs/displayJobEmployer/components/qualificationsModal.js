@@ -1,19 +1,13 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import {
-  Grid,
-  Typography,
-  Card,
-  CardContent,
-  Modal,
-  Button,
-  IconButton,
-  MenuItem,
+  Button, Card,
+  CardContent, Grid, IconButton, Modal, Typography
 } from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
-import { StateBlueTextField } from "./customTextField";
-import RemoveIcon from "@material-ui/icons/Remove";
+import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
+import CloseIcon from "@material-ui/icons/Close";
+import RemoveIcon from "@material-ui/icons/Remove";
+import React from "react";
+import { StateBlueTextField } from "./customTextField";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -190,7 +184,7 @@ const QualificationsModal = (props) => {
 
                     <div className={classes.submitBtnContainer}>
                       <Button
-                        variant="contained"
+                        
                         type="submit"
                         className={classes.submitBtn}
                       >

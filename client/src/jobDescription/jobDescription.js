@@ -1,21 +1,21 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Grid, Container, Typography, CircularProgress } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
-import BACKEND_URL from "../Config";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
+import FloatCard from "../components/FloatCard";
+import Loading from "../components/Loading";
+import BACKEND_URL from "../Config";
+import AdditionalSkills from "./components/additionalSkills";
+import ApplyForm from "./components/applyForm";
+import CompanySummary from "./components/companySummary";
 // Custom components
 import JobSummary from "./components/jobSummary";
-import Responsibilities from "./components/responsibilities";
-import Requirements from "./components/requirements";
-import ApplyForm from "./components/applyForm";
-import FloatCard from "../components/FloatCard";
 import MoreFromJobs from "./components/MoreFromJobs";
 import RelatedJobs from "./components/RelatedJobs";
-import CompanySummary from "./components/companySummary";
-import Loading from "../components/Loading";
+import Requirements from "./components/requirements";
+import Responsibilities from "./components/responsibilities";
 import TechStack from "./components/techStack";
-import AdditionalSkills from "./components/additionalSkills";
 
 const useStyles = makeStyles((theme) => ({
   border: {

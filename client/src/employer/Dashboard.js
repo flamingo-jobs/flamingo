@@ -1,20 +1,15 @@
-import React from "react";
 // import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
-  CssBaseline,
-  Container,
-  ThemeProvider,
-  makeStyles,
-  useTheme,
+  makeStyles
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
-import CompanySummaryCard from "./components/Dashboard/components/CompanySummaryCard";
-import PopularJobs from "./components/Dashboard/components/PopularJobs";
-import TopCards from "./components/Dashboard/components/TopCards";
+import React from "react";
 import Aquisitions from "./components/Dashboard/components/Aquisitions";
+import CompanySummaryCard from "./components/Dashboard/components/CompanySummaryCard";
+import LatestJobs from "./components/Dashboard/components/LatestJobs";
 import LineGraph from "./components/Dashboard/components/LineGraph";
 import NewApplicants from "./components/Dashboard/components/NewApplicants";
-import LatestJobs from "./components/Dashboard/components/LatestJobs";
+import TopCards from "./components/Dashboard/components/TopCards";
 
 const useStyles = makeStyles((theme) => ({
   root: {

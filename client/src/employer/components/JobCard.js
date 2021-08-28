@@ -1,6 +1,6 @@
 import React from 'react'
 import LocalOfferRoundedIcon from '@material-ui/icons/LocalOfferRounded';
-import { Avatar, Button, Chip, makeStyles, Typography } from '@material-ui/core';
+import { Avatar, Chip, makeStyles, Typography } from '@material-ui/core';
 import { FavoriteRounded } from '@material-ui/icons';
 import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
@@ -8,7 +8,6 @@ import ifs from '../images/ifs.png';
 import FloatCard from '../../components/FloatCard';
 import InfoSharpIcon from '@material-ui/icons/InfoSharp';
 import IconButton from '@material-ui/core/IconButton';
-
 
 const useStyles = makeStyles((theme) => ({
     root: {

@@ -1,19 +1,15 @@
-import React from 'react'
-import { CircularProgress, colors, makeStyles, Typography } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import PeopleSearchBar from './components/PeopleSearchBar';
-import PeopleFilters from './components/PeopleFilters';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import BACKEND_URL from '../Config';
-import { MemoryRouter, Route } from 'react-router';
-import { Link } from 'react-router-dom';
 import Pagination from '@material-ui/lab/Pagination';
-import PaginationItem from '@material-ui/lab/PaginationItem';
-import PeopleCard from './components/PeopleCard';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import FloatCard from '../components/FloatCard';
-import NoInfo from '../components/NoInfo';
 import Loading from '../components/Loading';
+import NoInfo from '../components/NoInfo';
+import BACKEND_URL from '../Config';
+import PeopleCard from './components/PeopleCard';
+import PeopleFilters from './components/PeopleFilters';
+import PeopleSearchBar from './components/PeopleSearchBar';
 
 const useStyles = makeStyles((theme) => ({
     peopleGrid: {

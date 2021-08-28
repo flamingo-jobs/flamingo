@@ -1,23 +1,22 @@
-import React, { useState, useEffect } from "react";
-import Stepper from "@material-ui/core/Stepper";
-import Step from "@material-ui/core/Step";
-import StepLabel from "@material-ui/core/StepLabel";
-import StepContent from "@material-ui/core/StepContent";
+import { Container, Grid, Typography } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
-import { Link } from "react-router-dom";
+import Step from "@material-ui/core/Step";
+import StepContent from "@material-ui/core/StepContent";
+import StepLabel from "@material-ui/core/StepLabel";
+import Stepper from "@material-ui/core/Stepper";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Typography, Container } from "@material-ui/core";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import FloatCard from "../../components/FloatCard";
+import SnackBarAlert from "../../components/SnackBarAlert";
+import BACKEND_URL from "../../Config";
+import AdditionalSkills from "./components/additionalSkills";
+import QualificationsForm from "./components/qualificationsForm";
 import SummaryForm from "./components/summaryForm";
 import TaskForm from "./components/tasksForm";
-import QualificationsForm from "./components/qualificationsForm";
-import AdditionalSkills from "./components/additionalSkills";
 import TechStack from "./components/techStack";
-import BACKEND_URL from "../../Config";
-import SnackBarAlert from "../../components/SnackBarAlert";
-import { validate } from "@material-ui/pickers";
 const jwt = require("jsonwebtoken");
 
 const useStyles = makeStyles((theme) => ({
@@ -735,7 +734,7 @@ export default function CreateJobSetup() {
                               </Button>
                             )}
                             <Button
-                              variant="contained"
+                              
                               color="primary"
                               onClick={() => handleNext(index)}
                               className={classes.next}

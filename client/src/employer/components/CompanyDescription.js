@@ -1,7 +1,6 @@
 import React from "react";
 import LocalOfferRoundedIcon from "@material-ui/icons/LocalOfferRounded";
 import {
-  Avatar,
   Button,
   Chip,
   makeStyles,
