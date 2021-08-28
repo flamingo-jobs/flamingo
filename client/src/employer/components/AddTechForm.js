@@ -2,10 +2,8 @@ import React from "react";
 import { makeStyles, Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import FloatCard from '../../components/FloatCard';
-import ComputerIcon from "@material-ui/icons/Computer";
 import Lottie from "react-lottie";
 import WorkingImage from "../lotties/working.json";
-import Technologies from "./Technologies";
 import TechnologiesStackEdit from "./TechnologiesStackEdit";
 
 const useStyles = makeStyles((theme) => ({

@@ -1,21 +1,19 @@
-import React, {useState, useEffect} from 'react'
-import LocalOfferRoundedIcon from '@material-ui/icons/LocalOfferRounded';
 import { Avatar, Button, Chip, makeStyles, Typography } from '@material-ui/core';
-import { FavoriteRounded } from '@material-ui/icons';
-import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
-import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
-import FloatCard from '../../components/FloatCard';
-import { Link } from 'react-router-dom';
-import ReactTimeAgo from 'react-time-ago'
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarkBorderRoundedIcon from '@material-ui/icons/BookmarkBorderRounded';
-import BookmarksIcon from '@material-ui/icons/Bookmarks';
-import BACKEND_URL from "../../Config";
+import LocalOfferRoundedIcon from '@material-ui/icons/LocalOfferRounded';
+import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
+import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 import axios from "axios";
-import LoginModal from './loginModal';
-import SnackBarAlert from "../../components/SnackBarAlert";
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
+import { Link } from 'react-router-dom';
+import ReactTimeAgo from 'react-time-ago';
+import FloatCard from '../../components/FloatCard';
+import SnackBarAlert from "../../components/SnackBarAlert";
+import BACKEND_URL from "../../Config";
 import { setSavedJobCount } from "../../redux/actions";
+import LoginModal from './loginModal';
 
 const jwt = require("jsonwebtoken");
 require("dotenv").config();

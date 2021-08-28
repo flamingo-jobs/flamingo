@@ -1,5 +1,5 @@
-import { withStyles } from "@material-ui/core/styles";
 import { TextField } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
 
 export const StateBlueTextField = withStyles((theme) => ({
   root: {

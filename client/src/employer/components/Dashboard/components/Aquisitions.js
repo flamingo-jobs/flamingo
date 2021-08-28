@@ -1,17 +1,6 @@
 import React from "react";
-// import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { makeStyles, Typography } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
 import FloatCard from "../../../../components/FloatCard";
-import AssignmentIcon from "@material-ui/icons/Assignment";
-import PieChart, {
-  Legend,
-  Export,
-  Series,
-  Label,
-  Font,
-  Connector,
-} from "devextreme-react/pie-chart";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import BACKEND_URL from "../../../../Config";

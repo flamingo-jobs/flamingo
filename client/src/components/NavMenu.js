@@ -16,11 +16,9 @@ import OfflineBoltRoundedIcon from '@material-ui/icons/OfflineBoltRounded';
 import CategoryRoundedIcon from '@material-ui/icons/CategoryRounded';
 import CodeRoundedIcon from '@material-ui/icons/CodeRounded';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import DescriptionIcon from '@material-ui/icons/Description';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import ComputerIcon from '@material-ui/icons/Computer';
 import FileCopyRoundedIcon from '@material-ui/icons/FileCopyRounded';
-import TuneRoundedIcon from '@material-ui/icons/TuneRounded';
 import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
 import PostAddRoundedIcon from '@material-ui/icons/PostAddRounded';
 const useStyles = makeStyles((theme) => ({

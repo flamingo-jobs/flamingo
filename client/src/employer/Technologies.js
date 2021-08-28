@@ -1,9 +1,8 @@
-import React from "react";
 import { makeStyles } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
-import AddTechForm from "./components/AddTechForm";
-import AvailableTechnologies from "./components/AvailableTechnologies";
+import React from "react";
 import NoAccess from "../components/NoAccess";
+import AddTechForm from "./components/AddTechForm";
 const jwt = require("jsonwebtoken");
 
 let haveAccess = false;

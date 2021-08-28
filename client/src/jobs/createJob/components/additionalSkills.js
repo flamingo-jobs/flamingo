@@ -1,12 +1,10 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Container, Typography, Button } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import Chip from "@material-ui/core/Chip";
+import { makeStyles } from "@material-ui/core/styles";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-
-// Custom components
-import FloatCard from "../../../components/FloatCard";
+import React from "react";
 import { StateBlueTextField } from "./customTextField";
+
 
 const useStyles = makeStyles((theme) => ({
   card: {

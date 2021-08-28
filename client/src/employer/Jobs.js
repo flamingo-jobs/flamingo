@@ -1,16 +1,14 @@
-import { Button, Grid, makeStyles } from '@material-ui/core'
-import React, { useState } from 'react'
-import JobGrid from './components/JobGrid'
-import NoAccess from "../components/NoAccess";
-import FloatCard from '../components/FloatCard';
+import { Button, Grid, makeStyles } from '@material-ui/core';
+import AddIcon from "@material-ui/icons/Add";
 import RefreshRoundedIcon from '@material-ui/icons/RefreshRounded';
-import { Link } from 'react-router-dom';
 import ViewListIcon from '@material-ui/icons/ViewList';
-import ViewModuleIcon from '@material-ui/icons/ViewModule';
 import ViewQuiltIcon from '@material-ui/icons/ViewQuilt';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import AddIcon from "@material-ui/icons/Add";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import NoAccess from "../components/NoAccess";
+import JobGrid from './components/JobGrid';
 import JobTable from './components/JobTable';
 const jwt = require("jsonwebtoken");
 const useStyles = makeStyles((theme) => ({

@@ -1,18 +1,13 @@
-import React from "react";
 import {
-  TextField,
-  Grid,
-  Typography,
-  Container,
-  IconButton,
-  Chip,
+  Chip, Container, Grid, IconButton, TextField, Typography
 } from "@material-ui/core";
-import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
+import { makeStyles } from "@material-ui/core/styles";
+import AddIcon from "@material-ui/icons/Add";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import RemoveIcon from "@material-ui/icons/Remove";
-import AddIcon from "@material-ui/icons/Add";
-import { makeStyles } from "@material-ui/core/styles";
+import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {

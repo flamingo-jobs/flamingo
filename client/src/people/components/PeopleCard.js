@@ -1,12 +1,9 @@
-import React from 'react'
-import LocalOfferRoundedIcon from '@material-ui/icons/LocalOfferRounded';
 import { Avatar, Button, Chip, makeStyles, Typography } from '@material-ui/core';
-import { FavoriteRounded } from '@material-ui/icons';
-import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
-import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
-import FloatCard from '../../components/FloatCard';
 import SchoolRoundedIcon from '@material-ui/icons/SchoolRounded';
+import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import FloatCard from '../../components/FloatCard';
 
 
 const useStyles = makeStyles((theme) => ({

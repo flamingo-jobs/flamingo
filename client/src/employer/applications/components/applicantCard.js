@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Avatar,
   Button,
-  Chip,
   makeStyles,
   Typography,
   Grid,
 } from "@material-ui/core";
-import WorkRoundedIcon from "@material-ui/icons/WorkRounded";
 import FloatCard from "../../components/FloatCard";
-import SchoolRoundedIcon from "@material-ui/icons/SchoolRounded";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import Status from "./status";
 import EditIcon from "@material-ui/icons/Edit";

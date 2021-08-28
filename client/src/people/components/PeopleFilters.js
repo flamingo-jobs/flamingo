@@ -1,12 +1,10 @@
 import { makeStyles, Typography } from '@material-ui/core'
+import FilterListRoundedIcon from '@material-ui/icons/FilterListRounded'
 import React, { useEffect, useState } from 'react'
 import FloatCard from '../../components/FloatCard'
-import theme from '../../Theme'
 import InterestList from './InterestList'
 import OrganizationList from './OrganizationList'
 import TechnologyList from './TechnologyList'
-import TypeList from './TypeList'
-import FilterListRoundedIcon from '@material-ui/icons/FilterListRounded';
 
 const useStyles = makeStyles((theme) => ({
     titleDiv: {

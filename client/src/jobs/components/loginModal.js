@@ -1,18 +1,13 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import {
-  Grid,
-  Typography,
-  Card,
-  CardContent,
-  Modal,
-  Button,
-  IconButton,
+  Button, Card,
+  CardContent, Grid, IconButton, Modal, Typography
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import CloseIcon from "@material-ui/icons/Close";
-import Flamingo from "../lotties/flamingo.json";
+import React from "react";
 import Lottie from "react-lottie";
 import { Link } from "react-router-dom";
+import Flamingo from "../lotties/flamingo.json";
 
 const useStyles = makeStyles((theme) => ({
   root: {

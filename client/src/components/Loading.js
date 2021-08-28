@@ -2,7 +2,6 @@ import React from 'react'
 import Grid from '@material-ui/core/Grid';
 import Lottie from 'react-lottie';
 import Anim from './lotties/loading.json';
-import { Typography } from '@material-ui/core';
 
 function Loading(props) {
 

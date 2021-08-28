@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { Typography, Container, Button } from "@material-ui/core";
-import FloatCard from "../../components/FloatCard";
+import { Button, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import EditIcon from "@material-ui/icons/Edit";
-import BACKEND_URL from "../../Config";
 import axios from "axios";
-import ReviewModal from "./ReviewModal";
-import ReviewCard from "./ReviewCard";
-import SnackBarAlert from "../../components/SnackBarAlert";
+import React, { useEffect, useState } from "react";
 import Lottie from "react-lottie";
+import FloatCard from "../../components/FloatCard";
+import SnackBarAlert from "../../components/SnackBarAlert";
+import BACKEND_URL from "../../Config";
 import Rating from "./lotties/rating.json";
+import ReviewCard from "./ReviewCard";
+import ReviewModal from "./ReviewModal";
 
 const jwt = require("jsonwebtoken");
 
@@ -289,7 +289,7 @@ const Reviews = (props) => {
           <Typography className={classes.reviewTitle} variant="h6">Reviews</Typography>
           {isSignedIn && role === "jobseeker" && (
             <Button
-              variant="contained"
+              
               className={classes.writeBtn}
               startIcon={<EditIcon />}
               onClick={handleReviewModal}

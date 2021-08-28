@@ -1,13 +1,11 @@
-import { Grid, makeStyles, Typography, Button } from '@material-ui/core';
-import React from 'react';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import FloatCard from '../../components/FloatCard';
-import JobCard from '../../jobs/components/JobCard';
+import { Button, Grid, makeStyles, Typography } from '@material-ui/core';
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
-import theme from '../../Theme';
-import BACKEND_URL from '../../Config';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import FloatCard from '../../components/FloatCard';
+import BACKEND_URL from '../../Config';
+import JobCard from '../../jobs/components/JobCard';
 const jwt = require("jsonwebtoken");
 
 

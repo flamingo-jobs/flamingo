@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { makeStyles, Grid } from "@material-ui/core";
+import { Grid, makeStyles } from "@material-ui/core";
 import axios from "axios";
-import BACKEND_URL from "../../Config";
+import React, { useEffect, useState } from "react";
 import FloatCard from "../../components/FloatCard";
+import BACKEND_URL from "../../Config";
 import OrganizationCard from "./../../employer/components/OrganizationCard";
 import SearchNotFound from "./searchNotFound";
 

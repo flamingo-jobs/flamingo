@@ -1,8 +1,8 @@
-import { Button, makeStyles, Typography } from '@material-ui/core'
-import React from 'react'
+import { Button, makeStyles, Typography } from '@material-ui/core';
+import React from 'react';
 import Lottie from 'react-lottie';
-import theme from '../../Theme';
 import FloatCard from '../../components/FloatCard';
+import theme from '../../Theme';
 import Hiring from '../lotties/hiring.json';
 
 const useStyles = makeStyles((theme) => ({

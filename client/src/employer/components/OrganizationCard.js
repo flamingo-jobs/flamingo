@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import LocalOfferRoundedIcon from "@material-ui/icons/LocalOfferRounded";
 import {
   Avatar,
   Button,
@@ -9,7 +8,6 @@ import {
 } from "@material-ui/core";
 import { FavoriteRounded } from "@material-ui/icons";
 import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
-import WorkRoundedIcon from "@material-ui/icons/WorkRounded";
 import FloatCard from "../../components/FloatCard";
 import Rating from "@material-ui/lab/Rating";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";

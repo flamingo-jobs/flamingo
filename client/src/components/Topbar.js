@@ -23,7 +23,6 @@ import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 import NotificationsPopover from "./NotificationPopover";
 import BookmarksIcon from '@material-ui/icons/Bookmarks';
-import WorkIcon from '@material-ui/icons/Work';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import { Link, useHistory } from 'react-router-dom';
 import BACKEND_URL from "../Config";

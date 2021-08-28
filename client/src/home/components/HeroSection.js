@@ -1,11 +1,10 @@
-import { Grid, makeStyles, Typography, Button } from "@material-ui/core";
-import React from "react";
-import Lottie from "react-lottie";
-import FloatCard from "../../components/FloatCard";
-import HeroImage from "../lotties/heroimage";
+import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import React from "react";
+import Lottie from "react-lottie";
 import { Link } from "react-router-dom";
+import HeroImage from "../lotties/heroimage";
 const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: '100%',

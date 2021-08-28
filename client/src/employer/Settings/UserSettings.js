@@ -1,29 +1,19 @@
-import React, { useState } from "react";
-import { useForm } from "react-hooks-helper";
-import PropTypes from "prop-types";
 import {
-  makeStyles,
-  Grid,
-  Typography,
-  Box,
-  Tab,
-  Tabs,
-  Button,
-  Link,
+  Box, Button, Checkbox, Container, Grid, Link,
   List,
   ListItem,
   ListItemIcon,
-  ListItemText,
-  TextField,
-  Container,
-  Checkbox,
+  ListItemText, makeStyles, Tab,
+  Tabs, TextField, Typography
 } from "@material-ui/core";
-import SnackBarAlert from "../../components/SnackBarAlert";
-import UsersTable from "../components/UsersTable";
 import axios from "axios";
-import BACKEND_URL from "../../Config";
-import FloatCard from "../../components/FloatCard";
+import PropTypes from "prop-types";
+import React, { useState } from "react";
+import { useForm } from "react-hooks-helper";
 import NoAccess from "../../components/NoAccess";
+import SnackBarAlert from "../../components/SnackBarAlert";
+import BACKEND_URL from "../../Config";
+import UsersTable from "../components/UsersTable";
 const jwt = require("jsonwebtoken");
 
 let userAccess = false;
@@ -463,7 +453,7 @@ const UserSettings = () => {
                                   <Button
                                     fullWidth
                                     type="submit"
-                                    variant="contained"
+                                    
                                     className={classes.button}
                                   >
                                     Send Invitation
@@ -473,7 +463,7 @@ const UserSettings = () => {
                                   <Link to="/">
                                     <Button
                                       fullWidth
-                                      variant="contained"
+                                      
                                       className={classes.cancel}
                                     >
                                       Cancel

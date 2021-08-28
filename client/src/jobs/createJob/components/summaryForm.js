@@ -1,14 +1,12 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Grid, MenuItem } from "@material-ui/core";
-import { StateBlueTextField } from "./customTextField";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import { createMuiTheme } from "@material-ui/core";
+import { createMuiTheme, Grid, MenuItem } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import {
+  KeyboardDatePicker, MuiPickersUtilsProvider
+} from "@material-ui/pickers";
 import { ThemeProvider } from "@material-ui/styles";
+import React from "react";
+import { StateBlueTextField } from "./customTextField";
 
 const materialTheme = createMuiTheme({
   spacing: 5,

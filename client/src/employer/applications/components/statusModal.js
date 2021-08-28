@@ -203,7 +203,7 @@ const StatusModal = (props) => {
 
               <div className={classes.applyBtnContainer}>
                 <Button
-                  variant="contained"
+                  
                   type="submit"
                   className={classes.applyBtn}
                   onClick={handleStatusSubmit}

@@ -1,22 +1,18 @@
-import React, { useEffect, useState } from "react";
+import { Avatar, Button, Chip, Container, Grid, Typography } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
+import Tooltip from '@material-ui/core/Tooltip';
+import BookmarkIcon from '@material-ui/icons/Bookmark';
+import BookmarkBorderRoundedIcon from '@material-ui/icons/BookmarkBorderRounded';
 import LocalOfferRoundedIcon from '@material-ui/icons/LocalOfferRounded';
-import { Avatar, Button, Chip, Typography } from '@material-ui/core';
 import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
-import ReactTimeAgo from 'react-time-ago';
-import BookmarkBorderRoundedIcon from '@material-ui/icons/BookmarkBorderRounded';
-import {
-  Grid,
-  Container,
-} from "@material-ui/core";
-import { Link as ScrollLink } from "react-scroll";
-import LoginModal from "./loginModal";
-import BookmarkIcon from '@material-ui/icons/Bookmark';
-import BACKEND_URL from "../../Config";
 import axios from "axios";
+import React, { useState } from "react";
+import { Link as ScrollLink } from "react-scroll";
+import ReactTimeAgo from 'react-time-ago';
 import SnackBarAlert from "../../components/SnackBarAlert";
-import Tooltip from '@material-ui/core/Tooltip';
+import BACKEND_URL from "../../Config";
+import LoginModal from "./loginModal";
 
 
 const useStyles = makeStyles((theme) => ({

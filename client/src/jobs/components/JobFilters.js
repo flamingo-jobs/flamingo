@@ -1,13 +1,12 @@
-import { makeStyles, Typography, FormControlLabel, Switch } from '@material-ui/core'
+import { makeStyles, Switch, Typography } from '@material-ui/core'
+import FilterListRoundedIcon from '@material-ui/icons/FilterListRounded'
 import React, { useEffect, useState } from 'react'
 import FloatCard from '../../components/FloatCard'
+import TechnologyList from '../../people/components/TechnologyList'
 import theme from '../../Theme'
 import CategoryList from './CategoryList'
 import OrganizationList from './OrganizationList'
-import TitileList from './TitleList'
 import TypeList from './TypeList'
-import FilterListRoundedIcon from '@material-ui/icons/FilterListRounded';
-import TechnologyList from '../../people/components/TechnologyList'
 
 const useStyles = makeStyles(() => ({
     titleDiv: {

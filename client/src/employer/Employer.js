@@ -1,10 +1,9 @@
-import React from "react";
-import { makeStyles, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
+import React from "react";
 import CompanyBasicInfo from "./components/CompanyBasicInfo";
 import CompanyDescription from "./components/CompanyDescription";
 import Technologies from "./components/Technologies";
-import ComputerIcon from "@material-ui/icons/Computer";
 import Reviews from "./reviews/Reviews";
 
 const useStyles = makeStyles((theme) => ({

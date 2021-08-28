@@ -1,7 +1,6 @@
-import { Grid, makeStyles, Typography } from '@material-ui/core'
-import React from 'react'
+import { makeStyles } from '@material-ui/core';
+import React from 'react';
 import ShortlistingSettingsAccordion from '../admin/components/ShortlistingSettingsAccordion';
-import FloatCard from '../components/FloatCard'
 import AccountSettingsAccordion from './Settings/AccountSettingsAccordion';
 import UserSettingsAccordion from './Settings/UserSettingsAccordion';
 

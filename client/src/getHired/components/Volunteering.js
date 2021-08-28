@@ -1,16 +1,12 @@
-import React from "react";
 import {
-  TextField,
-  Grid,
-  Typography,
-  Container,
-  IconButton,
+  Container, Grid, IconButton, TextField, Typography
 } from "@material-ui/core";
-import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
-import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import { makeStyles } from "@material-ui/core/styles";
-import backgroundImage from "../images/background.jpg";
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
+import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import React from "react";
+import backgroundImage from "../images/background.jpg";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -490,7 +486,7 @@ export const Volunteering = ({
                               <Grid item align="center">
                                 <Button
                                   fullWidth
-                                  variant="contained"
+                                  
                                   className={classes.next}
                                   onClick={() => navigation.next()}
                                 >

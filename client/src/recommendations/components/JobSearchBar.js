@@ -1,17 +1,14 @@
-import { Button, Grid, makeStyles, Typography, fade } from '@material-ui/core'
-import React, { useState, useEffect } from 'react'
-import FloatCard from '../../components/FloatCard'
-import SearchIcon from '@material-ui/icons/Search';
-import InputBase from '@material-ui/core/InputBase';
-import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
-import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
-import theme from '../../Theme';
-import ListDownPopup from './ListDownPopup';
+import { fade, Grid, makeStyles } from '@material-ui/core';
 import Chip from '@material-ui/core/Chip';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
+import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
+import SearchIcon from '@material-ui/icons/Search';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import FloatCard from '../../components/FloatCard';
 import BACKEND_URL from '../../Config';
+import theme from '../../Theme';
 
 const useStyles = makeStyles((theme) => ({
     root: {

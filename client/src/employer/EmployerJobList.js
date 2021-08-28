@@ -1,20 +1,15 @@
-import React from "react";
 // import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
-  CssBaseline,
-  Container,
-  ThemeProvider,
-  makeStyles,
-  useTheme,
+  makeStyles
 } from "@material-ui/core";
-import { Link } from "react-router-dom";
-import { useHistory } from "react-router-dom";
-import Grid from "@material-ui/core/Grid";
-import JobTable from "./components/JobTable";
 import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
 import AddIcon from "@material-ui/icons/Add";
-
+import React from "react";
+import { Link, useHistory } from "react-router-dom";
 import NoAccess from "../components/NoAccess";
+import JobTable from "./components/JobTable";
+
 const jwt = require("jsonwebtoken");
 
 let jobAccess = false;
@@ -91,7 +86,7 @@ const EmployerJobList = () => {
           <Grid item container xs={12} spacing={3}>
             <Link to="/employer/postAJob">
               <Button
-                variant="contained"
+                
                 className={classes.button}
                 startIcon={<AddIcon />}
                 // onClick={handleClick}

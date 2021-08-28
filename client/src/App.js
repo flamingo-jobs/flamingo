@@ -1,16 +1,16 @@
-import SignInSide from "./signIn/components/SignInSide.js";
-import { ForgotPassword } from "./signIn/components/ForgotPassword.js";
-import { ResetPassword } from "./signIn/components/ResetPassword.js";
-import { AcceptInvitation } from "./signIn/components/AcceptInvitation.js";
-import GetHired from "./getHired/GetHired";
-import StartHiring from "./startHiring/StartHiring.js";
-import "./App.css";
 import { ThemeProvider } from "@material-ui/styles";
-import theme from "./Theme";
-import { Route, BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
+import "./App.css";
 import Base from "./Base";
 import ScrollToTop from "./components/ScrollToTop.js";
+import GetHired from "./getHired/GetHired";
 import ProfileSetup from "./getHired/ProfileSetup";
+import { AcceptInvitation } from "./signIn/components/AcceptInvitation.js";
+import { ForgotPassword } from "./signIn/components/ForgotPassword.js";
+import { ResetPassword } from "./signIn/components/ResetPassword.js";
+import SignInSide from "./signIn/components/SignInSide.js";
+import StartHiring from "./startHiring/StartHiring.js";
+import theme from "./Theme";
 
 
 function App() {

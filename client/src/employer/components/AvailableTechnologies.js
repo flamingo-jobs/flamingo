@@ -6,7 +6,6 @@ import ComputerIcon from "@material-ui/icons/Computer";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import BACKEND_URL from "../../Config";
-import Divider from "@material-ui/core/Divider";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
