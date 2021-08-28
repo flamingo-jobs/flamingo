@@ -20,6 +20,11 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import SnackBarAlert from "../../components/SnackBarAlert";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const useStyles = makeStyles({
   defaultButton: {
@@ -56,7 +61,8 @@ const useStyles = makeStyles({
   form: {
     alignItems: 'center',
     justifyContent: 'center',
-    padding: '5% 15% 5% 15%'
+    paddingLeft: '20px',
+    paddingRight: '20px'
   },
   field: {
     margin: "20px 0px 20px 0px",
@@ -330,37 +336,19 @@ function Achievements(props) {
             </> : null }
         </Grid>
 
-        {/*-------------- add new edu field popup content ------------------- */}
-        <Modal
-          aria-labelledby="transition-modal-title"
-          aria-describedby="transition-modal-description"
-          className={classes.modal}
+        {/*-------------- add new award field popup content ------------------- */}
+        <Dialog
           open={open}
           onClose={handleClose}
-          closeAfterTransition
-          BackdropComponent={Backdrop}
-          BackdropProps={{
-            timeout: 500,
-          }}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
         >
-          <Fade in={open}>
-            <div className={classes.paper}>
-              <div style={{paddingTop:'40px'}}>
-                <Grid container direction="row">
-                  <Grid item xs={10}>
-                    <Typography gutterBottom variant="h5" style={{textAlign:'center',paddingLeft:'50px',color:theme.palette.stateBlue}}>
-                      Add Award
-                    </Typography>
-                    <Divider variant="middle" style={{marginLeft:'100px'}} />
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button className={classes.defaultButton} style={{ float: 'right',marginRight:'10px',marginTop:'-20px',backgroundColor:'white'}} onClick={handleClose}>
-                      <CloseIcon className={classes.closeIcon} style={{color: '#666',}} />
-                    </Button>
-                  </Grid>
-                </Grid>
-              </div>
-              <form className={classes.form} onSubmit={onSubmit}>
+          <DialogTitle id="alert-dialog-title" style={{color:theme.palette.stateBlue}}>
+          Add Award
+          </DialogTitle>
+          <Divider variant="middle" />
+          <DialogContent>
+            <form className={classes.form}>
                 <div>
                 <TextField
                   className={classes.field}
@@ -401,7 +389,7 @@ function Achievements(props) {
                         </FormControl>
                       </Grid>
                       <Grid item xs={6}>
-                        <FormControl variant="outlined" className={classes.formControl}>
+                        <FormControl variant="outlined" className={classes.formControl} style={{marginLeft:"30px"}}>
                           <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
                           <Select
                             native
@@ -426,13 +414,18 @@ function Achievements(props) {
                     onChange= {onChangeDescription}
                   />
                   </div>
-                  <Button type="submit" className={classes.defaultButton} style={{ width:'100%',marginTop:'5%'}}>Apply Changes</Button>
               </form>
-              
-            </div>
-          </Fade>
-        </Modal>
-        
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} style={{color:"#999"}}>
+              Cancel
+            </Button>
+            <Button onClick={onSubmit} color="primary" autoFocus>
+              Apply Changes
+            </Button>
+          </DialogActions>
+        </Dialog>
+       
       </Grid>
       <Grid container spacing={3}>
       <Grid item xs={12}>
