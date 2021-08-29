@@ -432,14 +432,14 @@ const JobSummaryModal = (props) => {
 
                     <div className={classes.submitBtnContainer}>
                       <Button
-                        
+                        variant="contained"
                         className={classes.cancelBtn}
                         onClick={props.handleClose}
                       >
                         Cancel
                       </Button>
                       <Button
-                        
+                        variant="contained"
                         type="submit"
                         className={classes.submitBtn}
                       >

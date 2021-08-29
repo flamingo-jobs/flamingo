@@ -21,7 +21,8 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: "80vh",
     overflowY: "auto",
     [theme.breakpoints.down("sm")]: {
-      width: "95%"
+      width: "95%",
+      padding: `0px 20px`,
     },
   },
   modal: {
@@ -41,6 +42,10 @@ const useStyles = makeStyles((theme) => ({
     },
     padding: "20px !important",
     margin: "0px",
+    [theme.breakpoints.down("sm")]: {
+      paddingLeft: "0px !important",
+      paddingRight: "0px !important",
+    }
   },
   title: {
     color: theme.palette.stateBlue,
@@ -88,14 +93,18 @@ const useStyles = makeStyles((theme) => ({
       padding: "5px",
     },
     [theme.breakpoints.down("xs")]: {
-      padding: "2px",
+      padding: "1px",
     }
   },
   submitBtnContainer: {
     width: "100%",
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "flex-end",
     paddingTop: theme.spacing(3),
+    [theme.breakpoints.down("xs")]: {
+      flexDirection: "column-reverse",
+      justifyContent: "center",
+    },
   },
   submitBtn: {
     background: theme.palette.stateBlue,
@@ -103,6 +112,20 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       background: theme.palette.stateBlue,
       color: theme.palette.white,
+    },
+    [theme.breakpoints.down("xs")]: {
+      width: "100%"
+    },
+    [theme.breakpoints.up("sm")]: {
+      marginLeft: theme.spacing(1)
+    },
+    [theme.breakpoints.down("sm")]: {
+      marginBottom: theme.spacing(1)
+    },
+  },
+  cancelBtn: {
+    [theme.breakpoints.down("xs")]: {
+      width: "100%"
     },
   },
 }));
@@ -140,7 +163,7 @@ const QualificationsModal = (props) => {
                 <form onSubmit={props.handleQualificationsSubmit}>
                   <Grid container>
                     {props.qualifications.map((field, index) => (
-                      <Grid item container key={index}>
+                      <Grid item container key={index} >
                         <Grid item xs={10}> 
                           <StateBlueTextField
                             label="Qualification"
@@ -171,7 +194,7 @@ const QualificationsModal = (props) => {
                                 }}
                               />
                             </IconButton>
-                            <IconButton 
+                            <IconButton
                               onClick={props.handleQualificationAdd}
                               className={classes.addRemoveButton}
                             >
@@ -184,7 +207,15 @@ const QualificationsModal = (props) => {
 
                     <div className={classes.submitBtnContainer}>
                       <Button
-                        
+                        variant="contained"
+                        className={classes.cancelBtn}
+                        onClick={props.handleClose}
+                      >
+                        Cancel
+                      </Button>
+                      
+                      <Button
+                        variant="contained"
                         type="submit"
                         className={classes.submitBtn}
                       >
@@ -201,5 +232,5 @@ const QualificationsModal = (props) => {
     </>
   );
 };
-
+// style={{border: "1px solid red"}}
 export default QualificationsModal;

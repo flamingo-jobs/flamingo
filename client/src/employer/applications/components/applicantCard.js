@@ -289,7 +289,7 @@ function ApplicantCard(props) {
                 startIcon={<GetAppIcon />}
                 onClick={handleResumeDownload}
               >
-                Downlaod Resume
+                Download Resume
               </Button>
             </div>
           </div>

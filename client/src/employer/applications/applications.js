@@ -393,7 +393,21 @@ const Applications = () => {
           if (response.data.success) {
             handleCloseShortlistModal();
             setShortlisted(true);
-            setShortlistedIds(response.data.applicantIds);
+            const newApplicants = [...applicants];
+
+            response.data.applicantIds.map((applicant) => {
+              newApplicants.map((jobseeker) => {
+                if(jobseeker._id === applicant.userId){
+                  jobseeker.score = applicant.score;
+                }
+              }); 
+            });
+
+            newApplicants.sort((a,b) => {
+              return b.score - a.score; 
+            });
+            
+            setScoredApplicants(newApplicants);
           }
         } catch (err) {
           handleCloseShortlistModal();

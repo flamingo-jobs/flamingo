@@ -17,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: theme.shadows[5],
     borderRadius: 10,
     paddingBottom: "30px",
+    [theme.breakpoints.down("sm")]: {
+      width: "98%",
+    },
   },
   modal: {
     display: "flex",
@@ -35,6 +38,10 @@ const useStyles = makeStyles((theme) => ({
     },
     padding: "20px !important",
     margin: "0px",
+    [theme.breakpoints.down("sm")]: {
+      paddingLeft: "0px !important",
+      paddingRight: "0px !important",
+    }
   },
   title: {
     color: theme.palette.stateBlue,

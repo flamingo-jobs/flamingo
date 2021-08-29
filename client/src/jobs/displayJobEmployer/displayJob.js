@@ -13,8 +13,19 @@ import TechStack from "./components/techStack";
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    spacing:"3",
     paddingLeft: theme.spacing(1.5),
     paddingRight: theme.spacing(1.5),
+  },
+  leftColumn:{
+    [theme.breakpoints.up("lg")]: {
+      paddingRight: theme.spacing(1.5),
+    },
+  },
+  rightColumn:{
+    [theme.breakpoints.up("lg")]: {
+      paddingLeft: theme.spacing(1.5),
+    },
   },
   containerGridItem: {
     marginBottom: theme.spacing(3),
@@ -112,7 +123,6 @@ const DisplayJob = () => {
       const response = await axios.get(`${BACKEND_URL}/jobs/${jobId}`);
       if (response.data.success) {
         setJob(response.data.job);
-        console.log("add skills", response.data.job)
       }
     } catch (err) {
       console.error(err);
@@ -280,9 +290,9 @@ const DisplayJob = () => {
   return (
     <>
       {displayAlert()}
-      <Grid container spacing={3} className={classes.root}>
+      <Grid container className={classes.root}>
         {/* Left column */}
-        <Grid item xs={12} lg={6}>
+        <Grid item xs={12} lg={6} className={classes.leftColumn}>
           <Grid container>
             <Grid item xs={12} className={classes.containerGridItem}>
               {displaySummary()}
@@ -294,7 +304,7 @@ const DisplayJob = () => {
         </Grid>
 
         {/* Right Column */}
-        <Grid item xs={12} lg={6}>
+        <Grid item xs={12} lg={6} className={classes.rightColumn}>
           <Grid container>
             <Grid item xs={12} className={classes.containerGridItem}>
               {displayTechStack()}
