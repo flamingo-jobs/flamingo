@@ -426,6 +426,58 @@ const getNewUsers = async (req, res) => {
         
 }
 
+const getWeeklyApplications = async (req, res) => {
+    try{
+        const allJobs = await Jobs.find().select('applicationDetails -_id');
+        const allApplications = allJobs.map(job => job.applicationDetails).flat();
+        
+        // Calculate the current week number
+        const currentdate = new Date();
+        const oneJan = new Date(currentdate.getFullYear(), 0, 1);
+        const numberOfDays = Math.floor((currentdate - oneJan) / (24 * 60 * 60 * 1000));
+        const currentWeek = Math.ceil(( currentdate.getDay() + 1 + numberOfDays) / 7);
+        
+        var weeklyApplications = [];
+        weeklyApplications = allApplications.filter(obj => {
+            const numOfDays = Math.floor((obj.appliedDate - oneJan) / (24 * 60 * 60 * 1000));
+            const appliedWeek = Math.ceil(( obj.appliedDate.getDay() + 1 + numOfDays) / 7);
+            if(appliedWeek === currentWeek) {
+                return obj;
+            }
+        });
+
+        res.status(200).json({ success: true, weeklyApplications: weeklyApplications.length});
+    } catch(error){
+        res.status(400).json({ success: false});
+    }
+}
+
+const getWeeklyJobPostings = async (req, res) => {
+    try{
+        const allJobs = await Jobs.find().select('postedDate -_id');
+        const allPostedDates = allJobs.map(job => job.postedDate);
+        
+        // Calculate the current week number
+        const currentdate = new Date();
+        const oneJan = new Date(currentdate.getFullYear(), 0, 1);
+        const numberOfDays = Math.floor((currentdate - oneJan) / (24 * 60 * 60 * 1000));
+        const currentWeek = Math.ceil(( currentdate.getDay() + 1 + numberOfDays) / 7);
+        
+        var weeklyJobPostings = [];
+        weeklyJobPostings = allPostedDates.filter(date => {
+            const numOfDays = Math.floor((date - oneJan) / (24 * 60 * 60 * 1000));
+            const postedWeek = Math.ceil(( date.getDay() + 1 + numOfDays) / 7);
+            if(postedWeek === currentWeek) {
+                return date;
+            }
+        });
+
+        res.status(200).json({ success: true, weeklyJobPostings: weeklyJobPostings.length});
+    } catch(error){
+        res.status(400).json({ success: false});
+    }
+}
+
 
 module.exports = {
     getMonthlyJobs,
@@ -434,4 +486,6 @@ module.exports = {
     getMonthlyResumes,
     getMonthlySubscriptions,
     getNewUsers,
+    getWeeklyApplications,
+    getWeeklyJobPostings,
 }

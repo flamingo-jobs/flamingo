@@ -21,6 +21,9 @@ function Dashboard() {
             <Grid item xs={12} style={{ minWidth: '100%' }}>
                 <Grid item container spacing={3}>
                     <Grid item xs={12} sm={6} md={3}>
+                        <NewJobPostings />
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={3}>
                         <WeeklyApplications />
                     </Grid>
                     <Grid item xs={12} sm={6} md={3}>
@@ -28,9 +31,6 @@ function Dashboard() {
                     </Grid>
                     <Grid item xs={12} sm={6} md={3}>
                         <NewEmployers />
-                    </Grid>
-                    <Grid item xs={12} sm={6} md={3}>
-                        <NewJobPostings />
                     </Grid>
 
                     <Grid item xs={12} md={6}>

@@ -10,6 +10,8 @@ router.get("/analytics/getMonthlyUsers/:userRole", analyticsController.getMonthl
 router.get("/analytics/getCategories", analyticsController.getJobCategories);
 router.get("/analytics/getMonthlyResumes", analyticsController.getMonthlyResumes);
 router.get("/analytics/getMonthlySubs", analyticsController.getMonthlySubscriptions);
+router.get("/analytics/getWeeklyApplications", analyticsController.getWeeklyApplications);
+router.get("/analytics/getWeeklyJobPostings", analyticsController.getWeeklyJobPostings);
 
 module.exports = router;
 
