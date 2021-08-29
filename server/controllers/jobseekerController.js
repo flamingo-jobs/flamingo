@@ -74,6 +74,7 @@ const getSearched = async (req, res) => {
 const getFiltered = (req, res) => {
   Jobseeker.find(req.body.queryParams, null, req.body.options).exec(
     (err, jobSeekers) => {
+      console.log(JSON.stringify(req.body.queryParams))
       if (err) {
         return res.status(400).json({
           error: err,

@@ -9,7 +9,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import BACKEND_URL from '../../Config';
-import StackList from './StackList';
+import CertificatesList from './CertificateList';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -48,21 +48,21 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function TechnologyList(props) {
+export default function CertificationList(props) {
     const classes = useStyles();
-    const [openTechnologies, setOpenTechnologies] = React.useState(false);
+    const [openCertifications, setOpenCertifications] = React.useState(false);
     const [openTechList, setOpenTechList] = React.useState([]);
     const [checked, setChecked] = React.useState([]);
-    const [technologies, setTechnologies] = useState([]);
-    const [stack, setStack] = useState([]);
+    const [certifications, setCertifications] = useState([]);
+    const [certificates, setCertificates] = useState([]);
 
-    const handleTechnologyClick = () => {
+    const handleCertificationClick = () => {
 
-        setOpenTechnologies(!openTechnologies);
+        setOpenCertifications(!openCertifications);
 
     };
 
-    const handleTechnologyListClick = (id) => {
+    const handleCertificationListClick = (id) => {
         const newList = [...openTechList];
 
         newList[id].open = !newList[id].open;
@@ -71,43 +71,43 @@ export default function TechnologyList(props) {
 
     };
 
-    const updateStackData = (filterData) => {
-        const newStack = [...stack];
-        const currentIndex = stack.findIndex(x => x.name === filterData.name);
+    const updateCertificatesData = (filterData) => {
+        const newCertificates = [...certificates];
+        const currentIndex = certificates.findIndex(x => x.issuer === filterData.issuer);
 
-        const itemObj = { name: filterData.name, stack: filterData.stack, type: filterData.type };
+        const itemObj = { issuer: filterData.issuer, certificates: filterData.certificates };
 
         if (currentIndex === -1) {
-            if (itemObj.stack.length !== 0) {
-                newStack.push(itemObj);
+            if (itemObj.certificates.length !== 0) {
+                newCertificates.push(itemObj);
             }
         } else {
-            if (itemObj.stack.length === 0) {
-                newStack.splice(currentIndex, 1);
+            if (itemObj.certificates.length === 0) {
+                newCertificates.splice(currentIndex, 1);
             } else {
-                newStack.splice(currentIndex, 1);
-                newStack.push(itemObj);
+                newCertificates.splice(currentIndex, 1);
+                newCertificates.push(itemObj);
             }
         }
 
-        setStack(newStack);
+        setCertificates(newCertificates);
     }
 
 
 
     useEffect(() => {
         passFilters();
-        console.log(stack)
-    }, [stack])
+        console.log(certificates)
+    }, [certificates])
 
     useEffect(() => {
-        retrieveTechnologies();
+        retrieveCertifications();
     }, [])
 
     // useEffect(() => {
-    //     displayTechnologies();
+    //     displayCertifications();
     //     console.log("hola")
-    // }, [technologies])
+    // }, [certifications])
 
     // const handleToggle = (value, itemId) => () => {
 
@@ -124,46 +124,38 @@ export default function TechnologyList(props) {
     // };
 
     const passFilters = () => {
-        console.log(stack)
+        console.log(certificates)
         let list = [];
-        let completeStack = [];
+        let completeCertificates = [];
 
-        if (stack.length === 0) {
+        if (certificates.length === 0) {
             props.onChange(0);
         } else {
-            stack.map(item => {
-                list.push({
-                    $or: [{ "technologyStack.list": { $in: item.stack } },
-                    { "technologyStack.frontEnd": { $in: item.stack } },
-                    { "technologyStack.backEnd": { $in: item.stack } }]
-                });
-            })
-
-            props.onChange(list);
+            props.onChange({ $in: Array.prototype.concat.apply([], certificates.map(x => x.certificates)) });
         }
     }
 
-    const retrieveTechnologies = () => {
-        axios.get(`${BACKEND_URL}/technologies`).then(res => {
+    const retrieveCertifications = () => {
+        axios.get(`${BACKEND_URL}/certifications`).then(res => {
             if (res.data.success) {
-                let subList = res.data.existingData.map(technology => {
+                let subList = res.data.existingData.map(certification => {
                     return { open: false }
                 });
                 setOpenTechList(subList);
 
-                setTechnologies(res.data.existingData);
+                setCertifications(res.data.existingData);
             } else {
-                setTechnologies(null)
+                setCertifications(null)
             }
         })
     }
 
-    // const displaySubTechnologies = (technology) => {
+    // const displaySubCertifications = (certification) => {
     //     let listArray = [];
-    //     if (technology.stack.list) {
-    //         listArray = technology.stack.list;
+    //     if (certification.certificates.list) {
+    //         listArray = certification.certificates.list;
     //     } else {
-    //         listArray = technology.stack.frontEnd.concat(technology.stack.backEnd);
+    //         listArray = certification.certificates.frontEnd.concat(certification.certificates.backEnd);
     //     }
     //     return listArray.map((tech, index) => {
     //         const labelId = `category-sub-list-${tech}`;
@@ -192,26 +184,26 @@ export default function TechnologyList(props) {
     //     })
     // }
 
-    const displayTechnologies = () => {
+    const displayCertifications = () => {
 
-        if (technologies) {
-            return technologies.map((technology, index) => {
-                const labelId = `category-list-${technology._id}`;
-                const itemId = technology._id;
+        if (certifications) {
+            return certifications.map((certification, index) => {
+                const labelId = `category-list-${certification._id}`;
+                const itemId = certification._id;
                 return (
-                    <StackList key={itemId} technology={technology} onChange={updateStackData} />
+                    <CertificatesList key={itemId} certification={certification} onChange={updateCertificatesData} />
                     // <List
                     //     component="nav"
                     //     className={classes.root}
                     //     key={itemId}
                     // >
-                    //     <ListItem button onClick={(event) => handleTechnologyListClick(index)}>
-                    //         <ListItemText primary={<Typography className={classes.listTitle} >{technology.name}</Typography>}></ListItemText>
+                    //     <ListItem button onClick={(event) => handleCertificationListClick(index)}>
+                    //         <ListItemText primary={<Typography className={classes.listTitle} >{certification.name}</Typography>}></ListItemText>
                     //         {openTechList[index].open ? <ExpandLess className={classes.listDown} /> : <ExpandMore className={classes.listDown} />}
                     //     </ListItem>
                     //     <Collapse in={openTechList[index].open} timeout="auto" unmountOnExit>
                     //         <List className={classes.root}>
-                    //             {displaySubTechnologies(technology)}
+                    //             {displaySubCertifications(certification)}
                     //         </List>
                     //     </Collapse>
                     // </List>
@@ -219,7 +211,7 @@ export default function TechnologyList(props) {
             })
         } else {
             return (
-                <Typography>No technology available</Typography>
+                <Typography>No certification available</Typography>
             )
         }
     }
@@ -229,13 +221,13 @@ export default function TechnologyList(props) {
                 component="nav"
                 className={classes.root}
             >
-                <ListItem button onClick={handleTechnologyClick} className={classes.listHeader}>
-                    <ListItemText primary={<Typography className={classes.listTitle} >Technology</Typography>}></ListItemText>
-                    {openTechnologies ? <ExpandLess className={classes.listDown} /> : <ExpandMore className={classes.listDown} />}
+                <ListItem button onClick={handleCertificationClick} className={classes.listHeader}>
+                    <ListItemText primary={<Typography className={classes.listTitle} >Certification</Typography>}></ListItemText>
+                    {openCertifications ? <ExpandLess className={classes.listDown} /> : <ExpandMore className={classes.listDown} />}
                 </ListItem>
-                <Collapse in={openTechnologies} timeout="auto" unmountOnExit>
+                <Collapse in={openCertifications} timeout="auto" unmountOnExit>
                     <List className={classes.root}>
-                        {displayTechnologies()}
+                        {displayCertifications()}
                     </List>
                 </Collapse>
             </List>
