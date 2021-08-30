@@ -1,13 +1,11 @@
-import React from 'react';
 import { Grid } from '@material-ui/core';
-import ProfileStatus from './components/ProfileStatus';
+import React from 'react';
 import Space from '../components/Space';
-import RecommendedJobs from './components/RecommendedJobs';
-import RecommendedOrganizations from './components/RecommendedOrganizations';
-import SideMenu from './components/SideMenu';
-import TopCards from './components/TopCards';
 import Favourites from './components/Favourites';
+import ProfileStatus from './components/ProfileStatus';
 import ReachChart from './components/ReachChart';
+import RecommendedJobs from './components/RecommendedJobs';
+import TopCards from './components/TopCards';
 
 
 
