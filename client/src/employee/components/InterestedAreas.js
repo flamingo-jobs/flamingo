@@ -6,7 +6,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import EditIcon from '@material-ui/icons/Edit';
-import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
+import InsertEmoticon from '@material-ui/icons/InsertEmoticon';
+import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
@@ -120,28 +121,12 @@ const useStyles = makeStyles({
   },
 });
 
-function Skills(props) {
+function InterestedAreas(props) {
   const classes = useStyles();
   const [fetchedData, setFetchedData] = useState('');
   const [open, setOpen] = useState(false);
-  const [skills, setSkills] = useState([]);
-  const names =[
-    "Cloud and Distributed Computing",
-    "Statistical Analysis and Data Mining",
-    "SEO/SEM Marketing",
-    "Middleware and Integration Software",
-    'Mobile Development',
-    'Network and Information Security',
-    'Public Speaking',
-    'Analytical Thinking',
-    'Object Oriented Programming',
-    'Leadership',
-    'Web Development',
-    'Data Engineering and Data Warehousing',
-    'Algorithm Design',
-    'Shell Scripting Languages',
-    'Software Modeling and Process Design'];
-  const [chipData, setChipData] = useState(names);
+  const [interests, setInterests] = useState([]);
+  const [chipData, setChipData] = useState([]);
   const [newData, setNewData] = useState(null);
   const [show, setShow] = useState(false);
 
@@ -165,15 +150,27 @@ function Skills(props) {
 
 
   function fetchData(){
+    axios.get(`${BACKEND_URL}/categories`).then(res => {
+        if (res.data.success) {
+            res.data.existingData?.forEach(element => {
+                if(chipData.indexOf(element.name) === -1 ){
+                    chipData.push(element.name);
+                }
+            });
+        }
+    });
+
+    
+
     axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
     .then(res => {
       if(res.data.success){
-        if(res.data.jobseeker.skills.length > 0){
-          if(res.data.jobseeker.skills[0] === ""){
-            res.data.jobseeker.skills.splice(0,1)
+        if(res.data.jobseeker.interests.length > 0){
+          if(res.data.jobseeker.interests[0] === ""){
+            res.data.jobseeker.interests.splice(0,1)
             i++;
           }
-          setSkills(res.data.jobseeker.skills)
+          setInterests(res.data.jobseeker.interests)
         }       
       }
     })
@@ -181,9 +178,9 @@ function Skills(props) {
   }
 
   function removeDuplicates(){
-    for (let index = 0; index < skills.length; index++) {
+    for (let index = 0; index < interests.length; index++) {
       for (let j = 0; j < chipData.length; j++) {
-        if(chipData[j] === skills[index]){
+        if(chipData[j] === interests[index]){
           chipData.splice(j, 1);
           break;
         }        
@@ -239,28 +236,28 @@ function Skills(props) {
   function onSubmit(e){
     e.preventDefault();
 
-    var l = skills.length;
+    var l = interests.length;
     for (let index = 0; index < newData?.length; index++) {
-      skills[l++]=newData[index];   
+      interests[l++]=newData[index];   
     }
 
-    const skillset = {
-      skills: skills,
+    const interestSet = {
+      interests: interests,
     }
 
 
-    axios.put(`${BACKEND_URL}/jobseeker/updateSkills/${loginId}`,skillset)
+    axios.put(`${BACKEND_URL}/jobseeker/update/${loginId}`,interestSet)
     .then(res => {
       if(res.data.success){
         setAlertData({
           severity: "success",
-          msg: "Skills added successfully!",
+          msg: "Interests added successfully!",
         });
         handleAlert();
       } else {
         setAlertData({
           severity: "error",
-          msg: "Skills could not be added!",
+          msg: "Interests could not be added!",
         });
         handleAlert();
       }
@@ -273,20 +270,23 @@ function Skills(props) {
 
   const handleDelete = (chipToDelete) => () => {
     setChipData([])
-    skills.splice(chipToDelete,1)
-    axios.put(`${BACKEND_URL}/jobseeker/removeSkill/${loginId}`,skills)
+    interests.splice(chipToDelete,1)
+    const data = {
+        interests : interests,
+    }
+    axios.put(`${BACKEND_URL}/jobseeker/update/${loginId}`,data)
     .then(res => {
       if(res.data.success){
         setAlertData({
           severity: "success",
-          msg: "Skill deleted successfully!",
+          msg: "Interest deleted successfully!",
         });
         handleAlert();
         fetchData();
       } else {
         setAlertData({
           severity: "error",
-          msg: "Skill could not be deleted!",
+          msg: "Interest could not be deleted!",
         });
       }
     });
@@ -316,7 +316,7 @@ function Skills(props) {
               <TextField
                 {...params}
                 variant="standard"
-                label="Select new skills"
+                label="Select Interests"
                 placeholder="+ new"
               />
             )}
@@ -339,8 +339,8 @@ function Skills(props) {
       <Grid container spacing={3}>
         <Grid item xs style={{ textAlign: 'left',}}>
             <Typography gutterBottom variant="h5" style={{color: theme.palette.tuftsBlue,padding:'10px',fontWeight:'bold'}}>
-                <EmojiEventsIcon style={{color: theme.palette.turfsBlue,marginRight: '10px',marginBottom:'-5px',fontSize:'27'}}/>
-                Skills
+                <InsertEmoticon style={{color: theme.palette.turfsBlue,marginRight: '10px',marginBottom:'-5px',fontSize:'27'}}/>
+                Interested Areas
             </Typography>
         </Grid>
         <Grid item style={{ textAlign: 'right' }}>
@@ -358,7 +358,7 @@ function Skills(props) {
         <Grid item xs={12} alignItems="center" justify="center">
             <Paper elevation={0} component="ul" className={classes.paperChips}>
                 {
-                skills.map((data) => {
+                interests.map((data) => {
                     let icon;
                     return show ? (
                     <li key={i++}>
@@ -386,4 +386,4 @@ function Skills(props) {
   );
 }
 
-export default Skills
+export default InterestedAreas

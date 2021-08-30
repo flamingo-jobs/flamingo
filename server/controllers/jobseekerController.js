@@ -248,6 +248,23 @@ const updateTechnologyStack = (req, res) => {
   );
 };
 
+const updateInterests = (req, res) => {
+  Jobseeker.findOneAndUpdate(
+    { _id: req.params.id },
+    { $push: { interests: req.body } },
+    (err, jobseeker) => {
+      if (err) {
+        return res.status(400).json({
+          error: err,
+        });
+      }
+      return res.status(200).json({
+        success: true,
+      });
+    }
+  );
+};
+
 const updateVolunteer = (req, res) => {
   Jobseeker.updateOne(
     { _id: req.params.id },
@@ -969,6 +986,7 @@ module.exports = {
   updateProfilePic,
   updateTechnologyItem,
   updateTechnologyStack,
+  updateInterests,
   updateVolunteer,
   updateAward,
   updateWork,

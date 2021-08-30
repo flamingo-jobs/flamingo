@@ -56,8 +56,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function InterestArea(props) {
     const classes = useStyles();
+    const [fetchedData, setFetchedData] = useState(false);
     const [openCategories, setOpenCategories] = React.useState(false);
     const [categories, setCategories] = useState([]);
+    const [interests, setInterests] = useState(null);
+    const [checked, setChecked] = useState([1]);
     const [alertShow, setAlertShow] = React.useState(false);
     const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
 
@@ -102,42 +105,6 @@ export default function InterestArea(props) {
         setOpenCategories(!openCategories);
     };
 
-
-    const [checked, setChecked] = useState([]);
-
-    useEffect(() => {
-        passFilters();
-    }, [checked])
-
-    useEffect(() => {
-        retrieveCategories();
-    }, [])
-
-    const handleToggle = (value, itemId) => () => {
-
-        const newChecked = [...checked];
-        const itemObj = { index: itemId, name: value };
-        const currentIndex = checked.findIndex(x => x.index === itemId);
-
-        if (currentIndex === -1) {
-            newChecked.push(itemObj);
-        } else {
-            newChecked.splice(currentIndex, 1);
-        }
-        setChecked(newChecked);
-    };
-
-    const passFilters = () => {
-        // let values = [];
-        // if (checked.length === 0) {
-        //     props.onChange(0);
-        // } else {
-        //     checked.map((value) => values.push(value.name));
-        //     props.onChange({ $in: values });
-        // }
-    }
-
-
     const retrieveCategories = () => {
         // console.log(filters);
         axios.get(`${BACKEND_URL}/categories`).then(res => {
@@ -146,15 +113,86 @@ export default function InterestArea(props) {
             } else {
                 setCategories(null)
             }
+        });
+    }
+
+    const retrieveInterests = () => {
+        
+        axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
+        .then(res => {
+        if(res.data.success){
+            setInterests(res.data.jobseeker.interests)
+        }
         })
+        console.log(interests)
+      //  setCheckedItems();
+    }
+
+    useEffect(() => {
+        retrieveCategories();
+    }, [])
+
+    useEffect(() => {
+        retrieveInterests();
+    }, [])
+
+    useEffect(() => {
+        setCheckedItems();
+    }, [interests])
+
+    const handleToggle = (value, itemId) => () => {
+        let currentIndex = 0;
+        const itemObj = { index: itemId, name: value };
+        checked?.forEach(element => {
+            if(element.name === value){
+                currentIndex = 1;
+            }
+        });
+
+        if (currentIndex === 0) {
+            checked.push(itemObj);
+        } else {
+            checked.splice(currentIndex, 1);
+        }
+        let interestSet=[];
+        checked?.forEach(interest => {
+            interestSet.push(interest.name);
+        });
+
+        const data = {
+            interests: interestSet,
+        }
+        
+        axios.put(`${BACKEND_URL}/jobseeker/update/${loginId}`,data)
+        .then(res => {
+            if(!res.data.success){
+                setAlertData({
+                severity: "error",
+                msg: "Interests could not be updated!",
+                });
+                handleAlert();
+            }
+        });
+    };
+
+    const setCheckedItems = () => {
+        categories?.forEach(category => {
+            let index = interests.includes(category.name);
+            if(index){
+                const itemObj = { index: category._id, name: category.name };
+                setChecked(itemObj);
+                console.log(itemObj)
+            }
+        });
+        setFetchedData(true);
     }
     
     const displayCategories = () => {
-
-        if (categories) {
+        if (interests) {
             return categories.map(category => {
                 const labelId = `category-list-${category._id}`;
                 const itemId = category._id;
+                const index = interests.includes(category.name);
                 if(category.name === "Other"){
                     return;
                 }else{
@@ -163,7 +201,7 @@ export default function InterestArea(props) {
                             <ListItemIcon className={classes.itemCheckBox}>
                                 <Checkbox
                                     edge="start"
-                                    checked={checked.findIndex(x => x.index === itemId) !== -1}
+                                    checked={index}
                                     tabIndex={-1}
                                     disableRipple
                                     inputProps={{ 'aria-labelledby': labelId }}
@@ -211,7 +249,7 @@ export default function InterestArea(props) {
         
       </Grid>
       <List className={classes.root}>
-          {displayCategories()}
+          {fetchedData ? displayCategories() : null}
       </List>
     </FloatCard>
     </>

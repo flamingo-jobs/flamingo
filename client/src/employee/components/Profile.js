@@ -7,7 +7,7 @@ import Achievements from './Awards';
 import CertificatesSection from './CertificatesSection';
 import Course from './Course';
 import EducationSection from './EducationSection';
-import InterestArea from './InterestArea';
+import InterestedAreas from './InterestedAreas';
 import IntroSection from './IntroSection';
 import ProjectsSection from './ProjectsSection';
 import Skills from './Skills';
@@ -72,7 +72,7 @@ function Profile() {
                 <Volunteer jobseekerID={jobseekerID} />
             </Grid>
             <Grid item xs={12} lg={8}>
-                <InterestArea jobseekerID={jobseekerID} />
+                <InterestedAreas jobseekerID={jobseekerID} />
                 <Space />
                 <WorkExperience jobseekerID={jobseekerID} />
                 <Space />
