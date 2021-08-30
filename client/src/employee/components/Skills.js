@@ -1,20 +1,19 @@
-import React, {useState, useEffect} from 'react';
-import axios from 'axios';
-import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import FloatCard from '../../components/FloatCard';
-import theme from '../../Theme';
-import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
-import Grid from '@material-ui/core/Grid';
-import BACKEND_URL from '../../Config';
-import EditIcon from '@material-ui/icons/Edit';
-import SnackBarAlert from "../../components/SnackBarAlert";
 import Chip from '@material-ui/core/Chip';
+import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import TagFacesIcon from '@material-ui/icons/TagFaces';
+import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import EditIcon from '@material-ui/icons/Edit';
+import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import FloatCard from '../../components/FloatCard';
+import SnackBarAlert from "../../components/SnackBarAlert";
+import BACKEND_URL from '../../Config';
+import theme from '../../Theme';
 
 const useStyles = makeStyles({
   defaultButton: {
