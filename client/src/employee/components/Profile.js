@@ -1,20 +1,20 @@
-import React, {useState, useEffect} from 'react'
-import {  makeStyles } from '@material-ui/core'
-import '../styles/Profile.css'
 import Grid from '@material-ui/core/Grid';
-import IntroSection from './IntroSection'
-import EducationSection from './EducationSection';
-import ProjectsSection from './ProjectsSection';
-import Achievements from './Awards';
-import Space from './Space';
-import WorkExperience from './WorkExperience';
-import Volunteer from './Volunteer';
-import Course from './Course';
-import TechnologySection from './TechnologySection';
-import Skills from './Skills';
-import CertificatesSection from './CertificatesSection';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import BACKEND_URL from '../../Config';
+import '../styles/Profile.css';
+import Achievements from './Awards';
+import CertificatesSection from './CertificatesSection';
+import Course from './Course';
+import EducationSection from './EducationSection';
+import InterestArea from './InterestArea';
+import IntroSection from './IntroSection';
+import ProjectsSection from './ProjectsSection';
+import Skills from './Skills';
+import Space from './Space';
+import TechnologySection from './TechnologySection';
+import Volunteer from './Volunteer';
+import WorkExperience from './WorkExperience';
 
 
 function Profile() {
@@ -72,6 +72,8 @@ function Profile() {
                 <Volunteer jobseekerID={jobseekerID} />
             </Grid>
             <Grid item xs={12} lg={8}>
+                <InterestArea jobseekerID={jobseekerID} />
+                <Space />
                 <WorkExperience jobseekerID={jobseekerID} />
                 <Space />
                 <ProjectsSection jobseekerID={jobseekerID} />
