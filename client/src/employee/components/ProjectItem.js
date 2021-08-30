@@ -132,6 +132,15 @@ const useStyles = makeStyles((theme) => ({
       item: {
         color: "#666",
         padding: "10px 20px"
+      },
+      linkCont: {
+        textAlign:'left',
+        paddingTop:'10px',
+        wordWrap: "break-word",
+        overflowWrap: "break-word",
+        [theme.breakpoints.down('sm')]: {
+          width: "23vw"
+        },
       }
 }));
 
@@ -375,8 +384,8 @@ function handleOpen(){
             onMouseLeave={e => {
                 setStyleEdit({display: 'none'});
         }}>
-            <Grid container spacing={3}>
-              <Grid item xs={11} style={{marginTop:"-5px"}}>
+            <Grid container xs={12} spacing={3}>
+              <Grid item xs={11} style={{marginTop:"-5px",boxSizing:"border-box"}}>
                 <Typography gutterBottom style={{textAlign:'left',fontSize:'16px',fontWeight:'bold',color:'#666'}}>
                     {state.name}
                 </Typography>
@@ -386,8 +395,8 @@ function handleOpen(){
                 <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'14px',fontWeight:'bold',paddingTop:'5px'}}>
                     {state.usedTech ? "Tech Stack : " + state.usedTech : ""}
                 </Typography>
-                <Typography variant="body2" color="textSecondary" style={{textAlign:'left',paddingTop:'10px'}}>
-                    {state.link === null ? "" : "Link : "+state.link}
+                <Typography variant="body2" color="textSecondary" className={classes.linkCont}>
+                    <b>{state.link === null || state.link === "" ? "" : "Link : "}</b>{state.link}
                 </Typography>
               </Grid>
               <Grid item xs={1} style={{padding:"10px 0px 0px 0px",textAlign:'right'}}>
