@@ -19,9 +19,11 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 10,
     margin: "30px 10px 30px 10px",
     flexGrow: 1,
+    paddingBottom: 24
   },
   mainGrid: {
     paddingLeft: 12,
+    paddingBottom: 12,
     [theme.breakpoints.down("sm")]: {
       flexDirection: "column",
       alignItems: "stretch",

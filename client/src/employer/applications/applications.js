@@ -41,8 +41,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "flex-end",
   },
   shortlistBtn: {
-    paddingLeft: "13px",
-    paddingRight: "13px",
+    padding: 16,
     borderRadius: 12,
     color: theme.palette.white,
     backgroundColor: theme.palette.vividSkyBlue,
@@ -61,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
   shorlistTitleText: {
-    color: theme.palette.vividSkyBlue,
+    color: theme.palette.stateBlue,
   },
   peopleGrid: {
     [theme.breakpoints.down('sm')]: {
