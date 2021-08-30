@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import FloatCard from '../../components/FloatCard'
 import CertificationList from './CertificationList'
 import EducationList from './EducationList'
+import ExperienceList from './ExperienceList'
 import InterestList from './InterestList'
 import OrganizationList from './OrganizationList'
 import TechnologyList from './TechnologyList'
@@ -37,6 +38,7 @@ function JobFilters(props) {
     // const [title, setTitle] = useState(0);
     const [interests, setCategory] = useState(0);
     const [education, setEducation] = useState(0);
+    const [experience, setExperience] = useState(0);
     const [organization, setOrganization] = useState(0);
     const [technologyStack, setTechnologyStack] = useState(0);
     const [certifications, setCertifications] = useState(0);
@@ -44,7 +46,7 @@ function JobFilters(props) {
     useEffect(() => {
         combineFilters();
 
-    }, [type, interests, organization, technologyStack, education, certifications]);
+    }, [type, interests, organization, technologyStack, education, certifications, experience]);
 
     const updateType = (filterData) => {
         setType(filterData);
@@ -60,6 +62,10 @@ function JobFilters(props) {
 
     const updateEducation = (filterData) => {
         setEducation(filterData);
+    }
+
+    const updateExperience = (filterData) => {
+        setExperience(filterData);
     }
 
     const updateOrganization = (filterData) => {
@@ -80,6 +86,10 @@ function JobFilters(props) {
         let filterObjects = {};
         if (education !== 0) {
             filterObjects = { ...filterObjects, "education.type": education };
+        }
+
+        if (experience !== 0) {
+            filterObjects = { ...filterObjects, "noYearsOfExp": experience };
         }
 
         if (certifications !== 0) {
@@ -110,6 +120,9 @@ function JobFilters(props) {
             </div>
             <div className={classes.categories}>
                 <EducationList onChange={updateEducation} />
+            </div>
+            <div className={classes.categories}>
+                <ExperienceList onChange={updateExperience} />
             </div>
             <div className={classes.categories}>
                 <InterestList onChange={updateCategory} />

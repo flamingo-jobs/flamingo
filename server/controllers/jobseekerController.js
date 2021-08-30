@@ -1,5 +1,5 @@
 const Jobseeker = require("../models/jobseeker");
-var multer  = require('multer');
+var multer = require('multer');
 var path = require('path');
 const fs = require("fs");
 
@@ -169,13 +169,13 @@ var storage = multer.diskStorage({
 
 const uploadPic = multer({ storage: storage }).single("photo");
 
-const fileFilter=(req, file, cb)=>{
+const fileFilter = (req, file, cb) => {
   console.log("inside fileFilter")
- if(file.mimetype ==='image/jpeg' || file.mimetype ==='image/jpg' || file.mimetype ==='image/png'){
-     cb(null,true);
- }else{
-     cb(null, false);
- }
+  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg' || file.mimetype === 'image/png') {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
 
 }
 
@@ -356,6 +356,52 @@ const updateWork = (req, res) => {
           error: err,
         });
       }
+
+      Jobseeker.findById(req.params.id).exec((err, jobseeker) => {
+        if (err) {
+          return res.status(400).json({
+            error: err,
+          });
+        }
+
+        let dateDiff = 0;
+
+        jobseeker.work.forEach((work) => {
+          const date1 = new Date(`1/${work.from}`);
+          const date2 = new Date(`1/${work.to}`);
+          const diffTime = Math.abs(date2 - date1);
+          const diffYears = Math.abs(diffTime / (1000 * 60 * 60 * 24 * 365));
+          dateDiff += diffYears;
+        });
+
+        let experience;
+
+        if (dateDiff === 0) {
+          experience = "0 years";
+        } else if (dateDiff > 0 && dateDiff < 1) {
+          experience = "0-1 years";
+        } else if (dateDiff >= 1 && dateDiff < 3) {
+          experience = "1-3 years";
+        } else if (dateDiff >= 3 && dateDiff < 5) {
+          experience = "3-5 years";
+        } else if (dateDiff > 5) {
+          experience = "5+ years";
+        }
+
+        Jobseeker.updateOne(
+          { _id: jobseeker._id },
+          {
+            $set: { 'noYearsOfExp': experience },
+          },
+          (err, jobseeker) => {
+            if (err) {
+              return res.status(400).json({
+                error: err,
+              });
+            }
+          })
+      });
+
       return res.status(200).json({
         success: true,
       });
@@ -572,6 +618,52 @@ const addWork = (req, res) => {
           error: err,
         });
       }
+
+      Jobseeker.findById(req.params.id).exec((err, jobseeker) => {
+        if (err) {
+          return res.status(400).json({
+            error: err,
+          });
+        }
+
+        let dateDiff = 0;
+
+        jobseeker.work.forEach((work) => {
+          const date1 = new Date(`1/${work.from}`);
+          const date2 = new Date(`1/${work.to}`);
+          const diffTime = Math.abs(date2 - date1);
+          const diffYears = Math.abs(diffTime / (1000 * 60 * 60 * 24 * 365));
+          dateDiff += diffYears;
+        });
+
+        let experience;
+
+        if (dateDiff === 0) {
+          experience = "0 years";
+        } else if (dateDiff > 0 && dateDiff < 1) {
+          experience = "0-1 years";
+        } else if (dateDiff >= 1 && dateDiff < 3) {
+          experience = "1-3 years";
+        } else if (dateDiff >= 3 && dateDiff < 5) {
+          experience = "3-5 years";
+        } else if (dateDiff > 5) {
+          experience = "5+ years";
+        }
+
+        Jobseeker.updateOne(
+          { _id: jobseeker._id },
+          {
+            $set: { 'noYearsOfExp': experience },
+          },
+          (err, jobseeker) => {
+            if (err) {
+              return res.status(400).json({
+                error: err,
+              });
+            }
+          })
+      });
+
       return res.status(200).json({
         success: true,
       });
@@ -656,6 +748,52 @@ const removeWork = (req, res) => {
           error: err,
         });
       }
+
+      Jobseeker.findById(req.params.id).exec((err, jobseeker) => {
+        if (err) {
+          return res.status(400).json({
+            error: err,
+          });
+        }
+
+        let dateDiff = 0;
+
+        jobseeker.work.forEach((work) => {
+          const date1 = new Date(`1/${work.from}`);
+          const date2 = new Date(`1/${work.to}`);
+          const diffTime = Math.abs(date2 - date1);
+          const diffYears = Math.abs(diffTime / (1000 * 60 * 60 * 24 * 365));
+          dateDiff += diffYears;
+        });
+
+        let experience;
+
+        if (dateDiff === 0) {
+          experience = "0 years";
+        } else if (dateDiff > 0 && dateDiff < 1) {
+          experience = "0-1 years";
+        } else if (dateDiff >= 1 && dateDiff < 3) {
+          experience = "1-3 years";
+        } else if (dateDiff >= 3 && dateDiff < 5) {
+          experience = "3-5 years";
+        } else if (dateDiff > 5) {
+          experience = "5+ years";
+        }
+
+        Jobseeker.updateOne(
+          { _id: jobseeker._id },
+          {
+            $set: { 'noYearsOfExp': experience },
+          },
+          (err, jobseeker) => {
+            if (err) {
+              return res.status(400).json({
+                error: err,
+              });
+            }
+          })
+      });
+      
       return res.status(200).json({
         success: true,
       });
