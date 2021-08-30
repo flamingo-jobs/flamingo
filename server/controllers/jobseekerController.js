@@ -132,6 +132,24 @@ const getByIds = async (req, res) => {
   }
 };
 
+const getApplicants = (req, res) => {
+  console.log(req.body.queryParams);
+  Jobseeker.find(req.body.queryParams, null, req.body.options).exec(
+    (err, jobSeekers) => {
+      console.log(JSON.stringify(req.body.queryParams))
+      if (err) {
+        return res.status(400).json({
+          error: err,
+        });
+      }
+      return res.status(200).json({
+        success: true,
+        existingData: jobSeekers,
+      });
+    }
+  );
+};
+
 // ------update ----------------------------------------
 const update = (req, res) => {
   Jobseeker.findByIdAndUpdate(
@@ -793,7 +811,7 @@ const removeWork = (req, res) => {
             }
           })
       });
-      
+
       return res.status(200).json({
         success: true,
       });
@@ -973,5 +991,6 @@ module.exports = {
   getCount,
   block,
   getNotifications,
-  getForTable
+  getForTable,
+  getApplicants
 };

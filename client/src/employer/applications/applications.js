@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { Grid, Typography, Button } from "@material-ui/core";
+import { Button, Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
-import BACKEND_URL from "../../Config";
-import FloatCard from "../../components/FloatCard";
-import ApplicantCard from "./components/applicantCard";
-import SnackBarAlert from "../../components/SnackBarAlert";
-import NoAccess from "../../components/NoAccess";
 import PeopleIcon from "@material-ui/icons/People";
-import ShortlistModal from "./components/shortlistModal";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import FloatCard from "../../components/FloatCard";
+import NoAccess from "../../components/NoAccess";
 import NoInfo from "../../components/NoInfo";
-
+import SnackBarAlert from "../../components/SnackBarAlert";
+import BACKEND_URL from "../../Config";
+import ApplicantCard from "./components/applicantCard";
+import ShortlistModal from "./components/shortlistModal";
+import PeopleFilters from "../../people/components/PeopleFilters";
+import PeopleSearchBar from "../../people/components/PeopleSearchBar";
 const jwt = require("jsonwebtoken");
 
 let resumeAccess = false;
@@ -38,7 +39,6 @@ const useStyles = makeStyles((theme) => ({
   shortlistBtnContainer: {
     display: "flex",
     justifyContent: "flex-end",
-    marginBottom: theme.spacing(2),
   },
   shortlistBtn: {
     paddingLeft: "13px",
@@ -63,6 +63,42 @@ const useStyles = makeStyles((theme) => ({
   shorlistTitleText: {
     color: theme.palette.vividSkyBlue,
   },
+  peopleGrid: {
+    [theme.breakpoints.down('sm')]: {
+      maxWidth: 'unset',
+      flexDirection: 'column',
+      alignItems: "stretch",
+      order: 3
+    },
+  },
+  mainGrid: {
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+      alignItems: "stretch"
+    },
+  },
+  filterGrid: {
+    [theme.breakpoints.down('sm')]: {
+      order: 2
+    },
+  },
+  searchGrid: {
+    [theme.breakpoints.down('sm')]: {
+      order: 1
+    },
+  },
+  pagination: {
+    justifyContent: 'center',
+  },
+  gridCard: {
+    display: "grid",
+    marginBottom: 12
+  },
+  titleCard: {
+    marginTop: 24,
+    marginBottom: 16
+  }
+
 }));
 
 // style={{border: "1px solid red"}}
@@ -73,6 +109,7 @@ const Applications = () => {
   const isSignedIn = sessionStorage.getItem("userToken") ? true : false;
   const [jobId, setJobId] = useState(window.location.pathname.split("/")[3]);
   const [job, setJob] = useState("empty");
+  const [filters, setFilters] = useState({});
 
   const [applicantIds, setApplicantIds] = useState([]);
   const [applicants, setApplicants] = useState("empty");
@@ -87,6 +124,49 @@ const Applications = () => {
   const [shortlisted, setShortlisted] = useState(false);
 
   const [customSettings, setCustomSettings] = useState([]);
+
+  const [search, setSearch] = useState({});
+  const [queryParams, setQueryParams] = useState({});
+
+  const [page, setPage] = React.useState(1);
+
+  const changePage = (event, value) => {
+    setPage(value);
+  };
+
+  useEffect(() => {
+    // retrievePeople();
+  }, [queryParams, page])
+
+  useEffect(() => {
+    updateQuery();
+  }, [filters, search, applicantIds])
+
+
+  useEffect(() => {
+    if (shortlisted) {
+      handleShortlistSubmit();
+    }
+  }, [applicants])
+
+  const updateSearch = (searchData) => {
+
+    setSearch(searchData);
+  }
+
+  const updateQuery = () => {
+
+    if (Object.keys(filters).length !== 0 && Object.keys(search).length !== 0) {
+      setQueryParams({ $and: [{ '_id': { $in: applicantIds } }, { $and: [filters, search] }] });
+    } else if (Object.keys(filters).length === 0) {
+      setQueryParams({ $and: [{ '_id': { $in: applicantIds } }, search] });
+    } else if (Object.keys(search).length === 0) {
+      setQueryParams({ $and: [{ '_id': { $in: applicantIds } }, filters] });
+    } else {
+      setQueryParams({ '_id': { $in: applicantIds } });
+    }
+  }
+
 
   const handleSliderChange = (e, newCount) => {
     setShortlistCount(newCount);
@@ -112,6 +192,10 @@ const Applications = () => {
     setAlertShow(true);
   };
 
+  const updateFilters = (filterData) => {
+    setFilters(filterData);
+  }
+
   const handleAlertClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -124,7 +208,7 @@ const Applications = () => {
 
   useEffect(() => {
     retrieveJobseekers();
-  }, [applicantIds]);
+  }, [queryParams]);
 
   const retrieveJob = async () => {
     try {
@@ -151,10 +235,9 @@ const Applications = () => {
 
   const retrieveJobseekers = async () => {
     if (applicantIds.length) {
-      const ids = applicantIds.join("$$");
       try {
-        const response = await axios.get(
-          `${BACKEND_URL}/jobseeker/applicants/${ids}`
+        const response = await axios.post(
+          `${BACKEND_URL}/jobseeker/applicants`, { queryParams: queryParams, options: {} }
         );
         if (response.data.success) {
           // var jobseekers = response.data.jobseekers;
@@ -165,7 +248,8 @@ const Applications = () => {
           //   )[0].score;
           //   user.score = score;
           // });
-          setApplicants(response.data.jobseekers);
+          console.log(response.data.existingData)
+          setApplicants(response.data.existingData);
         }
       } catch (err) {
         setAlertData({
@@ -177,35 +261,41 @@ const Applications = () => {
     }
   };
 
-  const displayApplicantCards = () => {
+  const displayApplicants = () => {
     if (applicants !== "empty") {
       if (isSignedIn && role === "employer" && userId) {
         return (
-          <div>
+          <>
             {!shortlisted &&
               applicants.map((user) => (
-                <ApplicantCard
-                  key={user._id}
-                  jobseeker={user}
-                  jobId={jobId}
-                  setAlertData={setAlertData}
-                  handleAlert={handleAlert}
-                ></ApplicantCard>
+                <Grid item key={job._id} xs={12} className={classes.gridCard}>
+                  <ApplicantCard
+                    key={user._id}
+                    jobseeker={user}
+                    jobId={jobId}
+                    setAlertData={setAlertData}
+                    handleAlert={handleAlert}
+                  ></ApplicantCard>
+                </Grid>
               ))}
-          </div>
+          </>
         );
       } else {
         return (
-          <FloatCard>
-            <Typography variant="h6">You must log in first</Typography>
-          </FloatCard>
+          <Grid item key={job._id} xs={12} className={classes.gridCard}>
+            <FloatCard>
+              <Typography variant="h6">You must log in first</Typography>
+            </FloatCard>
+          </Grid>
         );
       }
     } else {
       return (
-        <FloatCard>
-          <NoInfo message="Sorry, There are no any applications yet." />
-        </FloatCard>
+        <Grid item sm={12} style={{ marginBottom: 16 }}>
+          <FloatCard>
+            <NoInfo message="Sorry, There are no any applications yet." />
+          </FloatCard>
+        </Grid>
       );
     }
   };
@@ -229,26 +319,6 @@ const Applications = () => {
     );
   };
 
-  const displayApplicants = () => {
-    return (
-      <div>
-        {!shortlisted && applicantIds.length !== 0 && (
-          <div className={classes.shortlistBtnContainer}>
-            <Button
-              className={classes.shortlistBtn}
-              startIcon={<PeopleIcon />}
-              onClick={handleOpenShortlistModal}
-            >
-              Shortlist the Applicants
-            </Button>
-          </div>
-        )}
-
-        {displayApplicantCards()}
-      </div>
-    );
-  };
-
   const displayShortlistedApplicants = () => {
     if (scoredApplicants !== "empty" && shortlisted) {
       const shortlistedJobseekers = scoredApplicants.slice(0, shortlistCount);
@@ -257,38 +327,30 @@ const Applications = () => {
 
       if (isSignedIn && role === "employer" && userId) {
         return (
-          <div>
-            {shortlisted && (
-              <div className={classes.shortlistBtnContainer}>
-                <Button
-                  className={classes.shortlistBtn}
-                  startIcon={<PeopleIcon />}
-                  onClick={handleOpenShortlistModal}
-                >
-                  Shortlist the Applicants
-                </Button>
-              </div>
-            )}
-            <div className={classes.shorlistTitle}>
+          <>
+
+            <Grid item xs={12} className={classes.titleCard} style={{ marginTop: 0 }}>
               <FloatCard>
                 <Typography className={classes.shorlistTitleText} variant="h6">
                   Shortlisted Applicants
                 </Typography>
               </FloatCard>
-            </div>
+            </Grid>
 
             {shortlistedJobseekers.map((user) => (
-              <ApplicantCard
-                key={user._id}
-                jobseeker={user}
-                jobId={jobId}
-                setAlertData={setAlertData}
-                handleAlert={handleAlert}
-              ></ApplicantCard>
+              <Grid item key={user._id} xs={12} className={classes.gridCard}>
+                <ApplicantCard
+                  key={user._id}
+                  jobseeker={user}
+                  jobId={jobId}
+                  setAlertData={setAlertData}
+                  handleAlert={handleAlert}
+                ></ApplicantCard>
+              </Grid>
             ))}
 
             {otherJobseekers.length !== 0 && (
-              <div className={classes.applicantTitle}>
+              <Grid item xs={12} className={classes.titleCard}>
                 <FloatCard>
                   <Typography
                     className={classes.shorlistTitleText}
@@ -297,25 +359,29 @@ const Applications = () => {
                     Other Applicants
                   </Typography>
                 </FloatCard>
-              </div>
+              </Grid>
             )}
 
             {otherJobseekers.map((user) => (
-              <ApplicantCard
-                key={user._id}
-                jobseeker={user}
-                jobId={jobId}
-                setAlertData={setAlertData}
-                handleAlert={handleAlert}
-              ></ApplicantCard>
+              <Grid item key={user._id} xs={12} className={classes.gridCard}>
+                <ApplicantCard
+                  key={user._id}
+                  jobseeker={user}
+                  jobId={jobId}
+                  setAlertData={setAlertData}
+                  handleAlert={handleAlert}
+                ></ApplicantCard>
+              </Grid>
             ))}
-          </div>
+          </>
         );
       } else {
         return (
-          <FloatCard>
-            <Typography variant="h6">No applicants</Typography>
-          </FloatCard>
+          <Grid item xs={12} className={classes.gridCard}>
+            <FloatCard>
+              <Typography variant="h6">No applicants</Typography>
+            </FloatCard>
+          </Grid>
         );
       }
     }
@@ -339,9 +405,11 @@ const Applications = () => {
 
 
   const handleShortlistSubmit = async (e) => {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
 
-    if(shortlistCount === 0){
+    if (shortlistCount === 0) {
       setAlertData({
         severity: "info",
         msg: "Shortlist count should be greater than 0",
@@ -349,7 +417,7 @@ const Applications = () => {
       handleAlert();
       return;
     }
-    
+
     if (customSettings.length !== 3) {
       if (jobId && userId && applicants !== "empty") {
         try {
@@ -363,16 +431,16 @@ const Applications = () => {
 
             response.data.exsitingData.map((applicant) => {
               newApplicants.map((jobseeker) => {
-                if(jobseeker._id === applicant.userId){
+                if (jobseeker._id === applicant.userId) {
                   jobseeker.score = applicant.score;
                 }
-              }); 
+              });
             });
 
-            newApplicants.sort((a,b) => {
-              return b.score - a.score; 
+            newApplicants.sort((a, b) => {
+              return b.score - a.score;
             });
-            
+
             setScoredApplicants(newApplicants);
           }
         } catch (err) {
@@ -388,7 +456,7 @@ const Applications = () => {
       if (jobId && shortlistCount > 0) {
         try {
           const response = await axios.post(
-            `${BACKEND_URL}/jobs/customShortlisting`, {jobId: jobId, settings: customSettings}
+            `${BACKEND_URL}/jobs/customShortlisting`, { jobId: jobId, settings: customSettings }
           );
           if (response.data.success) {
             handleCloseShortlistModal();
@@ -397,16 +465,16 @@ const Applications = () => {
 
             response.data.applicantIds.map((applicant) => {
               newApplicants.map((jobseeker) => {
-                if(jobseeker._id === applicant.userId){
+                if (jobseeker._id === applicant.userId) {
                   jobseeker.score = applicant.score;
                 }
-              }); 
+              });
             });
 
-            newApplicants.sort((a,b) => {
-              return b.score - a.score; 
+            newApplicants.sort((a, b) => {
+              return b.score - a.score;
             });
-            
+
             setScoredApplicants(newApplicants);
           }
         } catch (err) {
@@ -426,7 +494,67 @@ const Applications = () => {
       {displayAlert()}
       {displayShortlistModal()}
 
-      <Grid item container sm={12} spacing={3} direction="row" justify="space-between" className={classes.mainGrid} alignItems="flex-start">
+      <Grid item container xs={12} spacing={3} direction="row"
+        justify="space-between"
+        alignItems="flex-start" className={classes.mainGrid}>
+        <Grid item sm={12} className={classes.searchGrid}>
+          {shortlisted && (
+            <div className={classes.shortlistBtnContainer}>
+              <Button
+                className={classes.shortlistBtn}
+                startIcon={<PeopleIcon />}
+                onClick={handleOpenShortlistModal}
+              >
+                Shortlist the Applicants
+              </Button>
+            </div>
+          )}
+
+          {!shortlisted && applicantIds.length !== 0 && (
+            <div className={classes.shortlistBtnContainer}>
+              <Button
+                className={classes.shortlistBtn}
+                startIcon={<PeopleIcon />}
+                onClick={handleOpenShortlistModal}
+              >
+                Shortlist the Applicants
+              </Button>
+            </div>
+          )}
+        </Grid>
+        <Grid item sm={12} className={classes.searchGrid}>
+          <PeopleSearchBar onChange={updateSearch} />
+        </Grid>
+        <Grid item container xs={12} md={8} lg={9} spacing={0} direction="row"
+          justify="space-between"
+          alignItems="flex-start" className={classes.peopleGrid}>
+
+          {resumeAccess || singleResumeAccess ? (
+            displayShortlistedApplicants()
+          ) : (
+            <Grid item sm={12} style={{ marginBottom: 16 }}>
+              <NoAccess />
+            </Grid>
+          )}
+          {resumeAccess || singleResumeAccess ? (
+            displayApplicants()
+          ) : (
+            <Grid item sm={12} style={{ marginBottom: 16 }}>
+              <NoAccess />
+            </Grid>
+          )}
+          {/* <Grid item sm={12}>
+            {jobs !== "empty" ?
+              <Pagination count={Math.ceil(count / 10)} color="primary" page={page} onChange={changePage} classes={{ ul: classes.pagination }} />
+              : null
+            }
+          </Grid> */}
+        </Grid>
+        <Grid item xs={12} sm={12} md={4} lg={3} className={classes.filterGrid}>
+          <PeopleFilters onChange={updateFilters} />
+        </Grid>
+      </Grid>
+      {/* <Grid item container sm={12} spacing={3} direction="row" justify="space-between" className={classes.mainGrid} alignItems="flex-start">
         <Grid item xs={12}>
           {resumeAccess || singleResumeAccess ? (
             displayShortlistedApplicants()
@@ -439,7 +567,7 @@ const Applications = () => {
             <NoAccess />
           )}
         </Grid>
-      </Grid>
+      </Grid> */}
     </>
   );
 };

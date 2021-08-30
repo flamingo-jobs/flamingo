@@ -209,7 +209,7 @@ function ApplicantCard(props) {
   }
 
   return (
-    <div className={classes.cardContainer}>
+    <>
       <StatusModal 
         status={status}
         setStatus={setStatus}
@@ -295,7 +295,7 @@ function ApplicantCard(props) {
           </div>
         </div>
       </FloatCard>
-    </div>
+    </>
   );
 }
 
