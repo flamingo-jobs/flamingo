@@ -33,13 +33,13 @@ const jobseekerSchema = new mongoose.Schema({
   certificate: {
     type: Array,
   },
-  // school: {
-  //   type: Array,
-  // },
   course: {
     type: Array,
   },
   work: {
+    type: Array,
+  },
+  interests: {
     type: Array,
   },
   project: {
