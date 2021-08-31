@@ -118,6 +118,7 @@ function WorkExperience(props) {
   const [fetchedData, setFetchedData] = useState('');
   const [open, setOpen] = useState(false);
   const [work, setWork] = useState([]);
+ // let workOrdered = null;
   const [state, setState] = useState({place: null, description: null, position: null, startYear: null, startMonth: null, endYear: null, endMonth: null, taskAndResponsibility: null});
 
   const [alertShow, setAlertShow] = React.useState(false);
@@ -191,9 +192,17 @@ function WorkExperience(props) {
             i++;
           }
         }
-        setWork(workData)
+        setWork(workData);
+        // let index = i;
+        // let workTemp = [];
+        // workData?.map(wk => (
+        //   workTemp.push({index: index++,year: wk.from.split("/")[0], month: wk.from.split("/")[1]})
+        // ));
+        // workOrdered = workTemp;
+        
       }
     })
+   // console.log(workOrdered);
     setFetchedData(0)
   }
 
@@ -216,6 +225,8 @@ function WorkExperience(props) {
       }
     });
     handleClose();
+    setState({place: null, description: null, position: null, startYear: null, startMonth: null, endYear: null, endMonth: null, taskAndResponsibility: null});
+    setWork(null);
     setFetchedData(1)
   }
 
@@ -341,10 +352,16 @@ function WorkExperience(props) {
   }
 
   const displayWork = () => {
-    if (work) {
-      if (work.length > 0) {
-      return work.map(wk => (
-            <WorkExpItem index={i++} place={wk.place} description={wk.description} position={wk.position} from={wk.from} to={wk.to} task={wk.taskAndResponsibility} parentFunction={deleteData} />
+    let index = i;
+    let workTemp = [];
+    work?.map(w => (
+      workTemp.push({index: index++,year: w.from.split("/")[0], month: w.from.split("/")[1], workItem: w})
+    ));
+    workTemp?.sort((a,b) => (a.year < b.year) ? 1 : ((b.year < a.year) ? -1 : 0));
+    if (workTemp) {
+      if (workTemp.length > 0) {
+      return workTemp.map(wk => (
+            <WorkExpItem index={wk.index} place={wk.workItem.place} description={wk.workItem.description} position={wk.workItem.position} from={wk.workItem.from} to={wk.workItem.to} task={wk.workItem.taskAndResponsibility} parentFunction={deleteData} />
             ))
       }else{
         return (<Typography variant="body2" color="textSecondary" component="p">Work experience details not added.</Typography>)
