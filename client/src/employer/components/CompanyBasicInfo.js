@@ -514,6 +514,17 @@ function CompanyBasicInfo(props) {
     setFileData(e.target.files[0]);
   };
 
+  //image update dialog
+  const [openLogoEditDialog, setOpenLogoEditDialog] = React.useState(false);
+
+  const handleClickOpenEditLogo = () => {
+    setOpenLogoEditDialog(true);
+  };
+
+  const handleClickCloseEditLogo = () => {
+    setOpenLogoEditDialog(false);
+  };
+
   const onSubmitHandler = (e) => {
     e.preventDefault();
 
@@ -528,9 +539,11 @@ function CompanyBasicInfo(props) {
     })
       .then((result) => {
         console.log("File Sent Successful");
+        handleClickAlertSuccess()
       })
       .catch((err) => {
         console.log(err.message);
+        setOpenAlertServerError()
       });
 
     const image = {
@@ -586,40 +599,62 @@ function CompanyBasicInfo(props) {
                 src={`${BACKEND_URL}/companyImage/${logo}`}
                 variant="square"
               />
+
               {props.userRole == "employer" ||
                 (haveAccess == true && (
-                  // <IconButton
-                  //   variant="outlined"
-                  //   aria-label="edit"
-                  //   className={classes.editPhotoButton}
-                  // // onClick={handleClickOpen}
-                  // >
-                  //   <PhotoCameraIcon />
-                  // </IconButton>
-
-                  <form
-                    onSubmit={onSubmitHandler}
-                    encType="multipart/form-data"
-                  >
-                    <TextField
-                      autoFocus
-                      margin="dense"
-                      id="photo"
-                      label="Photo"
-                      type="file"
-                      inputProps={{ accept: "image/*" }}
-                      fullWidth
-                      onChange={fileChangeHandler}
-                    />
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      className={classes.defaultButton}
-                      type="submit"
+                  <div>
+                    <IconButton
+                      variant="outlined"
+                      aria-label="edit"
+                      className={classes.editPhotoButton}
+                      onClick={handleClickOpenEditLogo}
                     >
-                      Save
-                    </Button>
-                  </form>
+                      <PhotoCameraIcon />
+                    </IconButton>
+
+                    <Dialog
+                      open={openLogoEditDialog}
+                      onClose={handleClickCloseEditLogo}
+                      aria-labelledby="form-dialog-title"
+                    >
+                      <form
+                        onSubmit={onSubmitHandler}
+                        encType="multipart/form-data"
+                      >
+                        <DialogTitle id="form-dialog-title">
+                          Edit Logo
+                        </DialogTitle>
+                        <DialogContent>
+
+                          <TextField
+                            autoFocus
+                            margin="dense"
+                            id="photo"
+                            label="Photo"
+                            type="file"
+                            inputProps={{ accept: "image/*" }}
+                            fullWidth
+                            onChange={fileChangeHandler}
+                          />
+                        </DialogContent>
+                        <DialogActions>
+                          <Button
+                            onClick={handleClickCloseEditLogo}
+                            color="primary"
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            onClick={handleClickCloseEditLogo}
+                            type="submit"
+                            color="primary"
+                          >
+                            Save
+                          </Button>
+                        </DialogActions>
+                      </form>
+                    </Dialog>
+                  </div>
                 ))}
             </Grid>
             <br />
