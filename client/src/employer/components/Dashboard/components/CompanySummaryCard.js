@@ -1,4 +1,5 @@
 import React from "react";
+// import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
   CssBaseline,
   Container,
@@ -126,19 +127,19 @@ const CompanySummaryCard = (props) => {
     return [averageRating, reviews.length];
   };
 
-  const loadLogo = () => {
-    try {
-      return require(`../images/${logo}`).default;
-    } catch (err) {
-      return require(`../images/default_company_logo.png`).default;
-    }
-  };
+  // const loadLogo = () => {
+  //   try {
+  //     return require(`../images/${logo}`).default;
+  //   } catch (err) {
+  //     return require(`../images/default_company_logo.png`).default;
+  //   }
+  // };
 
   return (
     <FloatCard >
       <div className={classes.header}>
         <div className={classes.headerLogo}>
-          <Avatar className={classes.logo} src={loadLogo()} variant="square" />
+          <Avatar className={classes.logo} src={`${BACKEND_URL}/companyImage/${logo}`} variant="square" />
         </div>
         <div className={classes.headerInfo}>
           <Typography variant="h5" className={classes.title} >{name}</Typography>
