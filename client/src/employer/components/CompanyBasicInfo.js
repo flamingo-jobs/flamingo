@@ -330,13 +330,13 @@ function CompanyBasicInfo(props) {
     return averageRating;
   };
 
-  // const loadLogo = () => {
-  //   try {
-  //     return require(`../images/${logo}`).default;
-  //   } catch (err) {
-  //     return require(`../images/default_company_logo.png`).default;
-  //   }
-  // };
+  const loadLogo = () => {
+    try {
+      return `${BACKEND_URL}/companyImage/${logo}`;
+    } catch (err) {
+      return `${BACKEND_URL}/companyImage/default_company_logo.png`;
+    }
+  };
 
   const displayEditForm = () => {
     return (
@@ -596,7 +596,7 @@ function CompanyBasicInfo(props) {
             <Grid item xs={12}>
               <Avatar
                 className={classes.logo}
-                src={`${BACKEND_URL}/companyImage/${logo}`}
+                src={loadLogo()}
                 variant="square"
               />
 
