@@ -1,4 +1,5 @@
 import React from "react";
+import LocalOfferRoundedIcon from "@material-ui/icons/LocalOfferRounded";
 import {
   Avatar,
   Button,
@@ -8,8 +9,10 @@ import {
 } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
-import FloatCard from '../../components/FloatCard';
+import wso2 from "../images/wso2.png";
+import FloatCard from "../../components/FloatCard";
 import EditIcon from "@material-ui/icons/Edit";
+import LoyaltyIcon from "@material-ui/icons/Loyalty";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -17,6 +20,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
 import IconButton from "@material-ui/core/IconButton";
 import LanguageIcon from "@material-ui/icons/Language";
 import FacebookIcon from "@material-ui/icons/Facebook";
@@ -32,7 +36,8 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import { Link } from "react-router-dom";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
-import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
+import { Route } from "react-router-dom";
+import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
 const jwt = require("jsonwebtoken");
 let haveAccess = false;
 
@@ -46,118 +51,65 @@ if (sessionStorage.getItem("userToken")) {
 }
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-  },
+  root: {},
   headerInfo: {
     marginTop: -25,
-    [theme.breakpoints.up('lg')]: {
-      textAlign: 'left',
-      marginTop: 0
-    }
   },
   body: {},
-  logoItem: {
-  },
+  logoItem: {},
   logo: {
     borderRadius: 12,
     width: 150,
     height: 150,
-    margin: '0px auto'
+    margin: "0px auto",
   },
   title: {
-    fontWeight: 700
+    fontWeight: 700,
   },
-  infoTags: {
-
-  },
-  infoTagsContainer: {
-
-  },
-  companyName: {
-
-  },
-  membershipType: {
-
-  },
-  listItem: {
-
-  },
+  infoTags: {},
+  infoTagsContainer: {},
+  companyName: {},
+  membershipType: {},
+  listItem: {},
   editButton: {
-    position: 'relative',
-    right: '-45%'
+    position: "relative",
+    right: "-45%",
   },
   locationTags: {
     marginTop: 16,
-    [theme.breakpoints.up('lg')]: {
-      textAlign: 'left',
-      marginLeft: -5
-    }
   },
   tag: {
     marginRight: 10,
     backgroundColor: theme.palette.tagYellow,
   },
   label: {
-
     backgroundColor: theme.palette.tagYellow,
   },
   rating: {
     margin: 10,
-    [theme.breakpoints.up('lg')]: {
-      textAlign: 'left',
-      marginLeft: -5
-    }
   },
-  links: {
-    [theme.breakpoints.up('lg')]: {
-      textAlign: 'left',
-      marginLeft: -15
-    }
-  },
-  ratingText: {
-
-  },
-  smIcons: {
-
-  },
-  dialogbuttons: {
-
-  },
-  dialogBox: {
-
-  },
-  editPhoto: {
-
-  },
-  textField: {
-
-  },
-  locations: {
-
-  },
-  textFieldColor: {
-
-  },
-  setMargin: {
-
-  },
+  ratingText: {},
+  smIcons: {},
+  dialogbuttons: {},
+  dialogBox: {},
+  editPhoto: {},
+  textField: {},
+  locations: {},
+  textFieldColor: {},
+  setMargin: {},
   link: {
     marginLeft: 5,
     marginRight: 5,
-    [theme.breakpoints.up('lg')]: {
-      marginLeft: 0
-    }
   },
   editPhotoButton: {
-    position: 'relative',
-    top: '-25px',
-    backgroundColor: 'rgba(0,0,0,0.2)',
+    position: "relative",
+    top: "-25px",
+    backgroundColor: "rgba(0,0,0,0.2)",
     color: theme.palette.white,
     "&:hover": {
-      backgroundColor: 'rgba(0,0,0,0.5)',
-
-    }
-  }
+      backgroundColor: "rgba(0,0,0,0.5)",
+    },
+  },
 }));
 
 function CompanyBasicInfo(props) {
@@ -172,12 +124,12 @@ function CompanyBasicInfo(props) {
   const token = sessionStorage.getItem("userToken");
   const header = jwt.decode(token, { complete: true });
   if (token === null) {
-    loginId = props.userRole;;
+    loginId = props.userRole;
   } else if (header.payload.userRole === "employer") {
     login = true;
     loginId = sessionStorage.getItem("loginId");
   } else {
-    loginId = props.userRole;;
+    loginId = props.userRole;
   }
 
   const [state, setState] = useState({
@@ -190,7 +142,7 @@ function CompanyBasicInfo(props) {
     linkedIn: " ",
     twitter: " ",
     logo: " ",
-    locations: []
+    locations: [],
   });
 
   const name = state.name;
@@ -380,9 +332,9 @@ function CompanyBasicInfo(props) {
 
   const loadLogo = () => {
     try {
-      return require(`../images/${logo}`).default;
+      return `${BACKEND_URL}/companyImage/${logo}`;
     } catch (err) {
-      return require(`../images/default_company_logo.png`).default;
+      return `${BACKEND_URL}/companyImage/default_company_logo.png`;
     }
   };
 
@@ -398,21 +350,14 @@ function CompanyBasicInfo(props) {
           fullWidth
           className={classes.dialogBox}
         >
-          <DialogTitle id="edit-details-form">
-            Company Profile
-          </DialogTitle>
+          <DialogTitle id="edit-details-form">Company Profile</DialogTitle>
           <DialogContent>
             <DialogContentText>*Required Fields</DialogContentText>
 
             {/* input fields */}
 
             <div>
-              <Grid
-                container
-                xs={12}
-                direction="column"
-                spacing={2}
-              >
+              <Grid container xs={12} direction="column" spacing={2}>
                 <Grid item sm={12}>
                   <TextField
                     required
@@ -440,8 +385,7 @@ function CompanyBasicInfo(props) {
                       setLocation([
                         ...fixedOptions,
                         ...newValue.filter(
-                          (option) =>
-                            fixedOptions.indexOf(option) === -1
+                          (option) => fixedOptions.indexOf(option) === -1
                         ),
                       ]);
                     }}
@@ -458,17 +402,9 @@ function CompanyBasicInfo(props) {
                   />
                 </Grid>
 
-                <Grid
-                  item
-                  container
-                  direction="row"
-                  sm={12}
-                  spacing={1}
-                >
+                <Grid item container direction="row" sm={12} spacing={1}>
                   <Grid item sm={6}>
-                    <InputLabel htmlFor="linkedIn">
-                      LinkedIn
-                    </InputLabel>
+                    <InputLabel htmlFor="linkedIn">LinkedIn</InputLabel>
                     <Input
                       id="linkedIn"
                       startAdornment={
@@ -487,9 +423,7 @@ function CompanyBasicInfo(props) {
                   </Grid>
 
                   <Grid item sm={6}>
-                    <InputLabel htmlFor="website">
-                      Website
-                    </InputLabel>
+                    <InputLabel htmlFor="website">Website</InputLabel>
                     <Input
                       id="website"
                       startAdornment={
@@ -508,17 +442,9 @@ function CompanyBasicInfo(props) {
                   </Grid>
                 </Grid>
 
-                <Grid
-                  item
-                  container
-                  direction="row"
-                  sm={12}
-                  spacing={1}
-                >
+                <Grid item container direction="row" sm={12} spacing={1}>
                   <Grid item sm={6}>
-                    <InputLabel htmlFor="facebook">
-                      Facebook
-                    </InputLabel>
+                    <InputLabel htmlFor="facebook">Facebook</InputLabel>
                     <Input
                       id="facebook"
                       startAdornment={
@@ -537,9 +463,7 @@ function CompanyBasicInfo(props) {
                   </Grid>
 
                   <Grid item sm={6}>
-                    <InputLabel htmlFor="twitter">
-                      Twitter
-                    </InputLabel>
+                    <InputLabel htmlFor="twitter">Twitter</InputLabel>
                     <Input
                       id="twitter"
                       startAdornment={
@@ -579,14 +503,85 @@ function CompanyBasicInfo(props) {
           </DialogActions>
         </Dialog>
       </form>
+    );
+  };
 
-    )
-  }
+  //image upload
+
+  const [fileData, setFileData] = useState();
+
+  const fileChangeHandler = (e) => {
+    setFileData(e.target.files[0]);
+  };
+
+  //image update dialog
+  const [openLogoEditDialog, setOpenLogoEditDialog] = React.useState(false);
+
+  const handleClickOpenEditLogo = () => {
+    setOpenLogoEditDialog(true);
+  };
+
+  const handleClickCloseEditLogo = () => {
+    setOpenLogoEditDialog(false);
+  };
+
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+
+    // Handle File Data from the state Before Sending
+    const data = new FormData();
+
+    data.append("image", fileData);
+
+    fetch(`${BACKEND_URL}/companyImage/${loginId}`, {
+      method: "POST",
+      body: data,
+    })
+      .then((result) => {
+        console.log("File Sent Successful");
+        handleClickAlertSuccess()
+      })
+      .catch((err) => {
+        console.log(err.message);
+        setOpenAlertServerError()
+      });
+
+    const image = {
+      logo: fileData.name,
+    };
+
+    axios
+      .put(`${BACKEND_URL}/employers/update/${loginId}`, image)
+      .then((res) => {
+        axios.get(`${BACKEND_URL}/employers/${loginId}`).then((res) => {
+          // console.log(res.data.employer.reviews);
+          if (res.data.success) {
+            setState({
+              name: res.data.employer.name,
+              technologyStack: res.data.employer.technologyStack,
+              links: res.data.employer.links,
+              subscription: res.data.employer.subscription.type,
+              website: res.data.employer.links.website,
+              facebook: res.data.employer.links.facebook,
+              linkedIn: res.data.employer.links.linkedIn,
+              twitter: res.data.employer.links.twitter,
+              reviews: res.data.employer.reviews,
+              logo: res.data.employer.logo,
+              locations: res.data.employer.locations,
+            });
+          }
+          res.data.employer.locations.forEach((element) => {
+            // console.log(element);
+            setLocation((location) => [...location, { city: element }]);
+          });
+        });
+      });
+  };
 
   return (
     <>
       <FloatCard>
-        {props.userRole == "employer" || haveAccess == true ?
+        {props.userRole == "employer" || haveAccess == true ? (
           <IconButton
             variant="outlined"
             aria-label="edit"
@@ -595,24 +590,76 @@ function CompanyBasicInfo(props) {
           >
             <EditIcon />
           </IconButton>
-          : null
-        }
+        ) : null}
         <Grid container spacing={3} direction="row">
           <Grid item container spacing={3} xs={12}>
-            <Grid item xs={12} lg={6}>
-              <Avatar className={classes.logo} src={loadLogo()} variant="square" />
-              {props.userRole == "employer" || haveAccess == true && (
-                <IconButton
-                  variant="outlined"
-                  aria-label="edit"
-                  className={classes.editPhotoButton}
-                // onClick={handleClickOpen}
-                >
-                  <PhotoCameraIcon />
-                </IconButton>
-              )}
+            <Grid item xs={12}>
+              <Avatar
+                className={classes.logo}
+                src={loadLogo()}
+                variant="square"
+              />
+
+              {props.userRole == "employer" ||
+                (haveAccess == true && (
+                  <div>
+                    <IconButton
+                      variant="outlined"
+                      aria-label="edit"
+                      className={classes.editPhotoButton}
+                      onClick={handleClickOpenEditLogo}
+                    >
+                      <PhotoCameraIcon />
+                    </IconButton>
+
+                    <Dialog
+                      open={openLogoEditDialog}
+                      onClose={handleClickCloseEditLogo}
+                      aria-labelledby="form-dialog-title"
+                    >
+                      <form
+                        onSubmit={onSubmitHandler}
+                        encType="multipart/form-data"
+                      >
+                        <DialogTitle id="form-dialog-title">
+                          Edit Logo
+                        </DialogTitle>
+                        <DialogContent>
+
+                          <TextField
+                            autoFocus
+                            margin="dense"
+                            id="photo"
+                            label="Photo"
+                            type="file"
+                            inputProps={{ accept: "image/*" }}
+                            fullWidth
+                            onChange={fileChangeHandler}
+                          />
+                        </DialogContent>
+                        <DialogActions>
+                          <Button
+                            onClick={handleClickCloseEditLogo}
+                            color="primary"
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            onClick={handleClickCloseEditLogo}
+                            type="submit"
+                            color="primary"
+                          >
+                            Save
+                          </Button>
+                        </DialogActions>
+                      </form>
+                    </Dialog>
+                  </div>
+                ))}
             </Grid>
-            <Grid item xs={12} lg={6} className={classes.headerInfo}>
+            <br />
+            <br />
+            <Grid item xs={12} className={classes.headerInfo}>
               <Typography variant="h5" className={classes.title}>
                 {name}
               </Typography>
@@ -627,39 +674,57 @@ function CompanyBasicInfo(props) {
               </div>
               <div className={classes.rating}>
                 {/* <Typography style={{ marginTop: 8 }}>{getAverageRating()}/5 ratings</Typography> */}
-                <Rating name="read-only" style={{ marginTop: 8 }} value={getAverageRating()} readOnly />
+                <Rating
+                  name="read-only"
+                  style={{ marginTop: 8 }}
+                  value={getAverageRating()}
+                  readOnly
+                />
               </div>
               <div className={classes.links}>
                 <Link to={{ pathname: website }} target="_blank">
-                  <IconButton variant="outlined" aria-label="website" className={classes.link}>
+                  <IconButton
+                    variant="outlined"
+                    aria-label="website"
+                    className={classes.link}
+                  >
                     <LanguageIcon />
                   </IconButton>
                 </Link>
                 <Link to={{ pathname: linkedIn }} target="_blank">
-                  <IconButton variant="outlined" aria-label="website" className={classes.link}>
+                  <IconButton
+                    variant="outlined"
+                    aria-label="website"
+                    className={classes.link}
+                  >
                     <LinkedInIcon />
                   </IconButton>
                 </Link>
 
                 <Link to={{ pathname: twitter }} target="_blank">
-                  <IconButton variant="outlined" aria-label="website" className={classes.link}>
+                  <IconButton
+                    variant="outlined"
+                    aria-label="website"
+                    className={classes.link}
+                  >
                     <TwitterIcon />
                   </IconButton>
                 </Link>
 
                 <Link to={{ pathname: facebook }} target="_blank">
-                  <IconButton variant="outlined" aria-label="website" className={classes.link}>
+                  <IconButton
+                    variant="outlined"
+                    aria-label="website"
+                    className={classes.link}
+                  >
                     <FacebookIcon />
                   </IconButton>
                 </Link>
-
               </div>
             </Grid>
           </Grid>
-
         </Grid>
-
-      </FloatCard >
+      </FloatCard>
       {displayEditForm()}
       <Snackbar
         open={openAlertValidationError}
@@ -667,10 +732,7 @@ function CompanyBasicInfo(props) {
         onClose={handleCloseAlertValidationError}
         anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
       >
-        <Alert
-          onClose={handleCloseAlertValidationError}
-          severity="error"
-        >
+        <Alert onClose={handleCloseAlertValidationError} severity="error">
           Required fields cannot be empty!
         </Alert>
       </Snackbar>

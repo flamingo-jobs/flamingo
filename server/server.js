@@ -23,6 +23,9 @@ const analyticsRoutes = require("./routes/analytics");
 const settingsRoutes = require("./routes/settings");
 const paymentRoutes = require("./routes/payment");
 
+
+app.use('/companyImage', express.static('companyImage'));
+
 // app middleware
 app.use(bodyParser.json());
 app.use(cors());

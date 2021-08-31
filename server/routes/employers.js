@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const employersController = require('../controllers/employersController');
 
+const multer = require("multer");
+
 // create employers
 
 router.post('/employers/create', employersController.create);
@@ -33,5 +35,25 @@ router.patch("/employers/addReview/:empId", employersController.addReview);
 router.post('/employer/delete', employersController.remove);
 
 router.get('/applications/:id', employersController.getAllApplications);
+
+//profile update
+
+const fileStorageEngine = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, "./companyImage"); //important this is a direct path fron our current file to storage location
+    },
+    filename: (req, file, cb) => {
+      cb(null,  file.originalname);
+    },
+  });
+
+  const upload = multer({ storage: fileStorageEngine });
+
+// Single File Route Handler
+router.post("/companyImage/:id", upload.single("image"), (req, res) => {
+  console.log(req.file);
+  console.log(req.params['id']);
+  res.send("Single FIle upload success");
+});
 
 module.exports = router;

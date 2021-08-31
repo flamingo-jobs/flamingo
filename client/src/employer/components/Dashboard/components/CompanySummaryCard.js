@@ -1,4 +1,5 @@
 import React from "react";
+// import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
   CssBaseline,
   Container,
@@ -128,9 +129,9 @@ const CompanySummaryCard = (props) => {
 
   const loadLogo = () => {
     try {
-      return require(`../images/${logo}`).default;
+      return `${BACKEND_URL}/companyImage/${logo}`;
     } catch (err) {
-      return require(`../images/default_company_logo.png`).default;
+      return `${BACKEND_URL}/companyImage/default_company_logo.png`;
     }
   };
 

@@ -203,7 +203,7 @@ function Organization(props) {
             <div className={classes.root}>
                 <div className={classes.header}>
                     <div className={classes.headerLeft}>
-                        <Avatar className={classes.logo} src={require(`../images/${props.info.logo}`).default} variant="square" />
+                        <Avatar className={classes.logo} src={`${BACKEND_URL}/companyImage/moomoo.PNG`} variant="square" />
                         <div className={classes.info}>
                             <Typography variant="h6" className={classes.company}>{props.info.name}</Typography>
                             <Typography>{props.info.openings}5 openings</Typography>
