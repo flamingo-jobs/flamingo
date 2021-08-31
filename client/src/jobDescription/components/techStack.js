@@ -1,6 +1,6 @@
-import React from "react";
+import { Chip, Container, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Typography, Container, Chip } from "@material-ui/core";
+import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {

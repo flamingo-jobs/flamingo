@@ -1,29 +1,17 @@
 import React from "react";
-// import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
   withStyles,
   makeStyles,
-  Avatar,
   Typography,
   Button,
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import FloatCard from "../../../../components/FloatCard";
-import Box from "@material-ui/core/Box";
-import WorkIcon from "@material-ui/icons/Work";
+
 import { Link } from "react-router-dom";
-import Table from "@material-ui/core/Table";
-import Paper from "@material-ui/core/Paper";
-import Chip from "@material-ui/core/Chip";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import CancelIcon from "@material-ui/icons/Cancel";
-import NavigateNextIcon from "@material-ui/icons/NavigateNext";
-import LocalOfferRoundedIcon from "@material-ui/icons/LocalOfferRounded";
-import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
-import TableBody from "@material-ui/core/TableBody";
+
 import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
+
 import TableRow from "@material-ui/core/TableRow";
 import axios from "axios";
 import BACKEND_URL from "../../../../Config";

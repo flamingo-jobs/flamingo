@@ -1,28 +1,19 @@
-import { React, useState, useRef } from "react";
-import { useForm } from "react-hooks-helper";
-import {
-  Button,
-  TextField,
-  Grid,
-  Typography,
-  Container,
-  IconButton,
-} from "@material-ui/core";
-import SnackBarAlert from "../components/SnackBarAlert";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+import { Avatar, Badge, Button, Container, Grid, IconButton, TextField, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import FloatCard from "./../components/FloatCard";
-import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
-import backgroundImage from "./images/background.jpg";
-import axios from "axios";
-import BACKEND_URL from "../Config";
-import { Avatar, Badge } from "@material-ui/core";
 import AddCircleRoundedIcon from "@material-ui/icons/AddCircleRounded";
+import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 import RemoveCircleRoundedIcon from "@material-ui/icons/RemoveCircleRounded";
-import { Link } from "react-router-dom";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import axios from "axios";
 import path from "path";
-import fs from "fs";
+import { React, useRef, useState } from "react";
+import { useForm } from "react-hooks-helper";
+import { Link } from "react-router-dom";
+import SnackBarAlert from "../components/SnackBarAlert";
+import BACKEND_URL from "../Config";
+import FloatCard from "./../components/FloatCard";
+import backgroundImage from "./images/background.jpg";
 
 const jwt = require("jsonwebtoken");
 const passwordRegexp =
@@ -857,7 +848,7 @@ export default function StartHiring() {
                               <Button
                                 fullWidth
                                 type="submit"
-                                variant="contained"
+                                
                                 className={classes.submit}
                               >
                                 Sign Up
@@ -867,7 +858,7 @@ export default function StartHiring() {
                               <Link to="/">
                                 <Button
                                   fullWidth
-                                  variant="contained"
+                                  
                                   className={classes.cancel}
                                 >
                                   Cancel

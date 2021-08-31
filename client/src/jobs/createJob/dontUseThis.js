@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
 import FloatCard from "../../components/FloatCard";
+import SnackBarAlert from "../../components/SnackBarAlert";
+import BACKEND_URL from "../../Config";
+import Keywords from "./components/keywords";
+import QualificationsForm from "./components/qualificationsForm";
 import SummaryForm from "./components/summaryForm";
 import TaskForm from "./components/tasksForm";
-import QualificationsForm from "./components/qualificationsForm";
-import Keywords from "./components/keywords";
 import TechStack from "./components/techStack";
-import BACKEND_URL from "../../Config";
-import SnackBarAlert from "../../components/SnackBarAlert";
 
 const useStyles = makeStyles((theme) => ({
   root: {

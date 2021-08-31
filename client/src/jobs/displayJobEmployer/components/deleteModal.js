@@ -1,13 +1,9 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import {
-  Grid,
-  Typography,
-  Card,
-  CardContent,
-  Modal,
-  Button,
+  Button, Card,
+  CardContent, Grid, Modal, Typography
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {

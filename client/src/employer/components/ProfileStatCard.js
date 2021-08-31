@@ -1,22 +1,21 @@
-import React from 'react'
-import { Avatar, Button, Chip, makeStyles, Typography } from '@material-ui/core';
-import { FavoriteRounded } from '@material-ui/icons';
-import FloatCard from '../../components/FloatCard';
-import Rating from '@material-ui/lab/Rating';
+import { Button, makeStyles, Typography } from '@material-ui/core';
+import Box from "@material-ui/core/Box";
 import Grid from '@material-ui/core/Grid';
-import Timeline from '@material-ui/lab/Timeline';
 import Paper from '@material-ui/core/Paper';
-import TimelineItem from '@material-ui/lab/TimelineItem';
-import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import CachedIcon from '@material-ui/icons/Cached';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import DescriptionIcon from '@material-ui/icons/Description';
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import Rating from '@material-ui/lab/Rating';
+import Timeline from '@material-ui/lab/Timeline';
 import TimelineConnector from '@material-ui/lab/TimelineConnector';
 import TimelineContent from '@material-ui/lab/TimelineContent';
 import TimelineDot from '@material-ui/lab/TimelineDot';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import Box from "@material-ui/core/Box";
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import CachedIcon from '@material-ui/icons/Cached';
-import DescriptionIcon from '@material-ui/icons/Description';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import TimelineItem from '@material-ui/lab/TimelineItem';
+import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
+import React from 'react';
+import FloatCard from '../../components/FloatCard';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -150,7 +149,7 @@ function ProfileStatCard() {
                                             </Grid>
                                             <Grid item xs={4}>
                                                 <Button
-                                                    variant="contained" size="small"
+                                                     size="small"
                                                     className={classes.button}
                                                     endIcon={<NavigateNextIcon />}
                                                     >
@@ -184,7 +183,7 @@ function ProfileStatCard() {
                                             </Grid>
                                             <Grid item xs={4}>
                                             <Button
-                                                variant="contained" size="small"
+                                                 size="small"
                                                 className={classes.button}
                                                 endIcon={<NavigateNextIcon />}
                                                 >
@@ -218,7 +217,7 @@ function ProfileStatCard() {
                                             </Grid>
                                             <Grid item xs={4}>
                                             <Button
-                                                variant="contained" size="small"
+                                                 size="small"
                                                 className={classes.button}
                                                 endIcon={<NavigateNextIcon />}
                                                 >
@@ -252,7 +251,7 @@ function ProfileStatCard() {
                                             </Grid>
                                             <Grid item xs={4}>
                                                 <Button
-                                                variant="contained" size="small"
+                                                 size="small"
                                                 className={classes.button}
                                                 endIcon={<NavigateNextIcon />}
                                                 >

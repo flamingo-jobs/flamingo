@@ -1,20 +1,14 @@
-import React, { useState } from "react";
 import {
-  makeStyles,
-  Grid,
-  Typography,
   Box,
-  Button,
-  Link,
-  TextField,
-  Dialog,
+  Button, Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
+  DialogTitle, Grid, Link, makeStyles, TextField, Typography
 } from "@material-ui/core";
-import SnackBarAlert from "../../components/SnackBarAlert";
 import axios from "axios";
+import React, { useState } from "react";
+import SnackBarAlert from "../../components/SnackBarAlert";
 import BACKEND_URL from "../../Config";
 const jwt = require("jsonwebtoken");
 const passwordRegexp =
@@ -25,9 +19,11 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 10,
     margin: "30px 10px 30px 10px",
     flexGrow: 1,
+    paddingBottom: 24
   },
   mainGrid: {
     paddingLeft: 12,
+    paddingBottom: 12,
     [theme.breakpoints.down("sm")]: {
       flexDirection: "column",
       alignItems: "stretch",
@@ -334,7 +330,7 @@ const AccountSettings = () => {
                         <Button
                           fullWidth
                           type="submit"
-                          variant="contained"
+                          
                           className={classes.button}
                         >
                           Change Password
@@ -344,7 +340,7 @@ const AccountSettings = () => {
                         <Link to="/">
                           <Button
                             fullWidth
-                            variant="contained"
+                            
                             className={classes.cancel}
                           >
                             Cancel
@@ -406,7 +402,7 @@ const AccountSettings = () => {
                       <Button
                         fullWidth
                         type="submit"
-                        variant="contained"
+                        
                         className={classes.button}
                       >
                         Delete Account
@@ -416,7 +412,7 @@ const AccountSettings = () => {
                       <Link to="/">
                         <Button
                           fullWidth
-                          variant="contained"
+                          
                           className={classes.cancel}
                         >
                           Cancel

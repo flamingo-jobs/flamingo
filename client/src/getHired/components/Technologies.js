@@ -1,8 +1,8 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Loading from "../../components/Loading";
-import DetailedAccordion from "./DetailedAccordion";
 import BACKEND_URL from "../../Config";
-import axios from "axios";
+import DetailedAccordion from "./DetailedAccordion";
 
 function Technologies({ tech, handleTechAddClick }) {
   const [technologies, setTechnologies] = useState([]);

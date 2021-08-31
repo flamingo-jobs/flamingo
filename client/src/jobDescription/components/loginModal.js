@@ -1,18 +1,13 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import {
-  Grid,
-  Typography,
-  Card,
-  CardContent,
-  Modal,
-  Button,
-  IconButton,
+  Button, Card,
+  CardContent, Grid, IconButton, Modal, Typography
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import CloseIcon from "@material-ui/icons/Close";
-import Flamingo from "../lotties/flamingo.json";
+import React from "react";
 import Lottie from "react-lottie";
 import { Link } from "react-router-dom";
+import Flamingo from "../lotties/flamingo.json";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: "30px",
     maxHeight: "98vh",
     overflowY: "auto",
+    [theme.breakpoints.down("sm")]: {
+      width: "350px",
+    },
   },
   modal: {
     display: "flex",
@@ -122,17 +120,15 @@ const LoginModal = (props) => {
               </div>
               {/* style={{border: "1px solid red"}} */}
               <Grid container>
-                <Grid item xs={4}>
+                <Grid item xs={12} md={4}>
                   <div className={classes.animation}>
                     <Lottie
                       className={classes.lottie}
                       options={defaultOptions}
-                      height="300px"
-                      width="300px"
                     />
                   </div>
                 </Grid>
-                <Grid item xs={8}>
+                <Grid item xs={12} md={8}>
                   <div className={classes.loginContent}>
                     <Typography className={classes.text}>
                       To apply for a job opportunity,

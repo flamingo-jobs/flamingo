@@ -1,11 +1,11 @@
-import React from 'react'
-import { makeStyles } from '@material-ui/core'
-import './styles/Home.css'
+import { makeStyles } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import HeroSection from './components/HeroSection'
-import FeaturedOrganizations from './components/FeaturedOrganizations'
-import FeaturedJobs from './components/FeaturedJobs'
-import PostJobSection from './components/PostJobSection'
+import React from 'react';
+import FeaturedJobs from './components/FeaturedJobs';
+import FeaturedOrganizations from './components/FeaturedOrganizations';
+import HeroSection from './components/HeroSection';
+import PostJobSection from './components/PostJobSection';
+import './styles/Home.css';
 
 const useStyles = makeStyles((theme) => ({
 

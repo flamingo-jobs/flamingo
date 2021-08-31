@@ -1,20 +1,20 @@
-import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import {
-  Typography,
-  Grid,
-  Container,
-  Chip,
-  IconButton,
+  Chip, Container, Grid, IconButton, Typography
 } from "@material-ui/core";
-import FloatCard from "../../../components/FloatCard";
+import { makeStyles } from "@material-ui/core/styles";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
-import TechStackModal from "./techStackModal";
 import axios from "axios";
+import React, { useState } from "react";
+import FloatCard from "../../../components/FloatCard";
 import BACKEND_URL from "../../../Config";
-import transitions from "@material-ui/core/styles/transitions";
+import TechStackModal from "./techStackModal";
 
 const useStyles = makeStyles((theme) => ({
+  floatCardWrapper:{
+    [theme.breakpoints.down("xs")]: {
+      marginTop: theme.spacing(3),
+    }
+  },
   techStackContainer: {
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
@@ -123,6 +123,7 @@ const TechStack = (props) => {
         handleTechStackSubmit={handleTechStackSubmit}
       ></TechStackModal>
 
+      <div className={classes.floatCardWrapper}>
       <FloatCard>
         <Container className={classes.techStackContainer}>
           <Grid container>
@@ -154,6 +155,7 @@ const TechStack = (props) => {
           </Container>
         </Container>
       </FloatCard>
+      </div>
     </>
   );
 };

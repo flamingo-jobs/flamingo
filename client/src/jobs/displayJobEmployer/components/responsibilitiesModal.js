@@ -1,20 +1,13 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import {
-  Grid,
-  Typography,
-  Card,
-  CardContent,
-  Modal,
-  Button,
-  IconButton,
-  MenuItem,
+  Button, Card,
+  CardContent, Grid, IconButton, Modal, Typography
 } from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
-import { StateBlueTextField } from "./customTextField";
-import FloatCard from "../../../components/FloatCard";
-import RemoveIcon from "@material-ui/icons/Remove";
+import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
+import CloseIcon from "@material-ui/icons/Close";
+import RemoveIcon from "@material-ui/icons/Remove";
+import React from "react";
+import { StateBlueTextField } from "./customTextField";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,7 +19,11 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: "30px",
     minHeight: "50vh",
     maxHeight: "80vh",
-    overflowY: "auto"
+    overflowY: "auto",
+    [theme.breakpoints.down("sm")]: {
+      width: "95%",
+      padding: `0px 20px`,
+    },
   },
   modal: {
     display: "flex",
@@ -45,7 +42,10 @@ const useStyles = makeStyles((theme) => ({
     },
     padding: "20px !important",
     margin: "0px",
-
+    [theme.breakpoints.down("sm")]: {
+      paddingLeft: "0px !important",
+      paddingRight: "0px !important",
+    }
   },
   title: {
     color: theme.palette.stateBlue,
@@ -73,11 +73,27 @@ const useStyles = makeStyles((theme) => ({
   textField: {
     marginBottom: theme.spacing(3),
   },
+  buttonContainer:{
+    marginBottom: theme.spacing(3),
+  },
+  addRemoveButton:{
+    padding: "12px",
+    [theme.breakpoints.down("sm")]: {
+      padding: "5px",
+    },
+    [theme.breakpoints.down("xs")]: {
+      padding: "1px",
+    }
+  },
   submitBtnContainer: {
     width: "100%",
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "flex-end",
     paddingTop: theme.spacing(3),
+    [theme.breakpoints.down("xs")]: {
+      flexDirection: "column-reverse",
+      justifyContent: "center",
+    },
   },
   submitBtn: {
     background: theme.palette.stateBlue,
@@ -85,6 +101,20 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       background: theme.palette.stateBlue,
       color: theme.palette.white,
+    },
+    [theme.breakpoints.down("xs")]: {
+      width: "100%"
+    },
+    [theme.breakpoints.up("sm")]: {
+      marginLeft: theme.spacing(1)
+    },
+    [theme.breakpoints.down("sm")]: {
+      marginBottom: theme.spacing(1)
+    },
+  },
+  cancelBtn: {
+    [theme.breakpoints.down("xs")]: {
+      width: "100%"
     },
   },
 }));
@@ -137,30 +167,42 @@ const ResponsibilitiesModal = (props) => {
                           />
                         </Grid>
                         <Grid item  xs={2} justify="space-around" >
-                          <IconButton
-                            disabled={props.responsibilities.length === 1}
-                            onClick={() => props.handleResponsibilityRemove(index)}
-                          >
-                            <RemoveIcon
-                              className={classes.removeIcon}
-                              style={{
-                                color:
-                                props.responsibilities.length === 1
-                                    ? "#bbb"
-                                    : null,
-                              }}
-                            />
-                          </IconButton>
-                          <IconButton 
-                            onClick={props.handleResponsibilityAdd}
-                          >
-                            <AddIcon className={classes.addIcon} />
-                          </IconButton>
+                          <div className={classes.buttonContainer}>
+                            <IconButton
+                              className={classes.addRemoveButton}
+                              disabled={props.responsibilities.length === 1}
+                              onClick={() => props.handleResponsibilityRemove(index)}
+                            >
+                              <RemoveIcon
+                                className={classes.removeIcon}
+                                style={{
+                                  color:
+                                  props.responsibilities.length === 1
+                                      ? "#bbb"
+                                      : null,
+                                }}
+                              />
+                            </IconButton>
+                            <IconButton 
+                              className={classes.addRemoveButton}
+                              onClick={props.handleResponsibilityAdd}
+                            >
+                              <AddIcon className={classes.addIcon} />
+                            </IconButton>
+                          </div>
                         </Grid>
                       </Grid>
                     ))}
 
                     <div className={classes.submitBtnContainer}>
+                      <Button
+                        variant="contained"
+                        className={classes.cancelBtn}
+                        onClick={props.handleClose}
+                      >
+                        Cancel
+                      </Button>
+                      
                       <Button
                         variant="contained"
                         type="submit"

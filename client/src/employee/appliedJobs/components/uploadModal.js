@@ -319,7 +319,7 @@ const UploadModal = (props) => {
             {displayFileName()}
             <div className={classes.submitBtnWrapper}>
               <Button
-                variant="contained"
+                
                 color="primary"
                 className={classes.submitButton}
                 type="submit"

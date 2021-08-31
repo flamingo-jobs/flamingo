@@ -1,18 +1,12 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import {
-  Grid,
-  Typography,
-  Card,
-  CardContent,
-  Modal,
-  Button,
-  IconButton,
+  Button, Card,
+  CardContent, IconButton, Modal, Typography
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import CloseIcon from "@material-ui/icons/Close";
-import { Link } from "react-router-dom";
-import { StateBlueTextField } from "./CustomTextField";
 import Rating from "@material-ui/lab/Rating";
+import React from "react";
+import { StateBlueTextField } from "./CustomTextField";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -164,14 +158,14 @@ const ReviewModal = (props) => {
 
                 <div className={classes.btnContainer}>
                   <Button
-                    variant="contained"
+                    
                     className={classes.cancelBtn}
                     onClick={() => props.handleClose()}
                   >
                     Cancel
                   </Button>
                   <Button
-                    variant="contained"
+                    
                     type="submit"
                     className={classes.submitBtn}
                   >

@@ -3,7 +3,6 @@ import React from 'react'
 import FloatCard from '../../components/FloatCard';
 import JobCard from './JobCard';
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
-import theme from '../../Theme';
 import axios from "axios";
 import BACKEND_URL from "../../Config";
 import { useState, useEffect } from "react";

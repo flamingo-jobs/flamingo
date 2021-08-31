@@ -1,23 +1,12 @@
 import React from "react";
-// import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
-  CssBaseline,
-  Container,
-  ThemeProvider,
   makeStyles,
-  useTheme,
-  Avatar,
   Typography,
-  Button,
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import FloatCard from "../../../../FloatCard";
-import Box from "@material-ui/core/Box";
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {

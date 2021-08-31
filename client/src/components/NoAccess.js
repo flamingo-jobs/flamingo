@@ -2,7 +2,7 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Lottie from "react-lottie";
 import Anim from "./lotties/blocked.json";
-import { makeStyles, Typography, Card } from "@material-ui/core";
+import { makeStyles, Typography } from "@material-ui/core";
 import FloatCard from "./FloatCard";
 
 const useStyles = makeStyles((theme) => ({

@@ -1,9 +1,7 @@
-import { Grid, makeStyles, Typography } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core'
 import React from 'react'
-import FloatCard from '../components/FloatCard'
 import RecommendationSettingsAccordion from './components/RecommendationSettingsAccordion';
 import ShortlistingSettingsAccordion from './components/ShortlistingSettingsAccordion';
-import AccountSettings from './components/AccountSettings';
 import AccountSettingsAccordion from './components/AccountSettingsAccordion';
 
 const useStyles = makeStyles((theme) => ({

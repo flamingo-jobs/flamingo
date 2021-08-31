@@ -1,32 +1,19 @@
 import React from "react";
 // import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
-  CssBaseline,
-  Container,
-  ThemeProvider,
   makeStyles,
-  useTheme,
-  Avatar,
   Typography,
-  Button,
-  Grid,
 } from "@material-ui/core";
 import FloatCard from "../../../../components/FloatCard";
 import {
-  Chart,
-  ArgumentAxis,
-  ValueAxis,
   AreaSeries,
-  Title,
   Legend,
 } from '@devexpress/dx-react-chart-material-ui';
 import { withStyles } from '@material-ui/core/styles';
-import { ArgumentScale, Animation } from '@devexpress/dx-react-chart';
 import {
   curveCatmullRom,
   area,
 } from 'd3-shape';
-import { scalePoint } from 'd3-scale';
 import axios from "axios";
 import BACKEND_URL from "../../../../Config";
 import { useState, useEffect } from "react";

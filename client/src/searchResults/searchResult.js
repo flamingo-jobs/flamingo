@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { makeStyles, Grid, withStyles } from "@material-ui/core";
-import { useLocation } from "react-router-dom";
+import { Grid, makeStyles, withStyles } from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
-import Tabs from "@material-ui/core/Tabs";
+import Badge from "@material-ui/core/Badge";
 import Tab from "@material-ui/core/Tab";
-import WorkIcon from "@material-ui/icons/Work";
+import Tabs from "@material-ui/core/Tabs";
 import BusinessIcon from "@material-ui/icons/Business";
 import PeopleIcon from "@material-ui/icons/People";
-import TabPanel from "./components/tabPanel";
-import Badge from "@material-ui/core/Badge";
+import WorkIcon from "@material-ui/icons/Work";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import BACKEND_URL from "../Config";
+import TabPanel from "./components/tabPanel";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -51,13 +51,22 @@ const SearchResult = (props) => {
 
   const [searchString, setSearchString] = useState("");
   const [tabIndex, setTabIndex] = useState(0);
-  const userId = sessionStorage.getItem("loginId");
   const [savedJobIds, setSavedJobIds] = useState("empty");
 
   // Search results
   const [jobMatches, setJobMatches] = useState(0);
   const [orgMatches, setOrgMatches] = useState(0);
   const [userMatches, setUserMatches] = useState(0);
+
+  const jwt = require("jsonwebtoken");
+  const isSignedIn = sessionStorage.getItem("userToken") ? true : false;
+  const userId = sessionStorage.getItem("loginId");
+  const token = sessionStorage.getItem("userToken");
+  const [role, setRole] = useState(
+    jwt.decode(token, { complete: true })
+    ? jwt.decode(token, { complete: true }).payload.userRole
+    : null
+  );
 
   useEffect(() => {
     setSearchString(location.searchString);
@@ -72,7 +81,7 @@ const SearchResult = (props) => {
   }, []);
   
   const retrieveJobseeker = async () => {
-    if(userId){
+    if(isSignedIn && role === "jobseeker" && userId){
       try {
         const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
         if (response.data.success) {

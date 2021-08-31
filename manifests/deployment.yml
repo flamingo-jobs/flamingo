@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: "dev-d55b"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: "dev-d55b"
+  template:
+    metadata:
+      labels:
+        app: "dev-d55b"
+    spec:
+      containers:
+        - name: "dev-d55b"
+          image: "flamingo.azurecr.io/dev"
+          ports:
+          - containerPort: 80

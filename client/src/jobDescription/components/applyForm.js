@@ -1,22 +1,17 @@
-import React, { useState, useRef, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import {
-  Typography,
-  IconButton,
-  Container,
-  Button,
-  TextField,
+  Button, Container, Typography
 } from "@material-ui/core";
-import PublishIcon from "@material-ui/icons/Publish";
-import { findByLabelText } from "@testing-library/dom";
-import FloatCard from "../../components/FloatCard";
-import BACKEND_URL from "../../Config";
-import axios from "axios";
-import DescriptionIcon from "@material-ui/icons/Description";
-import SnackBarAlert from "../../components/SnackBarAlert";
-import Lottie from "react-lottie";
-import ItPerson from "../lotties/itPerson.json";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import { makeStyles } from "@material-ui/core/styles";
+import DescriptionIcon from "@material-ui/icons/Description";
+import PublishIcon from "@material-ui/icons/Publish";
+import axios from "axios";
+import React, { useEffect, useRef, useState } from "react";
+import Lottie from "react-lottie";
+import FloatCard from "../../components/FloatCard";
+import SnackBarAlert from "../../components/SnackBarAlert";
+import BACKEND_URL from "../../Config";
+import ItPerson from "../lotties/itPerson.json";
 
 const useStyles = makeStyles((theme) => ({
   applyFormWrapper: {
@@ -366,7 +361,7 @@ const ApplyForm = (props) => {
             {displayFileName()}
             <div className={classes.submitBtnWrapper}>
               <Button
-                variant="contained"
+                
                 color="primary"
                 className={classes.submitButton}
                 type="submit"

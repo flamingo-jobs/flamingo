@@ -1,20 +1,31 @@
-import React, { useState, useEffect } from "react";
 import { Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
-import BACKEND_URL from "../../Config";
+import React, { useEffect, useState } from "react";
 import FloatCard from "../../components/FloatCard";
+import SnackBarAlert from "../../components/SnackBarAlert";
+import BACKEND_URL from "../../Config";
+import AdditionalSkills from "./components/additionalSkills";
 import JobSummary from "./components/jobSummary";
 import Qualifications from "./components/qualifications";
 import Responsibilities from "./components/responsibilities";
 import TechStack from "./components/techStack";
-import AdditionalSkills from "./components/additionalSkills";
-import SnackBarAlert from "../../components/SnackBarAlert";
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    spacing:"3",
     paddingLeft: theme.spacing(1.5),
     paddingRight: theme.spacing(1.5),
+  },
+  leftColumn:{
+    [theme.breakpoints.up("lg")]: {
+      paddingRight: theme.spacing(1.5),
+    },
+  },
+  rightColumn:{
+    [theme.breakpoints.up("lg")]: {
+      paddingLeft: theme.spacing(1.5),
+    },
   },
   containerGridItem: {
     marginBottom: theme.spacing(3),
@@ -112,7 +123,6 @@ const DisplayJob = () => {
       const response = await axios.get(`${BACKEND_URL}/jobs/${jobId}`);
       if (response.data.success) {
         setJob(response.data.job);
-        console.log("add skills", response.data.job)
       }
     } catch (err) {
       console.error(err);
@@ -280,9 +290,9 @@ const DisplayJob = () => {
   return (
     <>
       {displayAlert()}
-      <Grid container spacing={3} className={classes.root}>
+      <Grid container className={classes.root}>
         {/* Left column */}
-        <Grid item xs={12} lg={6}>
+        <Grid item xs={12} lg={6} className={classes.leftColumn}>
           <Grid container>
             <Grid item xs={12} className={classes.containerGridItem}>
               {displaySummary()}
@@ -294,7 +304,7 @@ const DisplayJob = () => {
         </Grid>
 
         {/* Right Column */}
-        <Grid item xs={12} lg={6}>
+        <Grid item xs={12} lg={6} className={classes.rightColumn}>
           <Grid container>
             <Grid item xs={12} className={classes.containerGridItem}>
               {displayTechStack()}

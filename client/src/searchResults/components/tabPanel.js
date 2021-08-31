@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { makeStyles, Grid } from "@material-ui/core";
+import { Grid, makeStyles } from "@material-ui/core";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import BACKEND_URL from "../../Config";
 import JobCards from "./jobCards";
 import OrganizationCards from "./organizationCards";
-import UserCards from "./userCards";
-import axios from "axios";
-import BACKEND_URL from "../../Config";
 
 const useStyles = makeStyles((theme) => ({}));
 

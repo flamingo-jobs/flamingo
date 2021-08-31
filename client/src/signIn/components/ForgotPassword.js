@@ -1,23 +1,17 @@
+import {
+  Box, Button, CardMedia,
+  Chip, Container, Grid, TextField, Typography
+} from "@material-ui/core";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import { makeStyles } from "@material-ui/core/styles";
+import ArrowBackRoundedIcon from "@material-ui/icons/ArrowBackRounded";
+import axios from "axios";
 import { React, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import {
-  Button,
-  TextField,
-  Grid,
-  Typography,
-  Container,
-  CardMedia,
-  Chip,
-  Box,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import FloatCard from "../../components/FloatCard";
-import cardImage from "../../signIn/images/flamingo.gif";
-import ArrowBackRoundedIcon from "@material-ui/icons/ArrowBackRounded";
-import theme from "../../Theme";
-import axios from "axios";
 import BACKEND_URL from "../../Config";
+import cardImage from "../../signIn/images/flamingo.gif";
+import theme from "../../Theme";
 
 const useStyles = makeStyles((theme) => ({
   root: {

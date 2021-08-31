@@ -1,37 +1,32 @@
-import React from "react";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
+import {
+  Checkbox,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle, Grid,
+  List,
+  ListItem, ListItemIcon, ListItemText
+} from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import Chip from "@material-ui/core/Chip";
+import Paper from "@material-ui/core/Paper";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import Chip from "@material-ui/core/Chip";
-import {
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemIcon,
-  Checkbox,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from "@material-ui/core";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import CancelIcon from "@material-ui/icons/Cancel";
-import Button from "@material-ui/core/Button";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import EditIcon from "@material-ui/icons/Edit";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import Loading from "../../components/Loading";
 import SnackBarAlert from "../../components/SnackBarAlert";
-import axios from "axios";
 import BACKEND_URL from "../../Config";
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {

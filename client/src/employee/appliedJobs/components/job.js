@@ -136,6 +136,7 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: "13px",
     borderRadius: 50,
     backgroundColor: theme.palette.tuftsBlue,
+    border: `2px solid ${theme.palette.tuftsBlue}`,
     color: theme.palette.white,
     transition: "0.3s",
     "&:hover": {

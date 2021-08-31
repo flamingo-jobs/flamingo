@@ -1,21 +1,13 @@
 import React from "react";
 import {
-  CssBaseline,
-  Container,
-  ThemeProvider,
+
   makeStyles,
-  useTheme,
-  Avatar,
+
   Typography,
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import FloatCard from "../../../../components/FloatCard";
-import {
-  Chart,
-  PieSeries,
-  Title,
-} from '@devexpress/dx-react-chart-material-ui';
-import { Animation } from '@devexpress/dx-react-chart';
+
 import axios from "axios";
 import BACKEND_URL from "../../../../Config";
 import { useState, useEffect } from "react";

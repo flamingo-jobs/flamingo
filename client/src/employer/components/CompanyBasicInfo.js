@@ -1,5 +1,4 @@
 import React from "react";
-import LocalOfferRoundedIcon from "@material-ui/icons/LocalOfferRounded";
 import {
   Avatar,
   Button,
@@ -9,10 +8,8 @@ import {
 } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
-import wso2 from "../images/wso2.png";
 import FloatCard from '../../components/FloatCard';
 import EditIcon from "@material-ui/icons/Edit";
-import LoyaltyIcon from "@material-ui/icons/Loyalty";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -20,7 +17,6 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
 import IconButton from "@material-ui/core/IconButton";
 import LanguageIcon from "@material-ui/icons/Language";
 import FacebookIcon from "@material-ui/icons/Facebook";
@@ -36,7 +32,6 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import { Link } from "react-router-dom";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
-import { Route } from "react-router-dom";
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 const jwt = require("jsonwebtoken");
 let haveAccess = false;

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { makeStyles, Grid } from "@material-ui/core";
+import { Grid, makeStyles } from "@material-ui/core";
 import axios from "axios";
-import BACKEND_URL from "../../Config";
+import React, { useEffect, useState } from "react";
 import FloatCard from "../../components/FloatCard";
+import BACKEND_URL from "../../Config";
 import OrganizationCard from "./../../employer/components/OrganizationCard";
 import SearchNotFound from "./searchNotFound";
 
@@ -14,8 +14,17 @@ const useStyles = makeStyles((theme) => ({
 
 const OrganizationCards = (props) => {
   const classes = useStyles();
-  const userId = sessionStorage.getItem("loginId");
   const [favoriteOrgs, setFavoriteOrgs] = useState("empty");
+
+  const jwt = require("jsonwebtoken");
+  const isSignedIn = sessionStorage.getItem("userToken") ? true : false;
+  const userId = sessionStorage.getItem("loginId");
+  const token = sessionStorage.getItem("userToken");
+  const [role, setRole] = useState(
+    jwt.decode(token, { complete: true })
+    ? jwt.decode(token, { complete: true }).payload.userRole
+    : null
+  );
 
   useEffect(() => {
       retrieveJobseeker();
@@ -23,7 +32,7 @@ const OrganizationCards = (props) => {
 
   const retrieveJobseeker = async () => {
     try {
-        if(userId){
+        if(isSignedIn && role === "jobseeker" && userId){
           const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
           if (response.data.success) {
               setFavoriteOrgs(response.data.jobseeker.favoriteOrganizations);

@@ -90,6 +90,9 @@ const jobseekerSchema = new mongoose.Schema({
   reach: {
     type: Array,
   },
+  noYearsOfExp: {
+    type: String,
+  }
 });
 
 module.exports = mongoose.model("Jobseeker", jobseekerSchema);

@@ -2,7 +2,6 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import FloatCard from "../../components/FloatCard";
 import Lottie from "react-lottie";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
@@ -16,7 +15,6 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import BillingImage from "../lotties/billingImage";
 import { Link } from "react-router-dom";
 
-import Rating from "@material-ui/lab/Rating";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -322,7 +320,7 @@ export default function BillingPackageCard() {
               <Grid item xs={12}>
                 <br />
                 <Link to="/employer/payment/standard">
-                  <Button variant="contained" className={classes.button}>
+                  <Button  className={classes.button}>
                     Get Started
                   </Button>
                 </Link>
@@ -414,7 +412,7 @@ export default function BillingPackageCard() {
               <Grid item xs={12}>
                 <br />
                 <Link to="/employer/payment/premium">
-                  <Button variant="contained" className={classes.button}>
+                  <Button  className={classes.button}>
                     Get Started
                   </Button>
                 </Link>

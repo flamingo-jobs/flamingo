@@ -1,15 +1,14 @@
-import { Grid, makeStyles, Typography, Button } from '@material-ui/core';
-import React from 'react';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import FloatCard from '../../components/FloatCard';
-import JobCard from '../../jobs/components/JobCard';
+import { Button, Grid, makeStyles, Typography } from '@material-ui/core';
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
-import theme from '../../Theme';
-import BACKEND_URL from '../../Config';
-import { Link } from 'react-router-dom'
-import NoInfo from '../../components/NoInfo';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import FloatCard from '../../components/FloatCard';
 import Loading from '../../components/Loading';
+import NoInfo from '../../components/NoInfo';
+import BACKEND_URL from '../../Config';
+import JobCard from '../../jobs/components/JobCard';
+import theme from '../../Theme';
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -61,8 +60,17 @@ function FeaturedJobs(props) {
     const classes = useStyles();
 
     const [featuredJobs, setFeaturedJobs] = useState([]);
-    const userId = sessionStorage.getItem("loginId");
     const [savedJobIds, setSavedJobIds] = useState("empty");
+
+    const jwt = require("jsonwebtoken");
+    const isSignedIn = sessionStorage.getItem("userToken") ? true : false;
+    const userId = sessionStorage.getItem("loginId");
+    const token = sessionStorage.getItem("userToken");
+    const [role, setRole] = useState(
+      jwt.decode(token, { complete: true })
+      ? jwt.decode(token, { complete: true }).payload.userRole
+      : null
+    );
 
     const retrieveFeaturedJobs = () => {
         axios.get(`${BACKEND_URL}/jobs/featuredJobs`).then(res => {
@@ -91,7 +99,7 @@ function FeaturedJobs(props) {
     }, []);
 
     const retrieveJobseeker = async () => {
-        if (userId) {
+        if (isSignedIn && role === "jobseeker" && userId) {
             try {
                 const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
                 if (response.data.success) {

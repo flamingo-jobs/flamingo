@@ -182,7 +182,7 @@ export default function Billing() {
               /> */}
             </div>
             <div>
-              <Button variant="contained" className={classes.button}>
+              <Button  className={classes.button}>
                 Get Started
               </Button>
             </div>
@@ -248,7 +248,7 @@ export default function Billing() {
               /> */}
             </div>
             <div>
-              <Button variant="contained" className={classes.button}>
+              <Button  className={classes.button}>
                 Get Started
               </Button>
             </div>
@@ -319,7 +319,7 @@ export default function Billing() {
               /> */}
             </div>
             <div>
-              <Button variant="contained" className={classes.button}>
+              <Button  className={classes.button}>
                 Get Started
               </Button>
             </div>
