@@ -1,7 +1,6 @@
 const Jobseeker = require("../models/jobseeker");
 var multer = require('multer');
 var path = require('path');
-const fs = require("fs");
 
 
 const create = (req, res) => {
