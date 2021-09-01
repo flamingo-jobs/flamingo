@@ -3,6 +3,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 import "./App.css";
 import Base from "./Base";
 import ScrollToTop from "./components/ScrollToTop.js";
+import Sample from "./fileUploadSample/Sample";
 import GetHired from "./getHired/GetHired";
 import ProfileSetup from "./getHired/ProfileSetup";
 import { AcceptInvitation } from "./signIn/components/AcceptInvitation.js";
@@ -42,6 +43,9 @@ function App() {
           </Route>
           <Route path="/startHiring">
             <StartHiring />
+          </Route>
+          <Route path="/sampleUpload">
+            <Sample />
           </Route>
         </ThemeProvider>
       </BrowserRouter>
