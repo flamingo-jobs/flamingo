@@ -5,6 +5,7 @@ import FloatCard from "../../components/FloatCard";
 import BACKEND_URL from "../../Config";
 import OrganizationCard from "./../../employer/components/OrganizationCard";
 import SearchNotFound from "./searchNotFound";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   orgCardWrapper: {
@@ -14,6 +15,10 @@ const useStyles = makeStyles((theme) => ({
 
 const OrganizationCards = (props) => {
   const classes = useStyles();
+
+  // Redux
+  const reduxFavoriteOrgIds = useSelector(state => state.favoriteOrgIds);
+
   const [favoriteOrgs, setFavoriteOrgs] = useState("empty");
 
   const jwt = require("jsonwebtoken");
@@ -31,15 +36,17 @@ const OrganizationCards = (props) => {
   }, []);
 
   const retrieveJobseeker = async () => {
-    try {
-        if(isSignedIn && role === "jobseeker" && userId){
-          const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
-          if (response.data.success) {
-              setFavoriteOrgs(response.data.jobseeker.favoriteOrganizations);
-          }
+    if(isSignedIn && role === "jobseeker" && userId && reduxFavoriteOrgIds === "empty"){
+      try {
+        const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
+        if (response.data.success) {
+            setFavoriteOrgs(response.data.jobseeker.favoriteOrganizations);
         }
-    } catch (err) {
-        console.log(err);
+      } catch (err) {
+          console.log(err);
+      }
+    } else {
+      setFavoriteOrgs(reduxFavoriteOrgIds);
     }
   };
   

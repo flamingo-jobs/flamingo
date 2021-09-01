@@ -16,9 +16,8 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import LoginModal from "./loginModal";
 import SnackBarAlert from "../../components/SnackBarAlert";
-import { useDispatch } from "react-redux";
-import { setFavoriteOrgCount } from "../../redux/actions";
-
+import { useSelector, useDispatch } from "react-redux";
+import { setFavoriteOrgCount, setReduxFavoriteOrgIds } from "../../redux/actions";
 
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -145,6 +144,8 @@ const useStyles = makeStyles((theme) => ({
 
 function OrganizationCard(props) {
   const classes = useStyles();
+
+  // Redux
   const dispatch = useDispatch();
 
   const [isSaved, setIsSaved] = useState(false);
@@ -222,6 +223,7 @@ function OrganizationCard(props) {
         );
         if (response.data.success) {
           dispatch(setFavoriteOrgCount(newFavoriteOrgs.length));
+          dispatch(setReduxFavoriteOrgIds(newFavoriteOrgs));
           setAlertData({
             severity: "success",
             msg: "Organization Removed From Favorite Organizations",
@@ -247,6 +249,7 @@ function OrganizationCard(props) {
         );
         if (response.data.success) {
           dispatch(setFavoriteOrgCount(newFavoriteOrgs.length));
+          dispatch(setReduxFavoriteOrgIds(newFavoriteOrgs));
           setAlertData({
             severity: "success",
             msg: "Organization Saved, Successfully!",

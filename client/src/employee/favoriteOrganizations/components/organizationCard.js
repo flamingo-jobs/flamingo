@@ -15,8 +15,7 @@ import BACKEND_URL from "../../../Config";
 import axios from "axios";
 import { Link } from 'react-router-dom'
 import { useDispatch } from "react-redux";
-import { setFavoriteOrgCount } from "../../../redux/actions";
-
+import { setFavoriteOrgCount, setReduxFavoriteOrgIds } from "../../../redux/actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -103,6 +102,8 @@ const OrganizationCard = (props) => {
   const classes = useStyles();
 
   const [isSaved, setIsSaved] = useState(true);
+
+  // Redux
   const dispatch = useDispatch();
 
   const getAvgRating = (arr = []) => {
@@ -134,6 +135,7 @@ const OrganizationCard = (props) => {
         });
         props.handleAlert();
         dispatch(setFavoriteOrgCount(newFavoriteOrgs.length));
+        dispatch(setReduxFavoriteOrgIds(newFavoriteOrgs));
         props.setFavoriteOrgIds(newFavoriteOrgs);
       }
     } catch (err) {
@@ -188,7 +190,7 @@ const OrganizationCard = (props) => {
             </Typography>
           </div>
           <div className={classes.orgTags}>
-            <Typography>5 openings</Typography>
+            {/* <Typography>5 openings</Typography> */}
           </div>
           <div className={classes.footer}>
             <div className={classes.footerLeft}>
@@ -199,7 +201,7 @@ const OrganizationCard = (props) => {
               />
             </div>
             <div className={classes.footerRight}>
-            <Link to="/employer/company">
+            <Link to={`/employer/company/${props.org._id}`}>
               <Button className={classes.applyButton}>View Organization</Button>
             </Link>
             </div>

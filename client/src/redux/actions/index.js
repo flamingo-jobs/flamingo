@@ -11,3 +11,10 @@ export const setSavedJobCount = (newValue) => {
         payload: newValue
     };
 }
+
+export const setReduxFavoriteOrgIds = (newIds) => {
+    return {
+        type: "UPDATE_ORG_IDS",
+        payload: newIds
+    };
+}

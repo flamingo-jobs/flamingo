@@ -8,7 +8,8 @@ import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
 import axios from 'axios';
 import BACKEND_URL from '../../../Config';
 import SnackBarAlert from "../../../components/SnackBarAlert";
-
+import { useSelector, useDispatch } from "react-redux";
+import { setReduxFavoriteOrgIds } from "../../../redux/actions";
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -40,6 +41,10 @@ function FeaturedOrganizations(props) {
     const [alertShow, setAlertShow] = useState(false);
     const [alertData, setAlertData] = useState({ severity: "", msg: "" });
 
+    // Redux
+    const reduxFavoriteOrgIds = useSelector(state => state.favoriteOrgIds);
+    const dispatch = useDispatch();
+
     let loginId;
     let login = false;
     const jwt = require("jsonwebtoken");
@@ -53,7 +58,14 @@ function FeaturedOrganizations(props) {
     } else {
         loginId=props.jobseekerID;
     }
+
+    const isSignedIn = sessionStorage.getItem("userToken") ? true : false;
     const userId = sessionStorage.getItem("loginId");
+    const [role, setRole] = useState(
+        jwt.decode(token, { complete: true })
+            ? jwt.decode(token, { complete: true }).payload.userRole
+            : null
+    );
 
     const handleAlert = () => {
         setAlertShow(true);
@@ -75,14 +87,19 @@ function FeaturedOrganizations(props) {
       }, [favoriteOrgIds]);
 
     const retrieveFavoriteOrgIds = () => {
-        axios.get(`${BACKEND_URL}/jobseeker/${userId}`)
-        .then(res => {
-            if(res.data.success){
-                if(res.data.jobseeker.favoriteOrganizations.length > 0){
-                    setFavoriteOrgIds(res.data.jobseeker.favoriteOrganizations);
+        if(isSignedIn && role === "jobseeker" && reduxFavoriteOrgIds === "empty"){
+            axios.get(`${BACKEND_URL}/jobseeker/${userId}`)
+            .then(res => {
+                if(res.data.success){
+                    if(res.data.jobseeker.favoriteOrganizations.length > 0){
+                        dispatch(setReduxFavoriteOrgIds(res.data.jobseeker.favoriteOrganizations));
+                        setFavoriteOrgIds(res.data.jobseeker.favoriteOrganizations);
+                    }
                 }
-            }
-        })
+            })
+        } else {
+            setFavoriteOrgIds(reduxFavoriteOrgIds);
+        }
     }
 
     const retrieveEmployers = async () => {
