@@ -1,8 +1,10 @@
 // ./src/App.tsx
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Path from 'path';
 import uploadFileToBlob, { isStorageConfigured } from '../utils/azureFileUpload';
+import axios from 'axios';
+
 
 const storageConfigured = isStorageConfigured();
 
@@ -16,6 +18,8 @@ const Sample = () => {
     // UI/form management
     const [uploading, setUploading] = useState(false);
     const [inputKey, setInputKey] = useState(Math.random().toString(36));
+
+    const [profilePic, setProfilePic] = useState('../employee/images/defaultProfilePic.jpg');
 
     const onFileChange = (event) => {
         // capture file into state
@@ -48,6 +52,18 @@ const Sample = () => {
         </div>
     )
 
+    const loadImage = async () => {
+        await axios.get('https://flamingofiles.blob.core.windows.net/employee-profile-pictures/news.png').then(res => {
+            setProfilePic('https://flamingofiles.blob.core.windows.net/employee-profile-pictures/news.png');
+        }).catch(error => {
+            setProfilePic('default');
+        })
+    }
+
+    useEffect(() => {
+        loadImage()
+    }, [])
+
     return (
         <div>
             <h1>Upload file to Azure Blob Storage</h1>
@@ -56,6 +72,8 @@ const Sample = () => {
             <hr />
             {storageConfigured && uploaded && <div>Uploaded succesfully image can be found at https://flamingofiles.blob.core.windows.net/employee-profile-pictures/image_name</div>}
             {!storageConfigured && <div>Storage is not configured.</div>}
+
+            <img src={profilePic !== 'default' ? profilePic : require('../employee/images/defaultProfilePic.jpg').default}></img>
         </div>
     );
 };
