@@ -25,7 +25,7 @@ import NotificationsPopover from "./NotificationPopover";
 import BookmarksIcon from '@material-ui/icons/Bookmarks';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import { Link, useHistory } from 'react-router-dom';
-import BACKEND_URL from "../Config";
+import BACKEND_URL, { FILE_URL } from "../Config";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { setFavoriteOrgCount } from "../redux/actions";
@@ -286,7 +286,7 @@ export default function Topbar(props) {
 
   const [searchString, setSearchString] = React.useState("");
 
-  const [profilePic, setProfilePic] = React.useState("../employee/images/defaultProfilePic.jpg");
+  const [profilePic, setProfilePic] = React.useState(require(`./images/loadingImage.gif`).default);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -352,8 +352,8 @@ export default function Topbar(props) {
     try {
       if (header.payload.userRole === "employer") {
 
-        await axios.get(`https://flamingofiles.blob.core.windows.net/employer-profile-pictures/${loginId}.png`).then(res => {
-          setProfilePic(`https://flamingofiles.blob.core.windows.net/employer-profile-pictures/${loginId}.png`);
+        await axios.get(`${FILE_URL}/employer-profile-pictures/${loginId}.png`).then(res => {
+          setProfilePic(`${FILE_URL}/employer-profile-pictures/${loginId}.png`);
         }).catch(error => {
           setProfilePic(require(`../admin/images/profilepic.jpg`).default);
         })
@@ -368,8 +368,8 @@ export default function Topbar(props) {
         //   return require('../employee/images/defaultProfilePic.jpg').default
         // }
 
-        await axios.get(`https://flamingofiles.blob.core.windows.net/jobseeker-profile-pictures/${loginId}.png`).then(res => {
-          setProfilePic(`https://flamingofiles.blob.core.windows.net/jobseeker-profile-pictures/${loginId}.png`);
+        await axios.get(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.png`).then(res => {
+          setProfilePic(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.png`);
         }).catch(error => {
           setProfilePic(require(`../components/images/defaultProfilePic.jpg`).default);
         })

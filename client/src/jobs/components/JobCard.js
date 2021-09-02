@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 import ReactTimeAgo from 'react-time-ago';
 import FloatCard from '../../components/FloatCard';
 import SnackBarAlert from "../../components/SnackBarAlert";
-import BACKEND_URL from "../../Config";
+import BACKEND_URL, { FILE_URL } from "../../Config";
 import { setSavedJobCount } from "../../redux/actions";
 import LoginModal from './loginModal';
 
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     favorite: {
         display: 'block',
         color: theme.palette.pinkyRed,
-        "&:hover":{
+        "&:hover": {
             cursor: "pointer",
         },
     },
@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
         marginRight: 10,
         backgroundColor: 'white',
     },
-    
+
     footerLeft: {
         display: 'flex',
         alignItems: 'center'
@@ -102,10 +102,12 @@ function JobCard(props) {
     const userId = sessionStorage.getItem("loginId");
     const token = sessionStorage.getItem("userToken");
     const [role, setRole] = useState(
-      jwt.decode(token, { complete: true })
-      ? jwt.decode(token, { complete: true }).payload.userRole
-      : null
+        jwt.decode(token, { complete: true })
+            ? jwt.decode(token, { complete: true }).payload.userRole
+            : null
     );
+
+    const [logo, setLogo] = useState(require(`../../components/images/loadingImage.gif`).default);
 
     const [alertShow, setAlertShow] = useState(false);
     const [alertData, setAlertData] = useState({ severity: "", msg: "" });
@@ -122,8 +124,8 @@ function JobCard(props) {
 
     const handleAlert = () => {
         setAlertShow(true);
-      };
-    
+    };
+
     const handleAlertClose = (event, reason) => {
         if (reason === "clickaway") {
             return;
@@ -132,19 +134,31 @@ function JobCard(props) {
     };
 
     useEffect(() => {
-        if(!role){
+        loadLogo();
+    }, [])
+
+    useEffect(() => {
+        if (!role) {
             setIsSaved(false);
-        } else if(role && role === "jobseeker"){
+        } else if (role && role === "jobseeker") {
             setIsSaved(props.savedJobIds?.includes(props.info._id));
         }
     }, [props.savedJobIds, props.info]);
 
-    const loadLogo = () => {
-        try {
-            return require(`../../employer/images/${props.info.organization.logo}`).default;
-        } catch (err) {
-            return require(`../../employer/images/default_company_logo.png`).default;
-        }
+    const loadLogo = async () => {
+        await axios.get(`${FILE_URL}/employer-profile-pictures/${props.info.organization.id}.png`).then(res => {
+            setLogo(`${FILE_URL}/employer-profile-pictures/${props.info.organization.id}.png`);
+        }).catch(error => {
+            axios.get(`${FILE_URL}/employer-profile-pictures/${props.info.organization.id}.jpg`).then(res => {
+                setLogo(`${FILE_URL}/employer-profile-pictures/${props.info.organization.id}.jpg`);
+            }).catch(error => {
+                axios.get(`${FILE_URL}/employer-profile-pictures/${props.info.organization.id}.PNG`).then(res => {
+                    setLogo(`${FILE_URL}/employer-profile-pictures/${props.info.organization.id}.PNG`);
+                }).catch(error => {
+                    setLogo(require(`../../employer/images/default_company_logo.png`).default);
+                })
+            })
+        })
     }
 
     const loadName = () => {
@@ -160,7 +174,7 @@ function JobCard(props) {
     }
 
     const handleSavingJob = async () => {
-        if(isSaved){ // Unsave
+        if (isSaved) { // Unsave
             setIsSaved(!isSaved);
             const newSavedJobIds = props.savedJobIds.filter((id) => id !== props.info._id);
             props.setSavedJobIds(newSavedJobIds);
@@ -184,21 +198,21 @@ function JobCard(props) {
                 handleAlert();
             }
 
-        } else{ // Save
+        } else { // Save
             setIsSaved(!isSaved);
             const newSavedJobIds = [...props.savedJobIds, props.info._id];
             props.setSavedJobIds(newSavedJobIds);
-      
+
             try {
-              const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateSavedJobs/${userId}`, newSavedJobIds);
-              if (response.data.success) {
-                dispatch(setSavedJobCount(newSavedJobIds.length));
-                setAlertData({
-                    severity: "success",
-                    msg: "Job Saved, Successfully!",
-                });
-                handleAlert();
-              }
+                const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateSavedJobs/${userId}`, newSavedJobIds);
+                if (response.data.success) {
+                    dispatch(setSavedJobCount(newSavedJobIds.length));
+                    setAlertData({
+                        severity: "success",
+                        msg: "Job Saved, Successfully!",
+                    });
+                    handleAlert();
+                }
             } catch (err) {
                 setAlertData({
                     severity: "error",
@@ -211,27 +225,27 @@ function JobCard(props) {
 
     const displayAlert = () => {
         return (
-          <SnackBarAlert
-            open={alertShow}
-            onClose={handleAlertClose}
-            severity={alertData.severity}
-            msg={alertData.msg}
-          />
+            <SnackBarAlert
+                open={alertShow}
+                onClose={handleAlertClose}
+                severity={alertData.severity}
+                msg={alertData.msg}
+            />
         );
-      };
+    };
 
     const displaySaveIcon = () => {
-        if(!isSignedIn){
+        if (!isSignedIn) {
             // When user is not signed in
             return <BookmarkBorderRoundedIcon className={classes.favorite} onClick={handleLoginModal} />;
         } else {
-            if(role === "jobseeker"){
-                if(isSaved){
+            if (role === "jobseeker") {
+                if (isSaved) {
                     // When user is signed in && Job is in savedjobs 
                     return <BookmarkIcon className={classes.favorite} onClick={handleSavingJob} />;
                 } else {
                     // When user is signed in but Job is not in savedJobs
-                    return <BookmarkBorderRoundedIcon className={classes.favorite} onClick={handleSavingJob}/>;
+                    return <BookmarkBorderRoundedIcon className={classes.favorite} onClick={handleSavingJob} />;
                 }
             }
         }
@@ -239,42 +253,42 @@ function JobCard(props) {
 
     return (
         <FloatCard >
-        {displayAlert()}
-        {/* Works only when user is not signed in */}
-        <LoginModal 
-            open={open}
-            handleClose={handleClose}
-        ></LoginModal>
+            {displayAlert()}
+            {/* Works only when user is not signed in */}
+            <LoginModal
+                open={open}
+                handleClose={handleClose}
+            ></LoginModal>
 
-        <div className={classes.root}>
-            <div className={classes.header}>
-                <div className={classes.headerLeft}>
-                    <Chip icon={<LocalOfferRoundedIcon className={classes.tagIcon} />} label={props.info.category} className={classes.label} />
-                    <Typography className={classes.time}><ReactTimeAgo date={props.info.postedDate} locale="en-US"/></Typography>
-                </div>
-                <div className={classes.headerRight}>
-                    {displaySaveIcon()}
-                </div>
+            <div className={classes.root}>
+                <div className={classes.header}>
+                    <div className={classes.headerLeft}>
+                        <Chip icon={<LocalOfferRoundedIcon className={classes.tagIcon} />} label={props.info.category} className={classes.label} />
+                        <Typography className={classes.time}><ReactTimeAgo date={props.info.postedDate} locale="en-US" /></Typography>
+                    </div>
+                    <div className={classes.headerRight}>
+                        {displaySaveIcon()}
+                    </div>
 
-            </div>
-            <div className={classes.body} >
-                <Typography variant="h5" className={classes.title} >{props.info.title}</Typography>
-                <Typography noWrap className={classes.description} >{props.info.description}</Typography>
-                <div className={classes.infoTags}>
-                    <Chip icon={<LocationOnRoundedIcon />} label={props.info.location} className={classes.tag} />
-                    <Chip icon={<WorkRoundedIcon />} label={props.info.type} className={classes.tag} />
+                </div>
+                <div className={classes.body} >
+                    <Typography variant="h5" className={classes.title} >{props.info.title}</Typography>
+                    <Typography noWrap className={classes.description} >{props.info.description}</Typography>
+                    <div className={classes.infoTags}>
+                        <Chip icon={<LocationOnRoundedIcon />} label={props.info.location} className={classes.tag} />
+                        <Chip icon={<WorkRoundedIcon />} label={props.info.type} className={classes.tag} />
+                    </div>
+                </div>
+                <div className={classes.footer} >
+                    <div className={classes.footerLeft}>
+                        <Avatar className={classes.logo} src={logo} variant="square" />
+                        <Typography className={classes.company}>{loadName()}</Typography>
+                    </div>
+                    <div className={classes.footerRight} >
+                        <Link to={`/jobDescription/${props.info._id}`}><Button className={classes.applyButton}>View Job</Button></Link>
+                    </div>
                 </div>
             </div>
-            <div className={classes.footer} >
-                <div className={classes.footerLeft}>
-                    <Avatar className={classes.logo} src={loadLogo()} variant="square" />
-                    <Typography className={classes.company}>{loadName()}</Typography>
-                </div>
-                <div className={classes.footerRight} >
-                <Link to={`/jobDescription/${props.info._id}`}><Button className={classes.applyButton}>View Job</Button></Link>
-                </div>
-            </div>
-        </div>
         </FloatCard>
     )
 }
