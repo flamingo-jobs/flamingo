@@ -286,11 +286,13 @@ export default function Topbar(props) {
 
   const [searchString, setSearchString] = React.useState("");
 
+  const [profilePic, setProfilePic] = React.useState("../employee/images/defaultProfilePic.jpg");
+
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const isNotificationMenuOpen = Boolean(notificationAnchorEl);
 
-  const loginId =sessionStorage.getItem("loginId");
+  const loginId = sessionStorage.getItem("loginId");
 
   const handleNotificationClose = () => {
     setNotificationAnchorEl(null);
@@ -342,28 +344,41 @@ export default function Topbar(props) {
 
   useEffect(() => {
     loadBadgeData();
+
+    if (token) { loadProfilePic(); }
   }, []);
 
-  const loadProfilePic = () => {
+  const loadProfilePic = async () => {
     try {
       if (header.payload.userRole === "employer") {
-        return require(`../employer/images/${header.payload.userId}`).default
+
+        await axios.get(`https://flamingofiles.blob.core.windows.net/employer-profile-pictures/${loginId}.png`).then(res => {
+          setProfilePic(`https://flamingofiles.blob.core.windows.net/employer-profile-pictures/${loginId}.png`);
+        }).catch(error => {
+          setProfilePic(require(`../admin/images/profilepic.jpg`).default);
+        })
 
       } else if (header.payload.userRole === "jobseeker") {
-          const images = require.context('../../../server/profilePictures', true);
-          try{
-            let loginId=sessionStorage.getItem("loginId");
-            let image = images(`./${loginId}.jpg`).default;
-            return image;
-          }catch (error) {
-            return require('../employee/images/defaultProfilePic.jpg').default
-          }
-          
+        // const images = require.context('../../../server/profilePictures', true);
+        // try{
+        //   let loginId=sessionStorage.getItem("loginId");
+        //   let image = images(`./${loginId}.jpg`).default;
+        //   return image;
+        // }catch (error) {
+        //   return require('../employee/images/defaultProfilePic.jpg').default
+        // }
+
+        await axios.get(`https://flamingofiles.blob.core.windows.net/jobseeker-profile-pictures/${loginId}.png`).then(res => {
+          setProfilePic(`https://flamingofiles.blob.core.windows.net/jobseeker-profile-pictures/${loginId}.png`);
+        }).catch(error => {
+          setProfilePic(require(`../components/images/defaultProfilePic.jpg`).default);
+        })
+
       } else if (header.payload.userRole === "admin") {
-        return require(`../admin/images/profilepic.jpg`).default
+        setProfilePic(require(`../admin/images/profilepic.jpg`).default);
       }
     } catch (err) {
-      return require('../employee/images/defaultProfilePic.jpg').default
+      setProfilePic(require(`../components/images/defaultProfilePic.jpg`).default);
     }
   }
 
@@ -475,7 +490,7 @@ export default function Topbar(props) {
                   </IconButton>
                 </Link>
                 <Link to="/jobseeker/favoriteOrganizations">
-                  <IconButton aria-label="" className={classes.topBarIcon} style={{border: "1px solid red"}}>
+                  <IconButton aria-label="" className={classes.topBarIcon} style={{ border: "1px solid red" }}>
                     <Badge badgeContent={favoriteOrgCount} color="secondary">
                       <FavoriteIcon />
                     </Badge>
@@ -504,7 +519,7 @@ export default function Topbar(props) {
               onClick={handleProfileMenuOpen}
             >
 
-              <Avatar className={classes.profilepic} src={loadProfilePic()} variant="square" />
+              <Avatar className={classes.profilepic} src={profilePic} variant="square" />
 
             </IconButton>
           </div>
@@ -617,7 +632,7 @@ export default function Topbar(props) {
                       onClick={handleProfileMenuOpen}
                       color="primary"
                     >
-                      <Avatar className={classes.profilepic} src={loadProfilePic()} variant="square" />
+                      <Avatar className={classes.profilepic} src={profilePic} variant="square" />
                     </IconButton>
 
                   </div>
