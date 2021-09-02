@@ -95,7 +95,7 @@ const Qualifications = (props) => {
     e.preventDefault();
 
     const updateFields = {
-      qualifications: props.job.qualifications,
+      qualifications: props.job.qualifications.map(q => q.trim()),
     };
 
     try {

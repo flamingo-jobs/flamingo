@@ -98,7 +98,7 @@ const Responsibilities = (props) => {
     e.preventDefault();
 
     const updateFields = {
-      tasksAndResponsibilities: props.job.tasksAndResponsibilities,
+      tasksAndResponsibilities: props.job.tasksAndResponsibilities.map(t => t.trim()),
     };
 
     try {

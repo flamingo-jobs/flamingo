@@ -210,10 +210,10 @@ function JobSummary(props) {
 
       if(value.trim() === ""){
         if(name === "min" || name === "max"){
-          newErrors[name] = "Salary cannot be empty.";
+          delete newErrors[name];
         }
         else if(name === "numberOfVacancies"){
-          newErrors[name] = "Number of vacancies cannot be empty.";
+          delete newErrors[name];
         }
       } else {
         if(regex.test(value.trim().replace(/\s/g, ''))){
@@ -481,6 +481,7 @@ function JobSummary(props) {
                   {props.job.minimumEducation}
                 </Typography>
               </div>
+
               <div>
                 <Typography align="left" className={classes.description}>
                   <span className={classes.minExperience}>
@@ -489,19 +490,45 @@ function JobSummary(props) {
                   {props.job.minimumExperience} years
                 </Typography>
               </div>
+
               <div>
-                <Typography align="left" className={classes.description}>
-                  <span className={classes.salary}>Salary: </span>Rs.
-                  {props.job.salaryRange.min} - Rs.{props.job.salaryRange.max}
-                </Typography>
+                {props.job.salaryRange.min !== "" &&
+                  props.job.salaryRange.max !== "" && (
+                    <Typography align="left" className={classes.description}>
+                      <span className={classes.salary}>Salary: </span>Rs.
+                      {props.job.salaryRange.min} - Rs.
+                      {props.job.salaryRange.max}
+                    </Typography>
+                  )}
+
+                {props.job.salaryRange.min !== "" &&
+                  props.job.salaryRange.max === "" && (
+                    <Typography align="left" className={classes.description}>
+                      <span className={classes.salary}>Minimum Salary: </span>
+                      Rs.
+                      {props.job.salaryRange.min}
+                    </Typography>
+                  )}
+
+                {props.job.salaryRange.min === "" &&
+                  props.job.salaryRange.max !== "" && (
+                    <Typography align="left" className={classes.description}>
+                      <span className={classes.salary}>Maximum Salary: </span>
+                      Rs.
+                      {props.job.salaryRange.max}
+                    </Typography>
+                  )}
               </div>
+
               <div>
-                <Typography align="left" className={classes.description}>
-                  <span className={classes.numOfVacancies}>
-                    Number of vacancies:{" "}
-                  </span>
-                  {props.job.numberOfVacancies}
-                </Typography>
+                {props.job.numberOfVacancies !== "" &&
+                  <Typography align="left" className={classes.description}>
+                    <span className={classes.numOfVacancies}>
+                      Number of vacancies:{" "}
+                    </span>
+                    {props.job.numberOfVacancies}
+                  </Typography>
+                }
               </div>
             </Grid>
             <Grid item xs={12}>
