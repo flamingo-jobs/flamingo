@@ -189,7 +189,7 @@ export default function CreateJobSetup() {
     "PhD",
   ];
 
-  const minExperienceList = ["0", "0-1", "1-3", "+3"];
+  const minExperienceList = ["0", "0-1", "1-3", "3-5", "5+"];
 
   const getFormattedDate = (date) => {
     const dateStr = `${date.getDate().toString().padStart(2, "0")}/
@@ -683,7 +683,7 @@ export default function CreateJobSetup() {
                 <Grid container direction="row">
                   <Grid item xs={12} align="left">
                     <Typography className={classes.mainTitle}>
-                      Create a new job...
+                      Post a new job...
                     </Typography>
                   </Grid>
                 </Grid>

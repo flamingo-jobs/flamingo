@@ -72,42 +72,29 @@ const AddTechForm = (props) => {
   };
 
   return (
-    <Grid
-      container
-      direction="column"
-      xs={12}
-      spacing={3}
-      style={{ marginRight: -10 }}
-    >
-      <FloatCard>
-        <Grid container direction="row">
-          <Grid item container direction="column" xs={7}>
+    <FloatCard>
+      <Grid container direction="row">
+        <Grid item container direction="column" xs={12} lg={7}>
 
-            <Grid item style={{ marginLeft: 15 }}>
-              <TechnologiesStackEdit
-                showEdit={true}
-                login={login}
-                employerId={loginId}
-              />
-            </Grid>
-          </Grid>
-
-          <Grid item container xs={5} className={classes.lottie}>
-            <Grid item>
-              {/* <ComputerIcon className={classes.notificationsIcon} /> */}
-            </Grid>
-            <Grid item>
-              <Lottie
-                className={classes.lottie}
-                options={defaultOptions}
-                height={"inherit"}
-                width={"inherit"}
-              />
-            </Grid>
+          <Grid item xs={12}>
+            <TechnologiesStackEdit
+              showEdit={true}
+              login={login}
+              employerId={loginId}
+            />
           </Grid>
         </Grid>
-      </FloatCard>
-    </Grid>
+
+          <Grid item xs={12} lg={5} className={classes.lottie}>
+            <Lottie
+              className={classes.lottie}
+              options={defaultOptions}
+              height={"inherit"}
+              width={"inherit"}
+            />
+          </Grid>
+      </Grid>
+    </FloatCard>
   );
 };
 

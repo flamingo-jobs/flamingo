@@ -31,7 +31,7 @@ const Sample = () => {
         setUploading(true);
 
         // *** UPLOAD TO AZURE STORAGE ***
-        const blobsInContainer = await uploadFileToBlob(fileSelected, "employee-profile-pictures");
+        const blobsInContainer = await uploadFileToBlob(fileSelected, "employer-profile-pictures");
 
         // prepare UI for results
         setUploaded(true);

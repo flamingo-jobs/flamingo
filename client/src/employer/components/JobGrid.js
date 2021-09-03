@@ -135,55 +135,55 @@ function JobGrid(props) {
 
     const getPending = (row) => {
         var pending = 0;
-    
+
         row.applicationDetails.forEach((element) => {
-          if (element.status == "pending") {
-            pending++;
-          }
-          console.log(element.status);
+            if (element.status == "pending") {
+                pending++;
+            }
+            console.log(element.status);
         });
-    
+
         return pending;
-      };
-    
-      const getReviewing = (row) => {
+    };
+
+    const getReviewing = (row) => {
         var reviewing = 0;
-    
+
         row.applicationDetails.forEach((element) => {
-          if (element.status == "reviewing") {
-            reviewing++;
-          }
-          console.log(element.status);
+            if (element.status == "reviewing") {
+                reviewing++;
+            }
+            console.log(element.status);
         });
-    
+
         return reviewing;
-      };
-    
-      const getShortlisted = (row) => {
+    };
+
+    const getShortlisted = (row) => {
         var shortlisted = 0;
-    
+
         row.applicationDetails.forEach((element) => {
-          if (element.status == "shortlisted") {
-            shortlisted++;
-          }
-          console.log(element.status);
+            if (element.status == "shortlisted") {
+                shortlisted++;
+            }
+            console.log(element.status);
         });
-    
+
         return shortlisted;
-      };
-    
-      const getRejected = (row) => {
+    };
+
+    const getRejected = (row) => {
         var rejected = 0;
-    
+
         row.applicationDetails.forEach((element) => {
-          if (element.status == "rejected") {
-            rejected++;
-          }
-          console.log(element.status);
+            if (element.status == "rejected") {
+                rejected++;
+            }
+            console.log(element.status);
         });
-    
+
         return rejected;
-      };
+    };
 
     const getMerged = (row) => {
         let mergedArray = [];
@@ -230,7 +230,7 @@ function JobGrid(props) {
     const delay = ms => new Promise(res => setTimeout(res, ms));
 
     const retrieveJobs = async () => {
-        if ((featured && JSON.stringify(queryParams) === "{}") || (org && JSON.stringify(queryParams) === "{}")) {
+        if (JSON.stringify(queryParams) === "{}") {
             return;
         }
         axios.post(`${BACKEND_URL}/jobs/getJobCount`, { queryParams: queryParams, related: relatedJob }).then(res => {
@@ -263,7 +263,7 @@ function JobGrid(props) {
             return (
                 <Grid item sm={12} style={{ marginBottom: 16 }}>
                     <FloatCard>
-                        <NoInfo message="Sorry, we can't find any job that matches with your requirements. Keep in touch with us" />
+                        <NoInfo message="Sorry, we can't find any job that matches with your requirements." />
                     </FloatCard>
                 </Grid>)
         } else if (jobs.length === 0) {

@@ -8,6 +8,7 @@ import axios from 'axios'
 import SnackBarAlert from '../../components/SnackBarAlert'
 import FloatCard from '../../components/FloatCard';
 import Loading from '../../components/Loading';
+import theme from '../../Theme';
 const useStyles = makeStyles((theme) => ({
 
 }));
@@ -120,9 +121,8 @@ function TechnologiesStackEdit(props) {
     };
 
     return (
-        <FloatCard>
-            <Grid container spacing={3} direction="column"
-                justify="space-between">
+        <FloatCard backColor={theme.palette.lightyPurple}>
+            <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <Typography variant="h6" className={classes.title}>
                         Company Technology Stack
@@ -130,7 +130,6 @@ function TechnologiesStackEdit(props) {
                 </Grid>
                 <Grid item xs={12}>
                     {displayTechnologies()}
-
                 </Grid >
             </Grid>
             {displayAlert()}
