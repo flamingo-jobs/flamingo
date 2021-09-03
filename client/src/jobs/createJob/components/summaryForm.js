@@ -59,6 +59,11 @@ const useStyles = makeStyles((theme) => ({
   },
   mainContainer: {
     padding: theme.spacing(5),
+    [theme.breakpoints.down('sm')]: {
+      padding: 16,
+      paddingLeft: 5,
+      paddingRight: 0,
+    }
   },
   dateWrapper: {
     // marginLeft: theme.spacing(2),

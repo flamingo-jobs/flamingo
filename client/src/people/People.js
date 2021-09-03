@@ -25,10 +25,6 @@ const useStyles = makeStyles((theme) => ({
             flexDirection: 'column',
             alignItems: "stretch"
         },
-        [theme.breakpoints.down('xs')]: {
-            paddingRight: 12,
-            paddingLeft: 12
-        },
     },
     filterGrid: {
         [theme.breakpoints.down('sm')]: {
@@ -44,7 +40,8 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center',
     },
     gridCard: {
-        display: "grid"
+        display: "grid",
+        marginBottom: 12
     }
 
 }));
@@ -144,14 +141,19 @@ function People() {
 
     return (
         <>
-            <Grid item container sm={12} spacing={3} direction="row" justify="space-between" className={classes.mainGrid} alignItems="flex-start">
-                <Grid item sm={12} className={classes.searchGrid}>
+            <Grid item container xs={12} spacing={3} direction="row"
+                justify="space-between"
+                alignItems="flex-start" className={classes.mainGrid}>
+                <Grid item xs={12} className={classes.searchGrid}>
                     <PeopleSearchBar onChange={updateSearch} />
                 </Grid>
-                <Grid item container xs={12} sm={12} md={8} lg={9} spacing={2} direction="row" className={classes.peopleGrid} justify="flex-start" alignItems="flex-start">
+                <Grid item container xs={12} md={8} lg={9} spacing={0} direction="row"
+                    justify="space-between"
+                    alignItems="flex-start" className={classes.peopleGrid}>
                     {displayPeople()}
                     <Grid item sm={12}>
-                    {people !== "empty" ?
+
+                        {people !== "empty" ?
                             <Pagination count={Math.ceil(count / 10)} color="primary" page={page} onChange={changePage} classes={{ ul: classes.pagination }} />
                             : null
                         }

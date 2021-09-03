@@ -57,4 +57,6 @@ router.patch('/jobs/updateResumeStatus/:id', jobsController.updateResumeStatus);
 
 router.delete('/jobs/delete/:id', jobsController.remove);
 
+router.get('/jobs/getOpeningsByOrg/:id', jobsController.getOpeningCountByOrg);
+
 module.exports = router;

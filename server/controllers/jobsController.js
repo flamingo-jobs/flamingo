@@ -212,7 +212,7 @@ const getAllJobsFromEmployer = (req, res) => {
 }
 
 const getAllJobsFromUser = (req, res) => {
-    Jobs.find({ 'organization.id': req.params.loginId, "createdBy" : req.params.userId }, (err, employerJobs) => {
+    Jobs.find({ 'organization.id': req.params.loginId, "createdBy": req.params.userId }, (err, employerJobs) => {
         if (err) {
             return res.status(400).json({
                 error: err
@@ -243,7 +243,7 @@ const shortlistForGivenCount = async (req, res) => {
     const jobId = req.params.jobId;
     const count = req.params.count;
 
-    try{
+    try {
         const job = await Jobs.findById(jobId).select("applicationDetails -_id");
         var applications = job.applicationDetails;
 
@@ -253,7 +253,7 @@ const shortlistForGivenCount = async (req, res) => {
         const applicantIds = applications.slice(0, count).map(obj => obj.userId);
 
         res.status(200).json({ success: true, applicantIds: applicantIds });
-    } catch(error){
+    } catch (error) {
         res.status(400).json({ success: false, error: error });
     }
 
@@ -361,6 +361,21 @@ const remove = (req, res) => {
     });
 }
 
+const getOpeningCountByOrg = (req, res) => {
+    Jobs.countDocuments({'organization.id': req.params.id}).exec((err, jobCount) => {
+        if (err) {
+            return res.status(400).json({
+                error: err
+            })
+        }
+        return res.status(200).json({
+            success: true,
+            jobCount: jobCount
+        });
+    });
+}
+
+
 module.exports = {
     create,
     getAll,
@@ -377,6 +392,6 @@ module.exports = {
     getAllJobsFromUser,
     shortlistForGivenCount,
     resetAll,
-    getAllRecommendedJobs
-
+    getAllRecommendedJobs,
+    getOpeningCountByOrg
 }

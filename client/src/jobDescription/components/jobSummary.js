@@ -7,11 +7,11 @@ import LocalOfferRoundedIcon from '@material-ui/icons/LocalOfferRounded';
 import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link as ScrollLink } from "react-scroll";
 import ReactTimeAgo from 'react-time-ago';
 import SnackBarAlert from "../../components/SnackBarAlert";
-import BACKEND_URL from "../../Config";
+import BACKEND_URL, { FILE_URL } from "../../Config";
 import LoginModal from "./loginModal";
 
 
@@ -149,6 +149,7 @@ function JobSummary(props) {
 
   // Login modal 
   const [open, setOpen] = useState(false);
+  const [logo, setLogo] = useState(require(`../../components/images/loadingImage.gif`).default);
 
   // Alert related states
   const [alertShow, setAlertShow] = useState(false);
@@ -177,6 +178,26 @@ function JobSummary(props) {
       />
     );
   };
+
+  useEffect(() => {
+    loadLogo();
+  }, [])
+
+  const loadLogo = async () => {
+    await axios.get(`${FILE_URL}/employer-profile-pictures/${props.job.organization.id}.png`).then(res => {
+      setLogo(`${FILE_URL}/employer-profile-pictures/${props.job.organization.id}.png`);
+    }).catch(error => {
+      axios.get(`${FILE_URL}/employer-profile-pictures/${props.job.organization.id}.jpg`).then(res => {
+        setLogo(`${FILE_URL}/employer-profile-pictures/${props.job.organization.id}.jpg`);
+      }).catch(error => {
+        axios.get(`${FILE_URL}/employer-profile-pictures/${props.job.organization.id}.PNG`).then(res => {
+          setLogo(`${FILE_URL}/employer-profile-pictures/${props.job.organization.id}.PNG`);
+        }).catch(error => {
+          setLogo(require(`../../employer/images/default_company_logo.png`).default);
+        })
+      })
+    })
+  }
 
   const handleAlert = () => {
     setAlertShow(true);
@@ -307,7 +328,7 @@ function JobSummary(props) {
                 <Typography className={classes.time}><ReactTimeAgo date={props.job.postedDate} locale="en-US" /></Typography>
               </div>
               <div className={classes.headerMain}>
-                <Avatar className={classes.logo} src={require(`../../employer/images/${props.job.organization.logo}`).default} variant="square" />
+                <Avatar className={classes.logo} src={logo} variant="square" />
                 <div className={classes.headerInfo}>
                   <Typography variant="h5" className={classes.title} >{props.job.title}</Typography>
                   <Typography variant="h6" className={classes.companyName} >{props.job.organization.name}</Typography>

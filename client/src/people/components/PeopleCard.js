@@ -1,9 +1,11 @@
 import { Avatar, Button, Chip, makeStyles, Typography } from '@material-ui/core';
 import SchoolRoundedIcon from '@material-ui/icons/SchoolRounded';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import FloatCard from '../../components/FloatCard';
+import { FILE_URL } from '../../Config';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -86,13 +88,34 @@ const useStyles = makeStyles((theme) => ({
 function PeopleCard(props) {
 
     const classes = useStyles();
+    const [logo, setLogo] = useState(require(`../../components/images/loadingImage.gif`).default);
+
+    useEffect(() => {
+        loadLogo();
+    }, [])
+
+    const loadLogo = async () => {
+        await axios.get(`${FILE_URL}/jobseeker-profile-pictures/${props.info._id}.png`).then(res => {
+            setLogo(`${FILE_URL}/jobseeker-profile-pictures/${props.info._id}.png`);
+        }).catch(error => {
+            axios.get(`${FILE_URL}/jobseeker-profile-pictures/${props.info._id}.jpg`).then(res => {
+                setLogo(`${FILE_URL}/jobseeker-profile-pictures/${props.info._id}.jpg`);
+            }).catch(error => {
+                axios.get(`${FILE_URL}/jobseeker-profile-pictures/${props.info._id}.PNG`).then(res => {
+                    setLogo(`${FILE_URL}/jobseeker-profile-pictures/${props.info._id}.PNG`);
+                }).catch(error => {
+                    setLogo({});
+                })
+            })
+        })
+    }
 
     return (
         <FloatCard >
             <div className={classes.root}>
                 <div className={classes.header}>
                     <div className={classes.headerLeft}>
-                        <Avatar className={classes.logo} variant="square" />
+                        <Avatar className={classes.logo} src={logo} variant="square" />
                         <div className={classes.headerInfo}>
                             <Typography variant="h5" className={classes.title} >{props.info.name}</Typography>
                             <Typography className={classes.tagline}>{props.info.tagline}</Typography>
@@ -106,8 +129,8 @@ function PeopleCard(props) {
 
                     <Typography noWrap className={classes.description} >{props.info.intro}</Typography>
                     <div className={classes.infoTags}>
-                        {props.info.education && props.info.education.length > 0 ? <Chip icon={<SchoolRoundedIcon />} label={props.info.education[0].university} className={classes.tag} /> : null}
-                        {props.info.work.length > 0 ? <Chip icon={<WorkRoundedIcon />} label={props.info.work[0].place} className={classes.tag} /> : null}
+                        {props.info.education && props.info.education.length > 0 ? <Chip icon={<SchoolRoundedIcon />} label={props.info.education[0].institute} className={classes.tag} /> : null}
+                        {props.info.work.length > 0 ? <Chip icon={<WorkRoundedIcon />} label={props.info.work[props.info.work.length - 1].place} className={classes.tag} /> : null}
 
                     </div>
                 </div>

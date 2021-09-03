@@ -351,11 +351,18 @@ export default function Topbar(props) {
   const loadProfilePic = async () => {
     try {
       if (header.payload.userRole === "employer") {
-
         await axios.get(`${FILE_URL}/employer-profile-pictures/${loginId}.png`).then(res => {
           setProfilePic(`${FILE_URL}/employer-profile-pictures/${loginId}.png`);
         }).catch(error => {
-          setProfilePic(require(`../admin/images/profilepic.jpg`).default);
+          axios.get(`${FILE_URL}/employer-profile-pictures/${loginId}.jpg`).then(res => {
+            setProfilePic(`${FILE_URL}/employer-profile-pictures/${loginId}.jpg`);
+          }).catch(error => {
+            axios.get(`${FILE_URL}/employer-profile-pictures/${loginId}.PNG`).then(res => {
+              setProfilePic(`${FILE_URL}/employer-profile-pictures/${loginId}.PNG`);
+            }).catch(error => {
+              setProfilePic(require(`../employer/images/default_company_logo.png`).default);
+            })
+          })
         })
 
       } else if (header.payload.userRole === "jobseeker") {
@@ -371,7 +378,15 @@ export default function Topbar(props) {
         await axios.get(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.png`).then(res => {
           setProfilePic(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.png`);
         }).catch(error => {
-          setProfilePic(require(`../components/images/defaultProfilePic.jpg`).default);
+          axios.get(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.jpg`).then(res => {
+            setProfilePic(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.jpg`);
+          }).catch(error => {
+            axios.get(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.PNG`).then(res => {
+              setProfilePic(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.PNG`);
+            }).catch(error => {
+              setProfilePic(require(`../components/images/defaultProfilePic.jpg`).default);
+            })
+          })
         })
 
       } else if (header.payload.userRole === "admin") {

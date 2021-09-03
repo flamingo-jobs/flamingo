@@ -7,7 +7,7 @@ import FloatCard from '../components/FloatCard';
 import Loading from '../components/Loading';
 import NoInfo from '../components/NoInfo';
 import BACKEND_URL from '../Config';
-import JobCard from './components/JobCard';
+import JobCard from '../jobs/components/JobCard';
 import JobFilters from './components/JobFilters';
 import JobSearchBar from './components/JobSearchBar';
 import LoginModal from './components/loginModal';

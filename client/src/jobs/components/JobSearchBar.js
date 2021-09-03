@@ -126,7 +126,8 @@ function JobSearchBar(props) {
         }
 
         if (locations.length !== 0) {
-            filterObjects = { ...filterObjects, location: locations };
+            let locationRegex = locations.join("|");
+            filterObjects = { ...filterObjects, "location" : {$regex : locationRegex, $options : "i"}};
         }
         props.onChange(filterObjects);
     }

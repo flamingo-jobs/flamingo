@@ -187,8 +187,8 @@ function NavMenu(props) {
                         </ListItem>
                     </Link>
 
-                    <Link to="/employer/techstack">
-                        <ListItem button key="techstack" selected={selectedIndex === "techstack"} onClick={(event) => handleListItemClick(event, "techstack")} classes={{ selected: classes.active }} className={classes.listItem}>
+                    <Link to="/employer/technologies">
+                        <ListItem button key="technologies" selected={selectedIndex === "technologies"} onClick={(event) => handleListItemClick(event, "technologies")} classes={{ selected: classes.active }} className={classes.listItem}>
                             <ListItemIcon className={classes.linkIcon}><ComputerIcon /></ListItemIcon>
                             <ListItemText className={classes.linkText} primary="Technologies" />
                         </ListItem>
