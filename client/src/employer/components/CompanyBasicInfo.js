@@ -54,6 +54,10 @@ const useStyles = makeStyles((theme) => ({
   root: {},
   headerInfo: {
     marginTop: -25,
+    [theme.breakpoints.up('lg')]: {
+      textAlign: 'left',
+      marginTop: 0
+    }
   },
   body: {},
   logoItem: {},
@@ -77,6 +81,10 @@ const useStyles = makeStyles((theme) => ({
   },
   locationTags: {
     marginTop: 16,
+    [theme.breakpoints.up('lg')]: {
+      textAlign: 'left',
+      marginLeft: -5
+    }
   },
   tag: {
     marginRight: 10,
@@ -87,6 +95,16 @@ const useStyles = makeStyles((theme) => ({
   },
   rating: {
     margin: 10,
+    [theme.breakpoints.up('lg')]: {
+      textAlign: 'left',
+      marginLeft: -5
+    }
+  },
+  links: {
+    [theme.breakpoints.up('lg')]: {
+      textAlign: 'left',
+      marginLeft: -15
+    }
   },
   ratingText: {},
   smIcons: {},
@@ -98,8 +116,10 @@ const useStyles = makeStyles((theme) => ({
   textFieldColor: {},
   setMargin: {},
   link: {
-    marginLeft: 5,
     marginRight: 5,
+    [theme.breakpoints.up('lg')]: {
+      marginLeft: 0
+    }
   },
   editPhotoButton: {
     position: "relative",
@@ -590,10 +610,10 @@ function CompanyBasicInfo(props) {
           >
             <EditIcon />
           </IconButton>
-        ) : null}
+        ) : <div style={{ margin: 16 }}></div>}
         <Grid container spacing={3} direction="row">
           <Grid item container spacing={3} xs={12}>
-            <Grid item xs={12}>
+            <Grid item xs={12} lg={5}>
               <Avatar
                 className={classes.logo}
                 src={loadLogo()}
@@ -659,7 +679,7 @@ function CompanyBasicInfo(props) {
             </Grid>
             <br />
             <br />
-            <Grid item xs={12} className={classes.headerInfo}>
+            <Grid item xs={12} lg={7} className={classes.headerInfo}>
               <Typography variant="h5" className={classes.title}>
                 {name}
               </Typography>

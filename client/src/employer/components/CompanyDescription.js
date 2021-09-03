@@ -280,7 +280,7 @@ function CompanyDescription(props) {
           >
             <EditIcon />
           </IconButton>
-          : null
+          : <div style={{margin: 16}}></div>
         }
         <Grid container spacing={3} direction="row">
 

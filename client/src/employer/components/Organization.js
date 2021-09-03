@@ -8,6 +8,7 @@ import axios from "axios";
 import LoginModal from './loginModal';
 import { useDispatch } from "react-redux";
 import { setFavoriteOrgCount, setReduxFavoriteOrgIds } from "../../redux/actions";
+import { Link } from 'react-router-dom';
 
 const jwt = require("jsonwebtoken");
 
@@ -237,7 +238,9 @@ function Organization(props) {
             <div className={classes.root}>
                 <div className={classes.header}>
                     <div className={classes.headerLeft}>
-                        <Avatar className={classes.logo} src={logo} variant="square" />
+                        <Link to={`/employer/profile/${props.info._id}`}>
+                            <Avatar className={classes.logo} src={logo} variant="square" />
+                        </Link>
                         <div className={classes.info}>
                             <Typography variant="h6" className={classes.company}>{props.info.name}</Typography>
                             {openings && openings !== "empty" ?

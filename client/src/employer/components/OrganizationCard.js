@@ -352,7 +352,7 @@ function OrganizationCard(props) {
             />
           </div>
           <div className={classes.footerRight}>
-            <Link to={`/employer/company/${props.info._id}`}>
+            <Link to={`/employer/profile/${props.info._id}`}>
               <Button className={classes.applyButton}>View Organization</Button>
             </Link>
           </div>
