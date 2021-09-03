@@ -223,7 +223,7 @@ function Base() {
           <Route path="/employer/company">
             <Employer userRole={role} />
           </Route>
-          <Route path="/employer/techstack">
+          <Route path="/employer/technologies">
             <EmployerTechnologies />
           </Route>
           <Route path="/employer/resumes">

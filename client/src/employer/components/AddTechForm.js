@@ -82,11 +82,6 @@ const AddTechForm = (props) => {
       <FloatCard>
         <Grid container direction="row">
           <Grid item container direction="column" xs={7}>
-            <Grid item className={classes.comboBox}>
-              <Typography variant="h6" className={classes.title}>
-                Add Technologies
-              </Typography>
-            </Grid>
 
             <Grid item style={{ marginLeft: 15 }}>
               <TechnologiesStackEdit
