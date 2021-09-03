@@ -136,8 +136,8 @@ export default function CreateJobSetup() {
         return false;
       } else if(errors.hasOwnProperty("numberOfVacancies")){
         return false;
-      }
-
+      } 
+      
     } else if(index === 1){
       var emptyFieldFound = false;
       tasksFields.map((task, index) => {
@@ -503,7 +503,7 @@ export default function CreateJobSetup() {
       } else {
         setAlertData({
           severity: "error",
-          msg: "Job could not be created!",
+          msg: response.data.error,
         });
         handleAlert();
       }

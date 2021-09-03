@@ -3,9 +3,11 @@ const router = express.Router();
 const jobsController = require('../controllers/jobsController');
 const recommendationController = require('../controllers/recommendationController');
 const shortlistController = require('../controllers/shortlistingController');
+const { jobFormValidations, jobFormValidationResults } = require("../validations/job");
+
 // create jobs
 
-router.post('/jobs/create', jobsController.create);
+router.post('/jobs/create', jobFormValidations, jobFormValidationResults, jobsController.create);
 
 // get jobs
 

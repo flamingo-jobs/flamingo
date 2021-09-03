@@ -3,12 +3,47 @@ const Jobs = require('../models/jobs');
 
 const create = async (req, res) => {
     const newJob = new Jobs(req.body);
+    
+    const isFeatured = checkWhetherFeatured(newJob);
+    if(isFeatured){
+        newJob.isFeatured = true;
+    }
+
     try {
         const savedPost = await newJob.save();
         res.status(200).json({ success: true, job: savedPost });
     } catch (err) {
         res.status(400).json({ error: err });
     }
+
+}
+
+const checkWhetherFeatured = (job) => {
+    var score = 0;
+    if(job.salaryRange.min !== ""){
+        score++;
+    }
+    if(job.salaryRange.max !== ""){
+        score++;
+    }
+    if(job.numberOfVacancies !== ""){
+        score++;
+    }
+    if(job.tasksAndResponsibilities.length > 4){
+        score++;
+    }
+    if(job.qualifications.length > 4){
+        score++;
+    }
+    if(job.additionalSkills.length > 0){
+        score++;
+    }
+
+    if(score === 6){
+        return true;
+    }
+
+    return false;
 }
 
 // const getAll = async (req, res) => {

@@ -1,11 +1,12 @@
 import {
-  Grid, IconButton
+  Grid, IconButton, Typography
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import React from "react";
 import { StateBlueTextField } from "./customTextField";
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -45,6 +46,13 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("xs")]: {
       padding: "2px",
     }
+  },
+  featuredMsg:{
+    color: theme.palette.black,
+    marginTop: theme.spacing(2),
+    display: "flex",
+    justify: "flex-start",
+    gap: "10px"
   },
 }));
 
@@ -102,6 +110,16 @@ const TasksForm = ({
                 </Grid>
               ))}
             </Grid>
+
+            <Grid item xs={12}>
+              <div className={classes.featuredMsg}>
+                <ErrorOutlineIcon/>
+                <Typography align="left">
+                  Job will get featured if more than 4 responsibilities are added.
+                </Typography>
+              </div>
+            </Grid>
+
           </Grid>
         </Grid>
     </Grid>
