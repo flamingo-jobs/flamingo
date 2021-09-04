@@ -26,10 +26,13 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import FloatCard from '../../components/FloatCard';
 import SnackBarAlert from "../../components/SnackBarAlert";
-import BACKEND_URL from '../../Config';
+import BACKEND_URL, { FILE_URL } from '../../Config';
 import theme from '../../Theme';
 import defaultImage from '../images/defaultProfilePic.jpg';
 //import CircularProgress from '@material-ui/core/CircularProgress';
+import uploadFileToBlob, { isStorageConfigured } from '../../utils/azureFileUpload';
+
+const storageConfigured = isStorageConfigured();
 
 
 const useStyles = makeStyles((theme) => ({
@@ -220,6 +223,16 @@ function IntroSection(props) {
     setAlertShow(false);
   };
 
+  const loadLogo = async () => {
+    await axios.get(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.jpg`).then(res => {
+        setSavedPic(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.jpg`);
+        console.log(savedPic);
+        setProfilePicPreview(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.jpg`)
+    }).catch(error => {
+        console.log("inside catch");
+    })
+  }
+
   useEffect(()=>{
     axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
     .then(res => {
@@ -238,15 +251,7 @@ function IntroSection(props) {
           email: res.data.jobseeker.contact.email
         })
         setIsPublic(res.data.jobseeker.isPublic)
-        
-        const images = require.context('../../../../server/profilePictures', true);
-        try{
-          let img = images(`./${res.data.jobseeker._id}.jpg`);
-          setSavedPic(img.default);
-          setProfilePicPreview(img.default)
-        }catch{
-          console.log("Profile picture not added.")
-        }        
+        loadLogo()    
       }
     })
   },[])
@@ -276,7 +281,6 @@ function IntroSection(props) {
     setProfilePicPreview(defaultImage);
 
      if (!loading && e.target.files[0] !== null) {
-      // setQuery('progress');
       setLoading(true);
       setDisabled(true);
      }
@@ -292,8 +296,11 @@ function IntroSection(props) {
         });
         handleAlert();
       } else {
-        setProfilePic(e.target.files[0]);
-        setProfilePicPreview(URL.createObjectURL(e.target.files[0]));
+        var file = e.target.files[0];
+        var blob = file.slice(0, file.size, 'image/jpg'); 
+        var newFile = new File([blob], `${loginId}.jpg`, {type: 'image/jpg'});
+        setProfilePic(newFile);
+        setProfilePicPreview(URL.createObjectURL(newFile));
       }
     }
     // setQuery('success')
@@ -301,7 +308,7 @@ function IntroSection(props) {
     setDisabled(false);
   };
 
-  function onSubmitProfilePic(e){
+  const onSubmitProfilePic= async (e) => {
     e.preventDefault();
 
     if (profilePic === "empty") {
@@ -317,28 +324,44 @@ function IntroSection(props) {
     data.append("userId", loginId);
     data.append("photo", profilePic);
 
-    axios.post(`${BACKEND_URL}/jobseeker/updateProfilePic/${loginId}`,data,
-    {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
-    .then(res=>{
-      if(res.data.success){
-        setSavedPic(profilePicPreview);
-        setAlertData({
-          severity: "success",
-          msg: "Profile picture updated successfully!",
-        });
-        handleAlert();
-      } else {
-        setAlertData({
-          severity: "error",
-          msg: "Couldn't update profile picture!",
-        });
-        handleAlert();
-      }
-    });
+    // prepare UI
+    //setUploading(true);
+
+    // *** UPLOAD TO AZURE STORAGE ***
+    const blobsInContainer = await uploadFileToBlob(profilePic, "jobseeker-profile-pictures");
+    loadLogo();
+
+    // prepare UI for results
+    //setUploaded(true);
+
+    // reset state/form
+    //setFileSelected(null);
+   // setUploading(false);
+   // setInputKey(Math.random().toString(36));
+
+    // axios.post(`${BACKEND_URL}/jobseeker/updateProfilePic/${loginId}`,data,
+    // {
+    //   headers: {
+    //     "Content-Type": "multipart/form-data",
+    //   },
+    // })
+    // .then(res=>{
+    //   if(res.data.success){
+    //     setSavedPic(profilePicPreview);
+    //     setAlertData({
+    //       severity: "success",
+    //       msg: "Profile picture updated successfully!",
+    //     });
+    //     handleAlert();
+    //   } else {
+    //     setAlertData({
+    //       severity: "error",
+    //       msg: "Couldn't update profile picture!",
+    //     });
+    //     handleAlert();
+    //   }
+    // });
+
     handleCloseImageDialog();   
   }
 
