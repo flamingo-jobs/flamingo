@@ -149,15 +149,7 @@ function JobCard(props) {
         await axios.get(`${FILE_URL}/employer-profile-pictures/${props.info.organization.id}.png`).then(res => {
             setLogo(`${FILE_URL}/employer-profile-pictures/${props.info.organization.id}.png`);
         }).catch(error => {
-            axios.get(`${FILE_URL}/employer-profile-pictures/${props.info.organization.id}.jpg`).then(res => {
-                setLogo(`${FILE_URL}/employer-profile-pictures/${props.info.organization.id}.jpg`);
-            }).catch(error => {
-                axios.get(`${FILE_URL}/employer-profile-pictures/${props.info.organization.id}.PNG`).then(res => {
-                    setLogo(`${FILE_URL}/employer-profile-pictures/${props.info.organization.id}.PNG`);
-                }).catch(error => {
-                    setLogo(require(`../../employer/images/default_company_logo.png`).default);
-                })
-            })
+            setLogo(require(`../../employer/images/default_company_logo.png`).default);
         })
     }
 

@@ -211,7 +211,7 @@ const ApplyForm = (props) => {
       timer.current = window.setTimeout(() => {
         setSuccess(true);
         setLoading(false);
-      }, 700);
+      }, 1000);
     }
 
     // Data to rename the pdf

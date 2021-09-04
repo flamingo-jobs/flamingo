@@ -352,22 +352,14 @@ function CompanyBasicInfo(props) {
   };
 
   useEffect(() => {
-      loadLogo();
+    loadLogo();
   }, []);
 
   const loadLogo = async () => {
     await axios.get(`${FILE_URL}/employer-profile-pictures/${loginId}.png`).then(res => {
       setCompLogo(`${FILE_URL}/employer-profile-pictures/${loginId}.png`);
     }).catch(error => {
-      axios.get(`${FILE_URL}/employer-profile-pictures/${loginId}.jpg`).then(res => {
-        setCompLogo(`${FILE_URL}/employer-profile-pictures/${loginId}.jpg`);
-      }).catch(error => {
-        axios.get(`${FILE_URL}/employer-profile-pictures/${loginId}.PNG`).then(res => {
-          setCompLogo(`${FILE_URL}/employer-profile-pictures/${loginId}.PNG`);
-        }).catch(error => {
-          setCompLogo(require(`../images/default_company_logo.png`).default);
-        })
-      })
+      setCompLogo(require(`../images/default_company_logo.png`).default);
     })
   }
 

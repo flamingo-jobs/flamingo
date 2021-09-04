@@ -31,7 +31,12 @@ const Sample = () => {
         setUploading(true);
 
         // *** UPLOAD TO AZURE STORAGE ***
-        await uploadFileToBlob(fileSelected, "resumes");
+
+        var file = fileSelected;
+        var blob = file.slice(0, file.size); 
+        var newFile = new File([blob], `mekaPNGimageEkekNemei.png`, {type: 'image/png'});
+
+        await uploadFileToBlob(newFile, "testing");
         // prepare UI for results
         setUploaded(true);
 
