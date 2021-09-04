@@ -1,9 +1,12 @@
 import { Grid, makeStyles, Typography } from "@material-ui/core";
-import React from "react";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
 import FloatCard from "../components/FloatCard";
 import NoAccess from "../components/NoAccess";
 import BillingPackageCard from "./components/BillingPackageCard";
+import BillingDetails from "./components/BillingDetails";
 import Payment from "./components/Payment";
+import BACKEND_URL from "../Config";
 const jwt = require("jsonwebtoken");
 
 const useStyles = makeStyles((theme) => ({
@@ -33,7 +36,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 let haveAccess = false;
-
 if (sessionStorage.getItem("userToken")) {
   var accessTokens = jwt.decode(sessionStorage.getItem("userToken"), {
     complete: true,
@@ -57,13 +59,7 @@ const PaymentSection = () => {
       <Grid item md={6}></Grid>
       <Grid item md={6}>
         <FloatCard backColor="#6772e5">
-          <Grid
-            item
-            container
-            sm={12}
-            direction="row"
-            alignItems="center"
-          >
+          <Grid item container sm={12} direction="row" alignItems="center">
             <Grid item xs={12}>
               <Typography className={classes.paymentBox} variant="h5">
                 Powered by
@@ -81,7 +77,15 @@ const PaymentSection = () => {
 
 const Billing = () => {
   const classes = useStyles();
-
+  const [subscribedPackage, setSubscribedPackage] = useState("");
+  const loginId = sessionStorage.getItem("loginId");
+  useEffect(() => {
+    axios.get(`${BACKEND_URL}/employers/${loginId}`).then((res) => {
+      if (res.data.success) {
+        setSubscribedPackage(res.data.employer.subscription.type);
+      }
+    });
+  }, []);
   return (
     <Grid
       item
@@ -93,9 +97,17 @@ const Billing = () => {
       justify="center"
     >
       <Grid item xs={12}>
-          <div className={classes.root}>
-            {haveAccess ? <BillingPackageCard /> : <NoAccess />}
-          </div>
+        <div className={classes.root}>
+          {haveAccess ? (
+            subscribedPackage === "Basic" ? (
+              <BillingPackageCard />
+            ) : (
+              <BillingDetails info={subscribedPackage} />
+            )
+          ) : (
+            <NoAccess />
+          )}
+        </div>
       </Grid>
     </Grid>
   );
