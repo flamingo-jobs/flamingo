@@ -75,11 +75,11 @@ const NewApplicants = (props) => {
   }, []);
 
   const loadProfilePic = () => {
-    try {
-      return require(`../../../../employee/images/`).default
-    } catch (err) {
-      return require(`../../../../employee/images/profilePic.jpg`).default
-    }
+    // try {
+    //   return require(`../../../../employee/images/`).default
+    // } catch (err) {
+    //   return require(`../../../../employee/images/profilePic.jpg`).default
+    // }
   }
   return (
     <div className={classes.root}>

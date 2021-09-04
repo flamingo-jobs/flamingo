@@ -9,7 +9,6 @@ import {
 } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
-import wso2 from "../images/wso2.png";
 import FloatCard from "../../components/FloatCard";
 import EditIcon from "@material-ui/icons/Edit";
 import LoyaltyIcon from "@material-ui/icons/Loyalty";

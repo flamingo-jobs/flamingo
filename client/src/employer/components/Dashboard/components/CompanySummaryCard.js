@@ -12,7 +12,6 @@ import {
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import FloatCard from "../../../../components/FloatCard";
-import wso2 from "../images/wso2.png";
 import Box from "@material-ui/core/Box";
 import Rating from "@material-ui/lab/Rating";
 import axios from "axios";
