@@ -107,4 +107,24 @@ const getOrderById = async (req, res) => {
   });
 };
 
-module.exports = { payherePayment, stripePayment, createOrder, getOrderById };
+const getAllOrdersByEmployer = async (req, res) => {
+  Order.find({ employer: req.params.id }, (err, previousOrders) => {
+    if (err) {
+      return res.status(400).json({
+        error: err,
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      previousOrders: previousOrders,
+    });
+  });
+};
+
+module.exports = {
+  payherePayment,
+  stripePayment,
+  createOrder,
+  getOrderById,
+  getAllOrdersByEmployer,
+};
