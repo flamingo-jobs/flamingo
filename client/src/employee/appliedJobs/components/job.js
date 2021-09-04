@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
-import BACKEND_URL from "../../../Config";
+import BACKEND_URL, { FILE_URL } from "../../../Config";
 import FloatCard from "../../../components/FloatCard";
 import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
 import WorkRoundedIcon from "@material-ui/icons/WorkRounded";
@@ -171,6 +171,7 @@ const Job = (props) => {
 
   const [alertShow, setAlertShow] = useState(false);
   const [alertData, setAlertData] = useState({ severity: "", msg: "" });
+  const [logo, setLogo] = useState(require(`../../../components/images/loadingImage.gif`).default);
 
   const [open, setOpen] = useState(false);
   const [fileData, setFileData] = useState("empty");
@@ -197,6 +198,28 @@ const Job = (props) => {
     retrieveJob();
   }, []);
 
+  useEffect(() => {
+    if (job !== "empty") {
+      loadLogo();
+    }
+  }, [job]);
+
+  const loadLogo = async () => {
+    await axios.get(`${FILE_URL}/employer-profile-pictures/${job.organization.id}.png`).then(res => {
+      setLogo(`${FILE_URL}/employer-profile-pictures/${job.organization.id}.png`);
+    }).catch(error => {
+      axios.get(`${FILE_URL}/employer-profile-pictures/${job.organization.id}.jpg`).then(res => {
+        setLogo(`${FILE_URL}/employer-profile-pictures/${job.organization.id}.jpg`);
+      }).catch(error => {
+        axios.get(`${FILE_URL}/employer-profile-pictures/${job.organization.id}.PNG`).then(res => {
+          setLogo(`${FILE_URL}/employer-profile-pictures/${job.organization.id}.PNG`);
+        }).catch(error => {
+          setLogo(require(`../../../employer/images/default_company_logo.png`).default);
+        })
+      })
+    })
+  }
+
   const retrieveJob = async () => {
     try {
       const response = await axios.get(`${BACKEND_URL}/jobs/${props.jobId}`);
@@ -211,7 +234,7 @@ const Job = (props) => {
     }
   };
 
-  const handleTitleClick = () => {};
+  const handleTitleClick = () => { };
 
   const handleResumeDownload = async () => {
     const resumeName = props.applicationDetails.resumeName;
@@ -272,8 +295,7 @@ const Job = (props) => {
                       <Avatar
                         className={classes.logo}
                         src={
-                          require(`../../../employer/images/${job.organization.logo}`)
-                            .default
+                          logo
                         }
                         variant="square"
                       />

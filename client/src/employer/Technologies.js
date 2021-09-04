@@ -17,21 +17,6 @@ if (sessionStorage.getItem("userToken")) {
 }
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundSize: "cover",
-    marginLeft: 20,
-    marginTop: 2,
-    marginBottom: 5,
-  },
-  addTechForm: {
-    marginLeft: 20,
-    marginTop: 10,
-    marginBottom: 10,
-  },
-  availableTech: {
-    marginLeft: -20,
-    marginRight: 20,
-  },
 }));
 
 const Technologies = () => {
@@ -40,19 +25,11 @@ const Technologies = () => {
   const classes = useStyles();
 
   return (
-    <Grid
-      container
-      direction="row"
-      xs={12}
-      spacing={3}
-      className={classes.root}
-    >
-      <Grid item xs={12} lg={12}>
-        {haveAccess ? <AddTechForm /> : <NoAccess message="to add/ edit technologies"/>}
-      </Grid>
-
-      <Grid item xs={12} lg={6}>
-        {/* <AvailableTechnologies /> */}
+    <Grid item container xs={12} spacing={3} direction="row"
+      justify="space-between"
+      alignItems="flex-start" className={classes.mainGrid}>
+      <Grid item xs={12} className={classes.searchGrid}>
+        {haveAccess ? <AddTechForm /> : <NoAccess message="to add/ edit technologies" />}
       </Grid>
     </Grid>
   );

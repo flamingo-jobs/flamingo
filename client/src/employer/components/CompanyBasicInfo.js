@@ -27,7 +27,7 @@ import FacebookIcon from "@material-ui/icons/Facebook";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import axios from "axios";
-import BACKEND_URL from "../../Config";
+import BACKEND_URL, { FILE_URL } from "../../Config";
 import { useState, useEffect } from "react";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import Input from "@material-ui/core/Input";
@@ -54,6 +54,10 @@ const useStyles = makeStyles((theme) => ({
   root: {},
   headerInfo: {
     marginTop: -25,
+    [theme.breakpoints.up('lg')]: {
+      textAlign: 'left',
+      marginTop: 0
+    }
   },
   body: {},
   logoItem: {},
@@ -77,9 +81,14 @@ const useStyles = makeStyles((theme) => ({
   },
   locationTags: {
     marginTop: 16,
+    [theme.breakpoints.up('lg')]: {
+      textAlign: 'left',
+      marginLeft: -5
+    }
   },
   tag: {
     marginRight: 10,
+    marginBottom: 5,
     backgroundColor: theme.palette.tagYellow,
   },
   label: {
@@ -87,6 +96,16 @@ const useStyles = makeStyles((theme) => ({
   },
   rating: {
     margin: 10,
+    [theme.breakpoints.up('lg')]: {
+      textAlign: 'left',
+      marginLeft: -5
+    }
+  },
+  links: {
+    [theme.breakpoints.up('lg')]: {
+      textAlign: 'left',
+      marginLeft: -15
+    }
   },
   ratingText: {},
   smIcons: {},
@@ -98,8 +117,10 @@ const useStyles = makeStyles((theme) => ({
   textFieldColor: {},
   setMargin: {},
   link: {
-    marginLeft: 5,
     marginRight: 5,
+    [theme.breakpoints.up('lg')]: {
+      marginLeft: 0
+    }
   },
   editPhotoButton: {
     position: "relative",
@@ -117,6 +138,7 @@ function CompanyBasicInfo(props) {
 
   const fixedOptions = [];
   const [location, setLocation] = React.useState([...fixedOptions]);
+  const [compLogo, setCompLogo] = useState(require(`../../components/images/loadingImage.gif`).default);
 
   let loginId;
   let login = false;
@@ -330,13 +352,25 @@ function CompanyBasicInfo(props) {
     return averageRating;
   };
 
-  const loadLogo = () => {
-    try {
-      return `${BACKEND_URL}/companyImage/${logo}`;
-    } catch (err) {
-      return `${BACKEND_URL}/companyImage/default_company_logo.png`;
-    }
-  };
+  useEffect(() => {
+      loadLogo();
+  }, []);
+
+  const loadLogo = async () => {
+    await axios.get(`${FILE_URL}/employer-profile-pictures/${loginId}.png`).then(res => {
+      setCompLogo(`${FILE_URL}/employer-profile-pictures/${loginId}.png`);
+    }).catch(error => {
+      axios.get(`${FILE_URL}/employer-profile-pictures/${loginId}.jpg`).then(res => {
+        setCompLogo(`${FILE_URL}/employer-profile-pictures/${loginId}.jpg`);
+      }).catch(error => {
+        axios.get(`${FILE_URL}/employer-profile-pictures/${loginId}.PNG`).then(res => {
+          setCompLogo(`${FILE_URL}/employer-profile-pictures/${loginId}.PNG`);
+        }).catch(error => {
+          setCompLogo(require(`../images/default_company_logo.png`).default);
+        })
+      })
+    })
+  }
 
   const displayEditForm = () => {
     return (
@@ -590,13 +624,13 @@ function CompanyBasicInfo(props) {
           >
             <EditIcon />
           </IconButton>
-        ) : null}
+        ) : <div style={{ margin: 16 }}></div>}
         <Grid container spacing={3} direction="row">
           <Grid item container spacing={3} xs={12}>
-            <Grid item xs={12}>
+            <Grid item xs={12} lg={5}>
               <Avatar
                 className={classes.logo}
-                src={loadLogo()}
+                src={compLogo}
                 variant="square"
               />
 
@@ -659,7 +693,7 @@ function CompanyBasicInfo(props) {
             </Grid>
             <br />
             <br />
-            <Grid item xs={12} className={classes.headerInfo}>
+            <Grid item xs={12} lg={7} className={classes.headerInfo}>
               <Typography variant="h5" className={classes.title}>
                 {name}
               </Typography>

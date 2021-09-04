@@ -1,6 +1,6 @@
 import { Button, Chip, Grid, InputAdornment, makeStyles, TextField, Typography } from '@material-ui/core'
 import axios from 'axios';
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hooks-helper';
 import Lottie from 'react-lottie';
 import FloatCard from '../components/FloatCard';
@@ -8,6 +8,7 @@ import BACKEND_URL from '../Config';
 import ContactImage from './lotties/contact-us.json';
 import PhoneRoundedIcon from '@material-ui/icons/PhoneRounded';
 import MailRoundedIcon from '@material-ui/icons/MailRounded';
+import SnackBarAlert from '../components/SnackBarAlert';
 
 const useStyles = makeStyles((theme) => ({
     mainGrid: {
@@ -75,10 +76,10 @@ const useStyles = makeStyles((theme) => ({
         height: 40,
         margin: 3,
         marginRight: 5,
-        "&.MuiChip-root" : {
+        "&.MuiChip-root": {
             padding: 8,
         },
-        "& span.MuiChip-label" : {
+        "& span.MuiChip-label": {
             fontSize: 16
         }
     },
@@ -87,14 +88,33 @@ const useStyles = makeStyles((theme) => ({
 function ContactUs() {
 
     const classes = useStyles();
+    const [alertShow, setAlertShow] = useState(false);
+    const [alertData, setAlertData] = useState({ severity: "", msg: "" });
+    const displayAlert = () => {
+        return (
+            <SnackBarAlert
+                open={alertShow}
+                onClose={handleAlertClose}
+                severity={alertData.severity}
+                msg={alertData.msg}
+            />
+        );
+    };
+    const handleAlert = () => {
+        setAlertShow(true);
+    };
+    const handleAlertClose = (event, reason) => {
+        if (reason === "clickaway") {
+            return;
+        }
+        setAlertShow(false);
+    };
 
-    const defaultData = {
+    const [formData, setForm] = useForm({
         name: "",
         email: "",
         message: "",
-    };
-
-    const [formData, setForm] = useForm(defaultData);
+        mobile: ""});
 
     const defaultOptions = {
         loop: true,
@@ -113,20 +133,26 @@ function ContactUs() {
             email: formData.email,
             mobile: formData.mobile,
             message: formData.message,
+            date: new Date(),
+            isRead: false
         };
-        // axios.post(`${BACKEND_URL}/api/signup`, newUserData).then((res) => {
-        //     if (res.data.success) {
-        //         const userId = jwt.decode(res.data.token, { complete: true }).payload
-        //             .userId;
-        //         sendEmail(userId);
-        //     } else {
-        //         setAlertData({
-        //             severity: "error",
-        //             msg: "Failed to send message!",
-        //         });
-        //         handleAlert();
-        //     }
-        // });
+
+        console.log(newMessagerData)
+        axios.post(`${BACKEND_URL}/contact/create`, newMessagerData).then((res) => {
+            if (res.data.success) {
+                setAlertData({
+                    severity: "success",
+                    msg: "Message has been sent successfully!",
+                });
+                handleAlert();
+            } else {
+                setAlertData({
+                    severity: "error",
+                    msg: "Failed to send message!",
+                });
+                handleAlert();
+            }
+        });
     }
 
     return (
@@ -216,6 +242,7 @@ function ContactUs() {
                                             className={classes.textField}
                                             size="small"
                                             fullWidth
+                                            required
                                             InputProps={{
                                                 startAdornment: (
                                                     <InputAdornment position="start">
@@ -253,7 +280,7 @@ function ContactUs() {
                                         <Button
                                             fullWidth
                                             type="submit"
-                                            
+
                                             className={classes.submit}
                                         >
                                             Send
@@ -266,6 +293,7 @@ function ContactUs() {
 
                 </FloatCard>
             </Grid>
+            {displayAlert()}
         </Grid>
     )
 }

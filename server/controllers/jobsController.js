@@ -3,12 +3,47 @@ const Jobs = require('../models/jobs');
 
 const create = async (req, res) => {
     const newJob = new Jobs(req.body);
+    
+    const isFeatured = checkWhetherFeatured(newJob);
+    if(isFeatured){
+        newJob.isFeatured = true;
+    }
+
     try {
         const savedPost = await newJob.save();
         res.status(200).json({ success: true, job: savedPost });
     } catch (err) {
         res.status(400).json({ error: err });
     }
+
+}
+
+const checkWhetherFeatured = (job) => {
+    var score = 0;
+    if(job.salaryRange.min !== ""){
+        score++;
+    }
+    if(job.salaryRange.max !== ""){
+        score++;
+    }
+    if(job.numberOfVacancies !== ""){
+        score++;
+    }
+    if(job.tasksAndResponsibilities.length > 4){
+        score++;
+    }
+    if(job.qualifications.length > 4){
+        score++;
+    }
+    if(job.additionalSkills.length > 0){
+        score++;
+    }
+
+    if(score === 6){
+        return true;
+    }
+
+    return false;
 }
 
 // const getAll = async (req, res) => {
@@ -177,7 +212,7 @@ const getAllJobsFromEmployer = (req, res) => {
 }
 
 const getAllJobsFromUser = (req, res) => {
-    Jobs.find({ 'organization.id': req.params.loginId, "createdBy" : req.params.userId }, (err, employerJobs) => {
+    Jobs.find({ 'organization.id': req.params.loginId, "createdBy": req.params.userId }, (err, employerJobs) => {
         if (err) {
             return res.status(400).json({
                 error: err
@@ -208,7 +243,7 @@ const shortlistForGivenCount = async (req, res) => {
     const jobId = req.params.jobId;
     const count = req.params.count;
 
-    try{
+    try {
         const job = await Jobs.findById(jobId).select("applicationDetails -_id");
         var applications = job.applicationDetails;
 
@@ -218,7 +253,7 @@ const shortlistForGivenCount = async (req, res) => {
         const applicantIds = applications.slice(0, count).map(obj => obj.userId);
 
         res.status(200).json({ success: true, applicantIds: applicantIds });
-    } catch(error){
+    } catch (error) {
         res.status(400).json({ success: false, error: error });
     }
 
@@ -326,6 +361,21 @@ const remove = (req, res) => {
     });
 }
 
+const getOpeningCountByOrg = (req, res) => {
+    Jobs.countDocuments({'organization.id': req.params.id}).exec((err, jobCount) => {
+        if (err) {
+            return res.status(400).json({
+                error: err
+            })
+        }
+        return res.status(200).json({
+            success: true,
+            jobCount: jobCount
+        });
+    });
+}
+
+
 module.exports = {
     create,
     getAll,
@@ -342,6 +392,6 @@ module.exports = {
     getAllJobsFromUser,
     shortlistForGivenCount,
     resetAll,
-    getAllRecommendedJobs
-
+    getAllRecommendedJobs,
+    getOpeningCountByOrg
 }

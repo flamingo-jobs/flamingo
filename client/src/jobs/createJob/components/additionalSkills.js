@@ -1,9 +1,10 @@
-import { Grid } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import Chip from "@material-ui/core/Chip";
 import { makeStyles } from "@material-ui/core/styles";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import React from "react";
 import { StateBlueTextField } from "./customTextField";
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -24,10 +25,11 @@ const useStyles = makeStyles((theme) => ({
   },
   mainContainer: {
     padding: theme.spacing(5),
-    [theme.breakpoints.down("sm")]: {
-      paddingLeft: "0px",
-      paddingRight: "0px",
-    },
+    [theme.breakpoints.down('sm')]: {
+      padding: 16,
+      paddingLeft: 5,
+      paddingRight: 0,
+    }
   },
   chip: {
     color: theme.palette.white,
@@ -40,6 +42,12 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       background: theme.palette.stateBlueHover,
     },
+  },
+  featuredMsg:{
+    color: theme.palette.black,
+    display: "flex",
+    justify: "flex-start",
+    gap: "10px"
   },
 }));
 
@@ -98,6 +106,13 @@ const AdditionalSkills = ({
             )}
           />
         </Grid>
+
+        <Grid item xs={12}>
+            <div className={classes.featuredMsg}>
+              <ErrorOutlineIcon/>
+              <Typography align="left">Job will get featured if additional skills are specified.</Typography>
+            </div>
+          </Grid>
       </Grid>
     </Grid>
   );

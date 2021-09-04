@@ -11,7 +11,7 @@ import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
 import FloatCard from "../../components/FloatCard";
 import Rating from "@material-ui/lab/Rating";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
-import BACKEND_URL from "../../Config";
+import BACKEND_URL, { FILE_URL } from "../../Config";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import LoginModal from "./loginModal";
@@ -122,7 +122,7 @@ const useStyles = makeStyles((theme) => ({
     width: 70,
     height: 70,
     [theme.breakpoints.down('sm')]: {
-     display: 'inline-block'
+      display: 'inline-block'
     }
   },
   company: {
@@ -152,6 +152,8 @@ function OrganizationCard(props) {
 
   const token = sessionStorage.getItem("userToken");
   const userId = sessionStorage.getItem("loginId");
+  const [logo, setLogo] = useState(require(`../../components/images/loadingImage.gif`).default);
+  const [openings, setOpenings] = useState(false);
 
   const [role, setRole] = useState(
     jwt.decode(token, { complete: true })
@@ -178,6 +180,11 @@ function OrganizationCard(props) {
     setAlertShow(true);
   };
 
+  useEffect(() => {
+    loadLogo();
+    loadOpenings();
+  }, [])
+
   const handleAlertClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -199,13 +206,31 @@ function OrganizationCard(props) {
     );
   };
 
-  const loadLogo = () => {
-    try {
-      return require(`../images/${props.info.logo}`).default;
-    } catch (err) {
-      return require(`../images/default_company_logo.png`).default;
-    }
-  };
+  const loadLogo = async () => {
+    await axios.get(`${FILE_URL}/employer-profile-pictures/${props.info._id}.png`).then(res => {
+      setLogo(`${FILE_URL}/employer-profile-pictures/${props.info._id}.png`);
+    }).catch(error => {
+      axios.get(`${FILE_URL}/employer-profile-pictures/${props.info._id}.jpg`).then(res => {
+        setLogo(`${FILE_URL}/employer-profile-pictures/${props.info._id}.jpg`);
+      }).catch(error => {
+        axios.get(`${FILE_URL}/employer-profile-pictures/${props.info._id}.PNG`).then(res => {
+          setLogo(`${FILE_URL}/employer-profile-pictures/${props.info._id}.PNG`);
+        }).catch(error => {
+          setLogo(require(`../../employer/images/default_company_logo.png`).default);
+        })
+      })
+    })
+  }
+
+  const loadOpenings = () => {
+    axios.get(`${BACKEND_URL}/jobs/getOpeningsByOrg/${props.info._id}`).then(res => {
+      if (res.data.success) {
+        setOpenings(res.data.jobCount);
+      } else {
+        setOpenings("empty");
+      }
+    })
+  }
 
   const handleAddingFavorite = async () => {
     if (isSaved) {
@@ -315,11 +340,11 @@ function OrganizationCard(props) {
 
       <div className={classes.root}>
         <div className={classes.header}>
-        <div className={classes.headerRight}>{displayFavoriteIcon()}</div>
+          <div className={classes.headerRight}>{displayFavoriteIcon()}</div>
           <div className={classes.headerLeft}>
             <Avatar
               className={classes.logo}
-              src={loadLogo()}
+              src={logo}
               variant="square"
             />
             <div className={classes.headerInfo}>
@@ -333,7 +358,7 @@ function OrganizationCard(props) {
               />
             </div>
           </div>
-          
+
         </div>
         <div className={classes.body}>
           <Typography noWrap className={classes.description}>
@@ -341,7 +366,8 @@ function OrganizationCard(props) {
           </Typography>
         </div>
         <div className={classes.infoTags}>
-          <Typography>5 openings</Typography>
+          {openings && openings !== "empty" ?
+            <Typography>{openings} openings</Typography> : null}
         </div>
         <div className={classes.footer}>
           <div className={classes.footerLeft}>
@@ -352,7 +378,7 @@ function OrganizationCard(props) {
             />
           </div>
           <div className={classes.footerRight}>
-            <Link to={`/employer/company/${props.info._id}`}>
+            <Link to={`/employer/profile/${props.info._id}`}>
               <Button className={classes.applyButton}>View Organization</Button>
             </Link>
           </div>

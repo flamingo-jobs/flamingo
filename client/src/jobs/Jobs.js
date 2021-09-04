@@ -61,7 +61,7 @@ function Jobs(props) {
     const [count, setCount] = useState(0);
     const [filters, setFilters] = useState({});
     const [search, setSearch] = useState({});
-    const [queryParams, setQueryParams] = useState({});
+    const [queryParams, setQueryParams] = useState({ isPublished: true });
 
     const [page, setPage] = React.useState(1);
 
@@ -115,22 +115,22 @@ function Jobs(props) {
     const updateQuery = () => {
 
         if (Object.keys(filters).length !== 0 && Object.keys(search).length !== 0) {
-            setQueryParams({ $and: [filters, search] });
+            setQueryParams({ $and: [filters, search, { isPublished: true }] });
         } else if (Object.keys(filters).length === 0) {
-            setQueryParams(search);
+            setQueryParams({ $and: [search, { isPublished: true }] });
         } else if (Object.keys(search).length === 0) {
-            setQueryParams(filters);
+            setQueryParams({$and: [filters, { isPublished: true }]});
         } else if (featured) {
-            setQueryParams({ isFeatured: true });
+            setQueryParams({ $and: [{ isFeatured: true }, { isPublished: true }] });
         } else {
-            setQueryParams({});
+            setQueryParams({ isPublished: true });
         }
     }
 
     const delay = ms => new Promise(res => setTimeout(res, ms));
 
     const retrieveJobs = async () => {
-        if ((featured && JSON.stringify(queryParams) === "{}") || (org && JSON.stringify(queryParams) === "{}")) {
+        if ((featured && JSON.stringify(queryParams) === '{"isPublished":true}') || (org && JSON.stringify(queryParams) === '{"isPublished":true}')) {
             return;
         }
         axios.post(`${BACKEND_URL}/jobs/getJobCount`, { queryParams: queryParams, related: relatedJob }).then(res => {

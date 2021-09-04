@@ -69,6 +69,8 @@ const TechStack = (props) => {
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
+  const [error, setError] = useState("");
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -80,11 +82,21 @@ const TechStack = (props) => {
     const newJob = { ...props.job };
     newJob.technologyStack = values;
     props.setJob(newJob);
+
+    if(values.length === 0){
+      setError("Technology stack cannot be empty.")
+    } else {
+      setError("");
+    }
   };
 
   const handleTechStackSubmit = async (e) => {
     e.preventDefault();
 
+    if(error.length !== 0){
+      return;
+    }
+    
     const updateFields = {
       technologyStack: props.job.technologyStack,
     };
@@ -121,6 +133,7 @@ const TechStack = (props) => {
         technologyStack={props.job.technologyStack}
         handleTechStackChange={handleTechStackChange}
         handleTechStackSubmit={handleTechStackSubmit}
+        error={error}
       ></TechStackModal>
 
       <div className={classes.floatCardWrapper}>

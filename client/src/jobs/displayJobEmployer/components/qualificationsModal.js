@@ -175,6 +175,11 @@ const QualificationsModal = (props) => {
                             onChange={(event) =>
                               props.handleQualificationsChange(event, index)
                             }
+                            error={props.errors[index].length !== 0}
+                            helperText={
+                              props.errors[index].length !== 0 &&
+                              props.errors[index]
+                            }
                           />
                         </Grid>
                         <Grid item xs={2} className={classes.buttonGridItem}>

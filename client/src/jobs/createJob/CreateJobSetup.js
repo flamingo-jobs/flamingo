@@ -122,33 +122,22 @@ export default function CreateJobSetup() {
     const newErrors = {...errors};
 
     if(index === 0){
-      if(title.trim() === ""){
+      if(title.trim() === ""){ // Required
         newErrors["title"] = `Title cannot be empty.`;
         setErrors(newErrors);
         return false;
-      } else if(description.trim() === ""){
+      } else if(description.trim() === ""){ // Required
         newErrors["description"] = `Description cannot be empty.`;
-        setErrors(newErrors);
-        return false;
-      } else if(minSalary.trim() === ""){
-        newErrors["minSalary"] = `Minimum salary cannot be empty.`;
         setErrors(newErrors);
         return false;
       } else if(errors.hasOwnProperty("minSalary")){
         return false;
-      } else if(maxSalary.trim() === ""){
-        newErrors["maxSalary"] = `Maximum salary cannot be empty.`;
-        setErrors(newErrors);
-        return false;
       } else if(errors.hasOwnProperty("maxSalary")){
-        return false;
-      } else if(numberOfVacancies.trim() === ""){
-        newErrors["numberOfVacancies"] = `Number of vacancies cannot be empty.`;
-        setErrors(newErrors);
         return false;
       } else if(errors.hasOwnProperty("numberOfVacancies")){
         return false;
-      }
+      } 
+      
     } else if(index === 1){
       var emptyFieldFound = false;
       tasksFields.map((task, index) => {
@@ -200,7 +189,7 @@ export default function CreateJobSetup() {
     "PhD",
   ];
 
-  const minExperienceList = ["0", "0-1", "1-3", "+3"];
+  const minExperienceList = ["0", "0-1", "1-3", "3-5", "5+"];
 
   const getFormattedDate = (date) => {
     const dateStr = `${date.getDate().toString().padStart(2, "0")}/
@@ -296,7 +285,7 @@ export default function CreateJobSetup() {
     const value = e.target.value;
 
     if(value.trim() === ""){
-      newErrors[name] = "Salary cannot be empty.";
+      delete newErrors[name];
     } else {
       if(regex.test(value.trim().replace(/\s/g, ''))){
         delete newErrors[name];
@@ -320,7 +309,7 @@ export default function CreateJobSetup() {
     const value = e.target.value;
 
     if(value.trim() === ""){
-      newErrors[name] = "Number of vacancies cannot be empty.";
+      delete newErrors[name];
     } else {
       if(regex.test(value.trim().replace(/\s/g, ''))){
         delete newErrors[name];
@@ -477,10 +466,10 @@ export default function CreateJobSetup() {
 
   const handleSubmit = async () => {
     const newJob = {
-      title: title,
+      title: title.trim(),
       category: category,
       type: jobType,
-      description: description,
+      description: description.trim(),
       organization: organization,
       location: location,
       postedDate: currentDate,
@@ -488,16 +477,16 @@ export default function CreateJobSetup() {
       minimumEducation: minEducation,
       minimumExperience: minExperience,
       salaryRange: {
-        min: minSalary,
-        max: maxSalary,
+        min: minSalary.trim().replace(/\s/g, ''),
+        max: maxSalary.trim().replace(/\s/g, ''),
       },
-      tasksAndResponsibilities: tasksFields,
-      qualifications: qualificationsFields,
+      tasksAndResponsibilities: tasksFields.map((t) => t.trim()),
+      qualifications: qualificationsFields.map((q) => q.trim()),
       technologyStack: techStackState,
       additionalSkills: additionalSkillsState,
       isPublished: isPublished,
       isFeatured: isFeatured,
-      numberOfVacancies: numberOfVacancies,
+      numberOfVacancies: numberOfVacancies.trim().replace(/\s/g, ''),
       createdBy: userId,
     };
 
@@ -514,7 +503,7 @@ export default function CreateJobSetup() {
       } else {
         setAlertData({
           severity: "error",
-          msg: "Job could not be created!",
+          msg: response.data.error,
         });
         handleAlert();
       }
@@ -694,7 +683,7 @@ export default function CreateJobSetup() {
                 <Grid container direction="row">
                   <Grid item xs={12} align="left">
                     <Typography className={classes.mainTitle}>
-                      Create a new job...
+                      Post a new job...
                     </Typography>
                   </Grid>
                 </Grid>

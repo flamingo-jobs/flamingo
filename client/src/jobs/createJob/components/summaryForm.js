@@ -1,5 +1,5 @@
 import DateFnsUtils from "@date-io/date-fns";
-import { createMuiTheme, Grid, MenuItem } from "@material-ui/core";
+import { createMuiTheme, Grid, MenuItem, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   KeyboardDatePicker, MuiPickersUtilsProvider
@@ -7,6 +7,7 @@ import {
 import { ThemeProvider } from "@material-ui/styles";
 import React from "react";
 import { StateBlueTextField } from "./customTextField";
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 
 const materialTheme = createMuiTheme({
   spacing: 5,
@@ -58,6 +59,11 @@ const useStyles = makeStyles((theme) => ({
   },
   mainContainer: {
     padding: theme.spacing(5),
+    [theme.breakpoints.down('sm')]: {
+      padding: 16,
+      paddingLeft: 5,
+      paddingRight: 0,
+    }
   },
   dateWrapper: {
     // marginLeft: theme.spacing(2),
@@ -70,6 +76,12 @@ const useStyles = makeStyles((theme) => ({
       justify: "center",
 
     },
+  },
+  featuredMsg:{
+    color: theme.palette.black,
+    display: "flex",
+    justify: "flex-start",
+    gap: "10px"
   },
 }));
 
@@ -110,10 +122,9 @@ const SummaryForm = ({
 
           <Grid item xs={12}>
             <StateBlueTextField
-              required
               id="title"
               name="title"
-              label="Title"
+              label="Title *"
               variant="outlined"
               size="small"
               fullWidth
@@ -168,10 +179,9 @@ const SummaryForm = ({
           {/* Description */}
           <Grid item xs={12}>
             <StateBlueTextField
-              required
               id="description"
               name="description"
-              label="Descriptionof the job opportunity"
+              label="Descriptionof the job opportunity *"
               variant="outlined"
               fullWidth
               size="small"
@@ -310,9 +320,17 @@ const SummaryForm = ({
               helperText={errors["numberOfVacancies"]}
             ></StateBlueTextField>
           </Grid>
+
+          <Grid item xs={12}>
+            <div className={classes.featuredMsg}>
+              <ErrorOutlineIcon/>
+              <Typography align="left">Job will get featured if all the optional fields are filled.</Typography>
+            </div>
+          </Grid>
         </Grid>
     </Grid >
   );
 };
 
+// style={{border: "1px solid red"}}
 export default SummaryForm;

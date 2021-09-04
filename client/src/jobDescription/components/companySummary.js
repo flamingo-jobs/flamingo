@@ -7,7 +7,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import FloatCard from '../../components/FloatCard';
 import SnackBarAlert from "../../components/SnackBarAlert";
-import BACKEND_URL from '../../Config';
+import BACKEND_URL, { FILE_URL } from '../../Config';
 import LoginModal from "./loginModal";
 import { Link } from 'react-router-dom';
 
@@ -114,17 +114,20 @@ function CompanySummary(props) {
 
     const [role, setRole] = useState(
         jwt.decode(token, { complete: true })
-        ? jwt.decode(token, { complete: true }).payload.userRole
-        : null
+            ? jwt.decode(token, { complete: true }).payload.userRole
+            : null
     );
+
+    const [logo, setLogo] = useState(require(`../../components/images/loadingImage.gif`).default);
+
 
     // Login modal 
     const [open, setOpen] = useState(false);
     const handleOpen = () => {
-      setOpen(true);
+        setOpen(true);
     };
     const handleClose = () => {
-      setOpen(false);
+        setOpen(false);
     };
     const handleLoginModal = () => {
         handleOpen();
@@ -132,8 +135,8 @@ function CompanySummary(props) {
 
     const handleAlert = () => {
         setAlertShow(true);
-      };
-    
+    };
+
     const handleAlertClose = (event, reason) => {
         if (reason === "clickaway") {
             return;
@@ -165,11 +168,11 @@ function CompanySummary(props) {
 
     useEffect(() => {
         retrieveJobseeker();
-      }, []);
+    }, []);
 
     useEffect(() => {
-        if(jobseeker !== "empty"){
-            if(jobseeker.favoriteOrganizations?.includes(props.job.organization.id)){
+        if (jobseeker !== "empty") {
+            if (jobseeker.favoriteOrganizations?.includes(props.job.organization.id)) {
                 setIsFavorite(true);
             }
         }
@@ -177,20 +180,20 @@ function CompanySummary(props) {
 
     const retrieveJobseeker = async () => {
         try {
-          if(props.userId && role === "jobseeker"){
-            const response = await axios.get(`${BACKEND_URL}/jobseeker/${props.userId}`);
-            if (response.data.success) {
-              setJobseeker(response.data.jobseeker);
+            if (props.userId && role === "jobseeker") {
+                const response = await axios.get(`${BACKEND_URL}/jobseeker/${props.userId}`);
+                if (response.data.success) {
+                    setJobseeker(response.data.jobseeker);
+                }
             }
-          }
         } catch (err) {
-          console.log(err);
+            console.log(err);
         }
-      };
-    
+    };
+
 
     const handleAddingFavorite = async () => {
-        if(isFavorite){ // Unsave
+        if (isFavorite) { // Unsave
             setIsFavorite(!isFavorite);
             const newFavoriteOrgs = jobseeker.favoriteOrganizations.filter((id) => id !== props.job.organization.id);
             try {
@@ -210,18 +213,18 @@ function CompanySummary(props) {
                 handleAlert();
             }
 
-        } else{ // Save
+        } else { // Save
             setIsFavorite(!isFavorite);
             const newFavoriteOrgs = [...jobseeker.favoriteOrganizations, props.job.organization.id];
             try {
-              const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateFavoriteOrgs/${props.userId}`, newFavoriteOrgs);
-              if (response.data.success) {
-                setAlertData({
-                    severity: "success",
-                    msg: "Organization Saved, Successfully!",
-                });
-                handleAlert();
-              }
+                const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateFavoriteOrgs/${props.userId}`, newFavoriteOrgs);
+                if (response.data.success) {
+                    setAlertData({
+                        severity: "success",
+                        msg: "Organization Saved, Successfully!",
+                    });
+                    handleAlert();
+                }
             } catch (err) {
                 setAlertData({
                     severity: "error",
@@ -233,21 +236,21 @@ function CompanySummary(props) {
     }
 
     const displayFavoriteButton = () => {
-        if(role !== "employer" && role !== "admin"){
-            if(!role){
+        if (role !== "employer" && role !== "admin") {
+            if (!role) {
                 // When user is not signed in
                 return (
                     <Button className={classes.favButton} onClick={handleLoginModal}>
-                        <FavoriteBorderIcon className={classes.favorite}/>
+                        <FavoriteBorderIcon className={classes.favorite} />
                         Add to Favorites
                     </Button>
                 );
-            } else if(role && role==="jobseeker"){
-                if(isFavorite){
+            } else if (role && role === "jobseeker") {
+                if (isFavorite) {
                     // When user is signed in && Org is in favorites 
                     return (
                         <Button className={classes.favButton} onClick={handleAddingFavorite}>
-                            <FavoriteRounded className={classes.favorite}/>
+                            <FavoriteRounded className={classes.favorite} />
                             Remove from favourites
                         </Button>
                     );
@@ -255,7 +258,7 @@ function CompanySummary(props) {
                     // When user is signed in but Org is not in favorites
                     return (
                         <Button className={classes.favButton} onClick={handleAddingFavorite}>
-                            <FavoriteBorderIcon className={classes.favorite}/>
+                            <FavoriteBorderIcon className={classes.favorite} />
                             Add to Favorites
                         </Button>
                     );
@@ -264,16 +267,36 @@ function CompanySummary(props) {
         }
     }
 
+    useEffect(() => {
+        loadLogo();
+    }, [])
+
+    const loadLogo = async () => {
+        await axios.get(`${FILE_URL}/employer-profile-pictures/${props.job.organization.id}.png`).then(res => {
+            setLogo(`${FILE_URL}/employer-profile-pictures/${props.job.organization.id}.png`);
+        }).catch(error => {
+            axios.get(`${FILE_URL}/employer-profile-pictures/${props.job.organization.id}.jpg`).then(res => {
+                setLogo(`${FILE_URL}/employer-profile-pictures/${props.job.organization.id}.jpg`);
+            }).catch(error => {
+                axios.get(`${FILE_URL}/employer-profile-pictures/${props.job.organization.id}.PNG`).then(res => {
+                    setLogo(`${FILE_URL}/employer-profile-pictures/${props.job.organization.id}.PNG`);
+                }).catch(error => {
+                    setLogo(require(`../../employer/images/default_company_logo.png`).default);
+                })
+            })
+        })
+    }
+
     const displayAlert = () => {
         return (
-          <SnackBarAlert
-            open={alertShow}
-            onClose={handleAlertClose}
-            severity={alertData.severity}
-            msg={alertData.msg}
-          />
+            <SnackBarAlert
+                open={alertShow}
+                onClose={handleAlertClose}
+                severity={alertData.severity}
+                msg={alertData.msg}
+            />
         );
-      };
+    };
 
     const displaySummary = () => {
         if (summary === "empty") {
@@ -286,7 +309,7 @@ function CompanySummary(props) {
             return (<>
                 <div className={classes.header}>
                     <div className={classes.headerLogo}>
-                        <Avatar className={classes.logo} src={require(`../../employer/images/${summary.logo}`).default} variant="square" />
+                        <Avatar className={classes.logo} src={logo} variant="square" />
                     </div>
                     <div className={classes.headerInfo}>
                         <Typography variant="h5" className={classes.title} >{summary.name}</Typography>
