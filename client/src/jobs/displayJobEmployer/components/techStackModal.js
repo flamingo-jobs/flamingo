@@ -1,6 +1,12 @@
 import {
-  Button, Card,
-  CardContent, Chip, Grid, IconButton, Modal, Typography
+  Button,
+  Card,
+  CardContent,
+  Chip,
+  Grid,
+  IconButton,
+  Modal,
+  Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import CancelIcon from "@material-ui/icons/Cancel";
@@ -41,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       paddingLeft: "0px !important",
       paddingRight: "0px !important",
-    }
+    },
   },
   title: {
     color: theme.palette.stateBlue,
@@ -160,15 +166,13 @@ const JobSummaryModal = (props) => {
                         {...params}
                         variant="outlined"
                         placeholder="Add a new technology..."
+                        error={props.error.length !== 0}
+                        helperText={props.error.length !== 0 && props.error}
                       />
                     )}
                   />
                   <div className={classes.submitBtnContainer}>
-                    <Button
-                      
-                      type="submit"
-                      className={classes.submitBtn}
-                    >
+                    <Button type="submit" className={classes.submitBtn}>
                       Save changes
                     </Button>
                   </div>

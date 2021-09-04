@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import { Container, Grid, IconButton, Typography } from "@material-ui/core";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -7,7 +8,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import CreateIcon from "@material-ui/icons/Create";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import axios from "axios";
-import React, { useState } from "react";
 import FloatCard from "../../../components/FloatCard";
 import BACKEND_URL from "../../../Config";
 import QualificationsModal from "./qualificationsModal";
@@ -55,6 +55,8 @@ const useStyles = makeStyles((theme) => ({
 const Qualifications = (props) => {
   const classes = useStyles();
 
+  const [errors, setErrors] = useState("empty");
+
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
     setOpen(true);
@@ -63,17 +65,35 @@ const Qualifications = (props) => {
     setOpen(false);
   };
 
+  useEffect(() => {
+    var fields = [];
+    props.job.qualifications.map((q) => {
+      const temp = [...fields, ""];
+      fields = temp;
+    });
+    setErrors(fields);
+  }, []);
+
   const handleQualificationsChange = (e, index) => {
     const newJob = { ...props.job };
+    const newErrors = [...errors];
+    const value = e.target.value;
 
     const newQualifications = newJob.qualifications.map((qualification, i) => {
       if (index === i) {
-        qualification = e.target.value;
+        qualification = value;
       }
       return qualification;
     });
     newJob.qualifications = newQualifications;
     props.setJob(newJob);
+
+    if (value.trim() === "") {
+      newErrors[index] = "This field cannot be empty.";
+    } else {
+      newErrors[index] = "";
+    }
+    setErrors(newErrors);
   };
 
   const handleQualificationRemove = (index) => {
@@ -83,19 +103,33 @@ const Qualifications = (props) => {
       1
     );
     props.setJob(newJob);
+
+    const newErrors = [...errors];
+    newErrors.splice(
+      newErrors.findIndex((e, i) => index === i),
+      1
+    );
+    setErrors(newErrors);
   };
+  console.log("Errors", errors);
 
   const handleQualificationAdd = () => {
     const newJob = { ...props.job };
     newJob.qualifications = [...newJob.qualifications, ""];
     props.setJob(newJob);
+
+    setErrors([...errors, ""]);
   };
 
   const handleQualificationsSubmit = async (e) => {
     e.preventDefault();
 
+    if(!validateFields()){
+      return;
+    }
+
     const updateFields = {
-      qualifications: props.job.qualifications.map(q => q.trim()),
+      qualifications: props.job.qualifications.map((q) => q.trim()),
     };
 
     try {
@@ -103,14 +137,17 @@ const Qualifications = (props) => {
         `${BACKEND_URL}/jobs/update/${props.jobId}`,
         updateFields
       );
-      // console.log(response);
-      handleClose();
-      props.setAlertData({
-        severity: "success",
-        msg: "Changes saved successfully!",
-      });
-      props.handleAlert();
-      await axios.get(`${BACKEND_URL}/jobs/generateRecommendations/${props.jobId}`);
+      if(response.data.success){
+        handleClose();
+        props.setAlertData({
+          severity: "success",
+          msg: "Changes saved successfully!",
+        });
+        props.handleAlert();
+        await axios.get(
+          `${BACKEND_URL}/jobs/generateRecommendations/${props.jobId}`
+        );
+      }
     } catch (err) {
       handleClose();
       props.setAlertData({
@@ -118,21 +155,37 @@ const Qualifications = (props) => {
         msg: "Changes could not be applied",
       });
       props.handleAlert();
-      console.log("Error: ", err);
+    }
+  };
+
+  const validateFields = () => {
+    const errorsLength = errors.filter(e => e !== "").length;
+    if(errorsLength === 0){
+      return true;
+    }
+    return false;
+  }
+
+  const displayQualificationModal = () => {
+    if (errors !== "empty") {
+      return (
+        <QualificationsModal
+          qualifications={props.job.qualifications}
+          open={open}
+          handleClose={handleClose}
+          handleQualificationsChange={handleQualificationsChange}
+          handleQualificationRemove={handleQualificationRemove}
+          handleQualificationAdd={handleQualificationAdd}
+          handleQualificationsSubmit={handleQualificationsSubmit}
+          errors={errors}
+        ></QualificationsModal>
+      );
     }
   };
 
   return (
     <>
-      <QualificationsModal
-        qualifications={props.job.qualifications}
-        open={open}
-        handleClose={handleClose}
-        handleQualificationsChange={handleQualificationsChange}
-        handleQualificationRemove={handleQualificationRemove}
-        handleQualificationAdd={handleQualificationAdd}
-        handleQualificationsSubmit={handleQualificationsSubmit}
-      ></QualificationsModal>
+      {displayQualificationModal()}
 
       <FloatCard>
         <Container className={classes.req}>
