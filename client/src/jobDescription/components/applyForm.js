@@ -10,8 +10,9 @@ import React, { useEffect, useRef, useState } from "react";
 import Lottie from "react-lottie";
 import FloatCard from "../../components/FloatCard";
 import SnackBarAlert from "../../components/SnackBarAlert";
-import BACKEND_URL from "../../Config";
+import BACKEND_URL, { FILE_URL } from "../../Config";
 import ItPerson from "../lotties/itPerson.json";
+import uploadFileToBlob, { isStorageConfigured } from '../../utils/azureFileUpload';
 
 const useStyles = makeStyles((theme) => ({
   applyFormWrapper: {
@@ -86,13 +87,13 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 600,
     color: theme.palette.black,
   },
-  submitBtnWrapper:{
+  submitBtnWrapper: {
     marginTop: theme.spacing(2),
     position: "relative",
   },
   buttonProgress: {
     color: theme.palette.stateBlue,
-    marginLeft:"10px",
+    marginLeft: "10px",
     position: "absolute",
     top: "20%",
   },
@@ -136,7 +137,7 @@ const ApplyForm = (props) => {
   const handleFileChange = (e) => {
     setFileData("empty");
 
-    if(e.target.files[0]){
+    if (e.target.files[0]) {
       let nameSplit = e.target.files[0].name.split(".");
       // console.log("file extention", nameSplit[nameSplit.length - 1]);
       if (nameSplit[nameSplit.length - 1] !== "pdf") {
@@ -195,7 +196,7 @@ const ApplyForm = (props) => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    if(fileData === "empty"){
+    if (fileData === "empty") {
       setAlertData({
         severity: "error",
         msg: "You should upload your resume first",
@@ -236,7 +237,7 @@ const ApplyForm = (props) => {
       userId: userId,
       resumeName: jobId + "--" + userId + resumeExt,
     };
-    
+
     try {
       // Update resume details in jobseeker collection
       const resumeDetailsResponseJobSeeker = await axios.patch(
@@ -251,30 +252,36 @@ const ApplyForm = (props) => {
           resumeDetailsJob
         );
 
+
         if (resumeDetailsResponseJob.data.success) {
+
+          await uploadFileToBlob(fileData, "resumes");
+
           // Add resume to the server
-          const resumeResponse = await axios.post(
-            `${BACKEND_URL}/resume`,
-            data,
-            {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-            }
-          );
-          if (resumeResponse.data.success) {
+          // const resumeResponse = await axios.post(
+          //   `${BACKEND_URL}/resume`,
+          //   data,
+          //   {
+          //     headers: {
+          //       "Content-Type": "multipart/form-data",
+          //     },
+          //   }
+          // );
+
+          await axios.get(`${FILE_URL}/resumes/${fileData.name}`).then(res => {
             setAlertData({
               severity: "success",
               msg: "Application sent!",
             });
             handleAlert();
-          } else {
+          }).catch(error => {
             setAlertData({
               severity: "error",
               msg: "Application could not be sent!",
             });
             handleAlert();
-          }
+          })
+
         } else {
           setAlertData({
             severity: "error",
@@ -362,7 +369,7 @@ const ApplyForm = (props) => {
             {displayFileName()}
             <div className={classes.submitBtnWrapper}>
               <Button
-                
+
                 color="primary"
                 className={classes.submitButton}
                 type="submit"
