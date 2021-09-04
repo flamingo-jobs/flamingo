@@ -111,7 +111,6 @@ const Qualifications = (props) => {
     );
     setErrors(newErrors);
   };
-  console.log("Errors", errors);
 
   const handleQualificationAdd = () => {
     const newJob = { ...props.job };

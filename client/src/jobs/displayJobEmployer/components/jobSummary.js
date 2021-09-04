@@ -18,6 +18,7 @@ import FloatCard from "../../../components/FloatCard";
 import BACKEND_URL from "../../../Config";
 import DeleteModal from "./deleteModal";
 import JobSummaryModal from "./jobSummaryModal";
+const jwt = require("jsonwebtoken");
 
 const useStyles = makeStyles((theme) => ({
   summaryContainer: {
@@ -170,6 +171,8 @@ function JobSummary(props) {
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
+  const [updatedFields, setUpdatedFields] = useState([]);
+  const userId = jwt.decode(sessionStorage.getItem("userToken"),{complete:true}).payload.userId;
 
   const handleOpen = () => {
     setOpen(true);
@@ -228,16 +231,27 @@ function JobSummary(props) {
           
         }
       }
+
       if(name === "min" || name === "max"){
         newJob.salaryRange[e.target.name] = value;
+        if(!updatedFields.includes(e.target.name + " salary")){
+          setUpdatedFields([...updatedFields, e.target.name+" salary"]);
+        }
       }
       else if(name === "numberOfVacancies"){
         newJob.numberOfVacancies = value;
+        if(!updatedFields.includes(e.target.name)){
+          setUpdatedFields([...updatedFields, e.target.name]);
+        }
       }
       
     } 
     else if (e.target.name === "isPublished") {
       newJob[e.target.name] = e.target.checked;
+      if(!updatedFields.includes(e.target.name)){
+        setUpdatedFields([...updatedFields, e.target.name]);
+      }
+
     } 
     else if(e.target.name === "title" || e.target.name === "description"){
       const name = e.target.name;
@@ -249,9 +263,16 @@ function JobSummary(props) {
         delete newErrors[name];
       }
       newJob[e.target.name] = value;
+      if(!updatedFields.includes(e.target.name)){
+        setUpdatedFields([...updatedFields, e.target.name]);
+      }
+
     } 
     else {
       newJob[e.target.name] = e.target.value;
+      if(!updatedFields.includes(e.target.name)){
+        setUpdatedFields([...updatedFields, e.target.name]);
+      }
     }
     props.setErrors(newErrors);
     props.setJob(newJob);
@@ -261,8 +282,12 @@ function JobSummary(props) {
     const newJob = { ...props.job };
     newJob.dueDate = date;
     props.setJob(newJob);
+    if(!updatedFields.includes("dueDate")){
+      setUpdatedFields([...updatedFields, "dueDate"]);
+    }
   };
 
+  console.log("updated fields", updatedFields);
   const handleSummarySubmit = async (e) => {
     e.preventDefault();
 
@@ -305,6 +330,10 @@ function JobSummary(props) {
         });
         props.handleAlert();
         await axios.get(`${BACKEND_URL}/jobs/generateRecommendations/${props.jobId}`);
+        const msg = "Job updated";
+        const status = "informational";
+        await axios.post(`${BACKEND_URL}/logs/create/${props.job._id}/${userId}`, {msg: msg, status: status, updatedFields: updatedFields});
+        setUpdatedFields([]);
       }
       // console.log(response);
     } catch (err) {
@@ -314,7 +343,6 @@ function JobSummary(props) {
         msg: "Changes could not be applied",
       });
       props.handleAlert();
-      console.log("Error: ", err);
     }
   };
 
@@ -329,6 +357,10 @@ function JobSummary(props) {
           msg: "Job deleted successfully",
         });
         props.handleAlert();
+        const msg = "Job deleted";
+        const status = "informational";
+        await axios.post(`${BACKEND_URL}/logs/create/${props.job._id}/${userId}`, {msg: msg, status: status});
+        
         window.location = "/employer/jobs";
       } else {
         props.setAlertData({
