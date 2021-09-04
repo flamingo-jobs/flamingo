@@ -34,7 +34,7 @@ const Sample = () => {
 
         var file = fileSelected;
         var blob = file.slice(0, file.size); 
-        var newFile = new File([blob], `mekaPNGimageEkekNemei.png`, {type: 'image/png'});
+        var newFile = new File([blob], `60c246913542f942e4c84454.pdf`, {type: 'application/pdf'});
 
         await uploadFileToBlob(newFile, "testing");
         // prepare UI for results

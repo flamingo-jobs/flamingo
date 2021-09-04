@@ -12,8 +12,9 @@ import Lottie from "react-lottie";
 import PublishIcon from "@material-ui/icons/Publish";
 import CloseIcon from "@material-ui/icons/Close";
 import DescriptionIcon from "@material-ui/icons/Description";
-import BACKEND_URL from "../../../Config";
+import BACKEND_URL, {FILE_URL} from "../../../Config";
 import axios from "axios";
+import uploadFileToBlob, { isStorageConfigured } from '../../../utils/azureFileUpload';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -195,29 +196,35 @@ const UploadModal = (props) => {
           );
 
           if (resumeDetailsResponseJob.data.success) {
+            var file = props.fileData;
+            var blob = file.slice(0, file.size);
+            var newFile = new File([blob], `${props.jobId}--${userId}.pdf`);
+
+            await uploadFileToBlob(newFile, "resumes");
+
             // Add resume to the server
-            const resumeResponse = await axios.post(
-              `${BACKEND_URL}/resume`,
-              data,
-              {
-                headers: {
-                  "Content-Type": "multipart/form-data",
-                },
-              }
-            );
-            if (resumeResponse.data.success) {
+            // const resumeResponse = await axios.post(
+            //   `${BACKEND_URL}/resume`,
+            //   data,
+            //   {
+            //     headers: {
+            //       "Content-Type": "multipart/form-data",
+            //     },
+            //   }
+            // );
+            await axios.get(`${FILE_URL}/resumes/${newFile.name}`).then(res => {
               props.setAlertData({
                 severity: "success",
-                msg: "Application sent!",
+                msg: "Resume updated!",
               });
               props.handleAlert();
-            } else {
+            }).catch(error => {
               props.setAlertData({
                 severity: "error",
-                msg: "Application could not be sent!",
+                msg: "Resume could not be updateds!",
               });
               props.handleAlert();
-            }
+            })
           } else {
             props.setAlertData({
               severity: "error",
@@ -319,7 +326,7 @@ const UploadModal = (props) => {
             {displayFileName()}
             <div className={classes.submitBtnWrapper}>
               <Button
-                
+
                 color="primary"
                 className={classes.submitButton}
                 type="submit"
