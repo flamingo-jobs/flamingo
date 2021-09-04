@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Button,
@@ -11,7 +11,7 @@ import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
 import FloatCard from "../../../components/FloatCard";
 import Rating from "@material-ui/lab/Rating";
-import BACKEND_URL from "../../../Config";
+import BACKEND_URL, { FILE_URL } from "../../../Config";
 import axios from "axios";
 import { Link } from 'react-router-dom'
 import { useDispatch } from "react-redux";
@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 10,
     backgroundColor: "white",
   },
-  orgTags:{
+  orgTags: {
     marginLeft: 10,
   },
   footerLeft: {
@@ -102,6 +102,7 @@ const OrganizationCard = (props) => {
   const classes = useStyles();
 
   const [isSaved, setIsSaved] = useState(true);
+  const [logo, setLogo] = useState(require(`../../../components/images/loadingImage.gif`).default);
 
   // Redux
   const dispatch = useDispatch();
@@ -112,14 +113,17 @@ const OrganizationCard = (props) => {
     );
   };
 
-  const loadLogo = () => {
-    try {
-      return require(`../../../employer/images/${props.org.logo}`).default;
-    } catch (err) {
-      return require(`../../../employer/images/default_company_logo.png`)
-        .default;
-    }
-  };
+  useEffect(() => {
+    loadLogo();
+  }, []);
+
+  const loadLogo = async () => {
+    await axios.get(`${FILE_URL}/employer-profile-pictures/${props.org._id}.png`).then(res => {
+      setLogo(`${FILE_URL}/employer-profile-pictures/${props.org._id}.png`);
+    }).catch(error => {
+      setLogo(require(`../../../employer/images/default_company_logo.png`).default);
+    })
+  }
 
   const handleSavingOrg = async (orgId) => {
     const newFavoriteOrgs = props.favoriteOrgIds.filter((id) => id !== orgId);
@@ -155,7 +159,7 @@ const OrganizationCard = (props) => {
             <div className={classes.headerLeft}>
               <Avatar
                 className={classes.logo}
-                src={loadLogo()}
+                src={logo}
                 variant="square"
               />
               <div className={classes.headerorg}>
@@ -201,9 +205,9 @@ const OrganizationCard = (props) => {
               />
             </div>
             <div className={classes.footerRight}>
-            <Link to={`/employer/company/${props.org._id}`}>
-              <Button className={classes.applyButton}>View Organization</Button>
-            </Link>
+              <Link to={`/employer/company/${props.org._id}`}>
+                <Button className={classes.applyButton}>View Organization</Button>
+              </Link>
             </div>
           </div>
         </div>
