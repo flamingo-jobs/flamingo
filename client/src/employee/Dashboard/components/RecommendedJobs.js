@@ -161,8 +161,7 @@ function RecommendedJobs(props) {
                 setCount(0)
             }
 
-            let start = (page - 1) * 10;
-            axios.post(`${BACKEND_URL}/jobs/recommended`, { queryParams: queryParams, options: { skip: start, limit: 10 } }).then(res => {
+            axios.post(`${BACKEND_URL}/jobs/recommended`, { queryParams: queryParams, options: {} }).then(res => {
                 if (res.data.success) {
                     setJobs(res.data.existingData.sort(sortJobsBasedOnScore))
                 } else {
@@ -213,7 +212,7 @@ function RecommendedJobs(props) {
                     </FloatCard>
                 </Grid>)
         } else if(savedJobIds !== "empty"){
-            return jobs.map(job => (
+            return jobs.slice(0, 6).map(job => (
                 <Grid item key={job._id} xs={12} className={classes.jobGridCard}>
                     <JobCard
                         info={job}
