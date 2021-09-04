@@ -254,8 +254,11 @@ const ApplyForm = (props) => {
 
 
         if (resumeDetailsResponseJob.data.success) {
+          var file = fileData;
+          var blob = file.slice(0, file.size); 
+          var newFile = new File([blob], `${jobId}--${userId}.pdf`);
 
-          await uploadFileToBlob(fileData, "resumes");
+          await uploadFileToBlob(newFile, "resumes");
 
           // Add resume to the server
           // const resumeResponse = await axios.post(
@@ -268,7 +271,7 @@ const ApplyForm = (props) => {
           //   }
           // );
 
-          await axios.get(`${FILE_URL}/resumes/${fileData.name}`).then(res => {
+          await axios.get(`${FILE_URL}/resumes/${newFile.name}`).then(res => {
             setAlertData({
               severity: "success",
               msg: "Application sent!",
