@@ -358,14 +358,6 @@ export default function Topbar(props) {
         })
 
       } else if (header.payload.userRole === "jobseeker") {
-        // const images = require.context('../../../server/profilePictures', true);
-        // try{
-        //   let loginId=sessionStorage.getItem("loginId");
-        //   let image = images(`./${loginId}.jpg`).default;
-        //   return image;
-        // }catch (error) {
-        //   return require('../employee/images/defaultProfilePic.jpg').default
-        // }
 
         await axios.get(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.png`).then(res => {
           setProfilePic(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.png`);
