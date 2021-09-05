@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 require('dotenv').config();
-
+const compression = require('compression');
+const hemlmet = require('helmet');
 const app = express();
 
 //import routes
@@ -29,7 +30,8 @@ app.use('/companyImage', express.static('companyImage'));
 // app middleware
 app.use(bodyParser.json());
 app.use(cors());
-
+app.use(hemlmet());
+app.use(compression());
 // route middleware
 app.use(userRoutes);
 app.use(jobRoutes);
