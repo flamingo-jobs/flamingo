@@ -86,16 +86,9 @@ const Billing = () => {
       }
     });
   }, []);
+  
   return (
-    <Grid
-      item
-      container
-      sm={12}
-      spacing={3}
-      direction="row"
-      alignItems="center"
-      justify="center"
-    >
+    <Grid item container sm={12} spacing={3} direction="row">
       <Grid item xs={12}>
         <div className={classes.root}>
           {haveAccess ? (

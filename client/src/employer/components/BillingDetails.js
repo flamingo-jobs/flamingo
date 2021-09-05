@@ -54,24 +54,21 @@ const columns = [
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minWidth: 275,
-    border: `1px solid #5E60CE`,
     borderRadius: 10,
-    margin: "30px 10px 30px 10px",
-    // background: "linear-gradient(45deg, #64DFDF 30%, #FFFFFF 90%)",
+    flexGrow: 1,
   },
-  title: {
-    color: theme.palette.grey,
-    marginBottom: 10,
-  },
-  price: {
-    color: theme.palette.stateBlue,
-    marginBottom: 20,
-  },
-  features: {
-    backgroundColor: theme.palette.white,
-    float: "left",
-    marginLeft: "18%",
+  mainGrid: {
+    paddingLeft: 20,
+    paddingTop: 20,
+    paddingBottom: 20,
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+      alignItems: "stretch",
+    },
+    [theme.breakpoints.down("xs")]: {
+      paddingRight: 12,
+      paddingLeft: 12,
+    },
   },
   icon: {
     color: theme.palette.darkGreen,
@@ -79,19 +76,32 @@ const useStyles = makeStyles((theme) => ({
   cancelIcon: {
     color: theme.palette.lightRed,
   },
-  featuresContainer: {
-    //marginBottom: "70%",
-  },
-  annual: {
-    color: theme.palette.stateBlue,
-    marginTop: -15,
-    marginBottom: 20,
-  },
   button: {
+    marginTop: 10,
     backgroundColor: theme.palette.stateBlue,
     color: theme.palette.white,
     "&:hover": {
       backgroundColor: theme.palette.stateBlueHover,
+    },
+    float: "center",
+  },
+  switchButton: {
+    marginTop: 10,
+    marginRight: 20,
+    backgroundColor: theme.palette.ashBlue,
+    color: theme.palette.white,
+    "&:hover": {
+      backgroundColor: theme.palette.ashBlueHover,
+    },
+    float: "center",
+  },
+  dangerButton: {
+    marginTop: 10,
+    marginRight: 20,
+    backgroundColor: theme.palette.red,
+    color: theme.palette.white,
+    "&:hover": {
+      backgroundColor: theme.palette.redHover,
     },
     float: "center",
   },
@@ -124,16 +134,11 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.black,
     marginBottom: 20,
   },
-  lottie: {
-    height: 200,
-    [theme.breakpoints.down("xs")]: {
-      width: 300,
-    },
-  },
 }));
 
 export default function BillingDetails(props) {
   const classes = useStyles();
+  const [expiryDate, setExpiryDate] = useState("");
   const [previousOrders, setPreviousOrders] = useState();
   const loginId = sessionStorage.getItem("loginId");
   useEffect(() => {
@@ -151,7 +156,7 @@ export default function BillingDetails(props) {
             payDay: x.paymentDate ? x.paymentDate.slice(0, 10) : "a",
             amount: x.amount ? x.currency + " " + x.amount : "a",
             description: x.items
-              ? "Monthly payment: " + x.items + " package"
+              ? "Monthly charge: " + x.items + " package"
               : "a",
             validity: x.duration ? x.duration : "a",
             nextDate: dueDate ? dueDate.toISOString().slice(0, 10) : "a",
@@ -163,23 +168,33 @@ export default function BillingDetails(props) {
           });
         });
         setPreviousOrders(row);
+        getDueDate(row);
       }
     });
   }, []);
+  const getDueDate = async (row) => {
+    let currentDate = new Date();
+    await row.map((x) => {
+      if (new Date(x.nextDate) > currentDate) {
+        currentDate = x.nextDate;
+      }
+    });
+    setExpiryDate(currentDate.toString());
+  };
   return (
-    <Grid
-      container
-      direction="row"
-      spacing={3}
-      justify="space-between"
-      alignItems="center"
-      style={{ maxWidth: "100%" }}
-    >
-      <FloatCard>
-        <Grid item xs={12} className={classes.topCardText}>
-          <Typography variant="h4">Previous payments</Typography>{" "}
+    <FloatCard>
+      <Grid
+        item
+        container
+        sm={12}
+        spacing={3}
+        direction="row"
+        className={classes.mainGrid}
+      >
+        <Grid item xs={12}>
+          <Typography variant="h6">Previous payments</Typography> <Box m={1} />
           {previousOrders ? (
-            <div style={{ height: 400, width: "100%" }}>
+            <div style={{ height: 300, width: "100%" }}>
               <DataGrid
                 rows={previousOrders}
                 columns={columns}
@@ -196,18 +211,28 @@ export default function BillingDetails(props) {
             </Typography>
           )}
         </Grid>
-        <Grid item xs={12} lg={6} className={classes.topCardText}>
-          <Typography variant="body1" className={classes.topCardTextBody}>
-            <Box fontWeight={500} fontSize={20} m={1}>
-              {props.info}
-              Flamingo goes few steps further from a typical job portal and
-              brings a novel recruitment experience for the Sri Lankan IT
-              industry by making use of cutting edge technology. Upgrade your
-              account today to experience advanced features!
-            </Box>
+        <Grid item xs={12} lg={6}>
+          <Typography variant="h6">
+            You have subscribed to: {props.info} package
           </Typography>
+          <Divider />
+          <Link to="/employer/payment/standard">
+            <Button className={classes.switchButton}>Change Package</Button>
+          </Link>
+          <Link to="/employer/payment/premium">
+            <Button className={classes.dangerButton}>
+              Unsubscribe from Service
+            </Button>
+          </Link>
         </Grid>
-      </FloatCard>
-    </Grid>
+        <Grid item xs={12} lg={6}>
+          <Typography variant="h6">Next Payment: {expiryDate}</Typography>
+          <Divider />
+          <Link to="/employer/payment/premium">
+            <Button className={classes.button}>Continue to Payment</Button>
+          </Link>
+        </Grid>
+      </Grid>
+    </FloatCard>
   );
 }
