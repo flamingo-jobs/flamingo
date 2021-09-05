@@ -24,6 +24,7 @@ const analyticsRoutes = require("./routes/analytics");
 const settingsRoutes = require("./routes/settings");
 const paymentRoutes = require("./routes/payment");
 const contactRoutes = require("./routes/contact");
+const logsRoutes = require("./routes/logs");
 
 app.use('/companyImage', express.static('companyImage'));
 
@@ -49,6 +50,7 @@ app.use(certificationsRoutes);
 app.use('/api', authRoutes);
 app.use(paymentRoutes)
 app.use(contactRoutes)
+app.use(logsRoutes)
 
 const PORT = 8000;
 

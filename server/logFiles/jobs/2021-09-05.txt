@@ -1,0 +1,4 @@
+Date & Time              Job Id                        User Id                       Status              Message
+
+2021-09-05 1:58:36       6133d6f204eda7128ca29027      60e75761c04b554238b7948b      INFORMATIONAL       Job created
+2021-09-05 1:59:01       6133d6f204eda7128ca29027      60e75761c04b554238b7948b      INFORMATIONAL       Job updated @Updated-Fields:description,title,min salary

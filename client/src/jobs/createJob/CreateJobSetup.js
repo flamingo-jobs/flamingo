@@ -499,6 +499,12 @@ export default function CreateJobSetup() {
         });
         handleAlert();
         await axios.get(`${BACKEND_URL}/jobs/generateRecommendations/${response.data.job._id}`);
+
+        // Create Log
+        const msg = "Job created";
+        const status = "informational"
+        await axios.post(`${BACKEND_URL}/logs/create/${response.data.job._id}/${userId}`, {msg: msg, status: status});
+
         window.location = "/employer/jobs";
       } else {
         setAlertData({

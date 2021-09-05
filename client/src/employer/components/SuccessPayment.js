@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Typography, Box } from "@material-ui/core";
 import FloatCard from "../../components/FloatCard";
+import SnackBarAlert from "../../components/SnackBarAlert";
 import Loading from "../../components/Loading";
 import Invoice from "./Invoice/Invoice";
 import BACKEND_URL from "../../Config";
@@ -60,17 +61,38 @@ const useStyles = makeStyles((theme) => ({
 
 const SuccessPayment = (props) => {
   const classes = useStyles();
+  // Alert stuff
+  const [alertShow, setAlertShow] = useState(false);
+  const [alertData, setAlertData] = useState({ severity: "", msg: "" });
+  const displayAlert = () => {
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertShow(false);
+  };
 
   const orderId = new URLSearchParams(useLocation().search).get("order_id");
   const [order, setOrder] = useState();
-
   useEffect(() => {
     axios
       .post(`${BACKEND_URL}/get-order-details/${orderId}`)
       .then((res) => {
         if (res.data.success) {
-          console.log(res.data);
           setOrder(res.data.order);
+          updatePackageDetails(res.data.order.items);
         }
       })
       .catch((err) => {
@@ -79,6 +101,36 @@ const SuccessPayment = (props) => {
         }
       });
   }, []);
+
+  const updatePackageDetails = (packageType) => {
+    const loginId = sessionStorage.getItem("loginId");
+    const subscriptionData = {
+      subscription: {
+        type: packageType,
+        startDate: new Date(),
+      },
+    };
+    axios
+      .put(`${BACKEND_URL}/employers/update/${loginId}`, subscriptionData)
+      .then((res) => {
+        if (res.data.success) {
+          setAlertData({
+            severity: "success",
+            msg: "Payment successful!",
+          });
+          handleAlert();
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          setAlertData({
+            severity: "error",
+            msg: "Failed to complete process. Please contact our support center",
+          });
+          handleAlert();
+        }
+      });
+  };
 
   if (order) {
     var invoiceData = {
@@ -115,6 +167,7 @@ const SuccessPayment = (props) => {
       align="left"
     >
       <Grid item xs={12}>
+        {displayAlert()}
         <FloatCard>
           {order ? (
             <Grid
@@ -131,7 +184,9 @@ const SuccessPayment = (props) => {
               <Grid item xs={12}>
                 <Box mt={2} />
                 <Typography variant="h4">Payment Successful!</Typography>
-                <Typography className={classes.text}>Download your invoice below</Typography>
+                <Typography className={classes.text}>
+                  Download your invoice below
+                </Typography>
               </Grid>
               <Grid item xs={12} className={classes.cardContent}>
                 <Invoice invoice={invoiceData} />{" "}

@@ -329,7 +329,7 @@ exports.checkPassword = async (req, res) => {
             });
           })
           .catch((err) => {
-            res.status(500).json({ success: false });
+            res.status(500).json({ success: false, error: err });
           });
       }
     })

@@ -7,5 +7,6 @@ router.post("/payment", paymentController.payherePayment);
 router.post("/checkout", paymentController.stripePayment);
 router.post("/create-order", paymentController.createOrder);
 router.post("/get-order-details/:id", paymentController.getOrderById);
+router.get("/orders/:id",paymentController.getAllOrdersByEmployer)
 
 module.exports = router;
