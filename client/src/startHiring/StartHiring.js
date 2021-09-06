@@ -1,4 +1,13 @@
-import { Avatar, Badge, Button, Container, Grid, IconButton, TextField, Typography } from "@material-ui/core";
+import {
+  Avatar,
+  Badge,
+  Button,
+  Container,
+  Grid,
+  IconButton,
+  TextField,
+  Typography,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import AddCircleRoundedIcon from "@material-ui/icons/AddCircleRounded";
@@ -276,6 +285,7 @@ export default function StartHiring() {
       dateRegistered: new Date(),
       links: social,
       subscription: { type: "Basic", startDate: new Date() },
+      verificationStatus: "none",
     };
     axios.post(`${BACKEND_URL}/employers/create`, employerData).then((res) => {
       if (res.data.success) {
@@ -848,7 +858,6 @@ export default function StartHiring() {
                               <Button
                                 fullWidth
                                 type="submit"
-                                
                                 className={classes.submit}
                               >
                                 Sign Up
@@ -856,11 +865,7 @@ export default function StartHiring() {
                             </Grid>
                             <Grid item>
                               <Link to="/">
-                                <Button
-                                  fullWidth
-                                  
-                                  className={classes.cancel}
-                                >
+                                <Button fullWidth className={classes.cancel}>
                                   Cancel
                                 </Button>
                               </Link>

@@ -53,6 +53,9 @@ const employerSchema = new mongoose.Schema({
       jobseekerName: { type: String },
     },
   ],
+  verificationStatus: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("Employers", employerSchema);

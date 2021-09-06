@@ -1,7 +1,8 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Lottie from "react-lottie";
-import Anim from "./lotties/verified.json";
+import VerifiedAnim from "./lotties/verified.json";
+import PendingAnim from "./lotties/pending.json";
 import { makeStyles, Typography } from "@material-ui/core";
 import FloatCard from "./FloatCard";
 
@@ -18,12 +19,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Verified() {
+function Verified(props) {
   const classes = useStyles();
   const defaultOptions = {
     loop: true,
     autoplay: true,
-    animationData: Anim,
+    animationData: props.message === "verified" ? VerifiedAnim : PendingAnim,
     rendererSettings: {
       preserveAspectRatio: "xMidYMid slice",
     },
@@ -42,22 +43,41 @@ function Verified() {
     >
       <Grid item xs={12}>
         <FloatCard>
-          <Grid container style={{ padding: 24 }}>
-            <Grid item xs={12}>
-              <Lottie options={defaultOptions} height={150} width={150} />
+          {props.message === "verified" ? (
+            <Grid container style={{ padding: 24 }}>
+              <Grid item xs={12}>
+                <Lottie options={defaultOptions} height={150} width={150} />
+              </Grid>
+              <Grid item xs={12} style={{ marginTop: 16 }}>
+                <Typography variant="h6">
+                  Congratulations! <br />
+                  Your are a verified company inside Flamingo Jobs
+                </Typography>
+              </Grid>{" "}
+              <Grid item xs={12} style={{ marginTop: 16 }}>
+                <Typography>
+                  If there is any issue, please contact our support center.
+                </Typography>
+              </Grid>
             </Grid>
-            <Grid item xs={12} style={{ marginTop: 16 }}>
-              <Typography variant="h6">
-                Congratulations! <br />
-                Your are a verified company inside Flamingo Jobs
-              </Typography>
-            </Grid>{" "}
-            <Grid item xs={12} style={{ marginTop: 16 }}>
-              <Typography>
-                If there is any issue, please contact our support center.
-              </Typography>
+          ) : (
+            <Grid container style={{ padding: 24 }}>
+              <Grid item xs={12}>
+                <Lottie options={defaultOptions} height={200} width={400} />
+              </Grid>
+              <Grid item xs={12} style={{ marginTop: 16 }}>
+                <Typography variant="h6">
+                  Pending! <br />
+                  We are reviewing your documents
+                </Typography>
+              </Grid>{" "}
+              <Grid item xs={12} style={{ marginTop: 16 }}>
+                <Typography>
+                  If there is any issue, please contact our support center.
+                </Typography>
+              </Grid>
             </Grid>
-          </Grid>
+          )}
         </FloatCard>
       </Grid>
     </Grid>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Accordion,
   AccordionDetails,
@@ -11,6 +11,8 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import VerificationSettings from "./VerificationSettings";
 import NoAccess from "../../components/NoAccess";
 import Verified from "../../components/Verified";
+import axios from "axios";
+import BACKEND_URL from "../../Config";
 const jwt = require("jsonwebtoken");
 
 const useStyles = makeStyles((theme) => ({
@@ -47,7 +49,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 let haveAccess = false;
-let verified = false;
 if (sessionStorage.getItem("userToken")) {
   var accessTokens = jwt.decode(sessionStorage.getItem("userToken"), {
     complete: true,
@@ -59,6 +60,23 @@ if (sessionStorage.getItem("userToken")) {
 
 export default function VerificationSettingsAccordion(props) {
   const classes = useStyles();
+
+  const loginId = sessionStorage.getItem("loginId");
+  const [verificationStatus, setVerificationStatus] = useState();
+  useEffect(() => {
+    axios
+      .get(`${BACKEND_URL}/employer/verificationStatus/${loginId}`)
+      .then((res) => {
+        if (res.data.success) {
+          setVerificationStatus(res.data.verificationStatus);
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          setVerificationStatus("none");
+        }
+      });
+  }, []);
 
   return (
     <div className={classes.root}>
@@ -76,12 +94,13 @@ export default function VerificationSettingsAccordion(props) {
           </Typography>
         </AccordionSummary>
         <AccordionDetails className={classes.details}>
-          {verified ? (
-            <Verified />
-          ) : haveAccess ? (
-            <VerificationSettings />
-          ) : (
+          {!haveAccess ? (
             <NoAccess message="for this content" />
+          ) : verificationStatus === "none" ||
+            verificationStatus === "rejected" ? (
+            <VerificationSettings message={verificationStatus} />
+          ) : (
+            <Verified message={verificationStatus} />
           )}
         </AccordionDetails>
       </Accordion>

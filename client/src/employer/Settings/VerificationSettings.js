@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const VerificationSettings = () => {
+const VerificationSettings = (props) => {
   const classes = useStyles();
 
   // Alert stuff
@@ -177,20 +177,33 @@ const VerificationSettings = () => {
             <Grid item xs={12}>
               <Grid item xs={12} md={12} lg={6} align="left">
                 <Grid container spacing={3}>
-                  <Grid item xs={12} align="left">
-                    <Typography variant="h5">Verify Account</Typography>
-                    <Typography>
-                      Please provide your business registration document or any
-                      other relevant document to verify your company. You will
-                      receive the verified badge{" "}
-                      <VerifiedUserIcon
-                        color="primary"
-                        className={classes.verifiedBadge}
-                      />{" "}
-                      after your name inside Flamingo.com when our support
-                      center verifies your business.
-                    </Typography>
-                  </Grid>
+                  {props.message === "rejected" ? (
+                    <Grid item xs={12} align="left">
+                      <Typography variant="h5" color="error">Verification Failed!</Typography>
+                      <Typography>
+                        Document you have provided has failed to verify your
+                        business. Please provide a valid document which can
+                        prove your business. If you think this is a mistake,
+                        please contact our support center.
+                      </Typography>
+                    </Grid>
+                  ) : (
+                    <Grid item xs={12} align="left">
+                      <Typography variant="h5">Verify Account</Typography>
+                      <Typography>
+                        Please provide your business registration document or
+                        any other relevant document to verify your company. You
+                        will receive the verified badge{" "}
+                        <VerifiedUserIcon
+                          color="primary"
+                          className={classes.verifiedBadge}
+                        />{" "}
+                        after your name inside Flamingo.com when our support
+                        center verifies your business.
+                      </Typography>
+                    </Grid>
+                  )}
+
                   <Grid item xs={12} align="left">
                     <TextField
                       label="Password"
