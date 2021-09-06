@@ -2,14 +2,12 @@ const Employers = require("../models/employers");
 const Verification = require("../models/verification");
 
 const create = (req, res) => {
+  let errorList = [];
   let newVerification = new Verification(req.body);
-  Employers.findById(req.body.employer, {
-    $set: { verificationStatus: "pending" },
-  });
   newVerification.save((err, verificationRequest) => {
     if (err) {
       return res.status(400).json({
-        error: err,
+        error: errorList,
       });
     }
     return res.status(200).json({

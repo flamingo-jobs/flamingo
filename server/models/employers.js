@@ -32,6 +32,9 @@ const employerSchema = new mongoose.Schema({
     type: { type: String },
     startDate: { type: Date },
   },
+  verificationStatus: {
+    type: String,
+  },
   scale: {
     type: String,
   },
@@ -53,9 +56,6 @@ const employerSchema = new mongoose.Schema({
       jobseekerName: { type: String },
     },
   ],
-  verificationStatus: {
-    type: String,
-  },
 });
 
 module.exports = mongoose.model("Employers", employerSchema);

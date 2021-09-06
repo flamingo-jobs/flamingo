@@ -165,13 +165,14 @@ const VerificationSettings = (props) => {
       });
       await uploadFileToBlob(newFile, "verification");
       createVerificationRequest(loginId);
+      
       setSuccess(true);
       setLoading(false);
     }
   };
   const createVerificationRequest = async (loginId) => {
     let empName = "";
-    axios.get(`${BACKEND_URL}/employer/${loginId}`).then((res) => {
+    await axios.get(`${BACKEND_URL}/employers/${loginId}`).then((res) => {
       if (res.data.success) {
         empName = res.data.employer.name;
       }
@@ -179,11 +180,32 @@ const VerificationSettings = (props) => {
     const sendData = {
       status: "pending",
       fileName: loginId + ".pdf",
+      requestedDate: new Date(),
       employerName: empName,
       employer: loginId,
     };
     axios
       .post(`${BACKEND_URL}/verification/create`, sendData)
+      .then((res) => {
+        if (res.data.success) {
+          updateEmployer(loginId);
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          setAlertData({
+            severity: "error",
+            msg: "There was an error when creating verification request. Please contact our support center",
+          });
+          handleAlert();
+        }
+      });
+  };
+
+  const updateEmployer = async (loginId) => {
+    const updateData = { verificationStatus: "pending" };
+    axios
+      .put(`${BACKEND_URL}/employers/update/${loginId}`, updateData)
       .then((res) => {
         if (res.data.success) {
           setAlertData({
