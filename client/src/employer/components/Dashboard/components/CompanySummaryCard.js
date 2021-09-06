@@ -10,6 +10,7 @@ import {
   Typography,
   Chip,
 } from "@material-ui/core";
+import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import Grid from "@material-ui/core/Grid";
 import FloatCard from "../../../../components/FloatCard";
 import Box from "@material-ui/core/Box";
@@ -20,36 +21,36 @@ import { useState, useEffect } from "react";
 
 const useStyles = makeStyles((theme) => ({
   header: {
-    display: 'block',
-    alignItems: 'center',
+    display: "block",
+    alignItems: "center",
     margin: 10,
-    marginTop: 16
+    marginTop: 16,
   },
   headerLogo: {
     marginTop: 10,
-    display: 'flex',
-    justifyContent: 'center',
+    display: "flex",
+    justifyContent: "center",
     marginBottom: 15,
   },
   label: {
-    alignSelf: 'left',
+    alignSelf: "left",
     marginRight: 15,
-    backgroundColor: theme.palette.tagYellow
+    backgroundColor: theme.palette.tagYellow,
   },
   headerLeft: {
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center",
   },
   tagIcon: {
-    color: theme.palette.tagIcon
+    color: theme.palette.tagIcon,
   },
   favorite: {
-    display: 'block',
+    display: "block",
     color: theme.palette.pinkyRed,
-    minWidth: 36
+    minWidth: 36,
   },
   body: {
-    margin: 10
+    margin: 10,
   },
   title: {
     fontWeight: 500,
@@ -84,8 +85,12 @@ const useStyles = makeStyles((theme) => ({
     marginTop: -20,
   },
   reviews: {
-    alignItems: 'center',
-    textAlign: '-webkit-center',
+    alignItems: "center",
+    textAlign: "-webkit-center",
+  },
+  verifiedBadge: {
+    width: "20px",
+    height: "20px",
   },
 }));
 
@@ -96,12 +101,14 @@ const CompanySummaryCard = (props) => {
     logo: " ",
     reviews: [],
   });
+  const [verified, setVerified] = useState(false);
 
   const name = state.name;
   const logo = state.logo;
   const reviews = state.reviews;
 
   useEffect(() => {
+    getVerificationStatus();
     axios.get(`${BACKEND_URL}/employers/${props.employerId}`).then((res) => {
       console.log(res.data.employer);
       if (res.data.success) {
@@ -134,17 +141,51 @@ const CompanySummaryCard = (props) => {
     }
   };
 
+  const getVerificationStatus = () => {
+    const loginId = sessionStorage.getItem("loginId");
+    axios
+      .get(`${BACKEND_URL}/employer/verificationStatus/${loginId}`)
+      .then((res) => {
+        if (res.data.success) {
+          if (res.data.verificationStatus === "verified") setVerified(true);
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          setVerified(false);
+        }
+      });
+  };
+
   return (
-    <FloatCard >
+    <FloatCard>
       <div className={classes.header}>
         <div className={classes.headerLogo}>
           <Avatar className={classes.logo} src={loadLogo()} variant="square" />
         </div>
         <div className={classes.headerInfo}>
-          <Typography variant="h5" className={classes.title} >{name}</Typography>
+          <Typography variant="h5" className={classes.title}>
+            {name}{" "}
+            {verified ? (
+              <VerifiedUserIcon
+                color="primary"
+                className={classes.verifiedBadge}
+              />
+            ) : (
+              ""
+            )}
+          </Typography>
         </div>
         <div className={classes.reviews}>
-          <Typography style={{ marginTop: 8 }}>{getAverageRating()[0]}/5 ratings</Typography><Rating name="read-only" style={{ marginTop: 8 }} value={getAverageRating()[0]} readOnly />
+          <Typography style={{ marginTop: 8 }}>
+            {getAverageRating()[0]}/5 ratings
+          </Typography>
+          <Rating
+            name="read-only"
+            style={{ marginTop: 8 }}
+            value={getAverageRating()[0]}
+            readOnly
+          />
         </div>
       </div>
     </FloatCard>

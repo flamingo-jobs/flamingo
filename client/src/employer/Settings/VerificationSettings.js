@@ -19,6 +19,7 @@ import PublishIcon from "@material-ui/icons/Publish";
 import DescriptionIcon from "@material-ui/icons/Description";
 import SnackBarAlert from "../../components/SnackBarAlert";
 import FormSubmit from "../../components/FormSubmit";
+import UnderMaintenance from "../../components/UnderMaintenance";
 import uploadFileToBlob, {
   isStorageConfigured,
 } from "../../utils/azureFileUpload";
@@ -165,7 +166,7 @@ const VerificationSettings = (props) => {
       });
       await uploadFileToBlob(newFile, "verification");
       createVerificationRequest(loginId);
-      
+
       setSuccess(true);
       setLoading(false);
     }
@@ -248,77 +249,45 @@ const VerificationSettings = (props) => {
         >
           <Grid item xs={12}>
             <Grid item xs={12} align="left">
-              {success ? (
-                <FormSubmit message="Your document has been uploaded. You will recieve notifications after our support center approves your document" />
-              ) : (
-                <Grid container spacing={3}>
-                  {props.message === "rejected" ? (
-                    <Grid item xs={12} align="left">
-                      <Typography variant="h5" color="error">
-                        Verification Failed!
-                      </Typography>
-                      <Typography>
-                        Document you have provided has failed to verify your
-                        business. Please provide a valid document which can
-                        prove your business. If you think this is a mistake,
-                        please contact our support center.
-                      </Typography>
-                    </Grid>
-                  ) : (
-                    <Grid item xs={12} align="left">
-                      <Typography variant="h5">Verify Account</Typography>
-                      <Typography>
-                        Please provide your business registration document or
-                        any other relevant document to verify your company. You
-                        will receive the verified badge{" "}
-                        <VerifiedUserIcon
-                          color="primary"
-                          className={classes.verifiedBadge}
-                        />{" "}
-                        after your name inside Flamingo.com when our support
-                        center verifies your business.
-                      </Typography>
-                    </Grid>
-                  )}
-
-                  <Grid item xs={12} align="left">
-                    <form
-                      onSubmit={handleFormSubmit}
-                      encType="multipart/form-data"
-                    >
-                      <Grid
-                        item
-                        container
-                        md={12}
-                        className={classes.actions}
-                        spacing={2}
-                      >
-                        <Grid item>
-                          <input
-                            className={classes.input}
-                            id="resume"
-                            name="resume"
-                            type="file"
-                            accept="application/pdf"
-                            hidden
-                            onChange={handleFileChange}
-                          />
-                          <label htmlFor="resume">
-                            <Button
-                              variant="outlined"
-                              color="primary"
-                              component="span"
-                              startIcon={<PublishIcon />}
-                              className={classes.uploadButton}
-                            >
-                              {fileData === "empty" ? "Upload" : "Change"}{" "}
-                              document
-                            </Button>
-                          </label>
-                        </Grid>
-                        <Grid item>{displayFileName()}</Grid>
+              {storageConfigured ? (
+                success ? (
+                  <FormSubmit message="Your document has been uploaded. You will recieve notifications after our support center approves your document" />
+                ) : (
+                  <Grid container spacing={3}>
+                    {props.message === "rejected" ? (
+                      <Grid item xs={12} align="left">
+                        <Typography variant="h5" color="error">
+                          Verification Failed!
+                        </Typography>
+                        <Typography>
+                          Document you have provided has failed to verify your
+                          business. Please provide a valid document which can
+                          prove your business. If you think this is a mistake,
+                          please contact our support center.
+                        </Typography>
                       </Grid>
-                      <div className={classes.submitBtnWrapper}>
+                    ) : (
+                      <Grid item xs={12} align="left">
+                        <Typography variant="h5">Verify Account</Typography>
+                        <Typography>
+                          Please provide your business registration document or
+                          any other relevant document to verify your company.
+                          You will receive the verified badge{" "}
+                          <VerifiedUserIcon
+                            color="primary"
+                            className={classes.verifiedBadge}
+                          />{" "}
+                          after your name inside Flamingo.com when our support
+                          center verifies your business.
+                        </Typography>
+                      </Grid>
+                    )}
+
+                    <Grid item xs={12} align="left">
+                      <form
+                        onSubmit={handleFormSubmit}
+                        encType="multipart/form-data"
+                      >
                         <Grid
                           item
                           container
@@ -327,34 +296,70 @@ const VerificationSettings = (props) => {
                           spacing={2}
                         >
                           <Grid item>
-                            <Button
-                              fullWidth
-                              type="submit"
-                              className={classes.button}
-                            >
-                              Request Verification
-                            </Button>
-                            {loading && (
-                              <CircularProgress
-                                size={24}
-                                className={classes.buttonProgress}
-                              />
-                            )}
+                            <input
+                              className={classes.input}
+                              id="resume"
+                              name="resume"
+                              type="file"
+                              accept="application/pdf"
+                              hidden
+                              onChange={handleFileChange}
+                            />
+                            <label htmlFor="resume">
+                              <Button
+                                variant="outlined"
+                                color="primary"
+                                component="span"
+                                startIcon={<PublishIcon />}
+                                className={classes.uploadButton}
+                              >
+                                {fileData === "empty" ? "Upload" : "Change"}{" "}
+                                document
+                              </Button>
+                            </label>
                           </Grid>
-                          <Grid item>
-                            <Button
-                              type="reset"
-                              fullWidth
-                              className={classes.cancel}
-                            >
-                              Cancel
-                            </Button>
-                          </Grid>
+                          <Grid item>{displayFileName()}</Grid>
                         </Grid>
-                      </div>
-                    </form>
+                        <div className={classes.submitBtnWrapper}>
+                          <Grid
+                            item
+                            container
+                            md={12}
+                            className={classes.actions}
+                            spacing={2}
+                          >
+                            <Grid item>
+                              <Button
+                                fullWidth
+                                type="submit"
+                                className={classes.button}
+                              >
+                                Request Verification
+                              </Button>
+                              {loading && (
+                                <CircularProgress
+                                  size={24}
+                                  className={classes.buttonProgress}
+                                />
+                              )}
+                            </Grid>
+                            <Grid item>
+                              <Button
+                                type="reset"
+                                fullWidth
+                                className={classes.cancel}
+                              >
+                                Cancel
+                              </Button>
+                            </Grid>
+                          </Grid>
+                        </div>
+                      </form>
+                    </Grid>
                   </Grid>
-                </Grid>
+                )
+              ) : (
+                <UnderMaintenance message="This service is temporarily down" />
               )}
             </Grid>
           </Grid>
