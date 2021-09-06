@@ -1,7 +1,7 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Lottie from "react-lottie";
-import Anim from "./lotties/blocked.json";
+import Anim from "./lotties/verified.json";
 import { makeStyles, Typography } from "@material-ui/core";
 import FloatCard from "./FloatCard";
 
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function NoAccess(props) {
+function Verified() {
   const classes = useStyles();
   const defaultOptions = {
     loop: true,
@@ -48,14 +48,13 @@ function NoAccess(props) {
             </Grid>
             <Grid item xs={12} style={{ marginTop: 16 }}>
               <Typography variant="h6">
-                Looks like you do not have access{" "}
-                {props.message ? props.message : "for this page!"}
+                Congratulations! <br />
+                Your are a verified company inside Flamingo Jobs
               </Typography>
             </Grid>{" "}
             <Grid item xs={12} style={{ marginTop: 16 }}>
               <Typography>
-                If you think this is a mistake, please contact your admin
-                employer.
+                If there is any issue, please contact our support center.
               </Typography>
             </Grid>
           </Grid>
@@ -65,4 +64,4 @@ function NoAccess(props) {
   );
 }
 
-export default NoAccess;
+export default Verified;
