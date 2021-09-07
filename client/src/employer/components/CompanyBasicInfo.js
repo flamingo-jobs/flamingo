@@ -652,8 +652,8 @@ function CompanyBasicInfo(props) {
     setFileSelected(null);
     setUploading(false);
     setInputKey(Math.random().toString(36));
-    // window.location.reload();
-    loadLogo();
+    setCompLogo("")
+    loadLogo()
 
   };
 
