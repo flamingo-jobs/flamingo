@@ -99,7 +99,7 @@ function ProfileStatus(props) {
         axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
         .then(res => {
           if(res.data.success){
-            const images = require.context('../../../../../server/profilePictures', true);
+            const images = require.context('../../images', true);
             try{
               let img = images(`./${res.data.jobseeker._id}.jpg`);
               setSavedPic(img.default);

@@ -15,47 +15,12 @@ import {
   Typography,
 } from "@material-ui/core";
 import Divider from "@material-ui/core/Divider";
-
+import Invoice from "./Invoice/Invoice";
 import SnackBarAlert from "../../components/SnackBarAlert";
 import { Link } from "react-router-dom";
 import BACKEND_URL from "../../Config";
 import axios from "axios";
 const jwt = require("jsonwebtoken");
-
-const columns = [
-  { field: "id", headerName: "ID", width: 90 },
-  {
-    field: "description",
-    headerName: "Description",
-    sortable: false,
-    width: 231,
-  },
-  {
-    field: "amount",
-    headerName: "Amount",
-    width: 127,
-  },
-  {
-    field: "payedBy",
-    headerName: "Payed By",
-    width: 150,
-  },
-  {
-    field: "payDay",
-    headerName: "Payed At",
-    width: 150,
-  },
-  {
-    field: "validity",
-    headerName: "Valid Period",
-    width: 154,
-  },
-  {
-    field: "nextDate",
-    headerName: "Expire Date",
-    width: 149,
-  },
-];
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -142,10 +107,64 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.black,
     marginBottom: 20,
   },
+  dialogBox: {
+    width: "100%",
+  },
 }));
 
 export default function BillingDetails(props) {
   const classes = useStyles();
+
+  const columns = [
+    { field: "id", headerName: "ID", width: 90 },
+    {
+      field: "description",
+      headerName: "Description",
+      sortable: false,
+      width: 240,
+    },
+    {
+      field: "amount",
+      headerName: "Amount",
+      width: 127,
+    },
+    {
+      field: "payedBy",
+      headerName: "Payed By",
+      width: 150,
+    },
+    {
+      field: "payDay",
+      headerName: "Payed On",
+      width: 150,
+    },
+    {
+      field: "validity",
+      headerName: "Valid Period",
+      width: 154,
+    },
+    {
+      field: "nextDate",
+      headerName: "Expire Date",
+      width: 149,
+    },
+    {
+      field: "orderId",
+      headerName: "Invoice",
+      width: 122,
+      renderCell: (params) => (
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          style={{ marginLeft: 16 }}
+          onClick={() => showInvoice(params.row.orderId)}
+        >
+          Open
+        </Button>
+      ),
+    },
+  ];
 
   // Alert stuff
   const [alertShow, setAlertShow] = useState(false);
@@ -170,19 +189,22 @@ export default function BillingDetails(props) {
     setAlertShow(false);
   };
 
+  const [currentOrder, setCurrentOrder] = useState();
   const [previousOrders, setPreviousOrders] = useState();
+  const [rows, setRows] = useState();
   const loginId = sessionStorage.getItem("loginId");
   useEffect(() => {
     axios.get(`${BACKEND_URL}/orders/${loginId}`).then((res) => {
       if (res.data.success) {
-        let row = [];
-        res.data.previousOrders.map((x, index) => {
+        setPreviousOrders(res.data.previousOrders);
+        let fixedRows = [];
+        res.data.previousOrders.forEach((x, index) => {
           let dueDate = x.paymentDate
             ? new Date(
                 new Date(x.paymentDate).getTime() + 30 * 24 * 60 * 60 * 1000
               )
             : undefined;
-          row.push({
+          fixedRows.push({
             id: index,
             payDay: x.paymentDate ? x.paymentDate.slice(0, 10) : "a",
             amount: x.amount ? x.currency + " " + x.amount : "a",
@@ -198,31 +220,41 @@ export default function BillingDetails(props) {
             orderId: x._id,
           });
         });
-        setPreviousOrders(row);
-        getDueDate(row);
+        setRows(fixedRows);
+        getDueDate(fixedRows);
       }
     });
   }, []);
 
   const [expiryDate, setExpiryDate] = useState("");
-  const getDueDate = async (row) => {
-    let currentDate = new Date();
-    row.forEach((x) => {
-      if (new Date(x.nextDate) > currentDate) {
-        currentDate = x.nextDate;
-      }
-    });
-    setExpiryDate(currentDate.toString());
+  const getDueDate = async (fixedRows) => {
+    setExpiryDate(
+      new Date(
+        Math.max.apply(
+          null,
+          fixedRows.map((x) => {
+            return new Date(x.nextDate);
+          })
+        )
+      )
+        .toISOString()
+        .slice(0, 10)
+    );
   };
 
   const [confirmPassword, setConfirmPassword] = useState("");
   const [open, setOpen] = useState(false);
+  const [invoiceOpen, setInvoiceOpen] = useState(false);
   const handleClickOpen = (e) => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
   };
+  const handleInvoiceClose = () => {
+    setInvoiceOpen(false);
+  };
+
   const unsubscribePackage = () => {
     const userId = jwt.decode(sessionStorage.getItem("userToken"), {
       complete: true,
@@ -254,6 +286,7 @@ export default function BillingDetails(props) {
         }
       });
   };
+
   const dropToBasic = () => {
     const loginId = sessionStorage.getItem("loginId");
     const subscriptionData = {
@@ -284,6 +317,33 @@ export default function BillingDetails(props) {
       });
   };
 
+  const showInvoice = (orderId) => {
+    let order = previousOrders.find((x) => {
+      return x._id === orderId;
+    });
+    let invoiceData = {
+      id: orderId,
+      invoice_no: order.paymentDate.slice(0, 10) + orderId.slice(0, 3),
+      balance: order.amount,
+      company: order.first_name + " " + order.last_name,
+      email: order.email,
+      phone: order.phone,
+      address: order.address + ", " + order.city + ", " + order.country,
+      trans_date: order.paymentDate.slice(0, 10),
+      due_date: order.paymentDate.slice(0, 10),
+      items: [
+        {
+          sno: 1,
+          desc: order.items + " subscription package",
+          qty: 1,
+          rate: order.amount,
+        },
+      ],
+    };
+    setCurrentOrder(invoiceData);
+    setInvoiceOpen(true);
+  };
+
   return (
     <FloatCard>
       <Grid
@@ -297,10 +357,10 @@ export default function BillingDetails(props) {
         <Grid item xs={12}>
           {displayAlert()}
           <Typography variant="h6">Previous payments</Typography> <Box m={1} />
-          {previousOrders ? (
+          {rows ? (
             <div style={{ height: 300, width: "100%" }}>
               <DataGrid
-                rows={previousOrders}
+                rows={rows}
                 columns={columns}
                 pageSize={10}
                 checkboxSelection
@@ -317,12 +377,22 @@ export default function BillingDetails(props) {
         </Grid>
         <Grid item xs={12} lg={6}>
           <Typography variant="h6">
-            You have subscribed to: {props.info} package
+            You are subscribed to {props.info} package
           </Typography>
           <Divider />
-          <Link to="/employer/payment/standard">
-            <Button className={classes.switchButton}>Change Package</Button>
-          </Link>
+          {props.info === "premium" ? (
+            <Link to="/employer/payment/standard">
+              <Button className={classes.switchButton}>
+                Switch to Standard Package
+              </Button>
+            </Link>
+          ) : (
+            <Link to="/employer/payment/premium">
+              <Button className={classes.switchButton}>
+                Switch to Premium Package
+              </Button>
+            </Link>
+          )}
           <Button className={classes.dangerButton} onClick={handleClickOpen}>
             Unsubscribe from Service
           </Button>
@@ -339,7 +409,6 @@ export default function BillingDetails(props) {
           onClose={handleClose}
           aria-labelledby="edit-details-form"
           fullWidth
-          className={classes.dialogBox}
         >
           <DialogTitle id="edit-details-form">Are you sure?</DialogTitle>
           <DialogContent>
@@ -367,6 +436,25 @@ export default function BillingDetails(props) {
               className={classes.dialogbuttons}
             >
               Confirm and Unsubscribe
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Dialog
+          open={invoiceOpen}
+          onClose={handleInvoiceClose}
+          aria-labelledby="edit-details-form"
+          fullWidth
+          className={classes.dialogBox}
+        >
+          <DialogTitle id="edit-details-form">Invoice</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              <Invoice invoice={currentOrder} />{" "}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleInvoiceClose} color="primary">
+              Close
             </Button>
           </DialogActions>
         </Dialog>

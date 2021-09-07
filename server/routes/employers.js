@@ -25,7 +25,7 @@ router.post('/employers/filter', employersController.getFiltered);
 
 router.get('/employers/:id', employersController.getById);
 router.get("/employers/favorites/:empIds", employersController.getByIds);
-
+router.get("/employer/verificationStatus/:id", employersController.getVerificationStatus);
 
 // update employer
 router.put('/employers/update/:id', employersController.update);

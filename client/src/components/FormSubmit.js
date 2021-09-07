@@ -1,7 +1,7 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Lottie from "react-lottie";
-import Anim from "./lotties/blocked.json";
+import Anim from "./lotties/formSubmit.json";
 import { makeStyles, Typography } from "@material-ui/core";
 import FloatCard from "./FloatCard";
 
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function NoAccess(props) {
+function FormSubmit(props) {
   const classes = useStyles();
   const defaultOptions = {
     loop: true,
@@ -47,16 +47,10 @@ function NoAccess(props) {
               <Lottie options={defaultOptions} height={150} width={150} />
             </Grid>
             <Grid item xs={12} style={{ marginTop: 16 }}>
-              <Typography variant="h6">
-                Looks like you do not have access{" "}
-                {props.message ? props.message : "for this page!"}
-              </Typography>
+              <Typography variant="h6">Successful!</Typography>
             </Grid>{" "}
             <Grid item xs={12} style={{ marginTop: 16 }}>
-              <Typography>
-                If you think this is a mistake, please contact your admin
-                employer.
-              </Typography>
+              <Typography>{props.message ? props.message : ""}</Typography>
             </Grid>
           </Grid>
         </FloatCard>
@@ -65,4 +59,4 @@ function NoAccess(props) {
   );
 }
 
-export default NoAccess;
+export default FormSubmit;

@@ -10,6 +10,7 @@ import {
   Typography,
   Chip,
 } from "@material-ui/core";
+import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import Grid from "@material-ui/core/Grid";
 import FloatCard from "../../../../components/FloatCard";
 import Box from "@material-ui/core/Box";
@@ -87,6 +88,10 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     textAlign: "-webkit-center",
   },
+  verifiedBadge: {
+    width: "20px",
+    height: "20px",
+  },
 }));
 
 const CompanySummaryCard = (props) => {
@@ -110,6 +115,7 @@ const CompanySummaryCard = (props) => {
     logo: " ",
     reviews: [],
   });
+  const [verified, setVerified] = useState(false);
 
   const [compLogo, setCompLogo] = useState(
     require(`../images/loadingImage.gif`).default
@@ -120,6 +126,7 @@ const CompanySummaryCard = (props) => {
   const reviews = state.reviews;
 
   useEffect(() => {
+    getVerificationStatus();
     axios.get(`${BACKEND_URL}/employers/${props.employerId}`).then((res) => {
       console.log(res.data.employer);
       if (res.data.success) {
@@ -167,6 +174,22 @@ const CompanySummaryCard = (props) => {
     setFileData(e.target.files[0]);
   };
 
+  const getVerificationStatus = () => {
+    const loginId = sessionStorage.getItem("loginId");
+    axios
+      .get(`${BACKEND_URL}/employer/verificationStatus/${loginId}`)
+      .then((res) => {
+        if (res.data.success) {
+          if (res.data.verificationStatus === "verified") setVerified(true);
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          setVerified(false);
+        }
+      });
+  };
+
   return (
     <FloatCard>
       <div className={classes.header}>
@@ -175,7 +198,16 @@ const CompanySummaryCard = (props) => {
         </div>
         <div className={classes.headerInfo}>
           <Typography variant="h5" className={classes.title}>
+
             {name}
+            {verified ? (
+              <VerifiedUserIcon
+                color="primary"
+                className={classes.verifiedBadge}
+              />
+            ) : (
+              ""
+            )}
           </Typography>
         </div>
         <div className={classes.reviews}>

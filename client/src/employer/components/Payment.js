@@ -6,7 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import React, { useEffect, useState } from "react";
-import FloatCard from '../../components/FloatCard';
+import FloatCard from "../../components/FloatCard";
 import payhereLogo from "./images/PayHere-Logo.png";
 import PayHereCheckoutForm from "./PayHereCheckoutForm";
 
@@ -34,16 +34,18 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.stateBlue,
     marginBottom: 20,
   },
+  featuresContainer: {
+    marginBottom: "17%",
+    display: "inline",
+  },
   features: {
     backgroundColor: theme.palette.white,
-    float: "left",
-    marginLeft: "15%",
+    justifyContent: "left",
+    marginLeft: "10%",
+    width: "250px",
   },
   icon: {
     color: theme.palette.darkGreen,
-  },
-  featuresContainer: {
-    marginBottom: "17%",
   },
   annual: {
     color: theme.palette.stateBlue,
@@ -110,34 +112,68 @@ export default function Payment() {
             </Box>
             <Divider variant="middle" />
           </Typography>
-
-          <div className={classes.featuresContainer}>
-            <Chip
-              icon={<CheckCircleIcon className={classes.icon} />}
-              label="Post upto 25 jobs"
-              className={classes.features}
-            />
-            <Chip
-              icon={<CheckCircleIcon className={classes.icon} />}
-              label="Receive upto 100 resumes"
-              className={classes.features}
-            />
-            <Chip
-              icon={<CheckCircleIcon className={classes.icon} />}
-              label="Applicant Tracking"
-              className={classes.features}
-            />
-            <Chip
-              icon={<CheckCircleIcon className={classes.icon} />}
-              label="Resume Shortlisting"
-              className={classes.features}
-            />
-            <Chip
-              icon={<CheckCircleIcon className={classes.icon} />}
-              label="Personalized Recommendations"
-              className={classes.features}
-            />
-          </div>
+          {subscription.desc === "standard" ? (
+            <div className={classes.featuresContainer}>
+              <Chip
+                icon={<CheckCircleIcon className={classes.icon} />}
+                label="Post upto 25 jobs"
+                className={classes.features}
+              />
+              <Chip
+                icon={<CheckCircleIcon className={classes.icon} />}
+                label="Receive upto 100 resumes"
+                className={classes.features}
+              />
+              <Chip
+                icon={<CheckCircleIcon className={classes.icon} />}
+                label="Applicant Tracking"
+                className={classes.features}
+              />
+              <Chip
+                icon={<CheckCircleIcon className={classes.icon} />}
+                label="Resume Shortlisting"
+                className={classes.features}
+              />
+              <Chip
+                icon={<CheckCircleIcon className={classes.icon} />}
+                label="Personalized Recommendations"
+                className={classes.features}
+              />
+            </div>
+          ) : (
+            <div className={classes.featuresContainer}>
+              <Chip
+                icon={<CheckCircleIcon className={classes.icon} />}
+                label="Post any number of jobs"
+                className={classes.features}
+              />
+              <Chip
+                icon={<CheckCircleIcon className={classes.icon} />}
+                label="Receive any number of resumes"
+                className={classes.features}
+              />
+              <Chip
+                icon={<CheckCircleIcon className={classes.icon} />}
+                label="Applicant Tracking"
+                className={classes.features}
+              />
+              <Chip
+                icon={<CheckCircleIcon className={classes.icon} />}
+                label="Resume Shortlisting"
+                className={classes.features}
+              />
+              <Chip
+                icon={<CheckCircleIcon className={classes.icon} />}
+                label="Personalized Recommendations"
+                className={classes.features}
+              />
+              <Chip
+                icon={<CheckCircleIcon className={classes.icon} />}
+                label="Advanced Analytics"
+                className={classes.features}
+              />
+            </div>
+          )}
           <Divider variant="middle" />
           <br />
           <Grid
@@ -175,7 +211,9 @@ export default function Payment() {
                       </Typography>
                     </Grid>
                     <Grid item xs={4} align="right">
-                      <Typography variant="caption">LKR {subscription.value}.00</Typography>
+                      <Typography variant="caption">
+                        LKR {subscription.value}.00
+                      </Typography>
                     </Grid>
                     <Grid item xs={8}>
                       <Typography variant="caption">
