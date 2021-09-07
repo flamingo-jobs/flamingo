@@ -29,7 +29,6 @@ import SnackBarAlert from "../../components/SnackBarAlert";
 import BACKEND_URL, { FILE_URL } from '../../Config';
 import theme from '../../Theme';
 import defaultImage from '../images/defaultProfilePic.jpg';
-//import CircularProgress from '@material-ui/core/CircularProgress';
 import uploadFileToBlob, { isStorageConfigured } from '../../utils/azureFileUpload';
 
 const storageConfigured = isStorageConfigured();
@@ -224,12 +223,21 @@ function IntroSection(props) {
   };
 
   const loadLogo = async () => {
-    await axios.get(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.jpg`).then(res => {
-        setSavedPic(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.jpg`);
-        console.log(savedPic);
-        setProfilePicPreview(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.jpg`)
+    await axios.get(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.png`).then(res => {
+        setSavedPic(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.png`);
+        setProfilePicPreview(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.png`)
     }).catch(error => {
-        console.log("inside catch");
+      axios.get(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.jpg`).then(res => {
+        setSavedPic(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.jpg`);
+        setProfilePicPreview(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.jpg`);
+      }).catch(error => {
+        axios.get(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.PNG`).then(res => {
+          setSavedPic(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.PNG`);
+          setProfilePicPreview(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.PNG`);
+        }).catch(error => {
+          console.log("Profile picture not set")
+        })
+      })
     })
   }
 
@@ -288,17 +296,17 @@ function IntroSection(props) {
     if(e.target.files[0]){
       let nameSplit = e.target.files[0].name.split(".");
       // console.log("file extention", nameSplit[nameSplit.length - 1]);
-      if (nameSplit[nameSplit.length - 1] !== "jpg") {
+      if (nameSplit[nameSplit.length - 1] !== "jpg" && nameSplit[nameSplit.length - 1] !== "png") {
         console.log("type invalid");
         setAlertData({
           severity: "error",
-          msg: "Invalid file type, only jpg file type is allowed",
+          msg: "Invalid file type, only jpg and png file types are allowed",
         });
         handleAlert();
       } else {
         var file = e.target.files[0];
-        var blob = file.slice(0, file.size, 'image/jpg'); 
-        var newFile = new File([blob], `${loginId}.jpg`, {type: 'image/jpg'});
+        var blob = file.slice(0, file.size); 
+        var newFile = new File([blob], `${loginId}.png`, {type: 'image/png'});
         setProfilePic(newFile);
         setProfilePicPreview(URL.createObjectURL(newFile));
       }
@@ -324,43 +332,8 @@ function IntroSection(props) {
     data.append("userId", loginId);
     data.append("photo", profilePic);
 
-    // prepare UI
-    //setUploading(true);
-
-    // *** UPLOAD TO AZURE STORAGE ***
     const blobsInContainer = await uploadFileToBlob(profilePic, "jobseeker-profile-pictures");
     loadLogo();
-
-    // prepare UI for results
-    //setUploaded(true);
-
-    // reset state/form
-    //setFileSelected(null);
-   // setUploading(false);
-   // setInputKey(Math.random().toString(36));
-
-    // axios.post(`${BACKEND_URL}/jobseeker/updateProfilePic/${loginId}`,data,
-    // {
-    //   headers: {
-    //     "Content-Type": "multipart/form-data",
-    //   },
-    // })
-    // .then(res=>{
-    //   if(res.data.success){
-    //     setSavedPic(profilePicPreview);
-    //     setAlertData({
-    //       severity: "success",
-    //       msg: "Profile picture updated successfully!",
-    //     });
-    //     handleAlert();
-    //   } else {
-    //     setAlertData({
-    //       severity: "error",
-    //       msg: "Couldn't update profile picture!",
-    //     });
-    //     handleAlert();
-    //   }
-    // });
 
     handleCloseImageDialog();   
   }
@@ -569,6 +542,7 @@ function IntroSection(props) {
           </Dialog>
         
         <Typography component="div">
+        { login ? <>
           <CardMedia
               className={classes.media}
               image={savedPic}
@@ -583,7 +557,16 @@ function IntroSection(props) {
               }}            
           >
             <EditIcon className={classes.overlayIcon} style={style} />
-          </CardMedia>        
+          </CardMedia> 
+        </> : 
+          <CardMedia
+            className={classes.mediaPreview}
+            image={savedPic}
+            alt="profile image"
+            zIndex="background"       
+          >
+          </CardMedia>
+        }      
         </Typography>
         {/* Profile picture change dialog */}
         <Dialog open={openImageDialog} onClose={handleCloseImageDialog} aria-labelledby="form-dialog-title">
