@@ -16,7 +16,7 @@ import FloatCard from "../../../../components/FloatCard";
 import Box from "@material-ui/core/Box";
 import Rating from "@material-ui/lab/Rating";
 import axios from "axios";
-import BACKEND_URL from "../../../../Config";
+import BACKEND_URL, { FILE_URL } from "../../../../Config";
 import { useState, useEffect } from "react";
 
 const useStyles = makeStyles((theme) => ({
@@ -97,11 +97,29 @@ const useStyles = makeStyles((theme) => ({
 const CompanySummaryCard = (props) => {
   const classes = useStyles();
 
+  let loginId;
+  let login = false;
+  const jwt = require("jsonwebtoken");
+  const token = sessionStorage.getItem("userToken");
+  const header = jwt.decode(token, { complete: true });
+  if (token === null) {
+    loginId = props.userRole;
+  } else if (header.payload.userRole === "employer") {
+    login = true;
+    loginId = sessionStorage.getItem("loginId");
+  } else {
+    loginId = props.userRole;
+  }
+
   const [state, setState] = useState({
     logo: " ",
     reviews: [],
   });
   const [verified, setVerified] = useState(false);
+
+  const [compLogo, setCompLogo] = useState(
+    require(`../images/loadingImage.gif`).default
+  );
 
   const name = state.name;
   const logo = state.logo;
@@ -121,6 +139,8 @@ const CompanySummaryCard = (props) => {
     });
   }, []);
 
+  
+
   const getAverageRating = () => {
     var totalRating = 0;
 
@@ -133,12 +153,25 @@ const CompanySummaryCard = (props) => {
     return [averageRating, reviews.length];
   };
 
-  const loadLogo = () => {
-    try {
-      return `${BACKEND_URL}/companyImage/${logo}`;
-    } catch (err) {
-      return `${BACKEND_URL}/companyImage/default_company_logo.png`;
-    }
+  useEffect(() => {
+    loadLogo();
+  }, []);
+
+  const loadLogo = async () => {
+    await axios
+      .get(`${FILE_URL}/employer-profile-pictures/${loginId}.png`)
+      .then((res) => {
+        setCompLogo(`${FILE_URL}/employer-profile-pictures/${loginId}.png`);
+      })
+      .catch((error) => {
+        setCompLogo(require(`../images/default_company_logo.png`).default);
+      });
+  };
+
+  const [fileData, setFileData] = useState();
+
+  const fileChangeHandler = (e) => {
+    setFileData(e.target.files[0]);
   };
 
   const getVerificationStatus = () => {
@@ -161,11 +194,12 @@ const CompanySummaryCard = (props) => {
     <FloatCard>
       <div className={classes.header}>
         <div className={classes.headerLogo}>
-          <Avatar className={classes.logo} src={loadLogo()} variant="square" />
+          <Avatar className={classes.logo} src={compLogo} variant="square" />
         </div>
         <div className={classes.headerInfo}>
           <Typography variant="h5" className={classes.title}>
-            {name}{" "}
+
+            {name}
             {verified ? (
               <VerifiedUserIcon
                 color="primary"

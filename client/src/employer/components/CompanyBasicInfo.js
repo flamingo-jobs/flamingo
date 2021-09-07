@@ -25,7 +25,6 @@ import LanguageIcon from "@material-ui/icons/Language";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
-import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import axios from "axios";
 import BACKEND_URL, { FILE_URL } from "../../Config";
 import { useState, useEffect } from "react";
@@ -38,6 +37,10 @@ import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import { Route } from "react-router-dom";
 import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
+import uploadFileToBlob, {
+  isStorageConfigured,
+} from "../../utils/azureFileUpload";
+
 const jwt = require("jsonwebtoken");
 let haveAccess = false;
 
@@ -131,10 +134,6 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "rgba(0,0,0,0.5)",
     },
   },
-  verifiedBadge: {
-    width: "20px",
-    height: "20px",
-  },
 }));
 
 function CompanyBasicInfo(props) {
@@ -143,9 +142,8 @@ function CompanyBasicInfo(props) {
   const fixedOptions = [];
   const [location, setLocation] = React.useState([...fixedOptions]);
   const [compLogo, setCompLogo] = useState(
-    require(`../../components/images/loadingImage.gif`).default
+    require(`./images/loadingImage.gif`).default
   );
-  const [verified, setVerified] = useState(false);
 
   let loginId;
   let login = false;
@@ -361,8 +359,8 @@ function CompanyBasicInfo(props) {
 
   useEffect(() => {
     loadLogo();
-    getVerificationStatus();
   }, []);
+
   const loadLogo = async () => {
     await axios
       .get(`${FILE_URL}/employer-profile-pictures/${loginId}.png`)
@@ -371,20 +369,6 @@ function CompanyBasicInfo(props) {
       })
       .catch((error) => {
         setCompLogo(require(`../images/default_company_logo.png`).default);
-      });
-  };
-  const getVerificationStatus = () => {
-    axios
-      .get(`${BACKEND_URL}/employer/verificationStatus/${loginId}`)
-      .then((res) => {
-        if (res.data.success) {
-          if (res.data.verificationStatus === "verified") setVerified(true);
-        }
-      })
-      .catch((err) => {
-        if (err) {
-          setVerified(false);
-        }
       });
   };
 
@@ -575,57 +559,102 @@ function CompanyBasicInfo(props) {
     setOpenLogoEditDialog(false);
   };
 
-  const onSubmitHandler = (e) => {
-    e.preventDefault();
+  // const onSubmitHandler = (e) => {
+  //   e.preventDefault();
 
-    // Handle File Data from the state Before Sending
-    const data = new FormData();
+  //   // Handle File Data from the state Before Sending
+  //   const data = new FormData();
 
-    data.append("image", fileData);
+  //   data.append("image", fileData);
 
-    fetch(`${BACKEND_URL}/companyImage/${loginId}`, {
-      method: "POST",
-      body: data,
-    })
-      .then((result) => {
-        console.log("File Sent Successful");
+  //   fetch(`${BACKEND_URL}/companyImage/${loginId}`, {
+  //     method: "POST",
+  //     body: data,
+  //   })
+  //     .then((result) => {
+  //       console.log("File Sent Successful");
+  //       handleClickAlertSuccess();
+  //     })
+  //     .catch((err) => {
+  //       console.log(err.message);
+  //       setOpenAlertServerError();
+  //     });
+
+  //   const image = {
+  //     logo: fileData.name,
+  //   };
+
+  //   axios
+  //     .put(`${BACKEND_URL}/employers/update/${loginId}`, image)
+  //     .then((res) => {
+  //       axios.get(`${BACKEND_URL}/employers/${loginId}`).then((res) => {
+  //         // console.log(res.data.employer.reviews);
+  //         if (res.data.success) {
+  //           setState({
+  //             name: res.data.employer.name,
+  //             technologyStack: res.data.employer.technologyStack,
+  //             links: res.data.employer.links,
+  //             subscription: res.data.employer.subscription.type,
+  //             website: res.data.employer.links.website,
+  //             facebook: res.data.employer.links.facebook,
+  //             linkedIn: res.data.employer.links.linkedIn,
+  //             twitter: res.data.employer.links.twitter,
+  //             reviews: res.data.employer.reviews,
+  //             logo: res.data.employer.logo,
+  //             locations: res.data.employer.locations,
+  //           });
+  //         }
+  //         res.data.employer.locations.forEach((element) => {
+  //           // console.log(element);
+  //           setLocation((location) => [...location, { city: element }]);
+  //         });
+  //       });
+  //     });
+  // };
+
+  // all blobs in container
+  const [uploaded, setUploaded] = useState(false);
+
+  // current file to upload into container
+  const [fileSelected, setFileSelected] = useState(null);
+
+  // UI/form management
+  const [uploading, setUploading] = useState(false);
+  const [inputKey, setInputKey] = useState(Math.random().toString(36));
+
+  const onFileChange = (event) => {
+    // capture file into state
+    setFileSelected(event.target.files[0]);
+  };
+
+  const onFileUpload = async () => {
+    // prepare UI
+    setUploading(true);
+
+    // *** UPLOAD TO AZURE STORAGE ***
+
+    var file = fileSelected;
+    var blob = file.slice(0, file.size);
+    var newFile = new File([blob], `${loginId}.png`, { type: "image/png" });
+
+    await uploadFileToBlob(newFile, "employer-profile-pictures").then(
+      async () => {
+        handleClickCloseEditLogo();
         handleClickAlertSuccess();
-      })
-      .catch((err) => {
-        console.log(err.message);
-        setOpenAlertServerError();
-      });
+      }  
+    ).catch(()=>{
+      handleClickAlertServerError();
+    });
+    // prepare UI for results
+    setUploaded(true);
 
-    const image = {
-      logo: fileData.name,
-    };
+    // reset state/form
+    setFileSelected(null);
+    setUploading(false);
+    setInputKey(Math.random().toString(36));
+    setCompLogo("")
+    loadLogo()
 
-    axios
-      .put(`${BACKEND_URL}/employers/update/${loginId}`, image)
-      .then((res) => {
-        axios.get(`${BACKEND_URL}/employers/${loginId}`).then((res) => {
-          // console.log(res.data.employer.reviews);
-          if (res.data.success) {
-            setState({
-              name: res.data.employer.name,
-              technologyStack: res.data.employer.technologyStack,
-              links: res.data.employer.links,
-              subscription: res.data.employer.subscription.type,
-              website: res.data.employer.links.website,
-              facebook: res.data.employer.links.facebook,
-              linkedIn: res.data.employer.links.linkedIn,
-              twitter: res.data.employer.links.twitter,
-              reviews: res.data.employer.reviews,
-              logo: res.data.employer.logo,
-              locations: res.data.employer.locations,
-            });
-          }
-          res.data.employer.locations.forEach((element) => {
-            // console.log(element);
-            setLocation((location) => [...location, { city: element }]);
-          });
-        });
-      });
   };
 
   return (
@@ -669,8 +698,52 @@ function CompanyBasicInfo(props) {
                       onClose={handleClickCloseEditLogo}
                       aria-labelledby="form-dialog-title"
                     >
-                      <form
-                        onSubmit={onSubmitHandler}
+                      {/* <div>
+      <input type="file" onChange={onFileChange} key={inputKey || ''} />
+      <button type="submit" onClick={onFileUpload}>
+        Upload!
+      </button>
+    </div> */}
+
+                      <DialogTitle id="form-dialog-title">
+                        Edit Logo
+                      </DialogTitle>
+                      <DialogContent>
+                        <input
+                          type="file"
+                          onChange={onFileChange}
+                          key={inputKey || ""}
+                          accept="image/png"
+                        />
+
+                        {/* <TextField
+                            autoFocus
+                            margin="dense"
+                            id="photo"
+                            label="Photo"
+                            type="file"
+                            inputProps={{ accept: "image/*" }}
+                            fullWidth
+                            onChange={onFileChange}
+                          /> */}
+                      </DialogContent>
+                      <DialogActions>
+                        <Button
+                          onClick={handleClickCloseEditLogo}
+                          color="primary"
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          onClick={onFileUpload}
+                          type="submit"
+                          color="primary"
+                        >
+                          Save
+                        </Button>
+                      </DialogActions>
+                      {/* <form
+                        onSubmit={onFileUpload}
                         encType="multipart/form-data"
                       >
                         <DialogTitle id="form-dialog-title">
@@ -685,7 +758,7 @@ function CompanyBasicInfo(props) {
                             type="file"
                             inputProps={{ accept: "image/*" }}
                             fullWidth
-                            onChange={fileChangeHandler}
+                            onChange={onFileChange}
                           />
                         </DialogContent>
                         <DialogActions>
@@ -703,7 +776,7 @@ function CompanyBasicInfo(props) {
                             Save
                           </Button>
                         </DialogActions>
-                      </form>
+                      </form> */}
                     </Dialog>
                   </div>
                 ))}
@@ -712,15 +785,7 @@ function CompanyBasicInfo(props) {
             <br />
             <Grid item xs={12} lg={7} className={classes.headerInfo}>
               <Typography variant="h5" className={classes.title}>
-                {name}{" "}
-                {verified ? (
-                  <VerifiedUserIcon
-                    color="primary"
-                    className={classes.verifiedBadge}
-                  />
-                ) : (
-                  ""
-                )}
+                {name}
               </Typography>
               <div className={classes.locationTags}>
                 {locations.map((item, i) => (
