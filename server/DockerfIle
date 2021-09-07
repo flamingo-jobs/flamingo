@@ -1,0 +1,15 @@
+FROM node:14-alpine AS production
+ENV NODE_ENV production
+# Add a work directory
+WORKDIR /app
+# Cache and Install dependencies
+COPY package.json .
+COPY package-lock.json .
+RUN npm install --production
+RUN npm install pm2@latest -g
+# Copy app files
+COPY . .
+
+EXPOSE 8000
+# Start the app
+CMD pm2-runtime start server.js -i 0

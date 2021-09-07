@@ -210,15 +210,7 @@ function OrganizationCard(props) {
     await axios.get(`${FILE_URL}/employer-profile-pictures/${props.info._id}.png`).then(res => {
       setLogo(`${FILE_URL}/employer-profile-pictures/${props.info._id}.png`);
     }).catch(error => {
-      axios.get(`${FILE_URL}/employer-profile-pictures/${props.info._id}.jpg`).then(res => {
-        setLogo(`${FILE_URL}/employer-profile-pictures/${props.info._id}.jpg`);
-      }).catch(error => {
-        axios.get(`${FILE_URL}/employer-profile-pictures/${props.info._id}.PNG`).then(res => {
-          setLogo(`${FILE_URL}/employer-profile-pictures/${props.info._id}.PNG`);
-        }).catch(error => {
-          setLogo(require(`../../employer/images/default_company_logo.png`).default);
-        })
-      })
+      setLogo(require(`../../employer/images/default_company_logo.png`).default);
     })
   }
 

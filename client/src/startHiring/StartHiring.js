@@ -1,4 +1,13 @@
-import { Avatar, Badge, Button, Container, Grid, IconButton, TextField, Typography } from "@material-ui/core";
+import {
+  Avatar,
+  Badge,
+  Button,
+  Container,
+  Grid,
+  IconButton,
+  TextField,
+  Typography,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import AddCircleRoundedIcon from "@material-ui/icons/AddCircleRounded";
@@ -14,8 +23,12 @@ import SnackBarAlert from "../components/SnackBarAlert";
 import BACKEND_URL from "../Config";
 import FloatCard from "./../components/FloatCard";
 import backgroundImage from "./images/background.jpg";
+import uploadFileToBlob, {
+  isStorageConfigured,
+} from "../utils/azureFileUpload";
 
 const jwt = require("jsonwebtoken");
+const storageConfigured = isStorageConfigured();
 const passwordRegexp =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})/;
 
@@ -267,7 +280,7 @@ export default function StartHiring() {
     locations.push({ name: formData.mainLocation });
     const employerData = {
       name: formData.name,
-      logo: selectedFile ? "" + userId + path.extname(selectedFile.name) : "",
+      logo: "",
       description: formData.description,
       locations: locations.map((x) => {
         return x.name;
@@ -276,6 +289,7 @@ export default function StartHiring() {
       dateRegistered: new Date(),
       links: social,
       subscription: { type: "Basic", startDate: new Date() },
+      verificationStatus: "none",
     };
     axios.post(`${BACKEND_URL}/employers/create`, employerData).then((res) => {
       if (res.data.success) {
@@ -341,8 +355,38 @@ export default function StartHiring() {
   const changeHandler = (event) => {
     setSelectedFile(event.target.files[0]);
   };
-  const handleUploads = (loginId) => {
+  const handleUploads = async (loginId) => {
     if (selectedFile) {
+      var file = selectedFile;
+      var blob = file.slice(0, file.size);
+      const fileName = loginId + "." + path.extname(selectedFile.name);
+      var newFile = new File([blob], `${fileName}`, {
+        type: "image/*",
+      });
+
+      await uploadFileToBlob(newFile, "EmployerLogos");
+      const updateData = { logo: fileName };
+      axios
+        .post(`${BACKEND_URL}/employers/update/${loginId}`, updateData)
+        .then((res) => {
+          if (res.data.success) {
+            setAlertData({
+              severity: "success",
+              msg: "Logo uploaded!",
+            });
+            handleAlert();
+          }
+        })
+        .catch((err) => {
+          if (err) {
+            setAlertData({
+              severity: "error",
+              msg: "Failed to upload logo!",
+            });
+            handleAlert();
+          }
+        });
+      /*
       const data = new FormData();
       const image = selectedFile;
       data.append("company", loginId);
@@ -379,7 +423,8 @@ export default function StartHiring() {
             handleAlert();
             return "";
           }
-        });
+        }); 
+        */
     }
   };
 
@@ -848,7 +893,6 @@ export default function StartHiring() {
                               <Button
                                 fullWidth
                                 type="submit"
-                                
                                 className={classes.submit}
                               >
                                 Sign Up
@@ -856,11 +900,7 @@ export default function StartHiring() {
                             </Grid>
                             <Grid item>
                               <Link to="/">
-                                <Button
-                                  fullWidth
-                                  
-                                  className={classes.cancel}
-                                >
+                                <Button fullWidth className={classes.cancel}>
                                   Cancel
                                 </Button>
                               </Link>

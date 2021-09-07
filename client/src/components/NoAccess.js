@@ -37,7 +37,8 @@ function NoAccess(props) {
       spacing={3}
       direction="row"
       className={classes.mainGrid}
-      alignItems="flex-start"
+      alignItems="center"
+      align="center"
     >
       <Grid item xs={12}>
         <FloatCard>

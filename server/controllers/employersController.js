@@ -41,17 +41,16 @@ const getForTable = (req, res) => {
       });
     }
 
-    
-    let formattedArray = employers.map(obj => {
+    let formattedArray = employers.map((obj) => {
       let ratings = 0;
 
-      if(obj.reviews.length){
-        obj.reviews.forEach(item => {
-          ratings += item.rating
+      if (obj.reviews.length) {
+        obj.reviews.forEach((item) => {
+          ratings += item.rating;
         });
 
-        ratings = ratings/obj.reviews.length;
-        console.log(ratings)
+        ratings = ratings / obj.reviews.length;
+        console.log(ratings);
       }
 
       let newObj = {
@@ -63,11 +62,11 @@ const getForTable = (req, res) => {
         ratings: ratings,
         categories: obj.categories,
         isFeatured: obj.isFeatured,
-        locations: obj.locations
+        locations: obj.locations,
       };
 
-      return newObj
-    })
+      return newObj;
+    });
 
     return res.status(200).json({
       success: true,
@@ -121,10 +120,10 @@ const getByIds = async (req, res) => {
   const employerIds = req.params.empIds.split("$$");
 
   try {
-    const response = await Employers.find({ '_id': { $in: employerIds } });
+    const response = await Employers.find({ _id: { $in: employerIds } });
     res.status(200).json({
       success: true,
-      employers: response
+      employers: response,
     });
   } catch (err) {
     res.status(400).json({
@@ -162,6 +161,20 @@ const getFeaturedEmployers = (req, res) => {
   });
 };
 
+const getVerificationStatus = (req, res) => {
+  Employers.findById(req.params.id).exec((err, employer) => {
+    if (err) {
+      return res.status(400).json({
+        error: err,
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      verificationStatus: employer.verificationStatus,
+    });
+  });
+};
+
 const update = (req, res) => {
   Employers.findByIdAndUpdate(
     req.params.id,
@@ -175,7 +188,7 @@ const update = (req, res) => {
         });
       }
       return res.status(200).json({
-        sucess: "Updated successfully",
+        success: "Updated successfully",
       });
     }
   );
@@ -183,24 +196,18 @@ const update = (req, res) => {
 
 const addReview = async (req, res) => {
   try {
-    const remove = await Employers.findByIdAndUpdate(
-      req.params.empId,
-      {
-        $pull: { reviews: { jobseekerId: req.body.jobseekerId } }
-      },
-    );
+    const remove = await Employers.findByIdAndUpdate(req.params.empId, {
+      $pull: { reviews: { jobseekerId: req.body.jobseekerId } },
+    });
 
-    const result = await Employers.findByIdAndUpdate(
-      req.params.empId,
-      {
-        $push: { reviews: req.body }
-      },
-    );
+    const result = await Employers.findByIdAndUpdate(req.params.empId, {
+      $push: { reviews: req.body },
+    });
     res.status(200).json({ success: true });
   } catch (error) {
     res.status(400).json({ success: false, error: error });
   }
-}
+};
 
 const remove = (req, res) => {
   Employers.findByIdAndDelete(req.params.id).exec((err, deletedEmployer) => {
@@ -208,7 +215,6 @@ const remove = (req, res) => {
       return res.status(400).json({
         error: err,
       });
-
     }
     return res.status(200).json({
       success: "Employer deleted successfully",
@@ -258,5 +264,6 @@ module.exports = {
   getEmployerCount,
   getFiltered,
   getAllApplications,
-  getForTable
+  getForTable,
+  getVerificationStatus,
 };

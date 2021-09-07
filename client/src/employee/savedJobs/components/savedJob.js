@@ -13,7 +13,7 @@ import FloatCard from "../../../components/FloatCard";
 import { Link } from "react-router-dom";
 import ReactTimeAgo from "react-time-ago";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
-import BACKEND_URL from "../../../Config";
+import BACKEND_URL, { FILE_URL } from "../../../Config";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setSavedJobCount } from "../../../redux/actions";
@@ -96,6 +96,7 @@ const useStyles = makeStyles((theme) => ({
 const SavedJob = (props) => {
   const classes = useStyles();
   const [job, setJob] = useState("empty");
+  const [logo, setLogo] = useState(require(`../../../components/images/loadingImage.gif`).default);
 
   const dispatch = useDispatch();
 
@@ -114,15 +115,19 @@ const SavedJob = (props) => {
     }
   };
 
-  const loadLogo = () => {
-    try {
-      return require(`../../../employer/images/${job.organization.logo}`)
-        .default;
-    } catch (err) {
-      return require(`../../../employer/images/default_company_logo.png`)
-        .default;
+  useEffect(() => {
+    if (job !== "empty") {
+      loadLogo();
     }
-  };
+  }, [job]);
+
+  const loadLogo = async () => {
+    await axios.get(`${FILE_URL}/employer-profile-pictures/${job.organization.id}.png`).then(res => {
+      setLogo(`${FILE_URL}/employer-profile-pictures/${job.organization.id}.png`);
+    }).catch(error => {
+      setLogo(require(`../../../employer/images/default_company_logo.png`).default);
+    })
+  }
 
   const loadName = () => {
     try {
@@ -141,7 +146,7 @@ const SavedJob = (props) => {
         newSavedJobIds
       );
       if (response.data.success) {
-        props.setAlertData({ severity: "success", msg: "Job removed successfully!"});
+        props.setAlertData({ severity: "success", msg: "Job removed successfully!" });
         props.handleAlert();
         dispatch(setSavedJobCount(newSavedJobIds.length));
         props.setSavedJobIds(newSavedJobIds);
@@ -160,65 +165,65 @@ const SavedJob = (props) => {
     if (job === "empty") return null;
 
     return (
-        <FloatCard>
-          <div className={classes.root}>
-            <div className={classes.header}>
-              <div className={classes.headerLeft}>
-                <Chip
-                  icon={<LocalOfferRoundedIcon className={classes.tagIcon} />}
-                  label={job.category}
-                  className={classes.label}
-                />
-                <Typography className={classes.time}>
-                  <ReactTimeAgo date={job.postedDate} locale="en-US" />
-                </Typography>
-              </div>
-              <div className={classes.headerRight}>
-                <BookmarkIcon
-                  className={classes.favorite}
-                  onClick={() => handleSavingJob(job._id)}
-                />
-              </div>
-            </div>
-            <div className={classes.body}>
-              <Typography variant="h5" className={classes.title}>
-                {job.title}
+      <FloatCard>
+        <div className={classes.root}>
+          <div className={classes.header}>
+            <div className={classes.headerLeft}>
+              <Chip
+                icon={<LocalOfferRoundedIcon className={classes.tagIcon} />}
+                label={job.category}
+                className={classes.label}
+              />
+              <Typography className={classes.time}>
+                <ReactTimeAgo date={job.postedDate} locale="en-US" />
               </Typography>
-              <Typography noWrap className={classes.description}>
-                {job.description}
-              </Typography>
-              <div className={classes.infoTags}>
-                <Chip
-                  icon={<LocationOnRoundedIcon />}
-                  label={job.location}
-                  className={classes.tag}
-                />
-                <Chip
-                  icon={<WorkRoundedIcon />}
-                  label={job.type}
-                  className={classes.tag}
-                />
-              </div>
             </div>
-            <div className={classes.footer}>
-              <div className={classes.footerLeft}>
-                <Avatar
-                  className={classes.logo}
-                  src={loadLogo()}
-                  variant="square"
-                />
-                <Typography className={classes.company}>
-                  {loadName()}
-                </Typography>
-              </div>
-              <div className={classes.footerRight}>
-                <Link to={`/jobDescription/${job._id}`}>
-                  <Button className={classes.applyButton}>View Job</Button>
-                </Link>
-              </div>
+            <div className={classes.headerRight}>
+              <BookmarkIcon
+                className={classes.favorite}
+                onClick={() => handleSavingJob(job._id)}
+              />
             </div>
           </div>
-        </FloatCard>
+          <div className={classes.body}>
+            <Typography variant="h5" className={classes.title}>
+              {job.title}
+            </Typography>
+            <Typography noWrap className={classes.description}>
+              {job.description}
+            </Typography>
+            <div className={classes.infoTags}>
+              <Chip
+                icon={<LocationOnRoundedIcon />}
+                label={job.location}
+                className={classes.tag}
+              />
+              <Chip
+                icon={<WorkRoundedIcon />}
+                label={job.type}
+                className={classes.tag}
+              />
+            </div>
+          </div>
+          <div className={classes.footer}>
+            <div className={classes.footerLeft}>
+              <Avatar
+                className={classes.logo}
+                src={logo}
+                variant="square"
+              />
+              <Typography className={classes.company}>
+                {loadName()}
+              </Typography>
+            </div>
+            <div className={classes.footerRight}>
+              <Link to={`/jobDescription/${job._id}`}>
+                <Button className={classes.applyButton}>View Job</Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </FloatCard>
 
     );
   };

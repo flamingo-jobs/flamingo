@@ -31,8 +31,12 @@ const Sample = () => {
         setUploading(true);
 
         // *** UPLOAD TO AZURE STORAGE ***
-        const blobsInContainer = await uploadFileToBlob(fileSelected, "employer-profile-pictures");
 
+        var file = fileSelected;
+        var blob = file.slice(0, file.size); 
+        var newFile = new File([blob], `60c246913542f942e4c84454.pdf`, {type: 'application/pdf'});
+
+        await uploadFileToBlob(newFile, "testing");
         // prepare UI for results
         setUploaded(true);
 

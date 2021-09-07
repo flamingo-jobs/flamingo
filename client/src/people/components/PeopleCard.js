@@ -98,15 +98,7 @@ function PeopleCard(props) {
         await axios.get(`${FILE_URL}/jobseeker-profile-pictures/${props.info._id}.png`).then(res => {
             setLogo(`${FILE_URL}/jobseeker-profile-pictures/${props.info._id}.png`);
         }).catch(error => {
-            axios.get(`${FILE_URL}/jobseeker-profile-pictures/${props.info._id}.jpg`).then(res => {
-                setLogo(`${FILE_URL}/jobseeker-profile-pictures/${props.info._id}.jpg`);
-            }).catch(error => {
-                axios.get(`${FILE_URL}/jobseeker-profile-pictures/${props.info._id}.PNG`).then(res => {
-                    setLogo(`${FILE_URL}/jobseeker-profile-pictures/${props.info._id}.PNG`);
-                }).catch(error => {
-                    setLogo({});
-                })
-            })
+            setLogo({});
         })
     }
 

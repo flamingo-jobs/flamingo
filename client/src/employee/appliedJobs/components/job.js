@@ -19,6 +19,7 @@ import Status from "./status";
 import download from "downloadjs";
 import UploadModal from "./uploadModal";
 import SnackBarAlert from "../../../components/SnackBarAlert";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   border: {
@@ -208,15 +209,7 @@ const Job = (props) => {
     await axios.get(`${FILE_URL}/employer-profile-pictures/${job.organization.id}.png`).then(res => {
       setLogo(`${FILE_URL}/employer-profile-pictures/${job.organization.id}.png`);
     }).catch(error => {
-      axios.get(`${FILE_URL}/employer-profile-pictures/${job.organization.id}.jpg`).then(res => {
-        setLogo(`${FILE_URL}/employer-profile-pictures/${job.organization.id}.jpg`);
-      }).catch(error => {
-        axios.get(`${FILE_URL}/employer-profile-pictures/${job.organization.id}.PNG`).then(res => {
-          setLogo(`${FILE_URL}/employer-profile-pictures/${job.organization.id}.PNG`);
-        }).catch(error => {
-          setLogo(require(`../../../employer/images/default_company_logo.png`).default);
-        })
-      })
+      setLogo(require(`../../../employer/images/default_company_logo.png`).default);
     })
   }
 
@@ -236,28 +229,28 @@ const Job = (props) => {
 
   const handleTitleClick = () => { };
 
-  const handleResumeDownload = async () => {
-    const resumeName = props.applicationDetails.resumeName;
+  // const handleResumeDownload = async () => {
+  //   const resumeName = props.applicationDetails.resumeName;
 
-    try {
-      const response = await axios.get(
-        `${BACKEND_URL}/resume/${props.jobId}/${props.userId}`,
-        {
-          responseType: "arraybuffer",
-        }
-      );
-      const file = new Blob([response.data], {
-        type: "application/pdf",
-      });
+  //   try {
+  //     // const response = await axios.get(
+  //     //   `${BACKEND_URL}/resume/${props.jobId}/${props.userId}`,
+  //     //   {
+  //     //     responseType: "arraybuffer",
+  //     //   }
+  //     // );
+  //     // const file = new Blob([response.data], {
+  //     //   type: "application/pdf",
+  //     // });
 
-      return download(response.data, "Flamingo_Resume", "application/pdf");
-    } catch (err) {
-      console.log(err);
-      if (err.status === 400) {
-        console.log("Error while downloading file. Try again later");
-      }
-    }
-  };
+  //     return download(`${FILE_URL}/resumes/${newFile.name}`, "Flamingo_Resume", "application/pdf");
+  //   } catch (err) {
+  //     console.log(err);
+  //     if (err.status === 400) {
+  //       console.log("Error while downloading file. Try again later");
+  //     }
+  //   }
+  // };
 
   const displayAlert = () => {
     return (
@@ -389,13 +382,14 @@ const Job = (props) => {
                 )}
 
                 <div className={classes.downloadContainer}>
-                  <Button
-                    className={classes.downloadBtn}
-                    startIcon={<GetAppIcon />}
-                    onClick={handleResumeDownload}
-                  >
-                    Download Resume
-                  </Button>
+                  <Link to={{ pathname: `${FILE_URL}/resumes/${props.applicationDetails.resumeName}` }} target="_blank" download>
+                    <Button
+                      className={classes.downloadBtn}
+                      startIcon={<GetAppIcon />}
+                    >
+                      Download Resume
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </Container>

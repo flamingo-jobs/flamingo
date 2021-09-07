@@ -127,7 +127,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 10,
     backgroundColor: 'white',
   },
-  vacanciyContainer:{
+  vacanciyContainer: {
     textAlign: 'left',
   },
   numOfVacancies: {
@@ -187,15 +187,7 @@ function JobSummary(props) {
     await axios.get(`${FILE_URL}/employer-profile-pictures/${props.job.organization.id}.png`).then(res => {
       setLogo(`${FILE_URL}/employer-profile-pictures/${props.job.organization.id}.png`);
     }).catch(error => {
-      axios.get(`${FILE_URL}/employer-profile-pictures/${props.job.organization.id}.jpg`).then(res => {
-        setLogo(`${FILE_URL}/employer-profile-pictures/${props.job.organization.id}.jpg`);
-      }).catch(error => {
-        axios.get(`${FILE_URL}/employer-profile-pictures/${props.job.organization.id}.PNG`).then(res => {
-          setLogo(`${FILE_URL}/employer-profile-pictures/${props.job.organization.id}.PNG`);
-        }).catch(error => {
-          setLogo(require(`../../employer/images/default_company_logo.png`).default);
-        })
-      })
+      setLogo(require(`../../employer/images/default_company_logo.png`).default);
     })
   }
 
@@ -241,7 +233,7 @@ function JobSummary(props) {
   }
 
   const displaySaveForLater = () => {
-    if(props.userRole !== "employer" && props.userRole !== "admin"){
+    if (props.userRole !== "employer" && props.userRole !== "admin") {
       if (props.userRole === "jobseeker") {
         if (props.isSaved) {
           return (
@@ -277,8 +269,8 @@ function JobSummary(props) {
   }
 
   const displayApplyButton = () => {
-    if(props.userRole !== "employer" && props.userRole !== "admin"){
-      if(props.isSignedIn && !props.isApplied){
+    if (props.userRole !== "employer" && props.userRole !== "admin") {
+      if (props.isSignedIn && !props.isApplied) {
         return (
           <ScrollLink to="applyForm" smooth={true} duration={1000}>
             <Button className={classes.applyBtn}>
@@ -288,14 +280,14 @@ function JobSummary(props) {
         );
       }
 
-      if(!props.isSignedIn){
+      if (!props.isSignedIn) {
         return (
           <Button className={classes.applyBtn} onClick={handleLoginModal}>
             Apply For This Job
           </Button>);
       }
 
-      if(props.isApplied){
+      if (props.isApplied) {
         return (
           <Tooltip title="You Can Upload Your CV Again Using the Applied Jobs Page">
             <div>
@@ -308,7 +300,7 @@ function JobSummary(props) {
       }
     }
   }
-// style={{border: "1px solid red"}}
+  // style={{border: "1px solid red"}}
   return (
     <Container>
       {displayAlert()}
