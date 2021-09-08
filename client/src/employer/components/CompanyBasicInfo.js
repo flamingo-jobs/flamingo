@@ -11,6 +11,7 @@ import Rating from "@material-ui/lab/Rating";
 import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
 import FloatCard from "../../components/FloatCard";
 import EditIcon from "@material-ui/icons/Edit";
+import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import LoyaltyIcon from "@material-ui/icons/Loyalty";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -144,6 +145,7 @@ function CompanyBasicInfo(props) {
   const [compLogo, setCompLogo] = useState(
     require(`./images/loadingImage.gif`).default
   );
+  const [verified, setVerified] = useState(false);
 
   let loginId;
   let login = false;
@@ -357,7 +359,24 @@ function CompanyBasicInfo(props) {
     return averageRating;
   };
 
+  const getVerificationStatus = () => {
+    const loginId = sessionStorage.getItem("loginId");
+    axios
+      .get(`${BACKEND_URL}/employer/verificationStatus/${loginId}`)
+      .then((res) => {
+        if (res.data.success) {
+          if (res.data.verificationStatus === "verified") setVerified(true);
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          setVerified(false);
+        }
+      });
+  };
+
   useEffect(() => {
+    getVerificationStatus()
     loadLogo();
   }, []);
 
@@ -785,7 +804,10 @@ function CompanyBasicInfo(props) {
             <br />
             <Grid item xs={12} lg={7} className={classes.headerInfo}>
               <Typography variant="h5" className={classes.title}>
-                {name}
+                {name} {verified ? <VerifiedUserIcon
+                color="primary"
+                className={classes.verifiedBadge}
+              /> : ""}
               </Typography>
               <div className={classes.locationTags}>
                 {locations.map((item, i) => (
