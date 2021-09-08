@@ -327,6 +327,7 @@ function CertificateItem(props) {
           msg: "Certificate updated successfully!",
         });
         handleAlert();
+        axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
       } else {
         setAlertData({
           severity: "error",

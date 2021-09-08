@@ -193,16 +193,9 @@ function WorkExperience(props) {
           }
         }
         setWork(workData);
-        // let index = i;
-        // let workTemp = [];
-        // workData?.map(wk => (
-        //   workTemp.push({index: index++,year: wk.from.split("/")[0], month: wk.from.split("/")[1]})
-        // ));
-        // workOrdered = workTemp;
         
       }
     })
-   // console.log(workOrdered);
     setFetchedData(0)
   }
 
@@ -216,6 +209,7 @@ function WorkExperience(props) {
           msg: "Work deleted successfully!",
         });
         handleAlert();
+        axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
       } else {
         setAlertData({
           severity: "error",
@@ -237,6 +231,7 @@ function WorkExperience(props) {
   },[fetchedData])
 
   function handleOpen(){
+    setState({place: null, description: null, position: null, startYear: null, startMonth: null, endYear: null, endMonth: null, taskAndResponsibility: null});
     setOpen(true);
   }
 
@@ -339,6 +334,7 @@ function WorkExperience(props) {
           msg: "Work added successfully!",
         });
         handleAlert();
+        axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
       } else {
         setAlertData({
           severity: "error",
@@ -352,10 +348,10 @@ function WorkExperience(props) {
   }
 
   const displayWork = () => {
-    let index = i;
+    let idx = i;
     let workTemp = [];
     work?.map(w => (
-      workTemp.push({index: index++,year: w.from.split("/")[0], month: w.from.split("/")[1], workItem: w})
+      workTemp.push({index: idx++,year: w.from.split("/")[0], month: w.from.split("/")[1], workItem: w})
     ));
     workTemp?.sort((a,b) => (a.year < b.year) ? 1 : ((b.year < a.year) ? -1 : 0));
     if (workTemp) {

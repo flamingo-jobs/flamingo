@@ -231,6 +231,7 @@ function CertificatesSection(props) {
           msg: "Certificate deleted successfully!",
         });
         handleAlert();
+        axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
       } else {
         setAlertData({
           severity: "error",
@@ -331,6 +332,7 @@ function CertificatesSection(props) {
           msg: "Certificate added successfully!",
         });
         handleAlert();
+        axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
       } else {
         setAlertData({
           severity: "error",
