@@ -384,6 +384,7 @@ function EduItem(props) {
           msg: "Education details updated successfully!",
         });
         handleAlert();
+        axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
       } else {
         setAlertData({
           severity: "error",

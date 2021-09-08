@@ -171,6 +171,7 @@ export default function InterestArea(props) {
                 msg: "Interests could not be updated!",
                 });
                 handleAlert();
+                axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
             }
         });
     };

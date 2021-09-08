@@ -336,6 +336,7 @@ function WorkExpItem(props) {
           msg: "Work updated successfully!",
         });
         handleAlert();
+        axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
       } else {
         setAlertData({
           severity: "error",

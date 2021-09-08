@@ -257,6 +257,7 @@ function Skills(props) {
           msg: "Skills added successfully!",
         });
         handleAlert();
+        axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
       } else {
         setAlertData({
           severity: "error",
@@ -283,6 +284,7 @@ function Skills(props) {
         });
         handleAlert();
         fetchData();
+        axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
       } else {
         setAlertData({
           severity: "error",
