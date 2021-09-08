@@ -10,6 +10,9 @@ import SnackBarAlert from "../../components/SnackBarAlert";
 import BACKEND_URL, { FILE_URL } from '../../Config';
 import LoginModal from "./loginModal";
 import { Link } from 'react-router-dom';
+import { useDispatch } from "react-redux";
+import { setFavoriteOrgCount, setReduxFavoriteOrgIds } from "../../redux/actions";
+
 
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -103,6 +106,9 @@ function CompanySummary(props) {
 
     const classes = useStyles();
 
+    // Redux
+    const dispatch = useDispatch();
+
     const [summary, setSummary] = useState("empty");
     const [isFavorite, setIsFavorite] = useState(false);
     const [jobseeker, setJobseeker] = useState("empty");
@@ -184,6 +190,7 @@ function CompanySummary(props) {
                 const response = await axios.get(`${BACKEND_URL}/jobseeker/${props.userId}`);
                 if (response.data.success) {
                     setJobseeker(response.data.jobseeker);
+                    dispatch(setReduxFavoriteOrgIds(response.data.jobseeker.favoriteOrganizations));
                 }
             }
         } catch (err) {
@@ -199,6 +206,8 @@ function CompanySummary(props) {
             try {
                 const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateFavoriteOrgs/${props.userId}`, newFavoriteOrgs);
                 if (response.data.success) {
+                    dispatch(setFavoriteOrgCount(newFavoriteOrgs.length));
+                    dispatch(setReduxFavoriteOrgIds(newFavoriteOrgs));
                     setAlertData({
                         severity: "success",
                         msg: "Organization Removed From Favorite Organizations",
@@ -219,6 +228,8 @@ function CompanySummary(props) {
             try {
                 const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateFavoriteOrgs/${props.userId}`, newFavoriteOrgs);
                 if (response.data.success) {
+                    dispatch(setFavoriteOrgCount(newFavoriteOrgs.length));
+                    dispatch(setReduxFavoriteOrgIds(newFavoriteOrgs));
                     setAlertData({
                         severity: "success",
                         msg: "Organization Saved, Successfully!",

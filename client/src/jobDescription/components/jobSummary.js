@@ -14,6 +14,9 @@ import SnackBarAlert from "../../components/SnackBarAlert";
 import BACKEND_URL, { FILE_URL } from "../../Config";
 import LoginModal from "./loginModal";
 import PeopleIcon from '@material-ui/icons/People';
+import { useDispatch } from "react-redux";
+import { setSavedJobCount } from "../../redux/actions";
+
 
 const useStyles = makeStyles((theme) => ({
   border: {
@@ -147,6 +150,9 @@ const useStyles = makeStyles((theme) => ({
 function JobSummary(props) {
   const classes = useStyles();
 
+  // Redux
+  const dispatch = useDispatch();
+
   // Login modal 
   const [open, setOpen] = useState(false);
   const [logo, setLogo] = useState(require(`../../components/images/loadingImage.gif`).default);
@@ -217,7 +223,7 @@ function JobSummary(props) {
     try {
       const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateSavedJobs/${props.userId}`, newSavedJobIds);
       if (response.data.success) {
-        // console.log('success');
+        dispatch(setSavedJobCount(newSavedJobIds.length));
       }
     } catch (err) {
       // console.log(err);
@@ -309,6 +315,19 @@ function JobSummary(props) {
     return `${props.job.applicationDetails.length} applicants`;
   }
 
+  const numOfVacancies = () => {
+    if(props.job.numberOfVacancies > 0){
+      return (
+        <Typography>
+          <span className={classes.numOfVacancies}>
+            Number of vacancies:<span>&nbsp;&nbsp;</span>
+          </span>
+          {props.job.numberOfVacancies}
+        </Typography>
+      );
+    }
+  }
+
   return (
     <Container>
       {displayAlert()}
@@ -345,12 +364,7 @@ function JobSummary(props) {
               </div>
 
               <div className={classes.vacanciyContainer}>
-                <Typography>
-                  <span className={classes.numOfVacancies}>
-                    Number of vacancies:<span>&nbsp;&nbsp;</span>
-                  </span>
-                  {props.job.numberOfVacancies}
-                </Typography>
+                {numOfVacancies()}
               </div>
             </div>
           </Grid>
