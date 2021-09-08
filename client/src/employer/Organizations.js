@@ -66,7 +66,7 @@ function Organizations(props) {
     );
 
     const userId = sessionStorage.getItem("loginId");
-    const [favoriteOrgs, setFavoriteOrgs] = useState("empty");
+    const [favoriteOrgIds, setFavoriteOrgIds] = useState("empty");
 
     const [organizations, setOrganizations] = useState([]);
     const [count, setCount] = useState(0);
@@ -153,14 +153,14 @@ function Organizations(props) {
             try {
                 const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
                 if (response.data.success) {
-                    setFavoriteOrgs(response.data.jobseeker.favoriteOrganizations);
+                    setFavoriteOrgIds(response.data.jobseeker.favoriteOrganizations);
                     dispatch(setReduxFavoriteOrgIds(response.data.jobseeker.favoriteOrganizations));
                 }
             } catch (err) {
                 console.log(err);
             }
         } else {
-            setFavoriteOrgs(reduxFavoriteOrgIds);
+            setFavoriteOrgIds(reduxFavoriteOrgIds);
         }
     };
 
@@ -186,8 +186,8 @@ function Organizations(props) {
                         userId={userId}
                         info={org}
                         userRole={props.userRole}
-                        favoriteOrgs={favoriteOrgs}
-                        setFavoriteOrgs={setFavoriteOrgs}
+                        favoriteOrgIds={favoriteOrgIds}
+                        setFavoriteOrgIds={setFavoriteOrgIds}
                         handleOpen={handleOpen}
                     />
                 </Grid>

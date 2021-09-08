@@ -231,7 +231,7 @@ function OrganizationCard(props) {
       const newFavoriteOrgs = props.favoriteOrgIds.filter(
         (id) => id !== props.info._id
       );
-      props.setFavoriteOrgs(newFavoriteOrgs);
+      props.setFavoriteOrgIds(newFavoriteOrgs);
 
       try {
         const response = await axios.patch(
@@ -258,7 +258,7 @@ function OrganizationCard(props) {
       // Save
       setIsSaved(!isSaved);
       const newFavoriteOrgs = [...props.favoriteOrgIds, props.info._id];
-      props.setFavoriteOrgs(newFavoriteOrgs);
+      props.setFavoriteOrgIds(newFavoriteOrgs);
       try {
         const response = await axios.patch(
           `${BACKEND_URL}/jobseeker/updateFavoriteOrgs/${userId}`,
