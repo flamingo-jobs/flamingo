@@ -254,6 +254,7 @@ function InterestedAreas(props) {
           msg: "Interests added successfully!",
         });
         handleAlert();
+        axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
       } else {
         setAlertData({
           severity: "error",
@@ -283,6 +284,7 @@ function InterestedAreas(props) {
         });
         handleAlert();
         fetchData();
+        axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
       } else {
         setAlertData({
           severity: "error",

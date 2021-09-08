@@ -215,6 +215,7 @@ export default function DetailedAccordion(props) {
       .then(res => {
         if (res.data.success) {
           props.onSuccessUpdate();
+          axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
         } else {
           props.onFailedUpdate();
         }

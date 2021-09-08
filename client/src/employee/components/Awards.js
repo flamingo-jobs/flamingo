@@ -188,6 +188,7 @@ function Achievements(props) {
           msg: "Award deleted successfully!",
         });
         handleAlert();
+        axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
       } else {
         setAlertData({
           severity: "error",
@@ -286,6 +287,7 @@ function Achievements(props) {
           msg: "Award added successfully!",
         });
         handleAlert();
+        axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
       } else {
         setAlertData({
           severity: "error",

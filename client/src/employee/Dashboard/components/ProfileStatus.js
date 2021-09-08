@@ -8,10 +8,9 @@ import defaultImage from '../../images/defaultProfilePic.jpg';
 import theme from '../../../Theme';
 import ChevronRightTwoToneIcon from '@material-ui/icons/ChevronRightTwoTone';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import BACKEND_URL from '../../../Config';
+import BACKEND_URL, { FILE_URL } from '../../../Config';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-// ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -94,19 +93,30 @@ function ProfileStatus(props) {
         loginId=props.jobseekerID;
     }
 
+    const loadLogo = async () => {
+        await axios.get(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.png`).then(res => {
+            setSavedPic(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.png`);
+        }).catch(error => {
+            axios.get(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.jpg`).then(res => {
+                setSavedPic(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.jpg`);
+              }).catch(error => {
+                axios.get(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.PNG`).then(res => {
+                  setSavedPic(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.PNG`);
+                }).catch(error => {
+                  console.log("Profile picture not set")
+                })
+              })
+        })
+    }
+
     
     useEffect(()=>{
         axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
         .then(res => {
           if(res.data.success){
-            const images = require.context('../../images', true);
-            try{
-              let img = images(`./${res.data.jobseeker._id}.jpg`);
-              setSavedPic(img.default);
-            }catch{
-              console.log("Profile picture not added.")
-            }
-
+            //load profile picture
+            loadLogo()
+            //load name
             if(res.data.jobseeker.name){
                 setName(res.data.jobseeker.name);                 
             }
