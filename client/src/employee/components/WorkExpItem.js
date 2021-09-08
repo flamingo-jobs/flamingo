@@ -33,10 +33,10 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 25,
     borderRadius: 10,
     "&:hover": {
-        defaultButton: {
-            display: 'block'
-        }
+      defaultButton: {
+        display: 'block'
       }
+    }
   },
   defaultButton: {
     backgroundColor: theme.palette.stateBlue,
@@ -47,8 +47,8 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   editIcon: {
-    padding:'0px',
-    margin:'-15px',
+    padding: '0px',
+    margin: '-15px',
     color: theme.palette.tuftsBlue,
     "&:hover": {
       backgroundColor: theme.palette.lightSkyBlue,
@@ -117,12 +117,12 @@ const useStyles = makeStyles((theme) => ({
   placeholder: {
     color: "#777",
     fontSize: '16px',
-    marginTop:"-8px",
+    marginTop: "-8px",
   },
   placeholderDate: {
     color: "#777",
     fontSize: '14px',
-    marginTop:"12px",
+    marginTop: "12px",
   },
   item: {
     color: "#666",
@@ -133,20 +133,20 @@ const useStyles = makeStyles((theme) => ({
 function WorkExpItem(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [styleEdit, setStyleEdit] = useState({display: 'none'});
-  let workStartDate=[0,0];
-  let workEndDate=[0,0];
-  if(props.from !== 'null/null' && props.from !== '0/0'){
+  const [styleEdit, setStyleEdit] = useState({ display: 'none' });
+  let workStartDate = [0, 0];
+  let workEndDate = [0, 0];
+  if (props.from !== 'null/null' && props.from !== '0/0') {
     workStartDate = props.from.split("/");
   }
-  if(props.to !== 'null/null' && props.to !== '0/0'){
+  if (props.to !== 'null/null' && props.to !== '0/0') {
     workEndDate = props.to.split("/");
   }
-  const [state, setState] = useState({place: props.place, description: props.description, position: props.position, startYear: workStartDate[1], startMonth: workStartDate[0], endYear: workEndDate[1], endMonth: workEndDate[0], taskAndResponsibility: props.task});
+  const [state, setState] = useState({ place: props.place, description: props.description, position: props.position, startYear: workStartDate[1], startMonth: workStartDate[0], endYear: workEndDate[1], endMonth: workEndDate[0], taskAndResponsibility: props.task });
 
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
-  const [alertData, setAlertData] = useState({severity: "", msg: ""});
+  const [alertData, setAlertData] = useState({ severity: "", msg: "" });
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [loading, setLoading] = useState(true);
   const [alertShow, setAlertShow] = React.useState(false);
@@ -156,58 +156,58 @@ function WorkExpItem(props) {
   const jwt = require("jsonwebtoken");
   const token = sessionStorage.getItem("userToken");
   const header = jwt.decode(token, { complete: true });
-  if(token === null){
-    loginId=props.jobseekerID;
-  }else if (header.payload.userRole === "jobseeker") {
+  if (token === null) {
+    loginId = props.jobseekerID;
+  } else if (header.payload.userRole === "jobseeker") {
     login = true;
-    loginId=sessionStorage.getItem("loginId");
+    loginId = sessionStorage.getItem("loginId");
   } else {
-    loginId=props.jobseekerID;
+    loginId = props.jobseekerID;
   }
 
   //generate year list
-  function getYearsFrom(){
+  function getYearsFrom() {
     let maxOffset = 25;
     let thisYear = (new Date()).getFullYear();
     let allYears = [];
-    for(let x = 0; x <= maxOffset; x++) {
-        allYears.push(thisYear - x)
+    for (let x = 0; x <= maxOffset; x++) {
+      allYears.push(thisYear - x)
     }
 
     return allYears.map((x) => (<option value={x}>{x}</option>));
   }
 
   //generate year list
-  function getYearsTo(){
+  function getYearsTo() {
     let maxOffset = 30;
     let thisYear = (new Date()).getFullYear();
     let allYears = [];
-    for(let x = -7; x <= maxOffset; x++) {
-        allYears.push(thisYear - x)
+    for (let x = -7; x <= maxOffset; x++) {
+      allYears.push(thisYear - x)
     }
 
     return allYears.map((x) => (<option value={x}>{x}</option>));
   }
 
   //generate month list
-  function getMonthsFrom(){
+  function getMonthsFrom() {
     let maxOffset = 12;
     let allMonths = [];
-    for(let x = 1; x <= maxOffset; x++) {
-      if(x<10){
-        allMonths.push("0"+x);
-      }else{
+    for (let x = 1; x <= maxOffset; x++) {
+      if (x < 10) {
+        allMonths.push("0" + x);
+      } else {
         allMonths.push(x);
-      }        
+      }
     }
 
     return allMonths.map((x) => (<option value={x}>{x}</option>));
   }
-  
+
   useEffect(() => {
     if (deleteSuccess === true) {
-        setAlertData({severity: "success", msg: "Item deleted successfully!"});
-        handleAlert();
+      setAlertData({ severity: "success", msg: "Item deleted successfully!" });
+      handleAlert();
     }
     setLoading(true);
     setDeleteSuccess(false);
@@ -226,12 +226,12 @@ function WorkExpItem(props) {
     setConfirmDelete(false);
   };
 
-  function handleOpen(){
+  function handleOpen() {
     setOpen(true);
     handleMenuClose();
   }
 
-  function handleClose(){
+  function handleClose() {
     setOpen(false);
   }
 
@@ -242,7 +242,7 @@ function WorkExpItem(props) {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
-  
+
   // Alert stuff
   const displayAlert = () => {
     return (
@@ -267,155 +267,155 @@ function WorkExpItem(props) {
   };
 
 
-   //---------------------------- text field onChange events
+  //---------------------------- text field onChange events
 
-   function onChangePlace(e){
+  function onChangePlace(e) {
     setState(prevState => {
-      return {...prevState, place: e.target.value}
+      return { ...prevState, place: e.target.value }
     })
   }
 
-  function onChangeDescription(e){
+  function onChangeDescription(e) {
     setState(prevState => {
-      return {...prevState, description: e.target.value}
+      return { ...prevState, description: e.target.value }
     })
   }
 
-  function onChangePosition(e){
+  function onChangePosition(e) {
     setState(prevState => {
-      return {...prevState, position: e.target.value}
+      return { ...prevState, position: e.target.value }
     })
   }
 
-  function onChangestartYear(e){
+  function onChangestartYear(e) {
     setState(prevState => {
-      return {...prevState, startYear: e.target.value}
+      return { ...prevState, startYear: e.target.value }
     })
   }
 
-  function onChangestartMonth(e){
+  function onChangestartMonth(e) {
     setState(prevState => {
-      return {...prevState, startMonth: e.target.value}
+      return { ...prevState, startMonth: e.target.value }
     })
   }
 
-  function onChangeEndYear(e){
+  function onChangeEndYear(e) {
     setState(prevState => {
-      return {...prevState, endYear: e.target.value}
+      return { ...prevState, endYear: e.target.value }
     })
   }
 
-  function onChangeEndMonth(e){
+  function onChangeEndMonth(e) {
     setState(prevState => {
-      return {...prevState, endMonth: e.target.value}
+      return { ...prevState, endMonth: e.target.value }
     })
   }
 
-  function onChangeTask(e){
+  function onChangeTask(e) {
     setState(prevState => {
-      return {...prevState, taskAndResponsibility: e.target.value}
+      return { ...prevState, taskAndResponsibility: e.target.value }
     })
   }
 
-  function onSubmit(e){
+  function onSubmit(e) {
     e.preventDefault();
     const work = {
       place: state.place,
       description: state.description,
       position: state.position,
-      from: state.startMonth+"/"+state.startYear,
-      to: state.endMonth+"/"+state.endYear,
+      from: state.startMonth + "/" + state.startYear,
+      to: state.endMonth + "/" + state.endYear,
       taskAndResponsibility: state.taskAndResponsibility,
-  }
+    }
 
-    axios.put(`${BACKEND_URL}/jobseeker/updateWork/${loginId}`,{index:props.index,work:work})
-    .then(res => {
-      if(res.data.success){
-        setAlertData({
-          severity: "success",
-          msg: "Work updated successfully!",
-        });
-        handleAlert();
-        axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
-      } else {
-        setAlertData({
-          severity: "error",
-          msg: "Work could not be updated!",
-        });
-        handleAlert();
-      }
-    });
+    axios.put(`${BACKEND_URL}/jobseeker/updateWork/${loginId}`, { index: props.index, work: work })
+      .then(res => {
+        if (res.data.success) {
+          setAlertData({
+            severity: "success",
+            msg: "Work updated successfully!",
+          });
+          handleAlert();
+          axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
+        } else {
+          setAlertData({
+            severity: "error",
+            msg: "Work could not be updated!",
+          });
+          handleAlert();
+        }
+      });
     handleClose();
   }
 
   return (
     <>
-    {displayAlert()}
+      {displayAlert()}
       <Paper elevation={0} className={classes.paperCont}
-      onMouseEnter={e => {
-          setStyleEdit({display: 'block'});
-      }}
-      onMouseLeave={e => {
-          setStyleEdit({display: 'none'});
-    }}>
+        onMouseEnter={e => {
+          setStyleEdit({ display: 'block' });
+        }}
+        onMouseLeave={e => {
+          setStyleEdit({ display: 'none' });
+        }}>
         <Grid container spacing={3}>
-          <Grid item xs={2} style={{marginTop:"-2px"}}>
-            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',marginLeft: "5px"}}>
-                {state.startYear ? state.startMonth+"/"+state.startYear+ " - " +state.endMonth+"/"+state.endYear : ""}
+          <Grid item xs={2} style={{ marginTop: "-2px" }}>
+            <Typography variant="body2" color="textSecondary" component="p" style={{ textAlign: 'left', marginLeft: "5px" }}>
+              {state.startYear ? state.startMonth + "/" + state.startYear + " - " + state.endMonth + "/" + state.endYear : ""}
             </Typography>
           </Grid>
-          <Grid item xs={9} style={{marginTop:"-5px",paddingLeft:"30px"}}>
-            <Typography gutterBottom style={{textAlign:'left',fontSize:'16px',fontWeight:'bold',color:'#666'}}>
-                {state.position}
+          <Grid item xs={9} style={{ marginTop: "-5px", paddingLeft: "30px" }}>
+            <Typography gutterBottom style={{ textAlign: 'left', fontSize: '16px', fontWeight: 'bold', color: '#666' }}>
+              {state.position}
             </Typography>
-            <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'14px',fontWeight:'bold',}}>
-                {state.place}
+            <Typography gutterBottom style={{ color: theme.palette.stateBlue, textAlign: 'left', fontSize: '14px', fontWeight: 'bold', }}>
+              {state.place}
             </Typography>
-            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',paddingTop:'10px'}}>
-                {state.description}
+            <Typography variant="body2" color="textSecondary" component="p" style={{ textAlign: 'left', paddingTop: '10px', whiteSpace: 'pre-wrap'  }}>
+              {state.description}
             </Typography>
-            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',paddingTop:'10px'}}>
-              <b>{state.taskAndResponsibility ? "Tasks & Responsibilities : " : ""}</b>{state.taskAndResponsibility}
+            <Typography variant="body2" color="textSecondary" component="p" style={{ textAlign: 'left', paddingTop: '10px', whiteSpace: 'pre-wrap' }}>
+              <b>{state.taskAndResponsibility ? "Tasks & Responsibilities : " : ""}</b><br />{state.taskAndResponsibility}
             </Typography>
           </Grid>
-          <Grid item xs={1} style={{padding:"10px 0px 0px 0px"}}>
-          { login ? <>
-            <Button style={{minWidth:'25px',width:'25px'}}>
-              <MoreVertIcon className={classes.editIcon} size="small" style={{color:"#999"}} onClick={handleMenuClick} />
-          </Button>
-          <Menu
-            id="simple-menu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleMenuClose}
-          >
-            <MenuItem className={classes.item} onClick={handleOpen}><EditIcon style={{marginRight:"7px"}} />Change</MenuItem>
-            <MenuItem className={classes.item} onClick={handleClickOpen}><DeleteIcon style={{marginRight:"7px"}} />Remove</MenuItem>
-          </Menu>
+          <Grid item xs={1} style={{ padding: "10px 0px 0px 0px" }}>
+            {login ? <>
+              <Button style={{ minWidth: '25px', width: '25px' }}>
+                <MoreVertIcon className={classes.editIcon} size="small" style={{ color: "#999" }} onClick={handleMenuClick} />
+              </Button>
+              <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+              >
+                <MenuItem className={classes.item} onClick={handleOpen}><EditIcon style={{ marginRight: "7px" }} />Change</MenuItem>
+                <MenuItem className={classes.item} onClick={handleClickOpen}><DeleteIcon style={{ marginRight: "7px" }} />Remove</MenuItem>
+              </Menu>
             </> : null
             }
             <Dialog
-                open={confirmDelete}
-                onClose={handleClickClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
+              open={confirmDelete}
+              onClose={handleClickClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">{"Confirm Delete?"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        Are you sure that you want to delete the selected item? This cannot be undone.
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClickClose} color="primary">
-                        No
-                    </Button>
-                    <Button onClick={handleDelete}
-                      color="primary" autoFocus>
-                        Yes
-                    </Button>
-                </DialogActions>
+              <DialogTitle id="alert-dialog-title">{"Confirm Delete?"}</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  Are you sure that you want to delete the selected item? This cannot be undone.
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClickClose} color="primary">
+                  No
+                </Button>
+                <Button onClick={handleDelete}
+                  color="primary" autoFocus>
+                  Yes
+                </Button>
+              </DialogActions>
             </Dialog>
             {/*-------------- edit work field popup content ------------------- */}
             <Dialog
@@ -424,132 +424,132 @@ function WorkExpItem(props) {
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description"
             >
-              <DialogTitle id="alert-dialog-title" style={{color:theme.palette.stateBlue}}>
-              Edit Work Experience
+              <DialogTitle id="alert-dialog-title" style={{ color: theme.palette.stateBlue }}>
+                Edit Work Experience
               </DialogTitle>
               <Divider variant="middle" />
               <DialogContent>
                 <form className={classes.form}>
-                    <div>
-                      <TextField
-                        className={classes.field}
-                        id="outlined-basic"
-                        label="Position"
-                        type="text"
-                        variant="outlined"
-                        size="small"
-                        value={state.position}
-                        onChange={onChangePosition}
-                        required
-                      />
-                      <TextField
-                        className={classes.field}
-                        id="outlined-basic"
-                        label="Place"
-                        type="text"
-                        variant="outlined"
-                        size="small"
-                        value={state.place}
-                        onChange={onChangePlace}
-                        required
-                      />
-                      <Grid container direction="row">
-                        <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
-                          <Grid item xs={12}>
-                            <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px"}}>Start Date</Typography>
-                          </Grid>
-                          <Grid item xs={6}>
-                            <FormControl variant="outlined" className={classes.formControl}>
-                              <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
-                              <Select
-                                native
-                                onChange={onChangestartYear}
-                                label="Start Date"
-                                value={state.startYear}
-                                className={classes.selectYear}
-                              >
-                                <option aria-label="None" value="" />
-                                {getYearsFrom()}
-                              </Select>
-                            </FormControl>
-                          </Grid>
-                          <Grid item xs={6}>
-                            <FormControl variant="outlined" className={classes.formControl}>
-                              <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
-                              <Select
-                                native
-                                onChange={onChangestartMonth}
-                                label="Start Date"
-                                value={state.startMonth}
-                                className={classes.selectMonth}
-                              >
-                                <option aria-label="None" value="" />
-                                {getMonthsFrom()}
-                              </Select>
-                            </FormControl>
-                          </Grid>
+                  <div>
+                    <TextField
+                      className={classes.field}
+                      id="outlined-basic"
+                      label="Position"
+                      type="text"
+                      variant="outlined"
+                      size="small"
+                      value={state.position}
+                      onChange={onChangePosition}
+                      required
+                    />
+                    <TextField
+                      className={classes.field}
+                      id="outlined-basic"
+                      label="Place"
+                      type="text"
+                      variant="outlined"
+                      size="small"
+                      value={state.place}
+                      onChange={onChangePlace}
+                      required
+                    />
+                    <Grid container direction="row">
+                      <Grid item container sm={12} md={6} style={{ paddingRight: "15px" }}>
+                        <Grid item xs={12}>
+                          <Typography variant="body2" component="p" style={{ color: "#777", fontSize: '16px', marginBottom: "-10px" }}>Start Date</Typography>
                         </Grid>
-                        <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
-                          <Grid item xs={12}>
-                            <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px"}}>End Date</Typography>
-                          </Grid>
-                          <Grid item xs={6}>
-                            <FormControl variant="outlined" className={classes.formControl}>
-                              <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
-                              <Select
-                                native
-                                onChange={onChangeEndYear}
-                                label="End Date"
-                                value={state.endYear}
-                                className={classes.selectYear}
-                              >
-                                <option aria-label="None" value="" />
-                                {getYearsTo()}
-                              </Select>
-                            </FormControl>
-                          </Grid>
-                          <Grid item xs={6}>
-                            <FormControl variant="outlined" className={classes.formControl}>
-                              <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
-                              <Select
-                                native
-                                onChange={onChangeEndMonth}
-                                label="Start Date"
-                                value={state.endMonth}
-                                className={classes.selectMonth}
-                              >
-                                <option aria-label="None" value="" />
-                                {getMonthsFrom()}
-                              </Select>
-                            </FormControl>
-                          </Grid>
+                        <Grid item xs={6}>
+                          <FormControl variant="outlined" className={classes.formControl}>
+                            <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
+                            <Select
+                              native
+                              onChange={onChangestartYear}
+                              label="Start Date"
+                              value={state.startYear}
+                              className={classes.selectYear}
+                            >
+                              <option aria-label="None" value="" />
+                              {getYearsFrom()}
+                            </Select>
+                          </FormControl>
+                        </Grid>
+                        <Grid item xs={6}>
+                          <FormControl variant="outlined" className={classes.formControl}>
+                            <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
+                            <Select
+                              native
+                              onChange={onChangestartMonth}
+                              label="Start Date"
+                              value={state.startMonth}
+                              className={classes.selectMonth}
+                            >
+                              <option aria-label="None" value="" />
+                              {getMonthsFrom()}
+                            </Select>
+                          </FormControl>
                         </Grid>
                       </Grid>
-                      <TextField
-                        className={classes.field}
-                        id="outlined-multiline-static"
-                        label="Description"
-                        multiline
-                        rows={5}
-                        variant="outlined"
-                        value={state.description}
-                        onChange= {onChangeDescription}
-                      />
-                      <TextField
-                        className={classes.field}
-                        id="outlined-multiline-static"
-                        label="Tasks & Responsibilities"
-                        multiline
-                        rows={5}
-                        variant="outlined"
-                        value={state.taskAndResponsibility}
-                        onChange= {onChangeTask}
-                      />
-                    </div>
-                  </form>
+                      <Grid item container sm={12} md={6} style={{ paddingRight: "15px" }}>
+                        <Grid item xs={12}>
+                          <Typography variant="body2" component="p" style={{ color: "#777", fontSize: '16px', marginBottom: "-10px" }}>End Date</Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                          <FormControl variant="outlined" className={classes.formControl}>
+                            <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
+                            <Select
+                              native
+                              onChange={onChangeEndYear}
+                              label="End Date"
+                              value={state.endYear}
+                              className={classes.selectYear}
+                            >
+                              <option aria-label="None" value="" />
+                              {getYearsTo()}
+                            </Select>
+                          </FormControl>
+                        </Grid>
+                        <Grid item xs={6}>
+                          <FormControl variant="outlined" className={classes.formControl}>
+                            <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
+                            <Select
+                              native
+                              onChange={onChangeEndMonth}
+                              label="Start Date"
+                              value={state.endMonth}
+                              className={classes.selectMonth}
+                            >
+                              <option aria-label="None" value="" />
+                              {getMonthsFrom()}
+                            </Select>
+                          </FormControl>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    <TextField
+                      className={classes.field}
+                      id="outlined-multiline-static"
+                      label="Description"
+                      multiline
+                      rows={5}
+                      variant="outlined"
+                      value={state.description}
+                      onChange={onChangeDescription}
+                    />
+                    <TextField
+                      className={classes.field}
+                      id="outlined-multiline-static"
+                      label="Tasks & Responsibilities"
+                      multiline
+                      rows={5}
+                      variant="outlined"
+                      value={state.taskAndResponsibility}
+                      onChange={onChangeTask}
+                    />
+                  </div>
+                </form>
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleClose} style={{color:"#999"}}>
+                <Button onClick={handleClose} style={{ color: "#999" }}>
                   Cancel
                 </Button>
                 <Button onClick={onSubmit} color="primary" autoFocus>
@@ -557,11 +557,11 @@ function WorkExpItem(props) {
                 </Button>
               </DialogActions>
             </Dialog>
-            
+
           </Grid>
         </Grid>
       </Paper>
-      </>
+    </>
   );
 }
 

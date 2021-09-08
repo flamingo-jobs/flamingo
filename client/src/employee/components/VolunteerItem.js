@@ -370,7 +370,7 @@ function VolunteerItem(props) {
             <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'14px',fontWeight:'bold',paddingTop:'5px',marginRight:"-50px"}}>
                 {state.organization ? state.organization : ""}
             </Typography>
-            <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'15px'}}>
+            <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'15px', whiteSpace: 'pre-wrap' }}>
                 {state.description ? state.description : ""}
             </Typography>
         </Grid>
