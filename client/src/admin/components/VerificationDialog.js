@@ -105,8 +105,8 @@ export default function VerificationDialog(props) {
                         <MenuItem key={0} value={"pending"}>
                             Pending
                         </MenuItem>
-                        <MenuItem key={1} value={"accepted"}>
-                            Accepted
+                        <MenuItem key={1} value={"verified"}>
+                            Verified
                         </MenuItem>
                         <MenuItem key={2} value={"rejected"}>
                             Rejected
