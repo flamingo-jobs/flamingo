@@ -161,9 +161,7 @@ const VerificationSettings = (props) => {
       var file = fileData;
       var blob = file.slice(0, file.size);
       var loginId = sessionStorage.getItem("loginId");
-      var newFile = new File([blob], `${loginId}.pdf`, {
-        type: "application/pdf",
-      });
+      var newFile = new File([blob], `${loginId}.pdf`);
       await uploadFileToBlob(newFile, "verification");
       createVerificationRequest(loginId);
 
