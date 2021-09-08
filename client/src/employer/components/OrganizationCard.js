@@ -193,12 +193,12 @@ function OrganizationCard(props) {
   };
 
   useEffect(() => {
-    if (props.favoriteOrgs !== "empty") {
-      setIsSaved(props.favoriteOrgs.includes(props.info._id));
+    if (props.favoriteOrgIds !== "empty") {
+      setIsSaved(props.favoriteOrgIds.includes(props.info._id));
     } else {
       setIsSaved(false);
     }
-  }, [props.favoriteOrgs]);
+  }, [props.favoriteOrgIds]);
 
   const getAvgRating = (arr = []) => {
     return (
@@ -228,7 +228,7 @@ function OrganizationCard(props) {
     if (isSaved) {
       // Unsave
       setIsSaved(!isSaved);
-      const newFavoriteOrgs = props.favoriteOrgs.filter(
+      const newFavoriteOrgs = props.favoriteOrgIds.filter(
         (id) => id !== props.info._id
       );
       props.setFavoriteOrgs(newFavoriteOrgs);
@@ -257,7 +257,7 @@ function OrganizationCard(props) {
     } else {
       // Save
       setIsSaved(!isSaved);
-      const newFavoriteOrgs = [...props.favoriteOrgs, props.info._id];
+      const newFavoriteOrgs = [...props.favoriteOrgIds, props.info._id];
       props.setFavoriteOrgs(newFavoriteOrgs);
       try {
         const response = await axios.patch(

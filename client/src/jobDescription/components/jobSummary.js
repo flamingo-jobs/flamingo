@@ -13,7 +13,7 @@ import ReactTimeAgo from 'react-time-ago';
 import SnackBarAlert from "../../components/SnackBarAlert";
 import BACKEND_URL, { FILE_URL } from "../../Config";
 import LoginModal from "./loginModal";
-
+import PeopleIcon from '@material-ui/icons/People';
 
 const useStyles = makeStyles((theme) => ({
   border: {
@@ -154,7 +154,6 @@ function JobSummary(props) {
   // Alert related states
   const [alertShow, setAlertShow] = useState(false);
   const [alertData, setAlertData] = useState({ severity: "", msg: "" });
-
 
   const handleOpen = () => {
     setOpen(true);
@@ -301,6 +300,15 @@ function JobSummary(props) {
     }
   }
   // style={{border: "1px solid red"}}
+
+  
+  const numOfApplicants = () => {
+    if(props.job.applicationDetails?.length === 1){
+      return `${props.job.applicationDetails.length} applicant`;
+    }
+    return `${props.job.applicationDetails.length} applicants`;
+  }
+
   return (
     <Container>
       {displayAlert()}
@@ -333,6 +341,7 @@ function JobSummary(props) {
               <div className={classes.infoTags}>
                 <Chip icon={<LocationOnRoundedIcon />} label={props.job.location} className={classes.tag} />
                 <Chip icon={<WorkRoundedIcon />} label={props.job.type} className={classes.tag} />
+                <Chip icon={<PeopleIcon />} label={numOfApplicants()} className={classes.tag} />
               </div>
 
               <div className={classes.vacanciyContainer}>

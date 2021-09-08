@@ -318,7 +318,7 @@ function CompanySummary(props) {
                     <Typography className={classes.description} >{summary.description}</Typography>
                 </div>
                 <div className={classes.footer} >
-                    <Link to={`/employer/company/${props.job.organization.id}`}>
+                    <Link to={`/employer/profile/${props.job.organization.id}`}>
                         <Button className={classes.applyButton}>View Full Profile</Button>
                     </Link>
                 </div>

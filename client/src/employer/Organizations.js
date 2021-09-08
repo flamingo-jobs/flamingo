@@ -11,7 +11,8 @@ import LoginModal from './components/loginModal';
 import OrganizationCard from './components/OrganizationCard';
 import OrganizationFilters from './components/OrganizationFilters';
 import OrgSearchBar from './components/OrgSearchBar';
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setReduxFavoriteOrgIds } from "../redux/actions";
 
 const useStyles = makeStyles((theme) => ({
     jobsGrid: {
@@ -53,6 +54,7 @@ function Organizations(props) {
 
     // Redux
     const reduxFavoriteOrgIds = useSelector(state => state.favoriteOrgIds);
+    const dispatch = useDispatch();
 
     const jwt = require("jsonwebtoken");
     const token = sessionStorage.getItem("userToken");
@@ -147,12 +149,12 @@ function Organizations(props) {
     }
 
     const retrieveJobseeker = async () => {
-        if (isSignedIn && role === "jobeeker" && reduxFavoriteOrgIds === "empty") {
-            console.log("DB called")
+        if (isSignedIn && role === "jobseeker" && reduxFavoriteOrgIds === "empty") {
             try {
                 const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
                 if (response.data.success) {
                     setFavoriteOrgs(response.data.jobseeker.favoriteOrganizations);
+                    dispatch(setReduxFavoriteOrgIds(response.data.jobseeker.favoriteOrganizations));
                 }
             } catch (err) {
                 console.log(err);

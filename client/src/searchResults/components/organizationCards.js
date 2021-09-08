@@ -5,7 +5,8 @@ import FloatCard from "../../components/FloatCard";
 import BACKEND_URL from "../../Config";
 import OrganizationCard from "./../../employer/components/OrganizationCard";
 import SearchNotFound from "./searchNotFound";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setReduxFavoriteOrgIds } from "../../redux/actions";
 
 const useStyles = makeStyles((theme) => ({
   orgCardWrapper: {
@@ -18,8 +19,9 @@ const OrganizationCards = (props) => {
 
   // Redux
   const reduxFavoriteOrgIds = useSelector(state => state.favoriteOrgIds);
+  const dispatch = useDispatch();
 
-  const [favoriteOrgs, setFavoriteOrgs] = useState("empty");
+  const [favoriteOrgIds, setFavoriteOrgIds] = useState("empty");
 
   const jwt = require("jsonwebtoken");
   const isSignedIn = sessionStorage.getItem("userToken") ? true : false;
@@ -40,13 +42,14 @@ const OrganizationCards = (props) => {
       try {
         const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
         if (response.data.success) {
-            setFavoriteOrgs(response.data.jobseeker.favoriteOrganizations);
+            setFavoriteOrgIds(response.data.jobseeker.favoriteOrganizations);
+            dispatch(setReduxFavoriteOrgIds(response.data.jobseeker.favoriteOrganizations));
         }
       } catch (err) {
           console.log(err);
       }
     } else {
-      setFavoriteOrgs(reduxFavoriteOrgIds);
+      setFavoriteOrgIds(reduxFavoriteOrgIds);
     }
   };
   
@@ -66,8 +69,8 @@ const OrganizationCards = (props) => {
             <div className={classes.orgCardWrapper} key={organization._id}>
               <OrganizationCard
                 info={organization}
-                favoriteOrgs={favoriteOrgs}
-                setFavoriteOrgs={setFavoriteOrgs}
+                favoriteOrgIds={favoriteOrgIds}
+                setFavoriteOrgIds={setFavoriteOrgIds}
               ></OrganizationCard>
             </div>
           ))}

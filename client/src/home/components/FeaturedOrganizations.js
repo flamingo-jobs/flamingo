@@ -9,7 +9,8 @@ import NoInfo from '../../components/NoInfo';
 import SnackBarAlert from '../../components/SnackBarAlert';
 import BACKEND_URL from '../../Config';
 import Organization from '../../employer/components/Organization';
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setReduxFavoriteOrgIds } from "../../redux/actions";
 
 const jwt = require("jsonwebtoken");
 
@@ -41,6 +42,8 @@ function FeaturedOrganizations() {
 
     // Redux
     const reduxFavoriteOrgIds = useSelector(state => state.favoriteOrgIds);
+    const dispatch = useDispatch();
+
 
     const [alertShow, setAlertShow] = useState(false);
     const [alertData, setAlertData] = useState({ severity: "", msg: "" });
@@ -102,11 +105,12 @@ function FeaturedOrganizations() {
     }, []);
 
     const retrieveJobseeker = async () => {
-        if (isSignedIn && userId && role === "jobseeker" && reduxFavoriteOrgIds === "empty") {
+        if (isSignedIn && role === "jobseeker" && reduxFavoriteOrgIds === "empty") {
             try {
                 const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
                 if (response.data.success) {
                     setFavoriteOrgIds(response.data.jobseeker.favoriteOrganizations);
+                    dispatch(setReduxFavoriteOrgIds(response.data.jobseeker.favoriteOrganizations));
                 }
             } catch (err) {
                 console.log(err);
