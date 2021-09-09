@@ -360,7 +360,6 @@ function CompanyBasicInfo(props) {
   };
 
   const getVerificationStatus = () => {
-    const loginId = sessionStorage.getItem("loginId");
     axios
       .get(`${BACKEND_URL}/employer/verificationStatus/${loginId}`)
       .then((res) => {
