@@ -236,7 +236,7 @@ const getAllApplications = async (req, res) => {
         for (let jindex = 0; jindex < job.applicationDetails.length; jindex++) {
           const user = job.applicationDetails[jindex];
           var a = await Jobseeker.findById(user.userId);
-          temp.push({ job: job.title, name: a.name });
+          temp.push({ job: job.title, name: a.name,jobseekerId:a._id });
         }
       }
 
