@@ -81,6 +81,7 @@ const NewApplicants = (props) => {
     //   return require(`../../../../employee/images/profilePic.jpg`).default
     // }
   }
+
   return (
     <div className={classes.root}>
       <FloatCard>
@@ -102,7 +103,7 @@ const NewApplicants = (props) => {
                   justifyContent="space-between"
                   alignItems="center">
                   <Grid item xs={3} lg={2}>
-                    <Avatar className={classes.avatar} src={`${FILE_URL}/jobseeker-profile-pictures/60eb046bf60c3701c051431e.jpg`} variant="square" />
+                    <Avatar className={classes.avatar} src={`${FILE_URL}/jobseeker-profile-pictures/${job.jobseekerId}.png`} variant="square" />
                   </Grid>
                   <Grid item xs={9} lg={10}>
                     <Typography variant="body2" className={classes.applicantName}>
