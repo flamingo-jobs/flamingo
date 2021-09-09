@@ -391,7 +391,7 @@ function handleOpen(){
                 <Typography gutterBottom style={{textAlign:'left',fontSize:'16px',fontWeight:'bold',color:'#666'}}>
                     {state.name}
                 </Typography>
-                <Typography variant="body2" color="textSecondary" style={{textAlign:'left'}}>
+                <Typography variant="body2" color="textSecondary" style={{textAlign:'left', whiteSpace: 'pre-wrap' }}>
                     {state.description}
                 </Typography>
                 <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'14px',fontWeight:'bold',paddingTop:'5px'}}>

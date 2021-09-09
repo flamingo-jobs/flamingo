@@ -1,11 +1,15 @@
 import {
-  Button, Grid, makeStyles, TextField,
-  Typography
+  Button,
+  Grid,
+  makeStyles,
+  TextField,
+  Typography,
 } from "@material-ui/core";
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import SnackBarAlert from "../../components/SnackBarAlert";
 import BACKEND_URL from "../../Config";
+import FRONTEND_URL from "../../Config";
 
 const packageList = [
   { desc: "standard", value: "1990" },
@@ -81,9 +85,9 @@ const PayHereCheckoutForm = () => {
   const [subscription, setSubscription] = useState({});
   const [billingDetails, setBillingDetails] = useState({
     merchant_id: "1218131",
-    return_url: "http://localhost:3000/employer/success-payment",
-    cancel_url: "http://localhost:3000/employer/cancel-payment",
-    notify_url: `${BACKEND_URL}/payment`,
+    return_url: FRONTEND_URL + "/employer/success-payment",
+    cancel_url: FRONTEND_URL + "/employer/cancel-payment",
+    notify_url: BACKEND_URL + "/payment",
     first_name: "",
     last_name: "",
     email: "",

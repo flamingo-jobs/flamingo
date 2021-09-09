@@ -11,7 +11,8 @@ import LoginModal from './components/loginModal';
 import OrganizationCard from './components/OrganizationCard';
 import OrganizationFilters from './components/OrganizationFilters';
 import OrgSearchBar from './components/OrgSearchBar';
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setReduxFavoriteOrgIds } from "../redux/actions";
 
 const useStyles = makeStyles((theme) => ({
     jobsGrid: {
@@ -53,6 +54,7 @@ function Organizations(props) {
 
     // Redux
     const reduxFavoriteOrgIds = useSelector(state => state.favoriteOrgIds);
+    const dispatch = useDispatch();
 
     const jwt = require("jsonwebtoken");
     const token = sessionStorage.getItem("userToken");
@@ -64,7 +66,7 @@ function Organizations(props) {
     );
 
     const userId = sessionStorage.getItem("loginId");
-    const [favoriteOrgs, setFavoriteOrgs] = useState("empty");
+    const [favoriteOrgIds, setFavoriteOrgIds] = useState("empty");
 
     const [organizations, setOrganizations] = useState([]);
     const [count, setCount] = useState(0);
@@ -147,18 +149,18 @@ function Organizations(props) {
     }
 
     const retrieveJobseeker = async () => {
-        if (isSignedIn && role === "jobeeker" && reduxFavoriteOrgIds === "empty") {
-            console.log("DB called")
+        if (isSignedIn && role === "jobseeker" && reduxFavoriteOrgIds === "empty") {
             try {
                 const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
                 if (response.data.success) {
-                    setFavoriteOrgs(response.data.jobseeker.favoriteOrganizations);
+                    setFavoriteOrgIds(response.data.jobseeker.favoriteOrganizations);
+                    dispatch(setReduxFavoriteOrgIds(response.data.jobseeker.favoriteOrganizations));
                 }
             } catch (err) {
                 console.log(err);
             }
         } else {
-            setFavoriteOrgs(reduxFavoriteOrgIds);
+            setFavoriteOrgIds(reduxFavoriteOrgIds);
         }
     };
 
@@ -184,8 +186,8 @@ function Organizations(props) {
                         userId={userId}
                         info={org}
                         userRole={props.userRole}
-                        favoriteOrgs={favoriteOrgs}
-                        setFavoriteOrgs={setFavoriteOrgs}
+                        favoriteOrgIds={favoriteOrgIds}
+                        setFavoriteOrgIds={setFavoriteOrgIds}
                         handleOpen={handleOpen}
                     />
                 </Grid>

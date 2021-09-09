@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     border: "1px solid red",
   },
   root: {
-    marginLeft: "12px",
+    // marginLeft: "12px",
   },
   title: {
     fontWeight: 600,
@@ -78,17 +78,23 @@ function JobDescription(props) {
     }
   }
 
+  const handleApply = () => {
+    setIsApplied(true);
+  }
+
   useEffect(() => {
     setJob("empty");
     retrieveJob();
     retrieveJobseeker();
+    checkApplied();
     displayMoreFromJobs();
     displayRelatedJobs();
   }, [jobId]);
 
   useEffect(() => {
+    setIsApplied(false);
+    setIsSaved(false);
     checkApplied();
-
   }, [job]);
 
   const retrieveJob = () => {
@@ -219,7 +225,7 @@ function JobDescription(props) {
         } else {
           return (
             <Grid item xs={12}>
-              <ApplyForm userId={userId} jobId={jobId}></ApplyForm>
+              <ApplyForm userId={userId} jobId={jobId} handleApply={handleApply}></ApplyForm>
             </Grid>
           );
         }

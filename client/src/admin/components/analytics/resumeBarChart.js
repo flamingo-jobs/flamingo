@@ -5,11 +5,15 @@ import { Bar } from "react-chartjs-2";
 import Theme from "../../../Theme";
 import axios from "axios";
 import BACKEND_URL from "../../../Config";
+import SnackBarAlert from "../../../components/SnackBarAlert";
 
 const ResumeBarChart = () => {
   const [pastMonths, setPastMonths] = useState([]);
   const [monthlyResumeCount, setMonthlyResumeCount] = useState([]);
   
+  const [alertShow, setAlertShow] = React.useState(false);
+  const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
+
   useEffect(() => {
     retrieveResumeCount();
   }, []);
@@ -24,7 +28,11 @@ const ResumeBarChart = () => {
         setMonthlyResumeCount(response.data.resumeCount);
       }
     } catch (err) {
-      console.log(err);
+      setAlertData({
+        severity: "error",
+        msg: "Resume chart data could not be retrieved.",
+      });
+      handleAlert();
     }
   };
 
@@ -43,8 +51,32 @@ const ResumeBarChart = () => {
     };
   };
 
+  const displayAlert = () => {
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
+
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertShow(false);
+  };
+
   return (
     <div>
+      {displayAlert()}
+
       <FloatCard>
         <Typography>Number of Resumes in Each Month</Typography>
         <Bar data={generateBarChart()} />

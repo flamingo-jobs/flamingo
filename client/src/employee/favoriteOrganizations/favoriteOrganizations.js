@@ -9,6 +9,8 @@ import { CircularProgress } from "@material-ui/core";
 import SnackBarAlert from "../../components/SnackBarAlert";
 import NoInfo from "../../components/NoInfo";
 import Loading from "../../components/Loading";
+import { useSelector, useDispatch } from "react-redux";
+import { setReduxFavoriteOrgIds } from "../../redux/actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,8 +23,21 @@ const useStyles = makeStyles((theme) => ({
 const FavoriteOrganizations = () => {
   const classes = useStyles();
   const [favoriteOrgIds, setFavoriteOrgIds] = useState([]);
-  const userId = sessionStorage.getItem("loginId");
   const [favoriteOrgs, setFavoriteOrgs] = useState([]);
+  
+  const jwt = require("jsonwebtoken");
+  const userId = sessionStorage.getItem("loginId");
+  const isSignedIn = sessionStorage.getItem("userToken") ? true : false;
+  const token = sessionStorage.getItem("userToken");
+  const [role, setRole] = useState(
+    jwt.decode(token, { complete: true })
+    ? jwt.decode(token, { complete: true }).payload.userRole
+    : null
+  );
+
+  // Redux
+  const reduxFavoriteOrgIds = useSelector(state => state.favoriteOrgIds);
+  const dispatch = useDispatch();
 
   // Alert related states
   const [alertShow, setAlertShow] = useState(false);
@@ -60,14 +75,21 @@ const FavoriteOrganizations = () => {
   }, [favoriteOrgIds]);
 
   const retrieveJobseeker = async () => {
-    try {
-      const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
-      if (response.data.success) {
-        setFavoriteOrgIds(response.data.jobseeker.favoriteOrganizations);
+    if(isSignedIn && role === "jobseeker" && userId && reduxFavoriteOrgIds === "empty"){
+      try {
+        const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
+        if (response.data.success) {
+          setFavoriteOrgIds(response.data.jobseeker.favoriteOrganizations);
+          dispatch(setReduxFavoriteOrgIds(response.data.jobseeker.favoriteOrganizations));
+
+        }
+      } catch (err) {
+        console.log(err);
       }
-    } catch (err) {
-      console.log(err);
+    } else {
+      setFavoriteOrgIds(reduxFavoriteOrgIds);
     }
+
   };
 
   const retrieveEmployers = async () => {

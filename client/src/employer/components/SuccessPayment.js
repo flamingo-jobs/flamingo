@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Typography, Box } from "@material-ui/core";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import FloatCard from "../../components/FloatCard";
 import SnackBarAlert from "../../components/SnackBarAlert";
 import Loading from "../../components/Loading";
@@ -45,17 +46,24 @@ const useStyles = makeStyles((theme) => ({
     margin: "0px",
   },
   text: {
-    color: theme.palette.tuftsBlueHover,
+    color: "green",
     fontSize: "20px",
     fontWeight: 500,
-    textAlign: "center",
+    marginLeft: "3.4em",
   },
-  signIn: {
-    backgroundColor: theme.palette.white,
-    color: theme.palette.tuftsBlue,
-    borderRadius: 25,
+  innerCard: {
     paddingLeft: 20,
     paddingRight: 20,
+  },
+  successTitle: {
+    marginLeft: "2em",
+    color: "green",
+  },
+  successIcon: {
+    position: "absolute",
+    width: "1.5em",
+    height: "1.5em",
+    marginRight: "1em",
   },
 }));
 
@@ -176,14 +184,20 @@ const SuccessPayment = (props) => {
               sm={12}
               spacing={3}
               direction="row"
-              className={classes.signIn}
+              className={classes.innerCard}
               alignItems="left"
               justify="left"
               align="left"
             >
               <Grid item xs={12}>
                 <Box mt={2} />
-                <Typography variant="h4">Payment Successful!</Typography>
+                <CheckCircleIcon
+                  style={{ fill: "green" }}
+                  className={classes.successIcon}
+                />
+                <Typography variant="h4" className={classes.successTitle}>
+                  Payment Successful!
+                </Typography>
                 <Typography className={classes.text}>
                   Download your invoice below
                 </Typography>

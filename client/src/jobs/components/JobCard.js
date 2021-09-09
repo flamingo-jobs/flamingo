@@ -14,6 +14,7 @@ import SnackBarAlert from "../../components/SnackBarAlert";
 import BACKEND_URL, { FILE_URL } from "../../Config";
 import { setSavedJobCount } from "../../redux/actions";
 import LoginModal from './loginModal';
+import PeopleIcon from '@material-ui/icons/People';
 
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -243,6 +244,13 @@ function JobCard(props) {
         }
     }
 
+    const numOfApplicants = () => {
+        if(props.info.applicationDetails?.length === 1){
+            return `${props.info.applicationDetails.length} applicant`;
+        }
+        return `${props.info.applicationDetails.length} applicants`;
+    }
+
     return (
         <FloatCard >
             {displayAlert()}
@@ -269,6 +277,7 @@ function JobCard(props) {
                     <div className={classes.infoTags}>
                         <Chip icon={<LocationOnRoundedIcon />} label={props.info.location} className={classes.tag} />
                         <Chip icon={<WorkRoundedIcon />} label={props.info.type} className={classes.tag} />
+                        <Chip icon={<PeopleIcon />} label={numOfApplicants()} className={classes.tag} />
                     </div>
                 </div>
                 <div className={classes.footer} >

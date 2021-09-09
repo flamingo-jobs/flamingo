@@ -410,19 +410,24 @@ export default function Topbar(props) {
         className={classes.profileMenu}
 
       >
-        <MenuItem className={classes.menuItem} onClick={handleMenuClose}>
-          <div className={classes.menuIcon}>
-            <PersonRoundedIcon />
-          </div>
-          <Typography className={classes.menuText} >Profile</Typography>
-        </MenuItem>
+        <Link to="/jobseeker/profile">
+          <MenuItem className={classes.menuItem} onClick={handleMenuClose}>
+              <div className={classes.menuIcon}>
+                <PersonRoundedIcon />
+              </div>
+              <Typography className={classes.menuText} >Profile</Typography>
+          </MenuItem>
+        </Link>
 
-        <MenuItem className={classes.menuItem} onClick={() => { history.push(`/${props.user}/settings`) }}>
-          <div className={classes.menuIcon}>
-            <SettingsRoundedIcon />
-          </div>
-          <Typography className={classes.menuText} >Settings</Typography>
-        </MenuItem>
+        <Link to="/jobseeker/settings">
+          <MenuItem className={classes.menuItem} onClick={() => { history.push(`/${props.user}/settings`) }}>
+              <div className={classes.menuIcon}>
+                <SettingsRoundedIcon />
+              </div>
+              <Typography className={classes.menuText}>Settings</Typography>
+          </MenuItem>
+        </Link>
+
         <Button
           onClick={() => {
             localStorage.clear("userToken");
@@ -481,7 +486,7 @@ export default function Topbar(props) {
                   </IconButton>
                 </Link>
                 <Link to="/jobseeker/favoriteOrganizations">
-                  <IconButton aria-label="" className={classes.topBarIcon} style={{ border: "1px solid red" }}>
+                  <IconButton aria-label="" className={classes.topBarIcon}>
                     <Badge badgeContent={favoriteOrgCount} color="secondary">
                       <FavoriteIcon />
                     </Badge>

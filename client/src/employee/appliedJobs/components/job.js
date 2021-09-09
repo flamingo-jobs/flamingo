@@ -20,6 +20,7 @@ import download from "downloadjs";
 import UploadModal from "./uploadModal";
 import SnackBarAlert from "../../../components/SnackBarAlert";
 import { Link } from "react-router-dom";
+import PeopleIcon from '@material-ui/icons/People';
 
 const useStyles = makeStyles((theme) => ({
   border: {
@@ -73,6 +74,10 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     fontWeight: 500,
+  },
+  titleLink:{
+    color: "inherit",
+    textDecoration: "inherit",
   },
   infoTags: {
     marginTop: 10,
@@ -263,6 +268,13 @@ const Job = (props) => {
     );
   };
 
+  const numOfApplicants = () => {
+    if(job.applicationDetails?.length === 1){
+      return `${job.applicationDetails.length} applicant`;
+    }
+    return `${job.applicationDetails.length} applicants`;
+  }
+
   // style={{border: "1px solid red"}}
   const displayJob = () => {
     if (job !== "empty") {
@@ -293,13 +305,17 @@ const Job = (props) => {
                         variant="square"
                       />
                       <div className={classes.headerInfo}>
-                        <Typography
-                          variant="h5"
-                          className={classes.title}
-                          onClick={handleTitleClick}
-                        >
-                          {job.title}
-                        </Typography>
+
+                        <Link to={`/jobDescription/${job._id}`} className={classes.titleLink}>
+                          <Typography
+                            variant="h5"
+                            className={classes.title}
+                            onClick={handleTitleClick}
+                          >
+                            {job.title}
+                          </Typography>
+                        </Link>
+
                         <Typography
                           variant="h6"
                           className={classes.companyName}
@@ -319,6 +335,11 @@ const Job = (props) => {
                       <Chip
                         icon={<WorkRoundedIcon />}
                         label={job.type}
+                        className={classes.tag}
+                      />
+                      <Chip
+                        icon={<PeopleIcon />}
+                        label={numOfApplicants()}
                         className={classes.tag}
                       />
                     </div>

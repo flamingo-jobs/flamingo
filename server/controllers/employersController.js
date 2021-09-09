@@ -63,6 +63,8 @@ const getForTable = (req, res) => {
         categories: obj.categories,
         isFeatured: obj.isFeatured,
         locations: obj.locations,
+        verificationFileName: obj.verificationFileName,
+        verificationStatus: obj.verificationStatus
       };
 
       return newObj;

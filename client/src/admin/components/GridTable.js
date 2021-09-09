@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { DataGrid, GridToolbar } from '@material-ui/data-grid';
-import { Grid, Button, makeStyles } from '@material-ui/core';
+import { Grid, Button, makeStyles, IconButton } from '@material-ui/core';
 import BACKEND_URL from '../../Config';
 import axios from 'axios';
 import NoRowGridOverlay from './NoRowGridOverlay';
@@ -17,6 +17,10 @@ import SaveRoundedIcon from '@material-ui/icons/SaveRounded';
 import SnackBarAlert from '../../components/SnackBarAlert';
 import AddNewCatePopup from './AddNewCatePopup';
 import FloatCard from '../../components/FloatCard';
+import { Link } from 'react-router-dom';
+import { FILE_URL } from './../../Config';
+import EditRoundedIcon from '@material-ui/icons/EditRounded';
+import VerificationDialog from './VerificationDialog';
 
 const useStyles = makeStyles((theme) => ({
     table: {
@@ -99,7 +103,77 @@ function GridTable(props) {
 
 
     const [rows, setRows] = useState([]);
-    const columns = props.columns;
+
+    const employerColumns = [{ field: 'name', headerName: 'Name', width: 150, editable: false },
+    { field: 'email', headerName: 'Email', width: 150, editable: false },
+    {
+        field: 'dateRegistered', headerName: 'Registered Date', width: 200, editable: false, valueFormatter: (params) => {
+            const valueFormatted = params.value.toString();
+            return `${valueFormatted}`;
+        },
+    },
+    { field: 'locations', headerName: 'Locations', width: 250, editable: false },
+    {
+        field: 'verificationStatus', headerName: 'Verification Status', width: 200, editable: false, renderCell: (params) => (
+            <div style={{ display: 'flex', justifyContent: 'space-between', minWidth: '-webkit-fill-available', alignItems: 'center' }}>
+                {params.value}
+                {params.value !== "none" ? <IconButton onClick={() => {
+                    handleOpenVerification(params.row.id, params.value);
+                }}><EditRoundedIcon /></IconButton> : null}
+            </div>
+        ),
+    },
+    {
+        field: 'verificationFileName', headerName: 'Verification Document', width: 200, editable: false, renderCell: (params) => (
+            <>
+                {params.value ?
+                    <Link to={{ pathname: `${FILE_URL}/verification/${params.value}` }} target="_blank" download>
+                        <Button
+                            color="primary"
+                            size="small"
+                            style={{ marginLeft: 16 }}
+                        >
+                            Open
+                        </Button>
+                    </Link>
+                    : null}
+            </>
+        ),
+    },
+    { field: 'subscription', headerName: 'Subscription', width: 170, editable: false },
+    {
+        field: 'ratings', headerName: 'Ratings', width: 150, editable: false
+    },
+    { field: 'categories', headerName: 'Categories', width: 200, editable: false },
+    { field: 'isFeatured', headerName: 'Is Featured', width: 170, editable: false },
+
+
+    ];
+
+    let columns;
+
+    if (props.type === "employers") {
+        columns = employerColumns;
+    } else {
+        columns = props.columns;
+    }
+
+    const [openVerification, setOpenVerification] = useState(false);
+    const [verifyId, setVerifyId] = useState(false);
+    const [verifyStatus, setVerifyStatus] = useState(false);
+
+    const handleOpenVerification = (id, status) => {
+        setVerifyId(id);
+        setVerifyStatus(status);
+        setOpenVerification(true);
+
+    }
+
+    const handleCloseVerification = () => {
+        setVerifyId(false);
+        setVerifyStatus(false);
+        setOpenVerification(false);
+    }
 
     const handleEditRowModelChange = React.useCallback((id, field, props) => {
         setEditRowsModel(id);
@@ -136,6 +210,7 @@ function GridTable(props) {
         retrieveCategories();
         setDeleteSuccess(false);
     }, [deleteSuccess]);
+
 
     useEffect(() => {
         if (updateSuccess === true) {
@@ -283,6 +358,12 @@ function GridTable(props) {
         }
     }
 
+    const displayVerificationPopup = () => {
+        if (openVerification) {
+            return <VerificationDialog open={openVerification} close={handleCloseVerification} verifyId={verifyId} verifyStatus={verifyStatus} handleRefresh={handleRefresh} />
+        }
+    }
+
     const saveChanges = () => {
         updatedRows.forEach((item) => {
             let data = {
@@ -379,6 +460,7 @@ function GridTable(props) {
                     </div>
                 </FloatCard>
             </Grid>
+            {displayVerificationPopup()}
             {displayAlert()}
         </Grid >
     )

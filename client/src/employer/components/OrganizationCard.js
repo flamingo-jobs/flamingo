@@ -193,12 +193,12 @@ function OrganizationCard(props) {
   };
 
   useEffect(() => {
-    if (props.favoriteOrgs !== "empty") {
-      setIsSaved(props.favoriteOrgs.includes(props.info._id));
+    if (props.favoriteOrgIds !== "empty") {
+      setIsSaved(props.favoriteOrgIds.includes(props.info._id));
     } else {
       setIsSaved(false);
     }
-  }, [props.favoriteOrgs]);
+  }, [props.favoriteOrgIds]);
 
   const getAvgRating = (arr = []) => {
     return (
@@ -228,10 +228,10 @@ function OrganizationCard(props) {
     if (isSaved) {
       // Unsave
       setIsSaved(!isSaved);
-      const newFavoriteOrgs = props.favoriteOrgs.filter(
+      const newFavoriteOrgs = props.favoriteOrgIds.filter(
         (id) => id !== props.info._id
       );
-      props.setFavoriteOrgs(newFavoriteOrgs);
+      props.setFavoriteOrgIds(newFavoriteOrgs);
 
       try {
         const response = await axios.patch(
@@ -257,8 +257,8 @@ function OrganizationCard(props) {
     } else {
       // Save
       setIsSaved(!isSaved);
-      const newFavoriteOrgs = [...props.favoriteOrgs, props.info._id];
-      props.setFavoriteOrgs(newFavoriteOrgs);
+      const newFavoriteOrgs = [...props.favoriteOrgIds, props.info._id];
+      props.setFavoriteOrgIds(newFavoriteOrgs);
       try {
         const response = await axios.patch(
           `${BACKEND_URL}/jobseeker/updateFavoriteOrgs/${userId}`,

@@ -35,6 +35,12 @@ const employerSchema = new mongoose.Schema({
   verificationStatus: {
     type: String,
   },
+  verificationFileName: {
+    type: String,
+  },
+  verificationRequestDate: {
+    type: Date,
+  },
   scale: {
     type: String,
   },

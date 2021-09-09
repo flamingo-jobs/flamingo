@@ -62,7 +62,7 @@ const checkWhetherFeatured = (job) => {
 // }
 
 const getAll = async (req, res) => {
-    console.log(JSON.stringify(req.body.queryParams));
+    // console.log(JSON.stringify(req.body.queryParams));
     if (req.body.relatedJob) {
         Jobs.find(req.body.queryParams, { score: { $meta: "textScore" } }, req.body.options).sort({ "postedDate": -1 }).exec((err, jobs) => {
             if (err) {
@@ -70,6 +70,15 @@ const getAll = async (req, res) => {
                     error: err
                 })
             }
+// 
+            const newJobs = jobs.filter((j) => {
+                const today = new Date();
+                const dueDate = new Date(j.dueDate);
+                if(today < dueDate){
+                    return j;
+                }
+            });
+
             return res.status(200).json({
                 success: true,
                 existingData: jobs
@@ -82,6 +91,14 @@ const getAll = async (req, res) => {
                     error: err
                 })
             }
+            const newJobs = jobs.filter((j) => {
+                const today = new Date();
+                const dueDate = new Date(j.dueDate);
+                if(today < dueDate){
+                    return j;
+                }
+            });
+
             return res.status(200).json({
                 success: true,
                 existingData: jobs

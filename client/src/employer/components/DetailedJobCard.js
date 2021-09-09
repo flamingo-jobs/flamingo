@@ -6,7 +6,7 @@ import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 import FloatCard from '../../components/FloatCard';
 import { Link } from 'react-router-dom';
 import ReactTimeAgo from 'react-time-ago'
-
+import PeopleIcon from '@material-ui/icons/People';
 import { Doughnut } from 'react-chartjs-2';
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import CancelIcon from "@material-ui/icons/Cancel";
@@ -114,6 +114,13 @@ function EmployerJobCard(props) {
     const classes = useStyles();
     const { loading = false } = props;
 
+    const numOfApplicants = () => {
+        if(props.info.applicationDetails?.length === 1){
+            return `${props.info.applicationDetails.length} applicant`;
+        }
+        return `${props.info.applicationDetails.length} applicants`;
+    }
+
     return (
         <FloatCard >
             <Grid container spacing={2}>
@@ -144,6 +151,7 @@ function EmployerJobCard(props) {
                             <div className={classes.infoTags}>
                                 <Chip icon={<LocationOnRoundedIcon />} label={props.info.location} className={classes.tag} />
                                 <Chip icon={<WorkRoundedIcon />} label={props.info.type} className={classes.tag} />
+                                <Chip icon={<PeopleIcon />} label={numOfApplicants()} className={classes.tag} />
                             </div>
                         </div>
                         <div className={classes.footer} >

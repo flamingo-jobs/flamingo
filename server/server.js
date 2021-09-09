@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 require("dotenv").config();
 const compression = require("compression");
-const hemlmet = require("helmet");
+const helmet = require("helmet");
 const app = express();
 
 //import routes
@@ -31,8 +31,13 @@ app.use("/companyImage", express.static("companyImage"));
 
 // app middleware
 app.use(bodyParser.json());
+app.use(helmet());
+app.use(
+  helmet.frameguard({
+    action: "deny"
+  })
+);
 app.use(cors());
-app.use(hemlmet());
 app.use(compression());
 // route middleware
 app.use(userRoutes);
