@@ -8,6 +8,7 @@ import {
 } from "@material-ui/core";
 import { FavoriteRounded } from "@material-ui/icons";
 import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
+import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import FloatCard from "../../components/FloatCard";
 import Rating from "@material-ui/lab/Rating";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
@@ -140,6 +141,10 @@ const useStyles = makeStyles((theme) => ({
   headerInfo: {
     display: "block",
   },
+  verifiedBadge: {
+    width: "0.8em",
+    height: "0.8em"
+  }
 }));
 
 function OrganizationCard(props) {
@@ -153,6 +158,7 @@ function OrganizationCard(props) {
   const token = sessionStorage.getItem("userToken");
   const userId = sessionStorage.getItem("loginId");
   const [logo, setLogo] = useState(require(`../../components/images/loadingImage.gif`).default);
+  const [verified, setVerified] = useState(false);
   const [openings, setOpenings] = useState(false);
 
   const [role, setRole] = useState(
@@ -183,6 +189,7 @@ function OrganizationCard(props) {
   useEffect(() => {
     loadLogo();
     loadOpenings();
+    getVerificationStatus();
   }, [])
 
   const handleAlertClose = (event, reason) => {
@@ -213,6 +220,21 @@ function OrganizationCard(props) {
       setLogo(require(`../../employer/images/default_company_logo.png`).default);
     })
   }
+
+  const getVerificationStatus = () => {
+    axios
+      .get(`${BACKEND_URL}/employer/verificationStatus/${props.info._id}`)
+      .then((res) => {
+        if (res.data.success) {
+          if (res.data.verificationStatus === "verified") setVerified(true);
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          setVerified(false);
+        }
+      });
+  };
 
   const loadOpenings = () => {
     axios.get(`${BACKEND_URL}/jobs/getOpeningsByOrg/${props.info._id}`).then(res => {
@@ -341,7 +363,7 @@ function OrganizationCard(props) {
             />
             <div className={classes.headerInfo}>
               <Typography variant="h5" className={classes.title}>
-                {props.info.name}
+                {props.info.name} {verified?<VerifiedUserIcon className={classes.verifiedBadge} color="primary"/>:""}
               </Typography>
               <Chip
                 icon={<LocationOnRoundedIcon />}
