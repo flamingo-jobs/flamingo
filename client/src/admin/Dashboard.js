@@ -24,7 +24,7 @@ function Dashboard() {
                     alignItems="stretch" style={{ minHeight: "100%" }}>
                     <Grid item xs={12}>
                         <FloatCard>
-                            <Typography style={{fontSize: 18, fontWeight: 500}}>Hi, Welcome back!</Typography>
+                            <Typography style={{ fontSize: 18, fontWeight: 500 }}>Hi, Welcome back!</Typography>
                         </FloatCard>
                     </Grid>
                     <Grid item xs={12} md={6} >
@@ -51,7 +51,7 @@ function Dashboard() {
             </Grid>
 
             <Grid item xs={12} md={6}>
-                <ResumeBarChart />
+                <JobsLineChart />
             </Grid>
 
             <Grid item xs={12} md={6}>
@@ -59,7 +59,7 @@ function Dashboard() {
             </Grid>
 
             <Grid item xs={12} md={6}>
-            <CategoryPieChart />
+                <CategoryPieChart />
 
             </Grid>
         </Grid>
