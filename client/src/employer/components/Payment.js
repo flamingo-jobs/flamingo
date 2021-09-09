@@ -108,7 +108,8 @@ export default function Payment() {
               m={1}
               className={classes.annual}
             >
-              LKR {subscription.value}/mo when billed annually
+              For {subscription.desc === "standard" ? "medium" : "large"}-scale
+              companies
             </Box>
             <Divider variant="middle" />
           </Typography>
@@ -131,12 +132,12 @@ export default function Payment() {
               />
               <Chip
                 icon={<CheckCircleIcon className={classes.icon} />}
-                label="Resume Shortlisting"
+                label="Upto 5 users"
                 className={classes.features}
               />
               <Chip
                 icon={<CheckCircleIcon className={classes.icon} />}
-                label="Personalized Recommendations"
+                label="Customized Resume Shortlisting"
                 className={classes.features}
               />
             </div>
@@ -144,12 +145,12 @@ export default function Payment() {
             <div className={classes.featuresContainer}>
               <Chip
                 icon={<CheckCircleIcon className={classes.icon} />}
-                label="Post any number of jobs"
+                label="Post unlimited jobs"
                 className={classes.features}
               />
               <Chip
                 icon={<CheckCircleIcon className={classes.icon} />}
-                label="Receive any number of resumes"
+                label="Receive unlimited resumes"
                 className={classes.features}
               />
               <Chip
@@ -159,17 +160,12 @@ export default function Payment() {
               />
               <Chip
                 icon={<CheckCircleIcon className={classes.icon} />}
-                label="Resume Shortlisting"
+                label="Unlimited users"
                 className={classes.features}
               />
               <Chip
                 icon={<CheckCircleIcon className={classes.icon} />}
-                label="Personalized Recommendations"
-                className={classes.features}
-              />
-              <Chip
-                icon={<CheckCircleIcon className={classes.icon} />}
-                label="Advanced Analytics"
+                label="Job Specific Resume Shortlisting"
                 className={classes.features}
               />
             </div>

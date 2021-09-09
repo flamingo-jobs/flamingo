@@ -1,5 +1,10 @@
 import {
-  Chip, Container, Grid, IconButton, TextField, Typography
+  Chip,
+  Container,
+  Grid,
+  IconButton,
+  TextField,
+  Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
@@ -428,7 +433,19 @@ export const Experience = ({
                         <Grid item xs={12} md={12} align="center">
                           <Autocomplete
                             multiple
-                            options={["Angular", "React", "Vue JS"]}
+                            options={[
+                              "Angular",
+                              "React",
+                              "Vue JS",
+                              "Node JS",
+                              "Spring Boot",
+                              "Java",
+                              "Python",
+                              "GO",
+                              "HTML",
+                              "CSS",
+                              "PHP",
+                            ]}
                             defaultValue={x.techStack}
                             freeSolo
                             disableClearable

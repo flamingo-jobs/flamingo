@@ -364,7 +364,7 @@ export default function StartHiring() {
         type: "image/*",
       });
 
-      await uploadFileToBlob(newFile, "EmployerLogos");
+      await uploadFileToBlob(newFile, "employer-profile-pictures");
       const updateData = { logo: fileName };
       axios
         .post(`${BACKEND_URL}/employers/update/${loginId}`, updateData)
@@ -623,6 +623,7 @@ export default function StartHiring() {
                             <TextField
                               label="Website"
                               name="website"
+                              type="url"
                               value={formData.website}
                               onChange={setForm}
                               variant="outlined"

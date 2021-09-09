@@ -1,5 +1,9 @@
 import {
-  Container, Grid, IconButton, TextField, Typography
+  Container,
+  Grid,
+  IconButton,
+  TextField,
+  Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
@@ -398,22 +402,15 @@ export const Volunteering = ({
                           />
                         </Grid>
                         <Grid item xs={12} align="center">
-                          <Autocomplete
-                            options={university}
-                            getOptionLabel={(option) => option.university}
-                            renderInput={(params) => (
-                              <TextField
-                                size="small"
-                                {...params}
-                                name="relatedTo"
-                                label="Related To"
-                                variant="outlined"
-                                value={x.relatedTo}
-                                onChange={(e) =>
-                                  handleAchievementInputChange(e, i)
-                                }
-                              />
-                            )}
+                          <TextField
+                            size="small"
+                            className={classes.textField}
+                            name="relatedTo"
+                            label="Related To"
+                            variant="outlined"
+                            fullWidth
+                            value={x.relatedTo}
+                            onChange={(e) => handleAchievementInputChange(e, i)}
                           />
                         </Grid>
                         <Grid item xs={12} md={6} align="center">
