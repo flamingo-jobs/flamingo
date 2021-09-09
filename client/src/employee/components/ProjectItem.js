@@ -30,6 +30,7 @@ import React, { useEffect, useState } from 'react';
 import SnackBarAlert from "../../components/SnackBarAlert";
 import BACKEND_URL from '../../Config';
 import theme from '../../Theme';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -157,7 +158,7 @@ function ProjectItem(props) {
     projectEndDate = props.to.split("/");
   }
   const [state, setState] = useState({name: props.name, link: props.link, description: props.description, startYear: projectStartDate[1], startMonth: projectStartDate[0], endYear: projectEndDate[1], endMonth: projectEndDate[0], usedTech: props.usedTech});
-
+  const [newData, setNewData] = useState(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
   const [alertData, setAlertData] = useState({severity: "", msg: ""});
@@ -339,7 +340,7 @@ function handleOpen(){
         description: state.description,
         from: state.startMonth+"/"+state.startYear,
         to: state.endMonth+"/"+state.endYear,
-        usedTech: state.usedTech
+        usedTech: state.usedTech,
   }
 
     axios.put(`${BACKEND_URL}/jobseeker/updateProject/${loginId}`,{index:props.index,project:project})
@@ -556,7 +557,7 @@ function handleOpen(){
                                 </Grid>
                               </Grid>
                             </Grid>
-                            <TextField
+                            {/* <TextField
                             className={classes.field}
                             id="outlined-basic"
                             label="Tech. Stack"
@@ -566,6 +567,29 @@ function handleOpen(){
                             value={state.usedTech}
                             onChange={onChangeUsedTech}
                             required
+                            /> */}
+                            <Autocomplete
+                                className={classes.field}
+                                multiple
+                                id="tags-outlined"
+                                filterSelectedOptions
+                                options={props.techList}
+                                getOptionLabel={(option) => option}
+                                value={state.usedTech}
+                                onChange={(event, value) => {
+                                  setState(prevState => {
+                                    return {...prevState, usedTech: value}
+                                  })
+                                }}
+                                renderInput={(params) => (
+                                  <TextField
+                                    {...params}
+                                    variant="standard"
+                                    label="Tech. Stack"
+                                    placeholder="+ new"
+                                    
+                                  />
+                                )}
                             />
                             </div>
                         </form>

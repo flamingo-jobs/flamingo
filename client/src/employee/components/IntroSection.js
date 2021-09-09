@@ -350,6 +350,12 @@ function IntroSection(props) {
     })
   }
 
+  function onChangeTagLine(e){
+    setState(prevState => {
+      return {...prevState, tagline: e.target.value}
+    })
+  }
+
   function onChangeIntro(e){
     setState(prevState => {
       return {...prevState, intro: e.target.value}
@@ -473,6 +479,16 @@ function IntroSection(props) {
                     style={{width:'45%'}}
                     />
                   </Grid>
+                  <TextField
+                    className={classes.field}
+                    id="outlined-multiline-static"
+                    label="Tagline"
+                    multiline
+                    rows={3}
+                    variant="outlined"
+                    value= {state.tagline}
+                    onChange= {onChangeTagLine}
+                  />
                   <TextField
                     className={classes.field}
                     id="outlined-multiline-static"

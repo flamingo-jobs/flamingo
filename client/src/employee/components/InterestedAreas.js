@@ -105,8 +105,8 @@ const useStyles = makeStyles({
     flexWrap: 'wrap',
     listStyle: 'none',
     backgroundColor: 'MintCream',
-    padding: "20px 10px 20px 10px",
-    marginBottom: 25,
+    padding: "10px",
+    marginBottom: 15,
     borderRadius: 10,
     marginTop: 0,
     "&:hover": {
@@ -340,7 +340,7 @@ function InterestedAreas(props) {
     <FloatCard>
       <Grid container spacing={3}>
         <Grid item xs style={{ textAlign: 'left',}}>
-            <Typography gutterBottom variant="h5" style={{color: theme.palette.tuftsBlue,padding:'10px',fontWeight:'bold'}}>
+            <Typography gutterBottom variant="h5" style={{color: theme.palette.tuftsBlue,padding:'10px 10px 0px 10px',fontWeight:'bold'}}>
                 <InsertEmoticon style={{color: theme.palette.turfsBlue,marginRight: '10px',marginBottom:'-5px',fontSize:'27'}}/>
                 Interested Areas
             </Typography>
@@ -353,7 +353,7 @@ function InterestedAreas(props) {
             </> : null }
         </Grid>       
       </Grid>
-      <Grid container spacing={3}>
+      <Grid container>
       {removeDuplicates()}
       {showCombo()}
       
