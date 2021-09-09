@@ -12,7 +12,7 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 import MenuRoundedIcon from "@material-ui/icons/MenuRounded";
 import "./styles/Custom.css";
 import logo from "./images/logo.jpg";
-import { Button, Avatar, Typography } from "@material-ui/core";
+import { Button, Avatar, Typography, ClickAwayListener } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import NavMenu from "./NavMenu";
@@ -30,7 +30,7 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { setFavoriteOrgCount } from "../redux/actions";
 import { setSavedJobCount } from "../redux/actions";
-
+import Dialog from '@material-ui/core/Dialog';
 
 const jwt = require("jsonwebtoken");
 const token = sessionStorage.getItem("userToken");
@@ -379,7 +379,7 @@ export default function Topbar(props) {
 
   const notificationId = "primary-notification-menu";
   const renderNotification = (
-    <Backdrop className={classes.backdrop} open={isNotificationMenuOpen} onClick={handleNotificationClose}>
+    <Dialog onClose={handleNotificationClose} aria-labelledby="simple-dialog-title" open={Boolean(notificationAnchorEl)}>
       <Menu
         anchorEl={notificationAnchorEl}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
@@ -389,16 +389,18 @@ export default function Topbar(props) {
         open={isNotificationMenuOpen}
         onClose={handleNotificationClose}
         className={classes.notificationMenu}
-
       >
         <NotificationsPopover loginId={token ? header.payload.loginId : null} userRole={token ? header.payload.userRole : null} />
       </Menu>
-    </Backdrop>
+
+    </Dialog>
+
   );
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
-    <Backdrop className={classes.backdrop} open={isMenuOpen} onClick={handleMenuClose}>
+    <Dialog onClose={handleMenuClose} aria-labelledby="simple-dialog-title" open={Boolean(anchorEl)}>
+
       <Menu
         anchorEl={anchorEl}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
@@ -412,19 +414,19 @@ export default function Topbar(props) {
       >
         <Link to="/jobseeker/profile">
           <MenuItem className={classes.menuItem} onClick={handleMenuClose}>
-              <div className={classes.menuIcon}>
-                <PersonRoundedIcon />
-              </div>
-              <Typography className={classes.menuText} >Profile</Typography>
+            <div className={classes.menuIcon}>
+              <PersonRoundedIcon />
+            </div>
+            <Typography className={classes.menuText} >Profile</Typography>
           </MenuItem>
         </Link>
 
         <Link to="/jobseeker/settings">
           <MenuItem className={classes.menuItem} onClick={() => { history.push(`/${props.user}/settings`) }}>
-              <div className={classes.menuIcon}>
-                <SettingsRoundedIcon />
-              </div>
-              <Typography className={classes.menuText}>Settings</Typography>
+            <div className={classes.menuIcon}>
+              <SettingsRoundedIcon />
+            </div>
+            <Typography className={classes.menuText}>Settings</Typography>
           </MenuItem>
         </Link>
 
@@ -439,13 +441,14 @@ export default function Topbar(props) {
           <ExitToAppRoundedIcon className={classes.logoutIcon} />Log Out
         </Button>
       </Menu>
-    </Backdrop>
+    </Dialog>
   );
 
 
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
-    <Backdrop className={classes.backdrop} open={isMobileMenuOpen} onClick={handleMobileMenuClose}>
+    <Dialog onClose={handleMobileMenuClose} aria-labelledby="simple-dialog-title" open={Boolean(mobileMoreAnchorEl)}>
+
       <Menu
         anchorEl={mobileMoreAnchorEl}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
@@ -502,7 +505,7 @@ export default function Topbar(props) {
                 </Link>
               </>
             }
-            <IconButton aria-label="show 11 new notifications" className={classes.topBarIcon}>
+            <IconButton aria-label="show 11 new notifications" className={classes.topBarIcon} onClick={handleNotificationOpen}>
               <Badge badgeContent={notifications} color="secondary">
                 <NotificationsIcon />
               </Badge>
@@ -524,7 +527,7 @@ export default function Topbar(props) {
           <NavMenu user={props.user} />
         </div>
       </Menu>
-    </Backdrop>
+    </Dialog>
   );
   const preventDefault = (event) => event.preventDefault();
 

@@ -152,13 +152,13 @@ function NotificationItem({ notification }) {
 }
 
 export default function NotificationsPopover(props) {
-    const [notifications, setNotifications] = useState([]);
+    const [notifications, setNotifications] = useState(NOTIFICATIONS);
     const [totalUnRead, setTotalUnRead] = useState(0);
 
     const classes = useStyles();
 
     useEffect(() => {
-        retrieveNotifications();
+        // retrieveNotifications();
     }, []);
 
     useEffect(() => {
