@@ -35,14 +35,12 @@ function WeeklyApplications() {
   // style={{border: "1px solid red"}}
   return (
     <FloatCard>
-      <div className={classes.cardContainer}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Typography variant="h3">{weeklyApplications}</Typography>
+            <Typography variant="h2">{weeklyApplications}</Typography>
             <Typography>Weekly Applications</Typography>
           </Grid>
         </Grid>
-      </div>
     </FloatCard>
   );
 }

@@ -34,14 +34,12 @@ function NewJobPostings() {
 
   return (
     <FloatCard>
-      <div className={classes.cardContainer}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Typography variant="h3">{weeklyJobPostings}</Typography>
+            <Typography variant="h2">{weeklyJobPostings}</Typography>
             <Typography>New Job Postings</Typography>
           </Grid>
         </Grid>
-      </div>
     </FloatCard>
   );
 }

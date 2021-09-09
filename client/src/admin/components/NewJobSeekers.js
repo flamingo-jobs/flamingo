@@ -30,14 +30,8 @@ function NewJobSeekers() {
         <FloatCard>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
-                    <CircularProgressWithLabel value={percentage} />
-                </Grid>
-                <Grid item xs={12}>
-                    <Typography variant="h3">{userCount}</Typography>
+                    <Typography variant="h2">{userCount}</Typography>
                     <Typography>New Job Seekers</Typography>
-                </Grid>
-                <Grid item xs={12}>
-                    
                 </Grid>
             </Grid>
         </FloatCard>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Pie } from "react-chartjs-2";
-import { Typography } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import FloatCard from "../../../components/FloatCard";
 import axios from "axios";
 import BACKEND_URL from "../../../Config";
@@ -83,7 +83,11 @@ const CategoryPieChart = () => {
 
       <FloatCard>
         <Typography>Most Popular Job Categories</Typography>
-        <Pie data={genPieData()} />
+        <Grid container spacing={1} justify="center" >
+          <Grid item xs={10} md={6} style={{marginBottom: 5}}>
+        <Pie data={genPieData()}/>
+        </Grid>
+        </Grid>
       </FloatCard>
     </div>
   );
