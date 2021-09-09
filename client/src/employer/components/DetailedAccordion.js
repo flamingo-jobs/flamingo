@@ -238,7 +238,7 @@ export default function DetailedAccordion(props) {
     axios
       .put(`${BACKEND_URL}/employers/update/${props.employerId}`, data)
       .then((res) => {
-        if (res.data.sucess == "Updated successfully") {
+        if (res.data.success == "Updated successfully") {
           props.onSuccessUpdate();
         } else {
           props.onFailedUpdate();
