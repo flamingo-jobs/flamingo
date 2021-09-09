@@ -86,13 +86,15 @@ function JobDescription(props) {
     setJob("empty");
     retrieveJob();
     retrieveJobseeker();
+    checkApplied();
     displayMoreFromJobs();
     displayRelatedJobs();
   }, [jobId]);
 
   useEffect(() => {
+    setIsApplied(false);
+    setIsSaved(false);
     checkApplied();
-
   }, [job]);
 
   const retrieveJob = () => {
