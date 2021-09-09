@@ -163,7 +163,11 @@ const Reviews = (props) => {
         }
       }
     } catch (err) {
-      console.log(err);
+      setAlertData({
+        severity: "error",
+        msg: "Something went wrong, Please try again later!",
+      });
+      handleAlert();
     }
   };
 
@@ -174,7 +178,11 @@ const Reviews = (props) => {
         setJobseeker(response.data.jobseeker);
       }
     } catch (err) {
-      console.log(err);
+      setAlertData({
+        severity: "error",
+        msg: "Something went wrong, Please try again later!",
+      });
+      handleAlert();
     }
   };
 

@@ -5,12 +5,16 @@ import FloatCard from "../../../components/FloatCard";
 import Theme from "../../../Theme";
 import axios from "axios";
 import BACKEND_URL from "../../../Config";
+import SnackBarAlert from "../../../components/SnackBarAlert";
 
 const SubsBarChart = () => {
   const [pastMonths, setPastMonths] = useState([]);
   const [monthlyBasic, setMonthlyBasic] = useState([]);
   const [monthlyStandard, setMonthlyStandard] = useState([]);
   const [monthlyPremium, setMonthlyPremium] = useState([]);
+
+  const [alertShow, setAlertShow] = React.useState(false);
+  const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
 
   useEffect(() => {
     retrieveSubscriptions();
@@ -28,7 +32,11 @@ const SubsBarChart = () => {
         setMonthlyPremium(response.data.premium);
       }
     } catch (err) {
-      console.log(err);
+      setAlertData({
+        severity: "error",
+        msg: "Subscription chart data could not be retrieved.",
+      });
+      handleAlert();
     }
   };
 
@@ -64,8 +72,32 @@ const SubsBarChart = () => {
     };
   };
 
+  const displayAlert = () => {
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
+
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertShow(false);
+  };
+
   return (
     <div>
+      {displayAlert()}
+
       <FloatCard>
         <Typography>Monthly Subscriptions</Typography>
         <Bar data={generateBarChart()} />

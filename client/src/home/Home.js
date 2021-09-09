@@ -1,6 +1,6 @@
+import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import React from 'react';
 import FeaturedJobs from './components/FeaturedJobs';
 import FeaturedOrganizations from './components/FeaturedOrganizations';
 import HeroSection from './components/HeroSection';
@@ -27,6 +27,14 @@ const useStyles = makeStyles((theme) => ({
 function Home(props) {
     const classes = useStyles();
 
+    const jwt = require("jsonwebtoken");
+    const token = sessionStorage.getItem("userToken");
+    const [role, setRole] = useState(
+        jwt.decode(token, { complete: true })
+            ? jwt.decode(token, { complete: true }).payload.userRole
+            : null
+    );
+
     return (
         <Grid item container xs={12} spacing={3} direction="column"
         justify="space-between"
@@ -43,9 +51,11 @@ function Home(props) {
                 <Grid item container xs={12} md={6} spacing={3} direction="column"
                     justify="space-between"
                     alignItems="flex-start" className={classes.rightSubColumn}>
-                    <Grid item sm={12} className={classes.postJobSection}>
-                        <PostJobSection />
-                    </Grid>
+                    {role !== "jobseeker" && role !== "admin" && 
+                        <Grid item sm={12} className={classes.postJobSection}>
+                            <PostJobSection />
+                        </Grid>
+                    }
                     <Grid item sm={12} className={classes.featuredOrganizations}>
                         <FeaturedOrganizations />
                     </Grid>

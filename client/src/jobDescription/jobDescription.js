@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     border: "1px solid red",
   },
   root: {
-    marginLeft: "12px",
+    // marginLeft: "12px",
   },
   title: {
     fontWeight: 600,
