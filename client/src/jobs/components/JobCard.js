@@ -3,6 +3,7 @@ import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarkBorderRoundedIcon from '@material-ui/icons/BookmarkBorderRounded';
 import LocalOfferRoundedIcon from '@material-ui/icons/LocalOfferRounded';
 import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
+import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 import axios from "axios";
 import React, { useEffect, useState } from 'react';
@@ -89,6 +90,11 @@ const useStyles = makeStyles((theme) => ({
             backgroundColor: theme.palette.vividSkyBlueHover,
         }
     },
+    verifiedBadge: {
+        width: "0.5em",
+        height: "0.5em",
+        merginLeft: "0.4em"
+    }
 }))
 
 function JobCard(props) {
@@ -109,6 +115,7 @@ function JobCard(props) {
     );
 
     const [logo, setLogo] = useState(require(`../../components/images/loadingImage.gif`).default);
+    const [verified, setVerified] = useState(false);
 
     const [alertShow, setAlertShow] = useState(false);
     const [alertData, setAlertData] = useState({ severity: "", msg: "" });
@@ -136,6 +143,7 @@ function JobCard(props) {
 
     useEffect(() => {
         loadLogo();
+        getVerificationStatus();
     }, [])
 
     useEffect(() => {
@@ -153,6 +161,21 @@ function JobCard(props) {
             setLogo(require(`../../employer/images/default_company_logo.png`).default);
         })
     }
+
+    const getVerificationStatus = () => {
+        axios
+          .get(`${BACKEND_URL}/employer/verificationStatus/${props.info.organization.id}`)
+          .then((res) => {
+            if (res.data.success) {
+              if (res.data.verificationStatus === "verified") setVerified(true);
+            }
+          })
+          .catch((err) => {
+            if (err) {
+              setVerified(false);
+            }
+          });
+      };
 
     const loadName = () => {
         try {
@@ -283,7 +306,7 @@ function JobCard(props) {
                 <div className={classes.footer} >
                     <div className={classes.footerLeft}>
                         <Avatar className={classes.logo} src={logo} variant="square" />
-                        <Typography className={classes.company}>{loadName()}</Typography>
+                        <Typography className={classes.company}>{loadName()}{verified?<VerifiedUserIcon className={classes.verifiedBadge} color="primary" />:""}</Typography>
                     </div>
                     <div className={classes.footerRight} >
                         <Link to={`/jobDescription/${props.info._id}`}><Button className={classes.applyButton}>View Job</Button></Link>

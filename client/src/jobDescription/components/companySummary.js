@@ -2,6 +2,7 @@ import { Avatar, Button, Chip, Grid, makeStyles, Typography } from '@material-ui
 import { FavoriteRounded } from '@material-ui/icons';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
+import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import Rating from '@material-ui/lab/Rating';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
@@ -99,6 +100,11 @@ const useStyles = makeStyles((theme) => ({
     },
     description: {
         fontSize: 13
+    },
+    verifiedBadge:{
+        marginLeft: "0.1em",
+        width: "0.8em",
+        height: "0.8em"
     }
 }))
 
@@ -110,6 +116,7 @@ function CompanySummary(props) {
     const dispatch = useDispatch();
 
     const [summary, setSummary] = useState("empty");
+    const [verified,setVerified] = useState(false);
     const [isFavorite, setIsFavorite] = useState(false);
     const [jobseeker, setJobseeker] = useState("empty");
 
@@ -158,11 +165,27 @@ function CompanySummary(props) {
         axios.get(`${BACKEND_URL}/employers/${props.job.organization.id}`,).then(res => {
             if (res.data.success) {
                 setSummary(res.data.employer)
+                getVerificationStatus()
             } else {
                 setSummary("empty")
             }
         })
     }
+
+    const getVerificationStatus = () => {
+        axios
+          .get(`${BACKEND_URL}/employer/verificationStatus/${props.job.organization.id}`)
+          .then((res) => {
+            if (res.data.success) {
+              if (res.data.verificationStatus === "verified") setVerified(true);
+            }
+          })
+          .catch((err) => {
+            if (err) {
+              setVerified(false);
+            }
+          });
+      };
 
     useEffect(() => {
         retrieveOrganizations();
@@ -315,7 +338,7 @@ function CompanySummary(props) {
                         <Avatar className={classes.logo} src={logo} variant="square" />
                     </div>
                     <div className={classes.headerInfo}>
-                        <Typography variant="h5" className={classes.title} >{summary.name}</Typography>
+                        <Typography variant="h5" className={classes.title} >{summary.name}{verified?<VerifiedUserIcon className={classes.verifiedBadge} color="primary"/>:""}</Typography>
                         <Chip icon={<LocationOnRoundedIcon />} label={summary.locations.join(', ')} className={classes.tag} />
                     </div>
                     <div className={classes.reviews}>

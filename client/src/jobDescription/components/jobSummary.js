@@ -5,6 +5,7 @@ import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarkBorderRoundedIcon from '@material-ui/icons/BookmarkBorderRounded';
 import LocalOfferRoundedIcon from '@material-ui/icons/LocalOfferRounded';
 import LocationOnRoundedIcon from '@material-ui/icons/LocationOnRounded';
+import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -145,6 +146,11 @@ const useStyles = makeStyles((theme) => ({
     width: 60,
     height: 60
   },
+  varifiedBadge: {
+    marginLeft: "0.1em",
+    width: "0.7em",
+    height: "0.7em"
+  }
 }));
 
 function JobSummary(props) {
@@ -156,6 +162,7 @@ function JobSummary(props) {
   // Login modal 
   const [open, setOpen] = useState(false);
   const [logo, setLogo] = useState(require(`../../components/images/loadingImage.gif`).default);
+  const [verified, setVerified] = useState(false)
 
   // Alert related states
   const [alertShow, setAlertShow] = useState(false);
@@ -186,6 +193,7 @@ function JobSummary(props) {
 
   useEffect(() => {
     loadLogo();
+    getVerificationStatus();
   }, [])
 
   const loadLogo = async () => {
@@ -195,6 +203,21 @@ function JobSummary(props) {
       setLogo(require(`../../employer/images/default_company_logo.png`).default);
     })
   }
+
+  const getVerificationStatus = () => {
+    axios
+      .get(`${BACKEND_URL}/employer/verificationStatus/${props.job.organization.id}`)
+      .then((res) => {
+        if (res.data.success) {
+          if (res.data.verificationStatus === "verified") setVerified(true);
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          setVerified(false);
+        }
+      });
+  };
 
   const handleAlert = () => {
     setAlertShow(true);
@@ -350,7 +373,7 @@ function JobSummary(props) {
                 <Avatar className={classes.logo} src={logo} variant="square" />
                 <div className={classes.headerInfo}>
                   <Typography variant="h5" className={classes.title} >{props.job.title}</Typography>
-                  <Typography variant="h6" className={classes.companyName} >{props.job.organization.name}</Typography>
+                  <Typography variant="h6" className={classes.companyName} >{props.job.organization.name}{verified?<VerifiedUserIcon className={classes.varifiedBadge} color="primary" />:""}</Typography>
                 </div>
               </div>
 
