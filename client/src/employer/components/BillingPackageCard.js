@@ -209,21 +209,14 @@ export default function BillingPackageCard() {
               <Grid item xs={12}>
                 <Chip
                   icon={<CancelIcon className={classes.cancelIcon} />}
-                  label="Resume Shortlisting"
+                  label="Multi User Access"
                   className={classes.features}
                 />
               </Grid>
               <Grid item xs={12}>
                 <Chip
                   icon={<CancelIcon className={classes.cancelIcon} />}
-                  label="Personalized Recommendations"
-                  className={classes.features}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Chip
-                  icon={<CancelIcon className={classes.cancelIcon} />}
-                  label="Advanced Analytics"
+                  label="Customized Resume Shortlisting"
                   className={classes.features}
                 />
               </Grid>
@@ -265,7 +258,7 @@ export default function BillingPackageCard() {
                 m={1}
                 className={classes.annual}
               >
-                LKR 1750/mo when billed annually
+                For medium-scale companies
               </Box>
               <Divider variant="middle" />
             </Typography>
@@ -299,21 +292,14 @@ export default function BillingPackageCard() {
               <Grid item xs={12}>
                 <Chip
                   icon={<CheckCircleIcon className={classes.icon} />}
-                  label="Resume Shortlisting"
+                  label="Upto 5 users"
                   className={classes.features}
                 />
               </Grid>
               <Grid item xs={12}>
                 <Chip
                   icon={<CheckCircleIcon className={classes.icon} />}
-                  label="Personalized Recommendations"
-                  className={classes.features}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Chip
-                  icon={<CancelIcon className={classes.cancelIcon} />}
-                  label="Advanced Analytics"
+                  label="Customized Resume Shortlisting"
                   className={classes.features}
                 />
               </Grid>
@@ -357,7 +343,7 @@ export default function BillingPackageCard() {
                 m={1}
                 className={classes.annual}
               >
-                LKR 4500/mo when billed annually
+                For large-scale companies
               </Box>
               <Divider variant="middle" />
             </Typography>
@@ -370,14 +356,14 @@ export default function BillingPackageCard() {
               <Grid item xs={12}>
                 <Chip
                   icon={<CheckCircleIcon className={classes.icon} />}
-                  label="Post any number of jobs"
+                  label="Post unlimited jobs"
                   className={classes.features}
                 />
               </Grid>
               <Grid item xs={12}>
                 <Chip
                   icon={<CheckCircleIcon className={classes.icon} />}
-                  label="Receive any number of resumes"
+                  label="Receive unlimited resumes"
                   className={classes.features}
                 />
               </Grid>
@@ -391,21 +377,14 @@ export default function BillingPackageCard() {
               <Grid item xs={12}>
                 <Chip
                   icon={<CheckCircleIcon className={classes.icon} />}
-                  label="Resume Shortlisting"
+                  label="Unlimited users"
                   className={classes.features}
                 />
               </Grid>
               <Grid item xs={12}>
                 <Chip
                   icon={<CheckCircleIcon className={classes.icon} />}
-                  label="Personalized Recommendations"
-                  className={classes.features}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Chip
-                  icon={<CheckCircleIcon className={classes.icon} />}
-                  label="Advanced Analytics"
+                  label="Job Specific Resume Shortlisting"
                   className={classes.features}
                 />
               </Grid>

@@ -3,6 +3,7 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import FloatCard from "../components/FloatCard";
 import NoAccess from "../components/NoAccess";
+import Loading from "../components/Loading";
 import BillingPackageCard from "./components/BillingPackageCard";
 import BillingDetails from "./components/BillingDetails";
 import Payment from "./components/Payment";
@@ -86,16 +87,20 @@ const Billing = () => {
       }
     });
   }, []);
-  
+
   return (
     <Grid item container sm={12} spacing={3} direction="row">
       <Grid item xs={12}>
         <div className={classes.root}>
           {haveAccess ? (
-            subscribedPackage === "Basic" ? (
-              <BillingPackageCard />
+            subscribedPackage ? (
+              subscribedPackage === "Basic" ? (
+                <BillingPackageCard />
+              ) : (
+                <BillingDetails info={subscribedPackage} />
+              )
             ) : (
-              <BillingDetails info={subscribedPackage} />
+              <Loading />
             )
           ) : (
             <NoAccess />
