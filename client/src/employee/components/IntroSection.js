@@ -343,7 +343,13 @@ function IntroSection(props) {
     })
   }
 
-  function onChangeIntro(e) {
+  function onChangeTagLine(e){
+    setState(prevState => {
+      return {...prevState, tagline: e.target.value}
+    })
+  }
+
+  function onChangeIntro(e){
     setState(prevState => {
       return { ...prevState, intro: e.target.value }
     })
@@ -432,109 +438,119 @@ function IntroSection(props) {
         </> : null}
 
         {/* ----- edit popup content */}
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title" style={{ color: theme.palette.stateBlue }}>
-            Edit Profile
-          </DialogTitle>
-          <Divider variant="middle" />
-          <DialogContent>
-            <form className={classes.form}>
-              <Grid container direction="row">
-                <TextField
-                  className={classes.field}
-                  id="outlined-basic"
-                  label="First Name"
-                  variant="outlined"
-                  size="small"
-                  value={state.firstName}
-                  onChange={onChangeFirstName}
-                  style={{ width: '45%', marginRight: '10%' }}
-                />
-                <TextField
-                  className={classes.field}
-                  id="outlined-basic"
-                  label="Last Name"
-                  variant="outlined"
-                  size="small"
-                  value={state.lastName}
-                  onChange={onChangeLastName}
-                  style={{ width: '45%' }}
-                />
-              </Grid>
-              <TextField
-                className={classes.field}
-                id="outlined-multiline-static"
-                label="Description"
-                multiline
-                rows={5}
-                variant="outlined"
-                value={state.intro}
-                onChange={onChangeIntro}
-              />
-              <Grid container direction="row" style={{ marginTop: '35px' }}>
-                <Typography gutterBottom style={{ color: theme.palette.stateBlue, textAlign: 'left', fontSize: '18px', fontStyle: 'italic', width: '100%', marginBottom: '10px' }}>
-                  Contact Details
-                </Typography>
-                <TextField
-                  className={classes.field}
-                  id="outlined-basic"
-                  label="Mobile"
-                  variant="outlined"
-                  size="small"
-                  value={state.mobile}
-                  onChange={onChangeMobile}
-                  style={{ width: '45%', marginRight: '10%' }}
-                />
-              </Grid>
-              <TextField
-                className={classes.field}
-                id="outlined-basic"
-                label="Email"
-                type="text"
-                variant="outlined"
-                size="small"
-                value={state.email}
-                onChange={onChangeEmail}
-              />
-              <Grid container direction="row">
-                <TextField
-                  className={classes.field}
-                  id="outlined-basic"
-                  label="Street Name"
-                  variant="outlined"
-                  size="small"
-                  value={state.street}
-                  onChange={onChangeStreet}
-                  style={{ width: '45%', marginRight: '10%' }}
-                />
-                <TextField
-                  className={classes.field}
-                  id="outlined-basic"
-                  label="City"
-                  variant="outlined"
-                  size="small"
-                  value={state.city}
-                  onChange={onChangeCity}
-                  style={{ width: '45%' }}
-                />
-              </Grid>
-            </form>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} style={{ color: "#999" }}>
-              Cancel
-            </Button>
-            <Button onClick={onSubmit} color="primary" autoFocus>
-              Apply Changes
-            </Button>
-          </DialogActions>
-        </Dialog>
-
+          <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title" style={{color:theme.palette.stateBlue}}>
+                Edit Profile
+              </DialogTitle>
+              <Divider variant="middle" />
+              <DialogContent>
+                <form className={classes.form}>
+                  <Grid container direction="row">
+                    <TextField
+                    className={classes.field}
+                    id="outlined-basic"
+                    label="First Name"
+                    variant="outlined"
+                    size="small"
+                    value={state.firstName}
+                    onChange={onChangeFirstName}
+                    style={{width:'45%',marginRight:'10%'}}
+                    />
+                    <TextField
+                    className={classes.field}
+                    id="outlined-basic"
+                    label="Last Name"
+                    variant="outlined"
+                    size="small"
+                    value={state.lastName}
+                    onChange={onChangeLastName}
+                    style={{width:'45%'}}
+                    />
+                  </Grid>
+                  <TextField
+                    className={classes.field}
+                    id="outlined-multiline-static"
+                    label="Tagline"
+                    multiline
+                    rows={3}
+                    variant="outlined"
+                    value= {state.tagline}
+                    onChange= {onChangeTagLine}
+                  />
+                  <TextField
+                    className={classes.field}
+                    id="outlined-multiline-static"
+                    label="Description"
+                    multiline
+                    rows={5}
+                    variant="outlined"
+                    value= {state.intro}
+                    onChange= {onChangeIntro}
+                  />
+                  <Grid container direction="row" style={{marginTop:'35px'}}>
+                  <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'18px',fontStyle:'italic',width:'100%',marginBottom:'10px'}}>
+                    Contact Details
+                  </Typography>
+                    <TextField
+                    className={classes.field}
+                    id="outlined-basic"
+                    label="Mobile"
+                    variant="outlined"
+                    size="small"
+                    value={state.mobile}
+                    onChange={onChangeMobile}
+                    style={{width:'45%',marginRight:'10%'}}
+                    />
+                  </Grid>
+                  <TextField
+                    className={classes.field}
+                    id="outlined-basic"
+                    label="Email"
+                    type="text"
+                    variant="outlined"
+                    size="small"
+                    value={state.email}
+                    onChange={onChangeEmail}
+                  />
+                  <Grid container direction="row">
+                    <TextField
+                    className={classes.field}
+                    id="outlined-basic"
+                    label="Street Name"
+                    variant="outlined"
+                    size="small"
+                    value={state.street}
+                    onChange={onChangeStreet}
+                    style={{width:'45%',marginRight:'10%'}}
+                    />
+                    <TextField
+                    className={classes.field}
+                    id="outlined-basic"
+                    label="City"
+                    variant="outlined"
+                    size="small"
+                    value={state.city}
+                    onChange={onChangeCity}
+                    style={{width:'45%'}}
+                    />
+                  </Grid>
+                </form>
+              </DialogContent>
+              <DialogActions>
+                  <Button onClick={handleClose} style={{color:"#999"}}>
+                      Cancel
+                  </Button>
+                  <Button onClick={onSubmit} color="primary" autoFocus>
+                      Apply Changes
+                  </Button>
+              </DialogActions>
+          </Dialog>
+        
         <Typography component="div">
           {login ? <>
             <CardMedia

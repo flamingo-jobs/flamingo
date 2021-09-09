@@ -23,6 +23,7 @@ import SnackBarAlert from "../../components/SnackBarAlert";
 import BACKEND_URL from '../../Config';
 import theme from '../../Theme';
 import ProjectItem from './ProjectItem';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const useStyles = makeStyles({
   defaultButton: {
@@ -133,6 +134,9 @@ function ProjectsSection(props) {
   const classes = useStyles();
   const [fetchedData, setFetchedData] = useState('');
   const [open, setOpen] = useState(false);
+  const [newData, setNewData] = useState(null);
+  const [technologies, setTechnologies] = useState([]);
+  const [technologyList, setTechnologyList] = useState([]);
   const [project, setProject] = useState(null);
   const [state, setState] = useState({name: null, link: null, description: null, startYear: null, startMonth: null, endYear: null, endMonth: null, usedTech: null});
 
@@ -210,6 +214,15 @@ function ProjectsSection(props) {
         setProject(projectData)
       }
     })
+
+    //tech stack from db
+    axios.get(`${BACKEND_URL}/technologies`).then(res => {
+        if (res.data.success) {
+            setTechnologies(res.data.existingData)
+        } else {
+            setTechnologies([])
+        }
+    })
     setFetchedData(0)
   }
 
@@ -241,6 +254,23 @@ function ProjectsSection(props) {
     setProject(null);
     fetchData();
   },[fetchedData])
+
+  useEffect(()=>{
+    technologies.map(technology => {
+      if (technology.stack.list) {
+        technology.stack.list.map(el => {
+          technologyList.push(el)
+        })
+      } else if (technology.stack.frontEnd) {
+        technology.stack.frontEnd.map(el => {
+          technologyList.push(el)
+        })
+        technology.stack.backEnd.map(el => {
+          technologyList.push(el)
+        })
+      }
+    })
+  },[technologies])
 
   function handleOpen(){
     setOpen(true);
@@ -332,7 +362,7 @@ function ProjectsSection(props) {
         description: state.description,
         from: state.startMonth+"/"+state.startYear,
         to: state.endMonth+"/"+state.endYear,
-        usedTech: state.usedTech
+        usedTech: newData,
     }
 
     axios.put(`${BACKEND_URL}/jobseeker/addProject/${loginId}`,newProject)
@@ -360,7 +390,7 @@ function ProjectsSection(props) {
     if (project) {
       if (project.length > 0) {
       return project.map(pro => (
-            <ProjectItem index={i++} name={pro.name} link={pro.link} description={pro.description} from={pro.from} to={pro.to} usedTech={pro.usedTech} parentFunction={deleteData} />
+            <ProjectItem index={i++} name={pro.name} link={pro.link} description={pro.description} from={pro.from} to={pro.to} usedTech={pro.usedTech} parentFunction={deleteData} techList={technologyList} />
             ))
       }else{
         return (<Typography variant="body2" color="textSecondary" component="p">Project details not added.</Typography>)
@@ -499,7 +529,7 @@ function ProjectsSection(props) {
                       </Grid>
                     </Grid>
                   </Grid>
-                  <TextField
+                  {/* <TextField
                     className={classes.field}
                     id="outlined-basic"
                     label="Tech. Stack"
@@ -508,6 +538,25 @@ function ProjectsSection(props) {
                     size="small"
                     onChange={onChangeUsedTech}
                     required
+                  /> */}
+                  <Autocomplete
+                      className={classes.field}
+                      multiple
+                      id="tags-outlined"
+                      filterSelectedOptions
+                      options={technologyList}
+                      getOptionLabel={(option) => option}
+                      onChange={(event, value) => {
+                        setNewData(value);
+                      }}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          variant="standard"
+                          label="Tech. Stack"
+                          placeholder="+ new"
+                        />
+                      )}
                   />
                   </div>
               </form>
