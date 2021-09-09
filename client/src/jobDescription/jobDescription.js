@@ -78,6 +78,10 @@ function JobDescription(props) {
     }
   }
 
+  const handleApply = () => {
+    setIsApplied(true);
+  }
+
   useEffect(() => {
     setJob("empty");
     retrieveJob();
@@ -219,7 +223,7 @@ function JobDescription(props) {
         } else {
           return (
             <Grid item xs={12}>
-              <ApplyForm userId={userId} jobId={jobId}></ApplyForm>
+              <ApplyForm userId={userId} jobId={jobId} handleApply={handleApply}></ApplyForm>
             </Grid>
           );
         }

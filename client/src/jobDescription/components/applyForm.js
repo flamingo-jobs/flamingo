@@ -110,6 +110,7 @@ const ApplyForm = (props) => {
 
   const [fileData, setFileData] = useState("empty");
 
+  const [uploading, setUploading] = useState(false);
   const [alertShow, setAlertShow] = useState(false);
   const [alertData, setAlertData] = useState({ severity: "", msg: "" });
 
@@ -130,7 +131,7 @@ const ApplyForm = (props) => {
       timer.current = window.setTimeout(() => {
         setSuccess(true);
         setLoading(false);
-      }, 1000);
+      }, 5000);
     }
   };
 
@@ -167,6 +168,8 @@ const ApplyForm = (props) => {
       />
     );
   };
+
+  const delay = ms => new Promise(res => setTimeout(res, ms));
 
   const handleAlert = () => {
     setAlertShow(true);
@@ -208,10 +211,6 @@ const ApplyForm = (props) => {
     if (!loading && fileData !== "empty") {
       setSuccess(false);
       setLoading(true);
-      timer.current = window.setTimeout(() => {
-        setSuccess(true);
-        setLoading(false);
-      }, 1000);
     }
 
     // Data to rename the pdf
@@ -255,7 +254,7 @@ const ApplyForm = (props) => {
 
         if (resumeDetailsResponseJob.data.success) {
           var file = fileData;
-          var blob = file.slice(0, file.size); 
+          var blob = file.slice(0, file.size);
           var newFile = new File([blob], `${jobId}--${userId}.pdf`);
 
           await uploadFileToBlob(newFile, "resumes");
@@ -271,12 +270,19 @@ const ApplyForm = (props) => {
           //   }
           // );
 
+          setUploading(true);
+
+          await delay(5000);
+
           await axios.get(`${FILE_URL}/resumes/${newFile.name}`).then(res => {
             setAlertData({
               severity: "success",
               msg: "Application sent!",
             });
             handleAlert();
+            setSuccess(true);
+            setLoading(false);
+
           }).catch(error => {
             setAlertData({
               severity: "error",
@@ -284,6 +290,9 @@ const ApplyForm = (props) => {
             });
             handleAlert();
           })
+          await delay(2000);
+          window.scrollTo(0, 0);
+          props.handleApply();
 
         } else {
           setAlertData({
@@ -332,13 +341,13 @@ const ApplyForm = (props) => {
       </div>
       <FloatCard>
         <Container className={classes.res}>
-          <Typography className={classes.formInfo} id="applyForm">
+          {!success ? <Typography className={classes.formInfo} id="applyForm">
             Upload your resume using the link given below.
             <br />
             You can view the status of the application shortlisting process
             <br />
             in the Applied Jobs page.
-          </Typography>
+          </Typography> : null}
           <div className={classes.animation}>
             <Lottie
               className={classes.lottie}
@@ -347,7 +356,7 @@ const ApplyForm = (props) => {
               width="300px"
             />
           </div>
-          <form onSubmit={handleFormSubmit} encType="multipart/form-data">
+          {!success ? <form onSubmit={handleFormSubmit} encType="multipart/form-data">
             <div style={{ color: "#fff" }}>
               <input
                 className={classes.input}
@@ -364,6 +373,7 @@ const ApplyForm = (props) => {
                   component="span"
                   startIcon={<PublishIcon />}
                   className={classes.uploadButton}
+                  disabled={loading}
                 >
                   Upload resume
                 </Button>
@@ -387,7 +397,11 @@ const ApplyForm = (props) => {
                 />
               )}
             </div>
-          </form>
+          </form> : <Typography className={classes.formInfo} >Your application has been sent succeesfully. Good Luck!
+            <br />
+            You can view the status of the application shortlisting process
+            <br />
+            in the Applied Jobs page.</Typography>}
         </Container>
       </FloatCard>
     </div>
