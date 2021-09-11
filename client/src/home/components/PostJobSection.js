@@ -1,9 +1,10 @@
+import React, {useState} from 'react';
 import { Button, makeStyles, Typography } from '@material-ui/core';
-import React from 'react';
 import Lottie from 'react-lottie';
 import FloatCard from '../../components/FloatCard';
 import theme from '../../Theme';
 import Hiring from '../lotties/hiring.json';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     card: {
@@ -39,6 +40,14 @@ const useStyles = makeStyles((theme) => ({
 function PostJobSection() {
 
     const classes = useStyles();
+    const isSignedIn = sessionStorage.getItem("userToken") ? true : false;
+    const jwt = require("jsonwebtoken");
+    const token = sessionStorage.getItem("userToken");
+    const [role, setRole] = useState(
+        jwt.decode(token, { complete: true })
+            ? jwt.decode(token, { complete: true }).payload.userRole
+            : null
+    );
 
     const defaultOptions = {
         loop: true,
@@ -63,7 +72,18 @@ function PostJobSection() {
                         width={250}
                     />
                 <Typography variant="h6" className={classes.heading}>Want to find the best candidate?</Typography>
-                <Button className={classes.btn}>Start Hiring</Button>
+
+                {isSignedIn && role === "employer" &&
+                    <Link to={`/employer/jobs`}>
+                        <Button className={classes.btn}>Start Hiring</Button>
+                    </Link>
+                }
+                {!isSignedIn && 
+                    <Link to={`/signin`}>
+                        <Button className={classes.btn}>Start Hiring</Button>
+                    </Link>
+                }
+                
             </div>
             </FloatCard>
         </div>

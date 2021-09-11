@@ -65,6 +65,7 @@ const ReachChart = (props) => {
           backgroundColor: Theme.palette.stateBlue,
           borderColor: Theme.palette.stateBlue,
           borderWidth: 1,
+          tension: 0.4,
           data: counts,
         },
       ],
