@@ -85,8 +85,8 @@ const CategoryPieChart = () => {
         <Typography>Most Popular Job Categories</Typography>
         <Grid container spacing={1} justify="center" >
           <Grid item xs={10} md={6} style={{marginBottom: 5}}>
-        <Pie data={genPieData()}/>
-        </Grid>
+            <Pie data={genPieData()}/>
+          </Grid>
         </Grid>
       </FloatCard>
     </div>

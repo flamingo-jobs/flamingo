@@ -9,6 +9,7 @@ import UsersBarChart from './components/analytics/userBarChart';
 import CategoryPieChart from "./components/analytics/categoryPieChart";
 import ResumeBarChart from "./components/analytics/resumeBarChart";
 import SubsBarChart from './components/analytics/subsBarChart';
+import RevenueLineChart from './components/analytics/revenueLineChart';
 import FloatCard from '../components/FloatCard';
 
 // style={{border: "1px solid red"}}
@@ -40,6 +41,10 @@ function Dashboard() {
                         <NewEmployers />
                     </Grid>
                 </Grid>
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+                <RevenueLineChart />
             </Grid>
 
             <Grid item xs={12} md={6}>
