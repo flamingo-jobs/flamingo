@@ -42,8 +42,8 @@ const ResumeBarChart = () => {
       datasets: [
         {
           label: "Resume Count",
-          backgroundColor: Theme.palette.stateBlue,
-          borderColor: Theme.palette.stateBlue,
+          backgroundColor: Theme.palette.chartGreen,
+          borderColor: Theme.palette.chartGreen,
           borderWidth: 1,
           data: monthlyResumeCount,
         },

@@ -57,7 +57,12 @@ const theme = createMuiTheme({
     lightRed: '#ff4c4c',
     red: "#cf1515",
     lightyPurple: '#f5f5ff',
-    redHover: "#a60000"
+    redHover: "#a60000",
+    chartBlack: "#2b3139",
+    chartGreen: "#3ac190",
+    chartOrange: "#ff9a4b",
+    chartBlue: "#42c0d5",
+    chartLightGreen: "#abca4c",
   },
   typography: {
     fontSize: 14,

@@ -12,6 +12,7 @@ router.get("/analytics/getMonthlyResumes", analyticsController.getMonthlyResumes
 router.get("/analytics/getMonthlySubs", analyticsController.getMonthlySubscriptions);
 router.get("/analytics/getWeeklyApplications", analyticsController.getWeeklyApplications);
 router.get("/analytics/getWeeklyJobPostings", analyticsController.getWeeklyJobPostings);
+router.get("/analytics/getMonthlyRevenue", analyticsController.getMonthlyRevenue);
 
 module.exports = router;
 

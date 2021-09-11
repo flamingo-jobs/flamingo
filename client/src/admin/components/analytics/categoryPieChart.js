@@ -5,6 +5,7 @@ import FloatCard from "../../../components/FloatCard";
 import axios from "axios";
 import BACKEND_URL from "../../../Config";
 import SnackBarAlert from "../../../components/SnackBarAlert";
+import Theme from "../../../Theme";
 
 const CategoryPieChart = () => {
   const [categoryNames, setCategoryNames] = useState([]);
@@ -41,12 +42,18 @@ const CategoryPieChart = () => {
         {
           data: categoryCount,
           backgroundColor: [
-            "#6a82fb",
-            "#fc5c7d",
-            "#45b649",
-            "#eeba0b",
-            "#f85032",
-            "#cb997e",
+            // "#6a82fb",
+            // "#fc5c7d",
+            // "#45b649",
+            // "#eeba0b",
+            // "#f85032",
+            // "#cb997e",
+            "#2980b9",
+            "#27ae60",
+            "#169e94",
+            "#eb6b56",
+            "#b05f6d",
+            "#34495e",
           ],
           label: "Categories",
         },

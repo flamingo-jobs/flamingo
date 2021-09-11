@@ -40,9 +40,10 @@ const JobsLineChart = () => {
       datasets: [
         {
           label: "Job Count",
-          backgroundColor: Theme.palette.stateBlue,
-          borderColor: Theme.palette.stateBlue,
+          backgroundColor: Theme.palette.chartBlack,
+          borderColor: Theme.palette.chartBlack,
           borderWidth: 1,
+          tension: 0.4,
           data: monthlyJobCount,
         },
       ],

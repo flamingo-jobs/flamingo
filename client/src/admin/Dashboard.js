@@ -56,7 +56,7 @@ function Dashboard() {
             </Grid>
 
             <Grid item xs={12} md={6}>
-                <JobsLineChart />
+                <ResumeBarChart />
             </Grid>
 
             <Grid item xs={12} md={6}>

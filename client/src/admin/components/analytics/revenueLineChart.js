@@ -25,7 +25,7 @@ const RevenueLineChart = () => {
       );
       if (response.data.success) {
         setPastMonths(response.data.months);
-        setMonthlyRevenue(response.data.jobCount);
+        setMonthlyRevenue(response.data.revenue);
       }
     } catch (err) {
       setAlertData({
@@ -36,16 +36,18 @@ const RevenueLineChart = () => {
     }
   };
 
-  const generateLineChart = () => {
+  const generateLineChart = (moreData = {}) => {
     return {
       labels: pastMonths,
       datasets: [
         {
           label: "Revenue",
-          backgroundColor: Theme.palette.stateBlue,
-          borderColor: Theme.palette.stateBlue,
+          backgroundColor: Theme.palette.chartBlack,
+          borderColor: Theme.palette.chartBlack,
           borderWidth: 1,
+          tension: 0.4,
           data: monthlyRevenue,
+          ...moreData,
         },
       ],
     };
@@ -79,7 +81,7 @@ const RevenueLineChart = () => {
 
       <FloatCard>
         <Typography>Revenue for the Past 8 Months</Typography>
-        <Line data={generateLineChart({ fill: false })} />
+        <Line data={generateLineChart({ fill: true })} />
       </FloatCard>
     </div>
   );

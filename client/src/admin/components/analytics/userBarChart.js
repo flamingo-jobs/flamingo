@@ -50,16 +50,16 @@ const UsersBarChart = () => {
       datasets: [
         {
           label: "Employers",
-          backgroundColor: Theme.palette.tuftsBlue,
-          borderColor: Theme.palette.tuftsBlue,
+          backgroundColor: Theme.palette.chartBlack,
+          borderColor: Theme.palette.chartBlack,
           borderWidth: 1,
           data: monthlyEmpCount,
           ...moreData,
         },
         {
           label: "Jobseekers",
-          backgroundColor: Theme.palette.stateBlue,
-          borderColor: Theme.palette.stateBlue,
+          backgroundColor: Theme.palette.chartGreen,
+          borderColor: Theme.palette.chartGreen,
           borderWidth: 1,
           data: monthlyJobseekerCount,
           ...moreData2,

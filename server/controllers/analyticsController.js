@@ -316,37 +316,37 @@ const getMonthlySubscriptions = async (req, res) => {
         employers.map(emp => {
             if(currentMonthIndex < numberOfMonthsNeeded-1){
                 if(emp.subscription.startDate.getFullYear() === currentYear){ 
-                    if(emp.subscription.type == "Basic"){
+                    if(emp.subscription.type.toLowerCase() == "basic"){
                         monthlyBasic[emp.subscription.startDate.getMonth() + 12]++;
                     }
-                    if(emp.subscription.type === "Standard"){
+                    if(emp.subscription.type.toLowerCase() === "standard"){
                         monthlyStandard[emp.subscription.startDate.getMonth() + 12]++;
                     }
-                    if(emp.subscription.type === "Premium"){
+                    if(emp.subscription.type.toLowerCase() === "premium"){
                         monthlyPremium[emp.subscription.startDate.getMonth() + 12]++;
                     }
                 } 
 
                 else if(emp.subscription.startDate.getFullYear() + 1 === currentYear){
-                    if(emp.subscription.type == "Basic"){
+                    if(emp.subscription.type.toLowerCase() == "basic"){
                         monthlyBasic[emp.subscription.startDate.getMonth()]++;
                     }
-                    if(emp.subscription.type === "Standard"){
+                    if(emp.subscription.type.toLowerCase() === "standard"){
                         monthlyStandard[emp.subscription.startDate.getMonth()]++;
                     }
-                    if(emp.subscription.type === "Premium"){
+                    if(emp.subscription.type.toLowerCase() === "premium"){
                         monthlyPremium[emp.subscription.startDate.getMonth()]++;
                     }
                 }
             } else {
                 if(emp.subscription.startDate.getFullYear() === currentYear){ 
-                    if(emp.subscription.type == "Basic"){
+                    if(emp.subscription.type.toLowerCase() == "basic"){
                         monthlyBasic[emp.subscription.startDate.getMonth()]++;
                     }
-                    if(emp.subscription.type === "Standard"){
+                    if(emp.subscription.type.toLowerCase() === "standard"){
                         monthlyStandard[emp.subscription.startDate.getMonth()]++;
                     }
-                    if(emp.subscription.type === "Premium"){
+                    if(emp.subscription.type.toLowerCase() === "premium"){
                         monthlyPremium[emp.subscription.startDate.getMonth()]++;
                     }
                 }
@@ -478,6 +478,94 @@ const getWeeklyJobPostings = async (req, res) => {
     }
 }
 
+const getMonthlyRevenue = async (req, res) => {
+    var monthNames = [];
+
+    const numberOfMonthsNeeded = 6;
+    var monthlyRevenue;
+
+    var pastNMonths = new Array(numberOfMonthsNeeded);
+    var pastNMonthsRevenue = new Array(numberOfMonthsNeeded);
+
+    for (var i=0; i < numberOfMonthsNeeded; i++) { 
+        pastNMonthsRevenue[i] = 0;
+    }
+
+    const currentDate = new Date();
+    const currentMonthIndex = currentDate.getMonth();
+    const currentYear = currentDate.getFullYear();
+
+    if(currentMonthIndex < numberOfMonthsNeeded-1){
+        monthlyRevenue = new Array(24);
+
+        for (var i=0; i < 24; i++) {
+            monthlyRevenue[i] = 0;
+        }
+        monthNames = [...MONTHS, ...MONTHS];
+    } else {
+        monthlyRevenue = new Array(12);
+
+        for (var i=0; i < 12; i++) {
+            monthlyRevenue[i] = 0;
+        }
+        monthNames = [...MONTHS];
+    }
+
+    const pacakges = {
+        standard: 1990, 
+        premium: 4990,
+    }
+
+    try{
+        const employers = await Employers.find().select("subscription -_id");
+        employers.map(emp => {
+            if(currentMonthIndex < numberOfMonthsNeeded-1){
+                if(emp.subscription.startDate.getFullYear() === currentYear){ 
+                    if(emp.subscription.type.toLowerCase() === "standard" || emp.subscription.type.toLowerCase() === "premium"){
+                        monthlyRevenue[emp.subscription.startDate.getMonth() + 12] = 
+                            monthlyRevenue[emp.subscription.startDate.getMonth() + 12] + 
+                                pacakges[emp.subscription.type.toLowerCase()];
+                    }
+                } 
+
+                else if(emp.subscription.startDate.getFullYear() + 1 === currentYear){
+                    if(emp.subscription.type.toLowerCase() === "standard" || emp.subscription.type.toLowerCase() === "premium"){
+                        monthlyRevenue[emp.subscription.startDate.getMonth()] = 
+                            monthlyRevenue[emp.subscription.startDate.getMonth()] + 
+                                pacakges[emp.subscription.type.toLowerCase()];
+                    }
+                    
+                }
+            } else {
+                if(emp.subscription.startDate.getFullYear() === currentYear){ 
+                    if(emp.subscription.type.toLowerCase() === "standard" || emp.subscription.type.toLowerCase() === "premium"){
+                        monthlyRevenue[emp.subscription.startDate.getMonth()] = 
+                                monthlyRevenue[emp.subscription.startDate.getMonth()] + 
+                                    pacakges[emp.subscription.type.toLowerCase()];
+                    }
+                }
+            }
+        });
+
+        if(currentMonthIndex < numberOfMonthsNeeded-1){
+            const remainingMonths = numberOfMonthsNeeded - (currentMonthIndex + 1);
+            pastNMonthsRevenue = monthlyRevenue.slice(12-remainingMonths, 12+currentMonthIndex+1);
+            pastNMonths = monthNames.slice(12-remainingMonths, 12+currentMonthIndex+1);
+        } else {
+            pastNMonthsRevenue = monthlyRevenue.slice(currentMonthIndex-numberOfMonthsNeeded+1, currentMonthIndex+1);
+            pastNMonths = monthNames.slice(currentMonthIndex-numberOfMonthsNeeded+1, currentMonthIndex+1);
+        }
+
+        res.status(200).json({ 
+            success: true, 
+            months: pastNMonths, 
+            revenue: pastNMonthsRevenue,
+        });
+
+    } catch(error){
+
+    }
+}
 
 module.exports = {
     getMonthlyJobs,
@@ -488,4 +576,5 @@ module.exports = {
     getNewUsers,
     getWeeklyApplications,
     getWeeklyJobPostings,
+    getMonthlyRevenue,
 }
