@@ -357,7 +357,7 @@ function Skills(props) {
       {removeDuplicates()}
       {showCombo()}
       
-        <Grid item xs={12} alignItems="center" justify="center">
+        <Grid item xs={12}>
             <Paper elevation={0} component="ul" className={classes.paperChips}>
                 {
                 skills.map((data) => {

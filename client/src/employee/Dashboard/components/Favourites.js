@@ -114,7 +114,7 @@ function FeaturedOrganizations(props) {
                 setFavoriteOrgs(response.data.employers);
               }
             } catch (err) {
-              console.log(err);
+              // console.log(err);
             }
           }
         }

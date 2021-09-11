@@ -139,7 +139,7 @@ function Course(props) {
         allYears.push(thisYear - x)
     }
 
-    return allYears.map((x) => (<option value={x}>{x}</option>));
+    return allYears.map((x,index) => (<option key={index} value={x}>{x}</option>));
   }
 
     //generate year list
@@ -151,7 +151,7 @@ function Course(props) {
           allYears.push(thisYear - x)
       }
   
-      return allYears.map((x) => (<option value={x}>{x}</option>));
+      return allYears.map((x,index) => (<option key={index} value={x}>{x}</option>));
     }
 
   //generate month list
@@ -166,7 +166,7 @@ function Course(props) {
       }        
     }
 
-    return allMonths.map((x) => (<option value={x}>{x}</option>));
+    return allMonths.map((x,index) => (<option key={index} value={x}>{x}</option>));
   }
 
   function fetchData(){
@@ -324,7 +324,7 @@ function Course(props) {
     if (course) {
       if (course.length > 0) {
         return course.map(awd => (
-            <CourseItem index={i++} course={awd.course} institute={awd.institute} startDate={awd.from} endDate={awd.to} parentFunction={deleteData} />
+            <CourseItem key={i} index={i++} course={awd.course} institute={awd.institute} startDate={awd.from} endDate={awd.to} parentFunction={deleteData} />
             ))
       }else{
         return (<Typography variant="body2" color="textSecondary" component="p">Course details not added.</Typography>)

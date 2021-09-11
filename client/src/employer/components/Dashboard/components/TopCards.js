@@ -79,7 +79,7 @@ const TopCards = (props) => {
         `${BACKEND_URL}/jobs/filterAllByOrganization/${props.employerId}`
       )
       .then((res) => {
-        console.log(res.data.employerJobs);
+        // console.log(res.data.employerJobs);
         if (res.data.success) {
           setState({
             allJobs: res.data.employerJobs,
@@ -294,7 +294,7 @@ const TopCards = (props) => {
 
       {/* <Grid item xs={12} sm={6} md={3}>
         <FloatCard>
-          <Grid container direction="row" xs={12} spacing={2}>
+          <Grid container direction="row" spacing={2}>
             <Grid item xs={1}>
               <Typography variant="body2" className={classes.cardTitle}>
                 SHORTLISTED

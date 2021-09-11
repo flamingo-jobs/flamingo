@@ -92,7 +92,7 @@ function Technologies(props) {
             }
         })
 
-        console.log("inside fetchData"+loginId)
+        // console.log("inside fetchData"+loginId)
         let technologyStackData;
         axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
         .then(res => {
@@ -108,7 +108,7 @@ function Technologies(props) {
                 }
             }
             setTechnologyStack(technologyStackData)
-            console.log(res.data.jobseeker.technologyStack)
+            // console.log(res.data.jobseeker.technologyStack)
 
             }
         })

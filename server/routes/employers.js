@@ -51,8 +51,8 @@ const fileStorageEngine = multer.diskStorage({
 
 // Single File Route Handler
 router.post("/companyImage/:id", upload.single("image"), (req, res) => {
-  console.log(req.file);
-  console.log(req.params['id']);
+  // console.log(req.file);
+  // console.log(req.params['id']);
   res.send("Single FIle upload success");
 });
 

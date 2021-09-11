@@ -178,7 +178,7 @@ const Settings = () => {
       role: userData.userRole,
       accessTokens: userData.accessTokens,
     };
-    console.log(deleteUserData);
+    // console.log(deleteUserData);
     axios
       .post(`${BACKEND_URL}/api/remove-user`, deleteUserData)
       .then((res) => {

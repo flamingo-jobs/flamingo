@@ -55,7 +55,7 @@ function AppliedJobs() {
         setJobseeker(response.data.jobseeker);
       }
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
 

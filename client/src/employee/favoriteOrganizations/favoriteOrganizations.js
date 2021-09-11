@@ -84,7 +84,7 @@ const FavoriteOrganizations = () => {
 
         }
       } catch (err) {
-        console.log(err);
+        // console.log(err);
       }
     } else {
       setFavoriteOrgIds(reduxFavoriteOrgIds);
@@ -104,7 +104,7 @@ const FavoriteOrganizations = () => {
             setFavoriteOrgs(response.data.employers);
           }
         } catch (err) {
-          console.log(err);
+          // console.log(err);
         }
       }
     }

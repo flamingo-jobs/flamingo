@@ -75,7 +75,6 @@ const EmployerJobList = () => {
   return (
     <Grid
       container
-      xs={12}
       spacing={3}
       direction="column"
       justify="space-between"

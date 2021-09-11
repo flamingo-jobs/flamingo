@@ -175,7 +175,7 @@ function CourseItem(props) {
           allYears.push(thisYear - x)
       }
   
-      return allYears.map((x) => (<option value={x}>{x}</option>));
+      return allYears.map((x,index) => (<option key={index} value={x}>{x}</option>));
     }
 
     //generate year list
@@ -187,7 +187,7 @@ function CourseItem(props) {
           allYears.push(thisYear - x)
       }
 
-      return allYears.map((x) => (<option value={x}>{x}</option>));
+      return allYears.map((x,index) => (<option key={index} value={x}>{x}</option>));
     }
   
     //generate month list
@@ -202,7 +202,7 @@ function CourseItem(props) {
         }        
       }
   
-      return allMonths.map((x) => (<option value={x}>{x}</option>));
+      return allMonths.map((x,index) => (<option key={index} value={x}>{x}</option>));
     }
   
   useEffect(() => {

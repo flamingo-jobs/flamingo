@@ -252,13 +252,13 @@ const shortlistApplicants = (req, res) => {
                                 + skills * (shortlistingSettings.skills / 100) + certificates * (shortlistingSettings.certifications / 100)
                                 + courses * (shortlistingSettings.courses / 100);
 
-                            console.log("education: " + education);
-                            console.log("experience: " + experience);
-                            console.log("techStack: " + techStack);
-                            console.log("projectTech: " + projectTech);
-                            console.log("skills: " + skills);
-                            console.log("certificates: " + certificates);
-                            console.log("courses: " + courses);
+                            // console.log("education: " + education);
+                            // console.log("experience: " + experience);
+                            // console.log("techStack: " + techStack);
+                            // console.log("projectTech: " + projectTech);
+                            // console.log("skills: " + skills);
+                            // console.log("certificates: " + certificates);
+                            // console.log("courses: " + courses);
 
                             let applicationIndex = job.applicationDetails.findIndex(applicant => applicant.userId == item._id);
 
@@ -312,7 +312,7 @@ const shortlistApplicantsCustoms = (req, res) => {
     let settings = req.body.settings;
 
 
-    console.log(settings)
+    // console.log(settings)
     if (settings) {
 
         let shortlistingSettings, educationShortlistings, experienceShortlistings;
@@ -530,13 +530,13 @@ const shortlistApplicantsCustoms = (req, res) => {
                             + skills * (shortlistingSettings.skills / 100) + certificates * (shortlistingSettings.certifications / 100)
                             + courses * (shortlistingSettings.courses / 100);
 
-                        console.log("education: " + education);
-                        console.log("experience: " + experience);
-                        console.log("techStack: " + techStack);
-                        console.log("projectTech: " + projectTech);
-                        console.log("skills: " + skills);
-                        console.log("certificates: " + certificates);
-                        console.log("courses: " + courses);
+                        // console.log("education: " + education);
+                        // console.log("experience: " + experience);
+                        // console.log("techStack: " + techStack);
+                        // console.log("projectTech: " + projectTech);
+                        // console.log("skills: " + skills);
+                        // console.log("certificates: " + certificates);
+                        // console.log("courses: " + courses);
 
                         let applicationIndex = job.applicationDetails.findIndex(applicant => applicant.userId == item._id);
 

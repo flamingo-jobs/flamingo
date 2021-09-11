@@ -76,12 +76,12 @@ const AvailableTechnologies = () => {
           data: res.data.existingData,
         });
       }
-      console.log(data);
+      // console.log(data);
     });
   }, []);
 
   return (
-    <Grid container direction="column" xs={12} spacing={3}>
+    <Grid container direction="column" spacing={3}>
       <FloatCard>
         <Grid item className={classes.item}>
           <Typography variant="h6" className={classes.title}>

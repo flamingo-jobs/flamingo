@@ -216,7 +216,7 @@ const LineGraph = (props) => {
         `${BACKEND_URL}/jobs/filterAllByOrganization/${props.employerId}`
       )
       .then((res) => {
-        console.log(res.data.employerJobs);
+        // console.log(res.data.employerJobs);
         if (res.data.success) {
           setState({
             allJobs: res.data.employerJobs,

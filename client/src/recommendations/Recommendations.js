@@ -167,7 +167,7 @@ function Recommendations(props) {
                     }
                 }
             } catch (err) {
-                console.log(err);
+                // console.log(err);
             }
         }
     };

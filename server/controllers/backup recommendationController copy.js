@@ -232,7 +232,7 @@ const generateJobSeekerRecommendations = (req, res) => {
                     if (jobseeker.hasOwnProperty("skills")) {
                         skills = similarity(jobseeker.skills.join(' '), job.qualifications.join(' '));
                     }
-                    console.log(techStack);
+                    // console.log(techStack);
 
                     total = education * 0.1 + experience * 0.2 + techStack * 0.2 + projectTech * 0.2 + skills * 0.2 + certificates * 0.1;
 

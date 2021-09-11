@@ -208,7 +208,7 @@ const PayHereCheckoutForm = () => {
         alignItems="flex-start"
       >
         {displayAlert()}
-        {console.log(billingDetails)}
+        {/* {console.log(billingDetails)} */}
         <Grid item xs={12}>
           <Typography variane="h6">Billing Details</Typography>
         </Grid>

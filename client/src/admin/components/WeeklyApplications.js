@@ -28,7 +28,7 @@ function WeeklyApplications() {
         setWeeklyApplications(response.data.weeklyApplications);
       }
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
 

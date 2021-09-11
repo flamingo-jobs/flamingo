@@ -115,7 +115,7 @@ function CertificationGrid(props) {
             let j = rows.findIndex(x => x.id === editRowsModel.id);
             
             if(editRowsModel.field === "score"){
-                console.log(i);
+                // console.log(i);
                 if (i >= 0) {
                     newRows[i] = { id: `${i}`, name: updatedRows[i].name, score: editRowsModel.props.value };
                 } else {
@@ -123,14 +123,14 @@ function CertificationGrid(props) {
                 }
             }
             if(editRowsModel.field === "name"){
-                console.log(i);
+                // console.log(i);
                 if (i >= 0) {
                     newRows[i] = { id: `${i}`, name: editRowsModel.props.value, score: updatedRows[i].score };
                 } else {
                     newRows.push({ id: editRowsModel.id, name: editRowsModel.props.value, score: rows[j].score });
                 }
             }
-            console.log(newRows);
+            // console.log(newRows);
             setUpdatedRows(newRows);
             setPendingChanges(true);
         } else if (updatedRows.length === 0) {
@@ -311,7 +311,7 @@ function CertificationGrid(props) {
             array.push({ name: item.name, score: item.score });
         })
 
-        console.log(updatedRows);
+        // console.log(updatedRows);
 
         let data = {
             certificates: array

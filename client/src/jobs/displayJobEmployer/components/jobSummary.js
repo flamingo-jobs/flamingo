@@ -287,7 +287,7 @@ function JobSummary(props) {
     }
   };
 
-  console.log("updated fields", updatedFields);
+  // console.log("updated fields", updatedFields);
   const handleSummarySubmit = async (e) => {
     e.preventDefault();
 

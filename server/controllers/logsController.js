@@ -46,7 +46,7 @@ const createLogsForJobs = (req, res) => {
   const userId = `${req.params.userId}`.padEnd(30);
   const logStatus = req.body.status.toUpperCase().padEnd(20);
   var msg = req.body.msg;
-  console.log("Req.body", req.body)
+  // console.log("Req.body", req.body)
   if (req.body.hasOwnProperty("updatedFields")) {
     msg = msg + " @Updated-Fields:"+req.body.updatedFields.join();
   }

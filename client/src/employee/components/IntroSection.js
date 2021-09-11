@@ -287,7 +287,7 @@ function IntroSection(props) {
       let nameSplit = e.target.files[0].name.split(".");
       // console.log("file extention", nameSplit[nameSplit.length - 1]);
       if (nameSplit[nameSplit.length - 1] !== "jpg" && nameSplit[nameSplit.length - 1] !== "png") {
-        console.log("type invalid");
+        // console.log("type invalid");
         setAlertData({
           severity: "error",
           msg: "Invalid file type, only jpg and png file types are allowed",
@@ -557,7 +557,7 @@ function IntroSection(props) {
               className={classes.media}
               image={savedPic}
               alt="profile image"
-              zIndex="background"
+              zindex="background"
               onClick={handleOpenImageDialog}
               onMouseEnter={e => {
                 setStyle({ display: 'block' });
@@ -573,7 +573,7 @@ function IntroSection(props) {
               className={classes.mediaPreview}
               image={savedPic}
               alt="profile image"
-              zIndex="background"
+              zindex="background"
             >
             </CardMedia>
           }
@@ -588,7 +588,7 @@ function IntroSection(props) {
                   className={classes.mediaPreview}
                   image={profilePicPreview}
                   alt="profile image"
-                  zIndex="background"
+                  zindex="background"
                   style={{ marginTop: "0px", marginBottom: "20px" }}
                 />
               </Typography>
@@ -676,7 +676,7 @@ function IntroSection(props) {
         </CardContent>
 
         <CardActions style={{ marginBottom: "-10px" }}>
-          <Grid container xs={12}>
+          <Grid container>
             <Grid item xs={12} style={{ textAlign: 'center', margin: "-15px 0px 0px 0px" }}>
               <a href={`mailto:${state.email}`}>
                 <IconButton>

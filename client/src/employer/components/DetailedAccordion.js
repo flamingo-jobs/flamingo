@@ -244,7 +244,7 @@ export default function DetailedAccordion(props) {
           props.onFailedUpdate();
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) =>  console.log(err));
   };
 
   const displayAccordionDetails = () => {

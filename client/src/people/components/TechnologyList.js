@@ -97,7 +97,7 @@ export default function TechnologyList(props) {
 
     useEffect(() => {
         passFilters();
-        console.log(stack)
+        // console.log(stack)
     }, [stack])
 
     useEffect(() => {
@@ -106,7 +106,7 @@ export default function TechnologyList(props) {
 
     // useEffect(() => {
     //     displayTechnologies();
-    //     console.log("hola")
+    //     // console.log("hola")
     // }, [technologies])
 
     // const handleToggle = (value, itemId) => () => {
@@ -124,7 +124,7 @@ export default function TechnologyList(props) {
     // };
 
     const passFilters = () => {
-        console.log(stack)
+        // console.log(stack)
         let list = [];
         let completeStack = [];
 

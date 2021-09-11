@@ -54,7 +54,7 @@ function Profile() {
 
     axios.put(`${BACKEND_URL}/jobseeker/addReach/${loginId}`,newReach)
     .then(res => {
-        console.log("reach added")
+        // console.log("reach added")
     });
   },[])
 

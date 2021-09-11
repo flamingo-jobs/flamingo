@@ -73,7 +73,7 @@ const getSearched = async (req, res) => {
 const getFiltered = (req, res) => {
   Jobseeker.find(req.body.queryParams, null, req.body.options).exec(
     (err, jobSeekers) => {
-      console.log(JSON.stringify(req.body.queryParams))
+      // console.log(JSON.stringify(req.body.queryParams))
       if (err) {
         return res.status(400).json({
           error: err,
@@ -132,10 +132,10 @@ const getByIds = async (req, res) => {
 };
 
 const getApplicants = (req, res) => {
-  console.log(req.body.queryParams);
+  // console.log(req.body.queryParams);
   Jobseeker.find(req.body.queryParams, null, req.body.options).exec(
     (err, jobSeekers) => {
-      console.log(JSON.stringify(req.body.queryParams))
+      // console.log(JSON.stringify(req.body.queryParams))
       if (err) {
         return res.status(400).json({
           error: err,
@@ -180,14 +180,14 @@ var storage = multer.diskStorage({
     fileName = req.body.userId + path.extname(file.originalname);
     fileName.replace(/:/g, "-");
     cb(null, fileName);
-    console.log(fileName);
+    // console.log(fileName);
   },
 });
 
 const uploadPic = multer({ storage: storage }).single("photo");
 
 const fileFilter = (req, file, cb) => {
-  console.log("inside fileFilter")
+  // console.log("inside fileFilter")
   if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg' || file.mimetype === 'image/png') {
     cb(null, true);
   } else {

@@ -145,7 +145,7 @@ function ContactUs() {
       isRead: false,
     };
 
-    console.log(newMessagerData);
+    // console.log(newMessagerData);
     axios.post(`${BACKEND_URL}/contact/create`, newMessagerData).then((res) => {
       if (res.data.success) {
         setAlertData({

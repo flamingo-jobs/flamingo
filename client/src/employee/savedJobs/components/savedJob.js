@@ -111,7 +111,7 @@ const SavedJob = (props) => {
         setJob(response.data.job);
       }
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
 

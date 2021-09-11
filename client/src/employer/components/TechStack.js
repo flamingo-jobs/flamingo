@@ -76,17 +76,17 @@ function TechStack(props) {
     fetch("http://localhost:8000/technologies")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.existingData);
+        // console.log(data.existingData);
 
         data.existingData.forEach((element) => {
-          console.log(element)
+          // console.log(element)
           // setTechnologies([...technologies, element]);
         
           technologies.push(element)
         });
-        console.log(technologies);
+        // console.log(technologies);
       })
-      .catch((error) => console.log(error.message));
+      .catch((error) => // console.log(error.message));
   }, []);
 
   //Event handlers for add new technologies dialog box
@@ -95,9 +95,9 @@ function TechStack(props) {
     setOpen(true);
   };
   const getStack =(name)=>{
-    console.log(name)
+    // console.log(name)
     var a=technologies.find(data=>data.name===name)['stack']
-    console.log(a)
+    // console.log(a)
     return a
   }
 
@@ -115,7 +115,7 @@ function TechStack(props) {
   const [theArray, update] = React.useState(new Set());
 
   const addTechnologyStack = () => {
-    console.log(theArray);
+    // console.log(theArray);
 
     setOpen(false);
   };

@@ -354,7 +354,7 @@ function CompanyBasicInfo(props) {
     var averageRating = totalRating / reviews.length;
     averageRating = parseInt(averageRating);
 
-    console.log(averageRating);
+    // console.log(averageRating);
 
     return averageRating;
   };
@@ -409,7 +409,7 @@ function CompanyBasicInfo(props) {
             {/* input fields */}
 
             <div>
-              <Grid container xs={12} direction="column" spacing={2}>
+              <Grid container direction="column" spacing={2}>
                 <Grid item sm={12}>
                   <TextField
                     required
@@ -590,11 +590,11 @@ function CompanyBasicInfo(props) {
   //     body: data,
   //   })
   //     .then((result) => {
-  //       console.log("File Sent Successful");
+  //       // console.log("File Sent Successful");
   //       handleClickAlertSuccess();
   //     })
   //     .catch((err) => {
-  //       console.log(err.message);
+  //       // console.log(err.message);
   //       setOpenAlertServerError();
   //     });
 

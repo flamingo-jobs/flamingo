@@ -104,7 +104,7 @@ function RecommendedJobs(props) {
     };
 
     useEffect(() => {
-        console.log(jobs.length)
+        // console.log(jobs.length)
         displayJobs();
     }, [jobs]);
 
@@ -190,7 +190,7 @@ function RecommendedJobs(props) {
                     }
                 }
             } catch (err) {
-                console.log(err);
+                // console.log(err);
             }
         }
     };

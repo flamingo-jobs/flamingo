@@ -69,7 +69,7 @@ const downloadLogo = async (req, res) => {
     var file = fs.createReadStream(logoPath);
     file.pipe(res);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 };
 
@@ -81,7 +81,7 @@ const downloadResume = async (req, res) => {
     var file = fs.createReadStream(resumePath);
     file.pipe(res);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 };
 

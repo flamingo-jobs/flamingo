@@ -139,7 +139,7 @@ function Achievements(props) {
         allYears.push(thisYear - x)
     }
 
-    return allYears.map((x) => (<option value={x}>{x}</option>));
+    return allYears.map((x,index) => (<option key={index} value={x}>{x}</option>));
   }
 
   //generate month list
@@ -154,7 +154,7 @@ function Achievements(props) {
       }        
     }
 
-    return allMonths.map((x) => (<option value={x}>{x}</option>));
+    return allMonths.map((x,index) => (<option key={index} value={x}>{x}</option>));
   }
 
   function fetchData(){
@@ -304,7 +304,7 @@ function Achievements(props) {
     if (award) {
       if (award.length > 0) {
         return award.map(awd => (
-            <AwardItem index={i++} title={awd.title} issuedBy={awd.issuedBy} date={awd.date} description={awd.description} parentFunction={deleteData} />
+            <AwardItem  key={i} index={i++} title={awd.title} issuedBy={awd.issuedBy} date={awd.date} description={awd.description} parentFunction={deleteData} />
             ))
       }else{
         return (<Typography variant="body2" color="textSecondary" component="p">Award details not added.</Typography>)

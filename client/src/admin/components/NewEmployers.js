@@ -22,7 +22,7 @@ function NewEmployers() {
                 setPercentage(response.data.percentage);
             }
         } catch (err) {
-            console.log(err);
+            // console.log(err);
         }
     };
     return (

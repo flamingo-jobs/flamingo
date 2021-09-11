@@ -189,7 +189,7 @@ function ProjectItem(props) {
         allYears.push(thisYear - x)
     }
 
-    return allYears.map((x) => (<option value={x}>{x}</option>));
+    return allYears.map((x,index) => (<option key={index} value={x}>{x}</option>));
   }
 
   //generate year list
@@ -201,7 +201,7 @@ function ProjectItem(props) {
         allYears.push(thisYear - x)
     }
 
-    return allYears.map((x) => (<option value={x}>{x}</option>));
+    return allYears.map((x,index) => (<option key={index} value={x}>{x}</option>));
   }
 
   //generate month list
@@ -216,7 +216,7 @@ function ProjectItem(props) {
       }        
     }
 
-    return allMonths.map((x) => (<option value={x}>{x}</option>));
+    return allMonths.map((x,index) => (<option key={index} value={x}>{x}</option>));
   }
   
   useEffect(() => {
@@ -386,7 +386,7 @@ function handleOpen(){
             onMouseLeave={e => {
                 setStyleEdit({display: 'none'});
         }}>
-            <Grid container xs={12} spacing={3}>
+            <Grid container spacing={3}>
               <Grid item xs={11} style={{marginTop:"-5px",boxSizing:"border-box"}}>
                 <Typography gutterBottom style={{textAlign:'left',fontSize:'16px',fontWeight:'bold',color:'#666'}}>
                     {state.name}

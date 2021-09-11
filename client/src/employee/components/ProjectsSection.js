@@ -166,7 +166,7 @@ function ProjectsSection(props) {
         allYears.push(thisYear - x)
     }
 
-    return allYears.map((x) => (<option value={x}>{x}</option>));
+    return allYears.map((x,index) => (<option key={index} value={x}>{x}</option>));
   }
 
   //generate year list
@@ -178,7 +178,7 @@ function ProjectsSection(props) {
         allYears.push(thisYear - x)
     }
 
-    return allYears.map((x) => (<option value={x}>{x}</option>));
+    return allYears.map((x,index) => (<option key={index} value={x}>{x}</option>));
   }
 
   //generate month list
@@ -193,7 +193,7 @@ function ProjectsSection(props) {
       }        
     }
 
-    return allMonths.map((x) => (<option value={x}>{x}</option>));
+    return allMonths.map((x,index) => (<option key={index} value={x}>{x}</option>));
   }
 
   function fetchData(){
@@ -390,7 +390,7 @@ function ProjectsSection(props) {
     if (project) {
       if (project.length > 0) {
       return project.map(pro => (
-            <ProjectItem index={i++} name={pro.name} link={pro.link} description={pro.description} from={pro.from} to={pro.to} usedTech={pro.usedTech} parentFunction={deleteData} techList={technologyList} />
+            <ProjectItem key={i}  index={i++} name={pro.name} link={pro.link} description={pro.description} from={pro.from} to={pro.to} usedTech={pro.usedTech} parentFunction={deleteData} techList={technologyList} />
             ))
       }else{
         return (<Typography variant="body2" color="textSecondary" component="p">Project details not added.</Typography>)

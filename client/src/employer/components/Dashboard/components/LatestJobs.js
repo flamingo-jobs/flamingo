@@ -96,7 +96,7 @@ const LatestJobs = (props) => {
     axios
       .get(`${BACKEND_URL}/jobs/filterAllByOrganization/${props.employerId}`)
       .then((res) => {
-        console.log(res.data.employerJobs);
+        // console.log(res.data.employerJobs);
         if (res.data.success) {
           setState({
             allJobs: res.data.employerJobs.slice(0, 5),
@@ -112,7 +112,7 @@ const LatestJobs = (props) => {
       if (element.status == "pending") {
         pending++;
       }
-      console.log(element.status);
+      // console.log(element.status);
     });
 
     return pending;
@@ -125,7 +125,7 @@ const LatestJobs = (props) => {
       if (element.status == "reviewing") {
         reviewing++;
       }
-      console.log(element.status);
+      // console.log(element.status);
     });
 
     return reviewing;
@@ -138,7 +138,7 @@ const LatestJobs = (props) => {
       if (element.status == "shortlisted") {
         shortlisted++;
       }
-      console.log(element.status);
+      // console.log(element.status);
     });
 
     return shortlisted;
@@ -151,7 +151,7 @@ const LatestJobs = (props) => {
       if (element.status == "rejected") {
         rejected++;
       }
-      console.log(element.status);
+      // console.log(element.status);
     });
 
     return rejected;

@@ -88,7 +88,7 @@ const SearchResult = (props) => {
           setSavedJobIds(response.data.jobseeker.savedJobs);
         }
       } catch (err) {
-        console.log(err);
+        // console.log(err);
       }
     }
   };

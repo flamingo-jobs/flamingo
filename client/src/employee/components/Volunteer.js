@@ -139,7 +139,7 @@ function Volunteer(props) {
         allYears.push(thisYear - x)
     }
 
-    return allYears.map((x) => (<option value={x}>{x}</option>));
+    return allYears.map((x,index) => (<option key={index} value={x}>{x}</option>));
   }
 
   //generate year list
@@ -151,7 +151,7 @@ function Volunteer(props) {
         allYears.push(thisYear - x)
     }
 
-    return allYears.map((x) => (<option value={x}>{x}</option>));
+    return allYears.map((x,index) => (<option key={index} value={x}>{x}</option>));
   }
 
   //generate month list
@@ -166,7 +166,7 @@ function Volunteer(props) {
       }        
     }
 
-    return allMonths.map((x) => (<option value={x}>{x}</option>));
+    return allMonths.map((x,index) => (<option key={index} value={x}>{x}</option>));
   }
 
   function fetchData(){
@@ -330,7 +330,7 @@ function Volunteer(props) {
     if (volunteer) {
       if (volunteer.length > 0) {
       return volunteer.map(vol => (
-            <VolunteerItem index={i++} title={vol.title} organization={vol.organization} from={vol.from} to={vol.to} description={vol.description} parentFunction={deleteData} />
+            <VolunteerItem key={i} index={i++} title={vol.title} organization={vol.organization} from={vol.from} to={vol.to} description={vol.description} parentFunction={deleteData} />
             ))
       }else{
         return (<Typography variant="body2" color="textSecondary" component="p">Volunteering details not added.</Typography>)

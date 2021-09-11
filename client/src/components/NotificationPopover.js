@@ -176,7 +176,7 @@ export default function NotificationsPopover(props) {
     };
 
     const retrieveNotifications = () => {
-        console.log(props.loginId);
+        // console.log(props.loginId);
         if (props.userRole) {
             axios.get(`${BACKEND_URL}/${props.userRole}/getNotifications/60f6fb850479410654e83dc3`).then((res) => {
                 

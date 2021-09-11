@@ -65,7 +65,7 @@ function TechCategory(props) {
 
   // useEffect(() => {
   //   subTechnologies.push({name:props.name,list:props.list});
-  //   console.log(subTechnologies)
+  //   // console.log(subTechnologies)
   //   // setSubTechnologies([...subTechnologies, props.list]);
   // }, []);
 
@@ -90,7 +90,7 @@ function TechCategory(props) {
   // });
 
   const addSubTechnologyStack = () => {
-    console.log(subArray);
+    // console.log(subArray);
 
     setOpen(false);
   };

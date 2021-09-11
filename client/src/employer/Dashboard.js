@@ -48,7 +48,6 @@ const Dashboard = (props) => {
         <Grid item>
           <Grid
             container
-            xs={12}
             spacing={1}
             direction="row"
             justify="space-between"

@@ -221,7 +221,7 @@ const AccountSettings = () => {
           })
           .catch((err) => {
             if (err) {
-              console.log(err)
+              // console.log(err)
               setAlertData({
                 severity: "error",
                 msg: "Cannot connect right now. Please check again later!",

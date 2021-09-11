@@ -65,7 +65,7 @@ const NewApplicants = (props) => {
 
   useEffect(() => {
     axios.get(`${BACKEND_URL}/applications/${props.employerId}`).then((res) => {
-      console.log(res.data.applications);
+      // console.log(res.data.applications);
       if (res.data.success) {
         setState({
           allJobs: res.data.applications,

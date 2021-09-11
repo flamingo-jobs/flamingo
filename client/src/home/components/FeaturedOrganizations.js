@@ -113,7 +113,7 @@ function FeaturedOrganizations() {
                     dispatch(setReduxFavoriteOrgIds(response.data.jobseeker.favoriteOrganizations));
                 }
             } catch (err) {
-                console.log(err);
+                // console.log(err);
             }
         } else {
             setFavoriteOrgIds(reduxFavoriteOrgIds);

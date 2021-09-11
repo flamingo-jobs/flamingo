@@ -224,10 +224,10 @@ const Job = (props) => {
       if (response.data.success) {
         setJob(response.data.job);
       } else {
-        console.log("404 Job not found");
+        // console.log("404 Job not found");
       }
     } catch (err) {
-      console.log("Could not retreive job");
+      // console.log("Could not retreive job");
       // console.log(err);
     }
   };
@@ -250,9 +250,9 @@ const Job = (props) => {
 
   //     return download(`${FILE_URL}/resumes/${newFile.name}`, "Flamingo_Resume", "application/pdf");
   //   } catch (err) {
-  //     console.log(err);
+  //     // console.log(err);
   //     if (err.status === 400) {
-  //       console.log("Error while downloading file. Try again later");
+  //       // console.log("Error while downloading file. Try again later");
   //     }
   //   }
   // };

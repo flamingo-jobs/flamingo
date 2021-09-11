@@ -220,10 +220,10 @@ const Applications = () => {
         });
         setApplicantIds(userIds);
       } else {
-        console.log("404 Job not found");
+        // console.log("404 Job not found");
       }
     } catch (err) {
-      console.log("Could not retreive job");
+      // console.log("Could not retreive job");
       setAlertData({
         severity: "error",
         msg: "Something Went Wrong, Please Try Again Later.",
@@ -247,7 +247,7 @@ const Applications = () => {
           //   )[0].score;
           //   user.score = score;
           // });
-          console.log(response.data.existingData)
+          // console.log(response.data.existingData)
           setApplicants(response.data.existingData);
         }
       } catch (err) {
@@ -300,7 +300,7 @@ const Applications = () => {
   };
 
   // useEffect(() => {
-  //   console.log(customSettings);
+  //   // console.log(customSettings);
   // }, [customSettings])
 
   const updateCustomCriterias = (criterias) => {

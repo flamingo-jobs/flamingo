@@ -53,7 +53,7 @@ const ReachChart = (props) => {
         monthlyReach[temp[1]-1]++;
     }
     setCounts(monthlyReach);
-    console.log(counts);
+    // console.log(counts);
   }
 
   const generateLineChart = () => {

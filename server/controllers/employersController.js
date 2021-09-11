@@ -50,7 +50,7 @@ const getForTable = (req, res) => {
         });
 
         ratings = ratings / obj.reviews.length;
-        console.log(ratings);
+        // console.log(ratings);
       }
 
       let newObj = {

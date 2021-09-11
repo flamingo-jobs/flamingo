@@ -217,7 +217,7 @@ function CompanySummary(props) {
                 }
             }
         } catch (err) {
-            console.log(err);
+            // console.log(err);
         }
     };
 

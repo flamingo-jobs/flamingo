@@ -257,7 +257,7 @@ export default function StartHiring() {
           })
           .catch((err) => {
             if (err) {
-              console.log(err);
+              // console.log(err);
               setAlertData({
                 severity: "error",
                 msg: "User account creation failed!",

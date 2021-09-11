@@ -79,14 +79,14 @@ export default function TechCard(props) {
   // });
   const [subSubArray, update] = React.useState(new Set());
   const addSubTechnologyStack = () => {
-    console.log(subSubArray);
+    // console.log(subSubArray);
 
     setOpen(false);
   };
 
   useEffect(() => {
-    console.log(props.name)
-    console.log(props.list);
+    // console.log(props.name)
+    // console.log(props.list);
   }, []);
   const handleChange = (event) => {
     if (!event.target.checked)

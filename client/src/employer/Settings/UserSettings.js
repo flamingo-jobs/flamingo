@@ -229,7 +229,7 @@ const UserSettings = () => {
     };
     axios.post(`${BACKEND_URL}/api/invite`, invitationData).then((res) => {
       if (res.data.success) {
-        console.log("successd");
+        // console.log("successd");
         setAlertData({
           severity: "success",
           msg: `Successful! Invitaion sent to ${formData.email}`,

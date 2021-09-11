@@ -47,7 +47,7 @@ const checkWhetherFeatured = (job) => {
 }
 
 // const getAll = async (req, res) => {
-//     console.log(JSON.stringify(req.body.queryParams));
+//     // console.log(JSON.stringify(req.body.queryParams));
 //     Jobs.find(req.body.queryParams, null, req.body.options).exec((err, jobs) => {
 //         if (err) {
 //             return res.status(400).json({
@@ -108,7 +108,7 @@ const getAll = async (req, res) => {
 }
 
 const getAllRecommendedJobs = async (req, res) => {
-    console.log(JSON.stringify(req.body.queryParams));
+    // console.log(JSON.stringify(req.body.queryParams));
 
     Jobs.find(req.body.queryParams, null, req.body.options).exec((err, jobs) => {
         if (err) {

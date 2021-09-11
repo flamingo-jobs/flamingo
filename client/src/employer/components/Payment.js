@@ -175,7 +175,6 @@ export default function Payment() {
           <Grid
             container
             className={classes.mainGrid}
-            xs={12}
             spacing={2}
             direction="row"
             align="left"
@@ -194,7 +193,6 @@ export default function Payment() {
                   <Grid
                     container
                     className={classes.mainGrid}
-                    xs={12}
                     direction="row"
                     align="left"
                   >

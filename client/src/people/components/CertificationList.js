@@ -97,7 +97,7 @@ export default function CertificationList(props) {
 
     useEffect(() => {
         passFilters();
-        console.log(certificates)
+        // console.log(certificates)
     }, [certificates])
 
     useEffect(() => {
@@ -106,7 +106,7 @@ export default function CertificationList(props) {
 
     // useEffect(() => {
     //     displayCertifications();
-    //     console.log("hola")
+    //     // console.log("hola")
     // }, [certifications])
 
     // const handleToggle = (value, itemId) => () => {
@@ -124,7 +124,7 @@ export default function CertificationList(props) {
     // };
 
     const passFilters = () => {
-        console.log(certificates)
+        // console.log(certificates)
         let list = [];
         let completeCertificates = [];
 

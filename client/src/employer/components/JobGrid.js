@@ -140,7 +140,7 @@ function JobGrid(props) {
             if (element.status == "pending") {
                 pending++;
             }
-            console.log(element.status);
+            // console.log(element.status);
         });
 
         return pending;
@@ -153,7 +153,7 @@ function JobGrid(props) {
             if (element.status == "reviewing") {
                 reviewing++;
             }
-            console.log(element.status);
+            // console.log(element.status);
         });
 
         return reviewing;
@@ -166,7 +166,7 @@ function JobGrid(props) {
             if (element.status == "shortlisted") {
                 shortlisted++;
             }
-            console.log(element.status);
+            // console.log(element.status);
         });
 
         return shortlisted;
@@ -179,7 +179,7 @@ function JobGrid(props) {
             if (element.status == "rejected") {
                 rejected++;
             }
-            console.log(element.status);
+            // console.log(element.status);
         });
 
         return rejected;

@@ -81,7 +81,7 @@ function JobTable(props) {
 
 
     useEffect(() => {
-        console.log(props.refreshRequired)
+        // console.log(props.refreshRequired)
         if (props.refreshRequired) {
             setLoading(true);
             retrieveCategories();

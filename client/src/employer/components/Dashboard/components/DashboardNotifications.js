@@ -61,7 +61,7 @@ const DashboardNotifications = () => {
         <NotificationsIcon className={classes.notificationsIcon}/>
 
         <Card className={classes.notificationCard}>
-            <Grid container direction="row" xs={12}>
+            <Grid container direction="row">
                 <Grid item xs={2}>
                     <NotificationsIcon className={classes.notificationsIconSmall}/>
                 </Grid>
@@ -74,7 +74,7 @@ const DashboardNotifications = () => {
         </Card>
 
         <Card className={classes.notificationCard}>
-            <Grid container direction="row" xs={12}>
+            <Grid container direction="row">
                 <Grid item xs={2}>
                     <NotificationsIcon className={classes.notificationsIconSmall}/>
                 </Grid>
@@ -87,7 +87,7 @@ const DashboardNotifications = () => {
         </Card>
 
         <Card className={classes.notificationCard}>
-            <Grid container direction="row" xs={12}>
+            <Grid container direction="row">
                 <Grid item xs={2}>
                     <NotificationsIcon className={classes.notificationsIconSmall}/>
                 </Grid>
@@ -100,7 +100,7 @@ const DashboardNotifications = () => {
         </Card>
 
         <Card className={classes.notificationCard}>
-            <Grid container direction="row" xs={12}>
+            <Grid container direction="row">
                 <Grid item xs={2}>
                     <NotificationsIcon className={classes.notificationsIconSmall}/>
                 </Grid>
@@ -113,7 +113,7 @@ const DashboardNotifications = () => {
         </Card>
 
         <Card className={classes.notificationCard}>
-            <Grid container direction="row" xs={12}>
+            <Grid container direction="row">
                 <Grid item xs={2}>
                     <NotificationsIcon className={classes.notificationsIconSmall}/>
                 </Grid>

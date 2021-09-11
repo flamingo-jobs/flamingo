@@ -128,7 +128,7 @@ const CompanySummaryCard = (props) => {
   useEffect(() => {
     getVerificationStatus();
     axios.get(`${BACKEND_URL}/employers/${props.employerId}`).then((res) => {
-      console.log(res.data.employer);
+      // console.log(res.data.employer);
       if (res.data.success) {
         setState({
           name: res.data.employer.name,

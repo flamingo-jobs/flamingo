@@ -77,7 +77,6 @@ const old = () => {
                         <div>
                           <Grid
                             container
-                            xs={12}
                             direction="column"
                             spacing={2}
                           >

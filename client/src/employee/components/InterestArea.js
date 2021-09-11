@@ -124,7 +124,7 @@ export default function InterestArea(props) {
             setInterests(res.data.jobseeker.interests)
         }
         })
-        console.log(interests)
+        // console.log(interests)
       //  setCheckedItems();
     }
 
@@ -182,7 +182,7 @@ export default function InterestArea(props) {
             if(index){
                 const itemObj = { index: category._id, name: category.name };
                 setChecked(itemObj);
-                console.log(itemObj)
+                // console.log(itemObj)
             }
         });
         setFetchedData(true);

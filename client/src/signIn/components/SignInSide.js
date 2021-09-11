@@ -213,7 +213,7 @@ export default function SignInSide() {
         }
       })
       .catch((err) => {
-        console.log(err.message);
+        // console.log(err.message);
         if (err.message === "Network Error") handleServerError();
         else handleCredentialError();
       });

@@ -58,7 +58,7 @@ const PopularJobs = (props) => {
     axios
       .get(`${BACKEND_URL}/jobs/filterAllByOrganization/${props.employerId}`)
       .then((res) => {
-        console.log(res.data.employerJobs);
+        // console.log(res.data.employerJobs);
         if (res.data.success) {
           setState({
             allJobs: res.data.employerJobs,
@@ -89,7 +89,7 @@ const PopularJobs = (props) => {
   return (
     <div className={classes.root}>
       <FloatCard>
-        <Grid container direction="row" xs={12}>
+        <Grid container direction="row">
           <Grid item>
             <Typography variant="h6" className={classes.title}>
               Most Popular Jobs

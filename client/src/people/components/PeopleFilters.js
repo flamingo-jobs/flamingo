@@ -77,7 +77,7 @@ function JobFilters(props) {
     }
 
     const updateCertificationData = (filterData) => {
-        console.log(filterData)
+        // console.log(filterData)
         setCertifications(filterData);
     }
 

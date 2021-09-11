@@ -244,7 +244,7 @@ function ProfileStatus(props) {
                             className={classes.media}
                             image={savedPic}
                             alt="profile image"
-                            zIndex="background"
+                            zindex="background"
                         />
                     </Typography>
                 </Grid>

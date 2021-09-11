@@ -137,10 +137,10 @@ function JobCard(props) {
             try {
                 const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateSavedJobs/${userId}`, newSavedJobIds);
                 if (response.data.success) {
-                console.log('success');
+                // console.log('success');
                 }
             } catch (err) {
-                console.log(err);
+                // console.log(err);
             }
 
         } else{ // Save
@@ -151,10 +151,10 @@ function JobCard(props) {
             try {
               const response = await axios.patch(`${BACKEND_URL}/jobseeker/updateSavedJobs/${userId}`, newSavedJobIds);
               if (response.data.success) {
-                console.log('success');
+                // console.log('success');
               }
             } catch (err) {
-              console.log(err);
+              // console.log(err);
             }
         }
     }

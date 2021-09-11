@@ -96,7 +96,7 @@ function StatCard(props) {
                                 image={statImage2}
                                 title="Contemplative Reptile"
                                 style={{height:"200px",width:"200px",borderRadius: 10}}
-                                zIndex="background"
+                                zindex="background"
                                 /> 
                             </Grid>
                             <Grid item sm={12} md={6} style={{alignItems:"center",display: "flex"}}>
@@ -123,7 +123,7 @@ function StatCard(props) {
                                 image={statImage1}
                                 title="Contemplative Reptile"
                                 style={{height:"200px",width:"200px",borderRadius: 10}}
-                                zIndex="background"
+                                zindex="background"
                                 /> 
                             </Grid>
                             <Grid item sm={12} md={6} style={{alignItems:"center",display: "flex"}}>

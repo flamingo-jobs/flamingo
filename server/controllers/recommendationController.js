@@ -308,7 +308,7 @@ const generateJobSeekerRecommendations = (req, res) => {
                                     }
                                 })
                             }
-                            console.log(courseNameList)
+                            // console.log(courseNameList)
                             if (courseNameList.length) {
                                 courseRelevence = similarity(courseNameList.join(' '), job.technologyStack.concat([job.title, job.description]));
                             }

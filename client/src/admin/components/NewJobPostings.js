@@ -28,7 +28,7 @@ function NewJobPostings() {
         setWeeklyJobPostings(response.data.weeklyJobPostings);
       }
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
 

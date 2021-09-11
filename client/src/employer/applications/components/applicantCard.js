@@ -204,7 +204,7 @@ function ApplicantCard(props) {
       return download(file, props.jobseeker.name, "application/pdf");
 
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   }
 

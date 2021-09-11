@@ -120,7 +120,7 @@ function TopCards(props){
   },[fetchedData])
 
     return (
-    <Grid container direction="row" xs={12} spacing={2} className={classes.root}>
+    <Grid container direction="row" spacing={2} className={classes.root}>
 
         <Grid item xs={6} md={3}>
             <FloatCard className={classes.applicationCard}>

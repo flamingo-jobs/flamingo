@@ -177,7 +177,7 @@ function EduItem(props) {
         allYears.push(thisYear - x)
     }
 
-    return allYears.map((x) => (<option value={x}>{x}</option>));
+    return allYears.map((x,index) => (<option key={index} value={x}>{x}</option>));
   }
 
   //generate year list
@@ -189,7 +189,7 @@ function EduItem(props) {
         allYears.push(thisYear - x)
     }
 
-    return allYears.map((x) => (<option value={x}>{x}</option>));
+    return allYears.map((x,index) => (<option key={index} value={x}>{x}</option>));
   }
 
   //generate month list
@@ -204,7 +204,7 @@ function EduItem(props) {
       }        
     }
 
-    return allMonths.map((x) => (<option value={x}>{x}</option>));
+    return allMonths.map((x,index) => (<option key={index} value={x}>{x}</option>));
   }
 
   useEffect(() => {
@@ -709,7 +709,7 @@ function EduItem(props) {
                         {education.type}
                     </Typography>
                 </Grid>
-                <Grid item xs={8} spacing={2}>
+                <Grid item xs={8}>
                     <Typography gutterBottom style={{color: "#666",textAlign:'left',fontSize:'16px',fontWeight:'bold'}}>
                         {education.institute}
                     </Typography>
@@ -742,7 +742,7 @@ function EduItem(props) {
                         {education.type}
                     </Typography>
                 </Grid>
-                <Grid item xs={8} spacing={2}>
+                <Grid item xs={8}>
                     <Typography gutterBottom style={{color: "#666",textAlign:'left',fontSize:'16px',fontWeight:'bold'}}>
                         {education.institute}
                     </Typography>
@@ -769,7 +769,7 @@ function EduItem(props) {
                       {education.type}
                   </Typography>
               </Grid>
-              <Grid item xs={8} spacing={2}>
+              <Grid item xs={8}>
                   <Typography gutterBottom style={{color: "#666",textAlign:'left',fontSize:'16px',fontWeight:'bold'}}>
                       {education.institute}
                   </Typography>

@@ -139,7 +139,7 @@ function CertificatesSection(props) {
         allYears.push(thisYear - x)
     }
 
-    return allYears.map((x) => (<option value={x}>{x}</option>));
+    return allYears.map((x,index) => (<option key={index} value={x}>{x}</option>));
   }
 
     //generate year list
@@ -151,7 +151,7 @@ function CertificatesSection(props) {
           allYears.push(thisYear - x)
       }
   
-      return allYears.map((x) => (<option value={x}>{x}</option>));
+      return allYears.map((x,index) => (<option key={index} value={x}>{x}</option>));
     }
 
   //generate month list
@@ -166,7 +166,7 @@ function CertificatesSection(props) {
       }        
     }
 
-    return allMonths.map((x) => (<option value={x}>{x}</option>));
+    return allMonths.map((x,index) => (<option key={index} value={x}>{x}</option>));
   }
 
   function fetchCertificates(){
@@ -208,7 +208,7 @@ function CertificatesSection(props) {
 
   //generate issuer list
   function getIssuers(){
-    return allCertificates?.map((x) => (<option value={x.issuer}>{x.issuer}</option>));
+    return allCertificates?.map((x,index) => (<option key={index} value={x.issuer}>{x.issuer}</option>));
   }
 
   //generate title list
@@ -349,7 +349,7 @@ function CertificatesSection(props) {
     if (certificate) {
       if (certificate.length > 0) {
         return certificate.map(awd => (
-            <CertificateItem index={i++} issuer={awd.issuer} title={awd.title} score={awd.score} date={awd.date} allCertificates={allCertificates} parentFunction={deleteData} />
+            <CertificateItem key={i} index={i++} issuer={awd.issuer} title={awd.title} score={awd.score} date={awd.date} allCertificates={allCertificates} parentFunction={deleteData} />
             ))
       }else{
         return (<Typography variant="body2" color="textSecondary" component="p">Certificates not added.</Typography>)

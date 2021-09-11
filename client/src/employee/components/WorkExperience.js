@@ -147,7 +147,7 @@ function WorkExperience(props) {
         allYears.push(thisYear - x)
     }
 
-    return allYears.map((x) => (<option value={x}>{x}</option>));
+    return allYears.map((x,index) => (<option key={index} value={x}>{x}</option>));
   }
 
   //generate year list
@@ -159,7 +159,7 @@ function WorkExperience(props) {
         allYears.push(thisYear - x)
     }
 
-    return allYears.map((x) => (<option value={x}>{x}</option>));
+    return allYears.map((x,index) => (<option key={index} value={x}>{x}</option>));
   }
 
   //generate month list
@@ -174,7 +174,7 @@ function WorkExperience(props) {
       }        
     }
 
-    return allMonths.map((x) => (<option value={x}>{x}</option>));
+    return allMonths.map((x,index) => (<option key={index} value={x}>{x}</option>));
   }
 
   function fetchData(){
@@ -324,7 +324,7 @@ function WorkExperience(props) {
         to: state.endMonth+"/"+state.endYear,
         taskAndResponsibility: state.taskAndResponsibility,
     }
-    console.log("my work"+newWork);
+    // console.log("my work"+newWork);
 
     axios.put(`${BACKEND_URL}/jobseeker/addWork/${loginId}`,newWork)
     .then(res => {
@@ -356,8 +356,8 @@ function WorkExperience(props) {
     workTemp?.sort((a,b) => (a.year < b.year) ? 1 : ((b.year < a.year) ? -1 : 0));
     if (workTemp) {
       if (workTemp.length > 0) {
-      return workTemp.map(wk => (
-            <WorkExpItem index={wk.index} place={wk.workItem.place} description={wk.workItem.description} position={wk.workItem.position} from={wk.workItem.from} to={wk.workItem.to} task={wk.workItem.taskAndResponsibility} parentFunction={deleteData} />
+      return workTemp.map((wk,j) => (
+            <WorkExpItem key={j} index={wk.index} place={wk.workItem.place} description={wk.workItem.description} position={wk.workItem.position} from={wk.workItem.from} to={wk.workItem.to} task={wk.workItem.taskAndResponsibility} parentFunction={deleteData} />
             ))
       }else{
         return (<Typography variant="body2" color="textSecondary" component="p">Work experience details not added.</Typography>)

@@ -159,7 +159,7 @@ function EducationSection(props) {
         allYears.push(thisYear - x)
     }
 
-    return allYears.map((x) => (<option value={x}>{x}</option>));
+    return allYears.map((x,index) => (<option key={index} value={x}>{x}</option>));
   }
 
     //generate year list
@@ -171,7 +171,7 @@ function EducationSection(props) {
           allYears.push(thisYear - x)
       }
   
-      return allYears.map((x) => (<option value={x}>{x}</option>));
+      return allYears.map((x,index) => (<option key={index} value={x}>{x}</option>));
     }
 
   //generate month list
@@ -186,7 +186,7 @@ function EducationSection(props) {
       }        
     }
 
-    return allMonths.map((x) => (<option value={x}>{x}</option>));
+    return allMonths.map((x,index) => (<option key={index} value={x}>{x}</option>));
   }
 
   const handleClick = (event) => {
@@ -352,7 +352,7 @@ function EducationSection(props) {
         }
         setEducationFields(eduData);
         matchFields();
-        console.log("data fetched");
+        // console.log("data fetched");
       }
     })
     setFetchedData(0)
@@ -391,7 +391,7 @@ function EducationSection(props) {
       societiesAndActivities: education.societiesAndActivities
     }
   }
-console.log(edu);
+// console.log(edu);
     axios.put(`${BACKEND_URL}/jobseeker/addEducation/${loginId}`,edu)
     .then(res => {
       if(res.data.success){
@@ -459,7 +459,7 @@ console.log(edu);
       if (phD) {
         eduCount=1;
         return phD.map(edu => (
-              <EduItem index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities}  parentFunction={deleteEducation} />
+              <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities}  parentFunction={deleteEducation} />
               ))
       }
     }
@@ -470,7 +470,7 @@ console.log(edu);
       if (mPhil) {
         eduCount=1;
         return mPhil.map(edu => (
-              <EduItem index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities}  parentFunction={deleteEducation} />
+              <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities}  parentFunction={deleteEducation} />
               ))
       }
     }
@@ -481,7 +481,7 @@ console.log(edu);
       if (masters) {
         eduCount=1;
         return masters.map(edu => (
-              <EduItem index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities}  parentFunction={deleteEducation} />
+              <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities}  parentFunction={deleteEducation} />
               ))
       }
     }
@@ -492,7 +492,7 @@ console.log(edu);
       if (bachelorsHonours) {
         eduCount=1;
         return bachelorsHonours.map(edu => (
-              <EduItem index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities}  parentFunction={deleteEducation} />
+              <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities}  parentFunction={deleteEducation} />
               ))
       }
     }
@@ -503,7 +503,7 @@ console.log(edu);
       if (bachelors) {
         eduCount=1;
         return bachelors.map(edu => (
-              <EduItem index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities}  parentFunction={deleteEducation} />
+              <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities}  parentFunction={deleteEducation} />
               ))
       }
     }
@@ -514,7 +514,7 @@ console.log(edu);
       if (graduateDiploma) {
         eduCount=1;
         return graduateDiploma.map(edu => (
-              <EduItem index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities}  parentFunction={deleteEducation} />
+              <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities}  parentFunction={deleteEducation} />
               ))
       }
     }
@@ -525,7 +525,7 @@ console.log(edu);
       if (diploma) {
         eduCount=1;
         return diploma.map(edu => (
-              <EduItem index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities}  parentFunction={deleteEducation} />
+              <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities}  parentFunction={deleteEducation} />
               ))
       }
     }
@@ -536,7 +536,7 @@ console.log(edu);
       if (school) {
         eduCount=1;
         return school.map(edu => (
-              <EduItem index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities}  parentFunction={deleteEducation} />
+              <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities}  parentFunction={deleteEducation} />
               ))
       }
     }

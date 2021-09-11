@@ -166,7 +166,7 @@ const Responsibilities = (props) => {
         msg: "Changes could not be applied",
       });
       props.handleAlert();
-      console.log("Error: ", err);
+      // console.log("Error: ", err);
     }
   };
 
