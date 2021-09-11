@@ -61,8 +61,7 @@ app.use(verificationRoutes);
 
 const PORT = 8000;
 
-const DB_URL =
-  "mongodb+srv://flam_root:flamingoroot123@flamingocluster1.wlgjg.mongodb.net/flamingoDb?retryWrites=true&w=majority";
+const DB_URL = process.env.MONGO_TOKEN;
 
 mongoose
   .connect(DB_URL, {
