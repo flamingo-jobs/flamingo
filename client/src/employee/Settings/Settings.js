@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import {
   makeStyles,
@@ -114,13 +114,84 @@ function a11yProps(index) {
     "aria-controls": `vertical-tabpanel-${index}`,
   };
 }
-const Settings = () => {
+const Settings = (props) => {
   const classes = useStyles();
 
   const [checked, setChecked] = React.useState(false);
+  const [checkboxConfirm, setCheckboxConfirm] = useState(false);
+
+  let loginId;
+  let login = false;
+  const jwt = require("jsonwebtoken");
+  const token = sessionStorage.getItem("userToken");
+  const header = jwt.decode(token, { complete: true });
+  if(token === null){
+    loginId=props.jobseekerID;
+  }else if (header.payload.userRole === "jobseeker") {
+    login = true;
+    loginId=sessionStorage.getItem("loginId");
+  } else {
+    loginId=props.jobseekerID;
+  }
+
+  useEffect(()=>{
+    fetchData();
+  },[])
 
   const handleChangeChecked = (event) => {
     setChecked(event.target.checked);
+    setCheckboxConfirm(true);
+  };
+
+  const handleClickClose = () => {
+    setCheckboxConfirm(false);
+  };
+
+  function fetchData(){
+    axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
+    .then(res => {
+      if(res.data.success){
+        if(res.data.jobseeker.isPublic !== null){
+          if(res.data.jobseeker.isPublic === true){
+            setChecked(false);
+          }else if(res.data.jobseeker.isPublic === false){
+            setChecked(true);
+          }
+        }       
+      }
+    })
+  }
+
+  const resetVisibility = () => {
+    if(checked){
+      setChecked(false);
+    }else{
+      setChecked(true);
+    }
+    setCheckboxConfirm(false);
+  };
+
+  const changeVisibility = () => {
+    const data = {
+      isPublic : !checked,
+    }
+    axios.put(`${BACKEND_URL}/jobseeker/update/${loginId}`,data)
+    .then(res => {
+      if(res.data.success){
+        setAlertData({
+          severity: "success",
+          msg: `Profile visibility changed to ${checked ? "private" : "public"}!`,
+        });
+        handleAlert();
+        fetchData();
+      } else {
+        setAlertData({
+          severity: "error",
+          msg: "Couldn't change profile visibility!",
+        });
+      }
+    });
+    setCheckboxConfirm(false);
   };
 
   const [value, setValue] = useState(0);
@@ -350,13 +421,36 @@ const Settings = () => {
                           control={
                             <Checkbox
                               checked={checked}
-                              onChange={handleChangeChecked}
+                              // onChange={handleChangeChecked}
+                              onClick={handleChangeChecked}
                               name="checkedB"
                               color="primary"
                             />
                           }
                           label="Private Account"
                         />
+                        <Dialog
+                            open={checkboxConfirm}
+                            onClose={handleClickClose}
+                            aria-labelledby="alert-dialog-title"
+                            aria-describedby="alert-dialog-description"
+                        >
+                            <DialogTitle id="alert-dialog-title">{"Confirm Delete?"}</DialogTitle>
+                            <DialogContent>
+                                <DialogContentText id="alert-dialog-description">
+                                    Are you sure that you want to make profile {checked ? "private?" : "public?"}
+                                </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={resetVisibility} color="primary">
+                                    No
+                                </Button>
+                                <Button 
+                                  color="primary" onClick={changeVisibility} autoFocus>
+                                    Yes
+                                </Button>
+                            </DialogActions>
+                        </Dialog>
                       </Grid>
                       <Grid item xs={12}>
                         <Typography gutterBottom style={{fontSize:'14px',color:'#666',textAlign:"left"}}>
