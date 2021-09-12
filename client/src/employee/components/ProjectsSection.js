@@ -24,6 +24,7 @@ import BACKEND_URL from '../../Config';
 import theme from '../../Theme';
 import ProjectItem from './ProjectItem';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import Loading from "../../components/Loading";
 
 const useStyles = makeStyles({
   defaultButton: {
@@ -387,16 +388,16 @@ function ProjectsSection(props) {
   }
   
   const displayProjectFields = () => {
-    if (project) {
+    if(project !== null){
       if (project.length > 0) {
-      return project.map(pro => (
+        return project.map(pro => (
             <ProjectItem key={i}  index={i++} name={pro.name} link={pro.link} description={pro.description} from={pro.from} to={pro.to} usedTech={pro.usedTech} parentFunction={deleteData} techList={technologyList} />
             ))
       }else{
         return (<Typography variant="body2" color="textSecondary" component="p">Project details not added.</Typography>)
       }
     }else{
-      return (<Typography variant="body2" color="textSecondary" component="p">Project details not added.</Typography>)
+      return (<Loading />);
     }
   }
 

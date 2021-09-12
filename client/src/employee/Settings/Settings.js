@@ -15,7 +15,12 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Avatar,
+  Checkbox,
+  FormControlLabel,
 } from "@material-ui/core";
+import theme from '../../Theme';
+import privateProfile from './images/privateProfile.png';
 import SnackBarAlert from "../../components/SnackBarAlert";
 import axios from "axios";
 import BACKEND_URL from "../../Config";
@@ -24,7 +29,7 @@ const jwt = require("jsonwebtoken");
 const passwordRegexp =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})/;
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   root: {
     borderRadius: 10,
     margin: "30px 10px 30px 10px",
@@ -76,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "stretch",
     order: 3
   },
-}));
+});
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -111,6 +116,12 @@ function a11yProps(index) {
 }
 const Settings = () => {
   const classes = useStyles();
+
+  const [checked, setChecked] = React.useState(false);
+
+  const handleChangeChecked = (event) => {
+    setChecked(event.target.checked);
+  };
 
   const [value, setValue] = useState(0);
 
@@ -318,10 +329,44 @@ const Settings = () => {
                 aria-label="Vertical tabs example"
                 className={classes.tabs}
               >
-                <Tab label="Account" {...a11yProps(0)} />
+                <Tab label="Visibility" {...a11yProps(0)} />
+                <Tab label="Account" {...a11yProps(1)} />
               </Tabs>
-
+              
               <TabPanel value={value} index={0}>
+                <Grid container xs={12}>
+                  <Grid item xs={0} md={4}></Grid>
+                  <Grid item container xs={12} md={4} spacing={2} justify="center" alignItems="center">
+                      <Grid item>
+                        <Typography gutterBottom variant="h5" style={{color: theme.palette.stateBlue,fontWeight:'bold',paddingTop:"5px"}}>
+                          Wanna Stay Hidden?     
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <Avatar alt="private profile image" src={privateProfile} />
+                      </Grid>
+                      <Grid item xs={12} style={{marginTop:"20px"}}>
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              checked={checked}
+                              onChange={handleChangeChecked}
+                              name="checkedB"
+                              color="primary"
+                            />
+                          }
+                          label="Private Account"
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Typography gutterBottom style={{fontSize:'14px',color:'#666',textAlign:"left"}}>
+                          By making your profile private, only the organizations you applied for will be able to view your profile in Famingo. You will not be visible to other organizations and job seekers.
+                        </Typography>
+                      </Grid>
+                  </Grid>
+                </Grid>
+              </TabPanel>
+              <TabPanel value={value} index={1}>
                 <Grid
                   container
                   justify="center"

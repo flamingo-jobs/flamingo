@@ -20,6 +20,7 @@ import SnackBarAlert from "../../components/SnackBarAlert";
 import BACKEND_URL from '../../Config';
 import theme from '../../Theme';
 import WorkExpItem from './WorkExpItem';
+import Loading from "../../components/Loading";
 
 const useStyles = makeStyles({
   media: {
@@ -363,7 +364,7 @@ function WorkExperience(props) {
         return (<Typography variant="body2" color="textSecondary" component="p">Work experience details not added.</Typography>)
       }
     }else{
-      return (<Typography variant="body2" color="textSecondary" component="p">Work experience details not added.</Typography>)
+      return (<Loading />);
     }
   }
 
