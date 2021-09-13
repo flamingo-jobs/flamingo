@@ -11,6 +11,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import FloatCard from '../../components/FloatCard';
+import Loading from '../../components/Loading';
 import SnackBarAlert from "../../components/SnackBarAlert";
 import BACKEND_URL from '../../Config';
 import theme from '../../Theme';
@@ -125,6 +126,7 @@ function Skills(props) {
   const [fetchedData, setFetchedData] = useState('');
   const [open, setOpen] = useState(false);
   const [skills, setSkills] = useState([]);
+  const [loading, setLoading] = useState(true);
   const names =[
     "Cloud and Distributed Computing",
     "Statistical Analysis and Data Mining",
@@ -165,6 +167,7 @@ function Skills(props) {
 
 
   function fetchData(){
+    setLoading(true);
     axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
     .then(res => {
       if(res.data.success){
@@ -178,6 +181,7 @@ function Skills(props) {
       }
     })
     setFetchedData(0);
+    setLoading(false);
   }
 
   function removeDuplicates(){
@@ -293,9 +297,9 @@ function Skills(props) {
       }
     });
     setShow(false);
-        showCombo();
-        handleAlert();
-        removeDuplicates();
+    showCombo();
+    handleAlert();
+    removeDuplicates();
     handleClose();
     setFetchedData(1)
   };
@@ -358,6 +362,7 @@ function Skills(props) {
       {showCombo()}
       
         <Grid item xs={12}>
+          {loading ? <Loading /> :
             <Paper elevation={0} component="ul" className={classes.paperChips}>
                 {
                 skills.map((data) => {
@@ -380,7 +385,7 @@ function Skills(props) {
                         />
                     </li>);
                 })}
-            </Paper>
+            </Paper> }
         </Grid>
       </Grid>
     </FloatCard>

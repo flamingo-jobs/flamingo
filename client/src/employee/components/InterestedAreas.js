@@ -12,6 +12,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import FloatCard from '../../components/FloatCard';
+import Loading from '../../components/Loading';
 import SnackBarAlert from "../../components/SnackBarAlert";
 import BACKEND_URL from '../../Config';
 import theme from '../../Theme';
@@ -129,6 +130,7 @@ function InterestedAreas(props) {
   const [chipData, setChipData] = useState([]);
   const [newData, setNewData] = useState(null);
   const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
@@ -150,6 +152,7 @@ function InterestedAreas(props) {
 
 
   function fetchData(){
+    setLoading(true);
     axios.get(`${BACKEND_URL}/categories`).then(res => {
         if (res.data.success) {
             res.data.existingData?.forEach(element => {
@@ -159,8 +162,6 @@ function InterestedAreas(props) {
             });
         }
     });
-
-    
 
     axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
     .then(res => {
@@ -174,6 +175,7 @@ function InterestedAreas(props) {
         }       
       }
     })
+    setLoading(false);
     setFetchedData(0);
   }
 
@@ -358,8 +360,10 @@ function InterestedAreas(props) {
       {showCombo()}
       
         <Grid item xs={12}>
+          
             <Paper elevation={0} component="ul" className={classes.paperChips}>
-                {
+            {loading ? <Loading /> : <>
+                {    
                 interests.map((data) => {
                     let icon;
                     return show ? (
@@ -380,7 +384,8 @@ function InterestedAreas(props) {
                         />
                     </li>);
                 })}
-            </Paper>
+                </> }
+            </Paper> 
         </Grid>
       </Grid>
     </FloatCard>

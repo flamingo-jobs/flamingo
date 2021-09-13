@@ -16,6 +16,7 @@ import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import FloatCard from '../../components/FloatCard';
+import Loading from '../../components/Loading';
 import SnackBarAlert from "../../components/SnackBarAlert";
 import BACKEND_URL from '../../Config';
 import theme from '../../Theme';
@@ -111,6 +112,7 @@ function Course(props) {
   const [fetchedData, setFetchedData] = useState('');
   const [open, setOpen] = useState(false);
   const [course, setCourse] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [state, setState] = useState({course: null, institute: null, startYear: null, startMonth: null, endYear: null, endMonth: null});
 
   const [alertShow, setAlertShow] = React.useState(false);
@@ -170,6 +172,7 @@ function Course(props) {
   }
 
   function fetchData(){
+    setLoading(true);
     let courseData;
     axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
     .then(res => {
@@ -187,6 +190,7 @@ function Course(props) {
         setCourse(courseData)
       }
     })
+    setLoading(false);
     setFetchedData(0)
   }
 
@@ -321,7 +325,9 @@ function Course(props) {
   }
   
   const displayCourseFields = () => {
-    if (course) {
+    if(loading){
+      return (<Loading />);
+    }else if (course) {
       if (course.length > 0) {
         return course.map(awd => (
             <CourseItem key={i} index={i++} course={awd.course} institute={awd.institute} startDate={awd.from} endDate={awd.to} parentFunction={deleteData} />

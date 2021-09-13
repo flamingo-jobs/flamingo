@@ -119,6 +119,7 @@ function WorkExperience(props) {
   const [fetchedData, setFetchedData] = useState('');
   const [open, setOpen] = useState(false);
   const [work, setWork] = useState([]);
+  const [loading, setLoading] = useState(true);
  // let workOrdered = null;
   const [state, setState] = useState({place: null, description: null, position: null, startYear: null, startMonth: null, endYear: null, endMonth: null, taskAndResponsibility: null});
 
@@ -179,6 +180,7 @@ function WorkExperience(props) {
   }
 
   function fetchData(){
+    setLoading(true);
     let workData;
     axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
     .then(res => {
@@ -197,6 +199,7 @@ function WorkExperience(props) {
         
       }
     })
+    setLoading(false);
     setFetchedData(0)
   }
 
@@ -355,16 +358,18 @@ function WorkExperience(props) {
       workTemp.push({index: idx++,year: w.from.split("/")[0], month: w.from.split("/")[1], workItem: w})
     ));
     workTemp?.sort((a,b) => (a.year < b.year) ? 1 : ((b.year < a.year) ? -1 : 0));
-    if (workTemp) {
-      if (workTemp.length > 0) {
-      return workTemp.map((wk,j) => (
-            <WorkExpItem key={j} index={wk.index} place={wk.workItem.place} description={wk.workItem.description} position={wk.workItem.position} from={wk.workItem.from} to={wk.workItem.to} task={wk.workItem.taskAndResponsibility} parentFunction={deleteData} />
-            ))
-      }else{
-        return (<Typography variant="body2" color="textSecondary" component="p">Work experience details not added.</Typography>)
-      }
-    }else{
+    if(loading){
       return (<Loading />);
+    }else if (workTemp) {
+        if (workTemp.length > 0) {
+        return workTemp.map((wk,j) => (
+              <WorkExpItem key={j} index={wk.index} place={wk.workItem.place} description={wk.workItem.description} position={wk.workItem.position} from={wk.workItem.from} to={wk.workItem.to} task={wk.workItem.taskAndResponsibility} parentFunction={deleteData} />
+              ))
+        }else{
+          return (<Typography variant="body2" color="textSecondary" component="p">Work experience details not added.</Typography>)
+        }
+    }else{
+      return (<Typography variant="body2" color="textSecondary" component="p">Work experience details not added.</Typography>)
     }
   }
 

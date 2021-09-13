@@ -16,6 +16,7 @@ import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import FloatCard from '../../components/FloatCard';
+import Loading from '../../components/Loading';
 import SnackBarAlert from "../../components/SnackBarAlert";
 import BACKEND_URL from '../../Config';
 import theme from '../../Theme';
@@ -111,6 +112,7 @@ function Volunteer(props) {
   const [fetchedData, setFetchedData] = useState('');
   const [open, setOpen] = useState(false);
   const [volunteer, setVolunteer] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [state, setState] = useState({title: null, organization: null, startYear: null, startMonth: null, endYear: null, endMonth: null, description: null});
 
   const [alertShow, setAlertShow] = React.useState(false);
@@ -170,6 +172,7 @@ function Volunteer(props) {
   }
 
   function fetchData(){
+    setLoading(true);
     let volunteerData;
     axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
     .then(res => {
@@ -187,6 +190,7 @@ function Volunteer(props) {
         setVolunteer(volunteerData)
       }
     })
+    setLoading(false);
     setFetchedData(0)
   }
 
@@ -327,7 +331,9 @@ function Volunteer(props) {
   }
   
   const displayVolunteeringFields = () => {
-    if (volunteer) {
+    if(loading){
+      return (<Loading />);
+    }else if (volunteer) {
       if (volunteer.length > 0) {
       return volunteer.map(vol => (
             <VolunteerItem key={i} index={i++} title={vol.title} organization={vol.organization} from={vol.from} to={vol.to} description={vol.description} parentFunction={deleteData} />

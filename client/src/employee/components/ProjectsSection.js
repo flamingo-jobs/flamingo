@@ -135,6 +135,7 @@ function ProjectsSection(props) {
   const classes = useStyles();
   const [fetchedData, setFetchedData] = useState('');
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [newData, setNewData] = useState(null);
   const [technologies, setTechnologies] = useState([]);
   const [technologyList, setTechnologyList] = useState([]);
@@ -198,6 +199,7 @@ function ProjectsSection(props) {
   }
 
   function fetchData(){
+    setLoading(true);
     let projectData;
     axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
     .then(res => {
@@ -213,6 +215,7 @@ function ProjectsSection(props) {
           }
         }       
         setProject(projectData)
+        setLoading(false);
       }
     })
 
@@ -388,7 +391,9 @@ function ProjectsSection(props) {
   }
   
   const displayProjectFields = () => {
-    if(project !== null){
+    if(loading){
+      return (<Loading />);
+    }else if(project){
       if (project.length > 0) {
         return project.map(pro => (
             <ProjectItem key={i}  index={i++} name={pro.name} link={pro.link} description={pro.description} from={pro.from} to={pro.to} usedTech={pro.usedTech} parentFunction={deleteData} techList={technologyList} />
@@ -397,7 +402,7 @@ function ProjectsSection(props) {
         return (<Typography variant="body2" color="textSecondary" component="p">Project details not added.</Typography>)
       }
     }else{
-      return (<Loading />);
+      return (<Typography variant="body2" color="textSecondary" component="p">Project details not added.</Typography>);
     }
   }
 

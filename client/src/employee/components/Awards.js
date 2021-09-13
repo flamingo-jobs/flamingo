@@ -16,6 +16,7 @@ import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import FloatCard from '../../components/FloatCard';
+import Loading from '../../components/Loading';
 import SnackBarAlert from "../../components/SnackBarAlert";
 import BACKEND_URL from '../../Config';
 import theme from '../../Theme';
@@ -110,6 +111,7 @@ function Achievements(props) {
   const classes = useStyles();
   const [fetchedData, setFetchedData] = useState('');
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [award, setAward] = useState(null);
   const [state, setState] = useState({title: null, issuedBy: null, year: null, month:null, description: null});
 
@@ -158,6 +160,7 @@ function Achievements(props) {
   }
 
   function fetchData(){
+    setLoading(true);
     let awardData;
     axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
     .then(res => {
@@ -176,6 +179,7 @@ function Achievements(props) {
       }
     })
     setFetchedData(0)
+    setLoading(false);
   }
 
   function deleteData(index){
@@ -301,14 +305,12 @@ function Achievements(props) {
   }
   
   const displayAwardFields = () => {
-    if (award) {
-      if (award.length > 0) {
+    if(loading){
+      return (<Loading />);
+    }else if (award && award.length > 0) {
         return award.map(awd => (
             <AwardItem  key={i} index={i++} title={awd.title} issuedBy={awd.issuedBy} date={awd.date} description={awd.description} parentFunction={deleteData} />
             ))
-      }else{
-        return (<Typography variant="body2" color="textSecondary" component="p">Award details not added.</Typography>)
-      }
     }else{
       return (<Typography variant="body2" color="textSecondary" component="p">Award details not added.</Typography>)
     }

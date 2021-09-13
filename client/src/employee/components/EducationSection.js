@@ -16,6 +16,7 @@ import SchoolIcon from '@material-ui/icons/School';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import FloatCard from '../../components/FloatCard';
+import Loading from '../../components/Loading';
 import SnackBarAlert from "../../components/SnackBarAlert";
 import BACKEND_URL from '../../Config';
 import theme from '../../Theme';
@@ -127,6 +128,7 @@ function EducationSection(props) {
   const mPhil=[];
   const phD=[];
   const [education, setEducation] = useState({institute: null, type: "School", fieldOfStudy: null, GPA: null, startYear: null, startMonth: null, endYear: null, endMonth: null, societiesAndActivities: null});
+  const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState(null);
   const [GPAError, setGPAError] = useState(null);
@@ -336,7 +338,8 @@ function EducationSection(props) {
 
 
   function fetchData(){
-    let eduData;
+    setLoading(true);
+    let eduData=[];
     axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
     .then(res => {
       if(res.data.success){
@@ -352,9 +355,9 @@ function EducationSection(props) {
         }
         setEducationFields(eduData);
         matchFields();
-        // console.log("data fetched");
       }
     })
+    setLoading(false);
     setFetchedData(0)
   }
 
@@ -455,14 +458,14 @@ function EducationSection(props) {
 
 
   const displayPhdFields = () => {
-    if (educationFields) {
-      if (phD) {
-        eduCount=1;
-        return phD.map(edu => (
-              <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities}  parentFunction={deleteEducation} />
-              ))
+      if (educationFields) {
+        if (phD) {
+          eduCount=1;
+          return phD.map(edu => (
+                <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities}  parentFunction={deleteEducation} />
+                ))
+        }
       }
-    }
   }
 
   const displayMphilFields = () => {
@@ -532,17 +535,21 @@ function EducationSection(props) {
   }
 
   const displaySchoolFields = () => {
-    if (educationFields) {
-      if (school) {
-        eduCount=1;
-        return school.map(edu => (
-              <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities}  parentFunction={deleteEducation} />
-              ))
+    if(loading){
+      return (<Loading />);
+    }else{
+      if (educationFields) {
+        if (school) {
+          eduCount=1;
+          return school.map(edu => (
+                <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities}  parentFunction={deleteEducation} />
+                ))
+        }
       }
-    }
 
-    if(eduCount === 0){
-      return (<Typography variant="body2" color="textSecondary" component="p">Education details not added.</Typography>)
+      if(eduCount === 0 ){
+        return (<Typography variant="body2" color="textSecondary" component="p">Education details not added.</Typography>)
+      }
     }
   }
 
