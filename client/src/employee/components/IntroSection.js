@@ -30,6 +30,8 @@ import BACKEND_URL, { FILE_URL } from '../../Config';
 import theme from '../../Theme';
 import defaultImage from '../images/defaultProfilePic.jpg';
 import uploadFileToBlob, { isStorageConfigured } from '../../utils/azureFileUpload';
+import { useDispatch } from "react-redux";
+import { setProfilePicReload } from "../../redux/actions";
 
 const storageConfigured = isStorageConfigured();
 
@@ -184,6 +186,7 @@ function IntroSection(props) {
   const [profilePic, setProfilePic] = useState("empty");
   const [profilePicPreview, setProfilePicPreview] = useState(defaultImage);
   const [savedPic, setSavedPic] = useState(require(`../../components/images/loadingImage.gif`).default);
+  const dispatch = useDispatch();
 
   let loginId;
   let login = false;
@@ -223,9 +226,10 @@ function IntroSection(props) {
   };
 
   const loadLogo = async () => {
-    await axios.get(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.png`).then(res => {
-      setSavedPic(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.png`);
-      setProfilePicPreview(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.png`)
+    let randomNo = Math.floor((Math.random() * 1000) + 111);
+    await axios.get(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.png?dummy=${randomNo}`).then(res => {
+      setSavedPic(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.png?dummy=${randomNo}`);
+      setProfilePicPreview(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.png?dummy=${randomNo}`)
     }).catch(error => {
       setSavedPic(defaultImage);
     })
@@ -326,7 +330,7 @@ function IntroSection(props) {
 
     handleCloseImageDialog();
     setSavedPic(require(`../../components/images/loadingImage.gif`).default);
-    await delay(5000);
+    dispatch(setProfilePicReload(true));
     loadLogo();
 
   }

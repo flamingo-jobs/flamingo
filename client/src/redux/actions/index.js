@@ -25,3 +25,10 @@ export const setNewNotifications = (newNotifications) => {
         payload: newNotifications
     };
 }
+
+export const setProfilePicReload = (profilePicReload) => {
+    return {
+        type: "RELOAD_PROFILE_PIC",
+        payload: profilePicReload
+    };
+}
