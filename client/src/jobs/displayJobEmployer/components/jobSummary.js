@@ -12,10 +12,10 @@ import LocationOnIcon from "@material-ui/icons/LocationOn";
 import TodayIcon from "@material-ui/icons/Today";
 import WorkIcon from "@material-ui/icons/Work";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReactTimeAgo from "react-time-ago";
 import FloatCard from "../../../components/FloatCard";
-import BACKEND_URL from "../../../Config";
+import BACKEND_URL, { FILE_URL } from "../../../Config";
 import DeleteModal from "./deleteModal";
 import JobSummaryModal from "./jobSummaryModal";
 const jwt = require("jsonwebtoken");
@@ -173,6 +173,7 @@ function JobSummary(props) {
   const [open, setOpen] = useState(false);
   const [updatedFields, setUpdatedFields] = useState([]);
   const userId = jwt.decode(sessionStorage.getItem("userToken"),{complete:true}).payload.userId;
+  const [logo, setLogo] = useState(require(`../../../components/images/loadingImage.gif`).default);
 
   const handleOpen = () => {
     setOpen(true);
@@ -191,6 +192,18 @@ function JobSummary(props) {
   ];
 
   const minExperienceList = ["0", "0-1", "1-3", "+3"];
+
+  useEffect(() => {
+    loadLogo();
+  }, [])
+  
+  const loadLogo = async () => {
+    await axios.get(`${FILE_URL}/employer-profile-pictures/${props.job.organization.id}.png`).then(res => {
+      setLogo(`${FILE_URL}/employer-profile-pictures/${props.job.organization.id}.png`);
+    }).catch(error => {
+      setLogo(require(`../../../employer/images/default_company_logo.png`).default);
+    })
+  }
 
   // delete modal
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
@@ -451,10 +464,7 @@ function JobSummary(props) {
               <Grid item>
                 <Avatar
                   className={classes.companyIcon}
-                  src={
-                    require(`../../../employer/images/${props.job.organization.logo}`)
-                      .default
-                  }
+                  src={logo}
                   variant="square"
                 ></Avatar>
               </Grid>
