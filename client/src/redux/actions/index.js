@@ -18,3 +18,10 @@ export const setReduxFavoriteOrgIds = (newIds) => {
         payload: newIds
     };
 }
+
+export const setNewNotifications = (newNotifications) => {
+    return {
+        type: "NEW_NOTIFICATION",
+        payload: newNotifications
+    };
+}

@@ -20,6 +20,9 @@ import {
     Grid
 } from '@material-ui/core';
 import WatchLaterRoundedIcon from '@material-ui/icons/WatchLaterRounded';
+import Loading from './Loading';
+import { setNewNotifications } from '../redux/actions';
+import { useDispatch } from 'react-redux';
 // ----------------------------------------------------------------------
 
 const NOTIFICATIONS = [
@@ -61,8 +64,16 @@ const NOTIFICATIONS = [
     }
 ];
 
-const useStyles = makeStyles(() => ({
-
+const useStyles = makeStyles((theme) => ({
+    loading: {
+        minWidth: 440,
+        padding: 20,
+        display: 'flex',
+        justifyContent: 'center',
+        [theme.breakpoints.down("sm")]: {
+            minWidth: 310,
+        },
+    }
 }))
 
 function renderContent(notification) {
@@ -152,49 +163,67 @@ function NotificationItem({ notification }) {
 }
 
 export default function NotificationsPopover(props) {
-    const [notifications, setNotifications] = useState(NOTIFICATIONS);
-    const [totalUnRead, setTotalUnRead] = useState(0);
+    const [notifications, setNotifications] = useState("empty");
+    const [totalUnRead, setTotalUnRead] = useState(props.count);
+    const dispatch = useDispatch();
 
     const classes = useStyles();
 
     useEffect(() => {
-        // retrieveNotifications();
-    }, []);
+        if (props.open) {
+            retrieveNotifications();
+        } else {
+            setNotifications("empty");
+        }
+    }, [props.open]);
 
     useEffect(() => {
         displayNotifications();
     }, [notifications]);
 
 
-    const handleMarkAllAsRead = () => {
+    const handleMarkAllAsRead = async () => {
         setNotifications(
             notifications.map((notification) => ({
                 ...notification,
                 isUnRead: false
             }))
         );
+
+        await axios.post(`${BACKEND_URL}/${props.userRole}/markNotifications/${props.loginId}`, notifications).then((res) => {
+            if (res.data.success) {
+                let unread = notifications.filter((item) => item.isUnRead === true).length;
+                setTotalUnRead(unread);
+                dispatch(setNewNotifications(unread));
+            } else {
+                setNotifications("empty");
+            }
+        });
+
     };
 
     const retrieveNotifications = () => {
-        // console.log(props.loginId);
         if (props.userRole) {
-            axios.get(`${BACKEND_URL}/${props.userRole}/getNotifications/60f6fb850479410654e83dc3`).then((res) => {
-                
+            axios.get(`${BACKEND_URL}/${props.userRole}/getNotifications/${props.loginId}`).then((res) => {
+
                 if (res.data.success) {
                     setNotifications(res.data.existingData);
-                    
+
                     if (res.data.existingData && res.data.existingData.length > 0) {
-                        setTotalUnRead(res.data.existingData.filter((item) => item.isUnRead === true).length);
+                        let unread = res.data.existingData.filter((item) => item.isUnRead === true).length;
+                        setTotalUnRead(unread);
+                        dispatch(setNewNotifications(unread));
                     }
                 } else {
-                    setNotifications(null);
+                    setNotifications("empty");
                 }
             });
         }
+
     }
 
     const displayNotifications = () => {
-        if (notifications && notifications.length > 0) {
+        if (notifications !== "empty" && notifications.length > 0) {
             return notifications.map((notification, index) => (
                 <NotificationItem key={index} notification={notification} />
             ))
@@ -211,7 +240,7 @@ export default function NotificationsPopover(props) {
                     </Typography>
                 </Grid>
                 <Grid item xs={2}>
-                    {notifications && notifications.length > 0 ?
+                    {notifications !== "empty" && totalUnRead.length > 0 ?
                         <Tooltip title=" Mark all as read">
                             <IconButton color="primary" onClick={handleMarkAllAsRead}>
                                 <ClearAllRoundedIcon />
@@ -220,11 +249,9 @@ export default function NotificationsPopover(props) {
                         : null}
                 </Grid>
             </Grid>
-            {notifications && notifications.length > 0 ?
+            {notifications !== "empty" && notifications.length > 0 ?
                 <>
                     <Divider />
-
-
                     <List
                         disablePadding
                     >
@@ -232,7 +259,13 @@ export default function NotificationsPopover(props) {
                     </List>
                 </>
                 : null}
-            {notifications && notifications.length > 4 ?
+            {notifications === "empty" ? <>
+                <Divider />
+                <div className={classes.loading}>
+                    <Avatar className={classes.loadingImage} src={require('./images/loadingImage.gif').default} />
+                </div>
+            </> : null}
+            {notifications !== "empty" && notifications.length > 4 ?
                 <>
                     <Divider />
 

@@ -28,7 +28,7 @@ import { Link, useHistory } from 'react-router-dom';
 import BACKEND_URL, { FILE_URL } from "../Config";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { setFavoriteOrgCount } from "../redux/actions";
+import { setFavoriteOrgCount, setNewNotifications } from "../redux/actions";
 import { setSavedJobCount } from "../redux/actions";
 import Dialog from '@material-ui/core/Dialog';
 
@@ -273,6 +273,7 @@ export default function Topbar(props) {
   // redux state
   const favoriteOrgCount = useSelector(state => state.favoriteOrgCounter);
   const savedJobCount = useSelector(state => state.savedJobCounter);
+  const newNotifications = useSelector(state => state.newNotifications);
   const dispatch = useDispatch();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -324,7 +325,7 @@ export default function Topbar(props) {
       axios.get(`${BACKEND_URL}/jobseeker/${sessionStorage.getItem("loginId")}`).then(res => {
         if (res.data.success) {
           if (res.data.jobseeker.hasOwnProperty("notifications")) {
-            setNotifications(res.data.jobseeker.notifications.length);
+            dispatch(setNewNotifications(res.data.jobseeker.notifications.filter((item) => item.isUnRead === true).length));
           }
           if (res.data.jobseeker.hasOwnProperty("favoriteOrganizations")) {
             dispatch(setFavoriteOrgCount(res.data.jobseeker.favoriteOrganizations.length));
@@ -390,7 +391,7 @@ export default function Topbar(props) {
         onClose={handleNotificationClose}
         className={classes.notificationMenu}
       >
-        <NotificationsPopover loginId={token ? header.payload.loginId : null} userRole={token ? header.payload.userRole : null} />
+        <NotificationsPopover open={isNotificationMenuOpen} count={newNotifications} loginId={loginId} userRole={token ? header.payload.userRole : null} />
       </Menu>
 
     </Dialog>
@@ -619,7 +620,7 @@ export default function Topbar(props) {
                       className={classes.topBarIcon}
                       onClick={handleNotificationOpen}
                     >
-                      <Badge badgeContent={notifications} color="secondary" >
+                      <Badge badgeContent={newNotifications !== "empty" ? newNotifications : null} color="secondary" >
                         <NotificationsIcon />
                       </Badge>
                     </IconButton>
