@@ -30,6 +30,8 @@ import BACKEND_URL, { FILE_URL } from '../../Config';
 import theme from '../../Theme';
 import defaultImage from '../images/defaultProfilePic.jpg';
 import uploadFileToBlob, { isStorageConfigured } from '../../utils/azureFileUpload';
+import { useDispatch } from "react-redux";
+import { setProfilePicReload } from "../../redux/actions";
 
 const storageConfigured = isStorageConfigured();
 
@@ -184,6 +186,7 @@ function IntroSection(props) {
   const [profilePic, setProfilePic] = useState("empty");
   const [profilePicPreview, setProfilePicPreview] = useState(defaultImage);
   const [savedPic, setSavedPic] = useState(require(`../../components/images/loadingImage.gif`).default);
+  const dispatch = useDispatch();
 
   let loginId;
   let login = false;
@@ -223,9 +226,10 @@ function IntroSection(props) {
   };
 
   const loadLogo = async () => {
-    await axios.get(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.png`).then(res => {
-      setSavedPic(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.png`);
-      setProfilePicPreview(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.png`)
+    let randomNo = Math.floor((Math.random() * 1000) + 111);
+    await axios.get(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.png?dummy=${randomNo}`).then(res => {
+      setSavedPic(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.png?dummy=${randomNo}`);
+      setProfilePicPreview(`${FILE_URL}/jobseeker-profile-pictures/${loginId}.png?dummy=${randomNo}`)
     }).catch(error => {
       setSavedPic(defaultImage);
     })
@@ -318,6 +322,8 @@ function IntroSection(props) {
       return;
     }
 
+    setDisabled(true);
+
     const data = new FormData();
     data.append("userId", loginId);
     data.append("photo", profilePic);
@@ -325,8 +331,9 @@ function IntroSection(props) {
     await uploadFileToBlob(profilePic, "jobseeker-profile-pictures")
 
     handleCloseImageDialog();
+    setDisabled(false);
     setSavedPic(require(`../../components/images/loadingImage.gif`).default);
-    await delay(5000);
+    dispatch(setProfilePicReload(true));
     loadLogo();
 
   }
@@ -343,13 +350,13 @@ function IntroSection(props) {
     })
   }
 
-  function onChangeTagLine(e){
+  function onChangeTagLine(e) {
     setState(prevState => {
-      return {...prevState, tagline: e.target.value}
+      return { ...prevState, tagline: e.target.value }
     })
   }
 
-  function onChangeIntro(e){
+  function onChangeIntro(e) {
     setState(prevState => {
       return { ...prevState, intro: e.target.value }
     })
@@ -438,119 +445,119 @@ function IntroSection(props) {
         </> : null}
 
         {/* ----- edit popup content */}
-          <Dialog
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-            >
-              <DialogTitle id="alert-dialog-title" style={{color:theme.palette.stateBlue}}>
-                Edit Profile
-              </DialogTitle>
-              <Divider variant="middle" />
-              <DialogContent>
-                <form className={classes.form}>
-                  <Grid container direction="row">
-                    <TextField
-                    className={classes.field}
-                    id="outlined-basic"
-                    label="First Name"
-                    variant="outlined"
-                    size="small"
-                    value={state.firstName}
-                    onChange={onChangeFirstName}
-                    style={{width:'45%',marginRight:'10%'}}
-                    />
-                    <TextField
-                    className={classes.field}
-                    id="outlined-basic"
-                    label="Last Name"
-                    variant="outlined"
-                    size="small"
-                    value={state.lastName}
-                    onChange={onChangeLastName}
-                    style={{width:'45%'}}
-                    />
-                  </Grid>
-                  <TextField
-                    className={classes.field}
-                    id="outlined-multiline-static"
-                    label="Tagline"
-                    multiline
-                    rows={3}
-                    variant="outlined"
-                    value= {state.tagline}
-                    onChange= {onChangeTagLine}
-                  />
-                  <TextField
-                    className={classes.field}
-                    id="outlined-multiline-static"
-                    label="Description"
-                    multiline
-                    rows={5}
-                    variant="outlined"
-                    value= {state.intro}
-                    onChange= {onChangeIntro}
-                  />
-                  <Grid container direction="row" style={{marginTop:'35px'}}>
-                  <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'18px',fontStyle:'italic',width:'100%',marginBottom:'10px'}}>
-                    Contact Details
-                  </Typography>
-                    <TextField
-                    className={classes.field}
-                    id="outlined-basic"
-                    label="Mobile"
-                    variant="outlined"
-                    size="small"
-                    value={state.mobile}
-                    onChange={onChangeMobile}
-                    style={{width:'45%',marginRight:'10%'}}
-                    />
-                  </Grid>
-                  <TextField
-                    className={classes.field}
-                    id="outlined-basic"
-                    label="Email"
-                    type="text"
-                    variant="outlined"
-                    size="small"
-                    value={state.email}
-                    onChange={onChangeEmail}
-                  />
-                  <Grid container direction="row">
-                    <TextField
-                    className={classes.field}
-                    id="outlined-basic"
-                    label="Street Name"
-                    variant="outlined"
-                    size="small"
-                    value={state.street}
-                    onChange={onChangeStreet}
-                    style={{width:'45%',marginRight:'10%'}}
-                    />
-                    <TextField
-                    className={classes.field}
-                    id="outlined-basic"
-                    label="City"
-                    variant="outlined"
-                    size="small"
-                    value={state.city}
-                    onChange={onChangeCity}
-                    style={{width:'45%'}}
-                    />
-                  </Grid>
-                </form>
-              </DialogContent>
-              <DialogActions>
-                  <Button onClick={handleClose} style={{color:"#999"}}>
-                      Cancel
-                  </Button>
-                  <Button onClick={onSubmit} color="primary" autoFocus>
-                      Apply Changes
-                  </Button>
-              </DialogActions>
-          </Dialog>
-        
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title" style={{ color: theme.palette.stateBlue }}>
+            Edit Profile
+          </DialogTitle>
+          <Divider variant="middle" />
+          <DialogContent>
+            <form className={classes.form}>
+              <Grid container direction="row">
+                <TextField
+                  className={classes.field}
+                  id="outlined-basic"
+                  label="First Name"
+                  variant="outlined"
+                  size="small"
+                  value={state.firstName}
+                  onChange={onChangeFirstName}
+                  style={{ width: '45%', marginRight: '10%' }}
+                />
+                <TextField
+                  className={classes.field}
+                  id="outlined-basic"
+                  label="Last Name"
+                  variant="outlined"
+                  size="small"
+                  value={state.lastName}
+                  onChange={onChangeLastName}
+                  style={{ width: '45%' }}
+                />
+              </Grid>
+              <TextField
+                className={classes.field}
+                id="outlined-multiline-static"
+                label="Tagline"
+                multiline
+                rows={3}
+                variant="outlined"
+                value={state.tagline}
+                onChange={onChangeTagLine}
+              />
+              <TextField
+                className={classes.field}
+                id="outlined-multiline-static"
+                label="Description"
+                multiline
+                rows={5}
+                variant="outlined"
+                value={state.intro}
+                onChange={onChangeIntro}
+              />
+              <Grid container direction="row" style={{ marginTop: '35px' }}>
+                <Typography gutterBottom style={{ color: theme.palette.stateBlue, textAlign: 'left', fontSize: '18px', fontStyle: 'italic', width: '100%', marginBottom: '10px' }}>
+                  Contact Details
+                </Typography>
+                <TextField
+                  className={classes.field}
+                  id="outlined-basic"
+                  label="Mobile"
+                  variant="outlined"
+                  size="small"
+                  value={state.mobile}
+                  onChange={onChangeMobile}
+                  style={{ width: '45%', marginRight: '10%' }}
+                />
+              </Grid>
+              <TextField
+                className={classes.field}
+                id="outlined-basic"
+                label="Email"
+                type="text"
+                variant="outlined"
+                size="small"
+                value={state.email}
+                onChange={onChangeEmail}
+              />
+              <Grid container direction="row">
+                <TextField
+                  className={classes.field}
+                  id="outlined-basic"
+                  label="Street Name"
+                  variant="outlined"
+                  size="small"
+                  value={state.street}
+                  onChange={onChangeStreet}
+                  style={{ width: '45%', marginRight: '10%' }}
+                />
+                <TextField
+                  className={classes.field}
+                  id="outlined-basic"
+                  label="City"
+                  variant="outlined"
+                  size="small"
+                  value={state.city}
+                  onChange={onChangeCity}
+                  style={{ width: '45%' }}
+                />
+              </Grid>
+            </form>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} style={{ color: "#999" }}>
+              Cancel
+            </Button>
+            <Button onClick={onSubmit} color="primary" autoFocus>
+              Apply Changes
+            </Button>
+          </DialogActions>
+        </Dialog>
+
         <Typography component="div">
           {login ? <>
             <CardMedia
@@ -592,7 +599,7 @@ function IntroSection(props) {
                   style={{ marginTop: "0px", marginBottom: "20px" }}
                 />
               </Typography>
-              <div className={classes.uploadBtnWrapper} style={{ color: "#fff" }}>
+              <div className={classes.uploadBtnWrapper} style={{ color: "#fff", minWidth: 320}}>
                 <input
                   autoFocus
                   margin="dense"
@@ -603,7 +610,7 @@ function IntroSection(props) {
                   style={{ display: "none" }}
                 />
                 <label htmlFor="photo">
-                  <Button
+                  {!disabled ? <Button
                     variant="outlined"
                     color="primary"
                     component="span"
@@ -612,7 +619,7 @@ function IntroSection(props) {
                     disabled={disabled}
                   >
                     Upload Image
-                  </Button>
+                  </Button> : <Avatar src={require(`../../components/images/loadingImage.gif`).default} />}
                   {/* {query === 'success' ? (
                         <CheckCircleIcon style={{color:"green"}} />
                       ) : (
@@ -631,7 +638,7 @@ function IntroSection(props) {
               </div>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleCloseImageDialog} style={{ color: "#999" }}>
+              <Button onClick={handleCloseImageDialog} style={{ color: "#999" }} disabled={disabled}>
                 Cancel
               </Button>
               <Button type="submit" color="primary" disabled={disabled}>

@@ -18,3 +18,17 @@ export const setReduxFavoriteOrgIds = (newIds) => {
         payload: newIds
     };
 }
+
+export const setNewNotifications = (newNotifications) => {
+    return {
+        type: "NEW_NOTIFICATION",
+        payload: newNotifications
+    };
+}
+
+export const setProfilePicReload = (profilePicReload) => {
+    return {
+        type: "RELOAD_PROFILE_PIC",
+        payload: profilePicReload
+    };
+}

@@ -23,6 +23,10 @@ router.post('/employers/filter', employersController.getFiltered);
 
 // get specific
 
+router.get('/employer/getNotifications/:id', employersController.getNotifications);
+router.put('/employer/addNotifications/:id', employersController.addNotifications);
+router.post('/employer/markNotifications/:id', employersController.markNotifications);
+
 router.get('/employers/:id', employersController.getById);
 router.get("/employers/favorites/:empIds", employersController.getByIds);
 router.get("/employer/verificationStatus/:id", employersController.getVerificationStatus);

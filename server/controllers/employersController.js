@@ -253,6 +253,56 @@ const getAllApplications = async (req, res) => {
     });
 };
 
+const getNotifications = (req, res) => {
+  Employers.findById(req.params.id, 'notifications').exec((err, notifications) => {
+    if (err) {
+      return res.status(400).json({
+        error: err,
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      existingData: notifications.notifications,
+    });
+  });
+};
+
+const addNotifications = (req, res) => {
+  Employers.findOneAndUpdate(
+    { _id: req.params.id },
+    { $push: { notifications: req.body } },
+    (err, employer) => {
+      if (err) {
+        return res.status(400).json({
+          error: err,
+        });
+      }
+      return res.status(200).json({
+        success: true,
+      });
+    }
+  );
+};
+
+const markNotifications = (req, res) => {
+  Employers.findByIdAndUpdate(
+    req.params.id,
+    {
+      $set: { notifications: req.body },
+    },
+    (err, employer) => {
+      if (err) {
+        return res.status(400).json({
+          error: err,
+        });
+      }
+      return res.status(200).json({
+        success: true,
+      });
+    }
+  );
+};
+
 module.exports = {
   create,
   getAll,
@@ -268,4 +318,7 @@ module.exports = {
   getAllApplications,
   getForTable,
   getVerificationStatus,
+  getNotifications,
+  markNotifications,
+  addNotifications
 };

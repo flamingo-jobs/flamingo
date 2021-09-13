@@ -4,6 +4,8 @@ import { Link as RouterLink } from 'react-router-dom';
 import ClearAllRoundedIcon from '@material-ui/icons/ClearAllRounded';
 import axios from 'axios';
 import BACKEND_URL from '../Config'
+import ReactTimeAgo from 'react-time-ago';
+
 // material
 import {
     List,
@@ -20,6 +22,9 @@ import {
     Grid
 } from '@material-ui/core';
 import WatchLaterRoundedIcon from '@material-ui/icons/WatchLaterRounded';
+import Loading from './Loading';
+import { setNewNotifications } from '../redux/actions';
+import { useDispatch } from 'react-redux';
 // ----------------------------------------------------------------------
 
 const NOTIFICATIONS = [
@@ -27,7 +32,7 @@ const NOTIFICATIONS = [
         id: 1,
         title: 'Your application is submitted',
         description: 'waiting for employer to review',
-        avatar: null,
+        link: null,
         type: 'job_applied',
         createdAt: "2019 July 25",
         isUnRead: true
@@ -61,8 +66,34 @@ const NOTIFICATIONS = [
     }
 ];
 
-const useStyles = makeStyles(() => ({
-
+const useStyles = makeStyles((theme) => ({
+    loading: {
+        minWidth: 500,
+        padding: 20,
+        display: 'flex',
+        justifyContent: 'center',
+        [theme.breakpoints.down("sm")]: {
+            minWidth: 310,
+        },
+    },
+    unRead: {
+        backgroundColor: theme.palette.lightSkyBlueHover,
+        paddingLeft: 8,
+        paddingRight: 8,
+        borderRadius: 10,
+        marginTop: 5,
+        marginBottom: 5,
+        maxWidth: 500
+    },
+    read: {
+        backgroundColor: theme.palette.white,
+        paddingLeft: 8,
+        paddingRight: 8,
+        borderRadius: 10,
+        marginTop: 5,
+        marginBottom: 5,
+        maxWidth: 500
+    }
 }))
 
 function renderContent(notification) {
@@ -84,6 +115,12 @@ function renderContent(notification) {
     if (notification.type === 'job_alert') {
         return {
             avatar: <img alt={notification.title} src={require(`./images/notifications/job_alert.png`).default} style={{ width: 'inherit' }} />,
+            title
+        };
+    }
+    if (notification.type === 'update') {
+        return {
+            avatar: <img alt={notification.title} src={require(`./images/notifications/update.png`).default} style={{ width: 'inherit' }} />,
             title
         };
     }
@@ -109,23 +146,18 @@ NotificationItem.propTypes = {
     notification: PropTypes.object.isRequired
 };
 
-function NotificationItem({ notification }) {
+function NotificationItem({ notification, onClose }) {
     const { avatar, title } = renderContent(notification);
+    const classes = useStyles();
 
     return (
         <ListItem
             button
-            to="#"
+            to={notification.link}
             disableGutters
             component={RouterLink}
-            sx={{
-                py: 1.5,
-                px: 2.5,
-                mt: '1px',
-                ...(notification.isUnRead && {
-                    bgcolor: 'action.selected'
-                })
-            }}
+            className={notification.isUnRead ? classes.unRead : classes.read}
+            onClick={onClose}
         >
             <ListItemAvatar>
                 <Avatar sx={{ bgcolor: 'background.neutral' }}>{avatar}</Avatar>
@@ -143,7 +175,7 @@ function NotificationItem({ notification }) {
                         }}
                     >
                         <WatchLaterRoundedIcon style={{ width: 18, marginRight: 5 }} />
-                        30 mins ago
+                        <ReactTimeAgo date={notification.createdAt} locale="en-US" />
                     </Typography>
                 }
             />
@@ -152,51 +184,70 @@ function NotificationItem({ notification }) {
 }
 
 export default function NotificationsPopover(props) {
-    const [notifications, setNotifications] = useState(NOTIFICATIONS);
-    const [totalUnRead, setTotalUnRead] = useState(0);
+    const [notifications, setNotifications] = useState("empty");
+    const [totalUnRead, setTotalUnRead] = useState(props.count);
+    const dispatch = useDispatch();
 
     const classes = useStyles();
 
     useEffect(() => {
-        // retrieveNotifications();
-    }, []);
+        if (props.open) {
+            retrieveNotifications();
+        } else {
+            setNotifications("empty");
+        }
+    }, [props.open]);
 
     useEffect(() => {
         displayNotifications();
     }, [notifications]);
 
 
-    const handleMarkAllAsRead = () => {
+    const handleMarkAllAsRead = async () => {
+        let read = notifications.map((notification) => ({
+            ...notification,
+            isUnRead: false
+        }))
         setNotifications(
-            notifications.map((notification) => ({
-                ...notification,
-                isUnRead: false
-            }))
+            read
         );
+
+        await axios.post(`${BACKEND_URL}/${props.userRole}/markNotifications/${props.loginId}`, read).then((res) => {
+            if (res.data.success) {
+                setTotalUnRead(0);
+                dispatch(setNewNotifications(0));
+                console.log(notifications)
+            }
+        });
+
     };
 
     const retrieveNotifications = () => {
-        // console.log(props.loginId);
         if (props.userRole) {
-            axios.get(`${BACKEND_URL}/${props.userRole}/getNotifications/60f6fb850479410654e83dc3`).then((res) => {
-                
+            axios.get(`${BACKEND_URL}/${props.userRole}/getNotifications/${props.loginId}`).then((res) => {
+
                 if (res.data.success) {
-                    setNotifications(res.data.existingData);
-                    
+                    setNotifications(res.data.existingData.sort((a, b) => {
+                        return new Date(a.createdAt).getTime() < new Date(b.createdAt).getTime() ? 1 : -1;
+                    }));
+
                     if (res.data.existingData && res.data.existingData.length > 0) {
-                        setTotalUnRead(res.data.existingData.filter((item) => item.isUnRead === true).length);
+                        let unread = res.data.existingData.filter((item) => item.isUnRead === true).length;
+                        setTotalUnRead(unread);
+                        dispatch(setNewNotifications(unread));
                     }
                 } else {
-                    setNotifications(null);
+                    setNotifications("empty");
                 }
             });
         }
+
     }
 
     const displayNotifications = () => {
-        if (notifications && notifications.length > 0) {
+        if (notifications !== "empty" && notifications.length > 0) {
             return notifications.map((notification, index) => (
-                <NotificationItem key={index} notification={notification} />
+                <NotificationItem key={index} notification={notification} onClose={props.onClose}/>
             ))
         }
     }
@@ -211,7 +262,7 @@ export default function NotificationsPopover(props) {
                     </Typography>
                 </Grid>
                 <Grid item xs={2}>
-                    {notifications && notifications.length > 0 ?
+                    {notifications !== "empty" && totalUnRead > 0 ?
                         <Tooltip title=" Mark all as read">
                             <IconButton color="primary" onClick={handleMarkAllAsRead}>
                                 <ClearAllRoundedIcon />
@@ -220,11 +271,9 @@ export default function NotificationsPopover(props) {
                         : null}
                 </Grid>
             </Grid>
-            {notifications && notifications.length > 0 ?
+            {notifications !== "empty" && notifications.length > 0 ?
                 <>
-                    <Divider />
-
-
+                    <Divider style={{ marginBottom: 8 }} />
                     <List
                         disablePadding
                     >
@@ -232,7 +281,13 @@ export default function NotificationsPopover(props) {
                     </List>
                 </>
                 : null}
-            {notifications && notifications.length > 4 ?
+            {notifications === "empty" ? <>
+                <Divider />
+                <div className={classes.loading}>
+                    <Avatar className={classes.loadingImage} src={require('./images/loadingImage.gif').default} />
+                </div>
+            </> : null}
+            {notifications !== "empty" && notifications.length > 4 ?
                 <>
                     <Divider />
 

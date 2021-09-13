@@ -16,8 +16,10 @@ import TableRow from "@material-ui/core/TableRow";
 import axios from "axios";
 import BACKEND_URL from "../../../../Config";
 import { useState, useEffect } from "react";
-import EmployerJobCard from "./EmployerJobCard";
+import EmployerJobCard from "../../DetailedJobCard";
 import theme from "../../../../Theme";
+import Loading from "../../../../components/Loading";
+const jwt = require("jsonwebtoken");
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -87,8 +89,12 @@ const LatestJobs = (props) => {
   const [value, setValue] = React.useState(2);
 
   const [state, setState] = useState({
-    allJobs: [],
+    allJobs: "empty",
   });
+
+  const userId = jwt.decode(sessionStorage.getItem("userToken"), {
+    complete: true,
+  }).payload.userId;
 
   const allJobs = state.allJobs;
 
@@ -99,7 +105,9 @@ const LatestJobs = (props) => {
         // console.log(res.data.employerJobs);
         if (res.data.success) {
           setState({
-            allJobs: res.data.employerJobs.slice(0, 5),
+            allJobs: res.data.employerJobs.sort((a, b) => {
+              return new Date(a.postedDate).getTime() < new Date(b.postedDate).getTime() ? 1 : -1
+            }).slice(0, 5),
           });
         }
       });
@@ -206,98 +214,31 @@ const LatestJobs = (props) => {
         <Typography variant="h6" className={classes.title}>
           Latest Jobs
         </Typography>
-
-        {/* <TableContainer component={Paper} className={classes.tableContainer}>
-          <Table className={classes.table} aria-label="customized table">
-            <colgroup>
-              <col style={{ width: "20%" }} />
-              <col style={{ width: "5%" }} />
-              <col style={{ width: "5%" }} />
-              <col style={{ width: "5%" }} />
-              <col style={{ width: "5%" }} />
-              <col style={{ width: "5%" }} />
-              <col style={{ width: "5%" }} />
-              <col style={{ width: "5%" }} />
-              <col style={{ width: "5%" }} />
-            </colgroup>
-            <TableHead>
-              <TableRow>
-                <StyledTableCell align="center">Job Title</StyledTableCell>
-                <StyledTableCell align="center">Category</StyledTableCell>
-                <StyledTableCell align="center">Active</StyledTableCell>
-                <StyledTableCell align="center">No of Resumes</StyledTableCell>
-                <StyledTableCell align="center">Pending</StyledTableCell>
-                <StyledTableCell align="center">Reviewing</StyledTableCell>
-                <StyledTableCell align="center">Shortlisted</StyledTableCell>
-                <StyledTableCell align="center">Rejected</StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody> */}
         <Grid container spacing={2}>
-          {allJobs.map((row) => (
-            // <StyledTableRow key={row.name}>
-            //   <StyledTableCell component="th" scope="row">
-            //     {row.title}
-            //   </StyledTableCell>
-            //   <StyledTableCell align="left">
-            //     <Chip
-            //       icon={<LocalOfferRoundedIcon />}
-            //       label={row.category}
-            //       className={classes.category}
-            //     />
-            //   </StyledTableCell>
-
-            //   <StyledTableCell align="center">
-            //     {row.isPublished ? (
-            //       <Chip
-            //         icon={<CheckCircleIcon />}
-            //         label="Active"
-            //         className={classes.activeChip}
-            //       />
-            //     ) : (
-            //       <Chip
-            //         icon={<CancelIcon />}
-            //         label="Inactive"
-            //         className={classes.inactiveChip}
-            //       />
-            //     )}
-            //   </StyledTableCell>
-            //   <StyledTableCell align="center">
-            //     {row.applicationDetails.length}
-            //   </StyledTableCell>
-
-            //   {/* Pending */}
-            //   <StyledTableCell align="center">
-            //     {getPending(row)}
-            //   </StyledTableCell>
-
-            //   {/* Reviewing */}
-            //   <StyledTableCell align="center">
-            //     {getReviewing(row)}
-            //   </StyledTableCell>
-
-            //   {/* Shortlisted  */}
-            //   <StyledTableCell align="center">
-            //     {getShortlisted(row)}
-            //   </StyledTableCell>
-
-            //   {/* Rejected */}
-            //   <StyledTableCell align="center">
-            //     {getRejected(row)}
-            //   </StyledTableCell>
-            // </StyledTableRow>
-            <Grid item xs={12}>
-              <EmployerJobCard info={row} values={getMerged(row)} />
-            </Grid>
-          ))}
+          {allJobs === "empty" ?
+            <Loading />
+            : null}
+          {allJobs !== "empty" && allJobs.length > 0 ?
+            allJobs.map((row) => (
+              <Grid item xs={12}>
+                <EmployerJobCard
+                  userId={userId}
+                  info={row}
+                  userRole={props.userRole}
+                  values={getMerged(row)}
+                />
+              </Grid>
+            )) : null }
+            {allJobs !== "empty" && allJobs.length === 0 ? <Typography>You have not posted any jobs yet!</Typography> : null}
           {/* </TableBody>
           </Table>
         </TableContainer> */}
-          <Grid item xs={12}>
-            <Link to={`/employer/jobs`}>
-              <Button className={classes.button}>View All</Button>
-            </Link>
-          </Grid>
+          {allJobs !== "empty" && allJobs.length > 0 ?
+            <Grid item xs={12}>
+              <Link to={`/employer/jobs`}>
+                <Button className={classes.button}>View All</Button>
+              </Link>
+            </Grid> : null}
         </Grid>
 
       </div>

@@ -70,12 +70,12 @@ mongoose
     useFindAndModify: false,
   })
   .then(() => {
-    // console.log("DB connected");
+    console.log("DB connected");
   })
   .catch((err) => {
-    // console.log("Error in DB connection", err);
+    console.log("Error in DB connection", err);
   });
 
 app.listen(PORT, () => {
-  // console.log(`App is running on ${PORT}`);
+  console.log(`App is running on ${PORT}`);
 });

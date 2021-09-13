@@ -62,6 +62,9 @@ const employerSchema = new mongoose.Schema({
       jobseekerName: { type: String },
     },
   ],
+  notifications: {
+    type: Array
+  }
 });
 
 module.exports = mongoose.model("Employers", employerSchema);
