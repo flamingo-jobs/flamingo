@@ -92,6 +92,7 @@ function JobDescription(props) {
   }, [jobId]);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     setIsApplied(false);
     setIsSaved(false);
     checkApplied();
@@ -113,6 +114,7 @@ function JobDescription(props) {
         const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
         if (response.data.success) {
           setSavedJobIds(response.data.jobseeker.savedJobs);
+          
 
           if (response.data.jobseeker.savedJobs.includes(jobId)) {
             setIsSaved(true);
@@ -225,7 +227,7 @@ function JobDescription(props) {
         } else {
           return (
             <Grid item xs={12}>
-              <ApplyForm userId={userId} jobId={jobId} handleApply={handleApply}></ApplyForm>
+              <ApplyForm userId={userId} name={job.title} org={job.organization.name} jobId={jobId} handleApply={handleApply}></ApplyForm>
             </Grid>
           );
         }

@@ -300,13 +300,12 @@ const ApplyForm = (props) => {
           axios.put(`${BACKEND_URL}/jobSeeker/addNotifications/${userId}`,
             {
               title: 'Your application is submitted',
-              description: 'waiting for employer to review',
+              description: `for ${props.name} at ${props.org}`,
               link: `/jobseeker/appliedJobs`,
               type: 'job_applied',
               createdAt: new Date(),
               isUnRead: true
             })
-
 
           dispatch(setNewNotifications(notificationCount+1));
 

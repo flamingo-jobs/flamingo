@@ -68,7 +68,7 @@ const NOTIFICATIONS = [
 
 const useStyles = makeStyles((theme) => ({
     loading: {
-        minWidth: 440,
+        minWidth: 500,
         padding: 20,
         display: 'flex',
         justifyContent: 'center',
@@ -82,7 +82,8 @@ const useStyles = makeStyles((theme) => ({
         paddingRight: 8,
         borderRadius: 10,
         marginTop: 5,
-        marginBottom: 5
+        marginBottom: 5,
+        maxWidth: 500
     },
     read: {
         backgroundColor: theme.palette.white,
@@ -90,7 +91,8 @@ const useStyles = makeStyles((theme) => ({
         paddingRight: 8,
         borderRadius: 10,
         marginTop: 5,
-        marginBottom: 5
+        marginBottom: 5,
+        maxWidth: 500
     }
 }))
 
@@ -113,6 +115,12 @@ function renderContent(notification) {
     if (notification.type === 'job_alert') {
         return {
             avatar: <img alt={notification.title} src={require(`./images/notifications/job_alert.png`).default} style={{ width: 'inherit' }} />,
+            title
+        };
+    }
+    if (notification.type === 'update') {
+        return {
+            avatar: <img alt={notification.title} src={require(`./images/notifications/update.png`).default} style={{ width: 'inherit' }} />,
             title
         };
     }
