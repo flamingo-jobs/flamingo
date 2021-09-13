@@ -187,7 +187,10 @@ function EmployerJobCard(props) {
                                     font: {
                                         weight: 'bold',
                                     },
-                                    color: 'white'
+                                    color: '#495357',
+                                    backgroundColor: '#E7F7FF',
+                                    padding: 4,
+                                    borderRadius: 4
 
                                 }
                             },
