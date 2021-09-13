@@ -811,6 +811,7 @@ function CompanyBasicInfo(props) {
               <div className={classes.locationTags}>
                 {locations.map((item, i) => (
                   <Chip
+                    key={item}
                     icon={<LocationOnRoundedIcon />}
                     label={item}
                     className={classes.tag}
