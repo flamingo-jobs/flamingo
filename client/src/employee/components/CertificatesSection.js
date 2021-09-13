@@ -15,6 +15,7 @@ import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import FloatCard from '../../components/FloatCard';
+import Loading from '../../components/Loading';
 import SnackBarAlert from "../../components/SnackBarAlert";
 import BACKEND_URL from '../../Config';
 import theme from '../../Theme';
@@ -111,6 +112,7 @@ function CertificatesSection(props) {
   const [open, setOpen] = useState(false);
   const [certificate, setCertificate] = useState(null);
   const [allCertificates, setAllCertificates] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [state, setState] = useState({issuer: null, title: null, score: null, month: null, year: null});
 
   const [alertShow, setAlertShow] = React.useState(false);
@@ -247,8 +249,10 @@ function CertificatesSection(props) {
   useEffect(()=>{
     setState({issuer: null, title: null, score: null, month: null, year: null});
     setCertificate(null);
+    setLoading(true);
     fetchCertificates();
     fetchData();
+    setLoading(false);
   },[fetchedData])
 
   function handleOpen(){
@@ -346,7 +350,9 @@ function CertificatesSection(props) {
   }
   
   const displayCourseFields = () => {
-    if (certificate) {
+    if(loading){
+      return (<Loading />);
+    }else if (certificate) {
       if (certificate.length > 0) {
         return certificate.map(awd => (
             <CertificateItem key={i} index={i++} issuer={awd.issuer} title={awd.title} score={awd.score} date={awd.date} allCertificates={allCertificates} parentFunction={deleteData} />
