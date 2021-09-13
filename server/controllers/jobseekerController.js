@@ -963,7 +963,26 @@ const getNotifications = (req, res) => {
   });
 };
 
+const addNotifications = (req, res) => {
+  console.log(JSON.stringify(req.body))
+  Jobseeker.findOneAndUpdate(
+    { _id: req.params.id },
+    { $push: { notifications: req.body } },
+    (err, jobseeker) => {
+      if (err) {
+        return res.status(400).json({
+          error: err,
+        });
+      }
+      return res.status(200).json({
+        success: true,
+      });
+    }
+  );
+};
+
 const markNotifications = (req, res) => {
+  console.log(JSON.stringify(req.body))
   Jobseeker.findByIdAndUpdate(
     req.params.id,
     {
@@ -1029,5 +1048,6 @@ module.exports = {
   getNotifications,
   getForTable,
   getApplicants,
-  markNotifications
+  markNotifications,
+  addNotifications
 };

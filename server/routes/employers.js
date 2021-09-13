@@ -23,8 +23,9 @@ router.post('/employers/filter', employersController.getFiltered);
 
 // get specific
 
-router.get('/employers/getNotifications/:id', employersController.getNotifications);
-router.post('/employers/markNotifications/:id', employersController.markNotifications);
+router.get('/employer/getNotifications/:id', employersController.getNotifications);
+router.put('/employer/addNotifications/:id', employersController.addNotifications);
+router.post('/employer/markNotifications/:id', employersController.markNotifications);
 
 router.get('/employers/:id', employersController.getById);
 router.get("/employers/favorites/:empIds", employersController.getByIds);

@@ -13,6 +13,8 @@ import SnackBarAlert from "../../components/SnackBarAlert";
 import BACKEND_URL, { FILE_URL } from "../../Config";
 import ItPerson from "../lotties/itPerson.json";
 import uploadFileToBlob, { isStorageConfigured } from '../../utils/azureFileUpload';
+import { useDispatch, useSelector } from "react-redux";
+import { setNewNotifications } from "../../redux/actions";
 
 const useStyles = makeStyles((theme) => ({
   applyFormWrapper: {
@@ -116,7 +118,8 @@ const ApplyForm = (props) => {
 
   const [loading, setLoading] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
-
+  const notificationCount = useSelector(state => state.newNotifications);
+  const dispatch = useDispatch();
   const timer = useRef();
   useEffect(() => {
     return () => {
@@ -293,6 +296,19 @@ const ApplyForm = (props) => {
           await delay(2000);
           window.scrollTo(0, 0);
           props.handleApply();
+
+          axios.put(`${BACKEND_URL}/jobSeeker/addNotifications/${userId}`,
+            {
+              title: 'Your application is submitted',
+              description: 'waiting for employer to review',
+              link: `/jobseeker/appliedJobs`,
+              type: 'job_applied',
+              createdAt: new Date(),
+              isUnRead: true
+            })
+
+
+          dispatch(setNewNotifications(notificationCount+1));
 
         } else {
           setAlertData({

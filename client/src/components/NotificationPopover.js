@@ -4,6 +4,8 @@ import { Link as RouterLink } from 'react-router-dom';
 import ClearAllRoundedIcon from '@material-ui/icons/ClearAllRounded';
 import axios from 'axios';
 import BACKEND_URL from '../Config'
+import ReactTimeAgo from 'react-time-ago';
+
 // material
 import {
     List,
@@ -30,7 +32,7 @@ const NOTIFICATIONS = [
         id: 1,
         title: 'Your application is submitted',
         description: 'waiting for employer to review',
-        avatar: null,
+        link: null,
         type: 'job_applied',
         createdAt: "2019 July 25",
         isUnRead: true
@@ -73,6 +75,22 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.down("sm")]: {
             minWidth: 310,
         },
+    },
+    unRead: {
+        backgroundColor: theme.palette.lightSkyBlueHover,
+        paddingLeft: 8,
+        paddingRight: 8,
+        borderRadius: 10,
+        marginTop: 5,
+        marginBottom: 5
+    },
+    read: {
+        backgroundColor: theme.palette.white,
+        paddingLeft: 8,
+        paddingRight: 8,
+        borderRadius: 10,
+        marginTop: 5,
+        marginBottom: 5
     }
 }))
 
@@ -120,23 +138,18 @@ NotificationItem.propTypes = {
     notification: PropTypes.object.isRequired
 };
 
-function NotificationItem({ notification }) {
+function NotificationItem({ notification, onClose }) {
     const { avatar, title } = renderContent(notification);
+    const classes = useStyles();
 
     return (
         <ListItem
             button
-            to="#"
+            to={notification.link}
             disableGutters
             component={RouterLink}
-            sx={{
-                py: 1.5,
-                px: 2.5,
-                mt: '1px',
-                ...(notification.isUnRead && {
-                    bgcolor: 'action.selected'
-                })
-            }}
+            className={notification.isUnRead ? classes.unRead : classes.read}
+            onClick={onClose}
         >
             <ListItemAvatar>
                 <Avatar sx={{ bgcolor: 'background.neutral' }}>{avatar}</Avatar>
@@ -154,7 +167,7 @@ function NotificationItem({ notification }) {
                         }}
                     >
                         <WatchLaterRoundedIcon style={{ width: 18, marginRight: 5 }} />
-                        30 mins ago
+                        <ReactTimeAgo date={notification.createdAt} locale="en-US" />
                     </Typography>
                 }
             />
@@ -183,20 +196,19 @@ export default function NotificationsPopover(props) {
 
 
     const handleMarkAllAsRead = async () => {
+        let read = notifications.map((notification) => ({
+            ...notification,
+            isUnRead: false
+        }))
         setNotifications(
-            notifications.map((notification) => ({
-                ...notification,
-                isUnRead: false
-            }))
+            read
         );
 
-        await axios.post(`${BACKEND_URL}/${props.userRole}/markNotifications/${props.loginId}`, notifications).then((res) => {
+        await axios.post(`${BACKEND_URL}/${props.userRole}/markNotifications/${props.loginId}`, read).then((res) => {
             if (res.data.success) {
-                let unread = notifications.filter((item) => item.isUnRead === true).length;
-                setTotalUnRead(unread);
-                dispatch(setNewNotifications(unread));
-            } else {
-                setNotifications("empty");
+                setTotalUnRead(0);
+                dispatch(setNewNotifications(0));
+                console.log(notifications)
             }
         });
 
@@ -207,7 +219,9 @@ export default function NotificationsPopover(props) {
             axios.get(`${BACKEND_URL}/${props.userRole}/getNotifications/${props.loginId}`).then((res) => {
 
                 if (res.data.success) {
-                    setNotifications(res.data.existingData);
+                    setNotifications(res.data.existingData.sort((a, b) => {
+                        return new Date(a.createdAt).getTime() < new Date(b.createdAt).getTime() ? 1 : -1;
+                    }));
 
                     if (res.data.existingData && res.data.existingData.length > 0) {
                         let unread = res.data.existingData.filter((item) => item.isUnRead === true).length;
@@ -225,7 +239,7 @@ export default function NotificationsPopover(props) {
     const displayNotifications = () => {
         if (notifications !== "empty" && notifications.length > 0) {
             return notifications.map((notification, index) => (
-                <NotificationItem key={index} notification={notification} />
+                <NotificationItem key={index} notification={notification} onClose={props.onClose}/>
             ))
         }
     }
@@ -240,7 +254,7 @@ export default function NotificationsPopover(props) {
                     </Typography>
                 </Grid>
                 <Grid item xs={2}>
-                    {notifications !== "empty" && totalUnRead.length > 0 ?
+                    {notifications !== "empty" && totalUnRead > 0 ?
                         <Tooltip title=" Mark all as read">
                             <IconButton color="primary" onClick={handleMarkAllAsRead}>
                                 <ClearAllRoundedIcon />
@@ -251,7 +265,7 @@ export default function NotificationsPopover(props) {
             </Grid>
             {notifications !== "empty" && notifications.length > 0 ?
                 <>
-                    <Divider />
+                    <Divider style={{ marginBottom: 8 }} />
                     <List
                         disablePadding
                     >

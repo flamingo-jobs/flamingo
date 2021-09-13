@@ -254,7 +254,7 @@ const getAllApplications = async (req, res) => {
 };
 
 const getNotifications = (req, res) => {
-  Jobseeker.findById(req.params.id, 'notifications').exec((err, notifications) => {
+  Employers.findById(req.params.id, 'notifications').exec((err, notifications) => {
     if (err) {
       return res.status(400).json({
         error: err,
@@ -267,13 +267,30 @@ const getNotifications = (req, res) => {
   });
 };
 
+const addNotifications = (req, res) => {
+  Employers.findOneAndUpdate(
+    { _id: req.params.id },
+    { $push: { notifications: req.body } },
+    (err, employer) => {
+      if (err) {
+        return res.status(400).json({
+          error: err,
+        });
+      }
+      return res.status(200).json({
+        success: true,
+      });
+    }
+  );
+};
+
 const markNotifications = (req, res) => {
-  Jobseeker.findByIdAndUpdate(
+  Employers.findByIdAndUpdate(
     req.params.id,
     {
       $set: { notifications: req.body },
     },
-    (err, jobseeker) => {
+    (err, employer) => {
       if (err) {
         return res.status(400).json({
           error: err,
@@ -302,5 +319,6 @@ module.exports = {
   getForTable,
   getVerificationStatus,
   getNotifications,
-  markNotifications
+  markNotifications,
+  addNotifications
 };

@@ -391,7 +391,7 @@ export default function Topbar(props) {
         onClose={handleNotificationClose}
         className={classes.notificationMenu}
       >
-        <NotificationsPopover open={isNotificationMenuOpen} count={newNotifications} loginId={loginId} userRole={token ? header.payload.userRole : null} />
+        <NotificationsPopover open={isNotificationMenuOpen} onClose={handleNotificationClose} count={newNotifications} loginId={loginId} userRole={token ? header.payload.userRole : null} />
       </Menu>
 
     </Dialog>
