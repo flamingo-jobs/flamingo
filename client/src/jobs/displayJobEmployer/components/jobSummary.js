@@ -362,7 +362,7 @@ function JobSummary(props) {
   const handleDelete = async () => {
     try {
       const response = await axios.delete(
-        `${BACKEND_URL}/jobs/delete/${props.jobId}`
+        `${BACKEND_URL}/jobs/delete/${props.jobId}`, { data: {applicationDetails: props.job.applicationDetails }}
       );
       if (response.data.success) {
         props.setAlertData({
@@ -372,7 +372,7 @@ function JobSummary(props) {
         props.handleAlert();
         const msg = "Job deleted";
         const status = "informational";
-        await axios.post(`${BACKEND_URL}/logs/create/${props.job._id}/${userId}`, {msg: msg, status: status});
+        // await axios.post(`${BACKEND_URL}/logs/create/${props.job._id}/${userId}`, {msg: msg, status: status});
         
         window.location = "/employer/jobs";
       } else {
@@ -382,7 +382,8 @@ function JobSummary(props) {
         });
         props.handleAlert();
       }
-    } catch {
+    } catch(error) {
+      console.log(error)
       props.setAlertData({
         severity: "error",
         msg: "Somethig went wrong",
