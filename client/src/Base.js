@@ -9,6 +9,7 @@ import Dashboard from "./admin/Dashboard";
 import Employers from "./admin/Employers";
 import JobSeekers from "./admin/JobSeekers";
 import Settings from "./admin/Settings";
+import Skills from "./admin/Skills";
 import Technologies from "./admin/Technologies";
 import "./App.css";
 import Footer from "./components/Footer";
@@ -270,6 +271,9 @@ function Base() {
           </Route>
           <Route path="/admin/employers">
             <Employers />
+          </Route>
+          <Route path="/admin/skills">
+            <Skills />
           </Route>
         </>
       );

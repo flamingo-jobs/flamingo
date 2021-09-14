@@ -21,6 +21,8 @@ import ComputerIcon from '@material-ui/icons/Computer';
 import FileCopyRoundedIcon from '@material-ui/icons/FileCopyRounded';
 import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
 import PostAddRoundedIcon from '@material-ui/icons/PostAddRounded';
+import SettingsEthernetRoundedIcon from '@material-ui/icons/SettingsEthernetRounded';
+
 const useStyles = makeStyles((theme) => ({
     root: {
         [theme.breakpoints.down('xs')]: {
@@ -145,6 +147,12 @@ function NavMenu(props) {
                         <ListItem button key="categories" selected={selectedIndex === "categories"} onClick={(event) => handleListItemClick(event, "categories")} classes={{ selected: classes.active }} className={classes.listItem}>
                             <ListItemIcon className={classes.linkIcon}><CategoryRoundedIcon /></ListItemIcon>
                             <ListItemText className={classes.linkText} primary="Categories" />
+                        </ListItem>
+                    </Link>
+                    <Link to="/admin/skills">
+                        <ListItem button key="skills" selected={selectedIndex === "skills"} onClick={(event) => handleListItemClick(event, "skills")} classes={{ selected: classes.active }} className={classes.listItem}>
+                            <ListItemIcon className={classes.linkIcon}><SettingsEthernetRoundedIcon /></ListItemIcon>
+                            <ListItemText className={classes.linkText} primary="Skills" />
                         </ListItem>
                     </Link>
                     <Link to="/admin/technologies">

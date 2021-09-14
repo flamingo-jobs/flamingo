@@ -21,6 +21,7 @@ import { Link } from 'react-router-dom';
 import { FILE_URL } from './../../Config';
 import EditRoundedIcon from '@material-ui/icons/EditRounded';
 import VerificationDialog from './VerificationDialog';
+import AddNewSkillPopup from './AddNewSkillPopup';
 
 const useStyles = makeStyles((theme) => ({
     table: {
@@ -403,7 +404,11 @@ function GridTable(props) {
     }
 
     const displayAddNewPopup = () => {
-        return <AddNewCatePopup open={openAddNewPopup} onClose={closeAddNewPopup} onSuccess={handleCreateSuccess} onError={handleCreateError} />
+        if(props.type === "categories"){
+            return <AddNewCatePopup open={openAddNewPopup} onClose={closeAddNewPopup} onSuccess={handleCreateSuccess} onError={handleCreateError} />
+        } else if(props.type === "skills"){
+            return <AddNewSkillPopup open={openAddNewPopup} onClose={closeAddNewPopup} onSuccess={handleCreateSuccess} onError={handleCreateError} />
+        }
     }
 
     return (
