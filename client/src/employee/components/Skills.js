@@ -12,6 +12,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import FloatCard from '../../components/FloatCard';
 import Loading from '../../components/Loading';
+import MiniLoading from '../../components/MiniLoading';
 import SnackBarAlert from "../../components/SnackBarAlert";
 import BACKEND_URL from '../../Config';
 import theme from '../../Theme';
@@ -92,12 +93,12 @@ const useStyles = makeStyles({
   placeholder: {
     color: "#777",
     fontSize: '16px',
-    marginTop:"-8px",
+    marginTop: "-8px",
   },
   placeholderDate: {
     color: "#777",
     fontSize: '14px',
-    marginTop:"12px",
+    marginTop: "12px",
   },
   paperChips: {
     display: 'flex',
@@ -110,10 +111,10 @@ const useStyles = makeStyles({
     borderRadius: 10,
     marginTop: 0,
     "&:hover": {
-        defaultButton: {
-            display: 'block'
-        }
+      defaultButton: {
+        display: 'block'
       }
+    }
   },
   chip: {
     margin: theme.spacing(0.5),
@@ -126,8 +127,9 @@ function Skills(props) {
   const [fetchedData, setFetchedData] = useState('');
   const [open, setOpen] = useState(false);
   const [skills, setSkills] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const names =[
+  const [loadingData, setLoadingData] = useState(true);
+
+  const names = [
     "Cloud and Distributed Computing",
     "Statistical Analysis and Data Mining",
     "SEO/SEM Marketing",
@@ -149,103 +151,104 @@ function Skills(props) {
 
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
-  let i=0;
+  let i = 0;
   let loginId;
   let login = false;
   const jwt = require("jsonwebtoken");
   const token = sessionStorage.getItem("userToken");
   const header = jwt.decode(token, { complete: true });
-  if(token === null){
-    loginId=props.jobseekerID;
-  }else if (header.payload.userRole === "jobseeker") {
+  if (token === null) {
+    loginId = props.jobseekerID;
+  } else if (header.payload.userRole === "jobseeker") {
     login = true;
-    loginId=sessionStorage.getItem("loginId");
+    loginId = sessionStorage.getItem("loginId");
   } else {
-    loginId=props.jobseekerID;
+    loginId = props.jobseekerID;
   }
 
 
 
-  function fetchData(){
-    setLoading(true);
+  function fetchData() {
+    setLoadingData(true);
     axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
-    .then(res => {
-      if(res.data.success){
-        if(res.data.jobseeker.skills.length > 0){
-          if(res.data.jobseeker.skills[0] === ""){
-            res.data.jobseeker.skills.splice(0,1)
-            i++;
+      .then(res => {
+        if (res.data.success) {
+          if (res.data.jobseeker.skills.length > 0) {
+            if (res.data.jobseeker.skills[0] === "") {
+              res.data.jobseeker.skills.splice(0, 1)
+              i++;
+            }
+            setSkills(res.data.jobseeker.skills);
           }
-          setSkills(res.data.jobseeker.skills)
-        }       
-      }
-    })
+          setLoadingData(false);
+
+        }
+      })
     setFetchedData(0);
-    setLoading(false);
   }
 
-  function removeDuplicates(){
+  function removeDuplicates() {
     for (let index = 0; index < skills.length; index++) {
       for (let j = 0; j < chipData.length; j++) {
-        if(chipData[j] === skills[index]){
+        if (chipData[j] === skills[index]) {
           chipData.splice(j, 1);
           break;
-        }        
-      }     
+        }
+      }
     }
     showCombo()
   }
 
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchData();
-  },[fetchedData])
+  }, [fetchedData])
 
-  function handleOpen(){
+  function handleOpen() {
     setOpen(true);
   }
 
-  function handleClose(){
+  function handleClose() {
     setOpen(false);
   }
 
-  function showOpen(){
+  function showOpen() {
     setShow(true);
   }
 
-  function showClose(){
+  function showClose() {
     setShow(false);
   }
 
-    // Alert stuff
-    const displayAlert = () => {
-      return (
-        <SnackBarAlert
-          open={alertShow}
-          onClose={handleAlertClose}
-          severity={alertData.severity}
-          msg={alertData.msg}
-        />
-      );
-    };
-  
-    const handleAlert = () => {
-      setAlertShow(true);
-    };
-  
-    const handleAlertClose = (event, reason) => {
-      if (reason === "clickaway") {
-        return;
-      }
-      setAlertShow(false);
-    };
+  // Alert stuff
+  const displayAlert = () => {
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
 
-  function onSubmit(e){
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertShow(false);
+  };
+
+  function onSubmit(e) {
     e.preventDefault();
 
     var l = skills.length;
     for (let index = 0; index < newData?.length; index++) {
-      skills[l++]=newData[index];   
+      skills[l++] = newData[index];
     }
 
     const skillset = {
@@ -253,23 +256,23 @@ function Skills(props) {
     }
 
 
-    axios.put(`${BACKEND_URL}/jobseeker/updateSkills/${loginId}`,skillset)
-    .then(res => {
-      if(res.data.success){
-        setAlertData({
-          severity: "success",
-          msg: "Skills added successfully!",
-        });
-        handleAlert();
-        axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
-      } else {
-        setAlertData({
-          severity: "error",
-          msg: "Skills could not be added!",
-        });
-        handleAlert();
-      }
-    });
+    axios.put(`${BACKEND_URL}/jobseeker/updateSkills/${loginId}`, skillset)
+      .then(res => {
+        if (res.data.success) {
+          setAlertData({
+            severity: "success",
+            msg: "Skills added successfully!",
+          });
+          handleAlert();
+          axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
+        } else {
+          setAlertData({
+            severity: "error",
+            msg: "Skills could not be added!",
+          });
+          handleAlert();
+        }
+      });
     setFetchedData(1);
     e.target.value = null;
     showClose();
@@ -278,24 +281,24 @@ function Skills(props) {
 
   const handleDelete = (chipToDelete) => () => {
     setChipData([])
-    skills.splice(chipToDelete,1)
-    axios.put(`${BACKEND_URL}/jobseeker/removeSkill/${loginId}`,skills)
-    .then(res => {
-      if(res.data.success){
-        setAlertData({
-          severity: "success",
-          msg: "Skill deleted successfully!",
-        });
-        handleAlert();
-        fetchData();
-        axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
-      } else {
-        setAlertData({
-          severity: "error",
-          msg: "Skill could not be deleted!",
-        });
-      }
-    });
+    skills.splice(chipToDelete, 1)
+    axios.put(`${BACKEND_URL}/jobseeker/removeSkill/${loginId}`, skills)
+      .then(res => {
+        if (res.data.success) {
+          setAlertData({
+            severity: "success",
+            msg: "Skill deleted successfully!",
+          });
+          handleAlert();
+          fetchData();
+          axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
+        } else {
+          setAlertData({
+            severity: "error",
+            msg: "Skill could not be deleted!",
+          });
+        }
+      });
     setShow(false);
     showCombo();
     handleAlert();
@@ -303,13 +306,13 @@ function Skills(props) {
     handleClose();
     setFetchedData(1)
   };
-  
+
   const showCombo = () => {
-      if(show){
-        return (
-          <>
+    if (show) {
+      return (
+        <>
           <Autocomplete
-          style={{width:"100%",margin:"10px 120px 20px 120px"}}
+            style={{ width: "100%", margin: "10px 120px 20px 120px" }}
             multiple
             id="tags-outlined"
             filterSelectedOptions
@@ -328,67 +331,67 @@ function Skills(props) {
             )}
           />
           <Grid item xs={12}>
-          <Button className={classes.defaultButton} onClick={onSubmit} style={{float:"right",marginRight:"115px"}}>Save</Button>
-          <Button onClick={showClose} style={{float:"right",marginRight:"15px"}}>Cancel</Button>         
-        </Grid>
-          </>
-        );
-      }else{
-        return <></>;
-      }
+            <Button className={classes.defaultButton} onClick={onSubmit} style={{ float: "right", marginRight: "115px" }}>Save</Button>
+            <Button onClick={showClose} style={{ float: "right", marginRight: "15px" }}>Cancel</Button>
+          </Grid>
+        </>
+      );
+    } else {
+      return <></>;
+    }
   }
 
   return (
     <>
-    {displayAlert()}
-    <FloatCard>
-      <Grid container spacing={3}>
-        <Grid item xs style={{ textAlign: 'left',}}>
-            <Typography gutterBottom variant="h5" style={{color: theme.palette.tuftsBlue,padding:'10px',fontWeight:'bold'}}>
-                <EmojiEventsIcon style={{color: theme.palette.turfsBlue,marginRight: '10px',marginBottom:'-5px',fontSize:'27'}}/>
-                Skills
+      {displayAlert()}
+      <FloatCard>
+        <Grid container spacing={3}>
+          <Grid item xs style={{ textAlign: 'left', }}>
+            <Typography gutterBottom variant="h5" style={{ color: theme.palette.tuftsBlue, padding: '10px', fontWeight: 'bold' }}>
+              <EmojiEventsIcon style={{ color: theme.palette.turfsBlue, marginRight: '10px', marginBottom: '-5px', fontSize: '27' }} />
+              Skills
             </Typography>
+          </Grid>
+          <Grid item style={{ textAlign: 'right' }}>
+            {login ? <>
+              <Button className={classes.defaultButton} style={{ float: 'right', marginRight: '0px', backgroundColor: 'white' }} onClick={showOpen}>
+                <EditIcon style={{ color: theme.palette.tuftsBlue, }} className={classes.editIcon} />
+              </Button>
+            </> : null}
+          </Grid>
         </Grid>
-        <Grid item style={{ textAlign: 'right' }}>
-        { login ? <>
-            <Button className={classes.defaultButton} style={{ float: 'right',marginRight: '0px',backgroundColor:'white'}} onClick={showOpen}>
-                <EditIcon style={{color: theme.palette.tuftsBlue,}} className={classes.editIcon} />
-            </Button>
-            </> : null }
-        </Grid>       
-      </Grid>
-      <Grid container spacing={3}>
-      {removeDuplicates()}
-      {showCombo()}
-      
-        <Grid item xs={12}>
-          {loading ? <Loading /> :
-            <Paper elevation={0} component="ul" className={classes.paperChips}>
+        <Grid container spacing={3}>
+          {removeDuplicates()}
+          {showCombo()}
+
+          <Grid item xs={12}>
+            {loadingData ? <MiniLoading /> :
+              <Paper elevation={0} component="ul" className={classes.paperChips}>
                 {
-                skills.map((data) => {
+                  skills.map((data) => {
                     let icon;
                     return show ? (
-                    <li key={i++}>
+                      <li key={i++}>
                         <Chip
-                        icon={icon}
-                        label={data}
-                        onDelete={handleDelete(i)}
-                        className={classes.chip}
+                          icon={icon}
+                          label={data}
+                          onDelete={handleDelete(i)}
+                          className={classes.chip}
                         />
-                    </li>
-                    ) : 
-                    (<li key={i++}>
+                      </li>
+                    ) :
+                      (<li key={i++}>
                         <Chip
-                        icon={icon}
-                        label={data}
-                        className={classes.chip}
+                          icon={icon}
+                          label={data}
+                          className={classes.chip}
                         />
-                    </li>);
-                })}
-            </Paper> }
+                      </li>);
+                  })}
+              </Paper>}
+          </Grid>
         </Grid>
-      </Grid>
-    </FloatCard>
+      </FloatCard>
     </>
   );
 }

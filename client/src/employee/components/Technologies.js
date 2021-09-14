@@ -7,6 +7,7 @@ import { Typography } from '@material-ui/core'
 import BACKEND_URL from '../../Config';
 import axios from 'axios'
 import SnackBarAlert from '../../components/SnackBarAlert'
+import Loading from '../../components/Loading';
 
 const useStyles = makeStyles((theme) => ({
     paperCont: {
@@ -29,6 +30,7 @@ function Technologies(props) {
     const [tech, setTech] = useState([]);
     const [technologies, setTechnologies] = useState([]);
     const [refershRequired, setRefreshRequired] = useState(false);
+    const [loadingData, setLoadingData] = useState(true);
 
     const [updateSuccess, setUpdateSuccess] = React.useState(false);
     const [updateFailed, setUpdateFailed] = React.useState(false);
@@ -84,6 +86,7 @@ function Technologies(props) {
     }
 
     const retrieveTechnoliges = () => {
+        setLoadingData(true);
         axios.get(`${BACKEND_URL}/technologies`).then(res => {
             if (res.data.success) {
                 setTechnologies(res.data.existingData)
@@ -108,6 +111,7 @@ function Technologies(props) {
                 }
             }
             setTechnologyStack(technologyStackData)
+            setLoadingData(false);
             // console.log(res.data.jobseeker.technologyStack)
 
             }
@@ -116,13 +120,15 @@ function Technologies(props) {
 
 
     const displayTechnologies = () => {
-        if (technologies) {
+        if(loadingData) {
+            return <Loading />
+        } else if (technologies) {
             return technologies.map(technology => (
                 <DetailedAccordion jobseeker={loginId} key={technology._id} info={technology} techno={technologyStack} onRefresh={handleRefresh} onSuccessUpdate={handleUpdatesuccess} onFailedUpdate={handleUpdateFailed} />
             ))
         } else {
             return (
-                <Typography>No featured Jobs</Typography>
+                <Typography>No technologies to display</Typography>
             )
         }
     }

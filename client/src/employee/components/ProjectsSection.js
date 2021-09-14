@@ -135,12 +135,12 @@ function ProjectsSection(props) {
   const classes = useStyles();
   const [fetchedData, setFetchedData] = useState('');
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [newData, setNewData] = useState(null);
   const [technologies, setTechnologies] = useState([]);
   const [technologyList, setTechnologyList] = useState([]);
   const [project, setProject] = useState(null);
   const [state, setState] = useState({name: null, link: null, description: null, startYear: null, startMonth: null, endYear: null, endMonth: null, usedTech: null});
+  const [loadingData, setLoadingData] = useState(true);
 
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
@@ -199,7 +199,7 @@ function ProjectsSection(props) {
   }
 
   function fetchData(){
-    setLoading(true);
+    setLoadingData(true);
     let projectData;
     axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
     .then(res => {
@@ -215,7 +215,7 @@ function ProjectsSection(props) {
           }
         }       
         setProject(projectData)
-        setLoading(false);
+        setLoadingData(false);
       }
     })
 
@@ -391,7 +391,7 @@ function ProjectsSection(props) {
   }
   
   const displayProjectFields = () => {
-    if(loading){
+    if(loadingData){
       return (<Loading />);
     }else if(project){
       if (project.length > 0) {

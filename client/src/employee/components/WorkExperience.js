@@ -119,9 +119,9 @@ function WorkExperience(props) {
   const [fetchedData, setFetchedData] = useState('');
   const [open, setOpen] = useState(false);
   const [work, setWork] = useState([]);
-  const [loading, setLoading] = useState(true);
  // let workOrdered = null;
   const [state, setState] = useState({place: null, description: null, position: null, startYear: null, startMonth: null, endYear: null, endMonth: null, taskAndResponsibility: null});
+  const [loadingData, setLoadingData] = useState(true);
 
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
@@ -180,7 +180,7 @@ function WorkExperience(props) {
   }
 
   function fetchData(){
-    setLoading(true);
+    setLoadingData(true);
     let workData;
     axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
     .then(res => {
@@ -196,10 +196,9 @@ function WorkExperience(props) {
           }
         }
         setWork(workData);
-        
+        setLoadingData(false);
       }
     })
-    setLoading(false);
     setFetchedData(0)
   }
 
@@ -358,7 +357,7 @@ function WorkExperience(props) {
       workTemp.push({index: idx++,year: w.from.split("/")[0], month: w.from.split("/")[1], workItem: w})
     ));
     workTemp?.sort((a,b) => (a.year < b.year) ? 1 : ((b.year < a.year) ? -1 : 0));
-    if(loading){
+    if(loadingData){
       return (<Loading />);
     }else if (workTemp) {
         if (workTemp.length > 0) {

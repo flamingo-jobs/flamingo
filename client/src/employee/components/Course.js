@@ -98,12 +98,12 @@ const useStyles = makeStyles({
   placeholder: {
     color: "#777",
     fontSize: '16px',
-    marginTop:"-8px",
+    marginTop: "-8px",
   },
   placeholderDate: {
     color: "#777",
     fontSize: '14px',
-    marginTop:"12px",
+    marginTop: "12px",
   }
 });
 
@@ -112,269 +112,269 @@ function Course(props) {
   const [fetchedData, setFetchedData] = useState('');
   const [open, setOpen] = useState(false);
   const [course, setCourse] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [state, setState] = useState({course: null, institute: null, startYear: null, startMonth: null, endYear: null, endMonth: null});
+  const [state, setState] = useState({ course: null, institute: null, startYear: null, startMonth: null, endYear: null, endMonth: null });
+  const [loadingData, setLoadingData] = useState(true);
 
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
-  let i=0;
+  let i = 0;
   let loginId;
   let login = false;
   const jwt = require("jsonwebtoken");
   const token = sessionStorage.getItem("userToken");
   const header = jwt.decode(token, { complete: true });
-  if(token === null){
-    loginId=props.jobseekerID;
-  }else if (header.payload.userRole === "jobseeker") {
+  if (token === null) {
+    loginId = props.jobseekerID;
+  } else if (header.payload.userRole === "jobseeker") {
     login = true;
-    loginId=sessionStorage.getItem("loginId");
+    loginId = sessionStorage.getItem("loginId");
   } else {
-    loginId=props.jobseekerID;
+    loginId = props.jobseekerID;
   }
 
   //generate year list
-  function getYearsFrom(){
+  function getYearsFrom() {
     let maxOffset = 25;
     let thisYear = (new Date()).getFullYear();
     let allYears = [];
-    for(let x = 0; x <= maxOffset; x++) {
-        allYears.push(thisYear - x)
+    for (let x = 0; x <= maxOffset; x++) {
+      allYears.push(thisYear - x)
     }
 
-    return allYears.map((x,index) => (<option key={index} value={x}>{x}</option>));
+    return allYears.map((x, index) => (<option key={index} value={x}>{x}</option>));
   }
 
-    //generate year list
-    function getYearsTo(){
-      let maxOffset = 30;
-      let thisYear = (new Date()).getFullYear();
-      let allYears = [];
-      for(let x = -7; x <= maxOffset; x++) {
-          allYears.push(thisYear - x)
-      }
-  
-      return allYears.map((x,index) => (<option key={index} value={x}>{x}</option>));
+  //generate year list
+  function getYearsTo() {
+    let maxOffset = 30;
+    let thisYear = (new Date()).getFullYear();
+    let allYears = [];
+    for (let x = -7; x <= maxOffset; x++) {
+      allYears.push(thisYear - x)
     }
+
+    return allYears.map((x, index) => (<option key={index} value={x}>{x}</option>));
+  }
 
   //generate month list
-  function getMonthsFrom(){
+  function getMonthsFrom() {
     let maxOffset = 12;
     let allMonths = [];
-    for(let x = 1; x <= maxOffset; x++) {
-      if(x<10){
-        allMonths.push("0"+x);
-      }else{
+    for (let x = 1; x <= maxOffset; x++) {
+      if (x < 10) {
+        allMonths.push("0" + x);
+      } else {
         allMonths.push(x);
-      }        
+      }
     }
 
-    return allMonths.map((x,index) => (<option key={index} value={x}>{x}</option>));
+    return allMonths.map((x, index) => (<option key={index} value={x}>{x}</option>));
   }
 
-  function fetchData(){
-    setLoading(true);
+  function fetchData() {
+    setLoadingData(true);
     let courseData;
     axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
-    .then(res => {
-      if(res.data.success){
-        if(res.data.jobseeker.course.length > 0){
-          courseData = res.data.jobseeker.course;
-          if(Object.keys(res.data.jobseeker.course[0]).length === 0){
-            res.data.jobseeker.course.splice(0,1)
-            i++;
-          }else if(courseData[0].course === "" && courseData[0].institute === "" && courseData[0].from === "" && courseData[0].to === ""){
-            res.data.jobseeker.course.splice(0,1)
-            i++;
+      .then(res => {
+        if (res.data.success) {
+          if (res.data.jobseeker.course.length > 0) {
+            courseData = res.data.jobseeker.course;
+            if (Object.keys(res.data.jobseeker.course[0]).length === 0) {
+              res.data.jobseeker.course.splice(0, 1)
+              i++;
+            } else if (courseData[0].course === "" && courseData[0].institute === "" && courseData[0].from === "" && courseData[0].to === "") {
+              res.data.jobseeker.course.splice(0, 1)
+              i++;
+            }
           }
+          setCourse(courseData)
+          setLoadingData(false);
         }
-        setCourse(courseData)
-      }
-    })
-    setLoading(false);
+      })
     setFetchedData(0)
   }
 
-  function deleteData(index){
-    course.splice(index,1)
-    axios.put(`${BACKEND_URL}/jobseeker/removeCourse/${loginId}`,course)
-    .then(res => {
-      if(res.data.success){
-        setAlertData({
-          severity: "success",
-          msg: "Course deleted successfully!",
-        });
-        handleAlert();
-        axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
-      } else {
-        setAlertData({
-          severity: "error",
-          msg: "Course could not be deleted!",
-        });
-        handleAlert();
-      }
-    });
+  function deleteData(index) {
+    course.splice(index, 1)
+    axios.put(`${BACKEND_URL}/jobseeker/removeCourse/${loginId}`, course)
+      .then(res => {
+        if (res.data.success) {
+          setAlertData({
+            severity: "success",
+            msg: "Course deleted successfully!",
+          });
+          handleAlert();
+          axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
+        } else {
+          setAlertData({
+            severity: "error",
+            msg: "Course could not be deleted!",
+          });
+          handleAlert();
+        }
+      });
     handleClose();
     setFetchedData(1)
   }
 
-  useEffect(()=>{
-    setState({course: null, institute: null, startYear: null, startMonth: null, endYear: null, endMonth: null});
+  useEffect(() => {
+    setState({ course: null, institute: null, startYear: null, startMonth: null, endYear: null, endMonth: null });
     setCourse(null);
     fetchData();
-  },[fetchedData])
+  }, [fetchedData])
 
-  function handleOpen(){
+  function handleOpen() {
     setOpen(true);
   }
 
-  function handleClose(){
+  function handleClose() {
     setOpen(false);
-    setState({course: null, institute: null, startYear: null, startMonth: null, endYear: null, endMonth: null});
+    setState({ course: null, institute: null, startYear: null, startMonth: null, endYear: null, endMonth: null });
   }
 
-    // Alert stuff
-    const displayAlert = () => {
-      return (
-        <SnackBarAlert
-          open={alertShow}
-          onClose={handleAlertClose}
-          severity={alertData.severity}
-          msg={alertData.msg}
-        />
-      );
-    };
-  
-    const handleAlert = () => {
-      setAlertShow(true);
-    };
-  
-    const handleAlertClose = (event, reason) => {
-      if (reason === "clickaway") {
-        return;
-      }
-      setAlertShow(false);
-    };
-  
+  // Alert stuff
+  const displayAlert = () => {
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
+
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertShow(false);
+  };
+
 
   //---------------------------- text field onChange events
-  function onChangeCourse(e){
+  function onChangeCourse(e) {
     setState(prevState => {
-      return {...prevState, course: e.target.value}
+      return { ...prevState, course: e.target.value }
     })
   }
 
-  function onChangeInstitute(e){
+  function onChangeInstitute(e) {
     setState(prevState => {
-      return {...prevState, institute: e.target.value}
+      return { ...prevState, institute: e.target.value }
     })
   }
 
-  function onChangestartYear(e){
+  function onChangestartYear(e) {
     setState(prevState => {
-      return {...prevState, startYear: e.target.value}
+      return { ...prevState, startYear: e.target.value }
     })
   }
 
-  function onChangestartMonth(e){
+  function onChangestartMonth(e) {
     setState(prevState => {
-      return {...prevState, startMonth: e.target.value}
+      return { ...prevState, startMonth: e.target.value }
     })
   }
 
-  function onChangeEndYear(e){
+  function onChangeEndYear(e) {
     setState(prevState => {
-      return {...prevState, endYear: e.target.value}
+      return { ...prevState, endYear: e.target.value }
     })
   }
 
-  function onChangeEndMonth(e){
+  function onChangeEndMonth(e) {
     setState(prevState => {
-      return {...prevState, endMonth: e.target.value}
+      return { ...prevState, endMonth: e.target.value }
     })
   }
 
 
-  function onSubmit(e){
+  function onSubmit(e) {
     e.preventDefault();
     const newCourse = {
-        course: state.course,
-        institute: state.institute,
-        from: state.startMonth+"/"+state.startYear,
-        to: state.endMonth+"/"+state.endYear,
+      course: state.course,
+      institute: state.institute,
+      from: state.startMonth + "/" + state.startYear,
+      to: state.endMonth + "/" + state.endYear,
     }
 
-    axios.put(`${BACKEND_URL}/jobseeker/addCourse/${loginId}`,newCourse)
-    .then(res => {
-      if(res.data.success){
-        setAlertData({
-          severity: "success",
-          msg: "Course added successfully!",
-        });
-        handleAlert();
-        axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
-      } else {
-        setAlertData({
-          severity: "error",
-          msg: "Course could not be added!",
-        });
-        handleAlert();
-      }
-    });
+    axios.put(`${BACKEND_URL}/jobseeker/addCourse/${loginId}`, newCourse)
+      .then(res => {
+        if (res.data.success) {
+          setAlertData({
+            severity: "success",
+            msg: "Course added successfully!",
+          });
+          handleAlert();
+          axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
+        } else {
+          setAlertData({
+            severity: "error",
+            msg: "Course could not be added!",
+          });
+          handleAlert();
+        }
+      });
     setFetchedData(1);
     handleClose();
   }
-  
+
   const displayCourseFields = () => {
-    if(loading){
+    if (loadingData) {
       return (<Loading />);
-    }else if (course) {
+    } else if (course) {
       if (course.length > 0) {
         return course.map(awd => (
-            <CourseItem key={i} index={i++} course={awd.course} institute={awd.institute} startDate={awd.from} endDate={awd.to} parentFunction={deleteData} />
-            ))
-      }else{
+          <CourseItem key={i} index={i++} course={awd.course} institute={awd.institute} startDate={awd.from} endDate={awd.to} parentFunction={deleteData} />
+        ))
+      } else {
         return (<Typography variant="body2" color="textSecondary" component="p">Course details not added.</Typography>)
       }
-    }else{
+    } else {
       return (<Typography variant="body2" color="textSecondary" component="p">Course details not added.</Typography>)
     }
   }
 
   return (
     <>
-    {displayAlert()}
-    <FloatCard>
-      <Grid container spacing={3}>
-        <Grid item xs style={{ textAlign: 'left',}}>
-            <Typography gutterBottom variant="h5" style={{color: theme.palette.tuftsBlue,padding:'10px',fontWeight:'bold'}}>
-                <EmojiEventsIcon style={{color: theme.palette.turfsBlue,marginRight: '10px',marginBottom:'-5px',fontSize:'27'}}/>
-                Courses
+      {displayAlert()}
+      <FloatCard>
+        <Grid container spacing={3}>
+          <Grid item xs style={{ textAlign: 'left', }}>
+            <Typography gutterBottom variant="h5" style={{ color: theme.palette.tuftsBlue, padding: '10px', fontWeight: 'bold' }}>
+              <EmojiEventsIcon style={{ color: theme.palette.turfsBlue, marginRight: '10px', marginBottom: '-5px', fontSize: '27' }} />
+              Courses
             </Typography>
-        </Grid>
-        <Grid item style={{ textAlign: 'right' }}>
-        { login ? <>
-            <Button className={classes.defaultButton} style={{ float: 'right',marginRight: '0px',backgroundColor:'white'}} onClick={handleOpen}>
-                <AddIcon style={{color: theme.palette.tuftsBlue,}} className={classes.editIcon} />
-            </Button>
-            </> : null }
-        </Grid>
+          </Grid>
+          <Grid item style={{ textAlign: 'right' }}>
+            {login ? <>
+              <Button className={classes.defaultButton} style={{ float: 'right', marginRight: '0px', backgroundColor: 'white' }} onClick={handleOpen}>
+                <AddIcon style={{ color: theme.palette.tuftsBlue, }} className={classes.editIcon} />
+              </Button>
+            </> : null}
+          </Grid>
 
-        {/*-------------- add course field popup content ------------------- */}
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title" style={{color:theme.palette.stateBlue}}>
-          Add Courses
-          </DialogTitle>
-          <Divider variant="middle" />
-          <DialogContent>
-            <form className={classes.form}>
+          {/*-------------- add course field popup content ------------------- */}
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title" style={{ color: theme.palette.stateBlue }}>
+              Add Courses
+            </DialogTitle>
+            <Divider variant="middle" />
+            <DialogContent>
+              <form className={classes.form}>
                 <div>
-                <TextField
-                  className={classes.field}
+                  <TextField
+                    className={classes.field}
                     id="outlined-basic"
                     label="Course Name"
                     type="text"
@@ -384,7 +384,7 @@ function Course(props) {
                     required
                   />
                   <TextField
-                  className={classes.field}
+                    className={classes.field}
                     id="outlined-basic"
                     label="Institute"
                     type="text"
@@ -394,9 +394,9 @@ function Course(props) {
                     required
                   />
                   <Grid container direction="row">
-                    <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
+                    <Grid item container sm={12} md={6} style={{ paddingRight: "15px" }}>
                       <Grid item xs={12}>
-                        <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px"}}>Start Date</Typography>
+                        <Typography variant="body2" component="p" style={{ color: "#777", fontSize: '16px', marginBottom: "-10px" }}>Start Date</Typography>
                       </Grid>
                       <Grid item xs={6}>
                         <FormControl variant="outlined" className={classes.formControl}>
@@ -427,9 +427,9 @@ function Course(props) {
                         </FormControl>
                       </Grid>
                     </Grid>
-                    <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
+                    <Grid item container sm={12} md={6} style={{ paddingRight: "15px" }}>
                       <Grid item xs={12}>
-                        <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px"}}>End Date</Typography>
+                        <Typography variant="body2" component="p" style={{ color: "#777", fontSize: '16px', marginBottom: "-10px" }}>End Date</Typography>
                       </Grid>
                       <Grid item xs={6}>
                         <FormControl variant="outlined" className={classes.formControl}>
@@ -461,26 +461,26 @@ function Course(props) {
                       </Grid>
                     </Grid>
                   </Grid>
-                  </div>
+                </div>
               </form>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} style={{color:"#999"}}>
-              Cancel
-            </Button>
-            <Button onClick={onSubmit} color="primary" autoFocus>
-              Apply Changes
-            </Button>
-          </DialogActions>
-        </Dialog>
-        
-      </Grid>
-      <Grid container spacing={3}>
-            <Grid item xs={12}>
-                {displayCourseFields()}
-            </Grid>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} style={{ color: "#999" }}>
+                Cancel
+              </Button>
+              <Button onClick={onSubmit} color="primary" autoFocus>
+                Apply Changes
+              </Button>
+            </DialogActions>
+          </Dialog>
+
         </Grid>
-    </FloatCard>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            {displayCourseFields()}
+          </Grid>
+        </Grid>
+      </FloatCard>
     </>
   );
 }

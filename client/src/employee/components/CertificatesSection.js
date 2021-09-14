@@ -112,8 +112,8 @@ function CertificatesSection(props) {
   const [open, setOpen] = useState(false);
   const [certificate, setCertificate] = useState(null);
   const [allCertificates, setAllCertificates] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [state, setState] = useState({issuer: null, title: null, score: null, month: null, year: null});
+  const [loadingData, setLoadingData] = useState(true);
 
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
@@ -188,6 +188,7 @@ function CertificatesSection(props) {
   }
 
   function fetchData(){
+    setLoadingData(true);
     let certificateData;
     axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
     .then(res => {
@@ -203,6 +204,7 @@ function CertificatesSection(props) {
           }
         }
         setCertificate(certificateData)
+        setLoadingData(false);
       }
     })
     setFetchedData(0)
@@ -249,10 +251,8 @@ function CertificatesSection(props) {
   useEffect(()=>{
     setState({issuer: null, title: null, score: null, month: null, year: null});
     setCertificate(null);
-    setLoading(true);
     fetchCertificates();
     fetchData();
-    setLoading(false);
   },[fetchedData])
 
   function handleOpen(){
@@ -350,7 +350,7 @@ function CertificatesSection(props) {
   }
   
   const displayCourseFields = () => {
-    if(loading){
+    if(loadingData){
       return (<Loading />);
     }else if (certificate) {
       if (certificate.length > 0) {
