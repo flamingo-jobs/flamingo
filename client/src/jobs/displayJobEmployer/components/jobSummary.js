@@ -18,6 +18,8 @@ import FloatCard from "../../../components/FloatCard";
 import BACKEND_URL, { FILE_URL } from "../../../Config";
 import DeleteModal from "./deleteModal";
 import JobSummaryModal from "./jobSummaryModal";
+import PeopleIcon from '@material-ui/icons/People';
+
 const jwt = require("jsonwebtoken");
 
 const useStyles = makeStyles((theme) => ({
@@ -121,6 +123,11 @@ const useStyles = makeStyles((theme) => ({
   type: {
     display: "flex",
     gap: "10px",
+  },
+  applicants:{
+    display: "flex",
+    gap: "10px",
+    marginTop: theme.spacing(2),
   },
   locationIcon: {
     color: "#666",
@@ -392,6 +399,13 @@ function JobSummary(props) {
     }
   };
 
+  const numOfApplicants = () => {
+    if(props.job.applicationDetails?.length === 1){
+      return `${props.job.applicationDetails.length} applicant`;
+    }
+    return `${props.job.applicationDetails.length} applicants`;
+  }
+
   // style={{border: "1px solid red"}}
   return (
     <>
@@ -513,8 +527,20 @@ function JobSummary(props) {
                     {getFormattedDate(props.job.dueDate)}
                   </Typography>
                 </div>
+                
               </div>
             </Grid>
+
+            <div className={classes.applicants}>
+              <PeopleIcon
+                fontSize="small"
+                className={classes.typeIcon}
+              ></PeopleIcon>
+              <Typography variant="subtitle2" className={classes.typeText}>
+                {numOfApplicants()}
+              </Typography>
+            </div>
+          
             <Grid item xs={12}>
               <div>
                 <Typography align="left" className={classes.description}>
