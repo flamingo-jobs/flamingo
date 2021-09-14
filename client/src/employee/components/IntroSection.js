@@ -33,6 +33,7 @@ import uploadFileToBlob, { isStorageConfigured } from '../../utils/azureFileUplo
 import { useDispatch } from "react-redux";
 import { setProfilePicReload } from "../../redux/actions";
 import Loading from "../../components/Loading";
+import Compressor from 'compressorjs';
 
 const storageConfigured = isStorageConfigured();
 
@@ -301,10 +302,19 @@ function IntroSection(props) {
         handleAlert();
       } else {
         var file = e.target.files[0];
+
+
         var blob = file.slice(0, file.size);
         var newFile = new File([blob], `${loginId}.png`, { type: 'image/png' });
-        setProfilePic(newFile);
-        setProfilePicPreview(URL.createObjectURL(newFile));
+        new Compressor(newFile, {
+          quality: 0.4,
+          width: 200,
+          success: (compressedResult) => {
+            setProfilePic(compressedResult);
+            setProfilePicPreview(URL.createObjectURL(compressedResult));
+          },
+        });
+
       }
     }
     // setQuery('success')
