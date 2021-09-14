@@ -1,4 +1,6 @@
 const Jobs = require('../models/jobs');
+const Jobseeker = require("../models/jobseeker");
+
 
 
 const create = async (req, res) => {
@@ -364,18 +366,44 @@ const updateResumeDetails = (req, res) => {
     );
 }
 
-const remove = (req, res) => {
-    Jobs.findByIdAndDelete(req.params.id).exec((err, deletedJob) => {
+const remove =  (req, res) => {
+    const jobId = req.params.id;
+    const applicantIds = req.body.applicationDetails.map(a => a.userId); 
+    
+    Jobs.findByIdAndDelete(jobId, (err, deletedJob) => {
         if (err) {
             return res.status(400).json({
                 error: err
             });
         }
+
+        if(applicantIds.length > 0){
+            const updatedApplicants = applicantIds.map(userId => {
+                Jobseeker.findByIdAndUpdate(
+                    userId,
+                    {
+                        $pull: {
+                            applicationDetails: { jobId: jobId }
+                        }
+                    },
+                    (err, job) => {
+                        if (err) {
+                            return res.status(400).json({
+                                error: err
+                            })
+                        }
+                        return job;
+                    }
+                );
+            });
+        }
+    
         return res.status(200).json({
-            success: "Job deleted successfully",
-            deletedJob
+            success: true,
         });
     });
+    
+    
 }
 
 const getOpeningCountByOrg = (req, res) => {

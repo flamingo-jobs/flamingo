@@ -70,7 +70,7 @@ const Responsibilities = (props) => {
 
   useEffect(() => {
     var fields = [];
-    props.job.qualifications.map((q) => {
+    props.job.tasksAndResponsibilities.map((q) => {
       const temp = [...fields, ""];
       fields = temp;
     });
