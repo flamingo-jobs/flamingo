@@ -293,7 +293,7 @@ function ApplicantCard(props) {
           <div className={classes.footer}>
             <div className={classes.footerLeft}></div>
             <div className={classes.footerRight}>
-              <Link to="/jobseeker/profile">
+              <Link to={`/jobseeker/profile/${props.jobseeker._id}`}>
                 <Button 
                   className={classes.profileBtn} 
                   startIcon={<PersonIcon/>}
