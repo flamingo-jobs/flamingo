@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Button,
   makeStyles,
   Typography,
   Grid,
+  Chip,
 } from "@material-ui/core";
 import FloatCard from "../../components/FloatCard";
 import GetAppIcon from "@material-ui/icons/GetApp";
@@ -13,11 +14,12 @@ import EditIcon from "@material-ui/icons/Edit";
 import IconButton from "@material-ui/core/IconButton";
 import StatusModal from "./statusModal";
 import axios from "axios";
-import BACKEND_URL from "../../../Config";
+import BACKEND_URL, { FILE_URL } from "../../../Config";
 import download from 'downloadjs';
 import { Link } from 'react-router-dom';
 import PersonIcon from '@material-ui/icons/Person';
-
+import SchoolRoundedIcon from '@material-ui/icons/SchoolRounded';
+import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 const useStyles = makeStyles((theme) => ({
   root: {
     textAlign: "left",
@@ -155,6 +157,20 @@ function ApplicantCard(props) {
       .status
   );
 
+  const [logo, setLogo] = useState(require(`../../components/images/loadingImage.gif`).default);
+
+  useEffect(() => {
+    loadLogo();
+  }, [])
+
+  const loadLogo = async () => {
+    await axios.get(`${FILE_URL}/jobseeker-profile-pictures/${props.jobseeker._id}.png`).then(res => {
+      setLogo(`${FILE_URL}/jobseeker-profile-pictures/${props.jobseeker._id}.png`);
+    }).catch(error => {
+      setLogo({});
+    })
+  }
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -164,16 +180,16 @@ function ApplicantCard(props) {
 
   const handleResumeDownload = async () => {
     const resumeName = props.jobseeker.applicationDetails.filter((item) => item.jobId === jobId)[0]
-    .resumeName;
+      .resumeName;
     try {
-      const response = await axios.get(`${BACKEND_URL}/resume/${jobId}/${props.jobseeker._id}`,{
+      const response = await axios.get(`${BACKEND_URL}/resume/${jobId}/${props.jobseeker._id}`, {
         responseType: 'blob'
       });
       const file = new Blob([response.data], {
         type: "application/pdf",
       });
 
-      if(status === "pending"){
+      if (status === "pending") {
         setStatus("reviewing");
         const jobseekerData = {
           status: "reviewing",
@@ -183,12 +199,12 @@ function ApplicantCard(props) {
           status: "reviewing",
           userId: props.jobseeker._id
         };
-  
+
         const jobseekerResponse = await axios.patch(
           `${BACKEND_URL}/jobseeker/updateResumeStatus/${props.jobseeker._id}`,
           jobseekerData
         );
-  
+
         const jobResponse = await axios.patch(
           `${BACKEND_URL}/jobs/updateResumeStatus/${jobId}`,
           jobData
@@ -210,7 +226,7 @@ function ApplicantCard(props) {
 
   return (
     <>
-      <StatusModal 
+      <StatusModal
         status={status}
         setStatus={setStatus}
         open={open}
@@ -227,7 +243,7 @@ function ApplicantCard(props) {
             <Grid container>
               <Grid item xs={12} md={8}>
                 <div className={classes.headerLeft}>
-                  <Avatar className={classes.logo} variant="square" />
+                  <Avatar className={classes.logo}  src={logo} variant="square" />
                   <div className={classes.headerInfo}>
                     <Typography variant="h5" className={classes.title}>
                       {props.jobseeker.name}
@@ -245,41 +261,31 @@ function ApplicantCard(props) {
                   {status === "shortlisted" && <Status status={status} text={"Shortlisted"}></Status>}
                   {status === "rejected" && <Status status={status} text={"Rejected"}></Status>}
                   <IconButton aria-label="delete" className={classes.editButton}>
-                    <EditIcon className={classes.editIcon} onClick={handleOpen}/>
+                    <EditIcon className={classes.editIcon} onClick={handleOpen} />
                   </IconButton>
                 </div>
               </Grid>
             </Grid>
           </div>
+
           <div className={classes.body}>
             <Typography noWrap className={classes.description}>
               {props.jobseeker.intro}
             </Typography>
-            {/* <div className={classes.infoTags}>
-              {props.jobseeker.education && props.jobseeker.education.length > 0 ? (
-                <Chip
-                  icon={<SchoolRoundedIcon />}
-                  label={props.jobseeker.education[0].university}
-                  className={classes.tag}
-                />
-              ) : null}
-              {props.jobseeker.work.length > 0 ? (
-                <Chip
-                  icon={<WorkRoundedIcon />}
-                  label={props.jobseeker.work[0].place}
-                  className={classes.tag}
-                />
-              ) : null}
-            </div> */}
+            <div className={classes.infoTags}>
+              {props.jobseeker.education && props.jobseeker.education.length > 0 ? <Chip icon={<SchoolRoundedIcon />} label={props.jobseeker.education[0].institute} className={classes.tag} /> : null}
+              {props.jobseeker.work.length > 0 ? <Chip icon={<WorkRoundedIcon />} label={props.jobseeker.work[props.jobseeker.work.length - 1].place} className={classes.tag} /> : null}
+
+            </div>
           </div>
 
           <div className={classes.footer}>
             <div className={classes.footerLeft}></div>
             <div className={classes.footerRight}>
               <Link to="/jobseeker/profile">
-                <Button 
-                  className={classes.profileBtn} 
-                  startIcon={<PersonIcon/>}
+                <Button
+                  className={classes.profileBtn}
+                  startIcon={<PersonIcon />}
                 >
                   View Profile
                 </Button>
