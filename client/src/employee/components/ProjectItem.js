@@ -25,12 +25,14 @@ import TimelineDot from '@material-ui/lab/TimelineDot';
 import TimelineItem from '@material-ui/lab/TimelineItem';
 import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
 import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
+import LocalOfferRoundedIcon from '@material-ui/icons/LocalOfferRounded';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import SnackBarAlert from "../../components/SnackBarAlert";
 import BACKEND_URL from '../../Config';
 import theme from '../../Theme';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import { Chip } from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -142,7 +144,14 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.down('sm')]: {
           width: "23vw"
         },
-      }
+      },
+      label: {
+        alignSelf: 'left',
+        backgroundColor: "MintCream"
+      },
+      tagIcon: {
+          color: theme.palette.tagIcon
+      },
 }));
 
 function ProjectItem(props) {
@@ -157,8 +166,10 @@ function ProjectItem(props) {
   if(props.to !== 'null/null' && props.to !== '0/0'){
     projectEndDate = props.to.split("/");
   }
-  const [state, setState] = useState({name: props.name, link: props.link, description: props.description, startYear: projectStartDate[1], startMonth: projectStartDate[0], endYear: projectEndDate[1], endMonth: projectEndDate[0], usedTech: props.usedTech});
-  const [newData, setNewData] = useState(null);
+  let tech=[];
+  tech = props.usedTech;
+  const [state, setState] = useState({name: props.name, link: props.link, description: props.description, startYear: projectStartDate[1], startMonth: projectStartDate[0], endYear: projectEndDate[1], endMonth: projectEndDate[0], usedTech: tech});
+  const [newData, setNewData] = useState([]);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
   const [alertData, setAlertData] = useState({severity: "", msg: ""});
@@ -388,6 +399,10 @@ function handleOpen(){
         }}>
             <Grid container spacing={3}>
               <Grid item xs={11} style={{marginTop:"-5px",boxSizing:"border-box"}}>
+                
+                <Typography gutterBottom style={{textAlign:'left',alignItems:'left'}}>
+                <Chip icon={<LocalOfferRoundedIcon className={classes.tagIcon} />} label={"Group Project"} className={classes.label} />
+                </Typography>
                 <Typography gutterBottom style={{textAlign:'left',fontSize:'16px',fontWeight:'bold',color:'#666'}}>
                     {state.name}
                 </Typography>

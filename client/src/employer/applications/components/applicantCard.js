@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Avatar,
   Button,
@@ -20,6 +20,9 @@ import { Link } from 'react-router-dom';
 import PersonIcon from '@material-ui/icons/Person';
 import SchoolRoundedIcon from '@material-ui/icons/SchoolRounded';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
+import defaultImage from '../../../employee/images/defaultProfilePic.jpg';
+import CardMedia from '@material-ui/core/CardMedia';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     textAlign: "left",
@@ -148,6 +151,8 @@ const useStyles = makeStyles((theme) => ({
 function ApplicantCard(props) {
   const classes = useStyles();
 
+  const [savedPic, setSavedPic] = useState(require(`../../../components/images/loadingImage.gif`).default);
+
   // Status modal
   const [open, setOpen] = useState(false);
 
@@ -224,6 +229,7 @@ function ApplicantCard(props) {
     }
   }
 
+
   return (
     <>
       <StatusModal
@@ -282,10 +288,10 @@ function ApplicantCard(props) {
           <div className={classes.footer}>
             <div className={classes.footerLeft}></div>
             <div className={classes.footerRight}>
-              <Link to="/jobseeker/profile">
-                <Button
-                  className={classes.profileBtn}
-                  startIcon={<PersonIcon />}
+              <Link to={`/jobseeker/profile/${props.jobseeker._id}`}>
+                <Button 
+                  className={classes.profileBtn} 
+                  startIcon={<PersonIcon/>}
                 >
                   View Profile
                 </Button>

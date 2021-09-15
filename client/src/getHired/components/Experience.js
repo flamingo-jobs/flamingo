@@ -177,11 +177,8 @@ const useStyles = makeStyles((theme) => ({
 export const Experience = ({
   work,
   handleWorkInputChange,
-  handleTaskInputChange,
   handleWorkAddClick,
-  handleTaskAddClick,
   handleWorkRemoveClick,
-  handleTaskRemoveClick,
   project,
   handleProjectInputChange,
   handleProjectAddClick,
@@ -223,9 +220,9 @@ export const Experience = ({
                               className={classes.textField}
                               variant="outlined"
                               fullWidth
-                              name="position"
-                              label="Position"
-                              value={x.position}
+                              name="place"
+                              label="Work Place"
+                              value={x.place}
                               onChange={(e) => handleWorkInputChange(e, i)}
                             />
                           </Grid>
@@ -235,9 +232,21 @@ export const Experience = ({
                               className={classes.textField}
                               variant="outlined"
                               fullWidth
-                              name="place"
-                              label="Work Place"
-                              value={x.place}
+                              name="position"
+                              label="Position"
+                              value={x.position}
+                              onChange={(e) => handleWorkInputChange(e, i)}
+                            />
+                          </Grid>
+                          <Grid item xs={12} align="center">
+                            <TextField
+                              size="small"
+                              className={classes.textField}
+                              variant="outlined"
+                              fullWidth
+                              name="description"
+                              label="Description"
+                              value={x.description}
                               onChange={(e) => handleWorkInputChange(e, i)}
                             />
                           </Grid>
@@ -265,58 +274,17 @@ export const Experience = ({
                               onChange={(e) => handleWorkInputChange(e, i)}
                             />
                           </Grid>
-                          <Grid item xs={12} md={12} align="center">
-                            {x.taskAndResponsibility.map((y, j) => {
-                              return (
-                                <div key={j}>
-                                  <Grid
-                                    container
-                                    alignItems="center"
-                                    spacing={1}
-                                  >
-                                    <Grid item xs={10} md={9} align="center">
-                                      <TextField
-                                        size="small"
-                                        className={classes.textField}
-                                        variant="outlined"
-                                        fullWidth
-                                        name="taskName"
-                                        label={
-                                          "Task/ Responsibility - " + (j + 1)
-                                        }
-                                        value={y.taskName}
-                                        onChange={(e) =>
-                                          handleTaskInputChange(e, i, j)
-                                        }
-                                      />
-                                    </Grid>
-                                    <Grid item xs={2} md={3} align="left">
-                                      {x.taskAndResponsibility.length !== 1 && (
-                                        <IconButton
-                                          onClick={() =>
-                                            handleTaskRemoveClick(i, j)
-                                          }
-                                          color="secondary"
-                                          aria-label="Add new work"
-                                        >
-                                          <RemoveIcon />
-                                        </IconButton>
-                                      )}
-                                      {x.taskAndResponsibility.length - 1 ===
-                                        j && (
-                                        <IconButton
-                                          onClick={() => handleTaskAddClick(i)}
-                                          color="primary"
-                                          aria-label="Remove work"
-                                        >
-                                          <AddIcon />
-                                        </IconButton>
-                                      )}
-                                    </Grid>
-                                  </Grid>
-                                </div>
-                              );
-                            })}
+                          <Grid item xs={6} md={4} align="center">
+                            <TextField
+                              size="small"
+                              className={classes.textField}
+                              variant="outlined"
+                              fullWidth
+                              name="taskAndResponsibility"
+                              label="Tasks and Responsibilities"
+                              value={x.taskAndResponsibility}
+                              onChange={(e) => handleWorkInputChange(e, i)}
+                            />
                           </Grid>
                         </Grid>
                       </Grid>

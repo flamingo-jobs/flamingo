@@ -399,10 +399,10 @@ function ProjectsSection(props) {
             <ProjectItem key={i}  index={i++} name={pro.name} link={pro.link} description={pro.description} from={pro.from} to={pro.to} usedTech={pro.usedTech} parentFunction={deleteData} techList={technologyList} />
             ))
       }else{
-        return (<Typography variant="body2" color="textSecondary" component="p">Project details not added.</Typography>)
+        return (<Typography variant="body2" color="textSecondary" component="p" style={{paddingBottom:"10px"}}>Project details not added.</Typography>)
       }
     }else{
-      return (<Typography variant="body2" color="textSecondary" component="p">Project details not added.</Typography>);
+      return (<Typography variant="body2" color="textSecondary" component="p" style={{paddingBottom:"10px"}}>Project details not added.</Typography>);
     }
   }
 

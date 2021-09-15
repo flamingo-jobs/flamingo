@@ -154,13 +154,16 @@ function InterestedAreas(props) {
   function fetchData() {
     setLoadingData(true);
     axios.get(`${BACKEND_URL}/categories`).then(res => {
-      if (res.data.success) {
-        res.data.existingData?.forEach(element => {
-          if (chipData.indexOf(element.name) === -1) {
-            chipData.push(element.name);
-          }
-        });
-      }
+        if (res.data.success) {
+            res.data.existingData?.forEach(element => {
+                if(chipData.indexOf(element.name) === -1 ){
+                  if(element.name !== "Other"){
+                    chipData.push(element.name);
+                  }
+                    
+                }
+            });
+        }
     });
 
     axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
