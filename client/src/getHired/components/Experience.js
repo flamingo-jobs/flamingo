@@ -414,7 +414,7 @@ export const Experience = ({
                               "CSS",
                               "PHP",
                             ]}
-                            defaultValue={x.techStack}
+                            defaultValue={x.usedTech}
                             freeSolo
                             disableClearable
                             renderTags={(value, getTagProps) =>
@@ -434,12 +434,12 @@ export const Experience = ({
                                 className={classes.textField}
                                 size="small"
                                 variant="outlined"
-                                name="techStack"
+                                name="usedTech"
                                 label="Technology Stack"
                                 fullWidth
                               />
                             )}
-                            value={x.techStack}
+                            value={x.usedTech}
                             onChange={(e, v) =>
                               handleProjectTechInputChange(e, v, i)
                             }

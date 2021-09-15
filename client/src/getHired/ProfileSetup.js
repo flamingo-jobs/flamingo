@@ -432,7 +432,7 @@ export default function ProfileSetup() {
       description: "",
       from: "",
       to: "",
-      techStack: [],
+      usedTech: [],
     },
   ]);
   const handleProjectInputChange = (e, index) => {
@@ -443,7 +443,7 @@ export default function ProfileSetup() {
   };
   const handleProjectTechInputChange = (event, value, index) => {
     let list = [...project];
-    list[index]["techStack"] = value;
+    list[index]["usedTech"] = value;
     setProject(list);
   };
   const handleProjectRemoveClick = (index) => {
@@ -460,7 +460,7 @@ export default function ProfileSetup() {
         description: "",
         from: "",
         to: "",
-        techStack: [],
+        usedTech: [],
       },
     ]);
   };
