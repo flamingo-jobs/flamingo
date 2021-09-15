@@ -157,7 +157,10 @@ function InterestedAreas(props) {
         if (res.data.success) {
             res.data.existingData?.forEach(element => {
                 if(chipData.indexOf(element.name) === -1 ){
+                  if(element.name !== "Other"){
                     chipData.push(element.name);
+                  }
+                    
                 }
             });
         }

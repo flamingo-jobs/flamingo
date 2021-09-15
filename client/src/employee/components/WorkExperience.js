@@ -366,10 +366,10 @@ function WorkExperience(props) {
               <WorkExpItem key={j} index={wk.index} place={wk.workItem.place} description={wk.workItem.description} position={wk.workItem.position} from={wk.workItem.from} to={wk.workItem.to} task={wk.workItem.taskAndResponsibility} parentFunction={deleteData} />
               ))
         }else{
-          return (<Typography variant="body2" color="textSecondary" component="p">Work experience details not added.</Typography>)
+          return (<Typography variant="body2" color="textSecondary" component="p" style={{paddingBottom:"10px"}}>Work experience details not added.</Typography>)
         }
     }else{
-      return (<Typography variant="body2" color="textSecondary" component="p">Work experience details not added.</Typography>)
+      return (<Typography variant="body2" color="textSecondary" component="p" style={{paddingBottom:"10px"}}>Work experience details not added.</Typography>)
     }
   }
 
