@@ -160,9 +160,9 @@ export default function ProfileSetup() {
         certificate: certificate,
       };
       const loginId = sessionStorage.getItem("loginId");
-      console.log(jobSeekerData);
-      console.log(Object.values(award[0])[0])
-      /*
+      //console.log(jobSeekerData);
+      //console.log(Object.values(award[0])[0])
+      
       axios
         .put(`${BACKEND_URL}/jobseeker/update/${loginId}`, jobSeekerData)
         .then((res) => {
@@ -183,7 +183,7 @@ export default function ProfileSetup() {
           });
           handleAlert();
         });
-        */
+        
     } else {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
