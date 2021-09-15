@@ -187,7 +187,7 @@ const shortlistApplicants = (req, res) => {
                             var projectArray = [];
                             item.project.forEach((ProjectItem) => {
                                 if (ProjectItem.hasOwnProperty("usedTech")) {
-                                    projectArray.push.apply(projectArray, ProjectItem.usedTech.split(", "));
+                                    projectArray.push.apply(projectArray, ProjectItem.usedTech);
                                 }
                             });
 
@@ -465,7 +465,7 @@ const shortlistApplicantsCustoms = (req, res) => {
                         var projectArray = [];
                         item.project.forEach((ProjectItem) => {
                             if (ProjectItem.hasOwnProperty("usedTech")) {
-                                projectArray.push.apply(projectArray, ProjectItem.usedTech.split(", "));
+                                projectArray.push.apply(projectArray, ProjectItem.usedTech);
                             }
                         });
 
@@ -733,7 +733,7 @@ const shortlistOnApplicantChanges = (req, res) => {
                         var projectArray = [];
                         jobseeker.project.forEach((ProjectItem) => {
                             if (ProjectItem.hasOwnProperty("usedTech")) {
-                                projectArray.push.apply(projectArray, ProjectItem.usedTech.split(", "));
+                                projectArray.push.apply(projectArray, ProjectItem.usedTech);
                             }
                         });
                         // console.log(projectArray)
