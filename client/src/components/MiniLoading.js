@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import Lottie from 'react-lottie';
 import Anim from './lotties/loading.json';
 
-function Loading(props) {
+function MiniLoading(props) {
 
     const defaultOptions = {
         loop: true,
@@ -15,17 +15,16 @@ function Loading(props) {
     };
 
     return (
-        <Grid container spacing={5} style={{ padding: 24 }}>
+        <Grid container>
             <Grid item xs={12}>
                 <Lottie
                     options={defaultOptions}
-                    height={150}
+                    height={50}
                     width={150}
                 />
             </Grid>
-
         </Grid>
     )
 }
 
-export default Loading
+export default MiniLoading

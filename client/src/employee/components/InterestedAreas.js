@@ -12,7 +12,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import FloatCard from '../../components/FloatCard';
-import Loading from '../../components/Loading';
+import MiniLoading from '../../components/MiniLoading';
 import SnackBarAlert from "../../components/SnackBarAlert";
 import BACKEND_URL from '../../Config';
 import theme from '../../Theme';
@@ -93,12 +93,12 @@ const useStyles = makeStyles({
   placeholder: {
     color: "#777",
     fontSize: '16px',
-    marginTop:"-8px",
+    marginTop: "-8px",
   },
   placeholderDate: {
     color: "#777",
     fontSize: '14px',
-    marginTop:"12px",
+    marginTop: "12px",
   },
   paperChips: {
     display: 'flex',
@@ -111,10 +111,10 @@ const useStyles = makeStyles({
     borderRadius: 10,
     marginTop: 0,
     "&:hover": {
-        defaultButton: {
-            display: 'block'
-        }
+      defaultButton: {
+        display: 'block'
       }
+    }
   },
   chip: {
     margin: theme.spacing(0.5),
@@ -130,29 +130,29 @@ function InterestedAreas(props) {
   const [chipData, setChipData] = useState([]);
   const [newData, setNewData] = useState(null);
   const [show, setShow] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loadingData, setLoadingData] = useState(true);
 
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
-  let i=0;
+  let i = 0;
   let loginId;
   let login = false;
   const jwt = require("jsonwebtoken");
   const token = sessionStorage.getItem("userToken");
   const header = jwt.decode(token, { complete: true });
-  if(token === null){
-    loginId=props.jobseekerID;
-  }else if (header.payload.userRole === "jobseeker") {
+  if (token === null) {
+    loginId = props.jobseekerID;
+  } else if (header.payload.userRole === "jobseeker") {
     login = true;
-    loginId=sessionStorage.getItem("loginId");
+    loginId = sessionStorage.getItem("loginId");
   } else {
-    loginId=props.jobseekerID;
+    loginId = props.jobseekerID;
   }
 
 
 
-  function fetchData(){
-    setLoading(true);
+  function fetchData() {
+    setLoadingData(true);
     axios.get(`${BACKEND_URL}/categories`).then(res => {
         if (res.data.success) {
             res.data.existingData?.forEach(element => {
@@ -167,83 +167,84 @@ function InterestedAreas(props) {
     });
 
     axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
-    .then(res => {
-      if(res.data.success){
-        if(res.data.jobseeker.interests.length > 0){
-          if(res.data.jobseeker.interests[0] === ""){
-            res.data.jobseeker.interests.splice(0,1)
-            i++;
+      .then(res => {
+        if (res.data.success) {
+          if (res.data.jobseeker.interests.length > 0) {
+            if (res.data.jobseeker.interests[0] === "") {
+              res.data.jobseeker.interests.splice(0, 1)
+              i++;
+            }
+            setInterests(res.data.jobseeker.interests);
           }
-          setInterests(res.data.jobseeker.interests)
-        }       
-      }
-    })
-    setLoading(false);
+          setLoadingData(false);
+
+        }
+      })
     setFetchedData(0);
   }
 
-  function removeDuplicates(){
+  function removeDuplicates() {
     for (let index = 0; index < interests.length; index++) {
       for (let j = 0; j < chipData.length; j++) {
-        if(chipData[j] === interests[index]){
+        if (chipData[j] === interests[index]) {
           chipData.splice(j, 1);
           break;
-        }        
-      }     
+        }
+      }
     }
     showCombo()
   }
 
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchData();
-  },[fetchedData])
+  }, [fetchedData])
 
-  function handleOpen(){
+  function handleOpen() {
     setOpen(true);
   }
 
-  function handleClose(){
+  function handleClose() {
     setOpen(false);
   }
 
-  function showOpen(){
+  function showOpen() {
     setShow(true);
   }
 
-  function showClose(){
+  function showClose() {
     setShow(false);
   }
 
-    // Alert stuff
-    const displayAlert = () => {
-      return (
-        <SnackBarAlert
-          open={alertShow}
-          onClose={handleAlertClose}
-          severity={alertData.severity}
-          msg={alertData.msg}
-        />
-      );
-    };
-  
-    const handleAlert = () => {
-      setAlertShow(true);
-    };
-  
-    const handleAlertClose = (event, reason) => {
-      if (reason === "clickaway") {
-        return;
-      }
-      setAlertShow(false);
-    };
+  // Alert stuff
+  const displayAlert = () => {
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
 
-  function onSubmit(e){
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertShow(false);
+  };
+
+  function onSubmit(e) {
     e.preventDefault();
 
     var l = interests.length;
     for (let index = 0; index < newData?.length; index++) {
-      interests[l++]=newData[index];   
+      interests[l++] = newData[index];
     }
 
     const interestSet = {
@@ -251,23 +252,23 @@ function InterestedAreas(props) {
     }
 
 
-    axios.put(`${BACKEND_URL}/jobseeker/update/${loginId}`,interestSet)
-    .then(res => {
-      if(res.data.success){
-        setAlertData({
-          severity: "success",
-          msg: "Interests added successfully!",
-        });
-        handleAlert();
-        axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
-      } else {
-        setAlertData({
-          severity: "error",
-          msg: "Interests could not be added!",
-        });
-        handleAlert();
-      }
-    });
+    axios.put(`${BACKEND_URL}/jobseeker/update/${loginId}`, interestSet)
+      .then(res => {
+        if (res.data.success) {
+          setAlertData({
+            severity: "success",
+            msg: "Interests added successfully!",
+          });
+          handleAlert();
+          axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
+        } else {
+          setAlertData({
+            severity: "error",
+            msg: "Interests could not be added!",
+          });
+          handleAlert();
+        }
+      });
     setFetchedData(1);
     e.target.value = null;
     showClose();
@@ -276,41 +277,41 @@ function InterestedAreas(props) {
 
   const handleDelete = (chipToDelete) => () => {
     setChipData([])
-    interests.splice(chipToDelete,1)
+    interests.splice(chipToDelete, 1)
     const data = {
-        interests : interests,
+      interests: interests,
     }
-    axios.put(`${BACKEND_URL}/jobseeker/update/${loginId}`,data)
-    .then(res => {
-      if(res.data.success){
-        setAlertData({
-          severity: "success",
-          msg: "Interest deleted successfully!",
-        });
-        handleAlert();
-        fetchData();
-        axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
-      } else {
-        setAlertData({
-          severity: "error",
-          msg: "Interest could not be deleted!",
-        });
-      }
-    });
+    axios.put(`${BACKEND_URL}/jobseeker/update/${loginId}`, data)
+      .then(res => {
+        if (res.data.success) {
+          setAlertData({
+            severity: "success",
+            msg: "Interest deleted successfully!",
+          });
+          handleAlert();
+          fetchData();
+          axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
+        } else {
+          setAlertData({
+            severity: "error",
+            msg: "Interest could not be deleted!",
+          });
+        }
+      });
     setShow(false);
-        showCombo();
-        handleAlert();
-        removeDuplicates();
+    showCombo();
+    handleAlert();
+    removeDuplicates();
     handleClose();
     setFetchedData(1)
   };
-  
+
   const showCombo = () => {
-      if(show){
-        return (
-          <>
+    if (show) {
+      return (
+        <>
           <Autocomplete
-          style={{width:"100%",margin:"10px 120px 20px 120px"}}
+            style={{ width: "100%", margin: "10px 120px 20px 120px" }}
             multiple
             id="tags-outlined"
             filterSelectedOptions
@@ -329,69 +330,69 @@ function InterestedAreas(props) {
             )}
           />
           <Grid item xs={12}>
-          <Button className={classes.defaultButton} onClick={onSubmit} style={{float:"right",marginRight:"115px"}}>Save</Button>
-          <Button onClick={showClose} style={{float:"right",marginRight:"15px"}}>Cancel</Button>         
-        </Grid>
-          </>
-        );
-      }else{
-        return <></>;
-      }
+            <Button className={classes.defaultButton} onClick={onSubmit} style={{ float: "right", marginRight: "115px" }}>Save</Button>
+            <Button onClick={showClose} style={{ float: "right", marginRight: "15px" }}>Cancel</Button>
+          </Grid>
+        </>
+      );
+    } else {
+      return <></>;
+    }
   }
 
   return (
     <>
-    {displayAlert()}
-    <FloatCard>
-      <Grid container spacing={3}>
-        <Grid item xs style={{ textAlign: 'left',}}>
-            <Typography gutterBottom variant="h5" style={{color: theme.palette.tuftsBlue,padding:'10px 10px 0px 10px',fontWeight:'bold'}}>
-                <InsertEmoticon style={{color: theme.palette.turfsBlue,marginRight: '10px',marginBottom:'-5px',fontSize:'27'}}/>
-                Interested Areas
+      {displayAlert()}
+      <FloatCard>
+        <Grid container spacing={3}>
+          <Grid item xs style={{ textAlign: 'left', }}>
+            <Typography gutterBottom variant="h5" style={{ color: theme.palette.tuftsBlue, padding: '10px 10px 0px 10px', fontWeight: 'bold' }}>
+              <InsertEmoticon style={{ color: theme.palette.turfsBlue, marginRight: '10px', marginBottom: '-5px', fontSize: '27' }} />
+              Interested Areas
             </Typography>
+          </Grid>
+          <Grid item style={{ textAlign: 'right' }}>
+            {login ? <>
+              <Button className={classes.defaultButton} style={{ float: 'right', marginRight: '0px', backgroundColor: 'white' }} onClick={showOpen}>
+                <EditIcon style={{ color: theme.palette.tuftsBlue, }} className={classes.editIcon} />
+              </Button>
+            </> : null}
+          </Grid>
         </Grid>
-        <Grid item style={{ textAlign: 'right' }}>
-        { login ? <>
-            <Button className={classes.defaultButton} style={{ float: 'right',marginRight: '0px',backgroundColor:'white'}} onClick={showOpen}>
-                <EditIcon style={{color: theme.palette.tuftsBlue,}} className={classes.editIcon} />
-            </Button>
-            </> : null }
-        </Grid>       
-      </Grid>
-      <Grid container>
-      {removeDuplicates()}
-      {showCombo()}
-      
-        <Grid item xs={12}>
-          
+        <Grid container>
+          {removeDuplicates()}
+          {showCombo()}
+
+          <Grid item xs={12}>
+
             <Paper elevation={0} component="ul" className={classes.paperChips}>
-            {loading ? <Loading /> : <>
-                {    
-                interests.map((data) => {
+              {loadingData ? <MiniLoading /> : <>
+                {
+                  interests.map((data) => {
                     let icon;
                     return show ? (
-                    <li key={i++}>
+                      <li key={i++}>
                         <Chip
-                        icon={icon}
-                        label={data}
-                        onDelete={handleDelete(i)}
-                        className={classes.chip}
+                          icon={icon}
+                          label={data}
+                          onDelete={handleDelete(i)}
+                          className={classes.chip}
                         />
-                    </li>
-                    ) : 
-                    (<li key={i++}>
+                      </li>
+                    ) :
+                      (<li key={i++}>
                         <Chip
-                        icon={icon}
-                        label={data}
-                        className={classes.chip}
+                          icon={icon}
+                          label={data}
+                          className={classes.chip}
                         />
-                    </li>);
-                })}
-                </> }
-            </Paper> 
+                      </li>);
+                  })}
+              </>}
+            </Paper>
+          </Grid>
         </Grid>
-      </Grid>
-    </FloatCard>
+      </FloatCard>
     </>
   );
 }

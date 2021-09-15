@@ -112,8 +112,8 @@ function Volunteer(props) {
   const [fetchedData, setFetchedData] = useState('');
   const [open, setOpen] = useState(false);
   const [volunteer, setVolunteer] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [state, setState] = useState({title: null, organization: null, startYear: null, startMonth: null, endYear: null, endMonth: null, description: null});
+  const [loadingData, setLoadingData] = useState(true);
 
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
@@ -172,7 +172,7 @@ function Volunteer(props) {
   }
 
   function fetchData(){
-    setLoading(true);
+    setLoadingData(true);
     let volunteerData;
     axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
     .then(res => {
@@ -187,10 +187,10 @@ function Volunteer(props) {
             i++;
           }
         }
-        setVolunteer(volunteerData)
+        setVolunteer(volunteerData);
+        setLoadingData(false);
       }
     })
-    setLoading(false);
     setFetchedData(0)
   }
 
@@ -331,7 +331,7 @@ function Volunteer(props) {
   }
   
   const displayVolunteeringFields = () => {
-    if(loading){
+    if(loadingData){
       return (<Loading />);
     }else if (volunteer) {
       if (volunteer.length > 0) {

@@ -32,6 +32,8 @@ import defaultImage from '../images/defaultProfilePic.jpg';
 import uploadFileToBlob, { isStorageConfigured } from '../../utils/azureFileUpload';
 import { useDispatch } from "react-redux";
 import { setProfilePicReload } from "../../redux/actions";
+import Loading from "../../components/Loading";
+import Compressor from 'compressorjs';
 
 const storageConfigured = isStorageConfigured();
 
@@ -162,7 +164,7 @@ function IntroSection(props) {
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = React.useState('idle');
   const timerRef = React.useRef();
-
+  const [loadingData, setLoadingData] = useState(true);
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
 
@@ -253,6 +255,7 @@ function IntroSection(props) {
             email: res.data.jobseeker.contact.email
           })
           setIsPublic(res.data.jobseeker.isPublic)
+          setLoadingData(false);
           loadLogo()
         }
       })
@@ -299,10 +302,19 @@ function IntroSection(props) {
         handleAlert();
       } else {
         var file = e.target.files[0];
+
+
         var blob = file.slice(0, file.size);
         var newFile = new File([blob], `${loginId}.png`, { type: 'image/png' });
-        setProfilePic(newFile);
-        setProfilePicPreview(URL.createObjectURL(newFile));
+        new Compressor(newFile, {
+          quality: 0.4,
+          width: 200,
+          success: (compressedResult) => {
+            setProfilePic(compressedResult);
+            setProfilePicPreview(URL.createObjectURL(compressedResult));
+          },
+        });
+
       }
     }
     // setQuery('success')
@@ -428,8 +440,13 @@ function IntroSection(props) {
   return (
     <>
       {displayAlert()}
-      <FloatCard>
-        {/* <FormControlLabel
+      {loadingData ?
+        <FloatCard>
+          <Loading />
+        </FloatCard> :
+        <FloatCard>
+
+          {/* <FormControlLabel
         style={{ float: 'left',marginLeft: '10px',color:theme.palette.tuftsBlue}}
           value="end"
           control={<Switch color="primary" />}
@@ -438,189 +455,189 @@ function IntroSection(props) {
           checked={isPublic}
           onChange={onChangeIsPublic}
         /> */}
-        {login ? <>
-          <Button className={classes.defaultButton} style={{ float: 'right', marginRight: '0px', backgroundColor: 'white' }} onClick={handleOpen}>
-            <EditIcon className={classes.editIcon} style={{ color: theme.palette.tuftsBlue, }} />
-          </Button>
-        </> : null}
-
-        {/* ----- edit popup content */}
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title" style={{ color: theme.palette.stateBlue }}>
-            Edit Profile
-          </DialogTitle>
-          <Divider variant="middle" />
-          <DialogContent>
-            <form className={classes.form}>
-              <Grid container direction="row">
-                <TextField
-                  className={classes.field}
-                  id="outlined-basic"
-                  label="First Name"
-                  variant="outlined"
-                  size="small"
-                  value={state.firstName}
-                  onChange={onChangeFirstName}
-                  style={{ width: '45%', marginRight: '10%' }}
-                />
-                <TextField
-                  className={classes.field}
-                  id="outlined-basic"
-                  label="Last Name"
-                  variant="outlined"
-                  size="small"
-                  value={state.lastName}
-                  onChange={onChangeLastName}
-                  style={{ width: '45%' }}
-                />
-              </Grid>
-              <TextField
-                className={classes.field}
-                id="outlined-multiline-static"
-                label="Tagline"
-                multiline
-                rows={3}
-                variant="outlined"
-                value={state.tagline}
-                onChange={onChangeTagLine}
-              />
-              <TextField
-                className={classes.field}
-                id="outlined-multiline-static"
-                label="Description"
-                multiline
-                rows={5}
-                variant="outlined"
-                value={state.intro}
-                onChange={onChangeIntro}
-              />
-              <Grid container direction="row" style={{ marginTop: '35px' }}>
-                <Typography gutterBottom style={{ color: theme.palette.stateBlue, textAlign: 'left', fontSize: '18px', fontStyle: 'italic', width: '100%', marginBottom: '10px' }}>
-                  Contact Details
-                </Typography>
-                <TextField
-                  className={classes.field}
-                  id="outlined-basic"
-                  label="Mobile"
-                  variant="outlined"
-                  size="small"
-                  value={state.mobile}
-                  onChange={onChangeMobile}
-                  style={{ width: '45%', marginRight: '10%' }}
-                />
-              </Grid>
-              <TextField
-                className={classes.field}
-                id="outlined-basic"
-                label="Email"
-                type="text"
-                variant="outlined"
-                size="small"
-                value={state.email}
-                onChange={onChangeEmail}
-              />
-              <Grid container direction="row">
-                <TextField
-                  className={classes.field}
-                  id="outlined-basic"
-                  label="Street Name"
-                  variant="outlined"
-                  size="small"
-                  value={state.street}
-                  onChange={onChangeStreet}
-                  style={{ width: '45%', marginRight: '10%' }}
-                />
-                <TextField
-                  className={classes.field}
-                  id="outlined-basic"
-                  label="City"
-                  variant="outlined"
-                  size="small"
-                  value={state.city}
-                  onChange={onChangeCity}
-                  style={{ width: '45%' }}
-                />
-              </Grid>
-            </form>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} style={{ color: "#999" }}>
-              Cancel
-            </Button>
-            <Button onClick={onSubmit} color="primary" autoFocus>
-              Apply Changes
-            </Button>
-          </DialogActions>
-        </Dialog>
-
-        <Typography component="div">
           {login ? <>
-            <CardMedia
-              className={classes.media}
-              image={savedPic}
-              alt="profile image"
-              zindex="background"
-              onClick={handleOpenImageDialog}
-              onMouseEnter={e => {
-                setStyle({ display: 'block' });
-              }}
-              onMouseLeave={e => {
-                setStyle({ display: 'none' })
-              }}
-            >
-              <EditIcon className={classes.overlayIcon} style={style} />
-            </CardMedia>
-          </> :
-            <CardMedia
-              className={classes.mediaPreview}
-              image={savedPic}
-              alt="profile image"
-              zindex="background"
-            >
-            </CardMedia>
-          }
-        </Typography>
-        {/* Profile picture change dialog */}
-        <Dialog open={openImageDialog} onClose={handleCloseImageDialog} aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title" style={{ textAlign: 'center', paddingLeft: '35px', color: theme.palette.stateBlue }}>Change Profile Picture</DialogTitle>
-          <form onSubmit={onSubmitProfilePic} encType="multipart/form-data">
-            <DialogContent style={{ paddingTop: "0px" }}>
-              <Typography component="div">
-                <CardMedia
-                  className={classes.mediaPreview}
-                  image={profilePicPreview}
-                  alt="profile image"
-                  zindex="background"
-                  style={{ marginTop: "0px", marginBottom: "20px" }}
-                />
-              </Typography>
-              <div className={classes.uploadBtnWrapper} style={{ color: "#fff", minWidth: 320}}>
-                <input
-                  autoFocus
-                  margin="dense"
-                  id="photo"
-                  label="Photo"
-                  type="file"
-                  onChange={onChangeProfilePic}
-                  style={{ display: "none" }}
-                />
-                <label htmlFor="photo">
-                  {!disabled ? <Button
+            <Button className={classes.defaultButton} style={{ float: 'right', marginRight: '0px', backgroundColor: 'white' }} onClick={handleOpen}>
+              <EditIcon className={classes.editIcon} style={{ color: theme.palette.tuftsBlue, }} />
+            </Button>
+          </> : null}
+
+          {/* ----- edit popup content */}
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title" style={{ color: theme.palette.stateBlue }}>
+              Edit Profile
+            </DialogTitle>
+            <Divider variant="middle" />
+            <DialogContent>
+              <form className={classes.form}>
+                <Grid container direction="row">
+                  <TextField
+                    className={classes.field}
+                    id="outlined-basic"
+                    label="First Name"
                     variant="outlined"
-                    color="primary"
-                    component="span"
-                    startIcon={<PublishIcon />}
-                    className={classes.uploadButton}
-                    disabled={disabled}
-                  >
-                    Upload Image
-                  </Button> : <Avatar src={require(`../../components/images/loadingImage.gif`).default} />}
-                  {/* {query === 'success' ? (
+                    size="small"
+                    value={state.firstName}
+                    onChange={onChangeFirstName}
+                    style={{ width: '45%', marginRight: '10%' }}
+                  />
+                  <TextField
+                    className={classes.field}
+                    id="outlined-basic"
+                    label="Last Name"
+                    variant="outlined"
+                    size="small"
+                    value={state.lastName}
+                    onChange={onChangeLastName}
+                    style={{ width: '45%' }}
+                  />
+                </Grid>
+                <TextField
+                  className={classes.field}
+                  id="outlined-multiline-static"
+                  label="Tagline"
+                  multiline
+                  rows={3}
+                  variant="outlined"
+                  value={state.tagline}
+                  onChange={onChangeTagLine}
+                />
+                <TextField
+                  className={classes.field}
+                  id="outlined-multiline-static"
+                  label="Description"
+                  multiline
+                  rows={5}
+                  variant="outlined"
+                  value={state.intro}
+                  onChange={onChangeIntro}
+                />
+                <Grid container direction="row" style={{ marginTop: '35px' }}>
+                  <Typography gutterBottom style={{ color: theme.palette.stateBlue, textAlign: 'left', fontSize: '18px', fontStyle: 'italic', width: '100%', marginBottom: '10px' }}>
+                    Contact Details
+                  </Typography>
+                  <TextField
+                    className={classes.field}
+                    id="outlined-basic"
+                    label="Mobile"
+                    variant="outlined"
+                    size="small"
+                    value={state.mobile}
+                    onChange={onChangeMobile}
+                    style={{ width: '45%', marginRight: '10%' }}
+                  />
+                </Grid>
+                <TextField
+                  className={classes.field}
+                  id="outlined-basic"
+                  label="Email"
+                  type="text"
+                  variant="outlined"
+                  size="small"
+                  value={state.email}
+                  onChange={onChangeEmail}
+                />
+                <Grid container direction="row">
+                  <TextField
+                    className={classes.field}
+                    id="outlined-basic"
+                    label="Street Name"
+                    variant="outlined"
+                    size="small"
+                    value={state.street}
+                    onChange={onChangeStreet}
+                    style={{ width: '45%', marginRight: '10%' }}
+                  />
+                  <TextField
+                    className={classes.field}
+                    id="outlined-basic"
+                    label="City"
+                    variant="outlined"
+                    size="small"
+                    value={state.city}
+                    onChange={onChangeCity}
+                    style={{ width: '45%' }}
+                  />
+                </Grid>
+              </form>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} style={{ color: "#999" }}>
+                Cancel
+              </Button>
+              <Button onClick={onSubmit} color="primary" autoFocus>
+                Apply Changes
+              </Button>
+            </DialogActions>
+          </Dialog>
+
+          <Typography component="div">
+            {login ? <>
+              <CardMedia
+                className={classes.media}
+                image={savedPic}
+                alt="profile image"
+                zindex="background"
+                onClick={handleOpenImageDialog}
+                onMouseEnter={e => {
+                  setStyle({ display: 'block' });
+                }}
+                onMouseLeave={e => {
+                  setStyle({ display: 'none' })
+                }}
+              >
+                <EditIcon className={classes.overlayIcon} style={style} />
+              </CardMedia>
+            </> :
+              <CardMedia
+                className={classes.mediaPreview}
+                image={savedPic}
+                alt="profile image"
+                zindex="background"
+              >
+              </CardMedia>
+            }
+          </Typography>
+          {/* Profile picture change dialog */}
+          <Dialog open={openImageDialog} onClose={handleCloseImageDialog} aria-labelledby="form-dialog-title">
+            <DialogTitle id="form-dialog-title" style={{ textAlign: 'center', paddingLeft: '35px', color: theme.palette.stateBlue }}>Change Profile Picture</DialogTitle>
+            <form onSubmit={onSubmitProfilePic} encType="multipart/form-data">
+              <DialogContent style={{ paddingTop: "0px" }}>
+                <Typography component="div">
+                  <CardMedia
+                    className={classes.mediaPreview}
+                    image={profilePicPreview}
+                    alt="profile image"
+                    zindex="background"
+                    style={{ marginTop: "0px", marginBottom: "20px" }}
+                  />
+                </Typography>
+                <div className={classes.uploadBtnWrapper} style={{ color: "#fff", minWidth: 320 }}>
+                  <input
+                    autoFocus
+                    margin="dense"
+                    id="photo"
+                    label="Photo"
+                    type="file"
+                    onChange={onChangeProfilePic}
+                    style={{ display: "none" }}
+                  />
+                  <label htmlFor="photo">
+                    {!disabled ? <Button
+                      variant="outlined"
+                      color="primary"
+                      component="span"
+                      startIcon={<PublishIcon />}
+                      className={classes.uploadButton}
+                      disabled={disabled}
+                    >
+                      Upload Image
+                    </Button> : <Avatar src={require(`../../components/images/loadingImage.gif`).default} />}
+                    {/* {query === 'success' ? (
                         <CheckCircleIcon style={{color:"green"}} />
                       ) : (
                         <Fade
@@ -633,86 +650,87 @@ function IntroSection(props) {
                           <CircularProgress />
                         </Fade>
                       )} */}
-                </label>
+                  </label>
 
-              </div>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleCloseImageDialog} style={{ color: "#999" }} disabled={disabled}>
-                Cancel
-              </Button>
-              <Button type="submit" color="primary" disabled={disabled}>
-                Save
-              </Button>
-            </DialogActions>
-          </form>
+                </div>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleCloseImageDialog} style={{ color: "#999" }} disabled={disabled}>
+                  Cancel
+                </Button>
+                <Button type="submit" color="primary" disabled={disabled}>
+                  Save
+                </Button>
+              </DialogActions>
+            </form>
 
 
-        </Dialog>
+          </Dialog>
 
-        <CardContent>
-          <Typography gutterBottom variant="h5" style={{ color: theme.palette.stateBlue, fontWeight: 'bold', marginTop: "-5px" }}>
-            {state.firstName + " " + state.lastName}
-          </Typography>
-          <Typography gutterBottom style={{ color: theme.palette.stateBlue, marginTop: '-8px' }}>
-            {state.tagline}
-          </Typography>
-          <Grid container>
-            <Grid item xs={12} style={{ textAlign: 'center', margin: "0px 0px 0px 0px" }}>
-              <Typography variant="body2" color="textSecondary" component="p" style={{ textAlign: 'center', }}>
-                <IconButton style={{ paddingLeft: "0px" }}>
-                  <PhoneIcon style={{ color: '#666', }} />
-                </IconButton>
-                {state.mobile}
-              </Typography>
-            </Grid>
-            <Grid item xs={12} style={{ textAlign: 'center', marginTop: "-20px" }}>
-              <Typography variant="body2" color="textSecondary" component="p" style={{ textAlign: 'center', }}>
-                <IconButton style={{ paddingLeft: "0px" }}>
-                  <LocationOnIcon style={{ color: '#666', }} />
-                </IconButton>
-                {state.street + ", " + state.city}
-              </Typography>
-            </Grid>
-          </Grid>
-          <Paper elevation={0} className={classes.paperCont} style={{ backgroundColor: "#ececf9" }}>
-            <Typography variant="body2" color="textSecondary" component="p" style={{ textAlign: 'left', }}>
-              {state.intro}
+          <CardContent>
+            <Typography gutterBottom variant="h5" style={{ color: theme.palette.stateBlue, fontWeight: 'bold', marginTop: "-5px" }}>
+              {state.firstName + " " + state.lastName}
             </Typography>
-          </Paper>
-        </CardContent>
+            <Typography gutterBottom style={{ color: theme.palette.stateBlue, marginTop: '-8px' }}>
+              {state.tagline}
+            </Typography>
+            <Grid container>
+              <Grid item xs={12} style={{ textAlign: 'center', margin: "0px 0px 0px 0px" }}>
+                <Typography variant="body2" color="textSecondary" component="p" style={{ textAlign: 'center', }}>
+                  <IconButton style={{ paddingLeft: "0px" }}>
+                    <PhoneIcon style={{ color: '#666', }} />
+                  </IconButton>
+                  {state.mobile}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} style={{ textAlign: 'center', marginTop: "-20px" }}>
+                <Typography variant="body2" color="textSecondary" component="p" style={{ textAlign: 'center', }}>
+                  <IconButton style={{ paddingLeft: "0px" }}>
+                    <LocationOnIcon style={{ color: '#666', }} />
+                  </IconButton>
+                  {state.street + ", " + state.city}
+                </Typography>
+              </Grid>
+            </Grid>
+            <Paper elevation={0} className={classes.paperCont} style={{ backgroundColor: "#ececf9" }}>
+              <Typography variant="body2" color="textSecondary" component="p" style={{ textAlign: 'left', }}>
+                {state.intro}
+              </Typography>
+            </Paper>
+          </CardContent>
 
-        <CardActions style={{ marginBottom: "-10px" }}>
-          <Grid container>
-            <Grid item xs={12} style={{ textAlign: 'center', margin: "-15px 0px 0px 0px" }}>
-              <a href={`mailto:${state.email}`}>
+          <CardActions style={{ marginBottom: "-10px" }}>
+            <Grid container>
+              <Grid item xs={12} style={{ textAlign: 'center', margin: "-15px 0px 0px 0px" }}>
+                <a href={`mailto:${state.email}`}>
+                  <IconButton>
+                    <Avatar className={classes.avatar}>
+                      <MailRoundedIcon />
+                    </Avatar>
+                  </IconButton>
+                </a>
                 <IconButton>
                   <Avatar className={classes.avatar}>
-                    <MailRoundedIcon />
+                    <FacebookIcon />
                   </Avatar>
                 </IconButton>
-              </a>
-              <IconButton>
-                <Avatar className={classes.avatar}>
-                  <FacebookIcon />
-                </Avatar>
-              </IconButton>
-              <IconButton>
-                <Avatar className={classes.avatar}>
-                  <LinkedInIcon />
-                </Avatar>
-              </IconButton>
-              <IconButton>
-                <Avatar className={classes.avatar}>
-                  <GitHubIcon />
-                </Avatar>
-              </IconButton>
+                <IconButton>
+                  <Avatar className={classes.avatar}>
+                    <LinkedInIcon />
+                  </Avatar>
+                </IconButton>
+                <IconButton>
+                  <Avatar className={classes.avatar}>
+                    <GitHubIcon />
+                  </Avatar>
+                </IconButton>
+              </Grid>
             </Grid>
-          </Grid>
 
 
-        </CardActions>
-      </FloatCard>
+          </CardActions>
+        </FloatCard>
+      }
     </>
   );
 }

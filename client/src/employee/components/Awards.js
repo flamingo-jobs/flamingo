@@ -111,9 +111,9 @@ function Achievements(props) {
   const classes = useStyles();
   const [fetchedData, setFetchedData] = useState('');
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [award, setAward] = useState(null);
   const [state, setState] = useState({title: null, issuedBy: null, year: null, month:null, description: null});
+  const [loadingData, setLoadingData] = useState(true);
 
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
@@ -160,7 +160,7 @@ function Achievements(props) {
   }
 
   function fetchData(){
-    setLoading(true);
+    setLoadingData(true);
     let awardData;
     axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
     .then(res => {
@@ -175,11 +175,11 @@ function Achievements(props) {
             i++;
           }
         }
-        setAward(awardData)
+        setAward(awardData);
+        setLoadingData(false);
       }
     })
     setFetchedData(0)
-    setLoading(false);
   }
 
   function deleteData(index){
@@ -305,7 +305,7 @@ function Achievements(props) {
   }
   
   const displayAwardFields = () => {
-    if(loading){
+    if(loadingData){
       return (<Loading />);
     }else if (award && award.length > 0) {
         return award.map(awd => (
