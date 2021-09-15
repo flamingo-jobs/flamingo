@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Avatar,
   Button,
@@ -13,10 +13,12 @@ import EditIcon from "@material-ui/icons/Edit";
 import IconButton from "@material-ui/core/IconButton";
 import StatusModal from "./statusModal";
 import axios from "axios";
-import BACKEND_URL from "../../../Config";
+import BACKEND_URL, { FILE_URL } from "../../../Config";
 import download from 'downloadjs';
 import { Link } from 'react-router-dom';
 import PersonIcon from '@material-ui/icons/Person';
+import defaultImage from '../../../employee/images/defaultProfilePic.jpg';
+import CardMedia from '@material-ui/core/CardMedia';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -146,6 +148,8 @@ const useStyles = makeStyles((theme) => ({
 function ApplicantCard(props) {
   const classes = useStyles();
 
+  const [savedPic, setSavedPic] = useState(require(`../../../components/images/loadingImage.gif`).default);
+
   // Status modal
   const [open, setOpen] = useState(false);
 
@@ -161,6 +165,18 @@ function ApplicantCard(props) {
   const handleClose = () => {
     setOpen(false);
   };
+
+  useEffect(() => {
+    loadLogo();
+  }, []);
+
+  const loadLogo = async () => {
+    await axios.get(`${FILE_URL}/jobseeker-profile-pictures/${props.jobseeker._id}.png`).then(res => {
+        setSavedPic(`${FILE_URL}/jobseeker-profile-pictures/${props.jobseeker._id}.png`);
+    }).catch(error => {
+        setSavedPic(defaultImage);
+    })
+  }
 
   const handleResumeDownload = async () => {
     const resumeName = props.jobseeker.applicationDetails.filter((item) => item.jobId === jobId)[0]
@@ -208,6 +224,7 @@ function ApplicantCard(props) {
     }
   }
 
+
   return (
     <>
       <StatusModal 
@@ -227,7 +244,7 @@ function ApplicantCard(props) {
             <Grid container>
               <Grid item xs={12} md={8}>
                 <div className={classes.headerLeft}>
-                  <Avatar className={classes.logo} variant="square" />
+                  <Avatar className={classes.logo} src={savedPic} variant="square" />
                   <div className={classes.headerInfo}>
                     <Typography variant="h5" className={classes.title}>
                       {props.jobseeker.name}

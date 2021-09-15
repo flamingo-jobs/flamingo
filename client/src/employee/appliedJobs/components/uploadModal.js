@@ -95,6 +95,7 @@ const useStyles = makeStyles((theme) => ({
   },
   submitButton: {
     width: "250px",
+    color: theme.palette.white,
     background: theme.palette.tuftsBlue,
     // background: "#E94B4C",
     transition: "0.3s",
