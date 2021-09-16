@@ -364,10 +364,10 @@ const Job = (props) => {
                       text={"Shortlisted"}
                     ></Status>
                   )}
-                  {applicationDetails.status === "selected" && (
+                  {applicationDetails.status === "rejected" && (
                     <Status
                       status={applicationDetails.status}
-                      text={"Selected"}
+                      text={"Rejected"}
                     ></Status>
                   )}
                 </Grid>
