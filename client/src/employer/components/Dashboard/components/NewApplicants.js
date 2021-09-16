@@ -7,7 +7,7 @@ import axios from "axios";
 import BACKEND_URL,{FILE_URL} from "../../../../Config";
 import { useState, useEffect } from "react";
 import theme from "../../../../Theme";
-
+import Loading from "../../../../components/Loading";
 const useStyles = makeStyles((theme) => ({
   title: {
     fontWeight: "bolder",
@@ -96,7 +96,7 @@ const NewApplicants = (props) => {
               New Applicants
             </Typography>
           </Grid>
-          {Array.from(allJobs).map((job, i) => (
+          {allJobs.length ? Array.from(allJobs).map((job, i) => (
             <Grid item xs={12}>
               <FloatCard backColor={theme.palette.lightSkyBlueHover}>
                 <Grid item container direction="row"
@@ -117,11 +117,8 @@ const NewApplicants = (props) => {
               </FloatCard>
             </Grid>
 
-          ))}
+          )) : <Loading />}
         </Grid>
-        <Link to={`/employer/resumes`}>
-          <Button className={classes.button}>View All</Button>
-        </Link>
       </FloatCard>
     </div>
   );

@@ -193,12 +193,15 @@ const Aquisitions = (props) => {
             anchor: 'center',
             clam: true,
             formatter: (val, ctx) => {
-              return val + " - " + ctx.chart.data.labels[ctx.dataIndex];
+              return val;
             },
             font: {
               weight: 'bold',
             },
-            color: 'white'
+            color: '#495357',
+            backgroundColor: '#E7F7FF',
+            padding: 4,
+            borderRadius: 4
 
           }
         },

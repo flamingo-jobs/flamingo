@@ -43,6 +43,8 @@ import Jobs from "./jobs/Jobs";
 import People from "./people/People";
 import Recommendations from "./recommendations/Recommendations";
 import SearchResult from "./searchResults/searchResult";
+import PrivacyPolicy from "./terms/PrivacyPolicy";
+import TermsOfServices from "./terms/TermsOfServices";
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
@@ -167,6 +169,12 @@ function Base() {
         </Route>
         <Route path="/contactUs" exact>
           <ContactUs />
+        </Route>
+        <Route path="/termsOfService" exact>
+          <TermsOfServices />
+        </Route>
+        <Route path="/privacy" exact>
+          <PrivacyPolicy />
         </Route>
       </>
     );

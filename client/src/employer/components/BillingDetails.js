@@ -20,6 +20,7 @@ import SnackBarAlert from "../../components/SnackBarAlert";
 import { Link } from "react-router-dom";
 import BACKEND_URL from "../../Config";
 import axios from "axios";
+import Loading from "../../components/Loading";
 const jwt = require("jsonwebtoken");
 
 const useStyles = makeStyles((theme) => ({
@@ -222,6 +223,7 @@ export default function BillingDetails(props) {
         });
         setRows(fixedRows);
         getDueDate(fixedRows);
+        setLoadingData(false);
       }
     });
   }, []);
@@ -254,6 +256,8 @@ export default function BillingDetails(props) {
   const handleInvoiceClose = () => {
     setInvoiceOpen(false);
   };
+
+  const [loadingData, setLoadingData] = useState(true);
 
   const unsubscribePackage = () => {
     const userId = jwt.decode(sessionStorage.getItem("userToken"), {
@@ -357,6 +361,7 @@ export default function BillingDetails(props) {
         <Grid item xs={12}>
           {displayAlert()}
           <Typography variant="h6">Previous payments</Typography> <Box m={1} />
+          {loadingData ? <Loading /> : null}
           {rows ? (
             <div style={{ height: 300, width: "100%" }}>
               <DataGrid
@@ -379,7 +384,7 @@ export default function BillingDetails(props) {
           <Typography variant="h6">
             You are subscribed to {props.info} package
           </Typography>
-          <Divider />
+          <Divider style={{marginTop: 20, marginBottom: 20}}/>
           {props.info === "premium" ? (
             <Link to="/employer/payment/standard">
               <Button className={classes.switchButton}>
@@ -399,7 +404,7 @@ export default function BillingDetails(props) {
         </Grid>
         <Grid item xs={12} lg={6}>
           <Typography variant="h6">Next Payment: {expiryDate}</Typography>
-          <Divider />
+          <Divider style={{marginTop: 20, marginBottom: 20}}/>
           <Link to="/employer/payment/premium">
             <Button className={classes.button}>Continue to Payment</Button>
           </Link>
