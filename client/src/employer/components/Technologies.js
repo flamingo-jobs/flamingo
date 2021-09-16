@@ -9,13 +9,14 @@ import FloatCard from '../../components/FloatCard';
 import TechDisplay from './TechDisplay';
 import Loading from '../../components/Loading';
 import NoInfo from '../../components/NoInfo';
+import NotEnoughData from '../../components/NotEnoughData';
 const useStyles = makeStyles((theme) => ({
 
 }));
 
 function Technologies(props) {
     const classes = useStyles();
-    const [technologyStack, setTechnologyStack] = useState([]);
+    const [technologyStack, setTechnologyStack] = useState("empty");
     const [tech, setTech] = useState([]);
     const [technologies, setTechnologies] = useState([]);
     const [refershRequired, setRefreshRequired] = useState(false);
@@ -67,16 +68,25 @@ function Technologies(props) {
         axios.get(`${BACKEND_URL}/employers/${props.employerId}`)
             .then(res => {
                 if (res.data.success) {
-                    if (res.data.employer.technologyStack.length > 0) {
-                        setTechnologyStack(res.data.employer.technologyStack)
-                    }
+                    setTechnologyStack(res.data.employer.technologyStack)
                 }
             })
     }
 
 
     const displayTechnologies = () => {
-        if (technologyStack.length) {
+        if (technologyStack === "empty") {
+            return (<Grid item xs={12}>
+                <Loading />
+            </Grid>
+            )
+        } else if (technologyStack.length === 0) {
+            return (
+                <Grid item xs={12}>
+                    <NotEnoughData />
+                </Grid>
+            )
+        } else {
             return technologyStack.map(technology => {
                 return (
                     <Grid item xs={12}>
@@ -84,17 +94,6 @@ function Technologies(props) {
                     </Grid>
                 )
             })
-        } else if (technologyStack.length === 0) {
-            return (
-                <Grid item xs={12}>
-                    <Loading />
-                </Grid>
-            )
-        } else {
-            <Grid item xs={12}>
-                <NoInfo message="No information on technology stack has been added" />
-            </Grid>
-
         }
     }
 
@@ -122,6 +121,7 @@ function Technologies(props) {
                         Company Technology Stack
                     </Typography>
                 </Grid>
+                
                 <Grid item xs={12}>
                     {displayTechnologies()}
 

@@ -19,6 +19,7 @@ import BACKEND_URL from "../../../../Config";
 import { useState, useEffect } from "react";
 import Theme from "../../../../Theme";
 import { Line } from "react-chartjs-2";
+import NotEnoughData from "../../../../components/NotEnoughData";
 
 const legendStyles = () => ({
   root: {
@@ -88,7 +89,7 @@ const LineGraph = (props) => {
   const classes = useStyles();
 
   // Get dates for the graph
-  
+
   var day1 = new Date();
   var day2 = new Date();
   var day3 = new Date();
@@ -129,37 +130,37 @@ const LineGraph = (props) => {
   var yyyy13 = day13.getFullYear();
   day13 = mm13 + '/' + dd13;
   var day13full = yyyy13 + '-' + mm13 + '-' + dd13;
-  
+
   var dd12 = String(day12.getDate()).padStart(2, '0');
   var mm12 = String(day12.getMonth() + 1).padStart(2, '0');
   var yyyy12 = day12.getFullYear();
   day12 = mm12 + '/' + dd12;
   var day12full = yyyy12 + '-' + mm12 + '-' + dd12;
-  
+
   var dd11 = String(day11.getDate()).padStart(2, '0');
   var mm11 = String(day11.getMonth() + 1).padStart(2, '0');
   var yyyy11 = day11.getFullYear();
   day11 = mm11 + '/' + dd11;
   var day11full = yyyy11 + '-' + mm11 + '-' + dd11;
-  
+
   var dd10 = String(day10.getDate()).padStart(2, '0');
   var mm10 = String(day10.getMonth() + 1).padStart(2, '0');
   var yyyy10 = day10.getFullYear();
   day10 = mm10 + '/' + dd10;
   var day10full = yyyy10 + '-' + mm10 + '-' + dd10;
-  
+
   var dd9 = String(day9.getDate()).padStart(2, '0');
   var mm9 = String(day9.getMonth() + 1).padStart(2, '0');
   var yyyy9 = day9.getFullYear();
   day9 = mm9 + '/' + dd9;
   var day9full = yyyy9 + '-' + mm9 + '-' + dd9;
-  
+
   var dd8 = String(day8.getDate()).padStart(2, '0');
   var mm8 = String(day8.getMonth() + 1).padStart(2, '0');
   var yyyy8 = day8.getFullYear();
   day8 = mm8 + '/' + dd8;
   var day8full = yyyy8 + '-' + mm8 + '-' + dd8;
-  
+
   var dd7 = String(day7.getDate()).padStart(2, '0');
   var mm7 = String(day7.getMonth() + 1).padStart(2, '0');
   var yyyy7 = day7.getFullYear();
@@ -245,8 +246,8 @@ const LineGraph = (props) => {
 
   const data = [getTotalApplications(day1full), getTotalApplications(day2full), getTotalApplications(day3full),
   getTotalApplications(day4full), getTotalApplications(day5full), getTotalApplications(day6full),
-  getTotalApplications(day7full), getTotalApplications(day8full), getTotalApplications(day9full), 
-  getTotalApplications(day10full), getTotalApplications(day11full), getTotalApplications(day12full), 
+  getTotalApplications(day7full), getTotalApplications(day8full), getTotalApplications(day9full),
+  getTotalApplications(day10full), getTotalApplications(day11full), getTotalApplications(day12full),
   getTotalApplications(day13full), getTotalApplications(day14full)];
 
   const labels = [day1, day2, day3, day4, day5, day6, day7, day8, day9, day10, day11, day12, day13, day14];
@@ -278,7 +279,7 @@ const LineGraph = (props) => {
         </Typography>
 
         <br />
-        <Line height={120} data={generateLineChart({ fill: false })} />
+        {allJobs.length ? <Line height={120} data={generateLineChart({ fill: false })} /> : <NotEnoughData />}
       </div>
     </FloatCard>
   );

@@ -139,7 +139,7 @@ const CompanySummaryCard = (props) => {
     });
   }, []);
 
-  
+
 
   const getAverageRating = () => {
     var totalRating = 0;
@@ -211,9 +211,9 @@ const CompanySummaryCard = (props) => {
           </Typography>
         </div>
         <div className={classes.reviews}>
-          <Typography style={{ marginTop: 8 }}>
+          {reviews.length ? <Typography style={{ marginTop: 8 }}>
             {getAverageRating()[0]}/5 ratings
-          </Typography>
+          </Typography> : <Typography style={{ marginTop: 8 }}>No reviews yet! </Typography>}
           <Rating
             name="read-only"
             style={{ marginTop: 8 }}
