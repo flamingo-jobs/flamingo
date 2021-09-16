@@ -121,10 +121,44 @@ const getAllOrdersByEmployer = async (req, res) => {
   });
 };
 
+const getNextDate = async (req, res) => {
+  Order.find({ employer: req.params.id }, async (err, previousOrders) => {
+    if (err) {
+      return res.status(400).json({
+        error: err,
+      });
+    }
+    let maxDate = new Date(
+      Math.max.apply(
+        null,
+        previousOrders.map((x) => {
+          return new Date(x.startDate);
+        })
+      )
+    )
+      .toISOString()
+      .slice(0, 10);
+
+    let nextStartDate = await addMonths(maxDate, 1);
+    let nextEndDate = await addMonths(maxDate, 2);
+    return res.status(200).json({
+      success: true,
+      nextDates: { nextStartDate, nextEndDate },
+    });
+  });
+};
+
+const addMonths = async (date, months) => {
+  return new Date(new Date(date).getTime() + 30 * 24 * 60 * 60 * 1000 * months)
+    .toISOString()
+    .slice(0, 10);
+};
+
 module.exports = {
   payherePayment,
   stripePayment,
   createOrder,
   getOrderById,
   getAllOrdersByEmployer,
+  getNextDate,
 };
