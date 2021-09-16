@@ -50,7 +50,6 @@ const Aquisitions = (props) => {
       .then((res) => {
         // console.log(res.data.employerJobs);
         if (res.data.success) {
-          console.log(res.data.employerJobs)
           setState({
             allJobs: res.data.employerJobs,
           });
@@ -205,9 +204,9 @@ const Aquisitions = (props) => {
       {!allJobs ?
         <Loading /> : null
       }
-      {allJobs && allJobs.length === 0 ?
+      {allJobs && dataSource.map(x => x.val).reduce((x, y) => x + y) === 0 ?
         <NotEnoughData /> : null}
-      {allJobs && allJobs.length > 0 ?
+      {allJobs && allJobs.length > 0 && dataSource.map(x => x.val).reduce((x, y) => x + y) > 0 ?
         <Pie data={genPieData()} options={{
           plugins: {
             datalabels: {

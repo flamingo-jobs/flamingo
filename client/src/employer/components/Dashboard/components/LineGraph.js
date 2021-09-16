@@ -279,7 +279,7 @@ const LineGraph = (props) => {
         </Typography>
 
         <br />
-        {allJobs.length ? <Line height={120} data={generateLineChart({ fill: false })} /> : <NotEnoughData />}
+        {allJobs.length && data.reduce((x, y) => x + y) !== 0 ? <Line height={120} data={generateLineChart({ fill: false })} /> : <NotEnoughData />}
       </div>
     </FloatCard>
   );
