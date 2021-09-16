@@ -60,15 +60,15 @@ const jobFormValidationResults = async (req, res, next) => {
   }
   req.body.qualifications = qualifications;
 
-  const technologiesDB = await Technologies.find();
-  const options = technologiesDB
-    .map((technology) => technology.stack)
-    .map((stackElement) => {
-      for (const item in stackElement) {
-        return stackElement[item].map((finalTechnology) => finalTechnology);
-      }
-    })
-    .flat(1);
+  // const technologiesDB = await Technologies.find();
+  // const options = technologiesDB
+  //   .map((technology) => technology.stack)
+  //   .map((stackElement) => {
+  //     for (const item in stackElement) {
+  //       return stackElement[item].map((finalTechnology) => finalTechnology);
+  //     }
+  //   })
+  //   .flat(1);
 
   const technologies = req.body.technologyStack
     .filter((t) => t.trim() !== "")
@@ -79,13 +79,13 @@ const jobFormValidationResults = async (req, res, next) => {
       .json({ success: false, error: "Technology stack cannot be empty." });
   }
 
-  req.body.technologyStack.map((t) => {
-    if (!options.includes(t.trim())) {
-      return res
-        .status(200)
-        .json({ success: false, error: "Invalid technology" });
-    }
-  });
+  // req.body.technologyStack.map((t) => {
+  //   if (!options.includes(t.trim())) {
+  //     return res
+  //       .status(200)
+  //       .json({ success: false, error: "Invalid technology" });
+  //   }
+  // });
 
   const typesDB = await Types.find();
   const typeOptions = typesDB.map((t) => t.name);

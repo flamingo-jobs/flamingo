@@ -472,7 +472,7 @@ export default function CreateJobSetup() {
       description: description.trim(),
       organization: organization,
       location: location,
-      postedDate: currentDate,
+      postedDate: new Date(),
       dueDate: dueDate,
       minimumEducation: minEducation,
       minimumExperience: minExperience,
