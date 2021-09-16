@@ -5,7 +5,7 @@ import ClearAllRoundedIcon from '@material-ui/icons/ClearAllRounded';
 import axios from 'axios';
 import BACKEND_URL from '../Config'
 import ReactTimeAgo from 'react-time-ago';
-
+import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
 // material
 import {
     List,
@@ -203,6 +203,16 @@ export default function NotificationsPopover(props) {
     }, [notifications]);
 
 
+    const deleteAll = async () => {
+        await axios.post(`${BACKEND_URL}/${props.userRole}/deleteNotifications/${props.loginId}`).then((res) => {
+            if (res.data.success) {
+                setTotalUnRead(0);
+                dispatch(setNewNotifications(0));
+                setNotifications([]);
+            }
+        });
+    }
+
     const handleMarkAllAsRead = async () => {
         let read = notifications.map((notification) => ({
             ...notification,
@@ -216,7 +226,6 @@ export default function NotificationsPopover(props) {
             if (res.data.success) {
                 setTotalUnRead(0);
                 dispatch(setNewNotifications(0));
-                console.log(notifications)
             }
         });
 
@@ -247,29 +256,39 @@ export default function NotificationsPopover(props) {
     const displayNotifications = () => {
         if (notifications !== "empty" && notifications.length > 0) {
             return notifications.map((notification, index) => (
-                <NotificationItem key={index} notification={notification} onClose={props.onClose}/>
+                <NotificationItem key={index} notification={notification} onClose={props.onClose} />
             ))
         }
     }
 
     return (
         <>
-            <Grid container spacing={3} style={{ marginBottom: 10 }}>
-                <Grid item xs={10}>
+            <Grid container spacing={3} style={{ marginBottom: 10 }} justify="space-between">
+                <Grid item xs={8} md={8}>
                     <Typography variant="h6">Notifications</Typography>
                     <Typography variant="body2" style={{ color: '#6D6D6D' }}>
                         You have {totalUnRead} unread notifications
                     </Typography>
                 </Grid>
-                <Grid item xs={2}>
-                    {notifications !== "empty" && totalUnRead > 0 ?
-                        <Tooltip title=" Mark all as read">
-                            <IconButton color="primary" onClick={handleMarkAllAsRead}>
-                                <ClearAllRoundedIcon />
+                <Grid item xs={2} md={2}>
+                    {notifications !== "empty" && notifications.length > 0 ?
+                        <Tooltip title=" Delete all">
+                            <IconButton color="secondary" onClick={deleteAll}>
+                                <DeleteRoundedIcon />
                             </IconButton>
                         </Tooltip>
                         : null}
                 </Grid>
+                {notifications !== "empty" && totalUnRead > 0 ? 
+                <Grid item xs={2} md={2}>
+
+                    <Tooltip title=" Mark all as read">
+                        <IconButton color="primary" onClick={handleMarkAllAsRead}>
+                            <ClearAllRoundedIcon />
+                        </IconButton>
+                    </Tooltip>
+
+                </Grid> : null}
             </Grid>
             {notifications !== "empty" && notifications.length > 0 ?
                 <>
@@ -287,22 +306,6 @@ export default function NotificationsPopover(props) {
                     <Avatar className={classes.loadingImage} src={require('./images/loadingImage.gif').default} />
                 </div>
             </> : null}
-            {notifications !== "empty" && notifications.length > 4 ?
-                <>
-                    <Divider />
-
-                    <Grid container spacing={3} style={{ marginTop: 8 }} direction="column"
-                        justify="center"
-                        alignItems="center">
-                        <Grid item xs={12}>
-
-                            <Button disableRipple component={RouterLink} to="#">
-                                View All
-                            </Button>
-                        </Grid>
-                    </Grid>
-                </>
-                : null}
         </>
     );
 }

@@ -25,6 +25,7 @@ router.post("/jobseeker/applicants", jobseekerController.getApplicants);
 router.get('/jobseeker/getNotifications/:id', jobseekerController.getNotifications);
 router.put('/jobseeker/addNotifications/:id', jobseekerController.addNotifications);
 router.post('/jobseeker/markNotifications/:id', jobseekerController.markNotifications);
+router.post('/jobseeker/deleteNotifications/:id', jobseekerController.deleteNotifications);
 
 // update jobseeker
 

@@ -220,12 +220,15 @@ const useStyles = makeStyles((theme) => ({
   notificationMenu: {
     marginTop: 60,
     '& .MuiMenu-paper': {
-      minWidth: 300,
+      minWidth: 540,
       padding: 16,
       borderRadius: 12,
       boxShadow: 'rgba(83, 144, 217, 0.6) 0px 4px 12px',
+      [theme.breakpoints.down("sm")]: {
+        minWidth: 340,
+      }
+    },
 
-    }
   },
   logOut: {
     backgroundColor: theme.palette.tuftsBlue,
@@ -351,7 +354,7 @@ export default function Topbar(props) {
   }, []);
 
   useEffect(() => {
-    if(profilePicReload){
+    if (profilePicReload) {
       setProfilePic(require(`./images/loadingImage.gif`).default);
       loadProfilePic();
       dispatch(setProfilePicReload(false));
@@ -433,7 +436,7 @@ export default function Topbar(props) {
         </Link>
 
         <Link to="/jobseeker/settings">
-          <MenuItem className={classes.menuItem} onClick={() => { history.push(`/${props.user}/settings`) }}>
+          <MenuItem className={classes.menuItem} onClick={() => { handleMenuClose(); history.push(`/${props.user}/settings`) }}>
             <div className={classes.menuIcon}>
               <SettingsRoundedIcon />
             </div>
@@ -493,14 +496,14 @@ export default function Topbar(props) {
             {props.user === "jobseeker" &&
               <>
                 <Link to="/jobseeker/savedJobs">
-                  <IconButton aria-label="" className={classes.topBarIcon}>
+                  <IconButton aria-label="" className={classes.topBarIcon} onClick={handleMobileMenuClose}>
                     <Badge badgeContent={savedJobCount} color="secondary">
                       <BookmarksIcon />
                     </Badge>
                   </IconButton>
                 </Link>
                 <Link to="/jobseeker/favoriteOrganizations">
-                  <IconButton aria-label="" className={classes.topBarIcon}>
+                  <IconButton aria-label="" className={classes.topBarIcon} onClick={handleMobileMenuClose}>
                     <Badge badgeContent={favoriteOrgCount} color="secondary">
                       <FavoriteIcon />
                     </Badge>
@@ -508,7 +511,7 @@ export default function Topbar(props) {
                 </Link>
 
                 <Link to="/jobseeker/appliedJobs">
-                  <IconButton aria-label="" className={classes.topBarIcon}>
+                  <IconButton aria-label="" className={classes.topBarIcon} onClick={handleMobileMenuClose}>
                     <Badge badgeContent={appliedJobs} color="secondary">
                       <WorkRoundedIcon />
                     </Badge>

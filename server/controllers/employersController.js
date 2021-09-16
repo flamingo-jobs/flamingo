@@ -303,6 +303,25 @@ const markNotifications = (req, res) => {
   );
 };
 
+const deleteNotifications = (req, res) => {
+  Employers.findByIdAndUpdate(
+    req.params.id,
+    {
+      $set: { notifications: [] },
+    },
+    (err, jobseeker) => {
+      if (err) {
+        return res.status(400).json({
+          error: err,
+        });
+      }
+      return res.status(200).json({
+        success: true,
+      });
+    }
+  );
+};
+
 module.exports = {
   create,
   getAll,
@@ -320,5 +339,6 @@ module.exports = {
   getVerificationStatus,
   getNotifications,
   markNotifications,
-  addNotifications
+  addNotifications,
+  deleteNotifications
 };
