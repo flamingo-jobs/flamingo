@@ -128,19 +128,24 @@ const getNextDate = async (req, res) => {
         error: err,
       });
     }
-    let maxDate = new Date(
-      Math.max.apply(
-        null,
-        previousOrders.map((x) => {
-          return new Date(x.startDate);
-        })
+    let maxDate = null;
+    let today = new Date().toISOString().slice(0, 10);
+    if (previousOrders.length) {
+      maxDate = new Date(
+        Math.max.apply(
+          null,
+          previousOrders.map((x) => {
+            return new Date(x.startDate);
+          })
+        )
       )
-    )
-      .toISOString()
-      .slice(0, 10);
-
-    let nextStartDate = await addMonths(maxDate, 1);
-    let nextEndDate = await addMonths(maxDate, 2);
+        .toISOString()
+        .slice(0, 10);
+    }
+    let nextStartDate = maxDate ? await addMonths(maxDate, 1) : today;
+    let nextEndDate = maxDate
+      ? await addMonths(maxDate, 2)
+      : await addMonthd(today, 1);
     return res.status(200).json({
       success: true,
       nextDates: { nextStartDate, nextEndDate },

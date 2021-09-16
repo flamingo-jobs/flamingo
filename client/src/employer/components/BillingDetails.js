@@ -272,7 +272,7 @@ export default function BillingDetails(props) {
       .then((res) => {
         if (res.data.success) {
           dropToBasic();
-          window.location = "./";
+          window.location = "/employer/billing";
         } else {
           setAlertData({
             severity: "error",
@@ -427,7 +427,7 @@ export default function BillingDetails(props) {
                 type="password"
                 value={confirmPassword}
                 placeholder="Enter your password"
-                onChange={(e, value) => setConfirmPassword(value)}
+                onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </DialogContentText>
           </DialogContent>
