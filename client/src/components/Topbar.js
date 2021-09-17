@@ -446,8 +446,9 @@ export default function Topbar(props) {
 
         <Button
           onClick={() => {
-            localStorage.clear("userToken");
-            sessionStorage.clear("userToken");
+            localStorage.clear();
+            sessionStorage.clear();
+            localStorage.setItem('logout', 'true');
             window.location = "/";
           }}
           className={classes.logOut}
