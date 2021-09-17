@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
   gridCard: {
     display: "grid",
-    marginBottom: 12
+    marginBottom: 6
   },
   filterGrid: {
     [theme.breakpoints.down('sm')]: {
@@ -65,6 +65,16 @@ function AppliedJobs() {
     try {
       const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
       if (response.data.success) {
+        const temp1 = new Date("2021-09-08T13:43:50.039Z");
+        const temp2 = new Date("2021-09-09T03:53:30.669Z");
+
+        response.data.jobseeker.applicationDetails.sort((a, b) => {
+          const temp1 = new Date(a.appliedDate);
+          const temp2 = new Date(b.appliedDate);
+          return temp2 - temp1;
+        });
+        console.log("ddd", response.data.jobseeker)
+
         setJobseeker(response.data.jobseeker);
       }
     } catch (err) {
