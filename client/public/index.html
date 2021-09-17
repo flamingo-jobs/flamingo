@@ -13,15 +13,12 @@
       if (!event) { event = window.event; } // ie suq
       if (!event.newValue) return;          // do nothing if no value to work with
       if (event.key == 'getSessionStorage') {
-        // another tab asked for the sessionStorage -> send it
-        console.log("initally -> " + localStorage.getItem('logout'))
         if (localStorage.getItem('logout') === 'true') {
-          console.log("Um in means you have loggedout")
           sessionStorage.clear();
+          window.location = "/signIn";
           localStorage.setItem('logout', 'false')
         }
-        console.log("after -> " + localStorage.getItem('logout'))
-
+        // another tab asked for the sessionStorage -> send it
         localStorage.setItem('sessionStorage', JSON.stringify(sessionStorage));
         // the other tab should now have it, so we're done with it.
         localStorage.removeItem('sessionStorage'); // <- could do short timeout as well.
@@ -33,7 +30,6 @@
         }
       }
 
-      console.log(sessionStorage);
 
     };
 
