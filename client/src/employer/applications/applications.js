@@ -12,6 +12,8 @@ import ApplicantCard from "./components/applicantCard";
 import ShortlistModal from "./components/shortlistModal";
 import PeopleFilters from "../../people/components/PeopleFilters";
 import PeopleSearchBar from "../../people/components/PeopleSearchBar";
+import Tooltip from '@material-ui/core/Tooltip';
+
 const jwt = require("jsonwebtoken");
 
 let resumeAccess = false;
@@ -42,6 +44,20 @@ const useStyles = makeStyles((theme) => ({
   },
   shortlistBtn: {
     padding: 16,
+    borderRadius: 12,
+    color: theme.palette.white,
+    backgroundColor: theme.palette.vividSkyBlue,
+    "&:hover": {
+      backgroundColor: theme.palette.vividSkyBlueHover,
+    },
+  },
+  shortlistEveryoneBtnContainer:{
+    display: "flex",
+    justifyContent: "flex-end",
+    marginBottom: theme.spacing(2),
+  },
+  shortlistEveryoneBtn:{
+    padding: 12,
     borderRadius: 12,
     color: theme.palette.white,
     backgroundColor: theme.palette.vividSkyBlue,
@@ -118,9 +134,9 @@ const Applications = () => {
   const [alertData, setAlertData] = useState({ severity: "", msg: "" });
 
   const [shortlistCount, setShortlistCount] = useState(0);
-  const [shortlistedIds, setShortlistedIds] = useState("empty");
 
   const [shortlisted, setShortlisted] = useState(false);
+  const [shortlistEveryone, setShortlistEveryone] = useState(false);
 
   const [customSettings, setCustomSettings] = useState([]);
 
@@ -140,13 +156,6 @@ const Applications = () => {
   useEffect(() => {
     updateQuery();
   }, [filters, search, applicantIds])
-
-
-  useEffect(() => {
-    if (shortlisted) {
-      handleShortlistSubmit();
-    }
-  }, [applicants])
 
   const updateSearch = (searchData) => {
 
@@ -219,14 +228,11 @@ const Applications = () => {
           userIds = [...userIds, user.userId];
         });
         setApplicantIds(userIds);
-      } else {
-        // console.log("404 Job not found");
       }
     } catch (err) {
-      // console.log("Could not retreive job");
       setAlertData({
         severity: "error",
-        msg: "Something Went Wrong, Please Try Again Later.",
+        msg: "Job could not be retrieved, Please Try Again Later.",
       });
       handleAlert();
     }
@@ -262,16 +268,16 @@ const Applications = () => {
 
   const displayApplicants = () => {
     if (applicants !== "empty") {
-      if (isSignedIn && role === "employer" && userId) {
+      if (isSignedIn && role === "employer" && !shortlisted) {
         return (
           <>
-            {!shortlisted &&
-              applicants.map((user) => (
-                <Grid item key={job._id} xs={12} className={classes.gridCard}>
+            {applicants.map((user) => (
+                <Grid item key={user._id} xs={12} className={classes.gridCard}>
                   <ApplicantCard
                     key={user._id}
                     jobseeker={user}
                     jobId={jobId}
+                    shortlistEveryone={shortlistEveryone}
                     setAlertData={setAlertData}
                     handleAlert={handleAlert}
                   ></ApplicantCard>
@@ -279,15 +285,16 @@ const Applications = () => {
               ))}
           </>
         );
-      } else {
-        return (
-          <Grid item key={job._id} xs={12} className={classes.gridCard}>
-            <FloatCard>
-              <Typography variant="h6">You must log in first</Typography>
-            </FloatCard>
-          </Grid>
-        );
-      }
+      } 
+      // else {
+      //   return (
+      //     <Grid item key={job._id} xs={12} className={classes.gridCard}>
+      //       <FloatCard>
+      //         <Typography variant="h6">You must log in first</Typography>
+      //       </FloatCard>
+      //     </Grid>
+      //   );
+      // }
     } else {
       return (
         <Grid item sm={12} style={{ marginBottom: 16 }}>
@@ -318,16 +325,51 @@ const Applications = () => {
     );
   };
 
-  const displayShortlistedApplicants = () => {
-    if (scoredApplicants !== "empty" && shortlisted) {
-      const shortlistedJobseekers = scoredApplicants.slice(0, shortlistCount);
+  const shortlistMatchedApplicants = async () => {
+    const ids = applicants.slice(0, shortlistCount).map(a => a._id);
 
-      const otherJobseekers = scoredApplicants.slice(shortlistCount);
+    try {
+      const response = await axios.patch(`${BACKEND_URL}/applications/status`, {jobseekerIds: ids, jobId: jobId});
+      if(response.data.success){
+        setAlertData({
+          severity: "success",
+          msg: "Applicants shortlisted!",
+        });
+        handleAlert();
+        var newScoredApplicants = [...applicants];
+        newScoredApplicants = newScoredApplicants.map(a => {
+          if(ids.includes(a._id)){
+            a.applicationDetails.map(b => {
+              if(b.jobId === jobId){
+                b.status = "shortlisted";
+              }
+              return b;
+            });
+          }
+          return a;
+        });
+        setApplicants(newScoredApplicants);
+        setShortlistEveryone(true);
+      }
+    } catch(error){
+      setAlertData({
+        severity: "error",
+        msg: "Shortlist could not be done, Please try again later.",
+      });
+      handleAlert();
+    }
+
+  }
+
+
+  const displayShortlistedApplicants = () => {
+    if (shortlisted) {
+      const shortlistedJobseekers = applicants.slice(0, shortlistCount);
+      const otherJobseekers = applicants.slice(shortlistCount);
 
       if (isSignedIn && role === "employer" && userId) {
         return (
           <>
-
             <Grid item xs={12} className={classes.titleCard} style={{ marginTop: 0 }}>
               <FloatCard>
                 <Typography className={classes.shorlistTitleText} variant="h6">
@@ -336,12 +378,27 @@ const Applications = () => {
               </FloatCard>
             </Grid>
 
+            <Grid item xs={12}>
+              <div className={classes.shortlistEveryoneBtnContainer}>
+                <Tooltip title="This will shortlist everyone who has been matched.">
+                  <Button
+                    className={classes.shortlistEveryoneBtn}
+                    startIcon={<PeopleIcon />}
+                    onClick={shortlistMatchedApplicants}
+                  >
+                    Shortlist everyone
+                  </Button>
+                </Tooltip>
+              </div>
+            </Grid>
+
             {shortlistedJobseekers.map((user) => (
               <Grid item key={user._id} xs={12} className={classes.gridCard}>
                 <ApplicantCard
                   key={user._id}
                   jobseeker={user}
                   jobId={jobId}
+                  shortlistEveryone={shortlistEveryone}
                   setAlertData={setAlertData}
                   handleAlert={handleAlert}
                 ></ApplicantCard>
@@ -367,6 +424,7 @@ const Applications = () => {
                   key={user._id}
                   jobseeker={user}
                   jobId={jobId}
+                  shortlistEveryone={shortlistEveryone}
                   setAlertData={setAlertData}
                   handleAlert={handleAlert}
                 ></ApplicantCard>
@@ -407,7 +465,6 @@ const Applications = () => {
     if (e) {
       e.preventDefault();
     }
-
     if (shortlistCount === 0) {
       setAlertData({
         severity: "info",
@@ -416,7 +473,9 @@ const Applications = () => {
       handleAlert();
       return;
     }
+    setShortlistEveryone(false);
 
+    var response = "";
     if (customSettings.length !== 3) {
       if (jobId && userId && applicants !== "empty") {
         try {
@@ -428,10 +487,12 @@ const Applications = () => {
             setShortlisted(true);
             const newApplicants = [...applicants];
 
-            response.data.exsitingData.map((applicant) => {
-              newApplicants.map((jobseeker) => {
-                if (jobseeker._id === applicant.userId) {
-                  jobseeker.score = applicant.score;
+            newApplicants.map(i => i.score = 0);
+
+            response.data.exsitingData.map((i) => {
+              newApplicants.map((j) => {
+                if (j._id === i.userId) {
+                  j.score = i.score;
                 }
               });
             });
@@ -440,7 +501,7 @@ const Applications = () => {
               return b.score - a.score;
             });
 
-            setScoredApplicants(newApplicants);
+            setApplicants(newApplicants);
           }
         } catch (err) {
           handleCloseShortlistModal();
@@ -452,6 +513,7 @@ const Applications = () => {
         }
       }
     } else {
+
       if (jobId && shortlistCount > 0) {
         try {
           const response = await axios.post(
@@ -462,10 +524,13 @@ const Applications = () => {
             setShortlisted(true);
             const newApplicants = [...applicants];
 
-            response.data.applicantIds.map((applicant) => {
-              newApplicants.map((jobseeker) => {
-                if (jobseeker._id === applicant.userId) {
-                  jobseeker.score = applicant.score;
+            newApplicants.map(i => i.score = 0);
+            // setApplicants(newApplicants);
+
+            response.data.exsitingData.map((i) => {
+              newApplicants.map((j) => {
+                if (j._id === i.userId) {
+                  j.score = i.score;
                 }
               });
             });
@@ -474,7 +539,7 @@ const Applications = () => {
               return b.score - a.score;
             });
 
-            setScoredApplicants(newApplicants);
+            setApplicants(newApplicants);
           }
         } catch (err) {
           handleCloseShortlistModal();
@@ -504,7 +569,7 @@ const Applications = () => {
                 startIcon={<PeopleIcon />}
                 onClick={handleOpenShortlistModal}
               >
-                Shortlist the Applicants
+                Shortlist Applicants
               </Button>
             </div>
           )}
@@ -516,7 +581,7 @@ const Applications = () => {
                 startIcon={<PeopleIcon />}
                 onClick={handleOpenShortlistModal}
               >
-                Shortlist the Applicants
+                Shortlist Applicants
               </Button>
             </div>
           )}

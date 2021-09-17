@@ -326,7 +326,7 @@ const ApplyForm = (props) => {
           handleAlert();
         }
       }
-    } catch {
+    } catch (error) {
       setAlertData({
         severity: "error",
         msg: "Something went wrong! Please try again later",

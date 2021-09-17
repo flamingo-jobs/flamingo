@@ -244,7 +244,7 @@ const UploadModal = (props) => {
           }
         }
       }
-    } catch {
+    } catch (error) {
       props.setAlertData({
         severity: "error",
         msg: "Something went wrong! Please try again later",

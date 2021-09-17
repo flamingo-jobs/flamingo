@@ -157,10 +157,13 @@ function ApplicantCard(props) {
   const [open, setOpen] = useState(false);
 
   const jobId = window.location.pathname.split("/")[3];
-  const [status, setStatus] = useState(
-    props.jobseeker.applicationDetails.filter((item) => item.jobId === jobId)[0]
-      .status
-  );
+  const [status, setStatus] = useState("");
+
+  useEffect(() => {
+    const newStatus = props.jobseeker.applicationDetails.filter((item) => item.jobId === jobId)[0]
+      .status;
+    setStatus(newStatus);
+  }, [props.shortlistEveryone]);
 
   const [logo, setLogo] = useState(require(`../../components/images/loadingImage.gif`).default);
 
@@ -229,10 +232,9 @@ function ApplicantCard(props) {
     }
   }
 
-
-  return (
-    <>
-      <StatusModal
+  const displayStatusModal = () => {
+    if(status !== ""){
+      return (<StatusModal
         status={status}
         setStatus={setStatus}
         open={open}
@@ -241,7 +243,14 @@ function ApplicantCard(props) {
         jobId={props.jobId}
         setAlertData={props.setAlertData}
         handleAlert={props.handleAlert}
-      ></StatusModal>
+      ></StatusModal>);
+
+    }
+  }
+
+  return (
+    <>
+      {displayStatusModal()}
 
       <FloatCard>
         <div className={classes.root}>

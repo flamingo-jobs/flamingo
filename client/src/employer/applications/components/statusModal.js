@@ -135,7 +135,7 @@ const StatusModal = (props) => {
       // console.log(err);
       props.setAlertData({
         severity: "error",
-        msg: "Status Could Not Be Changed!",
+        msg: "Status could not be changed!",
       });
       props.handleAlert();
     }
@@ -159,12 +159,11 @@ const StatusModal = (props) => {
                 </div>
 
                 <div className={classes.closeBtnContainer}>
-                  <IconButton
-                    onClick={props.handleClose}
+                  <Button
                     className={classes.closeButton}
-                  >
-                    <CloseIcon className={classes.closeIcon} />
-                  </IconButton>
+                    startIcon={<CloseIcon className={classes.closeIcon}/>}
+                    onClick={props.handleClose}
+                  ></Button>
                 </div>
               </div>
 
