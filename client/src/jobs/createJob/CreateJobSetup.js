@@ -12,6 +12,8 @@ import { Link } from "react-router-dom";
 import FloatCard from "../../components/FloatCard";
 import SnackBarAlert from "../../components/SnackBarAlert";
 import NoAccess from "../../components/NoAccess";
+import Loading from "../../components/Loading";
+import Reached from "../../components/Reached";
 import BACKEND_URL from "../../Config";
 import AdditionalSkills from "./components/additionalSkills";
 import QualificationsForm from "./components/qualificationsForm";
@@ -231,6 +233,7 @@ export default function CreateJobSetup() {
   const [types, setTypes] = useState("empty");
   const [employer, setEmployer] = useState("empty");
   const [technologies, setTechnologies] = useState("empty");
+  const [subscriptionStatus, setSubscriptionStatus] = useState();
 
   // Job state
   const [title, setTitle] = useState("");
@@ -267,6 +270,7 @@ export default function CreateJobSetup() {
     retrieveJobTypes();
     retrieveEmployer();
     retrieveTechnologies();
+    retrieveSubscriptionStatus();
   }, []);
 
   // Job basic details
@@ -617,6 +621,19 @@ export default function CreateJobSetup() {
     }
   };
 
+  const retrieveSubscriptionStatus = async () => {
+    try {
+      const response = await axios.get(
+        `${BACKEND_URL}/employer/subscription-status/${empId}`
+      );
+      if (response.data.success) {
+        setSubscriptionStatus(response.data.existingData);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const retrieveCategories = async () => {
     try {
       const response = await axios.get(`${BACKEND_URL}/categories`);
@@ -718,83 +735,92 @@ export default function CreateJobSetup() {
                   className={classes.gridCont}
                 >
                   {haveAccess ? (
-                    <div>
-                      <Grid container direction="row">
-                        <Grid item xs={12} align="left">
-                          <Typography className={classes.mainTitle}>
-                            Post a new job...
-                          </Typography>
-                        </Grid>
-                      </Grid>
+                    subscriptionStatus ? (
+                      subscriptionStatus.subscriptionType === "premium" ||
+                      subscriptionStatus.remainingJobs > 0 ? (
+                        <div>
+                          <Grid container direction="row">
+                            <Grid item xs={12} align="left">
+                              <Typography className={classes.mainTitle}>
+                                Post a new job...
+                              </Typography>
+                            </Grid>
+                          </Grid>
 
-                      <Stepper
-                        activeStep={activeStep}
-                        orientation="vertical"
-                        className={classes.stepper}
-                      >
-                        {steps.map((label, index) => (
-                          <Step key={label}>
-                            <StepLabel
-                              classes={{
-                                label: classes.label,
-                                active: classes.active,
-                                completed: classes.completed,
-                              }}
-                            >
-                              {label}
-                            </StepLabel>
-                            <StepContent>
-                              {getStepContent(index)}
-                              <div className={classes.actionsContainer}>
-                                <div>
-                                  {activeStep === 0 ? (
-                                    <Link to="/employer/jobs">
-                                      <Button className={classes.previous}>
-                                        Cancel
-                                      </Button>
-                                    </Link>
-                                  ) : (
-                                    <Button
-                                      disabled={activeStep === 0}
-                                      onClick={handleBack}
-                                      className={classes.previous}
-                                    >
-                                      Back
-                                    </Button>
-                                  )}
-                                  <Button
-                                    color="primary"
-                                    onClick={() => handleNext(index)}
-                                    className={classes.next}
-                                  >
-                                    {activeStep === steps.length - 1
-                                      ? "Finish"
-                                      : "Next"}
-                                  </Button>
-                                </div>
-                              </div>
-                            </StepContent>
-                          </Step>
-                        ))}
-                      </Stepper>
-                      {activeStep === steps.length && (
-                        <Paper
-                          square
-                          elevation={0}
-                          className={classes.resetContainer}
-                        >
-                          <Typography>
-                            All steps completed - you&apos;re finished
-                          </Typography>
-                          <Button
-                            onClick={handleReset}
-                            className={classes.button}
+                          <Stepper
+                            activeStep={activeStep}
+                            orientation="vertical"
+                            className={classes.stepper}
                           >
-                            Reset
-                          </Button>
-                        </Paper>
-                      )}
-                    </div>
+                            {steps.map((label, index) => (
+                              <Step key={label}>
+                                <StepLabel
+                                  classes={{
+                                    label: classes.label,
+                                    active: classes.active,
+                                    completed: classes.completed,
+                                  }}
+                                >
+                                  {label}
+                                </StepLabel>
+                                <StepContent>
+                                  {getStepContent(index)}
+                                  <div className={classes.actionsContainer}>
+                                    <div>
+                                      {activeStep === 0 ? (
+                                        <Link to="/employer/jobs">
+                                          <Button className={classes.previous}>
+                                            Cancel
+                                          </Button>
+                                        </Link>
+                                      ) : (
+                                        <Button
+                                          disabled={activeStep === 0}
+                                          onClick={handleBack}
+                                          className={classes.previous}
+                                        >
+                                          Back
+                                        </Button>
+                                      )}
+                                      <Button
+                                        color="primary"
+                                        onClick={() => handleNext(index)}
+                                        className={classes.next}
+                                      >
+                                        {activeStep === steps.length - 1
+                                          ? "Finish"
+                                          : "Next"}
+                                      </Button>
+                                    </div>
+                                  </div>
+                                </StepContent>
+                              </Step>
+                            ))}
+                          </Stepper>
+                          {activeStep === steps.length && (
+                            <Paper
+                              square
+                              elevation={0}
+                              className={classes.resetContainer}
+                            >
+                              <Typography>
+                                All steps completed - you&apos;re finished
+                              </Typography>
+                              <Button
+                                onClick={handleReset}
+                                className={classes.button}
+                              >
+                                Reset
+                              </Button>
+                            </Paper>
+                          )}
+                        </div>
+                      ) : (
+                        <Reached message="You have reached the maximum job count" />
+                      )
+                    ) : (
+                      <Loading />
+                    )
                   ) : (
                     <NoAccess />
                   )}
