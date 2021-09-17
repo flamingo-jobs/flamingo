@@ -41,6 +41,14 @@ const useStyles = makeStyles((theme) => ({
     },
     float: "center",
   },
+  deleteButton: {
+    backgroundColor: theme.palette.red,
+    color: theme.palette.white,
+    "&:hover": {
+      backgroundColor: theme.palette.redHover,
+    },
+    float: "center",
+  },
   topCard: {
     minWidth: "100%",
     borderRadius: 12,
@@ -403,7 +411,7 @@ const AccountSettings = () => {
                         fullWidth
                         type="submit"
                         
-                        className={classes.button}
+                        className={classes.deleteButton}
                       >
                         Delete Account
                       </Button>
