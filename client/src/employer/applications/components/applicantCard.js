@@ -23,7 +23,8 @@ import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 import defaultImage from '../../../employee/images/defaultProfilePic.jpg';
 import CardMedia from '@material-ui/core/CardMedia';
 import Percentage from "../../../components/Percentage";
-
+import CircularStatic from "../../../admin/components/CicularProgressWithLabel";
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 const useStyles = makeStyles((theme) => ({
   root: {
     textAlign: "left",
@@ -151,7 +152,7 @@ const useStyles = makeStyles((theme) => ({
 // style={{border : "1px solid red"}}
 function ApplicantCard(props) {
   const classes = useStyles();
-console.log(props.jobseeker.matches)
+  console.log(props.matches)
   const [savedPic, setSavedPic] = useState(require(`../../../components/images/loadingImage.gif`).default);
 
   // Status modal
@@ -293,84 +294,128 @@ console.log(props.jobseeker.matches)
               {props.jobseeker.work.length > 0 ? <Chip icon={<WorkRoundedIcon />} label={props.jobseeker.work[props.jobseeker.work.length - 1].place} className={classes.tag} /> : null}
 
             </div>
-            {status === "shortlisted" ?
-              <div className={classes.matches} >
-                <Typography style={{ marginBottom: 16 }}>Matched criteria: </Typography>
-                <Grid container spacing={2}>
-                  <Grid item container spacing={2} >
-                    <Grid item xs={12} md={3}>
-                      <Typography>Education</Typography>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                      <Percentage value={20} />
-                    </Grid>
-                  </Grid>
-                  <Grid item container spacing={2} >
-                    <Grid item xs={12} md={3}>
-                      <Typography>Experience</Typography>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                      <Percentage value={20} />
-                    </Grid>
-                  </Grid>
-                  <Grid item container spacing={2} >
-                    <Grid item xs={12} md={3}>
-                      <Typography>Technology Stack</Typography>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                      <Percentage value={20} />
-                    </Grid>
-                  </Grid>
-                  <Grid item container spacing={2} >
-                    <Grid item xs={12} md={3}>
-                      <Typography>Projects</Typography>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                      <Percentage value={20} />
-                    </Grid>
-                  </Grid>
-                  <Grid item container spacing={2} >
-                    <Grid item xs={12} md={3}>
-                      <Typography>Skills</Typography>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                      <Percentage value={20} />
-                    </Grid>
-                  </Grid>
-                  <Grid item container spacing={2} >
-                    <Grid item xs={12} md={3}>
-                      <Typography>Certificates</Typography>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                      <Percentage value={20} />
-                    </Grid>
-                  </Grid>
-                  <Grid item container spacing={2} >
-                    <Grid item xs={12} md={3}>
-                      <Typography>Courses</Typography>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                      <Percentage value={20} />
-                    </Grid>
-                  </Grid>
-                  <Grid item container spacing={2} >
-                    <Grid item xs={12} md={3}>
-                      <Typography>Extra Curricular</Typography>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                      <Percentage value={20} />
-                    </Grid>
-                  </Grid>
-                  <Grid item container spacing={2} >
-                    <Grid item xs={12} md={3}>
-                      <Typography>Awards</Typography>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                      <Percentage value={20} />
-                    </Grid>
+            {props.matches ?
+              <Grid container spacing={2} direction="row"
+              justifyContent="center"
+              alignItems="stretch" style={{marginTop: 16}}>
+                <Grid item xs={12} md={4} style={{alignSelf: 'center', textAlign: 'center'}}>
+                  <CircularStatic value={props.matches.score} />
+                  <Typography>Overall score</Typography>
+                </Grid>
+                <Grid item xs={12} md={8}>
+                  <Typography style={{ marginBottom: 16 }}></Typography>
+                  <Grid container spacing={2} >
+                    {props.matches.education ?
+                      <Grid item container spacing={2} >
+                        <Grid item xs={12} md={3}>
+                          <Typography>Education</Typography>
+                        </Grid>
+                        <Grid item xs={12} md={6} style={{alignSelf: 'center'}}>
+                          <Percentage value={props.matches.education} />
+                        </Grid>
+                        <Grid item xs={12} md={2}>
+                          <Typography>{`${props.matches.education.toFixed(2)}%`}</Typography>
+                        </Grid>
+                      </Grid> : null}
+                    {props.matches?.experience ?
+                      <Grid item container spacing={2} >
+                        <Grid item xs={12} md={3}>
+                          <Typography>Experience</Typography>
+                        </Grid>
+                        <Grid item xs={12} md={6} style={{alignSelf: 'center'}}>
+                          <Percentage value={props.matches.experience} />
+                        </Grid>
+                        <Grid item xs={12} md={2}>
+                          <Typography>{`${props.matches.experience.toFixed(2)}%`}</Typography>
+                        </Grid>
+                      </Grid> : null}
+                    {props.matches?.techStack ?
+                      <Grid item container spacing={2} >
+                        <Grid item xs={12} md={3}>
+                          <Typography>Technology Stack</Typography>
+                        </Grid>
+                        <Grid item xs={12} md={6} style={{alignSelf: 'center'}}>
+                          <Percentage value={props.matches.techStack} />
+                        </Grid>
+                        <Grid item xs={12} md={2}>
+                          <Typography>{`${props.matches.techStack.toFixed(2)}%`}</Typography>
+                        </Grid>
+                      </Grid> : null}
+                    {props.matches?.projects ?
+                      <Grid item container spacing={2} >
+                        <Grid item xs={12} md={3}>
+                          <Typography>Projects</Typography>
+                        </Grid>
+                        <Grid item xs={12} md={6} style={{alignSelf: 'center'}}>
+                          <Percentage value={props.matches.projects} />
+                        </Grid>
+                        <Grid item xs={12} md={2}>
+                          <Typography>{`${props.matches.projects.toFixed(2)}%`}</Typography>
+                        </Grid>
+                      </Grid> : null}
+                    {props.matches?.skills ?
+                      <Grid item container spacing={2} >
+                        <Grid item xs={12} md={3}>
+                          <Typography>Skills</Typography>
+                        </Grid>
+                        <Grid item xs={12} md={6} style={{alignSelf: 'center'}}>
+                          <Percentage value={props.matches.skills} />
+                        </Grid>
+                        <Grid item xs={12} md={2}>
+                          <Typography>{`${props.matches.skills.toFixed(2)}%`}</Typography>
+                        </Grid>
+                      </Grid> : null}
+                    {props.matches?.certificates ?
+                      <Grid item container spacing={2} >
+                        <Grid item xs={12} md={3}>
+                          <Typography>Certificates</Typography>
+                        </Grid>
+                        <Grid item xs={12} md={6} style={{alignSelf: 'center'}}>
+                          <Percentage value={props.matches.certificates} />
+                        </Grid>
+                        <Grid item xs={12} md={2}>
+                          <Typography>{`${props.matches.certificates.toFixed(2)}%`}</Typography>
+                        </Grid>
+                      </Grid> : null}
+                    {props.matches?.courses ?
+                      <Grid item container spacing={2} >
+                        <Grid item xs={12} md={3}>
+                          <Typography>Courses</Typography>
+                        </Grid>
+                        <Grid item xs={12} md={6} style={{alignSelf: 'center'}}>
+                          <Percentage value={props.matches.courses} />
+                        </Grid>
+                        <Grid item xs={12} md={2}>
+                          <Typography>{`${props.matches.courses.toFixed(2)}%`}</Typography>
+                        </Grid>
+                      </Grid> : null}
+                    {props.matches?.extraCurricular ?
+                      <Grid item container spacing={2} >
+                        <Grid item xs={12} md={3}>
+                          <Typography>Extra Curricular</Typography>
+                        </Grid>
+                        <Grid item xs={12} md={6} style={{alignSelf: 'center'}}>
+                          <Percentage value={props.matches.extraCurricular} />
+                        </Grid>
+                        <Grid item xs={12} md={2}>
+                          <Typography>{`${props.matches.extraCurricular.toFixed(2)}%`}</Typography>
+                        </Grid>
+                      </Grid> : null}
+                    {props.matches?.awards ?
+                      <Grid item container spacing={2} >
+                        <Grid item xs={12} md={3}>
+                          <Typography>Awards</Typography>
+                        </Grid>
+                        <Grid item xs={12} md={6} style={{alignSelf: 'center'}}>
+                          <Percentage value={props.matches.awards} />
+                        </Grid>
+                        <Grid item xs={12} md={2}>
+                          <Typography>{`${props.matches.awards.toFixed(2)}%`}</Typography>
+                        </Grid>
+                      </Grid> : null}
                   </Grid>
                 </Grid>
-              </div> : null}
+              </Grid> : null}
           </div>
 
           <div className={classes.footer}>

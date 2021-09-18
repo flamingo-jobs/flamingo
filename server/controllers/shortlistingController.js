@@ -273,6 +273,7 @@ const shortlistApplicants = (req, res) => {
                                     education: education,
                                     experience: experience,
                                     techStack: techStack,
+                                    projects: projectTech,
                                     skills: skills,
                                     certificates: certificates,
                                     courses: courses,
@@ -283,19 +284,22 @@ const shortlistApplicants = (req, res) => {
 
                             if (shortlistingSettings.ignoreMinimum) {
                                 scoredItem.score = total;
+                                scoredItem.matches.score = total;
                                 scoredApplicants.push(scoredItem);
                             } else if (noMin === 0) {
                                 scoredItem.score = total;
+                                scoredItem.matches.score = total;
                                 scoredApplicants.push(scoredItem);
                             } else {
                                 scoredItem.score = 0;
+                                scoredItem.matches.score = 0;
                                 scoredApplicants.push(scoredItem);
                             }
 
                         })
                     }
 
-                    updateJob(scoredApplicants, req.params.id);
+                    updateJob(scoredApplicants, job._id);
 
                     return res.status(200).json({
                         success: true,
@@ -563,6 +567,7 @@ const shortlistApplicantsCustoms = (req, res) => {
                                 education: education,
                                 experience: experience,
                                 techStack: techStack,
+                                projects: projectTech,
                                 skills: skills,
                                 certificates: certificates,
                                 courses: courses,
@@ -573,19 +578,22 @@ const shortlistApplicantsCustoms = (req, res) => {
 
                         if (shortlistingSettings.ignoreMinimum) {
                             scoredItem.score = total;
+                            scoredItem.matches.score = total;
                             scoredApplicants.push(scoredItem);
                         } else if (noMin === 0) {
                             scoredItem.score = total;
+                            scoredItem.matches.score = total;
                             scoredApplicants.push(scoredItem);
                         } else {
                             scoredItem.score = 0;
+                            scoredItem.matches.score = 0;
                             scoredApplicants.push(scoredItem);
                         }
 
                     })
                 }
 
-                updateJob(scoredApplicants, req.params.id);
+                updateJob(scoredApplicants, job._id);
 
 
                 // let scoredIds = scoredApplicants.map(x => x.userId);
@@ -834,6 +842,7 @@ const shortlistOnApplicantChanges = (req, res) => {
                             matches: {
                                 education: education,
                                 experience: experience,
+                                projects: projectTech,
                                 techStack: techStack,
                                 skills: skills,
                                 certificates: certificates,
@@ -847,18 +856,21 @@ const shortlistOnApplicantChanges = (req, res) => {
 
                         if (shortlistingSettings.ignoreMinimum) {
                             scoredItem.score = total;
+                            scoredItem.matches.score = total;
                             scoredApplicants.splice(applicationIndex, 1, scoredItem);
                         } else if (noMin === 0) {
                             scoredItem.score = total;
+                            scoredItem.matches.score = total;
                             scoredApplicants.splice(applicationIndex, 1, scoredItem);
                         } else {
                             scoredItem.score = 20;
+                            scoredItem.matches.score = total;
                             scoredApplicants.splice(applicationIndex, 1, scoredItem);
                         }
 
                     }
 
-                    updateJob(scoredApplicants, req.params.id);
+                    updateJob(scoredApplicants, job._id);
 
                     return res.status(200).json({
                         success: true,
@@ -935,15 +947,19 @@ const updateJobSeekerProfile = (jobSeekerId, recommendedJobs, jobId, total) => {
 
 const updateJob = (scoredApplicants, jobId) => {
 
+    let applicationDetails = scoredApplicants;
+    console.log(jobId)
     Jobs.updateOne({ "_id": jobId },
         [{
             $set: {
-                applicationDetails: scoredApplicants
+                applicationDetails: applicationDetails
             }
-        }], (err, job) => {
+        }], (err, jobs) => {
             if (err) {
+
                 return false;
             }
+            console.log(jobs);
             return true;
         });
 }

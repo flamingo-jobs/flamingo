@@ -130,7 +130,7 @@ const Applications = () => {
   const [applicantIds, setApplicantIds] = useState([]);
   const [applicants, setApplicants] = useState("empty");
   const [scoredApplicants, setScoredApplicants] = useState("empty");
-
+  const [applicationDetails, setApplicationDetails] = useState([]);
   const [alertShow, setAlertShow] = useState(false);
   const [alertData, setAlertData] = useState({ severity: "", msg: "" });
 
@@ -228,6 +228,7 @@ const Applications = () => {
         response.data.job.applicationDetails.map((user) => {
           userIds = [...userIds, user.userId];
         });
+        setApplicationDetails(response.data.job.applicationDetails);
         setApplicantIds(userIds);
       }
     } catch (err) {
@@ -287,6 +288,7 @@ const Applications = () => {
               <Grid item key={user._id} xs={12} className={classes.gridCard}>
                 <ApplicantCard
                   key={user._id}
+                  matches={applicationDetails.filter(x => x.userId === user._id).map(x => x.matches)[0]}
                   jobseeker={user}
                   jobId={jobId}
                   shortlistEveryone={shortlistEveryone}
@@ -416,6 +418,7 @@ const Applications = () => {
               <Grid item key={user._id} xs={12} className={classes.gridCard}>
                 <ApplicantCard
                   key={user._id}
+                  matches={user.matches}
                   jobseeker={user}
                   jobId={jobId}
                   shortlistEveryone={shortlistEveryone}
@@ -442,6 +445,7 @@ const Applications = () => {
               <Grid item key={user._id} xs={12} className={classes.gridCard}>
                 <ApplicantCard
                   key={user._id}
+                  matches={user.matches}
                   jobseeker={user}
                   jobId={jobId}
                   shortlistEveryone={shortlistEveryone}
