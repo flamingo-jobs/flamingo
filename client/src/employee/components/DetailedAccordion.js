@@ -118,19 +118,8 @@ export default function DetailedAccordion(props) {
   const [backEnd, setBackEnd] = React.useState([]);
   const [editing, setEditing] = React.useState(false);
   let index;
-  let loginId;
-  let login = false;
-  const jwt = require("jsonwebtoken");
-  const token = sessionStorage.getItem("userToken");
-  const header = jwt.decode(token, { complete: true });
-  if(token === null){
-    loginId=props.jobseeker;
-  }else if (header.payload.userRole === "jobseeker") {
-    login = true;
-    loginId=sessionStorage.getItem("loginId");
-  } else {
-    loginId=props.jobseeker;
-  }
+  let loginId=props.jobseekerID;
+  let login = props.login;
 
   const matchDetails = () => {
     let tech = props.techno;
