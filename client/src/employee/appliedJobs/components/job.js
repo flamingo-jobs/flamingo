@@ -1,26 +1,21 @@
-import React, { useState, useEffect } from "react";
 import {
-  Grid,
-  Container,
-  Typography,
-  Chip,
   Avatar,
-  Button,
+  Button, Chip, Container, Grid, Typography
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
-import BACKEND_URL, { FILE_URL } from "../../../Config";
-import FloatCard from "../../../components/FloatCard";
-import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
-import WorkRoundedIcon from "@material-ui/icons/WorkRounded";
-import GetAppIcon from "@material-ui/icons/GetApp";
 import DescriptionIcon from '@material-ui/icons/Description';
-import Status from "./status";
-import download from "downloadjs";
-import UploadModal from "./uploadModal";
-import SnackBarAlert from "../../../components/SnackBarAlert";
-import { Link } from "react-router-dom";
+import GetAppIcon from "@material-ui/icons/GetApp";
+import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
 import PeopleIcon from '@material-ui/icons/People';
+import WorkRoundedIcon from "@material-ui/icons/WorkRounded";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import FloatCard from "../../../components/FloatCard";
+import SnackBarAlert from "../../../components/SnackBarAlert";
+import BACKEND_URL, { FILE_URL } from "../../../Config";
+import Status from "./status";
+import UploadModal from "./uploadModal";
 
 const useStyles = makeStyles((theme) => ({
   border: {

@@ -231,7 +231,7 @@ const LatestJobs = (props) => {
                 />
               </Grid>
             )) : null }
-            {allJobs !== "empty" && allJobs.length === 0 ? <NoInfo message="Sorry, you havent posted any jobs yet." /> : null}
+            {allJobs !== "empty" && allJobs.length === 0 ? <NoInfo message="Sorry, you haven't posted any jobs yet." /> : null}
           {/* </TableBody>
           </Table>
         </TableContainer> */}

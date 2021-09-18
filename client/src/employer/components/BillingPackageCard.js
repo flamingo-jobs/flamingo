@@ -217,7 +217,7 @@ export default function BillingPackageCard() {
             </Grid>
             <br />
             <div>
-              <Typography variant="button" className={classes.Tytpography}>
+              <Typography variant="button" className={classes.Typography}>
                 You are currently on this plan
               </Typography>
             </div>

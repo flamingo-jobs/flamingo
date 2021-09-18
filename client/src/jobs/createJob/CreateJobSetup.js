@@ -108,7 +108,7 @@ if (sessionStorage.getItem("userToken")) {
 function getSteps() {
   return [
     "Basic Details",
-    "Tasks and Responsibilites",
+    "Tasks and Responsibilities",
     "Qualifications and Requirements",
     "Technology Stack",
     "Additional Skills",
@@ -195,14 +195,6 @@ export default function CreateJobSetup() {
     }
     return true;
   };
-
-  const keywords = [
-    { name: "Devops" },
-    { name: "Development" },
-    { name: "Design" },
-    { name: "MERN" },
-    { name: "Back end" },
-  ];
 
   const minEducationList = [
     "Diploma",
@@ -358,7 +350,7 @@ export default function CreateJobSetup() {
     setMinExperience(event.target.value);
   };
 
-  // ***** Tasks & Responsibilites *****
+  // ***** Tasks & Responsibilities *****
   const handleTaskChange = (e, index) => {
     const newErrors = { ...errors };
     const value = e.target.value;

@@ -171,7 +171,7 @@ export default function ProfileSetup() {
           } else {
             setAlertData({
               severity: "error",
-              msg: "Failed to update details! No worries. You can alwasy update/ change these details in your profile page",
+              msg: "Failed to update details! No worries. You can always update/ change these details in your profile page",
             });
             handleAlert();
           }
@@ -179,7 +179,7 @@ export default function ProfileSetup() {
         .catch((e) => {
           setAlertData({
             severity: "error",
-            msg: "Failed to update details! No worries. You can alwasy update/ change these details in your profile page",
+            msg: "Failed to update details! No worries. You can always update/ change these details in your profile page",
           });
           handleAlert();
         });

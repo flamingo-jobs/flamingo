@@ -385,7 +385,7 @@ function JobSummary(props) {
       } else {
         props.setAlertData({
           severity: "error",
-          msg: "Somethig went wrong",
+          msg: "Something went wrong",
         });
         props.handleAlert();
       }
@@ -393,7 +393,7 @@ function JobSummary(props) {
       console.log(error)
       props.setAlertData({
         severity: "error",
-        msg: "Somethig went wrong",
+        msg: "Something went wrong",
       });
       props.handleAlert();
     }

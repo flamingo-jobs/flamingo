@@ -285,7 +285,7 @@ function CompanySummary(props) {
                     return (
                         <Button className={classes.favButton} onClick={handleAddingFavorite}>
                             <FavoriteRounded className={classes.favorite} />
-                            Remove from favourites
+                            Remove from favorites
                         </Button>
                     );
                 } else {
@@ -328,7 +328,7 @@ function CompanySummary(props) {
         if (summary === "empty") {
             return (
                 <Grid item sm={12}>
-                    <Typography>No infromation to display</Typography>
+                    <Typography>No information to display</Typography>
                 </Grid>
             );
         } else {

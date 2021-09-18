@@ -168,7 +168,7 @@ const generateRecommendations = (req, res) => {
 
                     return res.status(200).json({
                         success: true,
-                        exsitingData: recommendedJobSeekers
+                        existingData: recommendedJobSeekers
                     });
                 });
 
@@ -337,7 +337,7 @@ const generateJobSeekerRecommendations = (req, res) => {
 
                     return res.status(200).json({
                         success: true,
-                        exsitingData: recommendedJobs
+                        existingData: recommendedJobs
                     });
                 });
 

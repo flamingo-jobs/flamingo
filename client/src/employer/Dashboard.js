@@ -110,7 +110,7 @@ const Dashboard = (props) => {
 
       <Grid item container xs={12} spacing={3} direction="row"
         justify="space-between"
-        alignItems="streched">
+        alignItems="stretched">
         <Grid item xs={12} lg={6}>
           <TopCards employerId={loginId} />
         </Grid>

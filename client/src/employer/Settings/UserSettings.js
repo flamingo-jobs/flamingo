@@ -183,7 +183,7 @@ const UserSettings = () => {
     if (checked.length === 0) {
       setAlertData({
         severity: "error",
-        msg: "Please set access priviledges for your employee!",
+        msg: "Please set access privileges for your employee!",
       });
       handleAlert();
       return;
@@ -232,7 +232,7 @@ const UserSettings = () => {
         // console.log("successd");
         setAlertData({
           severity: "success",
-          msg: `Successful! Invitaion sent to ${formData.email}`,
+          msg: `Successful! Invitation sent to ${formData.email}`,
         });
         handleAlert();
       } else {

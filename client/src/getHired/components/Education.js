@@ -815,7 +815,7 @@ export const Education = ({
                         <IconButton
                           onClick={handleCourseAddClick}
                           color="primary"
-                          aria-label="Remobe course"
+                          aria-label="Remove course"
                         >
                           <AddCircleOutlineIcon />
                         </IconButton>

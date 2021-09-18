@@ -230,7 +230,7 @@ export default function CustomizedTables() {
           <TableRow>
             <StyledTableCell align="center">Name</StyledTableCell>
             <StyledTableCell align="center">Email</StyledTableCell>
-            <StyledTableCell align="center">Priviledges</StyledTableCell>
+            <StyledTableCell align="center">Privileges</StyledTableCell>
             <StyledTableCell align="center">Registered Date</StyledTableCell>
             <StyledTableCell align="center">Status</StyledTableCell>
             <StyledTableCell align="center">Edit</StyledTableCell>
@@ -292,7 +292,7 @@ export default function CustomizedTables() {
                 className={classes.dialogBox}
               >
                 <DialogTitle id="edit-details-form">
-                  Edit access pivileges
+                  Edit access privileges
                 </DialogTitle>
                 <DialogContent>
                   <DialogContentText>

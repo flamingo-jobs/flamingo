@@ -210,7 +210,7 @@ export default function AddNewTechnologyPopup(props) {
         <div>
             <Dialog open={props.open} onClose={props.onClose} fullWidth={true}
                 maxWidth="sm" aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">Add New Techology Group</DialogTitle>
+                <DialogTitle id="form-dialog-title">Add New Technology Group</DialogTitle>
                 <DialogContent>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>

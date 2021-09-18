@@ -229,7 +229,7 @@ const PayHereCheckoutForm = (props) => {
         {displayAlert()}
         {/* {console.log(billingDetails)} */}
         <Grid item xs={12}>
-          <Typography variane="h6">Billing Details</Typography>
+          <Typography variant="h6">Billing Details</Typography>
         </Grid>
         <Grid item xs={12} md={6}>
           <TextField

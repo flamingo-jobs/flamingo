@@ -200,7 +200,7 @@ const Aquisitions = (props) => {
           </Grid>
         </Grid> */}
 
-      <Typography>Aquisitions</Typography>
+      <Typography>Acquisitions</Typography>
       {!allJobs ?
         <Loading /> : null
       }

@@ -272,9 +272,9 @@ function NavMenu(props) {
                         </ListItem>
                     </Link>
                     <Link to="/organizations">
-                        <ListItem button key="ogranizations" selected={selectedIndex === "organizations"} onClick={(event) => handleListItemClick(event, "organizations")} classes={{ selected: classes.active }} className={classes.listItem}>
+                        <ListItem button key="organizations" selected={selectedIndex === "organizations"} onClick={(event) => handleListItemClick(event, "organizations")} classes={{ selected: classes.active }} className={classes.listItem}>
                             <ListItemIcon className={classes.linkIcon}><BusinessRoundedIcon /></ListItemIcon>
-                            <ListItemText className={classes.linkText} primary="Ogranizations" />
+                            <ListItemText className={classes.linkText} primary="Organizations" />
                         </ListItem>
                     </Link>
                     {/* <Link to="/jobseeker/billing">
@@ -305,9 +305,9 @@ function NavMenu(props) {
                         </ListItem>
                     </Link>
                     <Link to="/organizations">
-                        <ListItem button key="Ogranizations" selected={selectedIndex === "organizations"} onClick={(event) => handleListItemClick(event, "organizations")} classes={{ selected: classes.active }} className={classes.listItem}>
+                        <ListItem button key="Organizations" selected={selectedIndex === "organizations"} onClick={(event) => handleListItemClick(event, "organizations")} classes={{ selected: classes.active }} className={classes.listItem}>
                             <ListItemIcon className={classes.linkIcon}><BusinessRoundedIcon /></ListItemIcon>
-                            <ListItemText className={classes.linkText} primary="Ogranizations" />
+                            <ListItemText className={classes.linkText} primary="Organizations" />
                         </ListItem>
                     </Link>
                     <Link to="/people">

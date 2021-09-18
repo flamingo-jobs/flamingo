@@ -315,7 +315,7 @@ const JobSummaryModal = (props) => {
                       </Grid>
                     </Grid>
 
-                    {/* Requried Degrees & Experience */}
+                    {/* Required Degrees & Experience */}
                     <Grid container spacing={1}>
                       <Grid item xs={12} sm={6}>
                         <StateBlueTextField

@@ -349,11 +349,11 @@ export default function RecommendationSettingsAccordion(props) {
               color="primary"
               inputProps={{ 'aria-label': 'primary checkbox' }}
             />
-            <Typography className={classes.featuredJobs}>Suggesst jobs only if the minimum requirements are met</Typography>
+            <Typography className={classes.featuredJobs}>Suggest jobs only if the minimum requirements are met</Typography>
           </div>
         </Grid>
         <Grid item xs={12} style={{ padding: 24 }}>
-          <Typography>Below values are considered as the weights for generate sugessted jobs for job seekers. <br />Total wights should be 100%.</Typography>
+          <Typography>Below values are considered as the weights for generate suggested jobs for job seekers. <br />Total wights should be 100%.</Typography>
         </Grid>
         {displaySettingOptions()}
       </Grid>

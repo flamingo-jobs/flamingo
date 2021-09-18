@@ -1,10 +1,10 @@
-// to the beginin of the component
+// to the beginning of the component
     const notificationCount = useSelector(state => state.newNotifications);
     const dispatch = useDispatch();
 
     // place where you wanna send the notification
-    //change the jobseeker in the URL if you want add noitifications to a diffrent user
-    // types are: job_applied,job_alert,update,saved_jobs,shortlisted if diffeerent leave that empty
+    //change the jobseeker in the URL if you want add notifications to a diffrent user
+    // types are: job_applied,job_alert,update,saved_jobs,shortlisted if different leave that empty
     axios.put(`${BACKEND_URL}/jobSeeker/addNotifications/${userId}`,
         {
             title: 'Your application is submitted',

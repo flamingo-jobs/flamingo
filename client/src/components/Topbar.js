@@ -426,23 +426,24 @@ export default function Topbar(props) {
         className={classes.profileMenu}
 
       >
-        <Link to="/jobseeker/profile">
+        {token && header.payload.userRole !== "admin" ? <Link to={`/${header.payload.userRole}/profile`}>
           <MenuItem className={classes.menuItem} onClick={handleMenuClose}>
             <div className={classes.menuIcon}>
               <PersonRoundedIcon />
             </div>
             <Typography className={classes.menuText} >Profile</Typography>
           </MenuItem>
-        </Link>
+        </Link> : null}
 
-        <Link to="/jobseeker/settings">
-          <MenuItem className={classes.menuItem} onClick={() => { handleMenuClose(); history.push(`/${props.user}/settings`) }}>
-            <div className={classes.menuIcon}>
-              <SettingsRoundedIcon />
-            </div>
-            <Typography className={classes.menuText}>Settings</Typography>
-          </MenuItem>
-        </Link>
+        {token ?
+          <Link to={`/${header.payload.userRole}/settings`}>
+            <MenuItem className={classes.menuItem} onClick={() => { handleMenuClose(); history.push(`/${props.user}/settings`) }}>
+              <div className={classes.menuIcon}>
+                <SettingsRoundedIcon />
+              </div>
+              <Typography className={classes.menuText}>Settings</Typography>
+            </MenuItem>
+          </Link> : null}
 
         <Button
           onClick={() => {

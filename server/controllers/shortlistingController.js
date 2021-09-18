@@ -288,7 +288,7 @@ const shortlistApplicants = (req, res) => {
 
                     return res.status(200).json({
                         success: true,
-                        exsitingData: scoredApplicants
+                        existingData: scoredApplicants
                     });
                 });
 
@@ -827,7 +827,7 @@ const shortlistOnApplicantChanges = (req, res) => {
 
                     return res.status(200).json({
                         success: true,
-                        exsitingData: scoredApplicants
+                        existingData: scoredApplicants
                     });
                 });
 

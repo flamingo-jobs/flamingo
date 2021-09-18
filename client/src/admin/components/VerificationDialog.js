@@ -90,7 +90,7 @@ export default function VerificationDialog(props) {
                 <DialogTitle id="form-dialog-title">Update Verification Status</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Update the verification status of the employer after verifiying the document.<br /><br />
+                        Update the verification status of the employer after verifying the document.<br /><br />
                     </DialogContentText>
                     <StateBlueTextField
                         id="status"

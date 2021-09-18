@@ -13,6 +13,7 @@ import ShortlistModal from "./components/shortlistModal";
 import PeopleFilters from "../../people/components/PeopleFilters";
 import PeopleSearchBar from "../../people/components/PeopleSearchBar";
 import Tooltip from '@material-ui/core/Tooltip';
+import Loading from "../../components/Loading";
 
 const jwt = require("jsonwebtoken");
 
@@ -51,18 +52,18 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.vividSkyBlueHover,
     },
   },
-  shortlistEveryoneBtnContainer:{
+  shortlistEveryoneBtnContainer: {
     display: "flex",
     justifyContent: "flex-end",
     marginBottom: theme.spacing(2),
   },
-  shortlistEveryoneBtn:{
+  shortlistEveryoneBtn: {
     padding: 12,
     borderRadius: 12,
     color: theme.palette.white,
-    backgroundColor: theme.palette.vividSkyBlue,
+    backgroundColor: theme.palette.mediumTurquoise,
     "&:hover": {
-      backgroundColor: theme.palette.vividSkyBlueHover,
+      backgroundColor: theme.palette.skyBlueCrayola,
     },
   },
   applicantTitle: {
@@ -267,25 +268,33 @@ const Applications = () => {
   };
 
   const displayApplicants = () => {
-    if (applicants !== "empty") {
+    if (job !== "empty" && applicantIds.length === 0) {
+      return (
+        <Grid item sm={12} style={{ marginBottom: 16 }}>
+          <FloatCard>
+            <NoInfo message="Sorry, There are no any applications yet." />
+          </FloatCard>
+        </Grid>
+      );
+    } else if (applicants !== "empty" && applicants.length) {
       if (isSignedIn && role === "employer" && !shortlisted) {
         return (
           <>
             {applicants.map((user) => (
-                <Grid item key={user._id} xs={12} className={classes.gridCard}>
-                  <ApplicantCard
-                    key={user._id}
-                    jobseeker={user}
-                    jobId={jobId}
-                    shortlistEveryone={shortlistEveryone}
-                    setAlertData={setAlertData}
-                    handleAlert={handleAlert}
-                  ></ApplicantCard>
-                </Grid>
-              ))}
+              <Grid item key={user._id} xs={12} className={classes.gridCard}>
+                <ApplicantCard
+                  key={user._id}
+                  jobseeker={user}
+                  jobId={jobId}
+                  shortlistEveryone={shortlistEveryone}
+                  setAlertData={setAlertData}
+                  handleAlert={handleAlert}
+                ></ApplicantCard>
+              </Grid>
+            ))}
           </>
         );
-      } 
+      }
       // else {
       //   return (
       //     <Grid item key={job._id} xs={12} className={classes.gridCard}>
@@ -295,11 +304,19 @@ const Applications = () => {
       //     </Grid>
       //   );
       // }
+    } else if (applicants.length === 0) {
+      return (
+        <Grid item sm={12} style={{ marginBottom: 16 }}>
+          <FloatCard>
+            <NoInfo message="Sorry, There are no any applications that matches with your search." />
+          </FloatCard>
+        </Grid>
+      );
     } else {
       return (
         <Grid item sm={12} style={{ marginBottom: 16 }}>
           <FloatCard>
-            <NoInfo message="Sorry, There are no any applications yet." />
+            <Loading />
           </FloatCard>
         </Grid>
       );
@@ -329,8 +346,8 @@ const Applications = () => {
     const ids = applicants.slice(0, shortlistCount).map(a => a._id);
 
     try {
-      const response = await axios.patch(`${BACKEND_URL}/applications/status`, {jobseekerIds: ids, jobId: jobId});
-      if(response.data.success){
+      const response = await axios.patch(`${BACKEND_URL}/applications/status`, { jobseekerIds: ids, jobId: jobId });
+      if (response.data.success) {
         setAlertData({
           severity: "success",
           msg: "Applicants shortlisted!",
@@ -338,9 +355,9 @@ const Applications = () => {
         handleAlert();
         var newScoredApplicants = [...applicants];
         newScoredApplicants = newScoredApplicants.map(a => {
-          if(ids.includes(a._id)){
+          if (ids.includes(a._id)) {
             a.applicationDetails.map(b => {
-              if(b.jobId === jobId){
+              if (b.jobId === jobId) {
                 b.status = "shortlisted";
               }
               return b;
@@ -351,7 +368,7 @@ const Applications = () => {
         setApplicants(newScoredApplicants);
         setShortlistEveryone(true);
       }
-    } catch(error){
+    } catch (error) {
       setAlertData({
         severity: "error",
         msg: "Shortlist could not be done, Please try again later.",
@@ -380,13 +397,13 @@ const Applications = () => {
 
             <Grid item xs={12}>
               <div className={classes.shortlistEveryoneBtnContainer}>
-                <Tooltip title="This will shortlist everyone who has been matched.">
+                <Tooltip title="This will mark all the shortlisted applicants as shortlisted and inform them">
                   <Button
                     className={classes.shortlistEveryoneBtn}
                     startIcon={<PeopleIcon />}
                     onClick={shortlistMatchedApplicants}
                   >
-                    Shortlist everyone
+                    Mark all the shortlisted applicants as shortlisted
                   </Button>
                 </Tooltip>
               </div>

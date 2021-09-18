@@ -130,7 +130,7 @@ function TechnologiesStackEdit(props) {
                 </Grid>
                 <Grid item xs={12}>
                     <Typography >
-                        Add or update the technolgies that your company is working with.
+                        Add or update the technologies that your company is working with.
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>

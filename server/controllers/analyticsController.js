@@ -511,7 +511,7 @@ const getMonthlyRevenue = async (req, res) => {
         monthNames = [...MONTHS];
     }
 
-    const pacakges = {
+    const packages = {
         standard: 1990, 
         premium: 4990,
     }
@@ -524,7 +524,7 @@ const getMonthlyRevenue = async (req, res) => {
                     if(emp.subscription.type.toLowerCase() === "standard" || emp.subscription.type.toLowerCase() === "premium"){
                         monthlyRevenue[emp.subscription.startDate.getMonth() + 12] = 
                             monthlyRevenue[emp.subscription.startDate.getMonth() + 12] + 
-                                pacakges[emp.subscription.type.toLowerCase()];
+                                packages[emp.subscription.type.toLowerCase()];
                     }
                 } 
 
@@ -532,7 +532,7 @@ const getMonthlyRevenue = async (req, res) => {
                     if(emp.subscription.type.toLowerCase() === "standard" || emp.subscription.type.toLowerCase() === "premium"){
                         monthlyRevenue[emp.subscription.startDate.getMonth()] = 
                             monthlyRevenue[emp.subscription.startDate.getMonth()] + 
-                                pacakges[emp.subscription.type.toLowerCase()];
+                                packages[emp.subscription.type.toLowerCase()];
                     }
                     
                 }
@@ -541,7 +541,7 @@ const getMonthlyRevenue = async (req, res) => {
                     if(emp.subscription.type.toLowerCase() === "standard" || emp.subscription.type.toLowerCase() === "premium"){
                         monthlyRevenue[emp.subscription.startDate.getMonth()] = 
                                 monthlyRevenue[emp.subscription.startDate.getMonth()] + 
-                                    pacakges[emp.subscription.type.toLowerCase()];
+                                    packages[emp.subscription.type.toLowerCase()];
                     }
                 }
             }
