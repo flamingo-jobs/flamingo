@@ -22,6 +22,7 @@ import SchoolRoundedIcon from '@material-ui/icons/SchoolRounded';
 import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
 import defaultImage from '../../../employee/images/defaultProfilePic.jpg';
 import CardMedia from '@material-ui/core/CardMedia';
+import Percentage from "../../../components/Percentage";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -150,7 +151,7 @@ const useStyles = makeStyles((theme) => ({
 // style={{border : "1px solid red"}}
 function ApplicantCard(props) {
   const classes = useStyles();
-
+console.log(props.jobseeker.matches)
   const [savedPic, setSavedPic] = useState(require(`../../../components/images/loadingImage.gif`).default);
 
   // Status modal
@@ -233,7 +234,7 @@ function ApplicantCard(props) {
   }
 
   const displayStatusModal = () => {
-    if(status !== ""){
+    if (status !== "") {
       return (<StatusModal
         status={status}
         setStatus={setStatus}
@@ -258,7 +259,7 @@ function ApplicantCard(props) {
             <Grid container>
               <Grid item xs={12} md={8}>
                 <div className={classes.headerLeft}>
-                  <Avatar className={classes.logo}  src={logo} variant="square" />
+                  <Avatar className={classes.logo} src={logo} variant="square" />
                   <div className={classes.headerInfo}>
                     <Typography variant="h5" className={classes.title}>
                       {props.jobseeker.name}
@@ -292,15 +293,93 @@ function ApplicantCard(props) {
               {props.jobseeker.work.length > 0 ? <Chip icon={<WorkRoundedIcon />} label={props.jobseeker.work[props.jobseeker.work.length - 1].place} className={classes.tag} /> : null}
 
             </div>
+            {status === "shortlisted" ?
+              <div className={classes.matches} >
+                <Typography style={{ marginBottom: 16 }}>Matched criteria: </Typography>
+                <Grid container spacing={2}>
+                  <Grid item container spacing={2} >
+                    <Grid item xs={12} md={3}>
+                      <Typography>Education</Typography>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Percentage value={20} />
+                    </Grid>
+                  </Grid>
+                  <Grid item container spacing={2} >
+                    <Grid item xs={12} md={3}>
+                      <Typography>Experience</Typography>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Percentage value={20} />
+                    </Grid>
+                  </Grid>
+                  <Grid item container spacing={2} >
+                    <Grid item xs={12} md={3}>
+                      <Typography>Technology Stack</Typography>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Percentage value={20} />
+                    </Grid>
+                  </Grid>
+                  <Grid item container spacing={2} >
+                    <Grid item xs={12} md={3}>
+                      <Typography>Projects</Typography>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Percentage value={20} />
+                    </Grid>
+                  </Grid>
+                  <Grid item container spacing={2} >
+                    <Grid item xs={12} md={3}>
+                      <Typography>Skills</Typography>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Percentage value={20} />
+                    </Grid>
+                  </Grid>
+                  <Grid item container spacing={2} >
+                    <Grid item xs={12} md={3}>
+                      <Typography>Certificates</Typography>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Percentage value={20} />
+                    </Grid>
+                  </Grid>
+                  <Grid item container spacing={2} >
+                    <Grid item xs={12} md={3}>
+                      <Typography>Courses</Typography>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Percentage value={20} />
+                    </Grid>
+                  </Grid>
+                  <Grid item container spacing={2} >
+                    <Grid item xs={12} md={3}>
+                      <Typography>Extra Curricular</Typography>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Percentage value={20} />
+                    </Grid>
+                  </Grid>
+                  <Grid item container spacing={2} >
+                    <Grid item xs={12} md={3}>
+                      <Typography>Awards</Typography>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Percentage value={20} />
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </div> : null}
           </div>
 
           <div className={classes.footer}>
             <div className={classes.footerLeft}></div>
             <div className={classes.footerRight}>
               <Link to={`/jobseeker/profile/${props.jobseeker._id}`}>
-                <Button 
-                  className={classes.profileBtn} 
-                  startIcon={<PersonIcon/>}
+                <Button
+                  className={classes.profileBtn}
+                  startIcon={<PersonIcon />}
                 >
                   View Profile
                 </Button>
