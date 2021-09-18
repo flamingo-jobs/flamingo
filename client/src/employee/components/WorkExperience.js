@@ -126,19 +126,8 @@ function WorkExperience(props) {
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
   let i=0;
-  let loginId;
-  let login = false;
-  const jwt = require("jsonwebtoken");
-  const token = sessionStorage.getItem("userToken");
-  const header = jwt.decode(token, { complete: true });
-  if(token === null){
-    loginId=props.jobseekerID;
-  }else if (header.payload.userRole === "jobseeker") {
-    login = true;
-    loginId=sessionStorage.getItem("loginId");
-  } else {
-    loginId=props.jobseekerID;
-  }
+  let loginId=props.jobseekerID;
+  let login = props.login;
 
   //generate year list
   function getYearsFrom(){
@@ -362,7 +351,7 @@ function WorkExperience(props) {
     }else if (workTemp) {
         if (workTemp.length > 0) {
         return workTemp.map((wk,j) => (
-              <WorkExpItem key={j} index={wk.index} place={wk.workItem.place} description={wk.workItem.description} position={wk.workItem.position} from={wk.workItem.from} to={wk.workItem.to} task={wk.workItem.taskAndResponsibility} parentFunction={deleteData} />
+              <WorkExpItem key={j} index={wk.index} place={wk.workItem.place} description={wk.workItem.description} position={wk.workItem.position} from={wk.workItem.from} to={wk.workItem.to} task={wk.workItem.taskAndResponsibility} parentFunction={deleteData} jobseekerID={loginId} login={login} />
               ))
         }else{
           return (<Typography variant="body2" color="textSecondary" component="p" style={{paddingBottom:"10px"}}>Work experience details not added.</Typography>)

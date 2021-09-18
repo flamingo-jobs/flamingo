@@ -39,19 +39,8 @@ function Technologies(props) {
     const [alertData, setAlertData] = React.useState({severity: "", msg: ""});
 
     let i=0;
-    let loginId;
-    let login = false;
-    const jwt = require("jsonwebtoken");
-    const token = sessionStorage.getItem("userToken");
-    const header = jwt.decode(token, { complete: true });
-    if(token === null){
-        loginId=props.jobseekerID;
-    }else if (header.payload.userRole === "jobseeker") {
-        login = true;
-        loginId=sessionStorage.getItem("loginId");
-    } else {
-        loginId=props.jobseekerID;
-    }
+    let loginId=props.jobseekerID;
+    let login = props.login;
 
     useEffect(() => {
             retrieveTechnologies();
@@ -124,7 +113,7 @@ function Technologies(props) {
             return <Loading />
         } else if (technologies) {
             return technologies.map(technology => (
-                <DetailedAccordion jobseeker={loginId} key={technology._id} info={technology} techno={technologyStack} onRefresh={handleRefresh} onSuccessUpdate={handleUpdatesuccess} onFailedUpdate={handleUpdateFailed} />
+                <DetailedAccordion jobseeker={loginId} key={technology._id} info={technology} techno={technologyStack} onRefresh={handleRefresh} onSuccessUpdate={handleUpdatesuccess} onFailedUpdate={handleUpdateFailed} jobseekerID={loginId} login={login} />
             ))
         } else {
             return (

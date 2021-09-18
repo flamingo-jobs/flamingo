@@ -19,7 +19,6 @@ import WorkExperience from './WorkExperience';
 
 function Profile() {
     const [jobseekerID, setJobseekerID] = useState(window.location.pathname.split("/")[3]);
-
     let loginId;
     let login = false;
     const jwt = require("jsonwebtoken");
@@ -27,11 +26,16 @@ function Profile() {
     const header = jwt.decode(token, { complete: true });
     if(token === null){
         loginId=jobseekerID;
-    }else if (header.payload.userRole === "jobseeker") {
+    }else if (jobseekerID) {
+        if (header.payload.userRole === "jobseeker" && sessionStorage.getItem("loginId") === jobseekerID) {
+            login = true;
+        }
+        loginId=jobseekerID;
+    } else if (header.payload.userRole === "jobseeker") {
         login = true;
         loginId=sessionStorage.getItem("loginId");
-    } else {
-        loginId=jobseekerID;
+    }else{
+        loginId=jobseekerID; 
     }
 
   useEffect(() => {
@@ -51,38 +55,39 @@ function Profile() {
         date: date+"/"+month+"/"+year,
         time: hours+":"+minutes+":"+seconds,
     }
-
-    axios.put(`${BACKEND_URL}/jobseeker/addReach/${loginId}`,newReach)
-    .then(res => {
-        // console.log("reach added")
-    });
+    if(!login){
+        axios.put(`${BACKEND_URL}/jobseeker/addReach/${loginId}`,newReach)
+        .then(res => {
+            // console.log("reach added")
+        });
+    }
   },[])
 
     return (
         <Grid item container xs={12} spacing={3} direction="row" justify="space-between" alignItems="flex-start">
             <Grid item xs={12} lg={4}>
-                <IntroSection jobseekerID={jobseekerID} />
+                <IntroSection jobseekerID={loginId} login={login} />
                 <Space />
-                <EducationSection jobseekerID={jobseekerID} />
+                <EducationSection jobseekerID={loginId} login={login} />
                 <Space />    
-                <CertificatesSection jobseekerID={jobseekerID} />
+                <CertificatesSection jobseekerID={loginId} login={login} />
                 <Space />
-                <Course jobseekerID={jobseekerID} />
+                <Course jobseekerID={loginId} login={login} />
                 <Space />
-                <Volunteer jobseekerID={jobseekerID} />
+                <Volunteer jobseekerID={loginId} login={login} />
             </Grid>
             <Grid item xs={12} lg={8}>
-                <InterestedAreas jobseekerID={jobseekerID} />
+                <InterestedAreas jobseekerID={loginId} login={login} />
                 <Space />
-                <WorkExperience jobseekerID={jobseekerID} />
+                <WorkExperience jobseekerID={loginId} login={login} />
                 <Space />
-                <ProjectsSection jobseekerID={jobseekerID} />
+                <ProjectsSection jobseekerID={loginId} login={login} />
                 <Space />
-                <TechnologySection jobseekerID={jobseekerID} />
+                <TechnologySection jobseekerID={loginId} login={login} />
                 <Space />
-                <Achievements jobseekerID={jobseekerID} />
+                <Achievements jobseekerID={loginId} login={login} />
                 <Space />
-                <Skills jobseekerID={jobseekerID} />
+                <Skills jobseekerID={loginId} login={login} />
             </Grid>                                            
         </Grid>
     )

@@ -277,12 +277,12 @@ function NavMenu(props) {
                             <ListItemText className={classes.linkText} primary="Organizations" />
                         </ListItem>
                     </Link>
-                    {/* <Link to="/jobseeker/billing">
-                        <ListItem button key="billing" selected={selectedIndex === "billing"} onClick={(event) => handleListItemClick(event, "billing")} classes={{ selected: classes.active }} className={classes.listItem}>
-                            <ListItemIcon className={classes.linkIcon}><MonetizationOnIcon /></ListItemIcon>
-                            <ListItemText className={classes.linkText} primary="Billing" />
+                    <Link to="/people">
+                        <ListItem button key="people" selected={selectedIndex === "people"} onClick={(event) => handleListItemClick(event, "people")} classes={{ selected: classes.active }} className={classes.listItem}>
+                            <ListItemIcon className={classes.linkIcon}><PeopleAltRoundedIcon /></ListItemIcon>
+                            <ListItemText className={classes.linkText} primary="People" />
                         </ListItem>
-                    </Link> */}
+                    </Link>
                 </>
             )
         }

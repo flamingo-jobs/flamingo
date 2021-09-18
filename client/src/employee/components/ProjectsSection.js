@@ -135,29 +135,18 @@ function ProjectsSection(props) {
   const classes = useStyles();
   const [fetchedData, setFetchedData] = useState('');
   const [open, setOpen] = useState(false);
-  const [newData, setNewData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [newData, setNewData] = useState([]);
   const [technologies, setTechnologies] = useState([]);
   const [technologyList, setTechnologyList] = useState([]);
   const [project, setProject] = useState(null);
-  const [state, setState] = useState({name: null, link: null, description: null, startYear: null, startMonth: null, endYear: null, endMonth: null, usedTech: null});
-  const [loadingData, setLoadingData] = useState(true);
+  const [state, setState] = useState({name: null, link: null, description: null, startYear: null, startMonth: null, endYear: null, endMonth: null, usedTech: []});
 
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
   let i=0;
-  let loginId;
-  let login = false;
-  const jwt = require("jsonwebtoken");
-  const token = sessionStorage.getItem("userToken");
-  const header = jwt.decode(token, { complete: true });
-  if(token === null){
-    loginId=props.jobseekerID;
-  }else if (header.payload.userRole === "jobseeker") {
-    login = true;
-    loginId=sessionStorage.getItem("loginId");
-  } else {
-    loginId=props.jobseekerID;
-  }
+  let loginId=props.jobseekerID;
+  let login = props.login;
 
   //generate year list
   function getYearsFrom(){
@@ -199,7 +188,7 @@ function ProjectsSection(props) {
   }
 
   function fetchData(){
-    setLoadingData(true);
+    setLoading(true);
     let projectData;
     axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
     .then(res => {
@@ -215,7 +204,7 @@ function ProjectsSection(props) {
           }
         }       
         setProject(projectData)
-        setLoadingData(false);
+        setLoading(false);
       }
     })
 
@@ -254,7 +243,7 @@ function ProjectsSection(props) {
   }
 
   useEffect(()=>{
-    setState({name: null, link: null, description: null, startYear: null, startMonth: null, endYear: null, endMonth: null, usedTech: null});
+    setState({name: null, link: null, description: null, startYear: null, startMonth: null, endYear: null, endMonth: null, usedTech: []});
     setProject(null);
     fetchData();
   },[fetchedData])
@@ -282,7 +271,7 @@ function ProjectsSection(props) {
 
   function handleClose(){
     setOpen(false);
-    setState({name: null, link: null, description: null, startYear: null, startMonth: null, endYear: null, endMonth: null, usedTech: null});
+    setState({name: null, link: null, description: null, startYear: null, startMonth: null, endYear: null, endMonth: null, usedTech: []});
   }
   
   // Alert stuff
@@ -360,13 +349,15 @@ function ProjectsSection(props) {
 
   function onSubmit(e){
     e.preventDefault();
+    let tech = [];
+    tech = newData;
     const newProject = {
         name: state.name,
         link: state.link,
         description: state.description,
         from: state.startMonth+"/"+state.startYear,
         to: state.endMonth+"/"+state.endYear,
-        usedTech: newData,
+        usedTech: tech,
     }
 
     axios.put(`${BACKEND_URL}/jobseeker/addProject/${loginId}`,newProject)
@@ -391,12 +382,12 @@ function ProjectsSection(props) {
   }
   
   const displayProjectFields = () => {
-    if(loadingData){
+    if(loading){
       return (<Loading />);
     }else if(project){
       if (project.length > 0) {
         return project.map(pro => (
-            <ProjectItem key={i}  index={i++} name={pro.name} link={pro.link} description={pro.description} from={pro.from} to={pro.to} usedTech={pro.usedTech} parentFunction={deleteData} techList={technologyList} />
+            <ProjectItem key={i}  index={i++} name={pro.name} link={pro.link} description={pro.description} from={pro.from} to={pro.to} usedTech={pro.usedTech} parentFunction={deleteData} techList={technologyList} jobseekerID={loginId} login={login} />
             ))
       }else{
         return (<Typography variant="body2" color="textSecondary" component="p" style={{paddingBottom:"10px"}}>Project details not added.</Typography>)

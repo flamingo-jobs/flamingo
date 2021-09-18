@@ -118,19 +118,8 @@ function Course(props) {
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
   let i = 0;
-  let loginId;
-  let login = false;
-  const jwt = require("jsonwebtoken");
-  const token = sessionStorage.getItem("userToken");
-  const header = jwt.decode(token, { complete: true });
-  if (token === null) {
-    loginId = props.jobseekerID;
-  } else if (header.payload.userRole === "jobseeker") {
-    login = true;
-    loginId = sessionStorage.getItem("loginId");
-  } else {
-    loginId = props.jobseekerID;
-  }
+  let loginId=props.jobseekerID;
+  let login = props.login;
 
   //generate year list
   function getYearsFrom() {
@@ -330,7 +319,7 @@ function Course(props) {
     } else if (course) {
       if (course.length > 0) {
         return course.map(awd => (
-          <CourseItem key={i} index={i++} course={awd.course} institute={awd.institute} startDate={awd.from} endDate={awd.to} parentFunction={deleteData} />
+          <CourseItem key={i} index={i++} course={awd.course} institute={awd.institute} startDate={awd.from} endDate={awd.to} parentFunction={deleteData} jobseekerID={loginId} login={login} />
         ))
       } else {
         return (<Typography variant="body2" color="textSecondary" component="p">Course details not added.</Typography>)
