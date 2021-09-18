@@ -55,11 +55,12 @@ function Profile() {
         date: date+"/"+month+"/"+year,
         time: hours+":"+minutes+":"+seconds,
     }
-
-    axios.put(`${BACKEND_URL}/jobseeker/addReach/${loginId}`,newReach)
-    .then(res => {
-        // console.log("reach added")
-    });
+    if(!login){
+        axios.put(`${BACKEND_URL}/jobseeker/addReach/${loginId}`,newReach)
+        .then(res => {
+            // console.log("reach added")
+        });
+    }
   },[])
 
     return (

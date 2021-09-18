@@ -319,7 +319,7 @@ function Course(props) {
     } else if (course) {
       if (course.length > 0) {
         return course.map(awd => (
-          <CourseItem key={i} index={i++} course={awd.course} institute={awd.institute} startDate={awd.from} endDate={awd.to} parentFunction={deleteData} />
+          <CourseItem key={i} index={i++} course={awd.course} institute={awd.institute} startDate={awd.from} endDate={awd.to} parentFunction={deleteData} jobseekerID={loginId} login={login} />
         ))
       } else {
         return (<Typography variant="body2" color="textSecondary" component="p">Course details not added.</Typography>)

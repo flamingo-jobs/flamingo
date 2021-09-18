@@ -298,7 +298,7 @@ function Achievements(props) {
       return (<Loading />);
     }else if (award && award.length > 0) {
         return award.map(awd => (
-            <AwardItem  key={i} index={i++} title={awd.title} issuedBy={awd.issuedBy} date={awd.date} description={awd.description} parentFunction={deleteData} />
+            <AwardItem  key={i} index={i++} title={awd.title} issuedBy={awd.issuedBy} date={awd.date} description={awd.description} parentFunction={deleteData} jobseekerID={loginId} login={login} />
             ))
     }else{
       return (<Typography variant="body2" color="textSecondary" component="p">Award details not added.</Typography>)

@@ -452,7 +452,7 @@ function EducationSection(props) {
       if (phD) {
         eduCount = 1;
         return phD.map(edu => (
-          <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities} parentFunction={deleteEducation} />
+          <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities} parentFunction={deleteEducation} jobseekerID={loginId} login={login}  />
         ))
       }
     }
@@ -463,7 +463,7 @@ function EducationSection(props) {
       if (mPhil) {
         eduCount = 1;
         return mPhil.map(edu => (
-          <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities} parentFunction={deleteEducation} />
+          <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities} parentFunction={deleteEducation} jobseekerID={loginId} login={login}  />
         ))
       }
     }
@@ -474,7 +474,7 @@ function EducationSection(props) {
       if (masters) {
         eduCount = 1;
         return masters.map(edu => (
-          <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities} parentFunction={deleteEducation} />
+          <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities} parentFunction={deleteEducation} jobseekerID={loginId} login={login}  />
         ))
       }
     }
@@ -485,7 +485,7 @@ function EducationSection(props) {
       if (bachelorsHonours) {
         eduCount = 1;
         return bachelorsHonours.map(edu => (
-          <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities} parentFunction={deleteEducation} />
+          <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities} parentFunction={deleteEducation} jobseekerID={loginId} login={login}  />
         ))
       }
     }
@@ -496,7 +496,7 @@ function EducationSection(props) {
       if (bachelors) {
         eduCount = 1;
         return bachelors.map(edu => (
-          <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities} parentFunction={deleteEducation} />
+          <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities} parentFunction={deleteEducation} jobseekerID={loginId} login={login}  />
         ))
       }
     }
@@ -507,7 +507,7 @@ function EducationSection(props) {
       if (graduateDiploma) {
         eduCount = 1;
         return graduateDiploma.map(edu => (
-          <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities} parentFunction={deleteEducation} />
+          <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities} parentFunction={deleteEducation} jobseekerID={loginId} login={login}  />
         ))
       }
     }
@@ -518,7 +518,7 @@ function EducationSection(props) {
       if (diploma) {
         eduCount = 1;
         return diploma.map(edu => (
-          <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities} parentFunction={deleteEducation} />
+          <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities} parentFunction={deleteEducation} jobseekerID={loginId} login={login}  />
         ))
       }
     }
@@ -532,7 +532,7 @@ function EducationSection(props) {
         if (school) {
           eduCount = 1;
           return school.map(edu => (
-            <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities} parentFunction={deleteEducation} />
+            <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities} parentFunction={deleteEducation} jobseekerID={loginId} login={login}  />
           ))
         }
       }

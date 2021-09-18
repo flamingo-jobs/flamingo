@@ -344,7 +344,7 @@ function CertificatesSection(props) {
     }else if (certificate) {
       if (certificate.length > 0) {
         return certificate.map(awd => (
-            <CertificateItem key={i} index={i++} issuer={awd.issuer} title={awd.title} score={awd.score} date={awd.date} allCertificates={allCertificates} parentFunction={deleteData} />
+            <CertificateItem key={i} index={i++} issuer={awd.issuer} title={awd.title} score={awd.score} date={awd.date} allCertificates={allCertificates} parentFunction={deleteData} jobseekerID={loginId} login={login} />
             ))
       }else{
         return (<Typography variant="body2" color="textSecondary" component="p">Certificates not added.</Typography>)

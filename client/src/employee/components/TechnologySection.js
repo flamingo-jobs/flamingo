@@ -49,7 +49,7 @@ function TechnologySection(props) {
         
       </Grid>
 
-      <Technologies jobseekerID={props.jobseekerID} />
+      <Technologies jobseekerID={props.jobseekerID} jobseekerID={props.jobseekerID} login={props.login} />
 
     </FloatCard>
   );

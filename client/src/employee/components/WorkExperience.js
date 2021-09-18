@@ -351,7 +351,7 @@ function WorkExperience(props) {
     }else if (workTemp) {
         if (workTemp.length > 0) {
         return workTemp.map((wk,j) => (
-              <WorkExpItem key={j} index={wk.index} place={wk.workItem.place} description={wk.workItem.description} position={wk.workItem.position} from={wk.workItem.from} to={wk.workItem.to} task={wk.workItem.taskAndResponsibility} parentFunction={deleteData} />
+              <WorkExpItem key={j} index={wk.index} place={wk.workItem.place} description={wk.workItem.description} position={wk.workItem.position} from={wk.workItem.from} to={wk.workItem.to} task={wk.workItem.taskAndResponsibility} parentFunction={deleteData} jobseekerID={loginId} login={login} />
               ))
         }else{
           return (<Typography variant="body2" color="textSecondary" component="p" style={{paddingBottom:"10px"}}>Work experience details not added.</Typography>)

@@ -113,7 +113,7 @@ function Technologies(props) {
             return <Loading />
         } else if (technologies) {
             return technologies.map(technology => (
-                <DetailedAccordion jobseeker={loginId} key={technology._id} info={technology} techno={technologyStack} onRefresh={handleRefresh} onSuccessUpdate={handleUpdatesuccess} onFailedUpdate={handleUpdateFailed} />
+                <DetailedAccordion jobseeker={loginId} key={technology._id} info={technology} techno={technologyStack} onRefresh={handleRefresh} onSuccessUpdate={handleUpdatesuccess} onFailedUpdate={handleUpdateFailed} jobseekerID={loginId} login={login} />
             ))
         } else {
             return (
