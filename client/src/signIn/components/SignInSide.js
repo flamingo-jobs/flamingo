@@ -270,6 +270,7 @@ export default function SignInSide() {
   }
 
   const [choice, setChoice] = useState(false);
+
   const handleClickChoice = () => {
     setChoice(true);
   };
@@ -429,7 +430,7 @@ export default function SignInSide() {
                     <Button
                       type="submit"
                       fullWidth
-                      
+
                       className={classes.submit}
                     >
                       Sign In
@@ -443,12 +444,12 @@ export default function SignInSide() {
                         </Link>
                       </Grid>
                       <Grid item xs={12} sm={8} className={classes.signUp}>
-                        <Link
+                        <Typography
                           className={classes.link}
                           onClick={handleClickChoice}
                         >
                           Don't have an account? Sign Up
-                        </Link>
+                        </Typography>
                       </Grid>
                     </Grid>
 
@@ -516,16 +517,15 @@ export default function SignInSide() {
                   </Link>
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <ListItem
-                    button
-                    onClick={() => {
-                      window.location = "/startHiring";
-                    }}
-                  >
-                    <Box mt={5} mb={5} ml={10} mr={10}>
-                      <Typography>Employer</Typography>
-                    </Box>
-                  </ListItem>
+                  <Link to="/startHiring">
+                    <ListItem
+                      button
+                    >
+                      <Box mt={5} mb={5} ml={10} mr={10}>
+                        <Typography>Employer</Typography>
+                      </Box>
+                    </ListItem>
+                  </Link>
                 </Grid>
               </Grid>
             </DialogContent>
