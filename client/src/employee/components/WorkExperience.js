@@ -126,19 +126,8 @@ function WorkExperience(props) {
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
   let i=0;
-  let loginId;
-  let login = false;
-  const jwt = require("jsonwebtoken");
-  const token = sessionStorage.getItem("userToken");
-  const header = jwt.decode(token, { complete: true });
-  if(token === null){
-    loginId=props.jobseekerID;
-  }else if (header.payload.userRole === "jobseeker") {
-    login = true;
-    loginId=sessionStorage.getItem("loginId");
-  } else {
-    loginId=props.jobseekerID;
-  }
+  let loginId=props.jobseekerID;
+  let login = props.login;
 
   //generate year list
   function getYearsFrom(){
