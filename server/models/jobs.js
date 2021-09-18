@@ -77,7 +77,8 @@ const jobSchema = new mongoose.Schema({
       appliedDate: { type: Date },
       userId: { type: String },
       resumeName: { type: String },
-      score: {type: Number}
+      score: {type: Number},
+      matches: {type: Object}
     },
   ],
   recommendedJobs: {

@@ -85,7 +85,7 @@ function Footer() {
                                 <Link to="/organizations" >
                                     <ListItem button className={classes.listItem}>
                                         <ListItemIcon className={classes.linkIcon}><BusinessRoundedIcon /></ListItemIcon>
-                                        <ListItemText className={classes.linkText} primary="Ogranizations" />
+                                        <ListItemText className={classes.linkText} primary="Organizations" />
                                     </ListItem>
                                 </Link>
                                 <Link to="/people" >
@@ -125,7 +125,7 @@ function Footer() {
                                         <ListItemText className={classes.linkText} primary="How it works" />
                                     </ListItem>
                                 </Link>
-                                <Link to="/pricings" >
+                                <Link to="/pricing" >
                                     <ListItem button className={classes.listItem}>
                                         <ListItemIcon className={classes.linkIcon}><MonetizationOnRoundedIcon /></ListItemIcon>
                                         <ListItemText className={classes.linkText} primary="Pricing" />
@@ -171,7 +171,7 @@ function Footer() {
                                 <Link to="/support" >
                                     <ListItem button className={classes.listItem}>
                                         <ListItemIcon className={classes.linkIcon}><ContactSupportRoundedIcon /></ListItemIcon>
-                                        <ListItemText className={classes.linkText} primary="Customer Support" />
+                                        <ListItemText className={classes.linkText} primary="Customer support" />
                                     </ListItem>
                                 </Link>
                             </List>

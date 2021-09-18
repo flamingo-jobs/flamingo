@@ -394,7 +394,7 @@ export default function ShortlistingEducationSettingsAccordion(props) {
         <Grid item xs={12}>
           <ContinousSlider name={"Minimum Requirement"} value={settings.settings.minimum} passValue={getSettingValues} />
           <div style={{ padding: 24 }}>
-            <Typography>Remaining percentage are divided as the weights for each educatation levels. <br />Total wights of below levels should be {100 - minimum}%.</Typography>
+            <Typography>Remaining percentage are divided as the weights for each education levels. <br />Total wights of below levels should be {100 - minimum}%.</Typography>
           </div>
           <ContinousSlider name={"Diploma"} value={settings.settings.diploma} passValue={getSettingValues} max={100 - minimum} />
           <ContinousSlider name={"Bachelor's"} value={settings.settings.bachelors} passValue={getSettingValues} max={100 - minimum} />
@@ -429,9 +429,9 @@ export default function ShortlistingEducationSettingsAccordion(props) {
           aria-controls="panel1c-content"
           id="panel1c-header"
         >
-          <Typography className={classes.heading}>Advanced Education Settigns</Typography>
+          <Typography className={classes.heading}>Advanced Education Settings</Typography>
           <Typography className={classes.secondaryHeading}>
-            Controll the wieghts given for each education levels
+            Controls the weights given for each education levels
           </Typography>
         </AccordionSummary>
         {displayAccordionDetails()}

@@ -180,7 +180,7 @@ const defaultData = {
   mobile: "",
   email: "",
   password: "",
-  condirmPassword: "",
+  confirmPassword: "",
 };
 
 export default function GetHired() {

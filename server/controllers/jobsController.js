@@ -310,7 +310,7 @@ const resetAll = (req, res) => { // To clear the test resume details
                 })
             }
             return res.status(200).json({
-                sucess: "Updated successfully"
+                success: "Updated successfully"
             });
         }
     );

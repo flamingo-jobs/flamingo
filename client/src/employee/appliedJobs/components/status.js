@@ -9,7 +9,7 @@ import Review from "../lotties/review.json";
 
 const useStyles = makeStyles((theme) => ({
   resumeStatus: {
-    width: "75%",
+    width: "100%",
     borderRadius: 12,
     padding: 10,
     background: theme.palette.tagYellow,
@@ -76,7 +76,7 @@ const Status = (props) => {
   };
 
   return (
-    <div className={classes.resumeStatus}>
+    <div className={classes.resumeStatus} >
       <div className={classes.animation}>
         {props.status === "pending" && (
           <Lottie

@@ -11,28 +11,6 @@ import BACKEND_URL from "../Config";
 const jwt = require("jsonwebtoken");
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundSize: "cover",
-    marginLeft: 10,
-    marginRight: 10,
-  },
-  container: {
-    paddingTop: 20,
-    [theme.breakpoints.down("xs")]: {
-      paddingTop: 0,
-    },
-  },
-  topBarGrid: {
-    [theme.breakpoints.down("xs")]: {
-      display: "block",
-      maxWidth: "unset",
-    },
-  },
-  sideDrawerGrid: {
-    [theme.breakpoints.down("xs")]: {
-      display: "none",
-    },
-  },
   paymentBox: { color: "white" },
 }));
 
@@ -89,8 +67,10 @@ const Billing = () => {
   }, []);
 
   return (
-    <Grid item container sm={12} spacing={3} direction="row">
-      <Grid item xs={12}>
+    <Grid item container xs={12} spacing={3} direction="row"
+      justify="space-between"
+      alignItems="flex-start" className={classes.mainGrid}>
+      <Grid item xs={12} className={classes.searchGrid}>
         <div className={classes.root}>
           {haveAccess ? (
             subscribedPackage ? (

@@ -27,6 +27,7 @@ const paymentRoutes = require("./routes/payment");
 const contactRoutes = require("./routes/contact");
 const logsRoutes = require("./routes/logs");
 const verificationRoutes = require("./routes/verification");
+const applicationRoutes = require("./routes/applications");
 
 app.use("/companyImage", express.static("companyImage"));
 
@@ -60,6 +61,7 @@ app.use(paymentRoutes);
 app.use(contactRoutes);
 app.use(logsRoutes);
 app.use(verificationRoutes);
+app.use(applicationRoutes);
 
 const PORT = 8000;
 

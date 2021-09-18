@@ -160,6 +160,9 @@ export default function ProfileSetup() {
         certificate: certificate,
       };
       const loginId = sessionStorage.getItem("loginId");
+      //console.log(jobSeekerData);
+      //console.log(Object.values(award[0])[0])
+      
       axios
         .put(`${BACKEND_URL}/jobseeker/update/${loginId}`, jobSeekerData)
         .then((res) => {
@@ -168,7 +171,7 @@ export default function ProfileSetup() {
           } else {
             setAlertData({
               severity: "error",
-              msg: "Failed to update details! No worries. You can alwasy update/ change these details in your profile page",
+              msg: "Failed to update details! No worries. You can always update/ change these details in your profile page",
             });
             handleAlert();
           }
@@ -176,10 +179,11 @@ export default function ProfileSetup() {
         .catch((e) => {
           setAlertData({
             severity: "error",
-            msg: "Failed to update details! No worries. You can alwasy update/ change these details in your profile page",
+            msg: "Failed to update details! No worries. You can always update/ change these details in your profile page",
           });
           handleAlert();
         });
+        
     } else {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
@@ -389,10 +393,11 @@ export default function ProfileSetup() {
   const [work, setWork] = useState([
     {
       place: "",
+      description: "",
       position: "",
       from: "",
       to: "",
-      taskAndResponsibility: [{ taskName: "" }],
+      taskAndResponsibility: "",
     },
   ]);
   const handleWorkInputChange = (e, index) => {
@@ -401,20 +406,9 @@ export default function ProfileSetup() {
     list[index][name] = value;
     setWork(list);
   };
-  const handleTaskInputChange = (e, index, secondIndex) => {
-    const { name, value } = e.target;
-    const list = [...work];
-    list[index]["taskAndResponsibility"][secondIndex][name] = value;
-    setWork(list);
-  };
   const handleWorkRemoveClick = (index) => {
     const list = [...work];
     list.splice(index, 1);
-    setWork(list);
-  };
-  const handleTaskRemoveClick = (index, secondIndex) => {
-    const list = [...work];
-    list[index]["taskAndResponsibility"].splice(secondIndex, 1);
     setWork(list);
   };
   const handleWorkAddClick = () => {
@@ -422,17 +416,13 @@ export default function ProfileSetup() {
       ...work,
       {
         place: "",
+        description: "",
         position: "",
         from: "",
         to: "",
-        taskAndResponsibility: [{ taskName: "" }],
+        taskAndResponsibility: "",
       },
     ]);
-  };
-  const handleTaskAddClick = (index) => {
-    const list = [...work];
-    list[index]["taskAndResponsibility"].push({ taskName: "" });
-    setWork(list);
   };
 
   const [project, setProject] = useState([
@@ -442,7 +432,7 @@ export default function ProfileSetup() {
       description: "",
       from: "",
       to: "",
-      techStack: [],
+      usedTech: [],
     },
   ]);
   const handleProjectInputChange = (e, index) => {
@@ -453,7 +443,7 @@ export default function ProfileSetup() {
   };
   const handleProjectTechInputChange = (event, value, index) => {
     let list = [...project];
-    list[index]["techStack"] = value;
+    list[index]["usedTech"] = value;
     setProject(list);
   };
   const handleProjectRemoveClick = (index) => {
@@ -470,7 +460,7 @@ export default function ProfileSetup() {
         description: "",
         from: "",
         to: "",
-        techStack: [],
+        usedTech: [],
       },
     ]);
   };
@@ -567,11 +557,8 @@ export default function ProfileSetup() {
     handleAchievementRemoveClick,
     work,
     handleWorkInputChange,
-    handleTaskInputChange,
     handleWorkAddClick,
-    handleTaskAddClick,
     handleWorkRemoveClick,
-    handleTaskRemoveClick,
     project,
     handleProjectInputChange,
     handleProjectAddClick,
@@ -674,7 +661,6 @@ export default function ProfileSetup() {
                                     </Button>
                                   )}
                                   <Button
-                                    
                                     color="primary"
                                     onClick={handleNext}
                                     className={classes.next}

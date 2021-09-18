@@ -136,7 +136,7 @@ function FeaturedOrganizations(props) {
         } else {
             return (
                 <Grid item sm={12}>
-                    <Typography>No Favourite Organizations</Typography>
+                    <Typography>No Favorite Organizations</Typography>
                 </Grid>)
         }
     }
@@ -159,7 +159,7 @@ function FeaturedOrganizations(props) {
             <Grid container direction="column" spacing={2} className={classes.container}>
                 <Grid item sm={12} >
                     <FloatCard>
-                        <Typography variant="h5" className={classes.title}>Favourite Organizations</Typography>
+                        <Typography variant="h5" className={classes.title}>Favorite Organizations</Typography>
                     </FloatCard>
                 </Grid>
                 <Grid item container direction="column" spacing={2}>

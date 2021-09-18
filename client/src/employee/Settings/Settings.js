@@ -454,7 +454,7 @@ const Settings = (props) => {
                       </Grid>
                       <Grid item xs={12}>
                         <Typography gutterBottom style={{fontSize:'14px',color:'#666',textAlign:"left"}}>
-                          By making your profile private, only the organizations you applied for will be able to view your profile in Famingo. You will not be visible to other organizations and job seekers.
+                          By making your profile private, only the organizations you applied for will be able to view your profile in Flamingo. You will not be visible to other organizations and job seekers.
                         </Typography>
                       </Grid>
                   </Grid>
@@ -471,7 +471,7 @@ const Settings = (props) => {
                 >
                   <form onSubmit={handleChangePassword}>
                     <Grid item xs={12}>
-                      <Grid container spacing={3} diection="column">
+                      <Grid container spacing={3} direction="column">
                         <Grid item xs={12} align="left">
                           <Typography variant="h5">Change Password</Typography>
                         </Grid>

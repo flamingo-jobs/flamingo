@@ -6,6 +6,8 @@ import axios from "axios";
 import BACKEND_URL from "../../../../Config";
 import { Pie } from "react-chartjs-2";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import Loading from '../../../../components/Loading';
+import NotEnoughData from '../../../../components/NotEnoughData';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -37,7 +39,7 @@ const Aquisitions = (props) => {
   const classes = useStyles();
 
   const [state, setState] = useState({
-    allJobs: [],
+    allJobs: null,
   });
 
   const allJobs = state.allJobs;
@@ -56,6 +58,10 @@ const Aquisitions = (props) => {
   }, []);
 
   const getTotalPending = () => {
+
+    if (!allJobs) {
+      return 0;
+    }
     var totalPending = 0;
 
     allJobs.forEach((job) => {
@@ -69,6 +75,9 @@ const Aquisitions = (props) => {
   };
 
   const getTotalReviewing = () => {
+    if (!allJobs) {
+      return 0;
+    }
     var totalReviewing = 0;
 
     allJobs.forEach((job) => {
@@ -82,6 +91,9 @@ const Aquisitions = (props) => {
   };
 
   const getTotalShortlisted = () => {
+    if (!allJobs) {
+      return 0;
+    }
     var totalShortlisted = 0;
 
     allJobs.forEach((job) => {
@@ -95,6 +107,9 @@ const Aquisitions = (props) => {
   };
 
   const getTotalRejected = () => {
+    if (!allJobs) {
+      return 0;
+    }
     var totalRejected = 0;
 
     allJobs.forEach((job) => {
@@ -185,24 +200,34 @@ const Aquisitions = (props) => {
           </Grid>
         </Grid> */}
 
-      <Typography>Aquisitions</Typography>
-      <Pie data={genPieData()} options={{
-        plugins: {
-          datalabels: {
-            display: true,
-            anchor: 'center',
-            clam: true,
-            formatter: (val, ctx) => {
-              return val + " - " + ctx.chart.data.labels[ctx.dataIndex];
-            },
-            font: {
-              weight: 'bold',
-            },
-            color: 'white'
+      <Typography>Acquisitions</Typography>
+      {!allJobs ?
+        <Loading /> : null
+      }
+      {allJobs && dataSource.map(x => x.val).reduce((x, y) => x + y) === 0 ?
+        <NotEnoughData /> : null}
+      {allJobs && allJobs.length > 0 && dataSource.map(x => x.val).reduce((x, y) => x + y) > 0 ?
+        <Pie data={genPieData()} options={{
+          plugins: {
+            datalabels: {
+              display: true,
+              anchor: 'center',
+              clam: true,
+              formatter: (val, ctx) => {
+                return val;
+              },
+              font: {
+                weight: 'bold',
+              },
+              color: '#495357',
+              backgroundColor: '#E7F7FF',
+              padding: 4,
+              borderRadius: 4
 
-          }
-        },
-      }} plugins={[ChartDataLabels]} />
+            }
+          },
+        }} plugins={[ChartDataLabels]} /> : null
+      }
     </FloatCard>
   );
 };

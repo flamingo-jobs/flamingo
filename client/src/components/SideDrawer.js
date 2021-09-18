@@ -72,14 +72,14 @@ export default function MiniDrawer(props) {
                         <Grid item xs={12}>
                             <NavMenu user={props.user} />
                         </Grid>
-                        <Grid item xs={12}>
+                        {props.user !== "admin" ? <Grid item xs={12}>
 
                             <Lottie
                                 options={defaultOptions}
                                 height={200}
                                 width={200}
                             />
-                        </Grid>
+                        </Grid> : null}
                     </Grid>
                 </div>
             </FloatCard>

@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { Grid, Typography } from '@material-ui/core'
 import FloatCard from '../../components/FloatCard'
-import CircularProgressWithLabel from './CicularProgressWithLabel'
 import axios from "axios";
 import BACKEND_URL from "../../Config";
 

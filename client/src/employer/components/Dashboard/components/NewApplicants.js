@@ -4,10 +4,11 @@ import Grid from "@material-ui/core/Grid";
 import FloatCard from "../../../../components/FloatCard";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import BACKEND_URL,{FILE_URL} from "../../../../Config";
+import BACKEND_URL, { FILE_URL } from "../../../../Config";
 import { useState, useEffect } from "react";
 import theme from "../../../../Theme";
-
+import Loading from "../../../../components/Loading";
+import NotEnoughData from "../../../../components/NotEnoughData";
 const useStyles = makeStyles((theme) => ({
   title: {
     fontWeight: "bolder",
@@ -48,7 +49,7 @@ const NewApplicants = (props) => {
   const [value, setValue] = React.useState(2);
 
   const [state, setState] = useState({
-    allJobs: [],
+    allJobs: null,
   });
 
   const allJobs = state.allJobs;
@@ -90,13 +91,14 @@ const NewApplicants = (props) => {
           spacing={2}
           direction="row"
           justifyContent="flex-start"
-          alignItems="stretch" style={{padding: 8}}>
+          alignItems="stretch" style={{ padding: 8 }}>
           <Grid item xs={12}>
             <Typography variant="h6" className={classes.title}>
               New Applicants
             </Typography>
           </Grid>
-          {Array.from(allJobs).map((job, i) => (
+          {!allJobs ? <Loading /> : null}
+          {allJobs && allJobs.length ? Array.from(allJobs).map((job, i) => (
             <Grid item xs={12}>
               <FloatCard backColor={theme.palette.lightSkyBlueHover}>
                 <Grid item container direction="row"
@@ -117,11 +119,8 @@ const NewApplicants = (props) => {
               </FloatCard>
             </Grid>
 
-          ))}
+          )) : <NotEnoughData />}
         </Grid>
-        <Link to={`/employer/resumes`}>
-          <Button className={classes.button}>View All</Button>
-        </Link>
       </FloatCard>
     </div>
   );

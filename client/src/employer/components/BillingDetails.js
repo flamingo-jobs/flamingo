@@ -20,6 +20,7 @@ import SnackBarAlert from "../../components/SnackBarAlert";
 import { Link } from "react-router-dom";
 import BACKEND_URL from "../../Config";
 import axios from "axios";
+import Loading from "../../components/Loading";
 const jwt = require("jsonwebtoken");
 
 const useStyles = makeStyles((theme) => ({
@@ -139,6 +140,11 @@ export default function BillingDetails(props) {
       width: 150,
     },
     {
+      field: "startDate",
+      headerName: "Start Date",
+      width: 149,
+    },
+    {
       field: "validity",
       headerName: "Valid Period",
       width: 154,
@@ -199,29 +205,26 @@ export default function BillingDetails(props) {
         setPreviousOrders(res.data.previousOrders);
         let fixedRows = [];
         res.data.previousOrders.forEach((x, index) => {
-          let dueDate = x.paymentDate
-            ? new Date(
-                new Date(x.paymentDate).getTime() + 30 * 24 * 60 * 60 * 1000
-              )
-            : undefined;
           fixedRows.push({
-            id: index,
-            payDay: x.paymentDate ? x.paymentDate.slice(0, 10) : "a",
-            amount: x.amount ? x.currency + " " + x.amount : "a",
+            id: index+1,
+            payDay: x.paymentDate ? x.paymentDate.slice(0, 10) : "N/A",
+            amount: x.amount ? x.currency + " " + x.amount : "N/A",
             description: x.items
               ? "Monthly charge: " + x.items + " package"
-              : "a",
-            validity: x.duration ? x.duration : "a",
-            nextDate: dueDate ? dueDate.toISOString().slice(0, 10) : "a",
+              : "N/A",
+            validity: x.duration ? x.duration : "N/A",
+            startDate: new Date(x.startDate).toISOString().slice(0, 10),
+            nextDate: new Date(x.endDate).toISOString().slice(0, 10),
             payedBy:
-              (x.first_name ? x.first_name : "a") +
+              (x.first_name ? x.first_name : "N/A") +
               " " +
-              (x.last_name ? x.last_name : "a"),
+              (x.last_name ? x.last_name : "N/A"),
             orderId: x._id,
           });
         });
-        setRows(fixedRows);
+        setRows(fixedRows.reverse());
         getDueDate(fixedRows);
+        setLoadingData(false);
       }
     });
   }, []);
@@ -255,6 +258,8 @@ export default function BillingDetails(props) {
     setInvoiceOpen(false);
   };
 
+  const [loadingData, setLoadingData] = useState(true);
+
   const unsubscribePackage = () => {
     const userId = jwt.decode(sessionStorage.getItem("userToken"), {
       complete: true,
@@ -267,7 +272,7 @@ export default function BillingDetails(props) {
       .then((res) => {
         if (res.data.success) {
           dropToBasic();
-          window.location = "./";
+          window.location = "/employer/billing";
         } else {
           setAlertData({
             severity: "error",
@@ -357,12 +362,13 @@ export default function BillingDetails(props) {
         <Grid item xs={12}>
           {displayAlert()}
           <Typography variant="h6">Previous payments</Typography> <Box m={1} />
+          {loadingData ? <Loading /> : null}
           {rows ? (
-            <div style={{ height: 300, width: "100%" }}>
+            <div style={{ height: 500, width: "100%" }}>
               <DataGrid
                 rows={rows}
                 columns={columns}
-                pageSize={10}
+                pageSize={11}
                 checkboxSelection
                 disableSelectionOnClick
               />
@@ -379,7 +385,7 @@ export default function BillingDetails(props) {
           <Typography variant="h6">
             You are subscribed to {props.info} package
           </Typography>
-          <Divider />
+          <Divider style={{ marginTop: 20, marginBottom: 20 }} />
           {props.info === "premium" ? (
             <Link to="/employer/payment/standard">
               <Button className={classes.switchButton}>
@@ -399,7 +405,7 @@ export default function BillingDetails(props) {
         </Grid>
         <Grid item xs={12} lg={6}>
           <Typography variant="h6">Next Payment: {expiryDate}</Typography>
-          <Divider />
+          <Divider style={{ marginTop: 20, marginBottom: 20 }} />
           <Link to="/employer/payment/premium">
             <Button className={classes.button}>Continue to Payment</Button>
           </Link>
@@ -421,7 +427,7 @@ export default function BillingDetails(props) {
                 type="password"
                 value={confirmPassword}
                 placeholder="Enter your password"
-                onChange={(e, value) => setConfirmPassword(value)}
+                onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </DialogContentText>
           </DialogContent>

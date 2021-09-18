@@ -115,7 +115,7 @@ function EmployerJobCard(props) {
     const { loading = false } = props;
 
     const numOfApplicants = () => {
-        if(props.info.applicationDetails?.length === 1){
+        if (props.info.applicationDetails?.length === 1) {
             return `${props.info.applicationDetails.length} applicant`;
         }
         return `${props.info.applicationDetails.length} applicants`;
@@ -124,7 +124,7 @@ function EmployerJobCard(props) {
     return (
         <FloatCard >
             <Grid container spacing={2}>
-                <Grid item xs={12} md={8}>
+                <Grid item xs={12} md={9}>
                     <div className={classes.root}>
                         <div className={classes.header}>
                             <div className={classes.headerLeft}>
@@ -162,40 +162,42 @@ function EmployerJobCard(props) {
                         </div>
                     </div>
                 </Grid>
-                <Grid item xs={12} md={4}>
-                    {props.info.applicationDetails.length ?
-                        <Doughnut data={{
-                            datasets: [
-                                {
-                                    data: props.values.map(x => x.value),
-                                    backgroundColor: props.values.map(x => x.color),
-                                    label: "Categories",
+                <Grid item xs={12} md={3} style={{alignSelf:"center"}}>
+                        {props.info.applicationDetails.length ?
+                            <Doughnut data={{
+                                datasets: [
+                                    {
+                                        data: props.values.map(x => x.value),
+                                        backgroundColor: props.values.map(x => x.color),
+                                        label: "Categories",
 
+                                    },
+                                ],
+                                labels: props.values.map(x => x.label),
+
+                            }} options={{
+                                plugins: {
+                                    datalabels: {
+                                        display: true,
+                                        anchor: 'start',
+                                        clam: true,
+                                        formatter: (val, ctx) => {
+                                            return val + " - " + ctx.chart.data.labels[ctx.dataIndex];
+                                        },
+                                        font: {
+                                            weight: 'bold',
+                                        },
+                                        color: '#495357',
+                                        backgroundColor: '#E7F7FF',
+                                        padding: 4,
+                                        borderRadius: 4
+
+                                    },
+                                    legend: false,
                                 },
-                            ],
-                            labels: props.values.map(x => x.label),
-
-                        }} options={{
-                            plugins: {
-                                datalabels: {
-                                    display: true,
-                                    anchor: 'center',
-                                    clam: true,
-                                    formatter: (val, ctx) => {
-                                        return val + " - " + ctx.chart.data.labels[ctx.dataIndex];
-                                    },
-                                    font: {
-                                        weight: 'bold',
-                                    },
-                                    color: '#495357',
-                                    backgroundColor: '#E7F7FF',
-                                    padding: 4,
-                                    borderRadius: 4
-
-                                }
-                            },
-                        }} plugins={[ChartDataLabels]} width="100" /> :
-                        <Typography style={{ position: 'relative', top: '50%' }}>No applications yet!</Typography>}
+                                responsive: true,
+                            }} plugins={[ChartDataLabels]} width="100" /> :
+                            <Typography style={{ position: 'relative', top: '50%' }}>No applications yet!</Typography>}
                 </Grid>
             </Grid>
 

@@ -17,13 +17,7 @@ import { Link } from "react-router-dom";
 
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    minWidth: 275,
-    border: `1px solid #5E60CE`,
-    borderRadius: 10,
-    margin: "30px 10px 30px 10px",
-    // background: "linear-gradient(45deg, #64DFDF 30%, #FFFFFF 90%)",
-  },
+
   title: {
     color: theme.palette.grey,
     marginBottom: 10,
@@ -67,10 +61,10 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 12,
     boxShadow: "rgba(83, 144, 217, 0.1) 0px 4px 12px",
     overflow: "unset",
-    margin: "0px 10px 20px 5px",
+    marginBottom: 24
   },
   topCardContent: {
-    padding: 10,
+    padding: 20,
     justifyContent: "center",
     display: "grid",
     justifyItems: "center",
@@ -109,47 +103,47 @@ export default function BillingPackageCard() {
   };
 
   return (
-    <div>
-      <Card className={classes.topCard}>
-        <CardContent className={classes.topCardContent}>
-          <Grid
-            container
-            direction="row"
-            spacing={3}
-            justify="space-between"
-            alignItems="center"
-            style={{ maxWidth: "100%" }}
-          >
-            <Grid item xs={11} md={9} className={classes.topCardText}>
-              <Typography variant="h4" className={classes.topCardTitle}>
-                With Flamingo, you can advance your recruitment process like
-                never before!
-              </Typography>
+    <>
+      <Grid item xs={12} spacing={3}>
+        <Card className={classes.topCard}>
+          <CardContent className={classes.topCardContent}>
+            <Grid
+              container
+              direction="row"
+              spacing={3}
+              justify="space-between"
+              alignItems="center"
+              style={{ maxWidth: "100%" }}
+            >
+              <Grid item xs={11} md={9} className={classes.topCardText}>
+                <Typography variant="h4" className={classes.topCardTitle}>
+                  With Flamingo, you can advance your recruitment process like
+                  never before!
+                </Typography>
 
-              <Typography variant="body1" className={classes.topCardTextBody}>
-                <Box fontWeight={500} fontSize={20} m={1}>
-                  Flamingo goes few steps further from a typical job portal and
-                  brings a novel recruitment experience for the Sri Lankan IT
-                  industry by making use of cutting edge technology. Upgrade
-                  your account today to experience advanced features!
-                </Box>
-              </Typography>
+                <Typography variant="body1" className={classes.topCardTextBody}>
+                  <Box fontWeight={400} fontSize={16} m={1}>
+                    Flamingo goes few steps further from a typical job portal and
+                    brings a novel recruitment experience for the Sri Lankan IT
+                    industry by making use of cutting edge technology. Upgrade
+                    your account today to experience advanced features!
+                  </Box>
+                </Typography>
+              </Grid>
+              <Grid item xs={11} md={3}>
+                <Lottie
+                  className={classes.lottie}
+                  options={defaultOptions}
+                  height={"inherit"}
+                  width={"inherit"}
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={11} md={3}>
-              <Lottie
-                className={classes.lottie}
-                options={defaultOptions}
-                height={"inherit"}
-                width={"inherit"}
-              />
-            </Grid>
-          </Grid>
-        </CardContent>
-      </Card>
-
-      <Grid container spacing={3} direction="row">
-        {/* Basic Package  */}
-        <Grid item container xs={12} lg={4}>
+          </CardContent>
+        </Card>
+      </Grid>
+      <Grid container spacing={3}>
+        <Grid item xs={12} lg={4}>
           <FloatCard className={classes.root}>
             <Typography variant="h4" gutterBottom>
               <Box
@@ -177,7 +171,7 @@ export default function BillingPackageCard() {
               >
                 Enjoy Flamingo Jobs for FREE
               </Box>
-              <Divider variant="middle"/>
+              <Divider variant="middle" />
             </Typography>
 
             <Grid
@@ -223,7 +217,7 @@ export default function BillingPackageCard() {
             </Grid>
             <br />
             <div>
-              <Typography variant="button" className={classes.Tytpography}>
+              <Typography variant="button" className={classes.Typography}>
                 You are currently on this plan
               </Typography>
             </div>
@@ -232,7 +226,7 @@ export default function BillingPackageCard() {
         </Grid>
 
         {/* Standard Package */}
-        <Grid item container xs={12} lg={4}>
+        <Grid item xs={12} lg={4}>
           <FloatCard className={classes.root}>
             <Typography variant="h4" gutterBottom>
               <Box
@@ -306,7 +300,7 @@ export default function BillingPackageCard() {
               <Grid item xs={12}>
                 <br />
                 <Link to="/employer/payment/standard">
-                  <Button  className={classes.button}>
+                  <Button className={classes.button}>
                     Get Started
                   </Button>
                 </Link>
@@ -317,7 +311,7 @@ export default function BillingPackageCard() {
         </Grid>
 
         {/* Premium Package */}
-        <Grid item container xs={12} lg={4}>
+        <Grid item xs={12} lg={4}>
           <FloatCard className={classes.root}>
             <Typography variant="h4" gutterBottom>
               <Box
@@ -391,7 +385,7 @@ export default function BillingPackageCard() {
               <Grid item xs={12}>
                 <br />
                 <Link to="/employer/payment/premium">
-                  <Button  className={classes.button}>
+                  <Button className={classes.button}>
                     Get Started
                   </Button>
                 </Link>
@@ -401,6 +395,6 @@ export default function BillingPackageCard() {
           </FloatCard>
         </Grid>
       </Grid>
-    </div>
+    </>
   );
 }

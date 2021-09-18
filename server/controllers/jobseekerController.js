@@ -533,7 +533,7 @@ const resetAll = (req, res) => { // To clear the test resume details
         })
       }
       return res.status(200).json({
-        sucess: "Updated successfully"
+        success: "Updated successfully"
       });
     }
   );
@@ -964,7 +964,6 @@ const getNotifications = (req, res) => {
 };
 
 const addNotifications = (req, res) => {
-  console.log(JSON.stringify(req.body))
   Jobseeker.findOneAndUpdate(
     { _id: req.params.id },
     { $push: { notifications: req.body } },
@@ -982,11 +981,30 @@ const addNotifications = (req, res) => {
 };
 
 const markNotifications = (req, res) => {
-  console.log(JSON.stringify(req.body))
   Jobseeker.findByIdAndUpdate(
     req.params.id,
     {
       $set: { notifications: req.body },
+    },
+    (err, jobseeker) => {
+      if (err) {
+        return res.status(400).json({
+          error: err,
+        });
+      }
+      return res.status(200).json({
+        success: true,
+      });
+    }
+  );
+};
+
+const deleteNotifications = (req, res) => {
+  console.log("deleting")
+  Jobseeker.findByIdAndUpdate(
+    req.params.id,
+    {
+      $set: { notifications: [] },
     },
     (err, jobseeker) => {
       if (err) {
@@ -1049,5 +1067,6 @@ module.exports = {
   getForTable,
   getApplicants,
   markNotifications,
-  addNotifications
+  addNotifications,
+  deleteNotifications
 };

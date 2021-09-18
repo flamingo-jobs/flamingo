@@ -43,6 +43,8 @@ import Jobs from "./jobs/Jobs";
 import People from "./people/People";
 import Recommendations from "./recommendations/Recommendations";
 import SearchResult from "./searchResults/searchResult";
+import PrivacyPolicy from "./terms/PrivacyPolicy";
+import TermsOfServices from "./terms/TermsOfServices";
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
@@ -119,7 +121,7 @@ const useStyles = makeStyles((theme) => ({
 function Base() {
   const classes = useStyles();
 
-  //Redirect user to signin page if not logged in
+  //Redirect user to sign in page if not logged in
   const token = sessionStorage.getItem("userToken");
 
   const [role, setRole] = useState(
@@ -167,6 +169,12 @@ function Base() {
         </Route>
         <Route path="/contactUs" exact>
           <ContactUs />
+        </Route>
+        <Route path="/termsOfService" exact>
+          <TermsOfServices />
+        </Route>
+        <Route path="/privacy" exact>
+          <PrivacyPolicy />
         </Route>
       </>
     );

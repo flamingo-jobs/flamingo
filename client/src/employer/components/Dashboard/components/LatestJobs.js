@@ -19,6 +19,8 @@ import { useState, useEffect } from "react";
 import EmployerJobCard from "../../DetailedJobCard";
 import theme from "../../../../Theme";
 import Loading from "../../../../components/Loading";
+import NotEnoughData from "../../../../components/NotEnoughData";
+import NoInfo from "../../../../components/NoInfo";
 const jwt = require("jsonwebtoken");
 
 const StyledTableCell = withStyles((theme) => ({
@@ -229,7 +231,7 @@ const LatestJobs = (props) => {
                 />
               </Grid>
             )) : null }
-            {allJobs !== "empty" && allJobs.length === 0 ? <Typography>You have not posted any jobs yet!</Typography> : null}
+            {allJobs !== "empty" && allJobs.length === 0 ? <NoInfo message="Sorry, you haven't posted any jobs yet." /> : null}
           {/* </TableBody>
           </Table>
         </TableContainer> */}

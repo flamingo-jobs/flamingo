@@ -95,6 +95,7 @@ const useStyles = makeStyles((theme) => ({
   },
   submitButton: {
     width: "250px",
+    color: theme.palette.white,
     background: theme.palette.tuftsBlue,
     // background: "#E94B4C",
     transition: "0.3s",
@@ -221,7 +222,7 @@ const UploadModal = (props) => {
             }).catch(error => {
               props.setAlertData({
                 severity: "error",
-                msg: "Resume could not be updateds!",
+                msg: "Resume could not be updated!",
               });
               props.handleAlert();
             })
@@ -233,7 +234,7 @@ const UploadModal = (props) => {
             props.handleAlert();
           }
         } else {
-          // Error occured in job seeker update
+          // Error occurred in job seeker update
           if (resumeDetailsResponseJobSeeker.data.error) {
             props.setAlertData({
               severity: "error",
@@ -243,7 +244,7 @@ const UploadModal = (props) => {
           }
         }
       }
-    } catch {
+    } catch (error) {
       props.setAlertData({
         severity: "error",
         msg: "Something went wrong! Please try again later",

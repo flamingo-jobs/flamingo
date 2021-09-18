@@ -210,7 +210,7 @@ export default function StartHiring() {
     mainLocation: "",
   };
   const [formData, setForm] = useForm(defaultData);
-
+  const [submitted, setSubmitted] = useState(false);
   const badPassword = (password) => {
     if (!passwordRegexp.test(password)) {
       return true;
@@ -239,6 +239,7 @@ export default function StartHiring() {
       handleAlert();
     } else {
       if (formData.password === formData.confirmPassword) {
+        setSubmitted(true);
         axios
           .post(`${BACKEND_URL}/api/signup`, signupData)
           .then((res) => {
@@ -257,7 +258,7 @@ export default function StartHiring() {
           })
           .catch((err) => {
             if (err) {
-              // console.log(err);
+              setSubmitted(false);
               setAlertData({
                 severity: "error",
                 msg: "User account creation failed!",
@@ -266,6 +267,7 @@ export default function StartHiring() {
             }
           });
       } else {
+        setSubmitted(false);
         setAlertData({
           severity: "error",
           msg: "Please check whether your passwords are matching!",
@@ -291,33 +293,59 @@ export default function StartHiring() {
       subscription: { type: "Basic", startDate: new Date() },
       verificationStatus: "none",
     };
-    axios.post(`${BACKEND_URL}/employers/create`, employerData).then((res) => {
-      if (res.data.success) {
-        handleSuccessLogin(userId, res.data.existingData);
-      } else {
-        setAlertData({
-          severity: "error",
-          msg: "Employer account creation failed!",
-        });
-        handleAlert();
-      }
-    });
+    axios
+      .post(`${BACKEND_URL}/employers/create`, employerData)
+      .then((res) => {
+        if (res.data.success) {
+          handleSuccessLogin(userId, res.data.existingData);
+        } else {
+          setSubmitted(false);
+          setAlertData({
+            severity: "error",
+            msg: "Employer account creation failed!",
+          });
+          handleAlert();
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          setSubmitted(false);
+          setAlertData({
+            severity: "error",
+            msg: "Employer account creation failed!",
+          });
+          handleAlert();
+        }
+      });
   };
 
-  const handleSuccessLogin = (id, loginId) => {
-    handleUploads(loginId);
+  const handleSuccessLogin = async (id, loginId) => {
+    await handleUploads(loginId);
     const linker = { id: id, loginId: loginId };
-    axios.post(`${BACKEND_URL}/api/link-account`, linker).then((res) => {
-      if (res.data.success) {
-        handleShorlistingSettings(loginId);
-      } else {
-        setAlertData({
-          severity: "error",
-          msg: "Account linking failed!",
-        });
-        handleAlert();
-      }
-    });
+    axios
+      .post(`${BACKEND_URL}/api/link-account`, linker)
+      .then((res) => {
+        if (res.data.success) {
+          handleShorlistingSettings(loginId);
+        } else {
+          setSubmitted(false);
+          setAlertData({
+            severity: "error",
+            msg: "Account linking failed!",
+          });
+          handleAlert();
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          setSubmitted(false);
+          setAlertData({
+            severity: "error",
+            msg: "Account linking failed!",
+          });
+          handleAlert();
+        }
+      });
   };
 
   const handleShorlistingSettings = (loginId) => {
@@ -331,6 +359,7 @@ export default function StartHiring() {
           sessionStorage.setItem("loginId", loginId);
           window.location = "/";
         } else {
+          setSubmitted(false);
           setAlertData({
             severity: "error",
             msg: "Account creation failed! Please contact support",
@@ -340,6 +369,7 @@ export default function StartHiring() {
       })
       .catch((err) => {
         if (err) {
+          setSubmitted(false);
           setAlertData({
             severity: "error",
             msg: "Account creation failed! Please contact support",
@@ -359,15 +389,15 @@ export default function StartHiring() {
     if (selectedFile) {
       var file = selectedFile;
       var blob = file.slice(0, file.size);
-      const fileName = loginId + "." + path.extname(selectedFile.name);
+      const fileName = loginId + path.extname(selectedFile.name);
       var newFile = new File([blob], `${fileName}`, {
-        type: "image/*",
+        type: "image/png",
       });
 
       await uploadFileToBlob(newFile, "employer-profile-pictures");
       const updateData = { logo: fileName };
       axios
-        .post(`${BACKEND_URL}/employers/update/${loginId}`, updateData)
+        .put(`${BACKEND_URL}/employers/update/${loginId}`, updateData)
         .then((res) => {
           if (res.data.success) {
             setAlertData({
@@ -379,6 +409,7 @@ export default function StartHiring() {
         })
         .catch((err) => {
           if (err) {
+            setSubmitted(false);
             setAlertData({
               severity: "error",
               msg: "Failed to upload logo!",
@@ -717,7 +748,7 @@ export default function StartHiring() {
                                 alignItems="flex-start"
                                 spacing={1}
                               >
-                                <Grid item xs={12} md={3} align="left">
+                                <Grid item xs={12} md={4} align="left">
                                   <Autocomplete
                                     id="combo-box-demo"
                                     options={socialMediaPlatforms}
@@ -727,7 +758,7 @@ export default function StartHiring() {
                                       <TextField
                                         {...params}
                                         name="platform"
-                                        label="Platform"
+                                        label="Select Platform"
                                         variant="outlined"
                                         size="small"
                                         value={x.platform}
@@ -738,13 +769,14 @@ export default function StartHiring() {
                                     )}
                                   />
                                 </Grid>
-                                <Grid item xs={12} md={6} align="left">
+                                <Grid item xs={12} md={5} align="left">
                                   <TextField
                                     className={classes.textField}
                                     variant="outlined"
                                     fullWidth
                                     size="small"
                                     name="link"
+                                    type="url"
                                     label="Link"
                                     value={x.link}
                                     onChange={(e) =>
@@ -895,6 +927,7 @@ export default function StartHiring() {
                                 fullWidth
                                 type="submit"
                                 className={classes.submit}
+                                disabled={submitted}
                               >
                                 Sign Up
                               </Button>

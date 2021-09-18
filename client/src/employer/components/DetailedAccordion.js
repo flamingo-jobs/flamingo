@@ -114,15 +114,14 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   cancelButton: {
-    backgroundColor: theme.palette.blueJeans,
-    color: "white",
+    backgroundColor: theme.palette.grey,
+    color: "black",
     margin: 17,
     borderRadius: 25,
     paddingLeft: 20,
     paddingRight: 20,
     "&:hover": {
-      backgroundColor: theme.palette.blueJeansHover,
-      color: "white",
+      backgroundColor: theme.palette.grey,
     },
   },
   saveButton: {

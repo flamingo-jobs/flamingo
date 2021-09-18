@@ -315,7 +315,7 @@ const JobSummaryModal = (props) => {
                       </Grid>
                     </Grid>
 
-                    {/* Requried Degrees & Experience */}
+                    {/* Required Degrees & Experience */}
                     <Grid container spacing={1}>
                       <Grid item xs={12} sm={6}>
                         <StateBlueTextField
@@ -366,7 +366,7 @@ const JobSummaryModal = (props) => {
                         <StateBlueTextField
                           id="minSalary"
                           name="min"
-                          label="Minimum Salary"
+                          label="Minimum Salary (LKR)"
                           onChange={props.handleSummaryChange}
                           className={classes.textField}
                           variant="outlined"
@@ -383,7 +383,7 @@ const JobSummaryModal = (props) => {
                         <StateBlueTextField
                           id="maxSalary"
                           name="max"
-                          label="Maximum Salary"
+                          label="Maximum Salary (LKR)"
                           onChange={props.handleSummaryChange}
                           variant="outlined"
                           fullWidth

@@ -1,7 +1,8 @@
 const Employers = require("../models/employers");
 const Jobs = require("../models/jobs");
-
+const Subscriptions = require("../models/subscriptions");
 const Jobseeker = require("../models/jobseeker");
+const Users = require("../models/users");
 
 const create = (req, res) => {
   let newEmployer = new Employers(req.body);
@@ -64,7 +65,7 @@ const getForTable = (req, res) => {
         isFeatured: obj.isFeatured,
         locations: obj.locations,
         verificationFileName: obj.verificationFileName,
-        verificationStatus: obj.verificationStatus
+        verificationStatus: obj.verificationStatus,
       };
 
       return newObj;
@@ -236,7 +237,7 @@ const getAllApplications = async (req, res) => {
         for (let jindex = 0; jindex < job.applicationDetails.length; jindex++) {
           const user = job.applicationDetails[jindex];
           var a = await Jobseeker.findById(user.userId);
-          temp.push({ job: job.title, name: a.name,jobseekerId:a._id });
+          temp.push({ job: job.title, name: a.name, jobseekerId: a._id });
         }
       }
 
@@ -254,17 +255,19 @@ const getAllApplications = async (req, res) => {
 };
 
 const getNotifications = (req, res) => {
-  Employers.findById(req.params.id, 'notifications').exec((err, notifications) => {
-    if (err) {
-      return res.status(400).json({
-        error: err,
+  Employers.findById(req.params.id, "notifications").exec(
+    (err, notifications) => {
+      if (err) {
+        return res.status(400).json({
+          error: err,
+        });
+      }
+      return res.status(200).json({
+        success: true,
+        existingData: notifications.notifications,
       });
     }
-    return res.status(200).json({
-      success: true,
-      existingData: notifications.notifications,
-    });
-  });
+  );
 };
 
 const addNotifications = (req, res) => {
@@ -303,6 +306,82 @@ const markNotifications = (req, res) => {
   );
 };
 
+const deleteNotifications = (req, res) => {
+  Employers.findByIdAndUpdate(
+    req.params.id,
+    {
+      $set: { notifications: [] },
+    },
+    (err, jobseeker) => {
+      if (err) {
+        return res.status(400).json({
+          error: err,
+        });
+      }
+      return res.status(200).json({
+        success: true,
+      });
+    }
+  );
+};
+
+const getSubscriptionStatus = async (req, res) => {
+  Employers.findById(req.params.id).exec((err, employer) => {
+    if (employer.subscription.type === "premium") {
+      return res.status(200).json({
+        success: true,
+        existingData: { subscriptionType: employer.subscription.type },
+      });
+    } else {
+      Subscriptions.find({ type: employer.subscription.type })
+        .exec()
+        .then((packageDetails) => {
+          Jobs.find({ "organization.id": req.params.id })
+            .exec()
+            .then((jobs) => {
+              Users.find({ loginId: req.params.id })
+                .exec()
+                .then((users) => {
+                  return res.status(200).json({
+                    success: true,
+                    existingData: {
+                      remainingJobs: packageDetails[0].maxJobs - jobs.length,
+                      remainingUsers: packageDetails[0].maxUsers - users.length,
+                      subscriptionType: employer.subscription.type,
+                      packageDetails,
+                    },
+                  });
+                })
+                .catch((err) => {
+                  if (err) {
+                    return res.status(400).json({
+                      success: false,
+                      error: err,
+                    });
+                  }
+                });
+            })
+            .catch((err) => {
+              if (err) {
+                return res.status(400).json({
+                  success: false,
+                  error: err,
+                });
+              }
+            });
+        })
+        .catch((err) => {
+          if (err) {
+            return res.status(400).json({
+              success: false,
+              error: err,
+            });
+          }
+        });
+    }
+  });
+};
+
 module.exports = {
   create,
   getAll,
@@ -320,5 +399,7 @@ module.exports = {
   getVerificationStatus,
   getNotifications,
   markNotifications,
-  addNotifications
+  addNotifications,
+  deleteNotifications,
+  getSubscriptionStatus,
 };

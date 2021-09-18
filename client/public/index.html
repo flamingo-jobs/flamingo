@@ -7,6 +7,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#000000" />
   <meta name="description" content="Web site created using create-react-app" />
+  <script async>
+    // transfers sessionStorage from one tab to another
+    var sessionStorage_transfer = function (event) {
+      if (!event) { event = window.event; } // ie suq
+      if (!event.newValue) return;          // do nothing if no value to work with
+      if (event.key == 'getSessionStorage') {
+        if (localStorage.getItem('logout') === 'true') {
+          sessionStorage.clear();
+          window.location = "/signIn";
+          localStorage.setItem('logout', 'false')
+        }
+        // another tab asked for the sessionStorage -> send it
+        localStorage.setItem('sessionStorage', JSON.stringify(sessionStorage));
+        // the other tab should now have it, so we're done with it.
+        localStorage.removeItem('sessionStorage'); // <- could do short timeout as well.
+      } else if (event.key == 'sessionStorage' && !sessionStorage.length) {
+        // another tab sent data <- get it
+        var data = JSON.parse(event.newValue);
+        for (var key in data) {
+          sessionStorage.setItem(key, data[key]);
+        }
+      }
+
+
+    };
+
+    // listen for changes to localStorage
+    if (window.addEventListener) {
+      window.addEventListener("storage", sessionStorage_transfer, false);
+    } else {
+      window.attachEvent("onstorage", sessionStorage_transfer);
+    };
+
+
+    // Ask other tabs for session storage (this is ONLY to trigger event)
+    if (!sessionStorage.length) {
+      localStorage.setItem('getSessionStorage', 'foobar');
+      localStorage.removeItem('getSessionStorage', 'foobar');
+    };
+
+    window.onload = function () {
+      document.getElementById("preloader").style.display = "none";
+      document.body.className = document.body.className.replace(/\bnoscroll\b/, '');
+    }
+  </script>
   <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
 
@@ -45,11 +90,6 @@
       src="%PUBLIC_URL%/favicon.jpg" style="width: 300px;" /> <br /><img src="%PUBLIC_URL%/loadingImage.gif"
       style="width: 80px;" /></div>
 </body>
-<script>
-  window.onload = function () {
-    document.getElementById("preloader").style.display = "none";
-    document.body.className = document.body.className.replace(/\bnoscroll\b/, '');
-  }
-</script>
+
 
 </html>

@@ -263,7 +263,7 @@ function JobGrid(props) {
             return (
                 <Grid item sm={12} style={{ marginBottom: 16 }}>
                     <FloatCard>
-                        <NoInfo message="Sorry, we can't find any job that matches with your requirements." />
+                        <NoInfo message="Sorry, you haven't posted any jobs yet." />
                     </FloatCard>
                 </Grid>)
         } else if (jobs.length === 0) {
