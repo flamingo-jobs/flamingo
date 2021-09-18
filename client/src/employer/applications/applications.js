@@ -246,15 +246,18 @@ const Applications = () => {
           `${BACKEND_URL}/jobseeker/applicants`, { queryParams: queryParams, options: {} }
         );
         if (response.data.success) {
-          // var jobseekers = response.data.jobseekers;
-
-          // jobseekers.map((user) => {
-          //   const score = job.applicationDetails.filter(
-          //     (obj) => obj.userId == user._id
-          //   )[0].score;
-          //   user.score = score;
-          // });
-          // console.log(response.data.existingData)
+          // Returned jobseekers are sorted according to these weights
+          const sortWeights = {
+            "shortlisted": 4,
+            "reviewing": 3,
+            "pending": 2,
+            "rejected": 1
+          }
+          response.data.existingData.sort((a, b) => {
+            const statusA = a.applicationDetails.filter(obj => obj.jobId === jobId)[0].status;
+            const statusB = b.applicationDetails.filter(obj => obj.jobId === jobId)[0].status;
+            return sortWeights[statusB] - sortWeights[statusA];
+          });
           setApplicants(response.data.existingData);
         }
       } catch (err) {
