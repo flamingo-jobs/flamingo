@@ -506,7 +506,7 @@ const Applications = () => {
 
             newApplicants.map(i => i.score = 0);
 
-            response.data.exsitingData.map((i) => {
+            response.data.existingData.map((i) => {
               newApplicants.map((j) => {
                 if (j._id === i.userId) {
                   j.score = i.score;
@@ -544,7 +544,7 @@ const Applications = () => {
             newApplicants.map(i => i.score = 0);
             // setApplicants(newApplicants);
 
-            response.data.exsitingData.map((i) => {
+            response.data.existingData.map((i) => {
               newApplicants.map((j) => {
                 if (j._id === i.userId) {
                   j.score = i.score;

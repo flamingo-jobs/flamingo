@@ -9,7 +9,7 @@ const generateRecommendations = (req, res) => {
     var jobSeekers = null;
     const recommendedJobSeekers = [];
 
-    Settings.find({ 'type': 'recommendationDefaults' }).exec((err, settings) => {
+    Settings.find({ 'type': 'recommendation' }).exec((err, settings) => {
         if (err) {
             return res.status(400).json({
                 error: err
@@ -35,10 +35,14 @@ const generateRecommendations = (req, res) => {
                     }
                     if (jobseeker) {
                         jobseeker.forEach((item, index) => {
-                            let [education, experience, techStack, projectTech, skills, certificates] = [false, false, 0, 0, 0, 0];
+                            let [interests, education, experience, techStack, projectTech, skills, certificates] = [0, false, false, 0, 0, 0, 0];
 
                             let total = 0;
 
+                            if (item.interests.includes(job.category)){
+                                interests = 100;
+                            }
+                            
                             // education
 
                             item.education.forEach((edu) => {
@@ -145,7 +149,7 @@ const generateRecommendations = (req, res) => {
                             // console.log("courses: " + courses);
 
 
-                            total = techStack * (recommendationSettings.techStack / 100) + projectTech * (recommendationSettings.projectTechStack / 100)
+                            total = interests * (recommendationSettings.interests / 100) + techStack * (recommendationSettings.techStack / 100) + projectTech * (recommendationSettings.projectTechStack / 100)
                                 + skills * (recommendationSettings.skills / 100) + certificates * (recommendationSettings.certifications / 100)
                                 + courses * (recommendationSettings.courses / 100);
 
@@ -187,7 +191,7 @@ const generateJobSeekerRecommendations = (req, res) => {
     var jobSeekerData = null;
     const recommendedJobs = [];
 
-    Settings.find({ 'type': 'recommendationDefaults' }).exec((err, settings) => {
+    Settings.find({ 'type': 'recommendation' }).exec((err, settings) => {
         if (err) {
             return res.status(400).json({
                 error: err
@@ -213,8 +217,13 @@ const generateJobSeekerRecommendations = (req, res) => {
                     }
                     if (jobs) {
                         jobs.forEach((job, index) => {
-                            let [education, experience, techStack, projectTech, skills, certificates, courses] = [false, false, 0, 0, 0, 0, 0];
+                            let [interests, education, experience, techStack, projectTech, skills, certificates] = [0, false, false, 0, 0, 0, 0];
+
                             let total = 0;
+
+                            if (jobseeker.interests.includes(job.category)){
+                                interests += 100;
+                            }
 
                             // education
                             jobseeker.education.forEach((edu) => {
@@ -316,10 +325,10 @@ const generateJobSeekerRecommendations = (req, res) => {
                             courses = courseRelevence;
 
 
-                            total = techStack * (recommendationSettings.techStack / 100) + projectTech * (recommendationSettings.projectTechStack / 100)
+                            total = interests * (recommendationSettings.interests / 100) + techStack * (recommendationSettings.techStack / 100) + projectTech * (recommendationSettings.projectTechStack / 100)
                                 + skills * (recommendationSettings.skills / 100) + certificates * (recommendationSettings.certifications / 100)
                                 + courses * (recommendationSettings.courses / 100);
-
+                                console.log(interests * (recommendationSettings.interests / 100) );
                             if (recommendationSettings.ignoreMinimum) {
                                 if (total >= 5) {
                                     recommendedJobs.push({ id: job._id, score: total });
