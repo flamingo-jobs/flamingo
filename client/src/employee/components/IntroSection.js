@@ -117,11 +117,10 @@ const useStyles = makeStyles((theme) => ({
   form: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingLeft: '20px',
-    paddingRight: '20px'
+
   },
   field: {
-    margin: "10px 0px 20px 0px",
+    marginTop: 16,
     display: "flex",
     fontSize: "16px",
     "& label": {
@@ -468,100 +467,116 @@ function IntroSection(props) {
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
-            <DialogTitle id="alert-dialog-title" style={{ color: theme.palette.stateBlue }}>
-              Edit Profile
+            <DialogTitle id="alert-dialog-title">
+              <Typography style={{ color: theme.palette.stateBlue, textAlign: 'left', fontSize: 18, fontWeight: 600 }}>
+                Edit Basic Info
+              </Typography>
             </DialogTitle>
             <Divider variant="middle" />
             <DialogContent>
               <form className={classes.form}>
-                <Grid container direction="row">
-                  <TextField
-                    className={classes.field}
-                    id="outlined-basic"
-                    label="First Name"
-                    variant="outlined"
-                    size="small"
-                    value={state.firstName}
-                    onChange={onChangeFirstName}
-                    style={{ width: '45%', marginRight: '10%' }}
-                  />
-                  <TextField
-                    className={classes.field}
-                    id="outlined-basic"
-                    label="Last Name"
-                    variant="outlined"
-                    size="small"
-                    value={state.lastName}
-                    onChange={onChangeLastName}
-                    style={{ width: '45%' }}
-                  />
-                </Grid>
-                <TextField
-                  className={classes.field}
-                  id="outlined-multiline-static"
-                  label="Tagline"
-                  multiline
-                  rows={3}
-                  variant="outlined"
-                  value={state.tagline}
-                  onChange={onChangeTagLine}
-                />
-                <TextField
-                  className={classes.field}
-                  id="outlined-multiline-static"
-                  label="Description"
-                  multiline
-                  rows={5}
-                  variant="outlined"
-                  value={state.intro}
-                  onChange={onChangeIntro}
-                />
-                <Grid container direction="row" style={{ marginTop: '35px' }}>
-                  <Typography gutterBottom style={{ color: theme.palette.stateBlue, textAlign: 'left', fontSize: '18px', fontStyle: 'italic', width: '100%', marginBottom: '10px' }}>
-                    Contact Details
-                  </Typography>
-                  <TextField
-                    className={classes.field}
-                    id="outlined-basic"
-                    label="Mobile"
-                    variant="outlined"
-                    size="small"
-                    value={state.mobile}
-                    onChange={onChangeMobile}
-                    style={{ width: '45%', marginRight: '10%' }}
-                  />
-                </Grid>
-                <TextField
-                  className={classes.field}
-                  id="outlined-basic"
-                  label="Email"
-                  type="text"
-                  variant="outlined"
-                  size="small"
-                  value={state.email}
-                  onChange={onChangeEmail}
-                />
-                <Grid container direction="row">
-                  <TextField
-                    className={classes.field}
-                    id="outlined-basic"
-                    label="Street Name"
-                    variant="outlined"
-                    size="small"
-                    value={state.street}
-                    onChange={onChangeStreet}
-                    style={{ width: '45%', marginRight: '10%' }}
-                  />
-                  <TextField
-                    className={classes.field}
-                    id="outlined-basic"
-                    label="City"
-                    variant="outlined"
-                    size="small"
-                    value={state.city}
-                    onChange={onChangeCity}
-                    style={{ width: '45%' }}
-                  />
+                <Grid container direction="row" spacing={2}>
+                  {/* <Grid item xs={12}>
+                    <Typography gutterBottom style={{ marginTop: 16, color: theme.palette.stateBlue, textAlign: 'left', fontSize: '18px', fontWeight: 600, width: '100%' }}>
+                      Basic Details
+                    </Typography>
+                  </Grid> */}
+                  <Grid item xs={12} md={6}>
+                    <TextField
+                      className={classes.field}
+                      id="outlined-basic"
+                      label="First Name"
+                      variant="outlined"
+                      size="small"
+                      value={state.firstName}
+                      onChange={onChangeFirstName}
+                    />
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <TextField
+                      className={classes.field}
+                      id="outlined-basic"
+                      label="Last Name"
+                      variant="outlined"
+                      size="small"
+                      value={state.lastName}
+                      onChange={onChangeLastName}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      className={classes.field}
+                      id="outlined-multiline-static"
+                      label="Tagline"
+                      multiline
+                      rows={3}
+                      variant="outlined"
+                      value={state.tagline}
+                      onChange={onChangeTagLine}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      className={classes.field}
+                      id="outlined-multiline-static"
+                      label="Description"
+                      multiline
+                      rows={5}
+                      variant="outlined"
+                      value={state.intro}
+                      onChange={onChangeIntro}
+                    />
+                  </Grid>
+                  {/* <Grid item xs={12}>
+                    <Typography gutterBottom style={{ marginTop: 16, color: theme.palette.stateBlue, textAlign: 'left', fontSize: '18px', fontWeight: 600, width: '100%', }}>
+                      Contact Details
+                    </Typography>
+                  </Grid> */}
+                  <Grid item xs={12} md={6}>
+                    <TextField
+                      className={classes.field}
+                      id="outlined-basic"
+                      label="Mobile"
+                      variant="outlined"
+                      size="small"
+                      value={state.mobile}
+                      onChange={onChangeMobile}
+                    />
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <TextField
+                      className={classes.field}
+                      id="outlined-basic"
+                      label="Email"
+                      type="text"
+                      variant="outlined"
+                      size="small"
+                      value={state.email}
+                      onChange={onChangeEmail}
+                    />
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <TextField
+                      className={classes.field}
+                      id="outlined-basic"
+                      label="Street Name"
+                      variant="outlined"
+                      size="small"
+                      value={state.street}
+                      onChange={onChangeStreet}
+                    />
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <TextField
+                      className={classes.field}
+                      id="outlined-basic"
+                      label="City"
+                      variant="outlined"
+                      size="small"
+                      value={state.city}
+                      onChange={onChangeCity}
+                    />
+                  </Grid>
                 </Grid>
               </form>
             </DialogContent>
