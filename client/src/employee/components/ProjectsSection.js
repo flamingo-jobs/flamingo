@@ -387,7 +387,7 @@ function ProjectsSection(props) {
     }else if(project){
       if (project.length > 0) {
         return project.map(pro => (
-            <ProjectItem key={i}  index={i++} name={pro.name} link={pro.link} description={pro.description} from={pro.from} to={pro.to} usedTech={pro.usedTech} parentFunction={deleteData} techList={technologyList} />
+            <ProjectItem key={i}  index={i++} name={pro.name} link={pro.link} description={pro.description} from={pro.from} to={pro.to} usedTech={pro.usedTech} parentFunction={deleteData} techList={technologyList} jobseekerID={loginId} login={login} />
             ))
       }else{
         return (<Typography variant="body2" color="textSecondary" component="p" style={{paddingBottom:"10px"}}>Project details not added.</Typography>)
