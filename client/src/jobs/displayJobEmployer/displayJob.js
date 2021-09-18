@@ -10,6 +10,7 @@ import JobSummary from "./components/jobSummary";
 import Qualifications from "./components/qualifications";
 import Responsibilities from "./components/responsibilities";
 import TechStack from "./components/techStack";
+import Loading from "../../components/Loading";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -182,7 +183,7 @@ const DisplayJob = () => {
     ) {
       return (
         <FloatCard>
-          <Typography>No information to display</Typography>
+          <Loading />
         </FloatCard>
       );
     } else {
@@ -207,7 +208,7 @@ const DisplayJob = () => {
     if (job === "empty") {
       return (
         <FloatCard>
-          <Typography>No information to display</Typography>
+          <Loading />
         </FloatCard>
       );
     } else {
@@ -229,7 +230,7 @@ const DisplayJob = () => {
     if (job === "empty") {
       return (
         <FloatCard>
-          <Typography>No information to display</Typography>
+          <Loading />
         </FloatCard>
       );
     } else {
@@ -249,7 +250,7 @@ const DisplayJob = () => {
     if (job === "empty" || technologies === "empty") {
       return (
         <FloatCard>
-          <Typography>No information to display</Typography>
+          <Loading />
         </FloatCard>
       );
     } else {
@@ -270,7 +271,7 @@ const DisplayJob = () => {
     if (job === "empty") {
       return (
         <FloatCard>
-          <Typography>No information to display</Typography>
+          <Loading />
         </FloatCard>
       );
     } else {
