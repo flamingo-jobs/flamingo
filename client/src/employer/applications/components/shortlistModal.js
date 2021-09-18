@@ -199,7 +199,7 @@ const ShortlistModal = (props) => {
                     color="primary"
                     inputProps={{ 'aria-label': 'primary checkbox' }}
                   />
-                  <Typography className={classes.featuredJobs}>Use company default shortlisting criterias.</Typography>
+                  <Typography className={classes.featuredJobs}>Use company default shortlisting criteria</Typography>
                 </div>
                 {displayCustomCriterias()}
 

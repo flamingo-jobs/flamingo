@@ -17,6 +17,8 @@ const orderSchema = new mongoose.Schema({
   recurrence: { type: String },
   duration: { type: String },
   amount: { type: String },
+  startDate: { type: Date },
+  endDate: { type: Date },
   paymentDate: { type: Date },
   employer: { type: mongoose.Schema.Types.ObjectId },
 });

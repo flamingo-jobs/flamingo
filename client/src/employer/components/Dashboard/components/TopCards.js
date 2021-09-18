@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
   cardNumber: {
     fontWeight: "bolder",
-    fontSize: 40,
+    fontSize: 35,
     color: theme.palette.stateBlue,
     float: "center",
   },
@@ -55,6 +55,9 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 20,
     color: theme.palette.stateBlue,
   },
+  expired: {
+    color: theme.palette.red
+  }
 }));
 
 const TopCards = (props) => {
@@ -185,7 +188,7 @@ const TopCards = (props) => {
   return (
     <Grid
       container
-      spacing={1}
+      spacing={2}
       direction="row"
       justifyContent="space-between"
       alignItems="stretch"
@@ -243,11 +246,18 @@ const TopCards = (props) => {
       </Grid>
 
       <Grid item xs={12}>
-        <FloatCard>
-          <Typography className={classes.maintitle}>
-            You have {getTotalExpiredJobs()} Expired Jobs! 
-          </Typography>
-        </FloatCard>
+        {getTotalExpiredJobs() > 0 ?
+          <FloatCard backColor="#FFDADA">
+            <Typography className={classes.expired}>
+              You have {getTotalExpiredJobs()} expired jobs!
+            </Typography>
+          </FloatCard> :
+          <FloatCard backColor="#FFFEDA">
+            <Typography>
+              You have no expired jobs!
+            </Typography>
+          </FloatCard>
+        }
       </Grid>
 
     </Grid>

@@ -11,6 +11,9 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import FloatCard from "../../components/FloatCard";
 import SnackBarAlert from "../../components/SnackBarAlert";
+import NoAccess from "../../components/NoAccess";
+import Loading from "../../components/Loading";
+import Reached from "../../components/Reached";
 import BACKEND_URL from "../../Config";
 import AdditionalSkills from "./components/additionalSkills";
 import QualificationsForm from "./components/qualificationsForm";
@@ -20,7 +23,7 @@ import TechStack from "./components/techStack";
 const jwt = require("jsonwebtoken");
 
 const useStyles = makeStyles((theme) => ({
-  root:{
+  root: {
     paddingLeft: theme.spacing(1.5),
     paddingRight: theme.spacing(1.5),
   },
@@ -88,8 +91,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+let haveAccess = false;
+if (sessionStorage.getItem("userToken")) {
+  var accessTokens = jwt.decode(sessionStorage.getItem("userToken"), {
+    complete: true,
+  }).payload.accessTokens;
+  if (
+    accessTokens.includes("all") ||
+    accessTokens.includes("singlejob") ||
+    accessTokens.includes("alljobs")
+  ) {
+    haveAccess = true;
+  }
+}
+
 function getSteps() {
-  return ["Basic Details", "Tasks and Responsibilites", "Qualifications and Requirements", "Technology Stack", "Additional Skills"];
+  return [
+    "Basic Details",
+    "Tasks and Responsibilities",
+    "Qualifications and Requirements",
+    "Technology Stack",
+    "Additional Skills",
+  ];
 }
 
 export default function CreateJobSetup() {
@@ -103,8 +126,8 @@ export default function CreateJobSetup() {
       handleSubmit();
     } else {
       var validation = validateStep(index);
-      
-      if(validation){
+
+      if (validation) {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
       }
     }
@@ -119,51 +142,52 @@ export default function CreateJobSetup() {
   };
 
   const validateStep = (index) => {
-    const newErrors = {...errors};
+    const newErrors = { ...errors };
 
-    if(index === 0){
-      if(title.trim() === ""){ // Required
+    if (index === 0) {
+      if (title.trim() === "") {
+        // Required
         newErrors["title"] = `Title cannot be empty.`;
         setErrors(newErrors);
         return false;
-      } else if(description.trim() === ""){ // Required
+      } else if (description.trim() === "") {
+        // Required
         newErrors["description"] = `Description cannot be empty.`;
         setErrors(newErrors);
         return false;
-      } else if(errors.hasOwnProperty("minSalary")){
+      } else if (errors.hasOwnProperty("minSalary")) {
         return false;
-      } else if(errors.hasOwnProperty("maxSalary")){
+      } else if (errors.hasOwnProperty("maxSalary")) {
         return false;
-      } else if(errors.hasOwnProperty("numberOfVacancies")){
+      } else if (errors.hasOwnProperty("numberOfVacancies")) {
         return false;
-      } 
-      
-    } else if(index === 1){
+      }
+    } else if (index === 1) {
       var emptyFieldFound = false;
       tasksFields.map((task, index) => {
-        if(task === ""){
+        if (task === "") {
           emptyFieldFound = true;
           newErrors.tasks[index] = `This field cannot be empty.`;
         }
       });
       setErrors(newErrors);
-      if(emptyFieldFound){
+      if (emptyFieldFound) {
         return false;
       }
-    } else if(index === 2){
+    } else if (index === 2) {
       var emptyFieldFound = false;
       qualificationsFields.map((q, index) => {
-        if(q === ""){
+        if (q === "") {
           emptyFieldFound = true;
           newErrors.requirements[index] = `This field cannot be empty.`;
         }
       });
       setErrors(newErrors);
-      if(emptyFieldFound){
+      if (emptyFieldFound) {
         return false;
       }
-    } else if(index === 3){
-      if(techStackState.length === 0){
+    } else if (index === 3) {
+      if (techStackState.length === 0) {
         newErrors["techStack"] = `Technology stack cannot be empty.`;
         setErrors(newErrors);
         return false;
@@ -171,14 +195,6 @@ export default function CreateJobSetup() {
     }
     return true;
   };
-
-  const keywords = [
-    { name: "Devops" },
-    { name: "Development" },
-    { name: "Design" },
-    { name: "MERN" },
-    { name: "Back end" },
-  ];
 
   const minEducationList = [
     "Diploma",
@@ -200,13 +216,16 @@ export default function CreateJobSetup() {
 
   // Session variables
   const empId = sessionStorage.getItem("loginId");
-  const userId = jwt.decode(sessionStorage.getItem("userToken"),{complete:true}).payload.userId;
+  const userId = jwt.decode(sessionStorage.getItem("userToken"), {
+    complete: true,
+  }).payload.userId;
 
   // Data retrieved from DB
   const [categories, setCategories] = useState("empty");
   const [types, setTypes] = useState("empty");
   const [employer, setEmployer] = useState("empty");
   const [technologies, setTechnologies] = useState("empty");
+  const [subscriptionStatus, setSubscriptionStatus] = useState();
 
   // Job state
   const [title, setTitle] = useState("");
@@ -236,31 +255,34 @@ export default function CreateJobSetup() {
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
 
-  const [errors, setErrors] = useState({ tasks: [""], requirements:[""] });
+  const [errors, setErrors] = useState({ tasks: [""], requirements: [""] });
 
   useEffect(() => {
     retrieveCategories();
     retrieveJobTypes();
     retrieveEmployer();
     retrieveTechnologies();
+    retrieveSubscriptionStatus();
   }, []);
 
   // Job basic details
   const handleTextFieldChange = (e) => {
-    const newErrors = {...errors};
+    const newErrors = { ...errors };
     // const regex = new RegExp('^[a-zA-Z0-9\)\(\\ ]+$');
     const name = e.target.name;
     const value = e.target.value;
 
-    if(value.trim() === ""){
-      newErrors[name] = `${name.charAt(0).toUpperCase() + name.slice(1)} cannot be empty.`;
-    } else{
+    if (value.trim() === "") {
+      newErrors[name] = `${
+        name.charAt(0).toUpperCase() + name.slice(1)
+      } cannot be empty.`;
+    } else {
       delete newErrors[name];
     }
     setErrors(newErrors);
-    if(name === "title"){
+    if (name === "title") {
       setTitle(value);
-    } else if(name === "description"){
+    } else if (name === "description") {
       setDescription(value);
     }
   };
@@ -279,39 +301,38 @@ export default function CreateJobSetup() {
   };
 
   const handleSalaryChange = (e) => {
-    const newErrors = {...errors};
-    const regex = new RegExp('^[0-9]+$');
+    const newErrors = { ...errors };
+    const regex = new RegExp("^[0-9]+$");
     const name = e.target.name;
     const value = e.target.value;
 
-    if(value.trim() === ""){
+    if (value.trim() === "") {
       delete newErrors[name];
     } else {
-      if(regex.test(value.trim().replace(/\s/g, ''))){
+      if (regex.test(value.trim().replace(/\s/g, ""))) {
         delete newErrors[name];
       } else {
         newErrors[name] = "Salary can only contain numbers.";
       }
     }
     setErrors(newErrors);
-    if(name === "minSalary"){
+    if (name === "minSalary") {
       setMinSalary(value);
-    } else if(name === "maxSalary"){
+    } else if (name === "maxSalary") {
       setMaxSalary(value);
     }
-    
   };
 
   const handleVacanciesChange = (e) => {
-    const newErrors = {...errors};
-    const regex = new RegExp('^[0-9]+$');
+    const newErrors = { ...errors };
+    const regex = new RegExp("^[0-9]+$");
     const name = e.target.name;
     const value = e.target.value;
 
-    if(value.trim() === ""){
+    if (value.trim() === "") {
       delete newErrors[name];
     } else {
-      if(regex.test(value.trim().replace(/\s/g, ''))){
+      if (regex.test(value.trim().replace(/\s/g, ""))) {
         delete newErrors[name];
       } else {
         newErrors[name] = "Number of vacancies can only contain numbers.";
@@ -329,12 +350,12 @@ export default function CreateJobSetup() {
     setMinExperience(event.target.value);
   };
 
-  // ***** Tasks & Responsibilites *****
+  // ***** Tasks & Responsibilities *****
   const handleTaskChange = (e, index) => {
-    const newErrors = {...errors};
+    const newErrors = { ...errors };
     const value = e.target.value;
 
-    if(value.trim() === ""){
+    if (value.trim() === "") {
       newErrors.tasks[index] = "This field cannot be empty.";
     } else {
       newErrors.tasks[index] = "";
@@ -359,7 +380,7 @@ export default function CreateJobSetup() {
     );
     setTasksFields(newTasksFields);
 
-    var newErrors = {...errors};
+    var newErrors = { ...errors };
     newErrors.tasks.splice(
       newErrors.tasks.findIndex((taskErr, i) => index === i),
       1
@@ -370,17 +391,17 @@ export default function CreateJobSetup() {
   const handleTaskAdd = () => {
     setTasksFields([...tasksFields, ""]);
     // Add element to errors task array
-    var newErrors = {...errors};
+    var newErrors = { ...errors };
     newErrors.tasks = [...newErrors.tasks, ""];
     setErrors(newErrors);
   };
 
   // ***** Qualifications *****
   const handleQualificationChange = (e, index) => {
-    const newErrors = {...errors};
+    const newErrors = { ...errors };
     const value = e.target.value;
 
-    if(value.trim() === ""){
+    if (value.trim() === "") {
       newErrors.requirements[index] = "This field cannot be empty.";
     } else {
       newErrors.requirements[index] = "";
@@ -407,7 +428,7 @@ export default function CreateJobSetup() {
     );
     setQualificationsFields(newQualificationsFields);
 
-    var newErrors = {...errors};
+    var newErrors = { ...errors };
     newErrors.requirements.splice(
       newErrors.requirements.findIndex((requirementsErr, i) => index === i),
       1
@@ -417,18 +438,18 @@ export default function CreateJobSetup() {
 
   const handleQualificationAdd = () => {
     setQualificationsFields([...qualificationsFields, ""]);
-    var newErrors = {...errors};
+    var newErrors = { ...errors };
     newErrors.requirements = [...newErrors.requirements, ""];
     setErrors(newErrors);
   };
 
   // Technology Stack
   const handleTechStack = (values) => {
-    const newErrors = {...errors};
+    const newErrors = { ...errors };
 
-    if(values.length === 0){
+    if (values.length === 0) {
       newErrors["techStack"] = `Technology stack cannot be empty.`;
-    } else if(errors.hasOwnProperty("techStack")){
+    } else if (errors.hasOwnProperty("techStack")) {
       delete newErrors["techStack"];
     }
     setErrors(newErrors);
@@ -472,13 +493,13 @@ export default function CreateJobSetup() {
       description: description.trim(),
       organization: organization,
       location: location,
-      postedDate: currentDate,
+      postedDate: new Date(),
       dueDate: dueDate,
       minimumEducation: minEducation,
       minimumExperience: minExperience,
       salaryRange: {
-        min: minSalary.trim().replace(/\s/g, ''),
-        max: maxSalary.trim().replace(/\s/g, ''),
+        min: minSalary.trim().replace(/\s/g, ""),
+        max: maxSalary.trim().replace(/\s/g, ""),
       },
       tasksAndResponsibilities: tasksFields.map((t) => t.trim()),
       qualifications: qualificationsFields.map((q) => q.trim()),
@@ -486,7 +507,7 @@ export default function CreateJobSetup() {
       additionalSkills: additionalSkillsState,
       isPublished: isPublished,
       isFeatured: isFeatured,
-      numberOfVacancies: numberOfVacancies.trim().replace(/\s/g, ''),
+      numberOfVacancies: numberOfVacancies.trim().replace(/\s/g, ""),
       createdBy: userId,
     };
 
@@ -498,12 +519,17 @@ export default function CreateJobSetup() {
           msg: "Job created successfully!",
         });
         handleAlert();
-        await axios.get(`${BACKEND_URL}/jobs/generateRecommendations/${response.data.job._id}`);
+        await axios.get(
+          `${BACKEND_URL}/jobs/generateRecommendations/${response.data.job._id}`
+        );
 
         // Create Log
         const msg = "Job created";
-        const status = "informational"
-        await axios.post(`${BACKEND_URL}/logs/create/${response.data.job._id}/${userId}`, {msg: msg, status: status});
+        const status = "informational";
+        await axios.post(
+          `${BACKEND_URL}/logs/create/${response.data.job._id}/${userId}`,
+          { msg: msg, status: status }
+        );
 
         window.location = "/employer/jobs";
       } else {
@@ -521,7 +547,6 @@ export default function CreateJobSetup() {
       handleAlert();
       // console.log(err);
     }
-    
   };
 
   const displaySummary = () => {
@@ -588,6 +613,19 @@ export default function CreateJobSetup() {
     }
   };
 
+  const retrieveSubscriptionStatus = async () => {
+    try {
+      const response = await axios.get(
+        `${BACKEND_URL}/employer/subscription-status/${empId}`
+      );
+      if (response.data.success) {
+        setSubscriptionStatus(response.data.existingData);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const retrieveCategories = async () => {
     try {
       const response = await axios.get(`${BACKEND_URL}/categories`);
@@ -643,21 +681,25 @@ export default function CreateJobSetup() {
       case 0:
         return displaySummary();
       case 1:
-        return <TaskForm
-          tasksFields={tasksFields}
-          handleTaskChange={handleTaskChange}
-          handleTaskRemove={handleTaskRemove}
-          handleTaskAdd={handleTaskAdd} 
-          errors={errors}
-          />;
+        return (
+          <TaskForm
+            tasksFields={tasksFields}
+            handleTaskChange={handleTaskChange}
+            handleTaskRemove={handleTaskRemove}
+            handleTaskAdd={handleTaskAdd}
+            errors={errors}
+          />
+        );
       case 2:
-        return <QualificationsForm
-          qualificationsFields={qualificationsFields}
-          handleQualificationChange={handleQualificationChange}
-          handleQualificationRemove={handleQualificationRemove}
-          handleQualificationAdd={handleQualificationAdd} 
-          errors={errors}
-          />;
+        return (
+          <QualificationsForm
+            qualificationsFields={qualificationsFields}
+            handleQualificationChange={handleQualificationChange}
+            handleQualificationRemove={handleQualificationRemove}
+            handleQualificationAdd={handleQualificationAdd}
+            errors={errors}
+          />
+        );
       case 3:
         return displayTechStack();
       case 4:
@@ -667,103 +709,117 @@ export default function CreateJobSetup() {
     }
   };
 
-  
-// style={{border: "1px solid red"}}
+  // style={{border: "1px solid red"}}
   return (
     <>
       {displayAlert()}
       <Grid item container sm={12} className={classes.root}>
-
         <Grid item xs={12} align="center">
           <div className={classes.floatCardWrapper}>
-          <FloatCard>
-            <Container>
-              <Grid
-                container
-                spacing={4}
-                direction="column"
-                justify="center"
-                alignItems="stretch"
-                className={classes.gridCont}
-              >
-                <Grid container direction="row">
-                  <Grid item xs={12} align="left">
-                    <Typography className={classes.mainTitle}>
-                      Post a new job...
-                    </Typography>
-                  </Grid>
-                </Grid>
-                <Stepper
-                  activeStep={activeStep}
-                  orientation="vertical"
-                  className={classes.stepper}
+            <FloatCard>
+              <Container>
+                <Grid
+                  container
+                  spacing={4}
+                  direction="column"
+                  justify="center"
+                  alignItems="stretch"
+                  className={classes.gridCont}
                 >
-                  {steps.map((label, index) => (
-                    <Step key={label}>
-                      <StepLabel
-                        classes={{
-                          label: classes.label,
-                          active: classes.active,
-                          completed: classes.completed,
-                        }}
-                      >
-                        {label}
-                      </StepLabel>
-                      <StepContent>
-                        {getStepContent(index)}
-                        <div className={classes.actionsContainer}>
-                          <div>
-                            {activeStep === 0 ? (
-                              <Link to="/employer/jobs">
-                                <Button className={classes.previous}>
-                                  Cancel
-                                </Button>
-                              </Link>
-                            ) : (
-                              <Button
-                                disabled={activeStep === 0}
-                                onClick={handleBack}
-                                className={classes.previous}
-                              >
-                                Back
-                              </Button>
-                            )}
-                            <Button
-                              
-                              color="primary"
-                              onClick={() => handleNext(index)}
-                              className={classes.next}
+                  {haveAccess ? (
+                    subscriptionStatus ? (
+                      subscriptionStatus.subscriptionType === "premium" ||
+                      subscriptionStatus.remainingJobs > 0 ? (
+                        <div>
+                          <Grid container direction="row">
+                            <Grid item xs={12} align="left">
+                              <Typography className={classes.mainTitle}>
+                                Post a new job...
+                              </Typography>
+                            </Grid>
+                          </Grid>
+
+                          <Stepper
+                            activeStep={activeStep}
+                            orientation="vertical"
+                            className={classes.stepper}
+                          >
+                            {steps.map((label, index) => (
+                              <Step key={label}>
+                                <StepLabel
+                                  classes={{
+                                    label: classes.label,
+                                    active: classes.active,
+                                    completed: classes.completed,
+                                  }}
+                                >
+                                  {label}
+                                </StepLabel>
+                                <StepContent>
+                                  {getStepContent(index)}
+                                  <div className={classes.actionsContainer}>
+                                    <div>
+                                      {activeStep === 0 ? (
+                                        <Link to="/employer/jobs">
+                                          <Button className={classes.previous}>
+                                            Cancel
+                                          </Button>
+                                        </Link>
+                                      ) : (
+                                        <Button
+                                          disabled={activeStep === 0}
+                                          onClick={handleBack}
+                                          className={classes.previous}
+                                        >
+                                          Back
+                                        </Button>
+                                      )}
+                                      <Button
+                                        color="primary"
+                                        onClick={() => handleNext(index)}
+                                        className={classes.next}
+                                      >
+                                        {activeStep === steps.length - 1
+                                          ? "Finish"
+                                          : "Next"}
+                                      </Button>
+                                    </div>
+                                  </div>
+                                </StepContent>
+                              </Step>
+                            ))}
+                          </Stepper>
+                          {activeStep === steps.length && (
+                            <Paper
+                              square
+                              elevation={0}
+                              className={classes.resetContainer}
                             >
-                              {activeStep === steps.length - 1
-                                ? "Finish"
-                                : "Next"}
-                            </Button>
-                          </div>
+                              <Typography>
+                                All steps completed - you&apos;re finished
+                              </Typography>
+                              <Button
+                                onClick={handleReset}
+                                className={classes.button}
+                              >
+                                Reset
+                              </Button>
+                            </Paper>
+                          )}
                         </div>
-                      </StepContent>
-                    </Step>
-                  ))}
-                </Stepper>
-                {activeStep === steps.length && (
-                  <Paper
-                    square
-                    elevation={0}
-                    className={classes.resetContainer}
-                  >
-                    <Typography>
-                      All steps completed - you&apos;re finished
-                    </Typography>
-                    <Button
-                      onClick={handleReset}
-                      className={classes.button}
-                    >
-                      Reset
-                    </Button>
-                  </Paper>
-                )}
-              </Grid>
-            </Container>
-          </FloatCard></div>
+                      ) : (
+                        <Reached message="You have reached the maximum job count" />
+                      )
+                    ) : (
+                      <Loading />
+                    )
+                  ) : (
+                    <NoAccess />
+                  )}
+                </Grid>
+              </Container>
+            </FloatCard>
+          </div>
         </Grid>
       </Grid>
     </>

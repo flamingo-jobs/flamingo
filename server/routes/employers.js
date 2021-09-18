@@ -26,10 +26,12 @@ router.post('/employers/filter', employersController.getFiltered);
 router.get('/employer/getNotifications/:id', employersController.getNotifications);
 router.put('/employer/addNotifications/:id', employersController.addNotifications);
 router.post('/employer/markNotifications/:id', employersController.markNotifications);
+router.post('/employer/deleteNotifications/:id', employersController.deleteNotifications);
 
 router.get('/employers/:id', employersController.getById);
 router.get("/employers/favorites/:empIds", employersController.getByIds);
 router.get("/employer/verificationStatus/:id", employersController.getVerificationStatus);
+router.get('/employer/subscription-status/:id', employersController.getSubscriptionStatus)
 
 // update employer
 router.put('/employers/update/:id', employersController.update);
@@ -37,7 +39,6 @@ router.patch("/employers/addReview/:empId", employersController.addReview);
 
 // delete employer
 router.post('/employer/delete', employersController.remove);
-
 router.get('/applications/:id', employersController.getAllApplications);
 
 //profile update

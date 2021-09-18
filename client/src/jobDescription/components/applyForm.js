@@ -317,7 +317,7 @@ const ApplyForm = (props) => {
           handleAlert();
         }
       } else {
-        // Error occured in job seeker update
+        // Error occurred in job seeker update
         if (resumeDetailsResponseJobSeeker.data.error) {
           setAlertData({
             severity: "error",
@@ -326,7 +326,7 @@ const ApplyForm = (props) => {
           handleAlert();
         }
       }
-    } catch {
+    } catch (error) {
       setAlertData({
         severity: "error",
         msg: "Something went wrong! Please try again later",
@@ -412,7 +412,7 @@ const ApplyForm = (props) => {
                 />
               )}
             </div>
-          </form> : <Typography className={classes.formInfo} >Your application has been sent succeesfully. Good Luck!
+          </form> : <Typography className={classes.formInfo} >Your application has been sent successfully. Good Luck!
             <br />
             You can view the status of the application shortlisting process
             <br />

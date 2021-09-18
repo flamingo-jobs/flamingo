@@ -433,7 +433,7 @@ export default function ShortlistingSettingsAccordion(props) {
           </div>
         </Grid>
         <Grid item xs={12} style={{ padding: 24 }}>
-          <Typography>Below values are considered as the weights for generate sugessted jobs for job seekers. <br />Total wights should be 100%.</Typography>
+          <Typography>Below values are considered as the weights for generate suggested jobs for job seekers. <br />Total wights should be 100%.</Typography>
         </Grid>
         {displaySettingOptions()}
       </Grid>

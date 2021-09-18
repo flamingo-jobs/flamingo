@@ -41,6 +41,14 @@ const useStyles = makeStyles((theme) => ({
     },
     float: "center",
   },
+  deleteButton: {
+    backgroundColor: theme.palette.red,
+    color: theme.palette.white,
+    "&:hover": {
+      backgroundColor: theme.palette.redHover,
+    },
+    float: "center",
+  },
   topCard: {
     minWidth: "100%",
     borderRadius: 12,
@@ -261,7 +269,7 @@ const AccountSettings = () => {
         >
           <form onSubmit={handleChangePassword}>
             <Grid item xs={12}>
-              <Grid container spacing={3} diection="column">
+              <Grid container spacing={3} direction="column">
                 <Grid item xs={12} align="left">
                   <Typography variant="h5">Change Password</Typography>
                 </Grid>
@@ -403,7 +411,7 @@ const AccountSettings = () => {
                         fullWidth
                         type="submit"
                         
-                        className={classes.button}
+                        className={classes.deleteButton}
                       >
                         Delete Account
                       </Button>

@@ -73,7 +73,7 @@ const shortlistApplicants = (req, res) => {
                     if (jobseeker) {
 
                         jobseeker.forEach((item, index) => {
-                            let [education, experience, techStack, projectTech, skills, certificates] = [0, 0, 0, 0, 0, 0];
+                            let [education, experience, techStack, projectTech, skills, certificates, courses, extraCurricular, awards] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 
                             let total = 0;
                             let noMin = 0;
@@ -250,7 +250,8 @@ const shortlistApplicants = (req, res) => {
                             total = education * (shortlistingSettings.education / 100) + experience * (shortlistingSettings.experience / 100) +
                                 techStack * (shortlistingSettings.techStack / 100) + projectTech * (shortlistingSettings.projectTechStack / 100)
                                 + skills * (shortlistingSettings.skills / 100) + certificates * (shortlistingSettings.certifications / 100)
-                                + courses * (shortlistingSettings.courses / 100);
+                                + courses * (shortlistingSettings.courses / 100) + extraCurricular * (shortlistingSettings.extraCurricular / 100)
+                                + awards * (shortlistingSettings.awards / 100);
 
                             // console.log("education: " + education);
                             // console.log("experience: " + experience);
@@ -268,27 +269,41 @@ const shortlistApplicants = (req, res) => {
                                 appliedDate: job.applicationDetails[applicationIndex].appliedDate,
                                 userId: job.applicationDetails[applicationIndex].userId,
                                 resumeName: job.applicationDetails[applicationIndex].resumeName,
+                                matches: {
+                                    education: education,
+                                    experience: experience,
+                                    techStack: techStack,
+                                    projects: projectTech,
+                                    skills: skills,
+                                    certificates: certificates,
+                                    courses: courses,
+                                    extraCurricular: extraCurricular,
+                                    awards: awards
+                                }
                             }
 
                             if (shortlistingSettings.ignoreMinimum) {
                                 scoredItem.score = total;
+                                scoredItem.matches.score = total;
                                 scoredApplicants.push(scoredItem);
                             } else if (noMin === 0) {
                                 scoredItem.score = total;
+                                scoredItem.matches.score = total;
                                 scoredApplicants.push(scoredItem);
                             } else {
                                 scoredItem.score = 0;
+                                scoredItem.matches.score = 0;
                                 scoredApplicants.push(scoredItem);
                             }
 
                         })
                     }
 
-                    updateJob(scoredApplicants, req.params.id);
+                    updateJob(scoredApplicants, job._id);
 
                     return res.status(200).json({
                         success: true,
-                        exsitingData: scoredApplicants
+                        existingData: scoredApplicants
                     });
                 });
 
@@ -351,7 +366,8 @@ const shortlistApplicantsCustoms = (req, res) => {
                 if (jobseeker) {
 
                     jobseeker.forEach((item, index) => {
-                        let [education, experience, techStack, projectTech, skills, certificates] = [0, 0, 0, 0, 0, 0];
+                        let [education, experience, techStack, projectTech, skills, certificates, courses, extraCurricular, awards] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+
 
                         let total = 0;
                         let noMin = 0;
@@ -528,7 +544,8 @@ const shortlistApplicantsCustoms = (req, res) => {
                         total = education * (shortlistingSettings.education / 100) + experience * (shortlistingSettings.experience / 100) +
                             techStack * (shortlistingSettings.techStack / 100) + projectTech * (shortlistingSettings.projectTechStack / 100)
                             + skills * (shortlistingSettings.skills / 100) + certificates * (shortlistingSettings.certifications / 100)
-                            + courses * (shortlistingSettings.courses / 100);
+                            + courses * (shortlistingSettings.courses / 100) + extraCurricular * (shortlistingSettings.extraCurricular / 100)
+                            + awards * (shortlistingSettings.awards / 100);
 
                         // console.log("education: " + education);
                         // console.log("experience: " + experience);
@@ -546,28 +563,43 @@ const shortlistApplicantsCustoms = (req, res) => {
                             appliedDate: job.applicationDetails[applicationIndex].appliedDate,
                             userId: job.applicationDetails[applicationIndex].userId,
                             resumeName: job.applicationDetails[applicationIndex].resumeName,
+                            matches: {
+                                education: education,
+                                experience: experience,
+                                techStack: techStack,
+                                projects: projectTech,
+                                skills: skills,
+                                certificates: certificates,
+                                courses: courses,
+                                extraCurricular: extraCurricular,
+                                awards: awards
+                            }
                         }
 
                         if (shortlistingSettings.ignoreMinimum) {
                             scoredItem.score = total;
+                            scoredItem.matches.score = total;
                             scoredApplicants.push(scoredItem);
                         } else if (noMin === 0) {
                             scoredItem.score = total;
+                            scoredItem.matches.score = total;
                             scoredApplicants.push(scoredItem);
                         } else {
                             scoredItem.score = 0;
+                            scoredItem.matches.score = 0;
                             scoredApplicants.push(scoredItem);
                         }
 
                     })
                 }
 
-                updateJob(scoredApplicants, req.params.id);
+                updateJob(scoredApplicants, job._id);
+
 
                 // let scoredIds = scoredApplicants.map(x => x.userId);
                 return res.status(200).json({
                     success: true,
-                    applicantIds: scoredApplicants
+                    existingData: scoredApplicants
                 });
             });
 
@@ -625,7 +657,7 @@ const shortlistOnApplicantChanges = (req, res) => {
 
                     if (jobseeker) {
 
-                        let [education, experience, techStack, projectTech, skills, certificates] = [0, 0, 0, 0, 0, 0];
+                        let [education, experience, techStack, projectTech, skills, certificates, courses, extraCurricular, awards] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 
                         let total = 0;
                         let noMin = 0;
@@ -796,7 +828,8 @@ const shortlistOnApplicantChanges = (req, res) => {
                         total = education * (shortlistingSettings.education / 100) + experience * (shortlistingSettings.experience / 100) +
                             techStack * (shortlistingSettings.techStack / 100) + projectTech * (shortlistingSettings.projectTechStack / 100)
                             + skills * (shortlistingSettings.skills / 100) + certificates * (shortlistingSettings.certifications / 100)
-                            + courses * (shortlistingSettings.courses / 100);
+                            + courses * (shortlistingSettings.courses / 100) + extraCurricular * (shortlistingSettings.extraCurricular / 100)
+                            + awards * (shortlistingSettings.awards / 100);
 
                         let applicationIndex = job.applicationDetails.findIndex(applicant => applicant.userId == jobseeker._id);
 
@@ -806,28 +839,42 @@ const shortlistOnApplicantChanges = (req, res) => {
                             appliedDate: job.applicationDetails[applicationIndex].appliedDate,
                             userId: job.applicationDetails[applicationIndex].userId,
                             resumeName: job.applicationDetails[applicationIndex].resumeName,
+                            matches: {
+                                education: education,
+                                experience: experience,
+                                projects: projectTech,
+                                techStack: techStack,
+                                skills: skills,
+                                certificates: certificates,
+                                courses: courses,
+                                extraCurricular: extraCurricular,
+                                awards: awards
+                            }
                         }
 
                         scoredApplicants = [...job.applicationDetails];
 
                         if (shortlistingSettings.ignoreMinimum) {
                             scoredItem.score = total;
+                            scoredItem.matches.score = total;
                             scoredApplicants.splice(applicationIndex, 1, scoredItem);
                         } else if (noMin === 0) {
                             scoredItem.score = total;
+                            scoredItem.matches.score = total;
                             scoredApplicants.splice(applicationIndex, 1, scoredItem);
                         } else {
                             scoredItem.score = 20;
+                            scoredItem.matches.score = total;
                             scoredApplicants.splice(applicationIndex, 1, scoredItem);
                         }
 
                     }
 
-                    updateJob(scoredApplicants, req.params.id);
+                    updateJob(scoredApplicants, job._id);
 
                     return res.status(200).json({
                         success: true,
-                        exsitingData: scoredApplicants
+                        existingData: scoredApplicants
                     });
                 });
 
@@ -900,15 +947,19 @@ const updateJobSeekerProfile = (jobSeekerId, recommendedJobs, jobId, total) => {
 
 const updateJob = (scoredApplicants, jobId) => {
 
+    let applicationDetails = scoredApplicants;
+    console.log(jobId)
     Jobs.updateOne({ "_id": jobId },
         [{
             $set: {
-                applicationDetails: scoredApplicants
+                applicationDetails: applicationDetails
             }
-        }], (err, job) => {
+        }], (err, jobs) => {
             if (err) {
+
                 return false;
             }
+            console.log(jobs);
             return true;
         });
 }

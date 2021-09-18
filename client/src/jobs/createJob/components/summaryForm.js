@@ -181,7 +181,7 @@ const SummaryForm = ({
             <StateBlueTextField
               id="description"
               name="description"
-              label="Descriptionof the job opportunity *"
+              label="Description of the job opportunity *"
               variant="outlined"
               fullWidth
               size="small"
@@ -235,7 +235,7 @@ const SummaryForm = ({
             </div>
           </Grid>
 
-          {/* Requried Degrees & Experience */}
+          {/* Required Degrees & Experience */}
           <Grid item xs={12} md={6}>
             <StateBlueTextField
               id="minEducation"

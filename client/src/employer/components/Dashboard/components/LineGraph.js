@@ -261,9 +261,11 @@ const LineGraph = (props) => {
     day14,
   ];
 
-  const options = {ticks: {
-    precision:0
-  }};
+  const options = {
+    ticks: {
+      precision: 0,
+    },
+  };
 
   const generateLineChart = () => {
     return {
@@ -292,11 +294,13 @@ const LineGraph = (props) => {
         </Typography>
 
         <br />
-        {allJobs.length ? (
+      
+        {allJobs.length && data.reduce((x, y) => x + y) !== 0 ? (
           <Line height={120} data={generateLineChart({ fill: false })} options={options}/>
         ) : (
           <NotEnoughData />
         )}
+        
       </div>
     </FloatCard>
   );

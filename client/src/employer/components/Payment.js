@@ -9,6 +9,9 @@ import React, { useEffect, useState } from "react";
 import FloatCard from "../../components/FloatCard";
 import payhereLogo from "./images/PayHere-Logo.png";
 import PayHereCheckoutForm from "./PayHereCheckoutForm";
+import BACKEND_URL from "../../Config";
+import axios from "axios";
+import Loading from "../../components/Loading";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -77,7 +80,7 @@ export default function Payment() {
   const classes = useStyles();
 
   const [subscription, setSubscription] = useState({});
-
+  const [nextDates, setNextDates] = useState();
   useEffect(() => {
     const selectedPackage = window.location.pathname.split("/")[3];
     setSubscription(
@@ -86,8 +89,23 @@ export default function Payment() {
       })
     );
   }, [window.location.pathname]);
-
-  const props = { subscription };
+  useEffect(() => {
+    getNextDays();
+  }, []);
+  const getNextDays = () => {
+    axios
+      .get(`${BACKEND_URL}/get-next-dates/${sessionStorage.getItem("loginId")}`)
+      .then((res) => {
+        if (res.data.success) {
+          setNextDates(res.data.nextDates);
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          setNextDates(undefined);
+        }
+      });
+  };
 
   return (
     <Grid container sm={12} spacing={3} direction="row" alignItems="flex-start">
@@ -244,36 +262,36 @@ export default function Payment() {
         </FloatCard>
       </Grid>
 
-      {/* STRIPR PAYENT 
-      <Grid item container xs={12} lg={4}>
-        <FloatCard className={classes.root}>
-          <Typography variant="h4" gutterBottom>
-            <Box fontWeight={400} fontSize={20} m={1} className={classes.title}>
-              <center>
-                <Avatar
-                  className={classes.logo}
-                  src={stripeLogo}
-                  variant="square"
-                />
-              </center>
-            </Box>
+      {/* STRIPE PAYENT 
+        <Grid item container xs={12} lg={4}>
+          <FloatCard className={classes.root}>
+            <Typography variant="h4" gutterBottom>
+              <Box fontWeight={400} fontSize={20} m={1} className={classes.title}>
+                <center>
+                  <Avatar
+                    className={classes.logo}
+                    src={stripeLogo}
+                    variant="square"
+                  />
+                </center>
+              </Box>
 
-            <Box
-              fontWeight={400}
-              fontSize={12}
-              m={1}
-              className={classes.annual}
-            >
-              Payment infrastructure for the internet
-            </Box>
-            <Divider variant="middle" />
-          </Typography>
+              <Box
+                fontWeight={400}
+                fontSize={12}
+                m={1}
+                className={classes.annual}
+              >
+                Payment infrastructure for the internet
+              </Box>
+              <Divider variant="middle" />
+            </Typography>
 
-          <StripeCheckoutForm subscription={subscription} />
-          <br />
-        </FloatCard>
-      </Grid>
-      */}
+            <StripeCheckoutForm subscription={subscription} />
+            <br />
+          </FloatCard>
+        </Grid>
+        */}
 
       {/* PAYHERE PAYMENT */}
       <Grid item container xs={12} lg={4}>
@@ -300,7 +318,7 @@ export default function Payment() {
             <Divider variant="middle" />
           </Typography>
 
-          <PayHereCheckoutForm />
+          {nextDates ? <PayHereCheckoutForm info={nextDates} /> : <Loading />}
           <br />
         </FloatCard>
       </Grid>

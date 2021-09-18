@@ -9,7 +9,7 @@ import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import SnackBarAlert from "../../components/SnackBarAlert";
 import BACKEND_URL from "../../Config";
-import FRONTEND_URL from "../../Config";
+import { FRONTEND_URL } from "../../Config";
 
 const packageList = [
   { desc: "standard", value: "1990" },
@@ -78,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PayHereCheckoutForm = () => {
+const PayHereCheckoutForm = (props) => {
   const classes = useStyles();
   const payForm = useRef(null);
   const [orderId, setOrderId] = useState("");
@@ -100,6 +100,8 @@ const PayHereCheckoutForm = () => {
     recurrence: "1 Month",
     duration: "1 Month",
     amount: "",
+    startDate: new Date(props.info.nextStartDate),
+    endDate: new Date(props.info.nextEndDate),
     paymentDate: new Date(),
     employer: sessionStorage.getItem("loginId"),
   });
@@ -142,29 +144,46 @@ const PayHereCheckoutForm = () => {
   };
 
   const handleSubmit = async () => {
-    axios
-      .post(`${BACKEND_URL}/create-order`, billingDetails)
-      .then((res) => {
-        if (res.data.success) {
-          setOrderId(res.data.order);
-          payForm.current.submit();
-        }
-      })
-      .catch((err) => {
-        if (err) {
-          setAlertData({
-            severity: "error",
-            msg: "Failed to connect with server. Please try again later!",
-          });
-          handleAlert();
-        }
+    if (
+      billingDetails.first_name &&
+      billingDetails.last_name &&
+      billingDetails.email &&
+      billingDetails.phone &&
+      billingDetails.address &&
+      billingDetails.city &&
+      billingDetails.country
+    ) {
+      axios
+        .post(`${BACKEND_URL}/create-order`, billingDetails)
+        .then((res) => {
+          if (res.data.success) {
+            setOrderId(res.data.order);
+            payForm.current.submit();
+          }
+        })
+        .catch((err) => {
+          if (err) {
+            setAlertData({
+              severity: "error",
+              msg: "Failed to connect with server. Please try again later!",
+            });
+            handleAlert();
+          }
+        });
+    } else {
+      setAlertData({
+        severity: "warning",
+        msg: "Please fill all required fields!",
       });
+      handleAlert();
+    }
   };
 
   return (
     <form
       action="https://sandbox.payhere.lk/pay/checkout"
       method="POST"
+      target="_blank"
       ref={payForm}
     >
       <input
@@ -210,7 +229,7 @@ const PayHereCheckoutForm = () => {
         {displayAlert()}
         {/* {console.log(billingDetails)} */}
         <Grid item xs={12}>
-          <Typography variane="h6">Billing Details</Typography>
+          <Typography variant="h6">Billing Details</Typography>
         </Grid>
         <Grid item xs={12} md={6}>
           <TextField

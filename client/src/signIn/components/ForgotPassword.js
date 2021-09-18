@@ -143,7 +143,7 @@ export const ForgotPassword = () => {
     } catch (e) {
       if (e.message.includes("502")) setErrorMesssage("Unregistered User");
       else if (e.message.includes("500")) setErrorMesssage("Email send failed");
-      else setErrorMesssage("Server Eror");
+      else setErrorMesssage("Server Error");
     }
   };
   return (

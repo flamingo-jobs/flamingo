@@ -16,19 +16,11 @@ function Settings() {
     const classes = useStyles();
 
     return (
-        // <Grid item container xs={12} spacing={3} direction="column"
-        //     justify="space-between"
-        //     alignItems="flex-start">
-        //     <Grid item xs={12} style={{ minWidth: '100%' }}>
-        //         <FloatCard>
         <div style={{ padding: 12, width: '100%', textAlign: 'left' }}>
             <RecommendationSettingsAccordion />
             <ShortlistingSettingsAccordion />
             <AccountSettingsAccordion />
         </div>
-        //         </FloatCard>
-        //     </Grid>
-        // </Grid>
     )
 }
 

@@ -279,6 +279,9 @@ export default function RecommendationSettingsAccordion(props) {
     }
 
     switch (name) {
+      case "Interested Areas":
+        newSettings.settings.interests = value;
+        break;
       case "Technology Stack":
         newSettings.settings.techStack = value;
         break;
@@ -304,7 +307,7 @@ export default function RecommendationSettingsAccordion(props) {
   }
 
   const calculateTotal = () => {
-    let total = updatedSettings.settings.techStack + updatedSettings.settings.projectTechStack +
+    let total = updatedSettings.settings.interests + updatedSettings.settings.techStack + updatedSettings.settings.projectTechStack +
       updatedSettings.settings.skills + updatedSettings.settings.certifications + updatedSettings.settings.courses;
     if (total === 100) {
       setInvalid(false);
@@ -349,11 +352,11 @@ export default function RecommendationSettingsAccordion(props) {
               color="primary"
               inputProps={{ 'aria-label': 'primary checkbox' }}
             />
-            <Typography className={classes.featuredJobs}>Suggesst jobs only if the minimum requirements are met</Typography>
+            <Typography className={classes.featuredJobs}>Suggest jobs only if the minimum requirements are met</Typography>
           </div>
         </Grid>
         <Grid item xs={12} style={{ padding: 24 }}>
-          <Typography>Below values are considered as the weights for generate sugessted jobs for job seekers. <br />Total wights should be 100%.</Typography>
+          <Typography>Below values are considered as the weights for generate suggested jobs for job seekers. <br />Total wights should be 100%.</Typography>
         </Grid>
         {displaySettingOptions()}
       </Grid>
@@ -364,6 +367,7 @@ export default function RecommendationSettingsAccordion(props) {
     if (settings !== false) {
       return (
         <Grid item xs={12}>
+          <ContinousSlider name={"Interested Areas"} value={settings.settings.interests} passValue={getSettingValues} />
           <ContinousSlider name={"Technology Stack"} value={settings.settings.techStack} passValue={getSettingValues} />
           <ContinousSlider name={"Project Technology Stack"} value={settings.settings.projectTechStack} passValue={getSettingValues} />
           <ContinousSlider name={"Skills"} value={settings.settings.skills} passValue={getSettingValues} />

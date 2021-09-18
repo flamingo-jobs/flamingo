@@ -1,26 +1,21 @@
-import React, { useState, useEffect } from "react";
 import {
-  Grid,
-  Container,
-  Typography,
-  Chip,
   Avatar,
-  Button,
+  Button, Chip, Container, Grid, Typography
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
-import BACKEND_URL, { FILE_URL } from "../../../Config";
-import FloatCard from "../../../components/FloatCard";
-import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
-import WorkRoundedIcon from "@material-ui/icons/WorkRounded";
-import GetAppIcon from "@material-ui/icons/GetApp";
 import DescriptionIcon from '@material-ui/icons/Description';
-import Status from "./status";
-import download from "downloadjs";
-import UploadModal from "./uploadModal";
-import SnackBarAlert from "../../../components/SnackBarAlert";
-import { Link } from "react-router-dom";
+import GetAppIcon from "@material-ui/icons/GetApp";
+import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
 import PeopleIcon from '@material-ui/icons/People';
+import WorkRoundedIcon from "@material-ui/icons/WorkRounded";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import FloatCard from "../../../components/FloatCard";
+import SnackBarAlert from "../../../components/SnackBarAlert";
+import BACKEND_URL, { FILE_URL } from "../../../Config";
+import Status from "./status";
+import UploadModal from "./uploadModal";
 
 const useStyles = makeStyles((theme) => ({
   border: {
@@ -99,7 +94,13 @@ const useStyles = makeStyles((theme) => ({
     width: 60,
     height: 60,
   },
-
+  statusContainer:{
+    display: "flex",
+    justifyContent: "flex-end",
+    [theme.breakpoints.down("md")]: {
+      justifyContent: "center",
+    },
+  },
   shortlisted: {
     fontSize: "30px",
     display: "flex",
@@ -107,6 +108,13 @@ const useStyles = makeStyles((theme) => ({
     alignContent: "center",
     flexDirection: "column",
     color: theme.palette.black,
+  },
+  bottomContainer:{
+    display: "flex",
+    justifyContent: "space-between",
+    [theme.breakpoints.down("md")]: {
+      flexDirection: "column",
+    },
   },
   appliedContainer: {
     marginTop: "20px",
@@ -128,6 +136,20 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "flex-end",
     gap: theme.spacing(2),
+    [theme.breakpoints.down("md")]: {
+      justifyContent: "center",
+    },
+    [theme.breakpoints.down("xs")]: {
+      flexDirection: "column",
+    },
+  },
+  resumeBtnContainer: {
+    marginTop: "20px",
+    display: "flex",
+    // justifyContent: "flex-start",
+    [theme.breakpoints.down("sm")]: {
+      justifyContent: "center",
+    },
   },
   downloadContainer: {
     marginTop: "20px",
@@ -135,6 +157,9 @@ const useStyles = makeStyles((theme) => ({
     // justifyContent: "flex-start",
     [theme.breakpoints.down("sm")]: {
       justifyContent: "center",
+    },
+    [theme.breakpoints.down("xs")]: {
+      marginTop: "0px",
     },
   },
   downloadBtn: {
@@ -151,6 +176,10 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.tuftsBlue,
       transition: "0.3s",
     },
+    [theme.breakpoints.down("xs")]: {
+      paddingLeft: "26px",
+      paddingRight: "26px",
+    },
   },
   changeBtn: {
     paddingLeft: "13px",
@@ -164,6 +193,10 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.tuftsBlue,
       color: theme.palette.white,
       transition: "0.3s",
+    },
+    [theme.breakpoints.down("xs")]: {
+      paddingLeft: "21px",
+      paddingRight: "21px",
     },
   },
 }));
@@ -345,31 +378,33 @@ const Job = (props) => {
                     </div>
                   </div>
                 </Grid>
-                <Grid item xs={12} md={4} align="right">
-                  {applicationDetails.status === "pending" && (
-                    <Status
-                      status={applicationDetails.status}
-                      text={"Pending...."}
-                    ></Status>
-                  )}
-                  {applicationDetails.status === "reviewing" && (
-                    <Status
-                      status={applicationDetails.status}
-                      text={"Reviewing"}
-                    ></Status>
-                  )}
-                  {applicationDetails.status === "shortlisted" && (
-                    <Status
-                      status={applicationDetails.status}
-                      text={"Shortlisted"}
-                    ></Status>
-                  )}
-                  {applicationDetails.status === "selected" && (
-                    <Status
-                      status={applicationDetails.status}
-                      text={"Selected"}
-                    ></Status>
-                  )}
+                <Grid item xs={12} md={4}>
+                  <div className={classes.statusContainer}>
+                    {applicationDetails.status === "pending" && (
+                      <Status
+                        status={applicationDetails.status}
+                        text={"Pending...."}
+                      ></Status>
+                    )}
+                    {applicationDetails.status === "reviewing" && (
+                      <Status
+                        status={applicationDetails.status}
+                        text={"Reviewing"}
+                      ></Status>
+                    )}
+                    {applicationDetails.status === "shortlisted" && (
+                      <Status
+                        status={applicationDetails.status}
+                        text={"Shortlisted"}
+                      ></Status>
+                    )}
+                    {applicationDetails.status === "rejected" && (
+                      <Status
+                        status={applicationDetails.status}
+                        text={"Rejected"}
+                      ></Status>
+                    )}
+                  </div>
                 </Grid>
                 {/* <div>
                   <PlaylistAddCheckIcon className={classes.shortlisted} />
@@ -377,40 +412,43 @@ const Job = (props) => {
               </Grid>
             </Container>
             <Container className={classes.jobDetailsContainer}>
-              {job.description.length >= 450 && (
-                <Typography>{job.description.slice(0, 450)}.....</Typography>
+              {job.description.length >= 200 && (
+                <Typography>{job.description.slice(0, 200)}.....</Typography>
               )}
-              {job.description.length < 450 && (
+              {job.description.length < 200 && (
                 <Typography>{job.description}</Typography>
               )}
-              <div className={classes.appliedContainer}>
-                <Typography className={classes.appliedDate}>
-                  <span className={classes.appliedOn}>Applied on:</span>{" "}
-                  {props.applicationDetails.appliedDate.slice(0, 10)}
-                </Typography>
-              </div>
-              <div className={classes.btnContainer}>
-                {applicationDetails.status === "pending" && (
-                  <div className={classes.downloadContainer}>
-                    <Button
-                      className={classes.changeBtn}
-                      onClick={handleOpen}
-                      startIcon={<DescriptionIcon />}
-                    >
-                      Change the Resume
-                    </Button>
-                  </div>
-                )}
+              <div className={classes.bottomContainer}>
+                <div className={classes.appliedContainer}>
+                  <Typography className={classes.appliedDate}>
+                    <span className={classes.appliedOn}>Applied on:</span>{" "}
+                    {props.applicationDetails.appliedDate.slice(0, 10)}
+                  </Typography>
+                </div>
 
-                <div className={classes.downloadContainer}>
-                  <Link to={{ pathname: `${FILE_URL}/resumes/${props.applicationDetails.resumeName}` }} target="_blank" download>
-                    <Button
-                      className={classes.downloadBtn}
-                      startIcon={<GetAppIcon />}
-                    >
-                      Download Resume
-                    </Button>
-                  </Link>
+                <div className={classes.btnContainer}>
+                  {applicationDetails.status === "pending" && (
+                    <div className={classes.resumeBtnContainer}>
+                      <Button
+                        className={classes.changeBtn}
+                        onClick={handleOpen}
+                        startIcon={<DescriptionIcon />}
+                      >
+                        Change the Resume
+                      </Button>
+                    </div>
+                  )}
+
+                  <div className={classes.downloadContainer}>
+                    <Link to={{ pathname: `${FILE_URL}/resumes/${props.applicationDetails.resumeName}` }} target="_blank" download>
+                      <Button
+                        className={classes.downloadBtn}
+                        startIcon={<GetAppIcon />}
+                      >
+                        Download Resume
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </Container>

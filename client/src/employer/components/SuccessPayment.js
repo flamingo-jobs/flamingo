@@ -100,7 +100,7 @@ const SuccessPayment = (props) => {
       .then((res) => {
         if (res.data.success) {
           setOrder(res.data.order);
-          updatePackageDetails(res.data.order.items);
+          updatePackageDetails(res.data.order.items, res.data.order.startDate);
         }
       })
       .catch((err) => {
@@ -110,12 +110,12 @@ const SuccessPayment = (props) => {
       });
   }, []);
 
-  const updatePackageDetails = (packageType) => {
+  const updatePackageDetails = (packageType, startDate) => {
     const loginId = sessionStorage.getItem("loginId");
     const subscriptionData = {
       subscription: {
         type: packageType,
-        startDate: new Date(),
+        startDate: startDate,
       },
     };
     axios

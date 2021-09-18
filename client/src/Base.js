@@ -121,7 +121,7 @@ const useStyles = makeStyles((theme) => ({
 function Base() {
   const classes = useStyles();
 
-  //Redirect user to signin page if not logged in
+  //Redirect user to sign in page if not logged in
   const token = sessionStorage.getItem("userToken");
 
   const [role, setRole] = useState(

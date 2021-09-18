@@ -221,7 +221,7 @@ const VerificationSettings = (props) => {
             <Grid item xs={12} align="left">
               {storageConfigured ? (
                 success ? (
-                  <FormSubmit message="Your document has been uploaded. You will recieve notifications after our support center approves your document" />
+                  <FormSubmit message="Your document has been uploaded. You will receive notifications after our support center approves your document" />
                 ) : (
                   <Grid container spacing={3}>
                     {props.message === "rejected" ? (

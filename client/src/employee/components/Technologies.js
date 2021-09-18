@@ -54,7 +54,7 @@ function Technologies(props) {
     }
 
     useEffect(() => {
-            retrieveTechnoliges();
+            retrieveTechnologies();
     }, [])
 
     const handleUpdatesuccess = () => {
@@ -85,7 +85,7 @@ function Technologies(props) {
         setRefreshRequired(true);
     }
 
-    const retrieveTechnoliges = () => {
+    const retrieveTechnologies = () => {
         setLoadingData(true);
         axios.get(`${BACKEND_URL}/technologies`).then(res => {
             if (res.data.success) {
