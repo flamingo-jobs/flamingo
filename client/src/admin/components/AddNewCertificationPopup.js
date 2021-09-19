@@ -125,7 +125,7 @@ export default function AddNewCertificationPopup(props) {
                         <Grid item xs={12}>
                             <TextField
                                 id="outlined-basic"
-                                label="Name"
+                                label="Issuer"
                                 name="name"
                                 fullWidth
                                 variant="outlined"
@@ -179,7 +179,7 @@ export default function AddNewCertificationPopup(props) {
                     </Grid>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={props.onClose} color="primary">
+                    <Button onClick={props.onClose} >
                         Cancel
                     </Button>
                     <Button onClick={onSubmit} color="primary">

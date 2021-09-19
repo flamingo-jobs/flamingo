@@ -110,6 +110,22 @@ const useStyles = makeStyles((theme) => ({
     margin: 3,
     marginRight: 5
   },
+  paperRoot: {
+    padding: 20,
+},
+confrimDelete: {
+    boxShadow: "none",
+    color: theme.palette.red,
+    backgroundColor: theme.palette.lightyPink,
+    borderRadius: 12,
+    marginLeft: "16px !important",
+    padding: "10px",
+    "&:hover": {
+        backgroundColor: theme.palette.lightyPinkHover,
+        boxShadow: "none",
+    },
+},
+
 }));
 
 export default function RecommendationSettingsAccordion(props) {
@@ -324,7 +340,7 @@ export default function RecommendationSettingsAccordion(props) {
       aria-describedby="alert-dialog-description"
       classes={{ paper: classes.paperRoot }}
     >
-      <DialogTitle id="alert-dialog-title">{"Confirm Delete?"}</DialogTitle>
+      <DialogTitle id="alert-dialog-title">{"Confirm Reset?"}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
           Are you sure that you reset these settings to default? <b>This cannot be undone.</b>
