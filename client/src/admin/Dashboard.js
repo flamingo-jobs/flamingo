@@ -7,7 +7,6 @@ import NewJobPostings from './components/NewJobPostings';
 import JobsLineChart from './components/analytics/jobsLineChart';
 import UsersBarChart from './components/analytics/userBarChart';
 import CategoryPieChart from "./components/analytics/categoryPieChart";
-import ResumeBarChart from "./components/analytics/resumeBarChart";
 import SubsBarChart from './components/analytics/subsBarChart';
 import RevenueLineChart from './components/analytics/revenueLineChart';
 import FloatCard from '../components/FloatCard';
@@ -25,7 +24,7 @@ function Dashboard() {
                     alignItems="stretch" style={{ minHeight: "100%" }}>
                     <Grid item xs={12}>
                         <FloatCard>
-                            <Typography style={{ fontSize: 18, fontWeight: 500 }}>Hi, Welcome back!</Typography>
+                            <Typography style={{ fontSize: 18, fontWeight: 500 }}>Weekly Statistics</Typography>
                         </FloatCard>
                     </Grid>
                     <Grid item xs={12} md={6} >
@@ -53,10 +52,6 @@ function Dashboard() {
 
             <Grid item xs={12} md={6}>
                 <UsersBarChart />
-            </Grid>
-
-            <Grid item xs={12} md={6}>
-                <ResumeBarChart />
             </Grid>
 
             <Grid item xs={12} md={6}>
