@@ -19,6 +19,9 @@ import BACKEND_URL, { FILE_URL } from "../../../Config";
 import DeleteModal from "./deleteModal";
 import JobSummaryModal from "./jobSummaryModal";
 import PeopleIcon from '@material-ui/icons/People';
+import { Link } from 'react-router-dom';
+import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
+import theme from "../../../Theme";
 
 const jwt = require("jsonwebtoken");
 
@@ -129,6 +132,12 @@ const useStyles = makeStyles((theme) => ({
     gap: "10px",
     marginTop: theme.spacing(2),
   },
+  viewApplicants:{
+    display: "flex",
+    gap: "5px",
+    marginTop: theme.spacing(2),
+    marginLeft: theme.spacing(2),
+  },
   locationIcon: {
     color: "#666",
   },
@@ -139,6 +148,9 @@ const useStyles = makeStyles((theme) => ({
     color: "#666",
   },
   typeText: {
+    color: "#666",
+  },
+  viewApplicantsText: {
     color: "#666",
   },
   time: {
@@ -182,11 +194,21 @@ function JobSummary(props) {
   const userId = jwt.decode(sessionStorage.getItem("userToken"),{complete:true}).payload.userId;
   const [logo, setLogo] = useState(require(`../../../components/images/loadingImage.gif`).default);
 
+  const [applicantHover, setApplicantsHover] = useState(false);
+
   const handleOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const onMouseEnter = (e) => {
+    setApplicantsHover(true);
+  };
+
+  const onMouseLeave = (e) => {
+    setApplicantsHover(false);
   };
 
   const minEducationList = [
@@ -540,7 +562,26 @@ function JobSummary(props) {
                 {numOfApplicants()}
               </Typography>
             </div>
-          
+
+            {props.job.applicationDetails.length>0 && 
+              <Link to={`/employer/resumes/${props.job._id}`}>
+                <div className={classes.viewApplicants} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+                  <SupervisedUserCircleIcon
+                    fontSize="small"
+                    className={classes.viewApplicantsText}
+                    style={applicantHover ? { color: theme.palette.tuftsBlue } : {}}
+                  />
+                  <Typography
+                    variant="subtitle2"
+                    className={classes.viewApplicantsText}
+                    style={applicantHover ? { color: theme.palette.tuftsBlue } : {}}
+                  >
+                    View Applicants
+                  </Typography>
+                </div>
+              </Link>
+            }
+
             <Grid item xs={12}>
               <div>
                 <Typography align="left" className={classes.description}>

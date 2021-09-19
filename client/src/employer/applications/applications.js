@@ -14,6 +14,9 @@ import PeopleFilters from "../../people/components/PeopleFilters";
 import PeopleSearchBar from "../../people/components/PeopleSearchBar";
 import Tooltip from '@material-ui/core/Tooltip';
 import Loading from "../../components/Loading";
+import WorkIcon from '@material-ui/icons/Work';
+import { Link } from 'react-router-dom';
+
 
 const jwt = require("jsonwebtoken");
 
@@ -51,6 +54,17 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: theme.palette.vividSkyBlueHover,
     },
+  },
+  viewJobBtn: {
+    padding: 16,
+    borderRadius: 12,
+    color: theme.palette.vividSkyBlue,
+    backgroundColor: theme.palette.white,
+    "&:hover": {
+      backgroundColor: theme.palette.lightSkyBlue,
+    },
+    marginRight: theme.spacing(2),
+
   },
   shortlistEveryoneBtnContainer: {
     display: "flex",
@@ -589,6 +603,15 @@ const Applications = () => {
         <Grid item sm={12} className={classes.searchGrid}>
           {shortlisted && (
             <div className={classes.shortlistBtnContainer}>
+              <Link to={`/employer/jobs/update/${jobId}`}>
+                <Button
+                  className={classes.viewJobBtn}
+                  startIcon={<WorkIcon />}
+                >
+                  View Job
+                </Button>
+              </Link>
+
               <Button
                 className={classes.shortlistBtn}
                 startIcon={<PeopleIcon />}
@@ -601,6 +624,15 @@ const Applications = () => {
 
           {!shortlisted && applicantIds.length !== 0 && (
             <div className={classes.shortlistBtnContainer}>
+              <Link to={`/employer/jobs/update/${jobId}`}>
+                <Button
+                  className={classes.viewJobBtn}
+                  startIcon={<WorkIcon />}
+                >
+                  View Job
+                </Button>
+              </Link>
+
               <Button
                 className={classes.shortlistBtn}
                 startIcon={<PeopleIcon />}
