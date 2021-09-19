@@ -70,7 +70,7 @@ const Responsibilities = (props) => {
 
   useEffect(() => {
     var fields = [];
-    props.job.tasksAndResponsibilities.map((q) => {
+    props.job.tasksAndResponsibilities.map((t) => {
       const temp = [...fields, ""];
       fields = temp;
     });
@@ -123,7 +123,7 @@ const Responsibilities = (props) => {
     const newJob = { ...props.job };
     newJob.tasksAndResponsibilities = [
       ...newJob.tasksAndResponsibilities,
-      [""],
+      "",
     ];
     props.setJob(newJob);
 
@@ -166,12 +166,19 @@ const Responsibilities = (props) => {
         msg: "Changes could not be applied",
       });
       props.handleAlert();
-      // console.log("Error: ", err);
     }
   };
 
   const validateFields = () => {
-    const errorsLength = errors.filter((e) => e !== "").length;
+    var newErrors = [...errors];
+    props.job.tasksAndResponsibilities.map((t, index) => {
+      if(t.trim() === ""){
+        newErrors[index] = "This field cannot be empty.";
+        setErrors(newErrors);
+      }
+    });
+    
+    const errorsLength = newErrors.filter((e) => e !== "").length;
     if (errorsLength === 0) {
       return true;
     }

@@ -158,7 +158,15 @@ const Qualifications = (props) => {
   };
 
   const validateFields = () => {
-    const errorsLength = errors.filter(e => e !== "").length;
+    var newErrors = [...errors];
+    props.job.qualifications.map((q, index) => {
+      if(q.trim() === ""){
+        newErrors[index] = "This field cannot be empty.";
+        setErrors(newErrors);
+      }
+    });
+    
+    const errorsLength = newErrors.filter(e => e !== "").length;
     if(errorsLength === 0){
       return true;
     }
