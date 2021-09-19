@@ -119,7 +119,8 @@ const NewApplicants = (props) => {
               </FloatCard>
             </Grid>
 
-          )) : <NotEnoughData />}
+          )) : null}
+          {allJobs && allJobs.length === 0 ? <NotEnoughData /> : null}
         </Grid>
       </FloatCard>
     </div>

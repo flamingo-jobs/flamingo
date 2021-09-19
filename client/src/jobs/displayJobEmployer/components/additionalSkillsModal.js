@@ -139,7 +139,7 @@ const JobSummaryModal = (props) => {
 
               <Grid item xs={12} className={classes.formContainer}>
                 <Typography align="center" className={classes.title}>
-                  Additional Skills
+                  Skills
                 </Typography>
                 <form onSubmit={props.handleAdditionalSkillsSubmit}>
                   <Autocomplete

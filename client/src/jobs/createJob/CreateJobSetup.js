@@ -111,7 +111,7 @@ function getSteps() {
     "Tasks and Responsibilities",
     "Qualifications and Requirements",
     "Technology Stack",
-    "Additional Skills",
+    "Skills",
   ];
 }
 

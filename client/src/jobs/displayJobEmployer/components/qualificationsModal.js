@@ -157,7 +157,7 @@ const QualificationsModal = (props) => {
 
               <Grid item xs={12} className={classes.formContainer}>
                 <Typography align="center" className={classes.title}>
-                  Skills and Requirements
+                Qualifications and Requirements
                 </Typography>
 
                 <form onSubmit={props.handleQualificationsSubmit}>

@@ -41,7 +41,7 @@ const Requirements = (props) => {
   return (
     <Container className={classes.req}>
       <Typography variant="h6" className={classes.reqTitle}>
-        Skills and Requirements
+        Qualifications and Requirements
       </Typography>
       <List dense={true}>
         {reqs.map((dutie, index) => (

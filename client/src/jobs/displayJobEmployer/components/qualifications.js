@@ -191,7 +191,7 @@ const Qualifications = (props) => {
           <Grid container>
             <Grid item xs={11}>
               <Typography variant="h6" className={classes.reqTitle}>
-                Skills and Requirements
+              Qualifications and Requirements
               </Typography>
             </Grid>
             <Grid item xs={1} className={classes.iconGridItem}>
