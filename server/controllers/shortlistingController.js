@@ -217,6 +217,10 @@ const shortlistApplicants = (req, res) => {
                                 skills += findPercentage(job.additionalSkills, item.skills);
                             }
 
+                            if (skills === 0 && item.skills.length) {
+                                skills = similarity(item.skills.join(' '), job.qualifications);
+                            }
+
                             // certificates
 
                             let certificationNameList = [];
@@ -529,6 +533,9 @@ const shortlistApplicantsCustoms = (req, res) => {
                             skills = findPercentage(job.additionalSkills, item.skills);
                         }
 
+                        if (skills === 0 && item.skills.length) {
+                            skills = similarity(item.skills.join(' '), job.qualifications);
+                        }
                         // certificates
 
                         let certificationNameList = [];
@@ -837,6 +844,9 @@ const shortlistOnApplicantChanges = (req, res) => {
                             skills = findPercentage(job.additionalSkills, jobseeker.skills);
                         }
 
+                        if (skills === 0 && jobseeker.skills.length) {
+                            skills = similarity(jobseeker.skills.join(' '), job.qualifications);
+                        }
                         // certificates
 
                         let certificationNameList = [];
