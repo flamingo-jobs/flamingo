@@ -1,0 +1,7 @@
+Date & Time              Status              Message
+
+2021-09-19 12:13:14      INFORMATIONAL       Session opened for user 60e88763e523bf3354852515 @role: jobseeker
+2021-09-19 12:13:39      INFORMATIONAL       Session opened for user 60e75761c04b554238b7948b @role: employer
+2021-09-19 12:14:00      INFORMATIONAL       Session opened for user 60db606a49427e2558ddca49 @role: admin
+2021-09-19 12:14:23      INFORMATIONAL       Authentication failure @email: 4321yeshan@gmail.com
+2021-09-19 12:15:16      INFORMATIONAL       Authentication failure @email: pramodya@example.com
