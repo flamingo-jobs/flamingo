@@ -114,7 +114,7 @@ export default function VerificationDialog(props) {
                     </StateBlueTextField>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} color="primary">
+                    <Button onClick={handleClose}>
                         Cancel
                     </Button>
                     {status ? <Button onClick={updateStatus} color="primary">
