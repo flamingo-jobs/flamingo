@@ -100,23 +100,25 @@ const NewApplicants = (props) => {
           {!allJobs ? <Loading /> : null}
           {allJobs && allJobs.length ? Array.from(allJobs).map((job, i) => (
             <Grid item xs={12}>
-              <FloatCard backColor={theme.palette.lightSkyBlueHover}>
-                <Grid item container direction="row"
-                  justifyContent="space-between"
-                  alignItems="center">
-                  <Grid item xs={3} lg={2}>
-                    <Avatar className={classes.avatar} src={`${FILE_URL}/jobseeker-profile-pictures/${job.jobseekerId}.png`} variant="square" />
+              <Link to={`/employer/resumes/${job.jobId}`} >
+                <FloatCard backColor={theme.palette.lightSkyBlueHover}>
+                  <Grid item container direction="row"
+                    justifyContent="space-between"
+                    alignItems="center">
+                    <Grid item xs={3} lg={2}>
+                      <Avatar className={classes.avatar} src={`${FILE_URL}/jobseeker-profile-pictures/${job.jobseekerId}.png`} variant="square" />
+                    </Grid>
+                    <Grid item xs={9} lg={10}>
+                      <Typography variant="body2" className={classes.applicantName}>
+                        {job.name}
+                      </Typography>
+                      <Typography variant="body2" className={classes.applicantBody}>
+                        Applied for <strong>{job.job}</strong>
+                      </Typography>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={9} lg={10}>
-                    <Typography variant="body2" className={classes.applicantName}>
-                      {job.name}
-                    </Typography>
-                    <Typography variant="body2" className={classes.applicantBody}>
-                      Applied for <strong>{job.job}</strong>
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </FloatCard>
+                </FloatCard>
+              </Link>
             </Grid>
 
           )) : null}
