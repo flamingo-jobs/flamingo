@@ -110,10 +110,14 @@ const useStyles = makeStyles({
       padding: "10px 10px 10px 10px"
     }
   },
-  placeholder: {
-    color: "#777",
-    fontSize: '16px',
-    marginTop: "-8px",
+  selectType: {
+    margin: "20px 10px 0px 0px",
+    minWidth: "130px",
+    fontSize: "16px",
+    display: "flex",
+    "& .MuiSelect-outlined": {
+      padding: "10px 10px 10px 10px"
+    }
   },
   placeholderDate: {
     color: "#777",
@@ -138,7 +142,7 @@ function ProjectsSection(props) {
   const [technologies, setTechnologies] = useState([]);
   const [technologyList, setTechnologyList] = useState([]);
   const [project, setProject] = useState(null);
-  const [state, setState] = useState({ name: null, link: null, description: null, startYear: null, startMonth: null, endYear: null, endMonth: null, usedTech: [] });
+  const [state, setState] = useState({ name: null, link: null, description: null, startYear: null, startMonth: null, endYear: null, endMonth: null, usedTech: [], type: null });
 
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
@@ -241,7 +245,7 @@ function ProjectsSection(props) {
   }
 
   useEffect(() => {
-    setState({ name: null, link: null, description: null, startYear: null, startMonth: null, endYear: null, endMonth: null, usedTech: [] });
+    setState({ name: null, link: null, description: null, startYear: null, startMonth: null, endYear: null, endMonth: null, usedTech: [], type: null });
     setProject(null);
     fetchData();
   }, [fetchedData])
@@ -269,7 +273,7 @@ function ProjectsSection(props) {
 
   function handleClose() {
     setOpen(false);
-    setState({ name: null, link: null, description: null, startYear: null, startMonth: null, endYear: null, endMonth: null, usedTech: [] });
+    setState({ name: null, link: null, description: null, startYear: null, startMonth: null, endYear: null, endMonth: null, usedTech: [], type: null });
   }
 
   // Alert stuff
@@ -339,11 +343,12 @@ function ProjectsSection(props) {
     })
   }
 
-  function onChangeUsedTech(e) {
+  function onChangeType(e) {
     setState(prevState => {
-      return { ...prevState, usedTech: e.target.value }
+      return { ...prevState, type: e.target.value }
     })
   }
+
 
   function onSubmit(e) {
     e.preventDefault();
@@ -356,6 +361,7 @@ function ProjectsSection(props) {
       from: state.startMonth + "/" + state.startYear,
       to: state.endMonth + "/" + state.endYear,
       usedTech: tech,
+      type: state.type
     }
 
     axios.put(`${BACKEND_URL}/jobseeker/addProject/${loginId}`, newProject)
@@ -385,7 +391,7 @@ function ProjectsSection(props) {
     } else if (project) {
       if (project.length > 0) {
         return project.map(pro => (
-          <ProjectItem key={i} index={i++} name={pro.name} link={pro.link} description={pro.description} from={pro.from} to={pro.to} usedTech={pro.usedTech} parentFunction={deleteData} techList={technologyList} jobseekerID={loginId} login={login} />
+          <ProjectItem key={i} index={i++} name={pro.name} link={pro.link} description={pro.description} from={pro.from} to={pro.to} usedTech={pro.usedTech} type={pro.type} parentFunction={deleteData} techList={technologyList} jobseekerID={loginId} login={login} />
         ))
       } else {
         return (<Typography variant="body2" color="textSecondary" component="p" style={{ paddingBottom: "10px" }}>Project details not added.</Typography>)
@@ -544,6 +550,7 @@ function ProjectsSection(props) {
                       className={classes.field}
                       multiple
                       id="tags-outlined"
+                      size="small"
                       filterSelectedOptions
                       options={technologyList}
                       getOptionLabel={(option) => option}
@@ -559,6 +566,23 @@ function ProjectsSection(props) {
                         />
                       )}
                     />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl variant="outlined" className={classes.formControl}>
+                      <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">Select Type</InputLabel>
+                      <Select
+                        native
+                        size="small"
+                        onChange={onChangeType}
+                        label="Select Type"
+                        className={classes.selectType}
+                      >
+                        <option aria-label="None" value="" />
+                        <option value="Individual">Individual</option>
+                        <option value="Group">Group</option>
+                        <option value="Community">Community</option>
+                      </Select>
+                    </FormControl>
                   </Grid>
                 </Grid>
               </form>
