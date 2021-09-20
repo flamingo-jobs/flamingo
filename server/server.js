@@ -28,6 +28,7 @@ const contactRoutes = require("./routes/contact");
 const logsRoutes = require("./routes/logs");
 const verificationRoutes = require("./routes/verification");
 const applicationRoutes = require("./routes/applications");
+const subscriptionRoutes = require("./routes/subscriptions");
 
 app.use("/companyImage", express.static("companyImage"));
 
@@ -62,6 +63,7 @@ app.use(contactRoutes);
 app.use(logsRoutes);
 app.use(verificationRoutes);
 app.use(applicationRoutes);
+app.use(subscriptionRoutes);
 
 const PORT = 8000;
 

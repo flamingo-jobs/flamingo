@@ -13,6 +13,15 @@ const subscriptionsSchema = new mongoose.Schema({
   maxUsers: {
     type: Number,
   },
+  shortlisting: {
+    type: Boolean
+  },
+  customizedShortlisting: {
+    type: Boolean
+  },
+  applicantFiltering: {
+    type: Boolean
+  }
 });
 
 module.exports = mongoose.model("Subscriptions", subscriptionsSchema);

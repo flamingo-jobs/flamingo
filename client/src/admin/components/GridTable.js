@@ -22,6 +22,7 @@ import { FILE_URL } from './../../Config';
 import EditRoundedIcon from '@material-ui/icons/EditRounded';
 import VerificationDialog from './VerificationDialog';
 import AddNewSkillPopup from './AddNewSkillPopup';
+import AddNewPackage from './AddNewPackage';
 
 const useStyles = makeStyles((theme) => ({
     table: {
@@ -404,10 +405,12 @@ function GridTable(props) {
     }
 
     const displayAddNewPopup = () => {
-        if(props.type === "categories"){
+        if (props.type === "categories") {
             return <AddNewCatePopup open={openAddNewPopup} onClose={closeAddNewPopup} onSuccess={handleCreateSuccess} onError={handleCreateError} />
-        } else if(props.type === "skills"){
+        } else if (props.type === "skills") {
             return <AddNewSkillPopup open={openAddNewPopup} onClose={closeAddNewPopup} onSuccess={handleCreateSuccess} onError={handleCreateError} />
+        } else if (props.type === "subscriptions") {
+            return <AddNewPackage open={openAddNewPopup} onClose={closeAddNewPopup} onSuccess={handleCreateSuccess} onError={handleCreateError} />
         }
     }
 

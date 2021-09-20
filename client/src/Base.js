@@ -10,6 +10,7 @@ import Employers from "./admin/Employers";
 import JobSeekers from "./admin/JobSeekers";
 import Settings from "./admin/Settings";
 import Skills from "./admin/Skills";
+import Subscriptions from "./admin/Subscriptions";
 import Technologies from "./admin/Technologies";
 import "./App.css";
 import Footer from "./components/Footer";
@@ -282,6 +283,9 @@ function Base() {
           </Route>
           <Route path="/admin/skills">
             <Skills />
+          </Route>
+          <Route path="/admin/pricing">
+            <Subscriptions />
           </Route>
         </>
       );
