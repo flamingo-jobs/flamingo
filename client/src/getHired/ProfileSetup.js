@@ -8,7 +8,7 @@ import Stepper from "@material-ui/core/Stepper";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import axios from "axios";
-import { React, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import FloatCard from "../components/FloatCard";
 import SnackBarAlert from "../components/SnackBarAlert";
@@ -133,7 +133,7 @@ export default function ProfileSetup() {
   };
 
   const sendToHome = () => {
-    if (university.length > 1) {
+    if (edu.length > 1) {
       axios.get(
         `${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${sessionStorage.getItem(
           "loginId"
@@ -149,20 +149,166 @@ export default function ProfileSetup() {
   const handleNext = () => {
     if (activeStep === steps.length - 1) {
       const jobSeekerData = {
-        education: [...university, ...college, ...diploma, ...postgraduate],
-        course: course,
-        award: award,
-        achievement: achievement,
-        work: work,
-        project: project,
-        volunteer: volunteer,
+        education: edu
+          .filter((x) => {
+            return !!x.institute;
+          })
+          .map((x) => {
+            if (x.type === "Bachelor's" || x.type === "Bachelor's Honours") {
+              return {
+                institute: x.institute ? x.institute : "",
+                type: x.type ? x.type : "",
+                fieldOfStudy: x.fieldOfStudy ? x.fieldOfStudy : "",
+                GPA: x.GPA ? x.GPA : 0,
+                startDate: x.startDate
+                  ? x.startDate.slice(5) + "/" + x.startDate.slice(0, 4)
+                  : "",
+                endDate: x.endDate
+                  ? x.endDate.slice(5) + "/" + x.endDate.slice(0, 4)
+                  : "",
+                societiesAndActivities: x.societiesAndActivities
+                  ? x.societiesAndActivities
+                  : "",
+              };
+            } else if (
+              x.type === "Diploma" ||
+              x.type === "Graduate Diploma" ||
+              x.type === "Masters" ||
+              x.type === "M.Phil." ||
+              x.type === "PhD"
+            ) {
+              return {
+                institute: x.institute ? x.institute : "",
+                type: x.type ? x.type : "",
+                fieldOfStudy: x.fieldOfStudy ? x.fieldOfStudy : "",
+                startDate: x.startDate
+                  ? x.startDate.slice(5) + "/" + x.startDate.slice(0, 4)
+                  : "",
+                endDate: x.endDate
+                  ? x.endDate.slice(5) + "/" + x.endDate.slice(0, 4)
+                  : "",
+              };
+            } else {
+              return {
+                institute: x.institute ? x.institute : "",
+                type: x.type ? x.type : "",
+                startDate: x.startDate
+                  ? x.startDate.slice(5) + "/" + x.startDate.slice(0, 4)
+                  : "",
+                endDate: x.endDate
+                  ? x.endDate.slice(5) + "/" + x.endDate.slice(0, 4)
+                  : "",
+                societiesAndActivities: x.societiesAndActivities
+                  ? x.societiesAndActivities
+                  : "",
+              };
+            }
+          }),
+        course: course
+          .filter((x) => {
+            return !!x.course;
+          })
+          .map((x) => {
+            return {
+              course: x.course ? x.course : "",
+              institute: x.institute ? x.institute : "",
+              from: x.from ? x.from.slice(5) + "/" + x.from.slice(0, 4) : "",
+              to: x.to ? x.to.slice(5) + "/" + x.to.slice(0, 4) : "",
+            };
+          }),
+        award: award
+          .filter((x) => {
+            return !!x.title;
+          })
+          .map((x) => {
+            return {
+              title: x.title ? x.title : "",
+              issuedBy: x.issuedBy ? x.issuedBy : "",
+              date: x.date ? x.date.slice(5) + "/" + x.date.slice(0, 4) : "",
+              description: x.description ? x.description : "",
+            };
+          }),
+        achievement: achievement
+          .filter((x) => {
+            return !!x.title;
+          })
+          .map((x) => {
+            return {
+              title: x.title ? x.title : "",
+              relatedTo: x.relatedTo ? x.relatedTo : "",
+              date: x.date ? x.date.slice(5) + "/" + x.date.slice(0, 4) : "",
+            };
+          }),
+        work: work
+          .filter((x) => {
+            return !!x.place;
+          })
+          .map((x) => {
+            return {
+              place: x.place ? x.place : "",
+              description: x.description ? x.description : "",
+              position: x.position ? x.position : "",
+              from: x.from ? x.from.slice(5) + "/" + x.from.slice(0, 4) : "",
+              to: x.to ? x.to.slice(5) + "/" + x.to.slice(0, 4) : "",
+              taskAndResponsibility: x.taskAndResponsibility
+                ? x.taskAndResponsibility
+                : "",
+            };
+          }),
+        project: project
+          .filter((x) => {
+            return !!x.name;
+          })
+          .map((x) => {
+            return {
+              name: x.name ? x.name : "",
+              link: x.link ? x.link : "",
+              description: x.description ? x.description : "",
+              from: x.from ? x.from.slice(5) + "/" + x.from.slice(0, 4) : "",
+              to: x.to ? x.to.slice(5) + "/" + x.to.slice(0, 4) : "",
+              usedTech: x.usedTech ? x.usedTech : [],
+            };
+          }),
+        volunteer: volunteer
+          .filter((x) => {
+            return !!x.title;
+          })
+          .map((x) => {
+            return {
+              title: x.title ? x.title : "",
+              organization: x.organization ? x.organization : "",
+              from: x.from ? x.from.slice(5) + "/" + x.from.slice(0, 4) : "",
+              to: x.to ? x.to.slice(5) + "/" + x.to.slice(0, 4) : "",
+              description: x.description ? x.description : "",
+            };
+          }),
+        certificate: certificate
+          .filter((x) => {
+            return !!x.issuer && !!x.title;
+          })
+          .map((x) => {
+            return {
+              issuer: x.issuer ? x.issuer : "",
+              title: x.title ? x.title : "",
+              score: certificate.length
+                ? allCertificates
+                    .find((cert) => {
+                      return cert.issuer === x.issuer;
+                    })
+                    .certificates.find((item) => {
+                      return item.name === x.title;
+                    }).score
+                : "",
+              date: x.date ? x.date.slice(5) + "/" + x.date.slice(0, 4) : "",
+            };
+          }),
         technologyStack: tech,
-        certificate: certificate,
       };
       const loginId = sessionStorage.getItem("loginId");
+
       //console.log(jobSeekerData);
       //console.log(Object.values(award[0])[0])
-      
+
       axios
         .put(`${BACKEND_URL}/jobseeker/update/${loginId}`, jobSeekerData)
         .then((res) => {
@@ -183,7 +329,6 @@ export default function ProfileSetup() {
           });
           handleAlert();
         });
-        
     } else {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
@@ -197,10 +342,10 @@ export default function ProfileSetup() {
     setActiveStep(0);
   };
 
-  const [university, setUniversity] = useState([
+  const [edu, setEdu] = useState([
     {
       institute: "",
-      type: "Bachelor's",
+      type: "School",
       fieldOfStudy: "",
       GPA: 0,
       startDate: "",
@@ -208,127 +353,28 @@ export default function ProfileSetup() {
       societiesAndActivities: "",
     },
   ]);
-  const handleUniversityInputChange = (e, index) => {
+  const handleEduInputChange = (e, index) => {
     const { name, value } = e.target;
-    const list = [...university];
+    const list = [...edu];
     list[index][name] = value;
-    setUniversity(list);
+    setEdu(list);
   };
-  const handleUniversityRemoveClick = (index) => {
-    const list = [...university];
+  const handleEduRemoveClick = (index) => {
+    const list = [...edu];
     list.splice(index, 1);
-    setUniversity(list);
+    setEdu(list);
   };
-  const handleUniversityAddClick = () => {
-    setUniversity([
-      ...university,
+  const handleEduAddClick = () => {
+    setEdu([
+      ...edu,
       {
         institute: "",
-        type: "Bachelor's",
+        type: "School",
         fieldOfStudy: "",
         GPA: 0,
         startDate: "",
         endDate: "",
         societiesAndActivities: "",
-      },
-    ]);
-  };
-
-  const [postgraduate, setPostgraduate] = useState([
-    {
-      institute: "",
-      type: "MSc",
-      startDate: "",
-      endDate: "",
-      fieldOfStudy: "",
-    },
-  ]);
-  const handlePostgraduateInputChange = (e, index) => {
-    const { name, value } = e.target;
-    const list = [...postgraduate];
-    list[index][name] = value;
-    setPostgraduate(list);
-  };
-  const handlePostgraduateRemoveClick = (index) => {
-    const list = [...postgraduate];
-    list.splice(index, 1);
-    setPostgraduate(list);
-  };
-  const handlePostgraduateAddClick = () => {
-    setPostgraduate([
-      ...postgraduate,
-      {
-        institute: "",
-        type: "MSc",
-        startDate: "",
-        endDate: "",
-        fieldOfStudy: "",
-      },
-    ]);
-  };
-
-  const [college, setCollege] = useState([
-    {
-      institute: "",
-      type: "School",
-      startDate: "",
-      endDate: "",
-      societiesAndActivities: "",
-    },
-  ]);
-  const handleCollegeInputChange = (e, index) => {
-    const { name, value } = e.target;
-    const list = [...college];
-    list[index][name] = value;
-    setCollege(list);
-  };
-  const handleCollegeRemoveClick = (index) => {
-    const list = [...college];
-    list.splice(index, 1);
-    setCollege(list);
-  };
-  const handleCollegeAddClick = () => {
-    setCollege([
-      ...college,
-      {
-        institute: "",
-        type: "School",
-        startDate: "",
-        endDate: "",
-        societiesAndActivities: "",
-      },
-    ]);
-  };
-
-  const [diploma, setDiploma] = useState([
-    {
-      institute: "",
-      type: "Diploma",
-      startDate: "",
-      endDate: "",
-      fieldOfStudy: "",
-    },
-  ]);
-  const handleDiplomaInputChange = (e, index) => {
-    const { name, value } = e.target;
-    const list = [...diploma];
-    list[index][name] = value;
-    setDiploma(list);
-  };
-  const handleDiplomaRemoveClick = (index) => {
-    const list = [...diploma];
-    list.splice(index, 1);
-    setDiploma(list);
-  };
-  const handleDiplomaAddClick = () => {
-    setDiploma([
-      ...diploma,
-      {
-        institute: "",
-        type: "Diploma",
-        startDate: "",
-        endDate: "",
-        fieldOfStudy: "",
       },
     ]);
   };
@@ -486,6 +532,7 @@ export default function ProfileSetup() {
     ]);
   };
 
+  const [allCertificates, setAllCertificates] = useState(null);
   const [certificate, setCertificate] = useState([
     {
       issuer: "",
@@ -516,6 +563,18 @@ export default function ProfileSetup() {
       },
     ]);
   };
+  const fetchCertificates = async () => {
+    await axios.get(`${BACKEND_URL}/certifications`).then((res) => {
+      if (res.data.success) {
+        if (res.data.existingData?.length > 0) {
+          if (Object.keys(res.data.existingData[0]).length === 0) {
+            res.data.existingData.splice(0, 1);
+          }
+        }
+        setAllCertificates(res.data.existingData);
+      }
+    });
+  };
 
   const [tech, setTech] = useState([]);
   const handleTechAddClick = (techName) => {
@@ -523,22 +582,10 @@ export default function ProfileSetup() {
   };
 
   const props = {
-    university,
-    handleUniversityInputChange,
-    handleUniversityAddClick,
-    handleUniversityRemoveClick,
-    postgraduate,
-    handlePostgraduateInputChange,
-    handlePostgraduateAddClick,
-    handlePostgraduateRemoveClick,
-    college,
-    handleCollegeInputChange,
-    handleCollegeAddClick,
-    handleCollegeRemoveClick,
-    diploma,
-    handleDiplomaInputChange,
-    handleDiplomaAddClick,
-    handleDiplomaRemoveClick,
+    edu,
+    handleEduInputChange,
+    handleEduAddClick,
+    handleEduRemoveClick,
     course,
     handleCourseInputChange,
     handleCourseAddClick,
@@ -586,6 +633,10 @@ export default function ProfileSetup() {
         return "Unknown step";
     }
   };
+
+  useEffect(() => {
+    fetchCertificates();
+  }, []);
 
   return (
     <div className={classes.root}>
