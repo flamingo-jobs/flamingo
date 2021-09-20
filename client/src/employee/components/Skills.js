@@ -125,24 +125,8 @@ function Skills(props) {
   const [fetchedData, setFetchedData] = useState('');
   const [open, setOpen] = useState(false);
   const [skills, setSkills] = useState([]);
+  const [names, setNames] = useState([]);
   const [loadingData, setLoadingData] = useState(true);
-
-  const names = [
-    "Cloud and Distributed Computing",
-    "Statistical Analysis and Data Mining",
-    "SEO/SEM Marketing",
-    "Middleware and Integration Software",
-    'Mobile Development',
-    'Network and Information Security',
-    'Public Speaking',
-    'Analytical Thinking',
-    'Object Oriented Programming',
-    'Leadership',
-    'Web Development',
-    'Data Engineering and Data Warehousing',
-    'Algorithm Design',
-    'Shell Scripting Languages',
-    'Software Modeling and Process Design'];
   const [chipData, setChipData] = useState(names);
   const [newData, setNewData] = useState(null);
   const [show, setShow] = useState(false);
@@ -154,9 +138,19 @@ function Skills(props) {
   let login = props.login;
 
 
-
   function fetchData() {
     setLoadingData(true);
+    setNames([]);
+    axios.get(`${BACKEND_URL}/skills`).then(res => {
+      if (res.data.success) {
+        res.data.existingData.forEach(element => {
+          names.push(element.name);
+        });
+      } else {
+          setNames([])
+      }
+    })
+
     axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
       .then(res => {
         if (res.data.success) {
@@ -204,6 +198,7 @@ function Skills(props) {
   }
 
   function showClose() {
+    fetchData();
     setShow(false);
   }
 
@@ -261,7 +256,6 @@ function Skills(props) {
         }
       });
     setFetchedData(1);
-    e.target.value = null;
     showClose();
     handleClose();
   }
@@ -277,7 +271,6 @@ function Skills(props) {
             msg: "Skill deleted successfully!",
           });
           handleAlert();
-          fetchData();
           axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
         } else {
           setAlertData({
@@ -286,12 +279,9 @@ function Skills(props) {
           });
         }
       });
-    setShow(false);
-    showCombo();
-    handleAlert();
-    removeDuplicates();
+    setFetchedData(1);
+    showClose();
     handleClose();
-    setFetchedData(1)
   };
 
   const showCombo = () => {
