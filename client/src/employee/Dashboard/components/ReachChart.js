@@ -5,11 +5,13 @@ import { Line } from "react-chartjs-2";
 import Theme from "../../../Theme";
 import axios from "axios";
 import BACKEND_URL from "../../../Config";
+import Loading from "../../../components/Loading";
 
 const ReachChart = (props) => {
 
   const [reach, setReach] = useState([]);
   const [counts, setCounts] = useState([]);
+  const [loadingData, setLoadingData] = useState(true);
   
 
   let loginId;
@@ -35,6 +37,7 @@ const ReachChart = (props) => {
 
 
   function fetchData(){
+    setLoadingData(true);
     axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
     .then(res => {
       if(res.data.success){
@@ -43,6 +46,7 @@ const ReachChart = (props) => {
         }
       }
     })
+    
   }
 
   function getCount(){
@@ -53,8 +57,19 @@ const ReachChart = (props) => {
         monthlyReach[temp[1]-1]++;
     }
     setCounts(monthlyReach);
-    // console.log(counts);
+    setLoadingData(false);
   }
+
+  const options = {
+    ticks: {
+      precision: 0,
+    },
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  };
 
   const generateLineChart = () => {
     return {
@@ -72,11 +87,23 @@ const ReachChart = (props) => {
     };
   };
 
+  const displayChart = () => {
+    if(loadingData){
+      return (<Loading />);
+    }else if (counts && counts.length > 0) {
+      return (  
+        <>     
+        <Typography>Monthly Profile Reach</Typography>
+        <Line data={generateLineChart({fill: false})}  options={options} />
+        </>
+      );
+    }
+  };
+
   return (
     <div>
       <FloatCard>
-        <Typography>Monthly Profile Reach</Typography>
-        <Line data={generateLineChart({fill: false})} />
+        {displayChart()}
       </FloatCard>
     </div>
   );

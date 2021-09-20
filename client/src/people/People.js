@@ -111,16 +111,12 @@ function People() {
             if (res.data.success) {
                 if (res.data.existingData.length !== 0) {
                     setAllPeople(res.data.existingData);
-                   // getPublicPeople();
                 } else {
                     setPeople("empty");
                 }
             } else {
                 setPeople(null)
             }
-            // if(people !== "empty" && people.length > 0){
-            //     getPublicPeople();
-            // }
         })
     }
 
