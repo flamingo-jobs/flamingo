@@ -1,12 +1,7 @@
 import React from "react";
 import LocalOfferRoundedIcon from "@material-ui/icons/LocalOfferRounded";
-import {
-  Button,
-  Chip,
-  makeStyles,
-  Typography,
-} from "@material-ui/core";
-import FloatCard from '../../components/FloatCard';
+import { Button, Chip, makeStyles, Typography } from "@material-ui/core";
+import FloatCard from "../../components/FloatCard";
 import EditIcon from "@material-ui/icons/Edit";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -41,14 +36,12 @@ const useStyles = makeStyles((theme) => ({
   body: {
     paddingLeft: 20,
     paddingRight: 20,
-    marginBottom: 16
+    marginBottom: 16,
   },
-  infoTagsContainer: {
-
-  },
+  infoTagsContainer: {},
   editButton: {
-    position: 'relative',
-    right: '-45%'
+    position: "relative",
+    right: "-45%",
   },
   tag: {
     marginRight: 10,
@@ -57,10 +50,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.lightSkyBlue,
   },
   label: {
-
     backgroundColor: theme.palette.tagYellow,
   },
-
 }));
 
 function CompanyDescription(props) {
@@ -74,11 +65,18 @@ function CompanyDescription(props) {
   const jwt = require("jsonwebtoken");
   const token = sessionStorage.getItem("userToken");
   const header = jwt.decode(token, { complete: true });
+  let editAccess = false;
   if (token === null) {
     loginId = props.userRole;
+  } else if (window.location.pathname.split("/")[3] != undefined) {
+    loginId = window.location.pathname.split("/")[3];
+
+    if(loginId==props.accessId) editAccess=true
+    
   } else if (header.payload.userRole === "employer") {
     login = true;
     loginId = sessionStorage.getItem("loginId");
+    editAccess = true;
   } else {
     loginId = props.userRole;
   }
@@ -217,9 +215,7 @@ function CompanyDescription(props) {
           fullWidth={true}
           className={classes.dialogBox}
         >
-          <DialogTitle id="edit-details-form">
-            Company Description
-          </DialogTitle>
+          <DialogTitle id="edit-details-form">Company Description</DialogTitle>
           <DialogContent>
             <Grid container spacing={3}>
               <Grid item xs={12}>
@@ -265,14 +261,13 @@ function CompanyDescription(props) {
           </DialogActions>
         </Dialog>
       </form>
-
-    )
-  }
+    );
+  };
 
   return (
     <>
       <FloatCard>
-        {props.userRole == "employer" || haveAccess == true ?
+        {props.userRole == "employer" || haveAccess == true  && editAccess==true ?  (
           <IconButton
             variant="outlined"
             aria-label="edit"
@@ -281,17 +276,18 @@ function CompanyDescription(props) {
           >
             <EditIcon />
           </IconButton>
-          : <div style={{ margin: 16 }}></div>
-        }
+        ) : (
+          <div style={{ margin: 16 }}></div>
+        )}
         <Grid container spacing={3} direction="row">
-
           <Grid item container spacing={3} xs={12}>
             {technologyStack.length > 0 ? (
               <Grid item xs={12}>
                 <div className={classes.infoTags}>
                   {Object.keys(technologyStack).map((item, i) => (
                     <Chip
-                      icon={<LocalOfferRoundedIcon />} className={classes.tag}
+                      icon={<LocalOfferRoundedIcon />}
+                      className={classes.tag}
                       label={technologyStack[i].type}
                     />
                   ))}
@@ -301,18 +297,17 @@ function CompanyDescription(props) {
               <Grid item xs={12}>
                 <div className={classes.infoTags}>
                   <Chip
-                    icon={<LocalOfferRoundedIcon />} className={classes.tag}
+                    icon={<LocalOfferRoundedIcon />}
+                    className={classes.tag}
                     label="No Technologies"
                   />
                 </div>
               </Grid>
             )}
-            <Grid item xs={12} className={classes.headerInfo}>
-
-            </Grid>
+            <Grid item xs={12} className={classes.headerInfo}></Grid>
           </Grid>
 
-          <Grid item xs={12} >
+          <Grid item xs={12}>
             <div className={classes.body}>
               <Typography
                 style={{ whiteSpace: "pre-line" }}
@@ -323,10 +318,8 @@ function CompanyDescription(props) {
               </Typography>
             </div>
           </Grid>
-
         </Grid>
-
-      </FloatCard >
+      </FloatCard>
       {displayEditForm()}
       <Snackbar
         open={openAlertValidationError}
