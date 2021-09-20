@@ -914,7 +914,7 @@ function EducationSection(props) {
               Cancel
             </Button>
             <Button onClick={onSubmitEducation} color="primary" autoFocus>
-              Apply Changes
+              Save
             </Button>
           </DialogActions>
         </Dialog>

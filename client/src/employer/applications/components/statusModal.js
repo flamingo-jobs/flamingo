@@ -101,6 +101,23 @@ const StatusModal = (props) => {
     props.setStatus(event.target.value);
   };
 
+  const notificationTitle = (status) => {
+    if(status === "reviewing"){
+      return "Your resume is being reviewed";
+    }
+    else if(status === "shortlisted"){
+      return "Congratulations! Your have been shortlisted";
+    }
+  }
+  const notificationType = (status) => {
+    if(status === "reviewing"){
+      return "";
+    }
+    else if(status === "shortlisted"){
+      return "shortlisted";
+    }
+  }
+
   const handleStatusSubmit = async () => {
     const status = props.status;
 
@@ -129,6 +146,18 @@ const StatusModal = (props) => {
           msg: "Status Changed successfully!",
         });
         props.handleAlert();
+
+        if(status === "reviewing" || status === "shortlisted"){
+          await axios.put(`${BACKEND_URL}/jobSeeker/addNotifications/${props.userId}`,
+          {
+            title: notificationTitle(status),
+            description: `for ${props.job.title} at ${props.job.organization.name}`,
+            link: `/jobseeker/appliedJobs`,
+            type: notificationType(status),
+            createdAt: new Date(),
+            isUnRead: true
+          });
+        }
 
       }
     } catch (err) {

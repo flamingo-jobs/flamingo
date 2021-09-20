@@ -50,6 +50,7 @@ function People() {
     const classes = useStyles();
 
     const [people, setPeople] = useState([]);
+    const [allPeople, setAllPeople] = useState([]);
     const [count, setCount] = useState(0);
     const [filters, setFilters] = useState({});
     const [search, setSearch] = useState({});
@@ -68,6 +69,10 @@ function People() {
     useEffect(() => {
         updateQuery();
     }, [filters, search])
+
+    useEffect(() => {
+        getPublicPeople();
+    }, [allPeople])
 
     const updateFilters = (filterData) => {
         setFilters(filterData);
@@ -105,14 +110,30 @@ function People() {
 
             if (res.data.success) {
                 if (res.data.existingData.length !== 0) {
-                    setPeople(res.data.existingData);
+                    setAllPeople(res.data.existingData);
+                   // getPublicPeople();
                 } else {
                     setPeople("empty");
                 }
             } else {
                 setPeople(null)
             }
+            // if(people !== "empty" && people.length > 0){
+            //     getPublicPeople();
+            // }
         })
+    }
+
+    function getPublicPeople(){
+        let publicPeople = allPeople;
+        publicPeople.forEach((person,i) => {
+            if(person.isPublic === false){
+                console.log(i);
+                allPeople.splice(i,1);        
+            }
+        });
+        setPeople(allPeople);
+        
     }
 
     const displayPeople = () => {

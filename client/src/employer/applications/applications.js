@@ -305,6 +305,7 @@ const Applications = () => {
                   matches={applicationDetails.filter(x => x.userId === user._id).map(x => x.matches)[0]}
                   jobseeker={user}
                   jobId={jobId}
+                  job={job}
                   shortlistEveryone={shortlistEveryone}
                   setAlertData={setAlertData}
                   handleAlert={handleAlert}
@@ -386,6 +387,18 @@ const Applications = () => {
         });
         setApplicants(newScoredApplicants);
         setShortlistEveryone(true);
+
+        ids.forEach(async (id) => {
+          await axios.put(`${BACKEND_URL}/jobSeeker/addNotifications/${id}`,
+          {
+            title: "Congratulations! Your have been shortlisted",
+            description: `for ${job.title} at ${job.organization.name}`,
+            link: `/jobseeker/appliedJobs`,
+            type: "shortlisted",
+            createdAt: new Date(),
+            isUnRead: true
+          });
+        });
       }
     } catch (error) {
       setAlertData({
@@ -416,7 +429,7 @@ const Applications = () => {
 
             <Grid item xs={12}>
               <div className={classes.shortlistEveryoneBtnContainer}>
-                <Tooltip title="This will mark all the shortlisted applicants as shortlisted and inform them">
+                <Tooltip title="This will mark all the shortlisted applicants as shortlisted and inform them.">
                   <Button
                     className={classes.shortlistEveryoneBtn}
                     startIcon={<PeopleIcon />}
@@ -435,6 +448,7 @@ const Applications = () => {
                   matches={user.matches}
                   jobseeker={user}
                   jobId={jobId}
+                  job={job}
                   shortlistEveryone={shortlistEveryone}
                   setAlertData={setAlertData}
                   handleAlert={handleAlert}
@@ -462,6 +476,7 @@ const Applications = () => {
                   matches={user.matches}
                   jobseeker={user}
                   jobId={jobId}
+                  job={job}
                   shortlistEveryone={shortlistEveryone}
                   setAlertData={setAlertData}
                   handleAlert={handleAlert}

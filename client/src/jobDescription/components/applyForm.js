@@ -14,7 +14,7 @@ import BACKEND_URL, { FILE_URL } from "../../Config";
 import ItPerson from "../lotties/itPerson.json";
 import uploadFileToBlob, { isStorageConfigured } from '../../utils/azureFileUpload';
 import { useDispatch, useSelector } from "react-redux";
-import { setNewNotifications } from "../../redux/actions";
+import { setNewNotifications, setApplicationCount } from "../../redux/actions";
 
 const useStyles = makeStyles((theme) => ({
   applyFormWrapper: {
@@ -118,6 +118,7 @@ const ApplyForm = (props) => {
 
   const [loading, setLoading] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
+
   const notificationCount = useSelector(state => state.newNotifications);
   const dispatch = useDispatch();
   const timer = useRef();
@@ -285,7 +286,7 @@ const ApplyForm = (props) => {
             handleAlert();
             setSuccess(true);
             setLoading(false);
-
+            dispatch(setApplicationCount(props.appliedJobCount + 1));
           }).catch(error => {
             setAlertData({
               severity: "error",
