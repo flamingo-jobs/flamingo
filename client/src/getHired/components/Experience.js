@@ -5,11 +5,12 @@ import {
   IconButton,
   TextField,
   Typography,
+  FormControl,
+  InputLabel,
+  Select,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import AddIcon from "@material-ui/icons/Add";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
-import RemoveIcon from "@material-ui/icons/Remove";
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import React from "react";
@@ -222,6 +223,7 @@ export const Experience = ({
                               fullWidth
                               name="place"
                               label="Work Place"
+                              required
                               value={x.place}
                               onChange={(e) => handleWorkInputChange(e, i)}
                             />
@@ -250,31 +252,33 @@ export const Experience = ({
                               onChange={(e) => handleWorkInputChange(e, i)}
                             />
                           </Grid>
-                          <Grid item xs={6} md={4} align="center">
+                          <Grid item xs={6} md={6} align="center">
                             <TextField
                               size="small"
                               className={classes.textField}
                               variant="outlined"
                               fullWidth
                               name="from"
-                              label="From"
+                              helperText="From"
+                              type="month"
                               value={x.from}
                               onChange={(e) => handleWorkInputChange(e, i)}
                             />
                           </Grid>
-                          <Grid item xs={6} md={4} align="center">
+                          <Grid item xs={6} md={6} align="center">
                             <TextField
                               size="small"
                               className={classes.textField}
                               variant="outlined"
                               fullWidth
                               name="to"
-                              label="To"
+                              type="month"
+                              helperText="To"
                               value={x.to}
                               onChange={(e) => handleWorkInputChange(e, i)}
                             />
                           </Grid>
-                          <Grid item xs={6} md={4} align="center">
+                          <Grid item xs={6} md={12} align="center">
                             <TextField
                               size="small"
                               className={classes.textField}
@@ -343,7 +347,58 @@ export const Experience = ({
                             fullWidth
                             name="name"
                             label="Project Name"
+                            required
                             value={x.name}
+                            onChange={(e) => handleProjectInputChange(e, i)}
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={6} align="center">
+                          <FormControl
+                            size="small"
+                            fullWidth
+                            variant="outlined"
+                            className={classes.formControl}
+                          >
+                            <InputLabel
+                              className={classes.placeholderDate}
+                              htmlFor="outlined-age-native-simple"
+                            >
+                              Type
+                            </InputLabel>
+                            <Select
+                              native
+                              label="Type"
+                              name="type"
+                              onChange={(e) => {
+                                handleProjectInputChange(e, i);
+                              }}
+                              required
+                            >
+                              <option
+                                aria-label="Individual"
+                                value="Individual"
+                              >
+                                Individual
+                              </option>
+                              <option aria-label="None" value="Group">
+                                Group
+                              </option>
+                              <option aria-label="None" value="Community">
+                                Community
+                              </option>
+                            </Select>
+                          </FormControl>
+                        </Grid>
+                        <Grid item xs={12} align="center">
+                          <TextField
+                            size="small"
+                            className={classes.textField}
+                            variant="outlined"
+                            fullWidth
+                            name="link"
+                            label="Link"
+                            type="url"
+                            value={x.link}
                             onChange={(e) => handleProjectInputChange(e, i)}
                           />
                         </Grid>
@@ -353,32 +408,22 @@ export const Experience = ({
                             className={classes.textField}
                             variant="outlined"
                             fullWidth
-                            name="link"
-                            label="Link"
-                            value={x.link}
-                            onChange={(e) => handleProjectInputChange(e, i)}
-                          />
-                        </Grid>
-                        <Grid item xs={6} md={4} align="center">
-                          <TextField
-                            size="small"
-                            className={classes.textField}
-                            variant="outlined"
-                            fullWidth
                             name="from"
-                            label="From"
+                            helperText="From"
+                            type="month"
                             value={x.from}
                             onChange={(e) => handleProjectInputChange(e, i)}
                           />
                         </Grid>
-                        <Grid item xs={6} md={4} align="center">
+                        <Grid item xs={12} md={6} align="center">
                           <TextField
                             size="small"
                             className={classes.textField}
                             variant="outlined"
                             fullWidth
                             name="to"
-                            label="To"
+                            helperText="To"
+                            type="month"
                             value={x.to}
                             onChange={(e) => handleProjectInputChange(e, i)}
                           />

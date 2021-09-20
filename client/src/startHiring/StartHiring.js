@@ -318,7 +318,12 @@ export default function StartHiring() {
         }
       });
   };
-
+  const setLogs = async (role, userId) => {
+    await axios.post(`${BACKEND_URL}/logs/user`, {
+      role: role,
+      userId: userId,
+    });
+  };
   const handleSuccessLogin = async (id, loginId) => {
     await handleUploads(loginId);
     const linker = { id: id, loginId: loginId };
@@ -326,6 +331,7 @@ export default function StartHiring() {
       .post(`${BACKEND_URL}/api/link-account`, linker)
       .then((res) => {
         if (res.data.success) {
+          setLogs("employer", id);
           handleShorlistingSettings(loginId);
         } else {
           setSubmitted(false);

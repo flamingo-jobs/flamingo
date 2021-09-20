@@ -8,7 +8,6 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
-import Autocomplete from "@material-ui/lab/Autocomplete";
 import React from "react";
 import backgroundImage from "../images/background.jpg";
 
@@ -141,7 +140,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const Volunteering = ({
-  university,
   volunteer,
   handleVolunteerInputChange,
   handleVolunteerAddClick,
@@ -165,6 +163,7 @@ export const Volunteering = ({
         justify="space-between"
         className={classes.gridCont}
       >
+        {/* Volunteering Details */}
         <Grid item xs={12} lg={4}>
           <Grid container alignItems="center" spacing={3}>
             <Grid item xs={12} align="left">
@@ -192,6 +191,7 @@ export const Volunteering = ({
                             fullWidth
                             name="title"
                             label="Title"
+                            required
                             value={x.title}
                             onChange={(e) => handleVolunteerInputChange(e, i)}
                           />
@@ -203,32 +203,8 @@ export const Volunteering = ({
                             variant="outlined"
                             fullWidth
                             name="organization"
-                            label="Description"
+                            label="Organization"
                             value={x.organization}
-                            onChange={(e) => handleVolunteerInputChange(e, i)}
-                          />
-                        </Grid>
-                        <Grid item xs={12} md={4} align="center">
-                          <TextField
-                            size="small"
-                            className={classes.textField}
-                            variant="outlined"
-                            fullWidth
-                            name="from"
-                            label="From"
-                            value={x.from}
-                            onChange={(e) => handleVolunteerInputChange(e, i)}
-                          />
-                        </Grid>
-                        <Grid item xs={12} md={4} align="center">
-                          <TextField
-                            size="small"
-                            className={classes.textField}
-                            variant="outlined"
-                            fullWidth
-                            name="to"
-                            label="To"
-                            value={x.to}
                             onChange={(e) => handleVolunteerInputChange(e, i)}
                           />
                         </Grid>
@@ -241,6 +217,32 @@ export const Volunteering = ({
                             name="description"
                             label="Description"
                             value={x.description}
+                            onChange={(e) => handleVolunteerInputChange(e, i)}
+                          />
+                        </Grid>
+                        <Grid item xs={12} align="center">
+                          <TextField
+                            size="small"
+                            className={classes.textField}
+                            variant="outlined"
+                            fullWidth
+                            name="from"
+                            helperText="From"
+                            type="month"
+                            value={x.from}
+                            onChange={(e) => handleVolunteerInputChange(e, i)}
+                          />
+                        </Grid>
+                        <Grid item xs={12} align="center">
+                          <TextField
+                            size="small"
+                            className={classes.textField}
+                            variant="outlined"
+                            fullWidth
+                            name="to"
+                            helperText="To"
+                            type="month"
+                            value={x.to}
                             onChange={(e) => handleVolunteerInputChange(e, i)}
                           />
                         </Grid>
@@ -300,6 +302,7 @@ export const Volunteering = ({
                             fullWidth
                             name="title"
                             label="Award Title"
+                            required
                             value={x.title}
                             onChange={(e) => handleAwardInputChange(e, i)}
                           />
@@ -316,18 +319,6 @@ export const Volunteering = ({
                             onChange={(e) => handleAwardInputChange(e, i)}
                           />
                         </Grid>
-                        <Grid item xs={12} md={8} align="center">
-                          <TextField
-                            size="small"
-                            className={classes.textField}
-                            variant="outlined"
-                            fullWidth
-                            name="date"
-                            label="Date (mm/yyyy)"
-                            value={x.date}
-                            onChange={(e) => handleAwardInputChange(e, i)}
-                          />
-                        </Grid>
                         <Grid item xs={12} md={12} align="center">
                           <TextField
                             size="small"
@@ -337,6 +328,19 @@ export const Volunteering = ({
                             name="description"
                             label="Description"
                             value={x.description}
+                            onChange={(e) => handleAwardInputChange(e, i)}
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={12} align="center">
+                          <TextField
+                            size="small"
+                            className={classes.textField}
+                            variant="outlined"
+                            fullWidth
+                            name="date"
+                            type="month"
+                            helperText="Date"
+                            value={x.date}
                             onChange={(e) => handleAwardInputChange(e, i)}
                           />
                         </Grid>
@@ -397,6 +401,7 @@ export const Volunteering = ({
                             fullWidth
                             name="title"
                             label="Title"
+                            required
                             value={x.title}
                             onChange={(e) => handleAchievementInputChange(e, i)}
                           />
@@ -413,14 +418,15 @@ export const Volunteering = ({
                             onChange={(e) => handleAchievementInputChange(e, i)}
                           />
                         </Grid>
-                        <Grid item xs={12} md={6} align="center">
+                        <Grid item xs={12} align="center">
                           <TextField
                             size="small"
                             className={classes.textField}
                             variant="outlined"
                             fullWidth
                             name="date"
-                            label="Date"
+                            helperText="Date"
+                            type="month"
                             value={x.date}
                             onChange={(e) => handleAchievementInputChange(e, i)}
                           />
@@ -453,48 +459,6 @@ export const Volunteering = ({
             </Grid>
           </Grid>
         </Grid>
-
-        {/* Navigation Buttons */}
-        {/* <Container className={classes.jobDetailsContainer}>
-                      <Grid container alignItems="center" spacing={2}>
-                        <Grid
-                          container
-                          direction="row"
-                          alignItems="center"
-                          justify="flex-end"
-                        >
-                          <Grid item sm={6} md={6} align="center">
-                            <Grid
-                              container
-                              alignItems="center"
-                              justify="flex-end"
-                              spacing={2}
-                            >
-                              <Grid item align="center">
-                                <Button
-                                  fullWidth
-                                  variant="outlined"
-                                  className={classes.previous}
-                                  onClick={() => navigation.previous()}
-                                >
-                                  Previous
-                                </Button>
-                              </Grid>{" "}
-                              <Grid item align="center">
-                                <Button
-                                  fullWidth
-                                  
-                                  className={classes.next}
-                                  onClick={() => navigation.next()}
-                                >
-                                  Next
-                                </Button>
-                              </Grid>
-                            </Grid>
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                    </Container> */}
       </Grid>
     </Container>
   );

@@ -1,5 +1,16 @@
 import {
-  Box, Button, Container, FormControl, Grid, InputAdornment, InputLabel, LinearProgress, MenuItem, Select, TextField, Typography
+  Box,
+  Button,
+  Container,
+  FormControl,
+  Grid,
+  InputAdornment,
+  InputLabel,
+  LinearProgress,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
@@ -337,7 +348,12 @@ export default function GetHired() {
         }
       });
   };
-
+  const setLogs = async (role, userId) => {
+    await axios.post(`${BACKEND_URL}/logs/user`, {
+      role: role,
+      userId: userId,
+    });
+  };
   const handleSuccessLogin = (id, loginId) => {
     const linker = { id: id, loginId: loginId };
     setProgress(70);
@@ -348,6 +364,7 @@ export default function GetHired() {
           setProgress(85);
           sessionStorage.setItem("loginId", loginId);
           setProgress(100);
+          setLogs("jobseeker", id);
           window.location = "/setupprofile";
         } else {
           setProgress(0);
@@ -652,7 +669,6 @@ export default function GetHired() {
                               <Button
                                 fullWidth
                                 type="submit"
-                                
                                 className={classes.submit}
                                 disabled={progress !== 0}
                               >
@@ -663,7 +679,6 @@ export default function GetHired() {
                               <Link to="/">
                                 <Button
                                   fullWidth
-                                  
                                   className={classes.cancel}
                                   disabled={progress !== 0}
                                 >
