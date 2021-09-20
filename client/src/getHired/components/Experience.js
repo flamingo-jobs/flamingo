@@ -222,6 +222,7 @@ export const Experience = ({
                               fullWidth
                               name="place"
                               label="Work Place"
+                              required
                               value={x.place}
                               onChange={(e) => handleWorkInputChange(e, i)}
                             />
@@ -250,31 +251,33 @@ export const Experience = ({
                               onChange={(e) => handleWorkInputChange(e, i)}
                             />
                           </Grid>
-                          <Grid item xs={6} md={4} align="center">
+                          <Grid item xs={6} md={6} align="center">
                             <TextField
                               size="small"
                               className={classes.textField}
                               variant="outlined"
                               fullWidth
                               name="from"
-                              label="From"
+                              helperText="From"
+                              type="month"
                               value={x.from}
                               onChange={(e) => handleWorkInputChange(e, i)}
                             />
                           </Grid>
-                          <Grid item xs={6} md={4} align="center">
+                          <Grid item xs={6} md={6} align="center">
                             <TextField
                               size="small"
                               className={classes.textField}
                               variant="outlined"
                               fullWidth
                               name="to"
-                              label="To"
+                              type="month"
+                              helperText="To"
                               value={x.to}
                               onChange={(e) => handleWorkInputChange(e, i)}
                             />
                           </Grid>
-                          <Grid item xs={6} md={4} align="center">
+                          <Grid item xs={6} md={12} align="center">
                             <TextField
                               size="small"
                               className={classes.textField}
@@ -343,6 +346,7 @@ export const Experience = ({
                             fullWidth
                             name="name"
                             label="Project Name"
+                            required
                             value={x.name}
                             onChange={(e) => handleProjectInputChange(e, i)}
                           />
@@ -359,26 +363,28 @@ export const Experience = ({
                             onChange={(e) => handleProjectInputChange(e, i)}
                           />
                         </Grid>
-                        <Grid item xs={6} md={4} align="center">
+                        <Grid item xs={12} md={6} align="center">
                           <TextField
                             size="small"
                             className={classes.textField}
                             variant="outlined"
                             fullWidth
                             name="from"
-                            label="From"
+                            helperText="From"
+                            type="month"
                             value={x.from}
                             onChange={(e) => handleProjectInputChange(e, i)}
                           />
                         </Grid>
-                        <Grid item xs={6} md={4} align="center">
+                        <Grid item xs={12} md={6} align="center">
                           <TextField
                             size="small"
                             className={classes.textField}
                             variant="outlined"
                             fullWidth
                             name="to"
-                            label="To"
+                            helperText="To"
+                            type="month"
                             value={x.to}
                             onChange={(e) => handleProjectInputChange(e, i)}
                           />
