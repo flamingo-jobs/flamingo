@@ -8,7 +8,6 @@ import {
   FormControl,
   InputLabel,
   Select,
-  Autocomplete,
 } from "@material-ui/core";
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
