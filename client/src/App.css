@@ -22,3 +22,7 @@ a {
 .MuiLink-underlineHover:hover{
   text-decoration: none !important;
 }
+
+.MuiDialogContent-root {
+  padding: 16px 24px !important;
+}

@@ -52,10 +52,8 @@ const useStyles = makeStyles({
   form: {
     alignItems: 'center',
     justifyContent: 'center',
-    padding: '5% 15% 5% 15%'
   },
   field: {
-    margin: "20px 0px 20px 0px",
     display: "flex",
     fontSize: "16px",
     "& label": {
@@ -301,7 +299,7 @@ function Skills(props) {
       return (
         <>
           <Autocomplete
-            style={{ width: "100%", margin: "10px 120px 20px 120px" }}
+            style={{ width: "100%", margin: "10px 10% 20px 10%" }}
             multiple
             id="tags-outlined"
             filterSelectedOptions
@@ -313,14 +311,14 @@ function Skills(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                variant="standard"
+                variant="outlined"
                 label="Select new skills"
                 placeholder="+ new"
               />
             )}
           />
           <Grid item xs={12}>
-            <Button className={classes.defaultButton} onClick={onSubmit} style={{ float: "right", marginRight: "115px" }}>Save</Button>
+            <Button color="primary" onClick={onSubmit} style={{ float: "right", marginRight: "10%" }}>Save</Button>
             <Button onClick={showClose} style={{ float: "right", marginRight: "15px" }}>Cancel</Button>
           </Grid>
         </>

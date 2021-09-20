@@ -34,10 +34,10 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 25,
     borderRadius: 10,
     "&:hover": {
-        defaultButton: {
-            display: 'block'
-        }
+      defaultButton: {
+        display: 'block'
       }
+    }
   },
   defaultButton: {
     backgroundColor: theme.palette.stateBlue,
@@ -48,8 +48,8 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   editIcon: {
-    padding:'0px',
-    margin:'-15px',
+    padding: '0px',
+    margin: '-15px',
     color: theme.palette.tuftsBlue,
     "&:hover": {
       backgroundColor: theme.palette.lightSkyBlue,
@@ -77,11 +77,8 @@ const useStyles = makeStyles((theme) => ({
   form: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingLeft: '20px',
-    paddingRight: '20px'
   },
   field: {
-    margin: "25px 0px 20px 0px",
     display: "flex",
     fontSize: "16px",
     "& label": {
@@ -118,32 +115,47 @@ const useStyles = makeStyles((theme) => ({
   placeholder: {
     color: "#777",
     fontSize: '16px',
-    marginTop:"-8px",
+    marginTop: "-8px",
   },
   placeholderDate: {
     color: "#777",
     fontSize: '14px',
-    marginTop:"12px",
+    marginTop: "12px",
   },
   item: {
     color: "#666",
     padding: "10px 20px"
-  }
+  },
+  paperRoot: {
+    padding: 20,
+  },
+  confrimDelete: {
+    boxShadow: "none",
+    color: theme.palette.red,
+    backgroundColor: theme.palette.lightyPink,
+    borderRadius: 12,
+    marginLeft: "16px !important",
+    padding: "10px",
+    "&:hover": {
+      backgroundColor: theme.palette.lightyPinkHover,
+      boxShadow: "none",
+    },
+  },
 }));
 
 function CourseItem(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [styleEdit, setStyleEdit] = useState({display: 'none'});
-  let courseStartDate=[0,0];
-  let courseEndDate=[0,0];
-  if(props.startDate !== 'null/null' && props.startDate !== '0/0'){
+  const [styleEdit, setStyleEdit] = useState({ display: 'none' });
+  let courseStartDate = [0, 0];
+  let courseEndDate = [0, 0];
+  if (props.startDate !== 'null/null' && props.startDate !== '0/0') {
     courseStartDate = props.startDate.split("/");
   }
-  if(props.endDate !== 'null/null' && props.endDate !== '0/0'){
+  if (props.endDate !== 'null/null' && props.endDate !== '0/0') {
     courseEndDate = props.endDate.split("/");
   }
-  const [state, setState] = useState({course: props.course, institute: props.institute, startYear: courseStartDate[1], startMonth: courseStartDate[0], endYear: courseEndDate[1], endMonth: courseEndDate[0]});
+  const [state, setState] = useState({ course: props.course, institute: props.institute, startYear: courseStartDate[1], startMonth: courseStartDate[0], endYear: courseEndDate[1], endMonth: courseEndDate[0] });
 
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
@@ -152,52 +164,52 @@ function CourseItem(props) {
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
   const [anchorEl, setAnchorEl] = React.useState(null);
   const index = props.index;
-  let loginId=props.jobseekerID;
+  let loginId = props.jobseekerID;
   let login = props.login;
 
-    //generate year list
-    function getYearsFrom(){
-      let maxOffset = 25;
-      let thisYear = (new Date()).getFullYear();
-      let allYears = [];
-      for(let x = 0; x <= maxOffset; x++) {
-          allYears.push(thisYear - x)
-      }
-  
-      return allYears.map((x,index) => (<option key={index} value={x}>{x}</option>));
+  //generate year list
+  function getYearsFrom() {
+    let maxOffset = 25;
+    let thisYear = (new Date()).getFullYear();
+    let allYears = [];
+    for (let x = 0; x <= maxOffset; x++) {
+      allYears.push(thisYear - x)
     }
 
-    //generate year list
-    function getYearsTo(){
-      let maxOffset = 30;
-      let thisYear = (new Date()).getFullYear();
-      let allYears = [];
-      for(let x = -7; x <= maxOffset; x++) {
-          allYears.push(thisYear - x)
-      }
+    return allYears.map((x, index) => (<option key={index} value={x}>{x}</option>));
+  }
 
-      return allYears.map((x,index) => (<option key={index} value={x}>{x}</option>));
+  //generate year list
+  function getYearsTo() {
+    let maxOffset = 30;
+    let thisYear = (new Date()).getFullYear();
+    let allYears = [];
+    for (let x = -7; x <= maxOffset; x++) {
+      allYears.push(thisYear - x)
     }
-  
-    //generate month list
-    function getMonthsFrom(){
-      let maxOffset = 12;
-      let allMonths = [];
-      for(let x = 1; x <= maxOffset; x++) {
-        if(x<10){
-          allMonths.push("0"+x);
-        }else{
-          allMonths.push(x);
-        }        
+
+    return allYears.map((x, index) => (<option key={index} value={x}>{x}</option>));
+  }
+
+  //generate month list
+  function getMonthsFrom() {
+    let maxOffset = 12;
+    let allMonths = [];
+    for (let x = 1; x <= maxOffset; x++) {
+      if (x < 10) {
+        allMonths.push("0" + x);
+      } else {
+        allMonths.push(x);
       }
-  
-      return allMonths.map((x,index) => (<option key={index} value={x}>{x}</option>));
     }
-  
+
+    return allMonths.map((x, index) => (<option key={index} value={x}>{x}</option>));
+  }
+
   useEffect(() => {
     if (deleteSuccess === true) {
-        setAlertData({severity: "success", msg: "Item deleted successfully!"});
-        handleAlert();
+      setAlertData({ severity: "success", msg: "Item deleted successfully!" });
+      handleAlert();
     }
     setLoading(true);
     setDeleteSuccess(false);
@@ -216,12 +228,12 @@ function CourseItem(props) {
     setConfirmDelete(false);
   };
 
-  function handleOpen(){
+  function handleOpen() {
     setOpen(true);
     handleMenuClose();
   }
 
-  function handleClose(){
+  function handleClose() {
     setOpen(false);
   }
 
@@ -233,164 +245,165 @@ function CourseItem(props) {
     setAnchorEl(null);
   };
 
-    // Alert stuff
-    const displayAlert = () => {
-      return (
-        <SnackBarAlert
-          open={alertShow}
-          onClose={handleAlertClose}
-          severity={alertData.severity}
-          msg={alertData.msg}
-        />
-      );
-    };
-  
-    const handleAlert = () => {
-      setAlertShow(true);
-    };
-  
-    const handleAlertClose = (event, reason) => {
-      if (reason === "clickaway") {
-        return;
-      }
-      setAlertShow(false);
-    };
-  
+  // Alert stuff
+  const displayAlert = () => {
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
+
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertShow(false);
+  };
+
 
   //---------------------------- text field onChange events
-  function onChangeCourse(e){
+  function onChangeCourse(e) {
     setState(prevState => {
-      return {...prevState, course: e.target.value}
+      return { ...prevState, course: e.target.value }
     })
   }
 
-  function onChangeInstitute(e){
+  function onChangeInstitute(e) {
     setState(prevState => {
-      return {...prevState, institute: e.target.value}
+      return { ...prevState, institute: e.target.value }
     })
   }
 
-  function onChangestartYear(e){
+  function onChangestartYear(e) {
     setState(prevState => {
-      return {...prevState, startYear: e.target.value}
+      return { ...prevState, startYear: e.target.value }
     })
   }
 
-  function onChangestartMonth(e){
+  function onChangestartMonth(e) {
     setState(prevState => {
-      return {...prevState, startMonth: e.target.value}
+      return { ...prevState, startMonth: e.target.value }
     })
   }
 
-  function onChangeEndYear(e){
+  function onChangeEndYear(e) {
     setState(prevState => {
-      return {...prevState, endYear: e.target.value}
+      return { ...prevState, endYear: e.target.value }
     })
   }
 
-  function onChangeEndMonth(e){
+  function onChangeEndMonth(e) {
     setState(prevState => {
-      return {...prevState, endMonth: e.target.value}
+      return { ...prevState, endMonth: e.target.value }
     })
   }
 
 
-  function onSubmit(e){
+  function onSubmit(e) {
     e.preventDefault();
     const course = {
-        course: state.course,
-        institute: state.institute,
-        from: state.startMonth+"/"+state.startYear,
-        to: state.endMonth+"/"+state.endYear,
+      course: state.course,
+      institute: state.institute,
+      from: state.startMonth + "/" + state.startYear,
+      to: state.endMonth + "/" + state.endYear,
     }
 
-    axios.put(`${BACKEND_URL}/jobseeker/updateCourse/${loginId}`,{index:props.index,course:course})
-    .then(res => {
-      if(res.data.success){
-        setAlertData({
-          severity: "success",
-          msg: "Course updated successfully!",
-        });
-        handleAlert();
-        axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
-      } else {
-        setAlertData({
-          severity: "error",
-          msg: "Course could not be updated!",
-        });
-        handleAlert();
-      }
-    });
+    axios.put(`${BACKEND_URL}/jobseeker/updateCourse/${loginId}`, { index: props.index, course: course })
+      .then(res => {
+        if (res.data.success) {
+          setAlertData({
+            severity: "success",
+            msg: "Course updated successfully!",
+          });
+          handleAlert();
+          axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
+        } else {
+          setAlertData({
+            severity: "error",
+            msg: "Course could not be updated!",
+          });
+          handleAlert();
+        }
+      });
     handleClose();
   }
-  
+
 
   return (
     <>
-    {displayAlert()}
+      {displayAlert()}
       <Paper elevation={0} className={classes.paperCont}
-      onMouseEnter={e => {
-          setStyleEdit({display: 'block'});
-      }}
-      onMouseLeave={e => {
-          setStyleEdit({display: 'none'});
-    }}>
-       <Grid container spacing={3}>
-        <Grid item xs={1}>
-        <ImportContactsIcon style={{color: "#cc99ff",}} />
-        </Grid>
-        <Grid item xs={10}>
-            <Typography gutterBottom style={{textAlign:'left',fontSize:'16px',fontWeight:'bold',color:'#666'}}>
-                {state.course}
+        onMouseEnter={e => {
+          setStyleEdit({ display: 'block' });
+        }}
+        onMouseLeave={e => {
+          setStyleEdit({ display: 'none' });
+        }}>
+        <Grid container spacing={3}>
+          <Grid item xs={1}>
+            <ImportContactsIcon style={{ color: "#cc99ff", }} />
+          </Grid>
+          <Grid item xs={10}>
+            <Typography gutterBottom style={{ textAlign: 'left', fontSize: '16px', fontWeight: 'bold', color: '#666' }}>
+              {state.course}
             </Typography>
-            <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'14px',fontWeight:'bold',}}>
-                {state.institute}
+            <Typography gutterBottom style={{ color: theme.palette.stateBlue, textAlign: 'left', fontSize: '14px', fontWeight: 'bold', }}>
+              {state.institute}
             </Typography>
-            <Typography gutterBottom color="textSecondary" style={{textAlign:'left',fontSize:'15px',marginRight:"-50px"}}>
-                {state.description}
+            <Typography gutterBottom color="textSecondary" style={{ textAlign: 'left', fontSize: '15px', marginRight: "-50px" }}>
+              {state.description}
             </Typography>
-            <Typography variant="body2" color="textSecondary" style={{textAlign:'left'}}>
-                {state.startMonth===0 ? "" : state.startMonth+"/"+state.startYear+ " - " +state.endMonth+"/"+state.endYear}
+            <Typography variant="body2" color="textSecondary" style={{ textAlign: 'left' }}>
+              {state.startMonth === 0 ? "" : state.startMonth + "/" + state.startYear + " - " + state.endMonth + "/" + state.endYear}
             </Typography>
-        </Grid>
-        <Grid item xs={1} style={{padding:"15px 0px 0px 0px"}}>
-          { login ? <>
-            <Button style={{minWidth:'25px',width:'25px'}}>
-              <MoreVertIcon className={classes.editIcon} size="small" style={{color:"#999"}} onClick={handleMenuClick} />
-          </Button>
-          <Menu
-            id="simple-menu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleMenuClose}
-          >
-            <MenuItem className={classes.item} onClick={handleOpen}><EditIcon style={{marginRight:"7px"}} />Change</MenuItem>
-            <MenuItem className={classes.item} onClick={handleClickOpen}><DeleteIcon style={{marginRight:"7px"}} />Remove</MenuItem>
-          </Menu>
-          </> : null }
-          <Dialog
+          </Grid>
+          <Grid item xs={1} style={{ padding: "15px 0px 0px 0px" }}>
+            {login ? <>
+              <Button style={{ minWidth: '25px', width: '25px' }}>
+                <MoreVertIcon className={classes.editIcon} size="small" style={{ color: "#999" }} onClick={handleMenuClick} />
+              </Button>
+              <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+              >
+                <MenuItem className={classes.item} onClick={handleOpen}><EditIcon style={{ marginRight: "7px" }} />Change</MenuItem>
+                <MenuItem className={classes.item} onClick={handleClickOpen}><DeleteIcon style={{ marginRight: "7px" }} />Remove</MenuItem>
+              </Menu>
+            </> : null}
+            <Dialog
               open={confirmDelete}
               onClose={handleClickClose}
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description"
-          >
+              classes={{ paper: classes.paperRoot }}
+            >
               <DialogTitle id="alert-dialog-title">{"Confirm Delete?"}</DialogTitle>
               <DialogContent>
-                  <DialogContentText id="alert-dialog-description">
-                      Are you sure that you want to delete the selected item? This cannot be undone.
-                  </DialogContentText>
+                <DialogContentText id="alert-dialog-description">
+                  Are you sure that you want to delete the selected item? This cannot be undone.
+                </DialogContentText>
               </DialogContent>
               <DialogActions>
-                  <Button onClick={handleClickClose} color="primary">
-                      No
-                  </Button>
-                  <Button onClick={handleDelete}
-                    color="primary" autoFocus>
-                      Yes
-                  </Button>
+                <Button onClick={handleClickClose} color="primary">
+                  No
+                </Button>
+                <Button onClick={handleDelete}
+                  color="primary" autoFocus className={classes.confrimDelete}>
+                  Yes
+                </Button>
               </DialogActions>
-          </Dialog>
+            </Dialog>
             {/*-------------- update course popup content ------------------- */}
             <Dialog
               open={open}
@@ -398,39 +411,43 @@ function CourseItem(props) {
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description"
             >
-              <DialogTitle id="alert-dialog-title" style={{color:theme.palette.stateBlue}}>
-              Edit Course Details
+              <DialogTitle id="alert-dialog-title" >
+                <Typography style={{ color: theme.palette.stateBlue, textAlign: 'left', fontSize: 18, fontWeight: 600 }}>
+                  Edit Course Details
+                </Typography>
               </DialogTitle>
-              <Divider variant="middle" />
               <DialogContent>
                 <form className={classes.form}>
-                <div>
-                <TextField
-                  className={classes.field}
-                    id="outlined-basic"
-                    label="Course Name"
-                    type="text"
-                    variant="outlined"
-                    size="small"
-                    value={state.course}
-                    onChange={onChangeCourse}
-                    required
-                  />
-                  <TextField
-                  className={classes.field}
-                    id="outlined-basic"
-                    label="Institute"
-                    type="text"
-                    variant="outlined"
-                    size="small"
-                    value={state.institute}
-                    onChange={onChangeInstitute}
-                    required
-                  />
-                  <Grid container direction="row">
-                    <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
+                  <Grid container direction="row" spacing={3}>
+                    <Grid item xs={12}>
+                      <TextField
+                        className={classes.field}
+                        id="outlined-basic"
+                        label="Course Name"
+                        type="text"
+                        variant="outlined"
+                        size="small"
+                        value={state.course}
+                        onChange={onChangeCourse}
+                        required
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        className={classes.field}
+                        id="outlined-basic"
+                        label="Institute"
+                        type="text"
+                        variant="outlined"
+                        size="small"
+                        value={state.institute}
+                        onChange={onChangeInstitute}
+                        required
+                      />
+                    </Grid>
+                    <Grid item container xs={12} md={6}>
                       <Grid item xs={12}>
-                        <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px"}}>Start Date</Typography>
+                        <Typography variant="body2" component="p" style={{ color: "#777", fontSize: '16px' }}>Start Date</Typography>
                       </Grid>
                       <Grid item xs={6}>
                         <FormControl variant="outlined" className={classes.formControl}>
@@ -463,9 +480,9 @@ function CourseItem(props) {
                         </FormControl>
                       </Grid>
                     </Grid>
-                    <Grid item container sm={12} md={6} style={{paddingRight: "15px"}}>
+                    <Grid item container xs={12} md={6}>
                       <Grid item xs={12}>
-                        <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px"}}>End Date</Typography>
+                        <Typography variant="body2" component="p" style={{ color: "#777", fontSize: '16px' }}>End Date</Typography>
                       </Grid>
                       <Grid item xs={6}>
                         <FormControl variant="outlined" className={classes.formControl}>
@@ -499,22 +516,21 @@ function CourseItem(props) {
                       </Grid>
                     </Grid>
                   </Grid>
-                  </div>
                 </form>
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleClose} style={{color:"#999"}}>
+                <Button onClick={handleClose} style={{ color: "#999" }}>
                   Cancel
                 </Button>
                 <Button onClick={onSubmit} color="primary" autoFocus>
                   Apply Changes
                 </Button>
               </DialogActions>
-            </Dialog>        
-        </Grid>       
-       </Grid>
+            </Dialog>
+          </Grid>
+        </Grid>
       </Paper>
-      </>
+    </>
   );
 }
 

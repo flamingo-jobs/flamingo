@@ -300,7 +300,7 @@ function InterestedAreas(props) {
       return (
         <>
           <Autocomplete
-            style={{ width: "100%", margin: "10px 120px 20px 120px" }}
+            style={{ width: "100%", margin: "10px 10% 20px 10%" }}
             multiple
             id="tags-outlined"
             filterSelectedOptions
@@ -312,14 +312,14 @@ function InterestedAreas(props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                variant="standard"
+                variant="outlined"
                 label="Select Interests"
                 placeholder="+ new"
               />
             )}
           />
           <Grid item xs={12}>
-            <Button className={classes.defaultButton} onClick={onSubmit} style={{ float: "right", marginRight: "115px" }}>Save</Button>
+            <Button onClick={onSubmit} color="primary" style={{ float: "right", marginRight: "10%" }}>Save</Button>
             <Button onClick={showClose} style={{ float: "right", marginRight: "15px" }}>Cancel</Button>
           </Grid>
         </>
@@ -348,7 +348,7 @@ function InterestedAreas(props) {
             </> : null}
           </Grid>
         </Grid>
-        <Grid container>
+        <Grid container spacing={3}>
           {removeDuplicates()}
           {showCombo()}
 

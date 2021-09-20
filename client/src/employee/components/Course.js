@@ -57,11 +57,9 @@ const useStyles = makeStyles({
   form: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingLeft: '20px',
-    paddingRight: '20px'
+
   },
   field: {
-    margin: "20px 0px 20px 0px",
     display: "flex",
     fontSize: "16px",
     "& label": {
@@ -118,7 +116,7 @@ function Course(props) {
   const [alertShow, setAlertShow] = React.useState(false);
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
   let i = 0;
-  let loginId=props.jobseekerID;
+  let loginId = props.jobseekerID;
   let login = props.login;
 
   //generate year list
@@ -355,102 +353,105 @@ function Course(props) {
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
-            <DialogTitle id="alert-dialog-title" style={{ color: theme.palette.stateBlue }}>
-              Add Courses
+            <DialogTitle id="alert-dialog-title" >
+              <Typography style={{ color: theme.palette.stateBlue, textAlign: 'left', fontSize: 18, fontWeight: 600 }}>
+                Add Courses
+              </Typography>
             </DialogTitle>
-            <Divider variant="middle" />
             <DialogContent>
               <form className={classes.form}>
-                <div>
-                  <TextField
-                    className={classes.field}
-                    id="outlined-basic"
-                    label="Course Name"
-                    type="text"
-                    variant="outlined"
-                    size="small"
-                    onChange={onChangeCourse}
-                    required
-                  />
-                  <TextField
-                    className={classes.field}
-                    id="outlined-basic"
-                    label="Institute"
-                    type="text"
-                    variant="outlined"
-                    size="small"
-                    onChange={onChangeInstitute}
-                    required
-                  />
-                  <Grid container direction="row">
-                    <Grid item container sm={12} md={6} style={{ paddingRight: "15px" }}>
-                      <Grid item xs={12}>
-                        <Typography variant="body2" component="p" style={{ color: "#777", fontSize: '16px', marginBottom: "-10px" }}>Start Date</Typography>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <FormControl variant="outlined" className={classes.formControl}>
-                          <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
-                          <Select
-                            native
-                            onChange={onChangestartYear}
-                            label="Start Date"
-                            className={classes.selectYear}
-                          >
-                            <option aria-label="None" value="" />
-                            {getYearsFrom()}
-                          </Select>
-                        </FormControl>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <FormControl variant="outlined" className={classes.formControl}>
-                          <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
-                          <Select
-                            native
-                            onChange={onChangestartMonth}
-                            label="Start Date"
-                            className={classes.selectMonth}
-                          >
-                            <option aria-label="None" value="" />
-                            {getMonthsFrom()}
-                          </Select>
-                        </FormControl>
-                      </Grid>
+                <Grid container direction="row" spacing={3}>
+                  <Grid item xs={12}>
+                    <TextField
+                      className={classes.field}
+                      id="outlined-basic"
+                      label="Course Name"
+                      type="text"
+                      variant="outlined"
+                      size="small"
+                      onChange={onChangeCourse}
+                      required
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      className={classes.field}
+                      id="outlined-basic"
+                      label="Institute"
+                      type="text"
+                      variant="outlined"
+                      size="small"
+                      onChange={onChangeInstitute}
+                      required
+                    />
+                  </Grid>
+                  <Grid item container xs={12} md={6}>
+                    <Grid item xs={12}>
+                      <Typography variant="body2" component="p" style={{ color: "#777", fontSize: '16px'}}>Start Date</Typography>
                     </Grid>
-                    <Grid item container sm={12} md={6} style={{ paddingRight: "15px" }}>
-                      <Grid item xs={12}>
-                        <Typography variant="body2" component="p" style={{ color: "#777", fontSize: '16px', marginBottom: "-10px" }}>End Date</Typography>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <FormControl variant="outlined" className={classes.formControl}>
-                          <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
-                          <Select
-                            native
-                            onChange={onChangeEndYear}
-                            label="End Date"
-                            className={classes.selectYear}
-                          >
-                            <option aria-label="None" value="" />
-                            {getYearsTo()}
-                          </Select>
-                        </FormControl>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <FormControl variant="outlined" className={classes.formControl}>
-                          <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
-                          <Select
-                            native
-                            onChange={onChangeEndMonth}
-                            label="Start Date"
-                            className={classes.selectMonth}
-                          >
-                            <option aria-label="None" value="" />
-                            {getMonthsFrom()}
-                          </Select>
-                        </FormControl>
-                      </Grid>
+                    <Grid item xs={6}>
+                      <FormControl variant="outlined" className={classes.formControl}>
+                        <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
+                        <Select
+                          native
+                          onChange={onChangestartYear}
+                          label="Start Date"
+                          className={classes.selectYear}
+                        >
+                          <option aria-label="None" value="" />
+                          {getYearsFrom()}
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <FormControl variant="outlined" className={classes.formControl}>
+                        <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
+                        <Select
+                          native
+                          onChange={onChangestartMonth}
+                          label="Start Date"
+                          className={classes.selectMonth}
+                        >
+                          <option aria-label="None" value="" />
+                          {getMonthsFrom()}
+                        </Select>
+                      </FormControl>
                     </Grid>
                   </Grid>
-                </div>
+                  <Grid item container xs={12} md={6}>
+                    <Grid item xs={12}>
+                      <Typography variant="body2" component="p" style={{ color: "#777", fontSize: '16px' }}>End Date</Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <FormControl variant="outlined" className={classes.formControl}>
+                        <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
+                        <Select
+                          native
+                          onChange={onChangeEndYear}
+                          label="End Date"
+                          className={classes.selectYear}
+                        >
+                          <option aria-label="None" value="" />
+                          {getYearsTo()}
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <FormControl variant="outlined" className={classes.formControl}>
+                        <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
+                        <Select
+                          native
+                          onChange={onChangeEndMonth}
+                          label="Start Date"
+                          className={classes.selectMonth}
+                        >
+                          <option aria-label="None" value="" />
+                          {getMonthsFrom()}
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                  </Grid>
+                </Grid>
               </form>
             </DialogContent>
             <DialogActions>
@@ -458,7 +459,7 @@ function Course(props) {
                 Cancel
               </Button>
               <Button onClick={onSubmit} color="primary" autoFocus>
-                Apply Changes
+                Add Course
               </Button>
             </DialogActions>
           </Dialog>

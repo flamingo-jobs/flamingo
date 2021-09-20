@@ -400,146 +400,141 @@ function CompanyBasicInfo(props) {
           onClose={handleClose}
           aria-labelledby="edit-details-form"
           fullWidth
-          className={classes.dialogBox}
+        // className={classes.dialogBox}
         >
           <DialogTitle id="edit-details-form">Company Profile</DialogTitle>
           <DialogContent>
-            <DialogContentText>*Required Fields</DialogContentText>
-
-            {/* input fields */}
-
-            <div>
-              <Grid container direction="column" spacing={2}>
-                <Grid item sm={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="name"
-                    label="Company Name"
-                    variant="outlined"
-                    defaultValue={name}
-                    InputProps={{
-                      classes: {
-                        input: classes.textField,
-                      },
-                    }}
-                    onChange={onChangeName}
-                  />
-                </Grid>
-
-                <Grid item sm={12}>
-                  <Autocomplete
-                    multiple
-                    required={true}
-                    id="fixed-tags-demo"
-                    value={location}
-                    onChange={(event, newValue) => {
-                      setLocation([
-                        ...fixedOptions,
-                        ...newValue.filter(
-                          (option) => fixedOptions.indexOf(option) === -1
-                        ),
-                      ]);
-                    }}
-                    options={cities}
-                    getOptionLabel={(option) => option.city}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Location"
-                        variant="outlined"
-                        required
-                      />
-                    )}
-                  />
-                </Grid>
-
-                <Grid item container direction="row" sm={12} spacing={1}>
-                  <Grid item sm={6}>
-                    <InputLabel htmlFor="linkedIn">LinkedIn</InputLabel>
-                    <Input
-                      id="linkedIn"
-                      startAdornment={
-                        <InputAdornment position="start">
-                          <LinkedInIcon />
-                        </InputAdornment>
-                      }
-                      defaultValue={linkedIn}
-                      InputProps={{
-                        classes: {
-                          input: classes.textField,
-                        },
-                      }}
-                      onChange={onChangeLinkedIn}
-                    />
-                  </Grid>
-
-                  <Grid item sm={6}>
-                    <InputLabel htmlFor="website">Website</InputLabel>
-                    <Input
-                      id="website"
-                      startAdornment={
-                        <InputAdornment position="start">
-                          <LanguageIcon />
-                        </InputAdornment>
-                      }
-                      defaultValue={website}
-                      InputProps={{
-                        classes: {
-                          input: classes.textField,
-                        },
-                      }}
-                      onChange={onChangeWebsite}
-                    />
-                  </Grid>
-                </Grid>
-
-                <Grid item container direction="row" sm={12} spacing={1}>
-                  <Grid item sm={6}>
-                    <InputLabel htmlFor="facebook">Facebook</InputLabel>
-                    <Input
-                      id="facebook"
-                      startAdornment={
-                        <InputAdornment position="start">
-                          <FacebookIcon />
-                        </InputAdornment>
-                      }
-                      defaultValue={facebook}
-                      InputProps={{
-                        classes: {
-                          input: classes.textField,
-                        },
-                      }}
-                      onChange={onChangeFacebook}
-                    />
-                  </Grid>
-
-                  <Grid item sm={6}>
-                    <InputLabel htmlFor="twitter">Twitter</InputLabel>
-                    <Input
-                      id="twitter"
-                      startAdornment={
-                        <InputAdornment position="start">
-                          <TwitterIcon />
-                        </InputAdornment>
-                      }
-                      defaultValue={twitter}
-                      InputProps={{
-                        classes: {
-                          input: classes.textField,
-                        },
-                      }}
-                      onChange={onChangeTwitter}
-                    />
-                  </Grid>
-                </Grid>
+            <Grid container direction="row" spacing={3}>
+              <Grid item xs={12}>
+                <Typography>*Required Fields</Typography>
               </Grid>
-            </div>
+
+              {/* input fields */}
+
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="name"
+                  label="Company Name"
+                  variant="outlined"
+                  defaultValue={name}
+                  InputProps={{
+                    classes: {
+                      input: classes.textField,
+                    },
+                  }}
+                  onChange={onChangeName}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <Autocomplete
+                  multiple
+                  required={true}
+                  id="fixed-tags-demo"
+                  value={location}
+                  onChange={(event, newValue) => {
+                    setLocation([
+                      ...fixedOptions,
+                      ...newValue.filter(
+                        (option) => fixedOptions.indexOf(option) === -1
+                      ),
+                    ]);
+                  }}
+                  options={cities}
+                  getOptionLabel={(option) => option.city}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Location"
+                      variant="outlined"
+                      required
+                    />
+                  )}
+                />
+              </Grid>
+
+              <Grid item xs={6}>
+                <InputLabel htmlFor="linkedIn">LinkedIn</InputLabel>
+                <Input
+                  id="linkedIn"
+                  startAdornment={
+                    <InputAdornment position="start">
+                      <LinkedInIcon />
+                    </InputAdornment>
+                  }
+                  defaultValue={linkedIn}
+                  InputProps={{
+                    classes: {
+                      input: classes.textField,
+                    },
+                  }}
+                  onChange={onChangeLinkedIn}
+                />
+              </Grid>
+
+              <Grid item xs={6}>
+                <InputLabel htmlFor="website">Website</InputLabel>
+                <Input
+                  id="website"
+                  startAdornment={
+                    <InputAdornment position="start">
+                      <LanguageIcon />
+                    </InputAdornment>
+                  }
+                  defaultValue={website}
+                  InputProps={{
+                    classes: {
+                      input: classes.textField,
+                    },
+                  }}
+                  onChange={onChangeWebsite}
+                />
+              </Grid>
+
+              <Grid item xs={6}>
+                <InputLabel htmlFor="facebook">Facebook</InputLabel>
+                <Input
+                  id="facebook"
+                  startAdornment={
+                    <InputAdornment position="start">
+                      <FacebookIcon />
+                    </InputAdornment>
+                  }
+                  defaultValue={facebook}
+                  InputProps={{
+                    classes: {
+                      input: classes.textField,
+                    },
+                  }}
+                  onChange={onChangeFacebook}
+                />
+              </Grid>
+
+              <Grid item xs={6}>
+                <InputLabel htmlFor="twitter">Twitter</InputLabel>
+                <Input
+                  id="twitter"
+                  startAdornment={
+                    <InputAdornment position="start">
+                      <TwitterIcon />
+                    </InputAdornment>
+                  }
+                  defaultValue={twitter}
+                  InputProps={{
+                    classes: {
+                      input: classes.textField,
+                    },
+                  }}
+                  onChange={onChangeTwitter}
+                />
+              </Grid>
+            </Grid>
           </DialogContent>
           <DialogActions>
             <Button
               onClick={handleClose}
-              color="primary"
               className={classes.dialogbuttons}
             >
               Cancel
@@ -659,8 +654,8 @@ function CompanyBasicInfo(props) {
       async () => {
         handleClickCloseEditLogo();
         handleClickAlertSuccess();
-      }  
-    ).catch(()=>{
+      }
+    ).catch(() => {
       handleClickAlertServerError();
     });
     // prepare UI for results
@@ -804,9 +799,9 @@ function CompanyBasicInfo(props) {
             <Grid item xs={12} lg={7} className={classes.headerInfo}>
               <Typography variant="h5" className={classes.title}>
                 {name} {verified ? <VerifiedUserIcon
-                color="primary"
-                className={classes.verifiedBadge}
-              /> : ""}
+                  color="primary"
+                  className={classes.verifiedBadge}
+                /> : ""}
               </Typography>
               <div className={classes.locationTags}>
                 {locations.map((item, i) => (

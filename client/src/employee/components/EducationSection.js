@@ -65,11 +65,8 @@ const useStyles = makeStyles({
   form: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingLeft: '20px',
-    paddingRight: '20px'
   },
   field: {
-    margin: "20px 0px 20px 0px",
     display: "flex",
     fontSize: "16px",
     "& label": {
@@ -139,7 +136,7 @@ function EducationSection(props) {
   let i = 0;
   let j = 0;
   let eduCount = 0;
-  let loginId=props.jobseekerID;
+  let loginId = props.jobseekerID;
   let login = props.login;
 
   //generate year list
@@ -452,7 +449,7 @@ function EducationSection(props) {
       if (phD) {
         eduCount = 1;
         return phD.map(edu => (
-          <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities} parentFunction={deleteEducation} jobseekerID={loginId} login={login}  />
+          <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities} parentFunction={deleteEducation} jobseekerID={loginId} login={login} />
         ))
       }
     }
@@ -463,7 +460,7 @@ function EducationSection(props) {
       if (mPhil) {
         eduCount = 1;
         return mPhil.map(edu => (
-          <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities} parentFunction={deleteEducation} jobseekerID={loginId} login={login}  />
+          <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities} parentFunction={deleteEducation} jobseekerID={loginId} login={login} />
         ))
       }
     }
@@ -474,7 +471,7 @@ function EducationSection(props) {
       if (masters) {
         eduCount = 1;
         return masters.map(edu => (
-          <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities} parentFunction={deleteEducation} jobseekerID={loginId} login={login}  />
+          <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities} parentFunction={deleteEducation} jobseekerID={loginId} login={login} />
         ))
       }
     }
@@ -485,7 +482,7 @@ function EducationSection(props) {
       if (bachelorsHonours) {
         eduCount = 1;
         return bachelorsHonours.map(edu => (
-          <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities} parentFunction={deleteEducation} jobseekerID={loginId} login={login}  />
+          <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities} parentFunction={deleteEducation} jobseekerID={loginId} login={login} />
         ))
       }
     }
@@ -496,7 +493,7 @@ function EducationSection(props) {
       if (bachelors) {
         eduCount = 1;
         return bachelors.map(edu => (
-          <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities} parentFunction={deleteEducation} jobseekerID={loginId} login={login}  />
+          <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities} parentFunction={deleteEducation} jobseekerID={loginId} login={login} />
         ))
       }
     }
@@ -507,7 +504,7 @@ function EducationSection(props) {
       if (graduateDiploma) {
         eduCount = 1;
         return graduateDiploma.map(edu => (
-          <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities} parentFunction={deleteEducation} jobseekerID={loginId} login={login}  />
+          <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities} parentFunction={deleteEducation} jobseekerID={loginId} login={login} />
         ))
       }
     }
@@ -518,7 +515,7 @@ function EducationSection(props) {
       if (diploma) {
         eduCount = 1;
         return diploma.map(edu => (
-          <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities} parentFunction={deleteEducation} jobseekerID={loginId} login={login}  />
+          <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities} parentFunction={deleteEducation} jobseekerID={loginId} login={login} />
         ))
       }
     }
@@ -532,7 +529,7 @@ function EducationSection(props) {
         if (school) {
           eduCount = 1;
           return school.map(edu => (
-            <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities} parentFunction={deleteEducation} jobseekerID={loginId} login={login}  />
+            <EduItem key={edu.in} index={edu.in} startDate={edu.field.startDate} endDate={edu.field.endDate} institute={edu.field.institute} type={edu.field.type} fieldOfStudy={edu.field.fieldOfStudy} gpa={edu.field.GPA} societiesAndActivities={edu.field.societiesAndActivities} parentFunction={deleteEducation} jobseekerID={loginId} login={login} />
           ))
         }
       }
@@ -549,189 +546,192 @@ function EducationSection(props) {
     if (education.type === "Bachelor's" || education.type === "Bachelor's Honours") {
       let temp =
         <>
-          <TextField
-            className={classes.field}
-            id="outlined-basic"
-            label="Field of Study"
-            type="text"
-            variant="outlined"
-            size="small"
-            onChange={onChangeFieldOfStudy}
-            required
-          />
-          <TextField
-            className={classes.field}
-            type="text"
-            id="outlined-basic"
-            label="GPA"
-            variant="outlined"
-            size="small"
-            onChange={onChangeGPA}
-            style={{ width: '30%' }}
-          />
-          <div style={{ marginTop: "-15px", paddingBottom: "20px" }}>
-            {GPAError}
-          </div>
-
-          <Grid container direction="row">
-            <Grid item container sm={12} md={6} style={{ paddingRight: "15px" }}>
-              <Grid item xs={12}>
-                <Typography variant="body2" component="p" style={{ color: "#777", fontSize: '16px', marginBottom: "-10px" }}>Start Date</Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
-                  <Select
-                    native
-                    onChange={onChangestartYear}
-                    label="Start Date"
-                    className={classes.selectYear}
-                  >
-                    <option aria-label="None" value="" />
-                    {getYearsFrom()}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={6}>
-                <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
-                  <Select
-                    native
-                    onChange={onChangestartMonth}
-                    label="Start Date"
-                    className={classes.selectMonth}
-                  >
-                    <option aria-label="None" value="" />
-                    {getMonthsFrom()}
-                  </Select>
-                </FormControl>
-              </Grid>
+          <Grid item xs={12} md={9}>
+            <TextField
+              className={classes.field}
+              id="outlined-basic"
+              label="Field of Study"
+              type="text"
+              variant="outlined"
+              size="small"
+              onChange={onChangeFieldOfStudy}
+              required
+            />
+          </Grid>
+          <Grid item xs={12} md={3}>
+            <TextField
+              className={classes.field}
+              type="text"
+              id="outlined-basic"
+              label="GPA"
+              variant="outlined"
+              size="small"
+              onChange={onChangeGPA}
+            />
+          </Grid>
+          {GPAError !== null ?
+            <Grid item xs={12} style={{marginTop: -16}}>
+              {GPAError}
+            </Grid> : null}
+          <Grid item container xs={12} md={6}>
+            <Grid item xs={12}>
+              <Typography variant="body2" component="p" style={{ color: "#777", fontSize: '16px', }}>Start Date</Typography>
             </Grid>
-            <Grid item container sm={12} md={6} style={{ paddingRight: "15px" }}>
-              <Grid item xs={12}>
-                <Typography variant="body2" component="p" style={{ color: "#777", fontSize: '16px', marginBottom: "-10px" }}>End Date</Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
-                  <Select
-                    native
-                    onChange={onChangeEndYear}
-                    label="End Date"
-                    className={classes.selectYear}
-                  >
-                    <option aria-label="None" value="" />
-                    {getYearsTo()}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={6}>
-                <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
-                  <Select
-                    native
-                    onChange={onChangeEndMonth}
-                    label="Start Date"
-                    className={classes.selectMonth}
-                  >
-                    <option aria-label="None" value="" />
-                    {getMonthsFrom()}
-                  </Select>
-                </FormControl>
-              </Grid>
+            <Grid item xs={6}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
+                <Select
+                  native
+                  onChange={onChangestartYear}
+                  label="Start Date"
+                  className={classes.selectYear}
+                >
+                  <option aria-label="None" value="" />
+                  {getYearsFrom()}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={6}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
+                <Select
+                  native
+                  onChange={onChangestartMonth}
+                  label="Start Date"
+                  className={classes.selectMonth}
+                >
+                  <option aria-label="None" value="" />
+                  {getMonthsFrom()}
+                </Select>
+              </FormControl>
             </Grid>
           </Grid>
-          <TextField
-            className={classes.field}
-            id="outlined-basic"
-            label="Societies and Activities"
-            type="text"
-            variant="outlined"
-            size="small"
-            onChange={onChangeSocietiesAndActivities}
-          />
+          <Grid item container xs={12} md={6}>
+            <Grid item xs={12}>
+              <Typography variant="body2" component="p" style={{ color: "#777", fontSize: '16px', }}>End Date</Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
+                <Select
+                  native
+                  onChange={onChangeEndYear}
+                  label="End Date"
+                  className={classes.selectYear}
+                >
+                  <option aria-label="None" value="" />
+                  {getYearsTo()}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={6}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
+                <Select
+                  native
+                  onChange={onChangeEndMonth}
+                  label="Start Date"
+                  className={classes.selectMonth}
+                >
+                  <option aria-label="None" value="" />
+                  {getMonthsFrom()}
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              className={classes.field}
+              id="outlined-basic"
+              label="Societies and Activities"
+              type="text"
+              variant="outlined"
+              size="small"
+              onChange={onChangeSocietiesAndActivities}
+            />
+          </Grid>
         </>;
       setForm(temp);
       // -----------------------------------School/College fields ---------------------------------
     } else if (education.type === "Diploma" || education.type === "Graduate Diploma" || education.type === "Masters" || education.type === "M.Phil." || education.type === "PhD") {
       let temp =
         <>
-          <TextField
-            className={classes.field}
-            id="outlined-basic"
-            label="Field of Study"
-            type="text"
-            variant="outlined"
-            size="small"
-            onChange={onChangeFieldOfStudy}
-            required
-          />
-          <Grid container direction="row">
-            <Grid item container sm={12} md={6} style={{ paddingRight: "15px" }}>
-              <Grid item xs={12}>
-                <Typography variant="body2" component="p" style={{ color: "#777", fontSize: '16px', marginBottom: "-10px", marginTop: "15px" }}>Start Date</Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
-                  <Select
-                    native
-                    onChange={onChangestartYear}
-                    label="Start Date"
-                    className={classes.selectYear}
-                  >
-                    <option aria-label="None" value="" />
-                    {getYearsFrom()}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={6}>
-                <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
-                  <Select
-                    native
-                    onChange={onChangestartMonth}
-                    label="Start Date"
-                    className={classes.selectMonth}
-                  >
-                    <option aria-label="None" value="" />
-                    {getMonthsFrom()}
-                  </Select>
-                </FormControl>
-              </Grid>
+          <Grid item xs={12}>
+            <TextField
+              className={classes.field}
+              id="outlined-basic"
+              label="Field of Study"
+              type="text"
+              variant="outlined"
+              size="small"
+              onChange={onChangeFieldOfStudy}
+              required
+            />
+          </Grid>
+          <Grid item container xs={12} md={6} >
+            <Grid item xs={12}>
+              <Typography variant="body2" component="p" style={{ color: "#777", fontSize: '16px', }}>Start Date</Typography>
             </Grid>
-            <Grid item container sm={12} md={6} style={{ paddingRight: "15px" }}>
-              <Grid item xs={12}>
-                <Typography variant="body2" component="p" style={{ color: "#777", fontSize: '16px', marginBottom: "-10px", marginTop: "15px" }}>End Date</Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
-                  <Select
-                    native
-                    onChange={onChangeEndYear}
-                    label="End Date"
-                    className={classes.selectYear}
-                  >
-                    <option aria-label="None" value="" />
-                    {getYearsTo()}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={6}>
-                <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
-                  <Select
-                    native
-                    onChange={onChangeEndMonth}
-                    label="Start Date"
-                    className={classes.selectMonth}
-                  >
-                    <option aria-label="None" value="" />
-                    {getMonthsFrom()}
-                  </Select>
-                </FormControl>
-              </Grid>
+            <Grid item xs={6}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
+                <Select
+                  native
+                  onChange={onChangestartYear}
+                  label="Start Date"
+                  className={classes.selectYear}
+                >
+                  <option aria-label="None" value="" />
+                  {getYearsFrom()}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={6}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
+                <Select
+                  native
+                  onChange={onChangestartMonth}
+                  label="Start Date"
+                  className={classes.selectMonth}
+                >
+                  <option aria-label="None" value="" />
+                  {getMonthsFrom()}
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
+          <Grid item container xs={12} md={6} >
+            <Grid item xs={12}>
+              <Typography variant="body2" component="p" style={{ color: "#777", fontSize: '16px', }}>End Date</Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
+                <Select
+                  native
+                  onChange={onChangeEndYear}
+                  label="End Date"
+                  className={classes.selectYear}
+                >
+                  <option aria-label="None" value="" />
+                  {getYearsTo()}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={6}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
+                <Select
+                  native
+                  onChange={onChangeEndMonth}
+                  label="Start Date"
+                  className={classes.selectMonth}
+                >
+                  <option aria-label="None" value="" />
+                  {getMonthsFrom()}
+                </Select>
+              </FormControl>
             </Grid>
           </Grid>
         </>;
@@ -739,83 +739,83 @@ function EducationSection(props) {
     } else {
       let temp =
         <>
-          <Grid container direction="row">
-            <Grid item container sm={12} md={6} style={{ paddingRight: "15px" }}>
-              <Grid item xs={12}>
-                <Typography variant="body2" component="p" style={{ color: "#777", fontSize: '16px', marginBottom: "-10px", marginTop: "15px" }}>Start Date</Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
-                  <Select
-                    native
-                    onChange={onChangestartYear}
-                    label="Start Date"
-                    className={classes.selectYear}
-                  >
-                    <option aria-label="None" value="" />
-                    {getYearsFrom()}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={6}>
-                <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
-                  <Select
-                    native
-                    onChange={onChangestartMonth}
-                    label="Start Date"
-                    className={classes.selectMonth}
-                  >
-                    <option aria-label="None" value="" />
-                    {getMonthsFrom()}
-                  </Select>
-                </FormControl>
-              </Grid>
+          <Grid item container xs={12} md={6} >
+            <Grid item xs={12}>
+              <Typography variant="body2" component="p" style={{ color: "#777", fontSize: '16px', }}>Start Date</Typography>
             </Grid>
-            <Grid item container sm={12} md={6} style={{ paddingRight: "15px" }}>
-              <Grid item xs={12}>
-                <Typography variant="body2" component="p" style={{ color: "#777", fontSize: '16px', marginBottom: "-10px", marginTop: "15px" }}>End Date</Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
-                  <Select
-                    native
-                    onChange={onChangeEndYear}
-                    label="End Date"
-                    className={classes.selectYear}
-                  >
-                    <option aria-label="None" value="" />
-                    {getYearsTo()}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={6}>
-                <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
-                  <Select
-                    native
-                    onChange={onChangeEndMonth}
-                    label="Start Date"
-                    className={classes.selectMonth}
-                  >
-                    <option aria-label="None" value="" />
-                    {getMonthsFrom()}
-                  </Select>
-                </FormControl>
-              </Grid>
+            <Grid item xs={6}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
+                <Select
+                  native
+                  onChange={onChangestartYear}
+                  label="Start Date"
+                  className={classes.selectYear}
+                >
+                  <option aria-label="None" value="" />
+                  {getYearsFrom()}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={6}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
+                <Select
+                  native
+                  onChange={onChangestartMonth}
+                  label="Start Date"
+                  className={classes.selectMonth}
+                >
+                  <option aria-label="None" value="" />
+                  {getMonthsFrom()}
+                </Select>
+              </FormControl>
             </Grid>
           </Grid>
-          <TextField
-            className={classes.field}
-            id="outlined-basic"
-            label="Societies and Activities"
-            type="text"
-            variant="outlined"
-            size="small"
-            onChange={onChangeSocietiesAndActivities}
-          />
+          <Grid item container xs={12} md={6}>
+            <Grid item xs={12}>
+              <Typography variant="body2" component="p" style={{ color: "#777", fontSize: '16px', }}>End Date</Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">YYYY</InputLabel>
+                <Select
+                  native
+                  onChange={onChangeEndYear}
+                  label="End Date"
+                  className={classes.selectYear}
+                >
+                  <option aria-label="None" value="" />
+                  {getYearsTo()}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={6}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">MM</InputLabel>
+                <Select
+                  native
+                  onChange={onChangeEndMonth}
+                  label="Start Date"
+                  className={classes.selectMonth}
+                >
+                  <option aria-label="None" value="" />
+                  {getMonthsFrom()}
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              className={classes.field}
+              id="outlined-basic"
+              label="Societies and Activities"
+              type="text"
+              variant="outlined"
+              size="small"
+              onChange={onChangeSocietiesAndActivities}
+            />
+          </Grid>
         </>;
       setForm(temp);
     }
@@ -842,19 +842,19 @@ function EducationSection(props) {
           </Grid>
 
         </Grid>
-          <Grid container>
-            <Grid item xs={12}>
-              {matchFields()}
-              {displayPhdFields()}
-              {displayMphilFields()}
-              {displayMastersFields()}
-              {displayBachelorsHonoursFields()}
-              {displayBachelorsFields()}
-              {displayGraduateDiplomaFields()}
-              {displayDiplomaFields()}
-              {displaySchoolFields()}
-            </Grid>
+        <Grid container>
+          <Grid item xs={12}>
+            {matchFields()}
+            {displayPhdFields()}
+            {displayMphilFields()}
+            {displayMastersFields()}
+            {displayBachelorsHonoursFields()}
+            {displayBachelorsFields()}
+            {displayGraduateDiplomaFields()}
+            {displayDiplomaFields()}
+            {displaySchoolFields()}
           </Grid>
+        </Grid>
 
         {/*-------------- add new edu field popup content ------------------- */}
         <Dialog
@@ -863,45 +863,50 @@ function EducationSection(props) {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title" style={{ color: theme.palette.stateBlue }}>
-            Add Education
+          <DialogTitle id="alert-dialog-title">
+            <Typography style={{ color: theme.palette.stateBlue, textAlign: 'left', fontSize: 18, fontWeight: 600 }}>
+              Add Education
+            </Typography>
           </DialogTitle>
-          <Divider variant="middle" />
           <DialogContent>
             <form className={classes.form}>
-              <div>
-                <TextField
-                  className={classes.field}
-                  id="outlined-basic"
-                  label="University/School/Institute"
-                  type="text"
-                  variant="outlined"
-                  size="small"
-                  onChange={onChangeInstitute}
-                  required
-                />
-                <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel className={classes.placeholder} htmlFor="outlined-age-native-simple">Select Type</InputLabel>
-                  <Select
-                    native
-                    defaultValue={"School"}
-                    onChange={onChangeType}
-                    label="Select Type"
-                    className={classes.select}
+              <Grid container direction="row" spacing={3}>
+                <Grid item xs={12}>
+                  <TextField
+                    className={classes.field}
+                    id="outlined-basic"
+                    label="University/School/Institute"
+                    type="text"
+                    variant="outlined"
+                    size="small"
+                    onChange={onChangeInstitute}
                     required
-                  >
-                    <option value="School">School</option>
-                    <option value="Diploma">Diploma</option>
-                    <option value="Graduate Diploma">Graduate Diploma</option>
-                    <option value="Bachelor's">Bachelor's</option>
-                    <option value="Bachelor's Honours">Bachelor's Honours</option>
-                    <option value="Masters">Masters</option>
-                    <option value="M.Phil.">M.Phil.</option>
-                    <option value="PhD">PhD</option>
-                  </Select>
-                </FormControl>
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl variant="outlined" className={classes.formControl}>
+                    <InputLabel className={classes.placeholder} htmlFor="outlined-age-native-simple">Select Type</InputLabel>
+                    <Select
+                      native
+                      defaultValue={"School"}
+                      onChange={onChangeType}
+                      label="Select Type"
+                      className={classes.select}
+                      required
+                    >
+                      <option value="School">School</option>
+                      <option value="Diploma">Diploma</option>
+                      <option value="Graduate Diploma">Graduate Diploma</option>
+                      <option value="Bachelor's">Bachelor's</option>
+                      <option value="Bachelor's Honours">Bachelor's Honours</option>
+                      <option value="Masters">Masters</option>
+                      <option value="M.Phil.">M.Phil.</option>
+                      <option value="PhD">PhD</option>
+                    </Select>
+                  </FormControl>
+                </Grid>
                 {form}
-              </div>
+              </Grid>
             </form>
           </DialogContent>
           <DialogActions>

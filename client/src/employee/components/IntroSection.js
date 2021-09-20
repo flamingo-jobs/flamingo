@@ -120,7 +120,6 @@ const useStyles = makeStyles((theme) => ({
 
   },
   field: {
-    marginTop: 16,
     display: "flex",
     fontSize: "16px",
     "& label": {
@@ -461,10 +460,9 @@ function IntroSection(props) {
                 Edit Basic Info
               </Typography>
             </DialogTitle>
-            <Divider variant="middle" />
             <DialogContent>
               <form className={classes.form}>
-                <Grid container direction="row" spacing={2}>
+                <Grid container direction="row" spacing={3}>
                   {/* <Grid item xs={12}>
                     <Typography gutterBottom style={{ marginTop: 16, color: theme.palette.stateBlue, textAlign: 'left', fontSize: '18px', fontWeight: 600, width: '100%' }}>
                       Basic Details

@@ -33,10 +33,10 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 25,
     borderRadius: 10,
     "&:hover": {
-        defaultButton: {
-            display: 'block'
-        }
+      defaultButton: {
+        display: 'block'
       }
+    }
   },
   defaultButton: {
     backgroundColor: theme.palette.stateBlue,
@@ -47,8 +47,8 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   editIcon: {
-    padding:'0px',
-    margin:'-15px',
+    padding: '0px',
+    margin: '-15px',
     color: theme.palette.tuftsBlue,
     "&:hover": {
       backgroundColor: theme.palette.lightSkyBlue,
@@ -76,11 +76,8 @@ const useStyles = makeStyles((theme) => ({
   form: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingLeft: '20px',
-    paddingRight: '20px'
   },
   field: {
-    margin: "25px 0px 20px 0px",
     display: "flex",
     fontSize: "16px",
     "& label": {
@@ -117,28 +114,43 @@ const useStyles = makeStyles((theme) => ({
   placeholder: {
     color: "#777",
     fontSize: '16px',
-    marginTop:"-8px",
+    marginTop: "-8px",
   },
   placeholderDate: {
     color: "#777",
     fontSize: '14px',
-    marginTop:"12px",
+    marginTop: "12px",
   },
   item: {
     color: "#666",
     padding: "10px 20px"
-  }
+  },
+  paperRoot: {
+    padding: 20,
+  },
+  confrimDelete: {
+    boxShadow: "none",
+    color: theme.palette.red,
+    backgroundColor: theme.palette.lightyPink,
+    borderRadius: 12,
+    marginLeft: "16px !important",
+    padding: "10px",
+    "&:hover": {
+      backgroundColor: theme.palette.lightyPinkHover,
+      boxShadow: "none",
+    },
+  },
 }));
 
 function CertificateItem(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [styleEdit, setStyleEdit] = useState({display: 'none'});
-  let certificateDate=[0,0];
-  if(props.date !== 'null/null' && props.date !== '0/0'){
+  const [styleEdit, setStyleEdit] = useState({ display: 'none' });
+  let certificateDate = [0, 0];
+  if (props.date !== 'null/null' && props.date !== '0/0') {
     certificateDate = props.date.split("/");
   }
-  const [state, setState] = useState({issuer: props.issuer, title: props.title, score: props.score, year: certificateDate[1], month: certificateDate[0]});
+  const [state, setState] = useState({ issuer: props.issuer, title: props.title, score: props.score, year: certificateDate[1], month: certificateDate[0] });
   const [allCertificates, setAllCertificates] = useState(props.allCertificates);
 
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -148,67 +160,67 @@ function CertificateItem(props) {
   const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
   const [anchorEl, setAnchorEl] = React.useState(null);
   const index = props.index;
-  let loginId=props.jobseekerID;
+  let loginId = props.jobseekerID;
   let login = props.login;
 
-    //generate year list
-    function getYearsFrom(){
-      let maxOffset = 25;
-      let thisYear = (new Date()).getFullYear();
-      let allYears = [];
-      for(let x = 0; x <= maxOffset; x++) {
-          allYears.push(thisYear - x)
-      }
-  
-      return allYears.map((x,index) => (<option key={index} value={x}>{x}</option>));
+  //generate year list
+  function getYearsFrom() {
+    let maxOffset = 25;
+    let thisYear = (new Date()).getFullYear();
+    let allYears = [];
+    for (let x = 0; x <= maxOffset; x++) {
+      allYears.push(thisYear - x)
     }
 
-    //generate year list
-    function getYearsTo(){
-      let maxOffset = 30;
-      let thisYear = (new Date()).getFullYear();
-      let allYears = [];
-      for(let x = -7; x <= maxOffset; x++) {
-          allYears.push(thisYear - x)
-      }
+    return allYears.map((x, index) => (<option key={index} value={x}>{x}</option>));
+  }
 
-      return allYears.map((x,index) => (<option key={index} value={x}>{x}</option>));
-    }
-  
-    //generate month list
-    function getMonthsFrom(){
-      let maxOffset = 12;
-      let allMonths = [];
-      for(let x = 1; x <= maxOffset; x++) {
-        if(x<10){
-          allMonths.push("0"+x);
-        }else{
-          allMonths.push(x);
-        }        
-      }
-  
-      return allMonths.map((x,index) => (<option key={index} value={x}>{x}</option>));
+  //generate year list
+  function getYearsTo() {
+    let maxOffset = 30;
+    let thisYear = (new Date()).getFullYear();
+    let allYears = [];
+    for (let x = -7; x <= maxOffset; x++) {
+      allYears.push(thisYear - x)
     }
 
-    //generate issuer list
-  function getIssuers(){
-    return allCertificates?.map((x,index) => (<option key={index} value={x.issuer}>{x.issuer}</option>));
+    return allYears.map((x, index) => (<option key={index} value={x}>{x}</option>));
+  }
+
+  //generate month list
+  function getMonthsFrom() {
+    let maxOffset = 12;
+    let allMonths = [];
+    for (let x = 1; x <= maxOffset; x++) {
+      if (x < 10) {
+        allMonths.push("0" + x);
+      } else {
+        allMonths.push(x);
+      }
+    }
+
+    return allMonths.map((x, index) => (<option key={index} value={x}>{x}</option>));
+  }
+
+  //generate issuer list
+  function getIssuers() {
+    return allCertificates?.map((x, index) => (<option key={index} value={x.issuer}>{x.issuer}</option>));
   }
 
   //generate title list
-  function getTitles(e){
-      for (let index = 0; index < allCertificates?.length; index++) {
-          if(allCertificates[index].issuer === state.issuer){
-             let titles = allCertificates[index].certificates;
-            return titles.map((title) => (<option value={JSON.stringify(title)}>{title.name}</option>));
-          }        
+  function getTitles(e) {
+    for (let index = 0; index < allCertificates?.length; index++) {
+      if (allCertificates[index].issuer === state.issuer) {
+        let titles = allCertificates[index].certificates;
+        return titles.map((title) => (<option value={JSON.stringify(title)}>{title.name}</option>));
       }
+    }
   }
-  
+
   useEffect(() => {
     if (deleteSuccess === true) {
-        setAlertData({severity: "success", msg: "Item deleted successfully!"});
-        handleAlert();
+      setAlertData({ severity: "success", msg: "Item deleted successfully!" });
+      handleAlert();
     }
     setLoading(true);
     setDeleteSuccess(false);
@@ -227,12 +239,12 @@ function CertificateItem(props) {
     setConfirmDelete(false);
   };
 
-  function handleOpen(){
+  function handleOpen() {
     setOpen(true);
     handleMenuClose();
   }
 
-  function handleClose(){
+  function handleClose() {
     setOpen(false);
   }
 
@@ -244,154 +256,155 @@ function CertificateItem(props) {
     setAnchorEl(null);
   };
 
-    // Alert stuff
-    const displayAlert = () => {
-      return (
-        <SnackBarAlert
-          open={alertShow}
-          onClose={handleAlertClose}
-          severity={alertData.severity}
-          msg={alertData.msg}
-        />
-      );
-    };
-  
-    const handleAlert = () => {
-      setAlertShow(true);
-    };
-  
-    const handleAlertClose = (event, reason) => {
-      if (reason === "clickaway") {
-        return;
-      }
-      setAlertShow(false);
-    };
-  
+  // Alert stuff
+  const displayAlert = () => {
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
+
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertShow(false);
+  };
+
 
   //---------------------------- text field onChange events
-  function onChangeIssuer(e){
+  function onChangeIssuer(e) {
     setState(prevState => {
-      return {...prevState, issuer: e.target.value}
+      return { ...prevState, issuer: e.target.value }
     })
     getTitles();
   }
 
-  function onChangeTitle(e){
+  function onChangeTitle(e) {
     let obj = JSON.parse(e.target.value);
     setState(prevState => {
-      return {...prevState, title: obj.name}
+      return { ...prevState, title: obj.name }
     })
     setState(prevState => {
-      return {...prevState, score: obj.score}
+      return { ...prevState, score: obj.score }
     })
   }
 
-  function onChangeMonth(e){
+  function onChangeMonth(e) {
     setState(prevState => {
-      return {...prevState, month: e.target.value}
+      return { ...prevState, month: e.target.value }
     })
   }
 
-  function onChangeYear(e){
+  function onChangeYear(e) {
     setState(prevState => {
-      return {...prevState, year: e.target.value}
+      return { ...prevState, year: e.target.value }
     })
   }
 
 
-  function onSubmit(e){
+  function onSubmit(e) {
     e.preventDefault();
     const certificate = {
-        issuer: state.issuer,
-        title: state.title,
-        score: state.score,
-        date: state.month+"/"+state.year,
+      issuer: state.issuer,
+      title: state.title,
+      score: state.score,
+      date: state.month + "/" + state.year,
     }
 
-    axios.put(`${BACKEND_URL}/jobseeker/updateCertificate/${loginId}`,{index:props.index,certificate:certificate})
-    .then(res => {
-      if(res.data.success){
-        setAlertData({
-          severity: "success",
-          msg: "Certificate updated successfully!",
-        });
-        handleAlert();
-        axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
-      } else {
-        setAlertData({
-          severity: "error",
-          msg: "Certificate could not be updated!",
-        });
-        handleAlert();
-      }
-    });
+    axios.put(`${BACKEND_URL}/jobseeker/updateCertificate/${loginId}`, { index: props.index, certificate: certificate })
+      .then(res => {
+        if (res.data.success) {
+          setAlertData({
+            severity: "success",
+            msg: "Certificate updated successfully!",
+          });
+          handleAlert();
+          axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
+        } else {
+          setAlertData({
+            severity: "error",
+            msg: "Certificate could not be updated!",
+          });
+          handleAlert();
+        }
+      });
     handleClose();
   }
-  
+
 
   return (
     <>
-    {displayAlert()}
+      {displayAlert()}
       <Paper elevation={0} className={classes.paperCont}
-      onMouseEnter={e => {
-          setStyleEdit({display: 'block'});
-      }}
-      onMouseLeave={e => {
-          setStyleEdit({display: 'none'});
-    }}>
-       <Grid container spacing={3}>
-        <Grid item xs={1}>
-        <ImportContactsIcon style={{color: "#cc99ff",}} />
-        </Grid>
-        <Grid item xs={10}>
-            <Typography gutterBottom style={{textAlign:'left',fontSize:'16px',fontWeight:'bold',color:'#666'}}>
-                {state.title}
+        onMouseEnter={e => {
+          setStyleEdit({ display: 'block' });
+        }}
+        onMouseLeave={e => {
+          setStyleEdit({ display: 'none' });
+        }}>
+        <Grid container spacing={3}>
+          <Grid item xs={1}>
+            <ImportContactsIcon style={{ color: "#cc99ff", }} />
+          </Grid>
+          <Grid item xs={10}>
+            <Typography gutterBottom style={{ textAlign: 'left', fontSize: '16px', fontWeight: 'bold', color: '#666' }}>
+              {state.title}
             </Typography>
-            <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'14px',fontWeight:'bold',}}>
-                {state.issuer}
+            <Typography gutterBottom style={{ color: theme.palette.stateBlue, textAlign: 'left', fontSize: '14px', fontWeight: 'bold', }}>
+              {state.issuer}
             </Typography>
-            <Typography variant="body2" color="textSecondary" component="p" style={{textAlign:'left',paddingTop:'5px'}}>
-                {state.year === 0 && state.month === 0 ? "" : "Issued date : " + state.month+"/"+state.year}
+            <Typography variant="body2" color="textSecondary" component="p" style={{ textAlign: 'left', paddingTop: '5px' }}>
+              {state.year === 0 && state.month === 0 ? "" : "Issued date : " + state.month + "/" + state.year}
             </Typography>
-        </Grid>
-        <Grid item xs={1} style={{padding:"15px 0px 0px 0px"}}>
-          { login ? <>
-            <Button style={{minWidth:'25px',width:'25px'}}>
-              <MoreVertIcon className={classes.editIcon} size="small" style={{color:"#999"}} onClick={handleMenuClick} />
-          </Button>
-          <Menu
-            id="simple-menu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleMenuClose}
-          >
-            <MenuItem className={classes.item} onClick={handleOpen}><EditIcon style={{marginRight:"7px"}} />Change</MenuItem>
-            <MenuItem className={classes.item} onClick={handleClickOpen}><DeleteIcon style={{marginRight:"7px"}} />Remove</MenuItem>
-          </Menu>
-          </> : null }
-          <Dialog
+          </Grid>
+          <Grid item xs={1} style={{ padding: "15px 0px 0px 0px" }}>
+            {login ? <>
+              <Button style={{ minWidth: '25px', width: '25px' }}>
+                <MoreVertIcon className={classes.editIcon} size="small" style={{ color: "#999" }} onClick={handleMenuClick} />
+              </Button>
+              <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+              >
+                <MenuItem className={classes.item} onClick={handleOpen}><EditIcon style={{ marginRight: "7px" }} />Change</MenuItem>
+                <MenuItem className={classes.item} onClick={handleClickOpen}><DeleteIcon style={{ marginRight: "7px" }} />Remove</MenuItem>
+              </Menu>
+            </> : null}
+            <Dialog
               open={confirmDelete}
               onClose={handleClickClose}
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description"
-          >
+              classes={{ paper: classes.paperRoot }}
+            >
               <DialogTitle id="alert-dialog-title">{"Confirm Delete?"}</DialogTitle>
               <DialogContent>
-                  <DialogContentText id="alert-dialog-description">
-                      Are you sure that you want to delete the selected item? This cannot be undone.
-                  </DialogContentText>
+                <DialogContentText id="alert-dialog-description">
+                  Are you sure that you want to delete the selected item? This cannot be undone.
+                </DialogContentText>
               </DialogContent>
               <DialogActions>
-                  <Button onClick={handleClickClose} color="primary">
-                      No
-                  </Button>
-                  <Button onClick={handleDelete}
-                    color="primary" autoFocus>
-                      Yes
-                  </Button>
+                <Button onClick={handleClickClose} color="primary">
+                  No
+                </Button>
+                <Button onClick={handleDelete}
+                  color="primary" autoFocus className={classes.confrimDelete}>
+                  Yes
+                </Button>
               </DialogActions>
-          </Dialog>
+            </Dialog>
             {/*-------------- update certificate field popup content ------------------- */}
             <Dialog
               open={open}
@@ -399,43 +412,47 @@ function CertificateItem(props) {
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description"
             >
-              <DialogTitle id="alert-dialog-title" style={{color:theme.palette.stateBlue}}>
-              Edit Professional Certificate
+              <DialogTitle id="alert-dialog-title">
+                <Typography style={{ color: theme.palette.stateBlue, textAlign: 'left', fontSize: 18, fontWeight: 600 }}>
+                  Edit Professional Certificate
+                </Typography>
               </DialogTitle>
-              <Divider variant="middle" />
               <DialogContent>
                 <form className={classes.form}>
-                <div>
-                <FormControl variant="outlined" className={classes.field}>
-                    <InputLabel className={classes.placeholder} htmlFor="outlined-age-native-simple">Select Issuer</InputLabel>
-                    <Select
-                      native
-                      value={props.issuer}
-                      className={classes.select}
-                      required
-                      disabled
-                    >
-                      <option>{props.issuer}</option>
-                      {/* {getIssuers()} */}
-                    </Select>
-                  </FormControl>
-                  <FormControl variant="outlined" className={classes.field}>
-                    <InputLabel className={classes.placeholder} htmlFor="outlined-age-native-simple">Select Certification</InputLabel>
-                    <Select
-                      native
-                      value={props.title}
-                      className={classes.select}
-                      required
-                      disabled
-                    >
-                      <option>{props.title}</option>
-                      {/* {getTitles()} */}
-                    </Select>
-                  </FormControl>
-                  <Grid container direction="row">
-                    <Grid item container xs={12}>
+                  <Grid container direction="row" spacing={3}>
+                    <Grid item xs={12}>
+                      <FormControl variant="outlined" className={classes.field}>
+                        <InputLabel className={classes.placeholder} htmlFor="outlined-age-native-simple">Select Issuer</InputLabel>
+                        <Select
+                          native
+                          value={props.issuer}
+                          className={classes.select}
+                          required
+                          disabled
+                        >
+                          <option>{props.issuer}</option>
+                          {/* {getIssuers()} */}
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <FormControl variant="outlined" className={classes.field}>
+                        <InputLabel className={classes.placeholder} htmlFor="outlined-age-native-simple">Select Certification</InputLabel>
+                        <Select
+                          native
+                          value={props.title}
+                          className={classes.select}
+                          required
+                          disabled
+                        >
+                          <option>{props.title}</option>
+                          {/* {getTitles()} */}
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item container xs={12} md={6}>
                       <Grid item xs={12}>
-                        <Typography variant="body2" component="p" style={{color: "#777",fontSize: '16px',marginBottom:"-10px"}}>Issued Date</Typography>
+                        <Typography variant="body2" component="p" style={{ color: "#777", fontSize: '16px' }}>Issued Date</Typography>
                       </Grid>
                       <Grid item xs={6}>
                         <FormControl variant="outlined" className={classes.formControl}>
@@ -467,11 +484,10 @@ function CertificateItem(props) {
                       </Grid>
                     </Grid>
                   </Grid>
-                  </div>
                 </form>
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleClose} style={{color:"#999"}}>
+                <Button onClick={handleClose} style={{ color: "#999" }}>
                   Cancel
                 </Button>
                 <Button onClick={onSubmit} color="primary" autoFocus>
@@ -479,10 +495,10 @@ function CertificateItem(props) {
                 </Button>
               </DialogActions>
             </Dialog>
-        </Grid>      
-       </Grid>
+          </Grid>
+        </Grid>
       </Paper>
-      </>
+    </>
   );
 }
 

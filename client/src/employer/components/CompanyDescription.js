@@ -214,19 +214,20 @@ function CompanyDescription(props) {
           open={open}
           onClose={handleClose}
           aria-labelledby="edit-details-form"
-          fullWidth
+          fullWidth={true}
           className={classes.dialogBox}
         >
           <DialogTitle id="edit-details-form">
             Company Description
           </DialogTitle>
           <DialogContent>
-            <DialogContentText>*Required Fields</DialogContentText>
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <Typography>*Required Fields</Typography>
+              </Grid>
+              {/* input fields */}
 
-            {/* input fields */}
-
-            <div>
-              <Grid item sm={12}>
+              <Grid item xs={12}>
                 <TextField
                   multiline
                   fullWidth
@@ -243,7 +244,7 @@ function CompanyDescription(props) {
                   onChange={onChangeDescription}
                 />
               </Grid>
-            </div>
+            </Grid>
           </DialogContent>
           <DialogActions>
             <Button
@@ -280,7 +281,7 @@ function CompanyDescription(props) {
           >
             <EditIcon />
           </IconButton>
-          : <div style={{margin: 16}}></div>
+          : <div style={{ margin: 16 }}></div>
         }
         <Grid container spacing={3} direction="row">
 
