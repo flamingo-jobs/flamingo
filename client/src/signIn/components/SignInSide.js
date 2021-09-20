@@ -1,7 +1,10 @@
 import {
-  CardMedia, Chip,
-  Container, Dialog,
-  ListItem, Snackbar
+  CardMedia,
+  Chip,
+  Container,
+  Dialog,
+  ListItem,
+  Snackbar,
 } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Box from "@material-ui/core/Box";
@@ -29,6 +32,7 @@ import theme from "../../Theme";
 import { useQueryParams } from "../../utils/useQueryparams";
 import backgroundImage from "../images/background.jpg";
 import GoogleIcon from "../images/google.png";
+const jwt = require("jsonwebtoken");
 
 function Copyright() {
   return (
@@ -184,7 +188,7 @@ export default function SignInSide() {
 
     axios
       .post(`${BACKEND_URL}/api/signin`, loginData)
-      .then( async (res) => {
+      .then(async (res) => {
         if (res.data.success) {
           if (remember) {
             localStorage.setItem("userToken", res.data.token);
@@ -192,11 +196,9 @@ export default function SignInSide() {
           }
           sessionStorage.setItem("userToken", res.data.token);
           sessionStorage.setItem("loginId", res.data.loginId);
-          const jwt = require("jsonwebtoken");
-          const token = sessionStorage.getItem("userToken");
-          const header = jwt.decode(token, { complete: true });
           
-          await axios.post(`${BACKEND_URL}/logs/user`, {role: header.payload.userRole, userId: header.payload.userId});
+          const header = jwt.decode(res.data.token, { complete: true });
+          await setLogs(header.payload.userRole, header.payload.userId);
 
           if (header.payload.userRole === "jobseeker") {
             const urlQuery = new URLSearchParams(window.location.search);
@@ -216,17 +218,25 @@ export default function SignInSide() {
         }
       })
       .catch((err) => {
-        // console.log(err.message);
         if (err.message === "Network Error") handleServerError();
         else handleCredentialError();
       });
   };
 
+  const setLogs = async (role, userId) => {
+    await axios.post(`${BACKEND_URL}/logs/user`, {
+      role: role,
+      userId: userId,
+    });
+  };
+
   useEffect(() => {
     if (token) {
+      const userData = jwt.decode(token, { complete: true }).payload;
       sessionStorage.setItem("userToken", token);
       sessionStorage.setItem("loginId", loginId);
-      window.location = "/";
+      setLogs(userData.userRole, userData.userId);
+      window.location = "/" + userData.userRole + "/dashboard";
     }
     if (error) {
       handleUserError();
@@ -254,7 +264,7 @@ export default function SignInSide() {
   const [userError, setUserError] = useState(false);
   const handleCredentialError = async () => {
     setCredentialError(true);
-    await axios.post(`${BACKEND_URL}/logs/user`, {email: formData.email});
+    await axios.post(`${BACKEND_URL}/logs/user`, { email: formData.email });
   };
   const handleServerError = () => {
     setServerError(true);
@@ -364,13 +374,15 @@ export default function SignInSide() {
                           src={GoogleIcon}
                           variant="square"
                         />
-                        <Typography>
-                          {" "}
-                          Sign In with Google
-                        </Typography>
+                        <Typography> Sign In with Google</Typography>
                       </Button>
                     </Grid>
-                    <Typography className={classes.text} style={{ marginBottom: 16 }}>or</Typography>
+                    <Typography
+                      className={classes.text}
+                      style={{ marginBottom: 16 }}
+                    >
+                      or
+                    </Typography>
 
                     {/* Social Login */}
 
@@ -431,12 +443,7 @@ export default function SignInSide() {
                       label="Remember me"
                       style={{ marginTop: "5%" }}
                     />
-                    <Button
-                      type="submit"
-                      fullWidth
-
-                      className={classes.submit}
-                    >
+                    <Button type="submit" fullWidth className={classes.submit}>
                       Sign In
                     </Button>
 
@@ -522,9 +529,7 @@ export default function SignInSide() {
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <Link to="/startHiring">
-                    <ListItem
-                      button
-                    >
+                    <ListItem button>
                       <Box mt={5} mb={5} ml={10} mr={10}>
                         <Typography>Employer</Typography>
                       </Box>
