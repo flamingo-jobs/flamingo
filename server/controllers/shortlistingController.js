@@ -247,7 +247,7 @@ const shortlistApplicants = (req, res) => {
                                 })
                             }
 
-                            certificates = (certScore / certTotal) * 0.5 + certRelevence * 0.5;
+                            certificates = (certScore / certTotal) * 50 + certRelevence * 0.5;
 
                             // courses
 
@@ -265,6 +265,26 @@ const shortlistApplicants = (req, res) => {
                             }
 
                             courses = courseRelevence;
+
+                            //extra curricular
+
+                            if (item.volunteer.length) {
+                                extraCurricular = (item.volunteer.length / 20) * 100;
+                            }
+
+                            if (extraCurricular > 100) {
+                                extraCurricular = 100;
+                            }
+
+                            //extra curricular
+
+                            if (item.award.length) {
+                                awards = (item.award.length / 20) * 100;
+                            }
+
+                            if (awards > 100) {
+                                awards = 100;
+                            }
 
                             //total
 
@@ -562,7 +582,7 @@ const shortlistApplicantsCustoms = (req, res) => {
                             })
                         }
 
-                        certificates = (certScore / certTotal) * 0.5 + certRelevence * 0.5;
+                        certificates = (certScore / certTotal) * 50 + certRelevence * 0.5;
 
                         // courses
 
@@ -580,6 +600,26 @@ const shortlistApplicantsCustoms = (req, res) => {
                         }
 
                         courses = courseRelevence;
+
+                        //extra curricular
+
+                        if (item.volunteer.length) {
+                            extraCurricular = (item.volunteer.length / 20) * 100;
+                        }
+
+                        if (extraCurricular > 100) {
+                            extraCurricular = 100;
+                        }
+
+                        //extra curricular
+
+                        if (item.award.length) {
+                            awards = (item.award.length / 20) * 100;
+                        }
+
+                        if (awards > 100) {
+                            awards = 100;
+                        }
 
                         //total
 
@@ -873,7 +913,7 @@ const shortlistOnApplicantChanges = (req, res) => {
                             })
                         }
 
-                        certificates = (certScore / certTotal) * 0.5 + certRelevence * 0.5;
+                        certificates = (certScore / certTotal) * 50 + certRelevence * 0.5;
 
                         // courses
 
@@ -891,6 +931,26 @@ const shortlistOnApplicantChanges = (req, res) => {
                         }
 
                         courses = courseRelevence;
+
+                        //extra curricular
+
+                        if (jobseeker.volunteer.length) {
+                            extraCurricular = (jobseeker.volunteer.length / 20) * 100;
+                        }
+
+                        if (extraCurricular > 100) {
+                            extraCurricular = 100;
+                        }
+
+                        //extra curricular
+
+                        if (jobseeker.award.length) {
+                            awards = (jobseeker.award.length / 20) * 100;
+                        }
+
+                        if (awards > 100) {
+                            awards = 100;
+                        }
 
                         //total
 
@@ -1018,7 +1078,6 @@ const updateJobSeekerProfile = (jobSeekerId, recommendedJobs, jobId, total) => {
 const updateJob = (scoredApplicants, jobId) => {
 
     let applicationDetails = scoredApplicants;
-    console.log(jobId)
     Jobs.updateOne({ "_id": jobId },
         [{
             $set: {
@@ -1029,7 +1088,6 @@ const updateJob = (scoredApplicants, jobId) => {
 
                 return false;
             }
-            console.log(jobs);
             return true;
         });
 }

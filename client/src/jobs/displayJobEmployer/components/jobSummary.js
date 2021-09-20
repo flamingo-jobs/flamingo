@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Button,
   Chip, Container, Grid, IconButton, Typography
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -127,12 +128,12 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     gap: "10px",
   },
-  applicants:{
+  applicants: {
     display: "flex",
     gap: "10px",
     marginTop: theme.spacing(2),
   },
-  viewApplicants:{
+  viewApplicants: {
     display: "flex",
     gap: "5px",
     marginTop: theme.spacing(2),
@@ -178,6 +179,14 @@ const useStyles = makeStyles((theme) => ({
       transition: "0.3s",
     },
   },
+  applicantsButton: {
+    borderRadius: 6,
+        backgroundColor: theme.palette.vividSkyBlue,
+        color: theme.palette.white,
+        "&:hover": {
+            backgroundColor: theme.palette.vividSkyBlueHover,
+        }
+  }
 }));
 
 const getFormattedDate = (date) => {
@@ -191,7 +200,7 @@ function JobSummary(props) {
 
   const [open, setOpen] = useState(false);
   const [updatedFields, setUpdatedFields] = useState([]);
-  const userId = jwt.decode(sessionStorage.getItem("userToken"),{complete:true}).payload.userId;
+  const userId = jwt.decode(sessionStorage.getItem("userToken"), { complete: true }).payload.userId;
   const [logo, setLogo] = useState(require(`../../../components/images/loadingImage.gif`).default);
 
   const [applicantHover, setApplicantsHover] = useState(false);
@@ -225,7 +234,7 @@ function JobSummary(props) {
   useEffect(() => {
     loadLogo();
   }, [])
-  
+
   const loadLogo = async () => {
     await axios.get(`${FILE_URL}/employer-profile-pictures/${props.job.organization.id}.png`).then(res => {
       setLogo(`${FILE_URL}/employer-profile-pictures/${props.job.organization.id}.png`);
@@ -246,73 +255,73 @@ function JobSummary(props) {
 
   const handleSummaryChange = (e) => {
     const newJob = { ...props.job };
-    const newErrors = {...props.errors};
+    const newErrors = { ...props.errors };
 
     if (e.target.name === "min" || e.target.name === "max" || e.target.name === "numberOfVacancies") {
       const regex = new RegExp('^[0-9]+$');
       const name = e.target.name;
       const value = e.target.value;
 
-      if(value.trim() === ""){
-        if(name === "min" || name === "max"){
+      if (value.trim() === "") {
+        if (name === "min" || name === "max") {
           delete newErrors[name];
         }
-        else if(name === "numberOfVacancies"){
+        else if (name === "numberOfVacancies") {
           delete newErrors[name];
         }
       } else {
-        if(regex.test(value.trim().replace(/\s/g, ''))){
+        if (regex.test(value.trim().replace(/\s/g, ''))) {
           delete newErrors[name];
         } else {
-          if(name === "min" || name === "max"){
+          if (name === "min" || name === "max") {
             newErrors[name] = "Salary can only contain numbers.";
           }
-          else if(name === "numberOfVacancies"){
+          else if (name === "numberOfVacancies") {
             newErrors[name] = "Number of vacancies cannot contain numbers.";
           }
-          
+
         }
       }
 
-      if(name === "min" || name === "max"){
+      if (name === "min" || name === "max") {
         newJob.salaryRange[e.target.name] = value;
-        if(!updatedFields.includes(e.target.name + " salary")){
-          setUpdatedFields([...updatedFields, e.target.name+" salary"]);
+        if (!updatedFields.includes(e.target.name + " salary")) {
+          setUpdatedFields([...updatedFields, e.target.name + " salary"]);
         }
       }
-      else if(name === "numberOfVacancies"){
+      else if (name === "numberOfVacancies") {
         newJob.numberOfVacancies = value;
-        if(!updatedFields.includes(e.target.name)){
+        if (!updatedFields.includes(e.target.name)) {
           setUpdatedFields([...updatedFields, e.target.name]);
         }
       }
-      
-    } 
+
+    }
     else if (e.target.name === "isPublished") {
       newJob[e.target.name] = e.target.checked;
-      if(!updatedFields.includes(e.target.name)){
+      if (!updatedFields.includes(e.target.name)) {
         setUpdatedFields([...updatedFields, e.target.name]);
       }
 
-    } 
-    else if(e.target.name === "title" || e.target.name === "description"){
+    }
+    else if (e.target.name === "title" || e.target.name === "description") {
       const name = e.target.name;
       const value = e.target.value;
 
-      if(value.trim() === ""){
+      if (value.trim() === "") {
         newErrors[name] = `${name.charAt(0).toUpperCase() + name.slice(1)} cannot be empty.`;
-      } else{
+      } else {
         delete newErrors[name];
       }
       newJob[e.target.name] = value;
-      if(!updatedFields.includes(e.target.name)){
+      if (!updatedFields.includes(e.target.name)) {
         setUpdatedFields([...updatedFields, e.target.name]);
       }
 
-    } 
+    }
     else {
       newJob[e.target.name] = e.target.value;
-      if(!updatedFields.includes(e.target.name)){
+      if (!updatedFields.includes(e.target.name)) {
         setUpdatedFields([...updatedFields, e.target.name]);
       }
     }
@@ -324,7 +333,7 @@ function JobSummary(props) {
     const newJob = { ...props.job };
     newJob.dueDate = date;
     props.setJob(newJob);
-    if(!updatedFields.includes("dueDate")){
+    if (!updatedFields.includes("dueDate")) {
       setUpdatedFields([...updatedFields, "dueDate"]);
     }
   };
@@ -333,14 +342,14 @@ function JobSummary(props) {
   const handleSummarySubmit = async (e) => {
     e.preventDefault();
 
-    if(props.errors.hasOwnProperty("title") || 
+    if (props.errors.hasOwnProperty("title") ||
       props.errors.hasOwnProperty("description") ||
       props.errors.hasOwnProperty("min") ||
       props.errors.hasOwnProperty("max") ||
-      props.errors.hasOwnProperty("numberOfVacancies")){
+      props.errors.hasOwnProperty("numberOfVacancies")) {
       return;
     }
-    
+
     const updateFields = {
       title: props.job.title.trim(),
       category: props.job.category,
@@ -364,7 +373,7 @@ function JobSummary(props) {
         updateFields
       );
 
-      if(response.data.success){
+      if (response.data.success) {
         handleClose();
         props.setAlertData({
           severity: "success",
@@ -374,7 +383,7 @@ function JobSummary(props) {
         await axios.get(`${BACKEND_URL}/jobs/generateRecommendations/${props.jobId}`);
         const msg = "Job updated";
         const status = "informational";
-        await axios.post(`${BACKEND_URL}/logs/create/${props.job._id}/${userId}`, {msg: msg, status: status, updatedFields: updatedFields});
+        await axios.post(`${BACKEND_URL}/logs/create/${props.job._id}/${userId}`, { msg: msg, status: status, updatedFields: updatedFields });
         setUpdatedFields([]);
       }
       // console.log(response);
@@ -391,7 +400,7 @@ function JobSummary(props) {
   const handleDelete = async () => {
     try {
       const response = await axios.delete(
-        `${BACKEND_URL}/jobs/delete/${props.jobId}`, { data: {applicationDetails: props.job.applicationDetails }}
+        `${BACKEND_URL}/jobs/delete/${props.jobId}`, { data: { applicationDetails: props.job.applicationDetails } }
       );
       if (response.data.success) {
         props.setAlertData({
@@ -402,7 +411,7 @@ function JobSummary(props) {
         const msg = "Job deleted";
         const status = "informational";
         // await axios.post(`${BACKEND_URL}/logs/create/${props.job._id}/${userId}`, {msg: msg, status: status});
-        
+
         window.location = "/employer/jobs";
       } else {
         props.setAlertData({
@@ -411,7 +420,7 @@ function JobSummary(props) {
         });
         props.handleAlert();
       }
-    } catch(error) {
+    } catch (error) {
       console.log(error)
       props.setAlertData({
         severity: "error",
@@ -422,7 +431,7 @@ function JobSummary(props) {
   };
 
   const numOfApplicants = () => {
-    if(props.job.applicationDetails?.length === 1){
+    if (props.job.applicationDetails?.length === 1) {
       return `${props.job.applicationDetails.length} applicant`;
     }
     return `${props.job.applicationDetails.length} applicants`;
@@ -472,7 +481,7 @@ function JobSummary(props) {
                     )
                   }
                   label={props.job.isPublished ? "Active" : "Inactive"}
-                  className={ props.job.isPublished ? classes.activeChip : classes.inactiveChip }
+                  className={props.job.isPublished ? classes.activeChip : classes.inactiveChip}
                 />
                 <div className={classes.time}>
                   <Typography>
@@ -549,37 +558,31 @@ function JobSummary(props) {
                     {getFormattedDate(props.job.dueDate)}
                   </Typography>
                 </div>
-                
+
               </div>
             </Grid>
-
-            <div className={classes.applicants}>
-              <PeopleIcon
-                fontSize="small"
-                className={classes.typeIcon}
-              ></PeopleIcon>
-              <Typography variant="subtitle2" className={classes.typeText}>
-                {numOfApplicants()}
-              </Typography>
-            </div>
-
-            {props.job.applicationDetails.length>0 && 
-              <Link to={`/employer/resumes/${props.job._id}`}>
-                <div className={classes.viewApplicants} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-                  <SupervisedUserCircleIcon
-                    fontSize="small"
-                    className={classes.viewApplicantsText}
-                    style={applicantHover ? { color: theme.palette.tuftsBlue } : {}}
-                  />
-                  <Typography
-                    variant="subtitle2"
-                    className={classes.viewApplicantsText}
-                    style={applicantHover ? { color: theme.palette.tuftsBlue } : {}}
-                  >
-                    View Applicants
-                  </Typography>
-                </div>
-              </Link>
+            <Grid item xs={12}>
+              <div className={classes.applicants}>
+                <PeopleIcon
+                  fontSize="small"
+                  className={classes.typeIcon}
+                ></PeopleIcon>
+                <Typography variant="subtitle2" className={classes.typeText}>
+                  {numOfApplicants()}
+                </Typography>
+              </div>
+            </Grid>
+            {props.job.applicationDetails.length > 0 &&
+              <Grid item xs={12} style={{textAlign: 'left', paddingTop: 16}}>
+                <Link to={`/employer/resumes/${props.job._id}`}>
+                    <Button className={classes.applicantsButton}>
+                      <SupervisedUserCircleIcon
+                        fontSize="small"
+                      />
+                        View Applicants
+                    </Button>
+                </Link>
+              </Grid>
             }
 
             <Grid item xs={12}>

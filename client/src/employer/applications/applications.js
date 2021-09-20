@@ -570,6 +570,7 @@ const Applications = () => {
               newApplicants.map((j) => {
                 if (j._id === i.userId) {
                   j.score = i.score;
+                  j.matches = i.matches;
                 }
               });
             });
