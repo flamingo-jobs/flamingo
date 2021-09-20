@@ -1,6 +1,7 @@
 import { combineReducers } from "redux";
 import favoriteOrgCounter from "./favoriteOrgCounter";
 import savedJobCounter from "./savedJobCounter";
+import applicationCounter from './applicationCounter';
 import favoriteOrgIds from "./favoriteOrgs";
 import newNotifications from "./Notifications";
 import profilePicReload from "./profilePicReload";
@@ -10,7 +11,8 @@ const combinedReducers = combineReducers({
     savedJobCounter,
     favoriteOrgIds,
     newNotifications,
-    profilePicReload
+    profilePicReload,
+    applicationCounter
 });
 
 export default combinedReducers;

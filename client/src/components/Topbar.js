@@ -29,7 +29,7 @@ import BACKEND_URL, { FILE_URL } from "../Config";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { setFavoriteOrgCount, setNewNotifications, setProfilePicReload } from "../redux/actions";
-import { setSavedJobCount } from "../redux/actions";
+import { setSavedJobCount, setApplicationCount } from "../redux/actions";
 import Dialog from '@material-ui/core/Dialog';
 
 const jwt = require("jsonwebtoken");
@@ -276,6 +276,7 @@ export default function Topbar(props) {
   // redux state
   const favoriteOrgCount = useSelector(state => state.favoriteOrgCounter);
   const savedJobCount = useSelector(state => state.savedJobCounter);
+  const applicationCount = useSelector(state => state.applicationCounter);
   const newNotifications = useSelector(state => state.newNotifications);
   const profilePicReload = useSelector(state => state.profilePicReload);
   const dispatch = useDispatch();
@@ -286,7 +287,7 @@ export default function Topbar(props) {
 
   // const [favourites, setFavourites] = React.useState(null);
   // const [savedJobs, setSavedJobs] = React.useState(null);
-  const [appliedJobs, setAppliedJobs] = React.useState(null);
+  // const [appliedJobs, setAppliedJobs] = React.useState(null);
   const [notifications, setNotifications] = React.useState(null);
 
   const [searchString, setSearchString] = React.useState("");
@@ -340,7 +341,8 @@ export default function Topbar(props) {
             // setSavedJobs(res.data.jobseeker.savedJobs.length);
           }
           if (res.data.jobseeker.hasOwnProperty("applicationDetails")) {
-            setAppliedJobs(res.data.jobseeker.applicationDetails.length);
+            dispatch(setApplicationCount(res.data.jobseeker.applicationDetails.length));
+            // setAppliedJobs(res.data.jobseeker.applicationDetails.length);
           }
         }
       });
@@ -514,7 +516,7 @@ export default function Topbar(props) {
 
                 <Link to="/jobseeker/appliedJobs">
                   <IconButton aria-label="" className={classes.topBarIcon} onClick={handleMobileMenuClose}>
-                    <Badge badgeContent={appliedJobs} color="secondary">
+                    <Badge badgeContent={applicationCount} color="secondary">
                       <WorkRoundedIcon />
                     </Badge>
                   </IconButton>
@@ -623,7 +625,7 @@ export default function Topbar(props) {
 
                         <Link to="/jobseeker/appliedJobs">
                           <IconButton aria-label="" className={classes.topBarIcon}>
-                            <Badge badgeContent={appliedJobs} color="secondary">
+                            <Badge badgeContent={applicationCount} color="secondary">
                               <WorkRoundedIcon />
                             </Badge>
                           </IconButton>
