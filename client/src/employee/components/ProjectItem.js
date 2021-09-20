@@ -118,6 +118,15 @@ const useStyles = makeStyles((theme) => ({
       padding: "10px 10px 10px 10px"
     }
   },
+  selectType: {
+    margin: "20px 10px 0px 0px",
+    minWidth: "130px",
+    fontSize: "16px",
+    display: "flex",
+    "& .MuiSelect-outlined": {
+      padding: "10px 10px 10px 10px"
+    }
+  },
   placeholder: {
     color: "#777",
     fontSize: '16px',
@@ -179,7 +188,7 @@ function ProjectItem(props) {
   }
   let tech = [];
   tech = props.usedTech;
-  const [state, setState] = useState({ name: props.name, link: props.link, description: props.description, startYear: projectStartDate[1], startMonth: projectStartDate[0], endYear: projectEndDate[1], endMonth: projectEndDate[0], usedTech: tech });
+  const [state, setState] = useState({ name: props.name, link: props.link, description: props.description, startYear: projectStartDate[1], startMonth: projectStartDate[0], endYear: projectEndDate[1], endMonth: projectEndDate[0], usedTech: tech, type: props.type });
   const [newData, setNewData] = useState([]);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
@@ -337,9 +346,9 @@ function ProjectItem(props) {
     })
   }
 
-  function onChangeUsedTech(e) {
+  function onChangeType(e) {
     setState(prevState => {
-      return { ...prevState, usedTech: e.target.value }
+      return { ...prevState, type: e.target.value }
     })
   }
 
@@ -352,6 +361,7 @@ function ProjectItem(props) {
       from: state.startMonth + "/" + state.startYear,
       to: state.endMonth + "/" + state.endYear,
       usedTech: state.usedTech,
+      type: state.type
     }
 
     axios.put(`${BACKEND_URL}/jobseeker/updateProject/${loginId}`, { index: props.index, project: project })
@@ -401,7 +411,7 @@ function ProjectItem(props) {
               <Grid item xs={11} style={{ marginTop: "-5px", boxSizing: "border-box" }}>
 
                 <Typography gutterBottom style={{ textAlign: 'left', alignItems: 'left' }}>
-                  <Chip icon={<LocalOfferRoundedIcon className={classes.tagIcon} />} label={"Group Project"} className={classes.label} />
+                  <Chip icon={<LocalOfferRoundedIcon className={classes.tagIcon} />} label={state.type} className={classes.label} />
                 </Typography>
                 <Typography gutterBottom style={{ textAlign: 'left', fontSize: '16px', fontWeight: 'bold', color: '#666' }}>
                   {state.name}
@@ -616,6 +626,24 @@ function ProjectItem(props) {
                               />
                             )}
                           />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <FormControl variant="outlined" className={classes.formControl}>
+                            <InputLabel className={classes.placeholderDate} htmlFor="outlined-age-native-simple">Select Type</InputLabel>
+                            <Select
+                              native
+                              size="small"
+                              onChange={onChangeType}
+                              label="Select Type"
+                              className={classes.selectType}
+                              value={state.type}
+                            >
+                              <option aria-label="None" value="" />
+                              <option value="Individual">Individual</option>
+                              <option value="Group">Group</option>
+                              <option value="Community">Community</option>
+                            </Select>
+                          </FormControl>
                         </Grid>
                       </Grid>
                     </form>
