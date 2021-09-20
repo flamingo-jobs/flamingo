@@ -6,9 +6,7 @@ import CompanyDescription from "./components/CompanyDescription";
 import Technologies from "./components/Technologies";
 import Reviews from "./reviews/Reviews";
 
-const useStyles = makeStyles((theme) => ({
-
-}));
+const useStyles = makeStyles((theme) => ({}));
 
 const Employer = (props) => {
   const classes = useStyles();
@@ -20,6 +18,8 @@ const Employer = (props) => {
   const header = jwt.decode(token, { complete: true });
   if (token === null) {
     loginId = window.location.pathname.split("/")[3];
+  } else if (window.location.pathname.split("/")[3] != undefined) {
+    loginId = window.location.pathname.split("/")[3];
   } else if (header.payload.userRole === "employer") {
     login = true;
     loginId = sessionStorage.getItem("loginId");
@@ -29,7 +29,6 @@ const Employer = (props) => {
 
   return (
     <>
-
       <Grid
         item
         container
@@ -39,11 +38,11 @@ const Employer = (props) => {
         direction="row"
       >
         <Grid item container md={12} lg={6}>
-          <Grid item xs={12} style={{marginBottom: 24}}>
-            <CompanyBasicInfo userRole={loginId}></CompanyBasicInfo>
+          <Grid item xs={12} style={{ marginBottom: 24 }}>
+          <CompanyBasicInfo accessId={sessionStorage.getItem("loginId")} userRole={loginId}></CompanyBasicInfo>
           </Grid>
-          <Grid item xs={12} style={{marginBottom: 24}}>
-            <CompanyDescription userRole={loginId}></CompanyDescription>
+          <Grid item xs={12} style={{ marginBottom: 24 }}>
+            <CompanyDescription accessId={sessionStorage.getItem("loginId")} userRole={loginId}></CompanyDescription>
           </Grid>
           <Grid item xs={12}>
             <Reviews />
@@ -59,14 +58,8 @@ const Employer = (props) => {
               userRole={loginId}
             />
           </Grid>
-
         </Grid>
-
-
       </Grid>
-
-
-
     </>
   );
 };

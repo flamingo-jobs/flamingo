@@ -46,6 +46,7 @@ import Recommendations from "./recommendations/Recommendations";
 import SearchResult from "./searchResults/searchResult";
 import PrivacyPolicy from "./terms/PrivacyPolicy";
 import TermsOfServices from "./terms/TermsOfServices";
+import Pricing from "./pricing/Pricing";
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
@@ -176,6 +177,9 @@ function Base() {
         </Route>
         <Route path="/privacy" exact>
           <PrivacyPolicy />
+        </Route>
+        <Route path="/pricing" exact>
+          <Pricing />
         </Route>
       </>
     );

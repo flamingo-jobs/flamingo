@@ -12,7 +12,7 @@ import { ResetPassword } from "./signIn/components/ResetPassword.js";
 import SignInSide from "./signIn/components/SignInSide.js";
 import StartHiring from "./startHiring/StartHiring.js";
 import theme from "./Theme";
-
+require("dotenv").config();
 
 function App() {
 
@@ -21,7 +21,7 @@ function App() {
       <BrowserRouter>
         <ScrollToTop />
         <ThemeProvider theme={theme}>
-          <Route path='(/|/jobs|/employer|/jobseeker|/jobDescription|/createJob|/admin|/organizations|/people|/job|/searchResults|/suggestedJobs|/contactUs|/termsOfService|/privacy)'>
+          <Route path='(/|/jobs|/employer|/jobseeker|/jobDescription|/createJob|/admin|/organizations|/people|/job|/searchResults|/suggestedJobs|/contactUs|/termsOfService|/privacy|/pricing)'>
             <Base />
           </Route>
           <Route path="/signIn">
