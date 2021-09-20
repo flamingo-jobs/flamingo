@@ -563,7 +563,7 @@ function ProjectsSection(props) {
               Cancel
             </Button>
             <Button onClick={onSubmit} color="primary" autoFocus>
-              Apply Changes
+              Save
             </Button>
           </DialogActions>
         </Dialog>
