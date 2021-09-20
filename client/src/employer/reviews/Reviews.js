@@ -1,8 +1,8 @@
+import React, { useEffect, useState } from "react";
 import { Button, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import EditIcon from "@material-ui/icons/Edit";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
 import Lottie from "react-lottie";
 import FloatCard from "../../components/FloatCard";
 import SnackBarAlert from "../../components/SnackBarAlert";
@@ -48,27 +48,36 @@ const useStyles = makeStyles((theme) => ({
 const Reviews = (props) => {
   const classes = useStyles();
 
-  const userId = sessionStorage.getItem("loginId");
-  const isSignedIn = sessionStorage.getItem("userToken") ? true : false;
-
   const [reviews, setReviews] = useState("empty");
   const [review, setReview] = useState("");
   const [rating, setRating] = useState(0);
   const [jobseeker, setJobseeker] = useState("empty");
-
-  const [alertShow, setAlertShow] = React.useState(false);
-  const [alertData, setAlertData] = React.useState({ severity: "", msg: "" });
-
+  
+  const [alertShow, setAlertShow] = useState(false);
+  const [alertData, setAlertData] = useState({ severity: "", msg: "" });
+  
   const [errors, setErrors] = useState({});
-
+  
+  const isSignedIn = sessionStorage.getItem("userToken") ? true : false;
+  const userId = sessionStorage.getItem("loginId");
   const token = sessionStorage.getItem("userToken");
   const [role, setRole] = useState(
     jwt.decode(token, { complete: true })
       ? jwt.decode(token, { complete: true }).payload.userRole
       : null
   );
-
-  const empId = window.location.pathname.split("/")[3];
+  const [empId, setEmpId] = useState("");
+  useEffect(() => {
+    const urlName =  window.location.pathname.split("/")[2];
+    if(urlName === "company"){
+      console.log("Called1");
+      setEmpId(userId);
+    } else {
+      console.log("Called2");
+      const urlEmpId = window.location.pathname.split("/")[3];
+      setEmpId(urlEmpId);
+    }
+  }, []);
 
   const ratingOptions = {
     loop: true,
@@ -152,13 +161,18 @@ const Reviews = (props) => {
 
   const retrieveEmployer = async () => {
     try {
-      if (empId) {
+      if (empId !== "") {
         const response = await axios.get(
           `${BACKEND_URL}/employers/${empId}`
         );
         if (response.data.success) {
           if (response.data.employer.reviews.length !== 0) {
-            setReviews(response.data.employer.reviews);
+            const sortedReviews = response.data.employer.reviews.sort((a, b) => {
+              const temp1 = new Date(a.createdDate);
+              const temp2 = new Date(b.createdDate);
+              return temp2-temp1;
+            });
+            setReviews(sortedReviews);
           }
         }
       }
@@ -172,17 +186,19 @@ const Reviews = (props) => {
   };
 
   const retrieveJobseeker = async () => {
-    try {
-      const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
-      if (response.data.success) {
-        setJobseeker(response.data.jobseeker);
+    if(role === "jobseeker"){
+      try {
+        const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
+        if (response.data.success) {
+          setJobseeker(response.data.jobseeker);
+        }
+      } catch (err) {
+        setAlertData({
+          severity: "error",
+          msg: "Something went wrong, Please try again later!",
+        });
+        handleAlert();
       }
-    } catch (err) {
-      setAlertData({
-        severity: "error",
-        msg: "Something went wrong, Please try again later!",
-      });
-      handleAlert();
     }
   };
 
@@ -210,9 +226,9 @@ const Reviews = (props) => {
     if(!validation){
       return;
     }
-    
+    console.log("empId", empId);
     try {
-      if (jobseeker !== "empty") {
+      if (jobseeker !== "empty" && empId !== "") {
         const data = {
           review: review,
           rating: rating,
@@ -220,7 +236,7 @@ const Reviews = (props) => {
           jobseekerId: jobseeker._id,
           jobseekerName: jobseeker.name,
         };
-
+        
         const response = await axios.patch(
           `${BACKEND_URL}/employers/addReview/${empId}`,
           data
@@ -233,6 +249,11 @@ const Reviews = (props) => {
             msg: "Review posted, successfully!",
           });
           handleAlert();
+          setReview("");
+          setRating(0);
+          const reviewsNotByMe = reviews.filter(r => r.jobseekerId !== jobseeker._id);
+          const newReviews = [data, ...reviewsNotByMe];
+          setReviews(newReviews);
         }
       }
     } catch (err) {
