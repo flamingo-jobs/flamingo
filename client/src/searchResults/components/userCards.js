@@ -17,7 +17,7 @@ const UserCards = (props) => {
   const displayUsers = () => {
     if (props.users.length === 0) {
       return (
-        <Grid item xs={9}>
+        <Grid item xs={12}>
           <FloatCard>
             <SearchNotFound></SearchNotFound>
           </FloatCard>

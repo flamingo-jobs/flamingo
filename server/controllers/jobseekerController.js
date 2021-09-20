@@ -63,7 +63,7 @@ const getSearched = async (req, res) => {
   try {
     const result = await Jobseeker.find({
       name: { $regex: req.params.string, $options: "i" },
-      isPublic: false,
+      isPublic: true,
     });
     res.status(200).json({ success: true, jobseekers: result });
   } catch (err) {
