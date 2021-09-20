@@ -152,11 +152,18 @@ function CompanyBasicInfo(props) {
   const jwt = require("jsonwebtoken");
   const token = sessionStorage.getItem("userToken");
   const header = jwt.decode(token, { complete: true });
+  let editAccess = false;
   if (token === null) {
     loginId = props.userRole;
+  } else if (window.location.pathname.split("/")[3] != undefined) {
+    loginId = window.location.pathname.split("/")[3];
+
+    if(loginId==props.accessId) editAccess=true
+    
   } else if (header.payload.userRole === "employer") {
     login = true;
     loginId = sessionStorage.getItem("loginId");
+    editAccess = true;
   } else {
     loginId = props.userRole;
   }
@@ -352,11 +359,8 @@ function CompanyBasicInfo(props) {
     });
 
     var averageRating = totalRating / reviews.length;
-    averageRating = parseInt(averageRating);
 
-    // console.log(averageRating);
-
-    return averageRating;
+    return [averageRating, reviews.length];
   };
 
   const getVerificationStatus = () => {
@@ -375,7 +379,7 @@ function CompanyBasicInfo(props) {
   };
 
   useEffect(() => {
-    getVerificationStatus()
+    getVerificationStatus();
     loadLogo();
   }, []);
 
@@ -400,7 +404,7 @@ function CompanyBasicInfo(props) {
           onClose={handleClose}
           aria-labelledby="edit-details-form"
           fullWidth
-        // className={classes.dialogBox}
+          // className={classes.dialogBox}
         >
           <DialogTitle id="edit-details-form">Company Profile</DialogTitle>
           <DialogContent>
@@ -533,10 +537,7 @@ function CompanyBasicInfo(props) {
             </Grid>
           </DialogContent>
           <DialogActions>
-            <Button
-              onClick={handleClose}
-              className={classes.dialogbuttons}
-            >
+            <Button onClick={handleClose} className={classes.dialogbuttons}>
               Cancel
             </Button>
             <Button
@@ -650,14 +651,14 @@ function CompanyBasicInfo(props) {
     var blob = file.slice(0, file.size);
     var newFile = new File([blob], `${loginId}.png`, { type: "image/png" });
 
-    await uploadFileToBlob(newFile, "employer-profile-pictures").then(
-      async () => {
+    await uploadFileToBlob(newFile, "employer-profile-pictures")
+      .then(async () => {
         handleClickCloseEditLogo();
         handleClickAlertSuccess();
-      }
-    ).catch(() => {
-      handleClickAlertServerError();
-    });
+      })
+      .catch(() => {
+        handleClickAlertServerError();
+      });
     // prepare UI for results
     setUploaded(true);
 
@@ -665,15 +666,14 @@ function CompanyBasicInfo(props) {
     setFileSelected(null);
     setUploading(false);
     setInputKey(Math.random().toString(36));
-    setCompLogo("")
-    loadLogo()
-
+    setCompLogo("");
+    loadLogo();
   };
 
   return (
     <>
       <FloatCard>
-        {props.userRole == "employer" || haveAccess == true ? (
+        {props.userRole == "employer" || haveAccess == true && editAccess==true ? (
           <IconButton
             variant="outlined"
             aria-label="edit"
@@ -694,8 +694,7 @@ function CompanyBasicInfo(props) {
                 variant="square"
               />
 
-              {props.userRole == "employer" ||
-                (haveAccess == true && (
+              {props.userRole == "employer" || haveAccess == true && editAccess==true ?(
                   <div>
                     <IconButton
                       variant="outlined"
@@ -711,13 +710,6 @@ function CompanyBasicInfo(props) {
                       onClose={handleClickCloseEditLogo}
                       aria-labelledby="form-dialog-title"
                     >
-                      {/* <div>
-      <input type="file" onChange={onFileChange} key={inputKey || ''} />
-      <button type="submit" onClick={onFileUpload}>
-        Upload!
-      </button>
-    </div> */}
-
                       <DialogTitle id="form-dialog-title">
                         Edit Logo
                       </DialogTitle>
@@ -729,16 +721,7 @@ function CompanyBasicInfo(props) {
                           accept="image/png"
                         />
 
-                        {/* <TextField
-                            autoFocus
-                            margin="dense"
-                            id="photo"
-                            label="Photo"
-                            type="file"
-                            inputProps={{ accept: "image/*" }}
-                            fullWidth
-                            onChange={onFileChange}
-                          /> */}
+                      
                       </DialogContent>
                       <DialogActions>
                         <Button
@@ -755,53 +738,26 @@ function CompanyBasicInfo(props) {
                           Save
                         </Button>
                       </DialogActions>
-                      {/* <form
-                        onSubmit={onFileUpload}
-                        encType="multipart/form-data"
-                      >
-                        <DialogTitle id="form-dialog-title">
-                          Edit Logo
-                        </DialogTitle>
-                        <DialogContent>
-                          <TextField
-                            autoFocus
-                            margin="dense"
-                            id="photo"
-                            label="Photo"
-                            type="file"
-                            inputProps={{ accept: "image/*" }}
-                            fullWidth
-                            onChange={onFileChange}
-                          />
-                        </DialogContent>
-                        <DialogActions>
-                          <Button
-                            onClick={handleClickCloseEditLogo}
-                            color="primary"
-                          >
-                            Cancel
-                          </Button>
-                          <Button
-                            onClick={handleClickCloseEditLogo}
-                            type="submit"
-                            color="primary"
-                          >
-                            Save
-                          </Button>
-                        </DialogActions>
-                      </form> */}
+                  
                     </Dialog>
                   </div>
-                ))}
+                ) : (
+                  <div style={{ margin: 16 }}></div>
+                )}
             </Grid>
             <br />
             <br />
             <Grid item xs={12} lg={7} className={classes.headerInfo}>
               <Typography variant="h5" className={classes.title}>
-                {name} {verified ? <VerifiedUserIcon
-                  color="primary"
-                  className={classes.verifiedBadge}
-                /> : ""}
+                {name}{" "}
+                {verified ? (
+                  <VerifiedUserIcon
+                    color="primary"
+                    className={classes.verifiedBadge}
+                  />
+                ) : (
+                  ""
+                )}
               </Typography>
               <div className={classes.locationTags}>
                 {locations.map((item, i) => (
@@ -818,7 +774,8 @@ function CompanyBasicInfo(props) {
                 <Rating
                   name="read-only"
                   style={{ marginTop: 8 }}
-                  value={getAverageRating()}
+                  value={getAverageRating()[0]}
+                  precision={0.1}
                   readOnly
                 />
               </div>

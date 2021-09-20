@@ -218,6 +218,7 @@ const CompanySummaryCard = (props) => {
             name="read-only"
             style={{ marginTop: 8 }}
             value={getAverageRating()[0]}
+            precision={0.1}
             readOnly
           />
         </div>
