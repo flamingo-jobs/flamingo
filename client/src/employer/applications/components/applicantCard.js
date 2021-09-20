@@ -243,6 +243,7 @@ function ApplicantCard(props) {
         handleClose={handleClose}
         userId={props.jobseeker._id}
         jobId={props.jobId}
+        job={props.job}
         setAlertData={props.setAlertData}
         handleAlert={props.handleAlert}
       ></StatusModal>);
