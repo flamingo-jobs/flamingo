@@ -5,6 +5,9 @@ import {
   IconButton,
   TextField,
   Typography,
+  FormControl,
+  InputLabel,
+  Select,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
@@ -350,6 +353,43 @@ export const Experience = ({
                           />
                         </Grid>
                         <Grid item xs={12} md={6} align="center">
+                          <FormControl
+                            size="small"
+                            fullWidth
+                            variant="outlined"
+                            className={classes.formControl}
+                          >
+                            <InputLabel
+                              className={classes.placeholderDate}
+                              htmlFor="outlined-age-native-simple"
+                            >
+                              Type
+                            </InputLabel>
+                            <Select
+                              native
+                              label="Type"
+                              name="type"
+                              onChange={(e) => {
+                                handleProjectInputChange(e, i);
+                              }}
+                              required
+                            >
+                              <option
+                                aria-label="Individual"
+                                value="Individual"
+                              >
+                                Individual
+                              </option>
+                              <option aria-label="None" value="Group">
+                                Group
+                              </option>
+                              <option aria-label="None" value="Community">
+                                Community
+                              </option>
+                            </Select>
+                          </FormControl>
+                        </Grid>
+                        <Grid item xs={12} align="center">
                           <TextField
                             size="small"
                             className={classes.textField}
@@ -357,6 +397,7 @@ export const Experience = ({
                             fullWidth
                             name="link"
                             label="Link"
+                            type="url"
                             value={x.link}
                             onChange={(e) => handleProjectInputChange(e, i)}
                           />

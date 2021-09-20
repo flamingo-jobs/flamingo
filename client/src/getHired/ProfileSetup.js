@@ -263,6 +263,7 @@ export default function ProfileSetup() {
             return {
               name: x.name ? x.name : "",
               link: x.link ? x.link : "",
+              type: x.type ? x.type : "",
               description: x.description ? x.description : "",
               from: x.from ? x.from.slice(5) + "/" + x.from.slice(0, 4) : "",
               to: x.to ? x.to.slice(5) + "/" + x.to.slice(0, 4) : "",
@@ -475,6 +476,7 @@ export default function ProfileSetup() {
     {
       name: "",
       link: "",
+      type: "Individual",
       description: "",
       from: "",
       to: "",
@@ -503,6 +505,7 @@ export default function ProfileSetup() {
       {
         name: "",
         link: "",
+        type: "Individual",
         description: "",
         from: "",
         to: "",
