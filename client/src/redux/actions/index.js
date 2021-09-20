@@ -12,6 +12,13 @@ export const setSavedJobCount = (newValue) => {
     };
 }
 
+export const setApplicationCount = (newValue) => {
+    return {
+        type: "UPDATE_APPLICATION_COUNT",
+        payload: newValue
+    };
+}
+
 export const setReduxFavoriteOrgIds = (newIds) => {
     return {
         type: "UPDATE_ORG_IDS",

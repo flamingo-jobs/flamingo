@@ -292,11 +292,46 @@ const update = (req, res) => {
                     error: err
                 })
             }
+            updateIsFeatured(req.params.id);
             return res.status(200).json({
                 success: true
             });
         }
     );
+}
+
+const updateIsFeatured = async (jobId) => {
+    try{
+        const job  = await Jobs.findById(jobId);
+        var score = 0;
+        if(job.salaryRange.min !== ""){
+            score++;
+        }
+        if(job.salaryRange.max !== ""){
+            score++;
+        }
+        if(job.numberOfVacancies !== ""){
+            score++;
+        }
+        if(job.tasksAndResponsibilities.length > 4){
+            score++;
+        }
+        if(job.qualifications.length > 4){
+            score++;
+        }
+        if(job.additionalSkills.length > 0){
+            score++;
+        }
+    
+        if(score === 6){
+            await Jobs.findByIdAndUpdate(jobId, {$set: {isFeatured: true}});
+        } else{
+            await Jobs.findByIdAndUpdate(jobId, {$set: {isFeatured: false}});
+        }
+    }catch(error){
+
+    }
+
 }
 
 const resetAll = (req, res) => { // To clear the test resume details
@@ -397,13 +432,24 @@ const remove =  (req, res) => {
                 );
             });
         }
+
+        deleteFavoriteJobs(jobId);
     
         return res.status(200).json({
             success: true,
         });
     });
-    
-    
+}
+
+const deleteFavoriteJobs = async (jobId) => {
+    try {
+        const updatedSavedJobs = await Jobseeker.updateMany(
+          {},
+          {
+            $pullAll: { savedJobs: [jobId] }
+          },
+        );
+    } catch (err) {}
 }
 
 const getOpeningCountByOrg = (req, res) => {

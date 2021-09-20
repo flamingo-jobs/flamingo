@@ -85,9 +85,27 @@ const shortlistApplicants = (req, res) => {
                                     minEduc = true;
                                 }
 
-                                if (edu.type === "Bachelor's Honours") {
-                                    if (job.minimumEducation.includes("Bachelor's")) {
-                                        minEduc = true;
+                                if (!minEduc) {
+                                    if (edu.type === "Diploma") {
+                                        if (job.minimumEducation.includes("School")) {
+                                            minEduc = true;
+                                        }
+                                    } else if (edu.type === "Bachelor's") {
+                                        if (job.minimumEducation.includes("School") || job.minimumEducation.includes("Diploma")) {
+                                            minEduc = true;
+                                        }
+                                    } else if (edu.type === "Bachelor's Honours") {
+                                        if (job.minimumEducation.includes("School") || job.minimumEducation.includes("Diploma") || job.minimumEducation.includes("Bachelor's")) {
+                                            minEduc = true;
+                                        }
+                                    } else if (edu.type === "Masters") {
+                                        if (job.minimumEducation.includes("School") || job.minimumEducation.includes("Diploma") || job.minimumEducation.includes("Bachelor's") || job.minimumEducation.includes("Bachelor's Honours")) {
+                                            minEduc = true;
+                                        }
+                                    } else if (edu.type === "PhD") {
+                                        if (job.minimumEducation.includes("School") || job.minimumEducation.includes("Diploma") || job.minimumEducation.includes("Bachelor's") || job.minimumEducation.includes("Bachelor's Honours") || job.minimumEducation.includes("Masters")) {
+                                            minEduc = true;
+                                        }
                                     }
                                 }
 
@@ -195,7 +213,11 @@ const shortlistApplicants = (req, res) => {
 
                             // skills
 
-                            if (item.skills.length) {
+                            if (item.skills.length && job.additionalSkills.length) {
+                                skills += findPercentage(job.additionalSkills, item.skills);
+                            }
+
+                            if (skills === 0 && item.skills.length) {
                                 skills = similarity(item.skills.join(' '), job.qualifications);
                             }
 
@@ -225,7 +247,7 @@ const shortlistApplicants = (req, res) => {
                                 })
                             }
 
-                            certificates = (certScore / certTotal) * 0.5 + certRelevence * 0.5;
+                            certificates = (certScore / certTotal) * 50 + certRelevence * 0.5;
 
                             // courses
 
@@ -243,6 +265,26 @@ const shortlistApplicants = (req, res) => {
                             }
 
                             courses = courseRelevence;
+
+                            //extra curricular
+
+                            if (item.volunteer.length) {
+                                extraCurricular = (item.volunteer.length / 20) * 100;
+                            }
+
+                            if (extraCurricular > 100) {
+                                extraCurricular = 100;
+                            }
+
+                            //extra curricular
+
+                            if (item.award.length) {
+                                awards = (item.award.length / 20) * 100;
+                            }
+
+                            if (awards > 100) {
+                                awards = 100;
+                            }
 
                             //total
 
@@ -379,9 +421,27 @@ const shortlistApplicantsCustoms = (req, res) => {
                                 minEduc = true;
                             }
 
-                            if (edu.type === "Bachelor's Honours") {
-                                if (job.minimumEducation.includes("Bachelor's")) {
-                                    minEduc = true;
+                            if (!minEduc) {
+                                if (edu.type === "Diploma") {
+                                    if (job.minimumEducation.includes("School")) {
+                                        minEduc = true;
+                                    }
+                                } else if (edu.type === "Bachelor's") {
+                                    if (job.minimumEducation.includes("School") || job.minimumEducation.includes("Diploma")) {
+                                        minEduc = true;
+                                    }
+                                } else if (edu.type === "Bachelor's Honours") {
+                                    if (job.minimumEducation.includes("School") || job.minimumEducation.includes("Diploma") || job.minimumEducation.includes("Bachelor's")) {
+                                        minEduc = true;
+                                    }
+                                } else if (edu.type === "Masters") {
+                                    if (job.minimumEducation.includes("School") || job.minimumEducation.includes("Diploma") || job.minimumEducation.includes("Bachelor's") || job.minimumEducation.includes("Bachelor's Honours")) {
+                                        minEduc = true;
+                                    }
+                                } else if (edu.type === "PhD") {
+                                    if (job.minimumEducation.includes("School") || job.minimumEducation.includes("Diploma") || job.minimumEducation.includes("Bachelor's") || job.minimumEducation.includes("Bachelor's Honours") || job.minimumEducation.includes("Masters")) {
+                                        minEduc = true;
+                                    }
                                 }
                             }
 
@@ -489,10 +549,13 @@ const shortlistApplicantsCustoms = (req, res) => {
 
                         // skills
 
-                        if (item.skills.length) {
-                            skills = similarity(item.skills.join(' '), job.qualifications);
+                        if (item.skills.length && job.additionalSkills.length) {
+                            skills = findPercentage(job.additionalSkills, item.skills);
                         }
 
+                        if (skills === 0 && item.skills.length) {
+                            skills = similarity(item.skills.join(' '), job.qualifications);
+                        }
                         // certificates
 
                         let certificationNameList = [];
@@ -519,7 +582,7 @@ const shortlistApplicantsCustoms = (req, res) => {
                             })
                         }
 
-                        certificates = (certScore / certTotal) * 0.5 + certRelevence * 0.5;
+                        certificates = (certScore / certTotal) * 50 + certRelevence * 0.5;
 
                         // courses
 
@@ -537,6 +600,26 @@ const shortlistApplicantsCustoms = (req, res) => {
                         }
 
                         courses = courseRelevence;
+
+                        //extra curricular
+
+                        if (item.volunteer.length) {
+                            extraCurricular = (item.volunteer.length / 20) * 100;
+                        }
+
+                        if (extraCurricular > 100) {
+                            extraCurricular = 100;
+                        }
+
+                        //extra curricular
+
+                        if (item.award.length) {
+                            awards = (item.award.length / 20) * 100;
+                        }
+
+                        if (awards > 100) {
+                            awards = 100;
+                        }
 
                         //total
 
@@ -669,6 +752,30 @@ const shortlistOnApplicantChanges = (req, res) => {
                                 minEduc = true;
                             }
 
+                            if (!minEduc) {
+                                if (edu.type === "Diploma") {
+                                    if (job.minimumEducation.includes("School")) {
+                                        minEduc = true;
+                                    }
+                                } else if (edu.type === "Bachelor's") {
+                                    if (job.minimumEducation.includes("School") || job.minimumEducation.includes("Diploma")) {
+                                        minEduc = true;
+                                    }
+                                } else if (edu.type === "Bachelor's Honours") {
+                                    if (job.minimumEducation.includes("School") || job.minimumEducation.includes("Diploma") || job.minimumEducation.includes("Bachelor's")) {
+                                        minEduc = true;
+                                    }
+                                } else if (edu.type === "Masters") {
+                                    if (job.minimumEducation.includes("School") || job.minimumEducation.includes("Diploma") || job.minimumEducation.includes("Bachelor's") || job.minimumEducation.includes("Bachelor's Honours")) {
+                                        minEduc = true;
+                                    }
+                                } else if (edu.type === "PhD") {
+                                    if (job.minimumEducation.includes("School") || job.minimumEducation.includes("Diploma") || job.minimumEducation.includes("Bachelor's") || job.minimumEducation.includes("Bachelor's Honours") || job.minimumEducation.includes("Masters")) {
+                                        minEduc = true;
+                                    }
+                                }
+                            }
+
                             if (edu.type === "Diploma") {
                                 education += educationShortlistings.diploma;
                             } else if (edu.type === "Bachelor's") {
@@ -773,10 +880,13 @@ const shortlistOnApplicantChanges = (req, res) => {
 
                         // skills
 
-                        if (jobseeker.skills.length) {
-                            skills = similarity(jobseeker.skills.join(' '), job.qualifications);
+                        if (jobseeker.skills.length && job.additionalSkills.length) {
+                            skills = findPercentage(job.additionalSkills, jobseeker.skills);
                         }
 
+                        if (skills === 0 && jobseeker.skills.length) {
+                            skills = similarity(jobseeker.skills.join(' '), job.qualifications);
+                        }
                         // certificates
 
                         let certificationNameList = [];
@@ -803,7 +913,7 @@ const shortlistOnApplicantChanges = (req, res) => {
                             })
                         }
 
-                        certificates = (certScore / certTotal) * 0.5 + certRelevence * 0.5;
+                        certificates = (certScore / certTotal) * 50 + certRelevence * 0.5;
 
                         // courses
 
@@ -821,6 +931,26 @@ const shortlistOnApplicantChanges = (req, res) => {
                         }
 
                         courses = courseRelevence;
+
+                        //extra curricular
+
+                        if (jobseeker.volunteer.length) {
+                            extraCurricular = (jobseeker.volunteer.length / 20) * 100;
+                        }
+
+                        if (extraCurricular > 100) {
+                            extraCurricular = 100;
+                        }
+
+                        //extra curricular
+
+                        if (jobseeker.award.length) {
+                            awards = (jobseeker.award.length / 20) * 100;
+                        }
+
+                        if (awards > 100) {
+                            awards = 100;
+                        }
 
                         //total
 
@@ -948,7 +1078,6 @@ const updateJobSeekerProfile = (jobSeekerId, recommendedJobs, jobId, total) => {
 const updateJob = (scoredApplicants, jobId) => {
 
     let applicationDetails = scoredApplicants;
-    console.log(jobId)
     Jobs.updateOne({ "_id": jobId },
         [{
             $set: {
@@ -959,7 +1088,6 @@ const updateJob = (scoredApplicants, jobId) => {
 
                 return false;
             }
-            console.log(jobs);
             return true;
         });
 }

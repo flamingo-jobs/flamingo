@@ -51,6 +51,7 @@ function JobDescription(props) {
   const [job, setJob] = useState("empty");
   const [moreFromJobs, setMoreFromJobs] = useState(null);
   const [savedJobIds, setSavedJobIds] = useState([]);
+  const [appliedJobCount, setAppliedJobCount] = useState(0);
   const [isSaved, setIsSaved] = useState(false);
   const [isApplied, setIsApplied] = useState(false);
 
@@ -114,7 +115,7 @@ function JobDescription(props) {
         const response = await axios.get(`${BACKEND_URL}/jobseeker/${userId}`);
         if (response.data.success) {
           setSavedJobIds(response.data.jobseeker.savedJobs);
-          
+          setAppliedJobCount(response.data.jobseeker.applicationDetails.length);
 
           if (response.data.jobseeker.savedJobs.includes(jobId)) {
             setIsSaved(true);
@@ -227,7 +228,14 @@ function JobDescription(props) {
         } else {
           return (
             <Grid item xs={12}>
-              <ApplyForm userId={userId} name={job.title} org={job.organization.name} jobId={jobId} handleApply={handleApply}></ApplyForm>
+              <ApplyForm
+                userId={userId}
+                name={job.title}
+                org={job.organization.name}
+                jobId={jobId}
+                handleApply={handleApply}
+                appliedJobCount={appliedJobCount}
+              ></ApplyForm>
             </Grid>
           );
         }

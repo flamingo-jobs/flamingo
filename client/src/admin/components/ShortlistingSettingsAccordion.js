@@ -119,6 +119,21 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 8,
     paddingRight: 8
   },
+  paperRoot: {
+    padding: 20,
+  },
+  confrimDelete: {
+    boxShadow: "none",
+    color: theme.palette.red,
+    backgroundColor: theme.palette.lightyPink,
+    borderRadius: 12,
+    marginLeft: "16px !important",
+    padding: "10px",
+    "&:hover": {
+      backgroundColor: theme.palette.lightyPinkHover,
+      boxShadow: "none",
+    },
+  },
 }));
 
 export default function ShortlistingSettingsAccordion(props) {
@@ -400,7 +415,7 @@ export default function ShortlistingSettingsAccordion(props) {
       aria-describedby="alert-dialog-description"
       classes={{ paper: classes.paperRoot }}
     >
-      <DialogTitle id="alert-dialog-title">{"Confirm Delete?"}</DialogTitle>
+      <DialogTitle id="alert-dialog-title">{"Confirm Reset?"}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
           Are you sure that you reset these settings to default? <b>This cannot be undone.</b>
@@ -477,9 +492,9 @@ export default function ShortlistingSettingsAccordion(props) {
           aria-controls="panel1c-content"
           id="panel1c-header"
         >
-          <Typography className={classes.heading}>Resume Shortlisting</Typography>
+          <Typography className={classes.heading}>Applicant Shortlisting</Typography>
           <Typography className={classes.secondaryHeading}>
-            Change the settings related to resume shortlisting
+            Change the settings related to applicant shortlisting
           </Typography>
         </AccordionSummary>
         {displayAccordionDetails()}

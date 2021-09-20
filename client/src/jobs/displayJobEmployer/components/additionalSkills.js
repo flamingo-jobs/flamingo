@@ -125,7 +125,7 @@ const AdditionalSkills = (props) => {
           <Grid container>
             <Grid item xs={11}>
               <Typography variant="h6" className={classes.additionalSkillsTitle}>
-                Additional Skills
+                Skills
               </Typography>
             </Grid>
             <Grid item xs={1} className={classes.iconGridItem}>
@@ -137,7 +137,7 @@ const AdditionalSkills = (props) => {
           <Container className={classes.chipContainer}>
             {props.job.additionalSkills.length === 0 && (
               <Typography className={classes.additionalSkillsEmpty}>
-                There are no additional skills.
+                There are no skills.
               </Typography>
             )}
             {props.job.additionalSkills.map((item) => (

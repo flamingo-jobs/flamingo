@@ -108,8 +108,8 @@ function GridTable(props) {
     const employerColumns = [{ field: 'name', headerName: 'Name', width: 150, editable: false },
     { field: 'email', headerName: 'Email', width: 150, editable: false },
     {
-        field: 'dateRegistered', headerName: 'Registered Date', width: 200, editable: false, valueFormatter: (params) => {
-            const valueFormatted = params.value.toString();
+        field: 'dateRegistered', headerName: 'Registered Date', width: 180, editable: false, valueFormatter: (params) => {
+            const valueFormatted = new Date(params.value).toLocaleDateString();
             return `${valueFormatted}`;
         },
     },

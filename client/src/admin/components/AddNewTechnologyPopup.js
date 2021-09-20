@@ -73,7 +73,9 @@ export default function AddNewTechnologyPopup(props) {
     const [list, setList] = React.useState([]);
     const [frontEnd, setFrontEnd] = React.useState([]);
     const [backEnd, setBackEnd] = React.useState([]);
-
+    const [inputList, setInputList] = React.useState([]);
+    const [inputFrontEnd, setInputFrontEnd] = React.useState([]);
+    const [inputBackEnd, setInputBackEnd] = React.useState([]);
     const handleList = (list) => {
         setList(list);
     }
@@ -152,6 +154,20 @@ export default function AddNewTechnologyPopup(props) {
                                 inputRoot: classes.inputRoot,
                                 input: classes.inputInput,
                             }}
+                            onInputChange={(event, newInputValue) => {
+                                const options = newInputValue.split(",");
+
+                                if (options.length > 1) {
+                                    setFrontEnd(
+                                        frontEnd
+                                            .concat(options)
+                                            .map(x => x.trim())
+                                            .filter(x => x)
+                                    );
+                                } else {
+                                    setInputFrontEnd(newInputValue);
+                                }
+                            }}
                         />
                     </Grid>
                     <Grid item xs={12} lg={6}>
@@ -176,6 +192,20 @@ export default function AddNewTechnologyPopup(props) {
                                 inputRoot: classes.inputRoot,
                                 input: classes.inputInput,
                             }}
+                            onInputChange={(event, newInputValue) => {
+                                const options = newInputValue.split(",");
+
+                                if (options.length > 1) {
+                                    setBackEnd(
+                                        backEnd
+                                            .concat(options)
+                                            .map(x => x.trim())
+                                            .filter(x => x)
+                                    );
+                                } else {
+                                    setInputBackEnd(newInputValue);
+                                }
+                            }}
                         />
                     </Grid> </> : <Grid item xs={12}>
                     <Typography className={classes.secondaryHeading}>Technologies</Typography>
@@ -198,6 +228,20 @@ export default function AddNewTechnologyPopup(props) {
                         classes={{
                             inputRoot: classes.inputRoot,
                             input: classes.inputInput,
+                        }}
+                        onInputChange={(event, newInputValue) => {
+                            const options = newInputValue.split(",");
+
+                            if (options.length > 1) {
+                                setList(
+                                    list
+                                        .concat(options)
+                                        .map(x => x.trim())
+                                        .filter(x => x)
+                                );
+                            } else {
+                                setInputList(newInputValue);
+                            }
                         }}
                     />
                 </Grid>}
@@ -235,18 +279,18 @@ export default function AddNewTechnologyPopup(props) {
                                         color="primary"
                                     />
                                 }
-                                label="Primary"
+                                label="Divide into front-end and back-end"
                             />
                         </Grid>
                         {displayTechnologyDetails()}
                     </Grid>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={props.onClose} color="primary">
+                    <Button onClick={props.onClose} >
                         Cancel
                     </Button>
                     <Button onClick={onSubmit} color="primary">
-                        Add New Category
+                        Add New Technology Group
                     </Button>
                 </DialogActions>
             </Dialog>

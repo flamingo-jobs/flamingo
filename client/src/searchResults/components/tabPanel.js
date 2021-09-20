@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import BACKEND_URL from "../../Config";
 import JobCards from "./jobCards";
 import OrganizationCards from "./organizationCards";
+import UserCards from './userCards';
 
 const useStyles = makeStyles((theme) => ({}));
 
@@ -65,13 +66,13 @@ const TabPanel = (props) => {
   const retrieveUsers = async () => {
     try {
       if (searchString !== "") {
-        // const response = await axios.get(
-        //   `${BACKEND_URL}/jobseekers/search/${searchString}`
-        // );
-        // if (response.data.success) {
-        //   setUsers(response.data.jobseekers);
-        //   setUserMatches(response.data.jobseekers.length);
-        // }
+        const response = await axios.get(
+          `${BACKEND_URL}/jobseekers/search/${searchString}`
+        );
+        if (response.data.success) {
+          setUsers(response.data.jobseekers);
+          setUserMatches(response.data.jobseekers.length);
+        }
       }
     } catch (err) {
       // console.log(err);
@@ -99,12 +100,12 @@ const TabPanel = (props) => {
             searchString={searchString}
           ></OrganizationCards>
         )}
-        {/* {value === index && index === 2 && (
+        {value === index && index === 2 && (
           <UserCards
             users={users}
             searchString={searchString}
           ></UserCards>
-        )} */}
+        )}
       </Grid>
     </div>
   );

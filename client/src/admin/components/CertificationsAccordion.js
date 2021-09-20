@@ -115,6 +115,21 @@ const useStyles = makeStyles((theme) => ({
     margin: 3,
     marginRight: 5
   },
+  paperRoot: {
+    padding: 20,
+  },
+  confrimDelete: {
+    boxShadow: "none",
+    color: theme.palette.red,
+    backgroundColor: theme.palette.lightyPink,
+    borderRadius: 12,
+    marginLeft: "16px !important",
+    padding: "10px",
+    "&:hover": {
+      backgroundColor: theme.palette.lightyPinkHover,
+      boxShadow: "none",
+    },
+  },
 }));
 
 export default function DetailedAccordion(props) {

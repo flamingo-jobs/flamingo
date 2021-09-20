@@ -26,7 +26,7 @@ const AdditionalSkills = (props) => {
   return (
     <Container className={classes.root}>
       <Typography variant="h6" className={classes.skillsTitle}>
-        Additional Skills
+        Skills
       </Typography>
       <List dense={true}>
 

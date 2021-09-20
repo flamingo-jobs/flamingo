@@ -184,7 +184,7 @@ export default function SignInSide() {
 
     axios
       .post(`${BACKEND_URL}/api/signin`, loginData)
-      .then((res) => {
+      .then( async (res) => {
         if (res.data.success) {
           if (remember) {
             localStorage.setItem("userToken", res.data.token);
@@ -195,6 +195,9 @@ export default function SignInSide() {
           const jwt = require("jsonwebtoken");
           const token = sessionStorage.getItem("userToken");
           const header = jwt.decode(token, { complete: true });
+          
+          await axios.post(`${BACKEND_URL}/logs/user`, {role: header.payload.userRole, userId: header.payload.userId});
+
           if (header.payload.userRole === "jobseeker") {
             const urlQuery = new URLSearchParams(window.location.search);
             const redirect = urlQuery.get("redirectTo");
@@ -249,8 +252,9 @@ export default function SignInSide() {
   const [credentialError, setCredentialError] = useState(false);
   const [serverError, setServerError] = useState(false);
   const [userError, setUserError] = useState(false);
-  const handleCredentialError = () => {
+  const handleCredentialError = async () => {
     setCredentialError(true);
+    await axios.post(`${BACKEND_URL}/logs/user`, {email: formData.email});
   };
   const handleServerError = () => {
     setServerError(true);

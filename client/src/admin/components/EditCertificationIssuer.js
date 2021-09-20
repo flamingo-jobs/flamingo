@@ -114,7 +114,7 @@ export default function EditCertificationIssuer(props) {
                     </Grid>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={props.onClose} color="primary">
+                    <Button onClick={props.onClose}>
                         Cancel
                     </Button>
                     <Button onClick={onSubmit} color="primary">

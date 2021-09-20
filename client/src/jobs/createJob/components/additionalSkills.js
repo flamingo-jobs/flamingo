@@ -100,7 +100,7 @@ const AdditionalSkills = ({
               <StateBlueTextField
                 {...params}
                 variant="outlined"
-                placeholder="Add additional skills..."
+                placeholder="Add skills..."
                 size="small"
               />
             )}
@@ -110,7 +110,7 @@ const AdditionalSkills = ({
         <Grid item xs={12}>
             <div className={classes.featuredMsg}>
               <ErrorOutlineIcon/>
-              <Typography align="left">Job will get featured if additional skills are specified.</Typography>
+              <Typography align="left">Job will get featured if skills are specified.</Typography>
             </div>
           </Grid>
       </Grid>

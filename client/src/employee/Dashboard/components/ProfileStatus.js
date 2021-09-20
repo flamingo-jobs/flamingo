@@ -11,6 +11,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import BACKEND_URL, { FILE_URL } from '../../../Config';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import Loading from '../../../components/Loading';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -60,6 +61,18 @@ const useStyles = makeStyles((theme) => ({
             color: 'white',
         }
     },
+    nameSection: {
+        fontSize: "16px",
+        textAlign: "center",
+
+    },
+    profileStatsInfo: {
+        fontSize: "16px",
+        textAlign: "center",
+        fontWeight: "bold",
+        paddingBottom: "5px",
+        color: "#666",
+    },
 }));
 
 const BorderLinearProgress = withStyles((theme) => ({
@@ -81,7 +94,7 @@ function ProfileStatus(props) {
     const [savedPic, setSavedPic] = useState(require(`../../../components/images/loadingImage.gif`).default);
     const [name, setName] = useState("User");
     const [state, setState] = useState({ education: 0, certificate: 0, courses: 0, awards: 0, volunteerings: 0, works: 0, projects: 0, skills: 0 });
-
+    const [loadingData, setLoadingData] = useState(true);
 
     let loginId;
     const jwt = require("jsonwebtoken");
@@ -210,6 +223,7 @@ function ProfileStatus(props) {
                             })
                         }
                     }
+                    setLoadingData(false);
                 }
             })
     }, [])
@@ -237,39 +251,39 @@ function ProfileStatus(props) {
 
     return (
         <FloatCard>
-            <Grid container spacing={3} style={{ padding: "20px" }}>
-                <Grid item md={12} lg={3}>
-                    <Typography component="div">
-                        <CardMedia
-                            className={classes.media}
-                            image={savedPic}
-                            alt="profile image"
-                            zindex="background"
-                        />
-                    </Typography>
-                </Grid>
-                <Grid item md={12} lg={9} style={{ alignItems: "center", display: "flex", paddingLeft: "40px", paddingRight: "0px" }}>
-                    <div>
+            {loadingData ?
+                <Loading /> :
+                <Grid container spacing={3} style={{ padding: "20px" }}>
+                    <Grid item xs={12}>
+                        <Typography component="div">
+                            <CardMedia
+                                className={classes.media}
+                                image={savedPic}
+                                alt="profile image"
+                                zindex="background"
+                            />
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
                         <Typography style={{ fontSize: "25px", fontWeight: "bold", color: theme.palette.stateBlue }}>
                             {name}
                         </Typography>
-                        <Typography variant="body2" component="p" style={{ fontSize: "16px", textAlign: "left", }}>
-                            <Link to="/jobseeker/profile" style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', color: theme.palette.tuftsBlue }}>
+                        <Typography variant="body2" component="p" className={classes.nameSection}>
+                            <Link to="/jobseeker/profile" style={{ display: 'inline-flex', alignItems: 'center', flexWrap: 'wrap', color: theme.palette.tuftsBlue, }}>
                                 <span>View Profile</span><ChevronRightTwoToneIcon style={{ marginTop: "-1px" }} />
                             </Link>
                         </Typography>
-                    </div>
-                </Grid>
-                <Grid item sm={12} style={{ alignItems: "center", display: "flex" }}>
-                    <div style={{ width: "100%" }}>
-                        <Typography variant="body2" component="p" style={{ fontSize: "16px", textAlign: "left", fontWeight: "bold", paddingBottom: "5px", color: "#666" }}>
-                            Your profile is {(state.education + state.certificate + state.courses + state.awards + state.volunteerings + state.works + state.projects + state.skills) / 8 * 100}% complete
-                        </Typography>
-                        <BorderLinearProgress variant="determinate" value={(state.education + state.certificate + state.courses + state.awards + state.volunteerings + state.works + state.projects + state.skills) / 8 * 100} />
-                    </div>
-                </Grid>
-                {displayStatus()}
-            </Grid>
+                    </Grid>
+                    <Grid item xs={12} style={{ alignItems: "center", display: "flex" }}>
+                        <div style={{ width: "100%" }}>
+                            <Typography variant="body2" component="p" className={classes.profileStatsInfo}>
+                                Your profile is {(state.education + state.certificate + state.courses + state.awards + state.volunteerings + state.works + state.projects + state.skills) / 8 * 100}% complete
+                            </Typography>
+                            <BorderLinearProgress variant="determinate" value={(state.education + state.certificate + state.courses + state.awards + state.volunteerings + state.works + state.projects + state.skills) / 8 * 100} />
+                        </div>
+                    </Grid>
+                    {displayStatus()}
+                </Grid>}
         </FloatCard>
     )
 }

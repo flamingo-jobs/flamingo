@@ -279,7 +279,7 @@ const SummaryForm = ({
             <StateBlueTextField
               id="minSalary"
               name="minSalary"
-              label="Minimum Salary"
+              label="Minimum Salary (LKR)"
               onChange={handleSalaryChange}
               variant="outlined"
               placeholder=""
@@ -295,7 +295,7 @@ const SummaryForm = ({
             <StateBlueTextField
               id="maxSalary"
               name="maxSalary"
-              label="Maximum Salary"
+              label="Maximum Salary (LKR)"
               onChange={handleSalaryChange}
               variant="outlined"
               fullWidth

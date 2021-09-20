@@ -158,7 +158,15 @@ const Qualifications = (props) => {
   };
 
   const validateFields = () => {
-    const errorsLength = errors.filter(e => e !== "").length;
+    var newErrors = [...errors];
+    props.job.qualifications.map((q, index) => {
+      if(q.trim() === ""){
+        newErrors[index] = "This field cannot be empty.";
+        setErrors(newErrors);
+      }
+    });
+    
+    const errorsLength = newErrors.filter(e => e !== "").length;
     if(errorsLength === 0){
       return true;
     }
@@ -191,7 +199,7 @@ const Qualifications = (props) => {
           <Grid container>
             <Grid item xs={11}>
               <Typography variant="h6" className={classes.reqTitle}>
-                Skills and Requirements
+              Qualifications and Requirements
               </Typography>
             </Grid>
             <Grid item xs={1} className={classes.iconGridItem}>

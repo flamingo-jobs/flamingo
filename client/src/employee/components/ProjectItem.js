@@ -399,7 +399,7 @@ function handleOpen(){
                     {state.description}
                 </Typography>
                 <Typography gutterBottom style={{color: theme.palette.stateBlue,textAlign:'left',fontSize:'14px',fontWeight:'bold',paddingTop:'5px'}}>
-                    {state.usedTech ? "Tech Stack : " + state.usedTech : ""}
+                    {state.usedTech ? "Tech Stack : " + state.usedTech.join(", ") : ""}
                 </Typography>
                 <Typography variant="body2" color="textSecondary" className={classes.linkCont}>
                     <b>{state.link === null || state.link === "" ? "" : "Link : "}</b>{state.link}

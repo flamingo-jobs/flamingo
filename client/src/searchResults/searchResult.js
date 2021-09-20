@@ -135,7 +135,7 @@ const SearchResult = (props) => {
                 icon={SearchResultBadge("orgs")}
                 aria-label="organizations"
               />
-              {/* <Tab icon={SearchResultBadge("users")} aria-label="users" /> */}
+              <Tab icon={SearchResultBadge("users")} aria-label="users" />
             </StyledTabs>
           </AppBar>
         </Grid>
@@ -160,14 +160,14 @@ const SearchResult = (props) => {
             setOrgMatches={setOrgMatches}
             setuserMatches={setUserMatches}
           ></TabPanel>
-          {/* <TabPanel
+          <TabPanel
             value={tabIndex}
             index={2}
             searchString={searchString}
             setJobMatches={setJobMatches}
             setOrgMatches={setOrgMatches}
             setUserMatches={setUserMatches}
-          ></TabPanel> */}
+          ></TabPanel>
         </Grid>
       </Grid>
     </div>
