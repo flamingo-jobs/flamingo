@@ -1,58 +1,23 @@
 import {
-  Button, Card,
-  CardContent, Grid, Modal, Typography
+  Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "500px",
-    padding: `0px 30px`,
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[5],
-    borderRadius: 10,
-    paddingBottom: "30px",
-    maxHeight: "98vh",
-    overflowY: "auto",
+  paperRoot: {
+    padding: 20,
   },
-  modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  deleteContainer: {
-    width: "100%",
-    marginTop: "20px",
-  },
-  deleteText: {
-    fontSize: "18px",
-    fontWeight: 400,
-    textAlign: "center",
-  },
-  deleteBtnContainer: {
-    marginTop: "40px",
-    display: "flex",
-    justifyContent: "center",
-  },
-  cancelBtn: {
-    paddingLeft: "20px",
-    paddingRight: "20px",
-    backgroundColor: "#ddd",
-    marginRight: "10px",
-    color: theme.palette.black,
+  confrimDelete: {
+    boxShadow: "none",
+    color: theme.palette.red,
+    backgroundColor: theme.palette.lightyPink,
+    borderRadius: 12,
+    marginLeft: "16px !important",
+    padding: "10px",
     "&:hover": {
-      backgroundColor: "#bbb",
-    },
-  },
-  deleteBtn: {
-    paddingLeft: "20px",
-    paddingRight: "20px",
-    marginLeft: "10px",
-    backgroundColor: theme.palette.lightRed,
-    color: theme.palette.white,
-    "&:hover": {
-      backgroundColor: theme.palette.red,
+      backgroundColor: theme.palette.lightyPinkHover,
+      boxShadow: "none",
     },
   },
 }));
@@ -63,29 +28,28 @@ const DeleteModal = (props) => {
 
   return (
     <>
-      <Modal
+      <Dialog
         open={props.open}
         onClose={props.handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        className={classes.modal}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        classes={{ paper: classes.paperRoot }}
       >
-        <Card className={classes.root}>
-          <CardContent className={classes.cardContent}>
-            <Grid container>
-              <div className={classes.deleteContainer}>
-                <Typography className={classes.deleteText}>
-                  Are you sure you want to delete?
-                </Typography>
-                <div className={classes.deleteBtnContainer}>
-                  <Button className={classes.cancelBtn} onClick={props.handleClose}>Cancel</Button>
-                  <Button className={classes.deleteBtn} onClick={props.handleDelete}>Delete</Button>
-                </div>
-              </div>
-            </Grid>
-          </CardContent>
-        </Card>
-      </Modal>
+        <DialogTitle id="alert-dialog-title">{"Confirm Delete?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure that you want to delete the selected item? <b>This cannot be undone.</b>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={props.handleClose} color="primary">
+            No
+          </Button>
+          <Button onClick={props.handleDelete} color="primary" className={classes.confrimDelete} autoFocus>
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

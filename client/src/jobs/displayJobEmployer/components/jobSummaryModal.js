@@ -1,7 +1,7 @@
 import DateFnsUtils from "@date-io/date-fns";
 import {
   Button, Card,
-  CardContent, createMuiTheme, Grid, IconButton,
+  CardContent, createMuiTheme, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton,
   MenuItem, Modal, Typography
 } from "@material-ui/core";
 import FormControl from "@material-ui/core/FormControl";
@@ -15,6 +15,7 @@ import {
 } from "@material-ui/pickers";
 import { ThemeProvider } from "@material-ui/styles";
 import React from "react";
+import theme from "../../../Theme";
 import { StateBlueTextField } from "./customTextField";
 
 const useStyles = makeStyles((theme) => ({
@@ -81,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
   numberOfVacancies: {
     // marginTop: theme.spacing(2),
   },
-  publishBtnContainer:{
+  publishBtnContainer: {
     marginTop: theme.spacing(1),
   },
   submitBtnContainer: {
@@ -115,7 +116,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("xs")]: {
       width: "100%"
     },
-    
+
   },
   date: {
     width: "100%",
@@ -166,293 +167,270 @@ const JobSummaryModal = (props) => {
 
   return (
     <>
-      <Modal
-        open={props.open}
-        onClose={props.handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        className={classes.modal}
-      >
-        <Card className={classes.root}>
-          <CardContent className={classes.cardContent}>
+        <Dialog
+          open={props.open}
+          onClose={props.handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+          maxWidth="md"
+        >
+          <DialogTitle id="alert-dialog-title">
+            <Typography style={{ color: theme.palette.stateBlue, textAlign: 'left', fontSize: 18, fontWeight: 600 }}>
+              Basic details
+            </Typography>
+          </DialogTitle>
+          <DialogContent>
             <Grid container>
-              <div className={classes.closeBtnContainer}>
-                <IconButton
-                  onClick={props.handleClose}
-                  className={classes.closeButton}
-                >
-                  <CloseIcon className={classes.closeIcon} />
-                </IconButton>
-              </div>
+              <Grid item xs={12}>
+                <StateBlueTextField
+                  id="title"
+                  name="title"
+                  label="Title"
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                  value={props.job.title}
+                  className={classes.textField}
+                  onChange={props.handleSummaryChange}
+                  error={props.errors.hasOwnProperty("title")}
+                  helperText={props.errors["title"]}
+                />
+              </Grid>
 
-              <Grid item xs={12} className={classes.formContainer}>
-                <Typography align="center" className={classes.title}>
-                  Basic details
-                </Typography>
-                <form onSubmit={props.handleSummarySubmit}>
+              {/* Category    */}
+              <Grid container spacing={1}>
+                <Grid item xs={12} sm={6}>
+                  <StateBlueTextField
+                    id="category"
+                    name="category"
+                    select
+                    label="Category"
+                    value={props.job.category}
+                    onChange={props.handleSummaryChange}
+                    variant="outlined"
+                    fullWidth
+                    size="small"
+                    className={classes.textField}
+                  >
+                    {props.categories.map((category) => (
+                      <MenuItem key={category.id} value={category.name}>
+                        {category.name}
+                      </MenuItem>
+                    ))}
+                  </StateBlueTextField>
+                </Grid>
+
+                {/* Job type */}
+                <Grid item xs={12} sm={6}>
+                  <StateBlueTextField
+                    id="jobType"
+                    name="type"
+                    select
+                    label="Job type"
+                    value={props.job.type}
+                    onChange={props.handleSummaryChange}
+                    variant="outlined"
+                    fullWidth
+                    size="small"
+                    className={classes.textField}
+                  >
+                    {props.types.map((type) => (
+                      <MenuItem key={type.id} value={type.name}>
+                        {type.name}
+                      </MenuItem>
+                    ))}
+                  </StateBlueTextField>
+                </Grid>
+              </Grid>
+
+              {/* Description */}
+              <StateBlueTextField
+                id="description"
+                name="description"
+                label="Description of the job"
+                variant="outlined"
+                fullWidth
+                multiline
+                className={classes.textField}
+                value={props.job.description}
+                onChange={props.handleSummaryChange}
+                error={props.errors.hasOwnProperty("description")}
+                helperText={props.errors["description"]}
+              />
+
+              {/* Location & Due date */}
+              <Grid container spacing={1} className={classes.textField}>
+                <Grid item xs={12} sm={6}>
+                  <StateBlueTextField
+                    id="location"
+                    name="location"
+                    select
+                    label="Location"
+                    value={props.job.location}
+                    onChange={props.handleSummaryChange}
+                    variant="outlined"
+                    fullWidth
+                    size="small"
+                    className={classes.location}
+                  >
+                    {props.locations.map((location) => (
+                      <MenuItem key={location} value={location}>
+                        {location}
+                      </MenuItem>
+                    ))}
+                  </StateBlueTextField>
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
                   <Grid container>
-                    <Grid item xs={12}>
-                      <StateBlueTextField
-                        id="title"
-                        name="title"
-                        label="Title"
-                        variant="outlined"
-                        fullWidth
-                        size="small"
-                        value={props.job.title}
-                        className={classes.textField}
-                        onChange={props.handleSummaryChange}
-                        error={props.errors.hasOwnProperty("title")}
-                        helperText={props.errors["title"]}
-                      />
-                    </Grid>
-
-                    {/* Category    */}
-                    <Grid container spacing={1}>
-                      <Grid item xs={12} sm={6}>
-                        <StateBlueTextField
-                          id="category"
-                          name="category"
-                          select
-                          label="Category"
-                          value={props.job.category}
-                          onChange={props.handleSummaryChange}
-                          variant="outlined"
-                          fullWidth
-                          size="small"
-                          className={classes.textField}
-                        >
-                          {props.categories.map((category) => (
-                            <MenuItem key={category.id} value={category.name}>
-                              {category.name}
-                            </MenuItem>
-                          ))}
-                        </StateBlueTextField>
-                      </Grid>
-
-                      {/* Job type */}
-                      <Grid item xs={12} sm={6}>
-                        <StateBlueTextField
-                          id="jobType"
-                          name="type"
-                          select
-                          label="Job type"
-                          value={props.job.type}
-                          onChange={props.handleSummaryChange}
-                          variant="outlined"
-                          fullWidth
-                          size="small"
-                          className={classes.textField}
-                        >
-                          {props.types.map((type) => (
-                            <MenuItem key={type.id} value={type.name}>
-                              {type.name}
-                            </MenuItem>
-                          ))}
-                        </StateBlueTextField>
-                      </Grid>
-                    </Grid>
-
-                    {/* Description */}
-                    <StateBlueTextField
-                      id="description"
-                      name="description"
-                      label="Description of the job"
-                      variant="outlined"
-                      fullWidth
-                      multiline
-                      className={classes.textField}
-                      value={props.job.description}
-                      onChange={props.handleSummaryChange}
-                      error={props.errors.hasOwnProperty("description")}
-                      helperText={props.errors["description"]}
-                    />
-
-                    {/* Location & Due date */}
-                    <Grid container spacing={1} className={classes.textField}>
-                      <Grid item xs={12} sm={6}>
-                        <StateBlueTextField
-                          id="location"
-                          name="location"
-                          select
-                          label="Location"
-                          value={props.job.location}
-                          onChange={props.handleSummaryChange}
-                          variant="outlined"
-                          fullWidth
-                          size="small"
-                          className={classes.location}
-                        >
-                          {props.locations.map((location) => (
-                            <MenuItem key={location} value={location}>
-                              {location}
-                            </MenuItem>
-                          ))}
-                        </StateBlueTextField>
-                      </Grid>
-
-                      <Grid item xs={12} sm={6}>
-                        <Grid container>
-                          <div className={classes.date}>
-                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                              <ThemeProvider theme={materialTheme}>
-                                <KeyboardDatePicker
-                                  format="dd/MM/yyyy"
-                                  id="dueDate"
-                                  name="dueDate"
-                                  label="Due Date"
-                                  value={props.job.dueDate}
-                                  onChange={props.handleDueDateChange}
-                                  KeyboardButtonProps={{
-                                    "aria-label": "change date",
-                                  }}
-                                  size="small"
-                                />
-                              </ThemeProvider>
-                            </MuiPickersUtilsProvider>
-                          </div>
-                        </Grid>
-                      </Grid>
-                    </Grid>
-
-                    {/* Required Degrees & Experience */}
-                    <Grid container spacing={1}>
-                      <Grid item xs={12} sm={6}>
-                        <StateBlueTextField
-                          id="minEducation"
-                          name="minimumEducation"
-                          select
-                          label="Minimum Education Requirement"
-                          value={props.job.minimumEducation}
-                          size="small"
-                          onChange={props.handleSummaryChange}
-                          variant="outlined"
-                          fullWidth
-                          className={classes.textField}
-                        >
-                          {props.minEducationList.map((edu) => (
-                            <MenuItem key={edu} value={edu}>
-                              {edu}
-                            </MenuItem>
-                          ))}
-                        </StateBlueTextField>
-                      </Grid>
-
-                      <Grid item xs={12} sm={6}>
-                        <StateBlueTextField
-                          id="minExperience"
-                          name="minimumExperience"
-                          select
-                          label="Minimum Experience Required"
-                          className={classes.textField}
-                          value={props.job.minimumExperience}
-                          onChange={props.handleSummaryChange}
-                          variant="outlined"
-                          size="small"
-                          fullWidth
-                        >
-                          {props.minExperienceList.map((exp) => (
-                            <MenuItem key={exp} value={exp}>
-                              {exp + " years"}
-                            </MenuItem>
-                          ))}
-                        </StateBlueTextField>
-                      </Grid>
-                    </Grid>
-
-                    {/* Salary range */}
-                    <Grid container spacing={1}>
-                      <Grid item xs={12} sm={6}>
-                        <StateBlueTextField
-                          id="minSalary"
-                          name="min"
-                          label="Minimum Salary (LKR)"
-                          onChange={props.handleSummaryChange}
-                          className={classes.textField}
-                          variant="outlined"
-                          placeholder=""
-                          fullWidth
-                          size="small"
-                          value={props.job.salaryRange.min}
-                          error={props.errors.hasOwnProperty("min")}
-                          helperText={props.errors["min"]}
-                        ></StateBlueTextField>
-                      </Grid>
-
-                      <Grid item xs={12} sm={6}>
-                        <StateBlueTextField
-                          id="maxSalary"
-                          name="max"
-                          label="Maximum Salary (LKR)"
-                          onChange={props.handleSummaryChange}
-                          variant="outlined"
-                          fullWidth
-                          size="small"
-                          className={classes.textField}
-                          value={props.job.salaryRange.max}
-                          error={props.errors.hasOwnProperty("max")}
-                          helperText={props.errors["max"]}
-                        ></StateBlueTextField>
-                      </Grid>
-
-                      <Grid item xs={12} sm={6}>
-                        <StateBlueTextField
-                          id="numberOfVacancies"
-                          name="numberOfVacancies"
-                          label="Number of Vacancies"
-                          onChange={props.handleSummaryChange}
-                          variant="outlined"
-                          fullWidth
-                          size="small"
-                          className={classes.numberOfVacancies}
-                          value={props.job.numberOfVacancies}
-                          error={props.errors.hasOwnProperty("numberOfVacancies")}
-                          helperText={props.errors["numberOfVacancies"]}
-                        ></StateBlueTextField>
-                      </Grid>
-                    </Grid>
-
-                    {/* isPublished */}
-                    <FormControl component="fieldset" className={classes.publishBtnContainer}>
-                      <FormGroup>
-                        <FormControlLabel style={{marginLeft: "0px"}}
-                          control={
-                            <Switch
-                              checked={props.job.isPublished}
-                              color="primary"
-                              onChange={props.handleSummaryChange}
-                              name="isPublished"
-                            />
-                          }
-                          labelPlacement="start"
-                          label="Publish the Job"
-                        />
-                      </FormGroup>
-                    </FormControl>
-
-                    <div className={classes.submitBtnContainer}>
-                      <Button
-                        variant="contained"
-                        className={classes.cancelBtn}
-                        onClick={props.handleClose}
-                      >
-                        Cancel
-                      </Button>
-                      <Button
-                        variant="contained"
-                        type="submit"
-                        className={classes.submitBtn}
-                      >
-                        Save changes
-                      </Button>
+                    <div className={classes.date}>
+                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <ThemeProvider theme={materialTheme}>
+                          <KeyboardDatePicker
+                            format="dd/MM/yyyy"
+                            id="dueDate"
+                            name="dueDate"
+                            label="Due Date"
+                            value={props.job.dueDate}
+                            onChange={props.handleDueDateChange}
+                            KeyboardButtonProps={{
+                              "aria-label": "change date",
+                            }}
+                            size="small"
+                          />
+                        </ThemeProvider>
+                      </MuiPickersUtilsProvider>
                     </div>
                   </Grid>
-                </form>
+                </Grid>
               </Grid>
+
+              {/* Required Degrees & Experience */}
+              <Grid container spacing={1}>
+                <Grid item xs={12} sm={6}>
+                  <StateBlueTextField
+                    id="minEducation"
+                    name="minimumEducation"
+                    select
+                    label="Minimum Education Requirement"
+                    value={props.job.minimumEducation}
+                    size="small"
+                    onChange={props.handleSummaryChange}
+                    variant="outlined"
+                    fullWidth
+                    className={classes.textField}
+                  >
+                    {props.minEducationList.map((edu) => (
+                      <MenuItem key={edu} value={edu}>
+                        {edu}
+                      </MenuItem>
+                    ))}
+                  </StateBlueTextField>
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <StateBlueTextField
+                    id="minExperience"
+                    name="minimumExperience"
+                    select
+                    label="Minimum Experience Required"
+                    className={classes.textField}
+                    value={props.job.minimumExperience}
+                    onChange={props.handleSummaryChange}
+                    variant="outlined"
+                    size="small"
+                    fullWidth
+                  >
+                    {props.minExperienceList.map((exp) => (
+                      <MenuItem key={exp} value={exp}>
+                        {exp + " years"}
+                      </MenuItem>
+                    ))}
+                  </StateBlueTextField>
+                </Grid>
+              </Grid>
+
+              {/* Salary range */}
+              <Grid container spacing={1}>
+                <Grid item xs={12} sm={6}>
+                  <StateBlueTextField
+                    id="minSalary"
+                    name="min"
+                    label="Minimum Salary (LKR)"
+                    onChange={props.handleSummaryChange}
+                    className={classes.textField}
+                    variant="outlined"
+                    placeholder=""
+                    fullWidth
+                    size="small"
+                    value={props.job.salaryRange.min}
+                    error={props.errors.hasOwnProperty("min")}
+                    helperText={props.errors["min"]}
+                  ></StateBlueTextField>
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <StateBlueTextField
+                    id="maxSalary"
+                    name="max"
+                    label="Maximum Salary (LKR)"
+                    onChange={props.handleSummaryChange}
+                    variant="outlined"
+                    fullWidth
+                    size="small"
+                    className={classes.textField}
+                    value={props.job.salaryRange.max}
+                    error={props.errors.hasOwnProperty("max")}
+                    helperText={props.errors["max"]}
+                  ></StateBlueTextField>
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <StateBlueTextField
+                    id="numberOfVacancies"
+                    name="numberOfVacancies"
+                    label="Number of Vacancies"
+                    onChange={props.handleSummaryChange}
+                    variant="outlined"
+                    fullWidth
+                    size="small"
+                    className={classes.numberOfVacancies}
+                    value={props.job.numberOfVacancies}
+                    error={props.errors.hasOwnProperty("numberOfVacancies")}
+                    helperText={props.errors["numberOfVacancies"]}
+                  ></StateBlueTextField>
+                </Grid>
+              </Grid>
+
+              {/* isPublished */}
+              <FormControl component="fieldset" className={classes.publishBtnContainer}>
+                <FormGroup>
+                  <FormControlLabel style={{ marginLeft: "0px" }}
+                    control={
+                      <Switch
+                        checked={props.job.isPublished}
+                        color="primary"
+                        onChange={props.handleSummaryChange}
+                        name="isPublished"
+                      />
+                    }
+                    labelPlacement="start"
+                    label="Publish the Job"
+                  />
+                </FormGroup>
+              </FormControl>
             </Grid>
-          </CardContent>
-        </Card>
-      </Modal>
+
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={props.handleClose} style={{ color: "#999" }}>
+              Cancel
+            </Button>
+            <Button type="submit" color="primary" autoFocus onClick={props.handleSummarySubmit}>
+              Save
+            </Button>
+          </DialogActions>
+        </Dialog>
     </>
   );
 };

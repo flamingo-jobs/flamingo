@@ -33,9 +33,6 @@ const useStyles = makeStyles((theme) => ({
   },
   containerGridLastItem: {
     marginBottom: theme.spacing(3),
-    [theme.breakpoints.down("md")]: {
-      marginBottom: "0px",
-    },
   },
   feedbackMsgContainer: {
     width: "100%",

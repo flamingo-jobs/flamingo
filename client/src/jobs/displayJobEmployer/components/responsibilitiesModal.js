@@ -1,12 +1,11 @@
 import {
-  Button, Card,
-  CardContent, Grid, IconButton, Modal, Typography
+  Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, Typography
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
-import CloseIcon from "@material-ui/icons/Close";
 import RemoveIcon from "@material-ui/icons/Remove";
 import React from "react";
+import theme from "../../../Theme";
 import { StateBlueTextField } from "./customTextField";
 
 const useStyles = makeStyles((theme) => ({
@@ -73,10 +72,10 @@ const useStyles = makeStyles((theme) => ({
   textField: {
     marginBottom: theme.spacing(3),
   },
-  buttonContainer:{
+  buttonContainer: {
     marginBottom: theme.spacing(3),
   },
-  addRemoveButton:{
+  addRemoveButton: {
     padding: "12px",
     [theme.breakpoints.down("sm")]: {
       padding: "5px",
@@ -125,104 +124,80 @@ const ResponsibilitiesModal = (props) => {
 
   return (
     <>
-      <Modal
-        open={props.open}
-        onClose={props.handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        className={classes.modal}
-      >
-        <Card className={classes.root}>
-          <CardContent className={classes.cardContent}>
+        <Dialog
+          open={props.open}
+          onClose={props.handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+          maxWidth="md"
+        >
+          <DialogTitle id="alert-dialog-title">
+            <Typography style={{ color: theme.palette.stateBlue, textAlign: 'left', fontSize: 18, fontWeight: 600 }}>
+              Duties and Responsibilities
+            </Typography>
+          </DialogTitle>
+          <DialogContent>
             <Grid container>
-              <div className={classes.closeBtnContainer}>
-                <IconButton
-                  onClick={props.handleClose}
-                  className={classes.closeButton}
-                >
-                  <CloseIcon className={classes.closeIcon} />
-                </IconButton>
-              </div>
-
-              <Grid item xs={12} className={classes.formContainer}>
-                <Typography align="center" className={classes.title}>
-                  Duties and Responsibilities
-                </Typography>
-
-                <form onSubmit={props.handleResponsibilitiesSubmit}>
-                  <Grid container>
-                    {props.responsibilities.map((field, index) => (
-                      <Grid item container key={index}>
-                        <Grid item xs={10} > 
-                          <StateBlueTextField
-                            label="Responsibility"
-                            variant="outlined"
-                            value={field}
-                            fullWidth
-                            multiline
-                            className={classes.textField}
-                            onChange={(event) =>
-                              props.handleResponsibilitiesChange(event, index)
-                            }
-                            error={props.errors[index].length !== 0}
-                            helperText={
-                              props.errors[index].length !== 0 &&
-                              props.errors[index]
-                            }
-                          />
-                        </Grid>
-                        <Grid item  xs={2} justify="space-around" >
-                          <div className={classes.buttonContainer}>
-                            <IconButton
-                              className={classes.addRemoveButton}
-                              disabled={props.responsibilities.length === 1}
-                              onClick={() => props.handleResponsibilityRemove(index)}
-                            >
-                              <RemoveIcon
-                                className={classes.removeIcon}
-                                style={{
-                                  color:
-                                  props.responsibilities.length === 1
-                                      ? "#bbb"
-                                      : null,
-                                }}
-                              />
-                            </IconButton>
-                            <IconButton 
-                              className={classes.addRemoveButton}
-                              onClick={props.handleResponsibilityAdd}
-                            >
-                              <AddIcon className={classes.addIcon} />
-                            </IconButton>
-                          </div>
-                        </Grid>
-                      </Grid>
-                    ))}
-
-                    <div className={classes.submitBtnContainer}>
-                      <Button
-                        variant="contained"
-                        className={classes.cancelBtn}
-                        onClick={props.handleClose}
+              {props.responsibilities.map((field, index) => (
+                <Grid item container key={index}  justifyContent="space-between" spacing={3} alignItems="center">
+                  <Grid item xs={10} >
+                    <StateBlueTextField
+                      variant="outlined"
+                      value={field}
+                      size="small"
+                      fullWidth
+                      multiline
+                      className={classes.textField}
+                      onChange={(event) =>
+                        props.handleResponsibilitiesChange(event, index)
+                      }
+                      error={props.errors[index].length !== 0}
+                      helperText={
+                        props.errors[index].length !== 0 &&
+                        props.errors[index]
+                      }
+                    />
+                  </Grid>
+                  <Grid item xs={2} justify="space-around" >
+                    <div className={classes.buttonContainer}>
+                      <IconButton
+                        className={classes.addRemoveButton}
+                        disabled={props.responsibilities.length === 1}
+                        onClick={() => props.handleResponsibilityRemove(index)}
+                        style={{ color: theme.palette.red }}
                       >
-                        Cancel
-                      </Button>
-                      
-                      <Button
-                        variant="contained"
-                        type="submit"
-                        className={classes.submitBtn}
-                      >
-                        Save changes
-                      </Button>
+                        <RemoveIcon
+                          className={classes.removeIcon}
+                          style={{
+                            color:
+                              props.responsibilities.length === 1
+                                ? "#bbb"
+                                : null,
+                          }}
+                        />
+                      </IconButton>
+                      {props.responsibilities.length === index + 1 ?
+                        <IconButton
+                          className={classes.addRemoveButton}
+                          onClick={props.handleResponsibilityAdd}
+                        >
+                          <AddIcon className={classes.addIcon} />
+                        </IconButton> : null}
                     </div>
                   </Grid>
-                </form>
-              </Grid>
+                </Grid>
+              ))}
             </Grid>
-          </CardContent>
-        </Card>
-      </Modal>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={props.handleClose} style={{ color: "#999" }}>
+              Cancel
+            </Button>
+            <Button type="submit" color="primary" autoFocus onClick={props.handleResponsibilitiesSubmit}>
+              Save Changes
+            </Button>
+          </DialogActions>
+        </Dialog>
     </>
   );
 };

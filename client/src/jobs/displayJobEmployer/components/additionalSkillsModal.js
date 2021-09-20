@@ -1,12 +1,13 @@
 import {
   Button, Card,
-  CardContent, Chip, Grid, IconButton, Modal, Typography
+  CardContent, Chip, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, Modal, Typography
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import CancelIcon from "@material-ui/icons/Cancel";
 import CloseIcon from "@material-ui/icons/Close";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import React from "react";
+import theme from "../../../Theme";
 import { StateBlueTextField } from "./customTextField";
 
 const useStyles = makeStyles((theme) => ({
@@ -83,13 +84,13 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.white,
     },
   },
-  chip:{
+  chip: {
     background: theme.palette.stateBlue,
     color: theme.palette.white,
     marginLeft: "2px",
     marginRight: "2px",
   },
-  chipRemove:{
+  chipRemove: {
     color: "#f8f9fa",
 
   },
@@ -118,73 +119,59 @@ const JobSummaryModal = (props) => {
 
   return (
     <>
-      <Modal
-        open={props.open}
-        onClose={props.handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        className={classes.modal}
-      >
-        <Card className={classes.root}>
-          <CardContent className={classes.cardContent}>
-            <Grid container>
-              <div className={classes.closeBtnContainer}>
-                <IconButton
-                  onClick={props.handleClose}
-                  className={classes.closeButton}
-                >
-                  <CloseIcon className={classes.closeIcon} />
-                </IconButton>
-              </div>
-
-              <Grid item xs={12} className={classes.formContainer}>
-                <Typography align="center" className={classes.title}>
-                  Skills
-                </Typography>
-                <form onSubmit={props.handleAdditionalSkillsSubmit}>
-                  <Autocomplete
-                    multiple
-                    id="additionalSkills"
-                    options={skills}
-                    defaultValue={props.additionalSkills}
-                    freeSolo
-                    onChange={(event, values) => props.handleAdditionalSkillsChange(values)}
-                    renderTags={(value, getTagProps) =>
-                      value.map((option, index) => (
-                        <Chip
-                          variant="outlined"
-                          label={option}
-                          {...getTagProps({ index })}
-                          className={classes.chip}
-                          deleteIcon={
-                            <CancelIcon className={classes.chipRemove} />
-                          }
-                        />
-                      ))
-                    }
-                    renderInput={(params) => (
-                      <StateBlueTextField
-                        {...params}
-                        variant="outlined"
-                        placeholder="Add a new skills..."
-                      />
-                    )}
+        <Dialog
+          open={props.open}
+          onClose={props.handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+          maxWidth="md"
+        >
+          <DialogTitle id="alert-dialog-title">
+            <Typography style={{ color: theme.palette.stateBlue, textAlign: 'left', fontSize: 18, fontWeight: 600 }}>
+              Skills
+            </Typography>
+          </DialogTitle>
+          <DialogContent>
+            <Grid item xs={12} className={classes.formContainer}>
+              <Autocomplete
+                multiple
+                id="additionalSkills"
+                options={skills}
+                defaultValue={props.additionalSkills}
+                freeSolo
+                onChange={(event, values) => props.handleAdditionalSkillsChange(values)}
+                renderTags={(value, getTagProps) =>
+                  value.map((option, index) => (
+                    <Chip
+                      variant="outlined"
+                      label={option}
+                      {...getTagProps({ index })}
+                      className={classes.chip}
+                      deleteIcon={
+                        <CancelIcon className={classes.chipRemove} />
+                      }
+                    />
+                  ))
+                }
+                renderInput={(params) => (
+                  <StateBlueTextField
+                    {...params}
+                    variant="outlined"
+                    placeholder="Add a new skills..."
                   />
-                  <div className={classes.submitBtnContainer}>
-                      <Button
-                        
-                        type="submit"
-                        className={classes.submitBtn}
-                      >
-                        Save changes
-                      </Button>
-                    </div>
-                </form>
-              </Grid>
+                )}
+              />
             </Grid>
-          </CardContent>
-        </Card>
-      </Modal>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={props.handleClose} style={{ color: "#999" }}>
+              Cancel
+            </Button>
+            <Button type="submit" color="primary" autoFocus onClick={props.handleAdditionalSkillsSubmit}>
+              Save
+            </Button>
+          </DialogActions>
+        </Dialog>
     </>
   );
 };

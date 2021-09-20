@@ -1,12 +1,11 @@
 import {
-  Button, Card,
-  CardContent, Grid, IconButton, Modal, Typography
+  Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, Typography
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
-import CloseIcon from "@material-ui/icons/Close";
 import RemoveIcon from "@material-ui/icons/Remove";
 import React from "react";
+import theme from "../../../Theme";
 import { StateBlueTextField } from "./customTextField";
 
 const useStyles = makeStyles((theme) => ({
@@ -70,24 +69,24 @@ const useStyles = makeStyles((theme) => ({
   formContainer: {
     marginBottom: "24px",
   },
-  textFieldContainer:{
+  textFieldContainer: {
     display: "flex",
-    flexDirection :"column",
+    flexDirection: "column",
     justifyContent: "center",
     gap: theme.spacing(1)
   },
   textField: {
     marginBottom: theme.spacing(3),
   },
-  buttonGridItem:{
+  buttonGridItem: {
     display: "flex",
-    flexDirection :"column",
+    flexDirection: "column",
     justifyContent: "center",
   },
-  buttonContainer:{
+  buttonContainer: {
     marginBottom: theme.spacing(3),
   },
-  addRemoveButton:{
+  addRemoveButton: {
     padding: "12px",
     [theme.breakpoints.down("sm")]: {
       padding: "5px",
@@ -136,104 +135,80 @@ const QualificationsModal = (props) => {
 
   return (
     <>
-      <Modal
-        open={props.open}
-        onClose={props.handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        className={classes.modal}
-      >
-        <Card className={classes.root}>
-          <CardContent className={classes.cardContent}>
+        <Dialog
+          open={props.open}
+          onClose={props.handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+          maxWidth="md"
+        >
+          <DialogTitle id="alert-dialog-title">
+            <Typography style={{ color: theme.palette.stateBlue, textAlign: 'left', fontSize: 18, fontWeight: 600 }}>
+              Qualifications and Requirements
+            </Typography>
+          </DialogTitle>
+          <DialogContent>
             <Grid container>
-              <div className={classes.closeBtnContainer}>
-                <IconButton
-                  onClick={props.handleClose}
-                  className={classes.closeButton}
-                >
-                  <CloseIcon className={classes.closeIcon} />
-                </IconButton>
-              </div>
-
-              <Grid item xs={12} className={classes.formContainer}>
-                <Typography align="center" className={classes.title}>
-                Qualifications and Requirements
-                </Typography>
-
-                <form onSubmit={props.handleQualificationsSubmit}>
-                  <Grid container>
-                    {props.qualifications.map((field, index) => (
-                      <Grid item container key={index} >
-                        <Grid item xs={10}> 
-                          <StateBlueTextField
-                            label="Qualification"
-                            variant="outlined"
-                            value={field}
-                            fullWidth
-                            multiline
-                            className={classes.textField}
-                            onChange={(event) =>
-                              props.handleQualificationsChange(event, index)
-                            }
-                            error={props.errors[index].length !== 0}
-                            helperText={
-                              props.errors[index].length !== 0 &&
-                              props.errors[index]
-                            }
-                          />
-                        </Grid>
-                        <Grid item xs={2} className={classes.buttonGridItem}>
-                          <div className={classes.buttonContainer}>
-                            <IconButton
-                              disabled={props.qualifications.length === 1}
-                              onClick={() => props.handleQualificationRemove(index)}
-                              className={classes.addRemoveButton}
-                            >
-                              <RemoveIcon
-                                className={classes.removeIcon}
-                                style={{
-                                  color:
-                                  props.qualifications.length === 1
-                                      ? "#bbb"
-                                      : null,
-                                }}
-                              />
-                            </IconButton>
-                            <IconButton
-                              onClick={props.handleQualificationAdd}
-                              className={classes.addRemoveButton}
-                            >
-                              <AddIcon className={classes.addIcon} />
-                            </IconButton>
-                          </div>
-                        </Grid>
-                      </Grid>
-                    ))}
-
-                    <div className={classes.submitBtnContainer}>
-                      <Button
-                        variant="contained"
-                        className={classes.cancelBtn}
-                        onClick={props.handleClose}
+              {props.qualifications.map((field, index) => (
+                <Grid item container key={index} justifyContent="space-between" spacing={3} alignItems="center">
+                  <Grid item xs={10}>
+                    <StateBlueTextField
+                      variant="outlined"
+                      value={field}
+                      fullWidth
+                      multiline
+                      size="small"
+                      className={classes.textField}
+                      onChange={(event) =>
+                        props.handleQualificationsChange(event, index)
+                      }
+                      error={props.errors[index].length !== 0}
+                      helperText={
+                        props.errors[index].length !== 0 &&
+                        props.errors[index]
+                      }
+                    />
+                  </Grid>
+                  <Grid item xs={2} className={classes.buttonGridItem}>
+                    <div className={classes.buttonContainer}>
+                      <IconButton
+                        disabled={props.qualifications.length === 1}
+                        onClick={() => props.handleQualificationRemove(index)}
+                        className={classes.addRemoveButton}
+                        style={{ color: theme.palette.red }}
                       >
-                        Cancel
-                      </Button>
-                      
-                      <Button
-                        variant="contained"
-                        type="submit"
-                        className={classes.submitBtn}
-                      >
-                        Save changes
-                      </Button>
+                        <RemoveIcon
+                          className={classes.removeIcon}
+                          style={{
+                            color:
+                              props.qualifications.length === 1
+                                ? "#bbb"
+                                : null,
+                          }}
+                        />
+                      </IconButton>
+                      {props.qualifications.length === index + 1 ?
+                        <IconButton
+                          onClick={props.handleQualificationAdd}
+                          className={classes.addRemoveButton}
+                        >
+                          <AddIcon className={classes.addIcon} />
+                        </IconButton> : null}
                     </div>
                   </Grid>
-                </form>
-              </Grid>
+                </Grid>
+              ))}
             </Grid>
-          </CardContent>
-        </Card>
-      </Modal>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={props.handleClose} style={{ color: "#999" }}>
+              Cancel
+            </Button>
+            <Button type="submit" color="primary" autoFocus onClick={props.handleQualificationsSubmit}>
+              Save
+            </Button>
+          </DialogActions>
+        </Dialog>
     </>
   );
 };
