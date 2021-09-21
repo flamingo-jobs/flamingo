@@ -336,7 +336,7 @@ const Settings = (props) => {
     if (badPassword(newPassword)) {
       setAlertData({
         severity: "error",
-        msg: `Please make an stronger password!
+        msg: `Please make a stronger password!
         Your password must contain minimum 8 characters, 
         at least 1 uppercase letter, 1 lowercase letter, 
         1 number and 1 special character`,
@@ -474,7 +474,7 @@ const Settings = (props) => {
                         aria-describedby="alert-dialog-description"
                       >
                         <DialogTitle id="alert-dialog-title">
-                          {"Confirm Delete?"}
+                          {"Confirm?"}
                         </DialogTitle>
                         <DialogContent>
                           <DialogContentText id="alert-dialog-description">
