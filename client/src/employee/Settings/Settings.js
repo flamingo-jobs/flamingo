@@ -465,13 +465,12 @@ const Settings = (props) => {
                   container
                   justify="center"
                   alignItems="center"
-                  className={classes.mainGrid}
                   spacing={2}
                   direction="column"
                 >
                   <form onSubmit={handleChangePassword}>
                     <Grid item xs={12}>
-                      <Grid container spacing={3} direction="column">
+                      <Grid container spacing={3}>
                         <Grid item xs={12} align="left">
                           <Typography variant="h5">Change Password</Typography>
                         </Grid>
