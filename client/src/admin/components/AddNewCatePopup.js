@@ -53,13 +53,14 @@ export default function AddNewCatePopup(props) {
             .then(res => {
                 if (res.data.success) {
                     props.onSuccess();
+                    props.onClose();
+
                 } else {
                     props.onError();
                 }
             }).catch(err => {
                 props.onError();
             })
-        props.onClose();
     }
 
     return (

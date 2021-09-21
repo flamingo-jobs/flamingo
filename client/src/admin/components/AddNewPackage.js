@@ -52,23 +52,28 @@ export default function AddNewPackage(props) {
         maxUsers: 0,
         shortlisting: false,
         customizedShortlisting: false,
-        applicantFiltering: false
+        applicantFiltering: false,
+        jobSpecificShortlisting: false,
+        price: 0
     });
 
     const onSubmit = (e) => {
         e.preventDefault();
 
+
+
         axios.post(`${BACKEND_URL}/subscriptions/create`, formData)
             .then(res => {
                 if (res.data.success) {
                     props.onSuccess();
+                    props.onClose();
+
                 } else {
                     props.onError();
                 }
             }).catch(err => {
                 props.onError();
             })
-        props.onClose();
     }
 
     return (
@@ -168,6 +173,32 @@ export default function AddNewPackage(props) {
                                     />
                                 }
                                 label="Customized Shortlisting"
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        checked={formData.jobSpecificShortlisting}
+                                        onChange={setForm}
+                                        name="jobSpecificShortlisting"
+                                        color="primary"
+                                    />
+                                }
+                                label="Job Specific Shortlisting"
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                id="price"
+                                label="Price (LKR)"
+                                name="price"
+                                variant="outlined"
+                                size="small"
+                                type="number"
+                                onChange={setForm}
+                                required
+                                fullWidth
                             />
                         </Grid>
                     </Grid>
