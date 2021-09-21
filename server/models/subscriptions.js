@@ -14,14 +14,20 @@ const subscriptionsSchema = new mongoose.Schema({
     type: Number,
   },
   shortlisting: {
-    type: Boolean
+    type: Boolean,
   },
   customizedShortlisting: {
-    type: Boolean
+    type: Boolean,
+  },
+  jobSpecificShortlisting: {
+    type: Boolean,
   },
   applicantFiltering: {
-    type: Boolean
-  }
+    type: Boolean,
+  },
+  price: {
+    type: Number,
+  },
 });
 
 module.exports = mongoose.model("Subscriptions", subscriptionsSchema);
