@@ -16,6 +16,7 @@ import {
 import SnackBarAlert from "../../components/SnackBarAlert";
 import axios from "axios";
 import BACKEND_URL from "../../Config";
+import ChangeEmail from "./components/ChangeEmail";
 const jwt = require("jsonwebtoken");
 const passwordRegexp =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})/;
@@ -198,6 +199,8 @@ const AccountSettings = () => {
           spacing={2}
           direction="column"
         >
+          <ChangeEmail/>
+          <Box mt={5}/>
           <form onSubmit={handleChangePassword}>
             <Grid item xs={12}>
               <Grid container spacing={3} >
