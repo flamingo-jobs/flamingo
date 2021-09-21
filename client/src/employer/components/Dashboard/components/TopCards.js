@@ -6,6 +6,7 @@ import FloatCard from "../../../../components/FloatCard";
 import axios from "axios";
 import BACKEND_URL from "../../../../Config";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -202,14 +203,16 @@ const TopCards = (props) => {
       </Grid>
 
       <Grid item xs={12} sm={6}>
-        <FloatCard>
-          <Typography variant="body2" className={classes.cardTitle}>
-            TOTAL JOBS
-          </Typography>
-          <Typography variant="h5" className={classes.cardNumber}>
-            {allJobs.length}
-          </Typography>
-        </FloatCard>
+        <Link to="/employer/jobs">
+          <FloatCard>
+            <Typography variant="body2" className={classes.cardTitle}>
+              TOTAL JOBS
+            </Typography>
+            <Typography variant="h5" className={classes.cardNumber}>
+              {allJobs.length}
+            </Typography>
+          </FloatCard>
+        </Link>
       </Grid>
 
       <Grid item xs={12} sm={6}>
@@ -224,34 +227,58 @@ const TopCards = (props) => {
       </Grid>
 
       <Grid item xs={12} sm={6}>
-        <FloatCard>
-          <Typography variant="body2" className={classes.cardTitle}>
-            ACTIVE JOBS
-          </Typography>
-          <Typography variant="h5" className={classes.cardNumber}>
-            {getTotalActiveJobs()}
-          </Typography>
-        </FloatCard>
+        {getTotalActiveJobs() > 0 ?
+          <Link to="/employer/jobs?active=true">
+            <FloatCard>
+              <Typography variant="body2" className={classes.cardTitle}>
+                ACTIVE JOBS
+              </Typography>
+              <Typography variant="h5" className={classes.cardNumber}>
+                {getTotalActiveJobs()}
+              </Typography>
+            </FloatCard>
+          </Link> :
+          <FloatCard>
+            <Typography variant="body2" className={classes.cardTitle}>
+              ACTIVE JOBS
+            </Typography>
+            <Typography variant="h5" className={classes.cardNumber}>
+              {getTotalActiveJobs()}
+            </Typography>
+          </FloatCard>}
       </Grid>
 
       <Grid item xs={12} sm={6}>
-        <FloatCard>
-          <Typography variant="body2" className={classes.cardTitle}>
-            INACTIVE JOBS
-          </Typography>
-          <Typography variant="h5" className={classes.cardNumber}>
-            {getTotalInactiveJobs()}
-          </Typography>
-        </FloatCard>
+        {getTotalInactiveJobs() > 0 ?
+          <Link to="/employer/jobs?inactive=true">
+            <FloatCard>
+              <Typography variant="body2" className={classes.cardTitle}>
+                INACTIVE JOBS
+              </Typography>
+              <Typography variant="h5" className={classes.cardNumber}>
+                {getTotalInactiveJobs()}
+              </Typography>
+            </FloatCard>
+          </Link> :
+          <FloatCard>
+            <Typography variant="body2" className={classes.cardTitle}>
+              INACTIVE JOBS
+            </Typography>
+            <Typography variant="h5" className={classes.cardNumber}>
+              {getTotalInactiveJobs()}
+            </Typography>
+          </FloatCard>}
       </Grid>
 
       <Grid item xs={12}>
         {getTotalExpiredJobs() > 0 ?
-          <FloatCard backColor="#FFDADA">
-            <Typography className={classes.expired}>
-              You have {getTotalExpiredJobs()} expired jobs!
-            </Typography>
-          </FloatCard> :
+          <Link to="/employer/jobs?expired=true">
+            <FloatCard backColor="#FFDADA">
+              <Typography className={classes.expired}>
+                You have {getTotalExpiredJobs()} expired jobs!
+              </Typography>
+            </FloatCard>
+          </Link> :
           <FloatCard backColor="#FFFEDA">
             <Typography>
               You have no expired jobs!

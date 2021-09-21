@@ -1,5 +1,5 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core'
+import { Button, makeStyles, Typography } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid';
 import JobSearchBar from '../../jobs/components/JobSearchBar';
 import JobCard from './DetailedJobCard';
@@ -11,6 +11,8 @@ import FloatCard from '../../components/FloatCard';
 import NoInfo from '../../components/NoInfo';
 import Loading from '../../components/Loading';
 import JobFiltersForEmployer from '../../jobs/components/JobFiltersForEmployer';
+import { Link } from 'react-router-dom';
+import theme from '../../Theme';
 const jwt = require("jsonwebtoken");
 const useStyles = makeStyles((theme) => ({
     jobsGrid: {
@@ -46,6 +48,9 @@ const useStyles = makeStyles((theme) => ({
     },
     gridCard: {
         display: "grid"
+    },
+    expired: {
+        color: theme.palette.red
     }
 
 }));
@@ -57,6 +62,9 @@ function JobGrid(props) {
     const featured = urlQuery.get('featured');
     const org = urlQuery.get('org');
     const relatedJob = urlQuery.get('related');
+    const expired = urlQuery.get('expired');
+    const active = urlQuery.get('active');
+    const inactive = urlQuery.get('inactive');
 
     const [savedJobIds, setSavedJobIds] = useState("empty");
 
@@ -257,6 +265,14 @@ function JobGrid(props) {
 
     }
 
+    var today = new Date();
+
+    var dd = String(today.getDate()).padStart(2, "0");
+    var mm = String(today.getMonth() + 1).padStart(2, "0");
+    var yyyy = today.getFullYear();
+
+    var today = yyyy + "-" + mm + "-" + dd;
+
     const displayJobs = () => {
         // await delay(3000);
         if (jobs === "empty") {
@@ -274,16 +290,59 @@ function JobGrid(props) {
                     </FloatCard>
                 </Grid>)
         } else {
-            return jobs.map(job => (
-                <Grid item key={job._id} xs={12} className={classes.gridCard}>
-                    <JobCard
-                        userId={userId}
-                        info={job}
-                        userRole={props.userRole}
-                        values={getMerged(job)}
-                    />
-                </Grid>
-            ))
+            return jobs.map(job => {
+                if (expired) {
+                    if (job.dueDate.slice(0, 10) < today) {
+                        return (
+                            <Grid item key={job._id} xs={12} className={classes.gridCard}>
+                                <JobCard
+                                    userId={userId}
+                                    info={job}
+                                    userRole={props.userRole}
+                                    values={getMerged(job)}
+                                />
+                            </Grid>
+                        )
+                    }
+                } else if (active) {
+                    if (job.isPublished) {
+                        return (
+                            <Grid item key={job._id} xs={12} className={classes.gridCard}>
+                                <JobCard
+                                    userId={userId}
+                                    info={job}
+                                    userRole={props.userRole}
+                                    values={getMerged(job)}
+                                />
+                            </Grid>
+                        )
+                    }
+                } else if (inactive) {
+                    if (!job.isPublished) {
+                        return (
+                            <Grid item key={job._id} xs={12} className={classes.gridCard}>
+                                <JobCard
+                                    userId={userId}
+                                    info={job}
+                                    userRole={props.userRole}
+                                    values={getMerged(job)}
+                                />
+                            </Grid>
+                        )
+                    }
+                } else {
+                    return (
+                        <Grid item key={job._id} xs={12} className={classes.gridCard}>
+                            <JobCard
+                                userId={userId}
+                                info={job}
+                                userRole={props.userRole}
+                                values={getMerged(job)}
+                            />
+                        </Grid>
+                    )
+                }
+            })
         }
     }
 
@@ -294,15 +353,59 @@ function JobGrid(props) {
                     <JobSearchBar onChange={updateSearch} />
                 </Grid>
                 <Grid item container xs={12} sm={12} md={8} lg={9} spacing={2} direction="row" className={classes.jobsGrid} justify="flex-start" alignItems="flex-start">
+                    {expired ?
+                        <Grid item xs={12}>
+                            <FloatCard backColor="#FFFEDA">
+                                <Grid container spacing={3} justifyContent="space-between" alignItems="center">
+                                    <Grid item xs={12} sm={6} style={{ textAlign: 'left', paddingLeft: 24 }}>
+                                        <Typography className={classes.expired}>You're currently seeing the expired jobs</Typography>
+                                    </Grid>
+                                    <Grid item xs={12} sm={6} style={{ textAlign: 'right', paddingRight: 24 }}>
+                                        <Link to="/employer/jobs">
+                                            <Button color="primary" onClick={retrieveJobs}>All jobs</Button></Link>
+                                    </Grid>
+                                </Grid>
+                            </FloatCard>
+                        </Grid> : null}
+                        {inactive ?
+                        <Grid item xs={12}>
+                            <FloatCard backColor="#FFFEDA">
+                                <Grid container spacing={3} justifyContent="space-between" alignItems="center">
+                                    <Grid item xs={12} sm={6} style={{ textAlign: 'left', paddingLeft: 24 }}>
+                                        <Typography className={classes.expired}>You're currently seeing the inactive jobs</Typography>
+                                    </Grid>
+                                    <Grid item xs={12} sm={6} style={{ textAlign: 'right', paddingRight: 24 }}>
+                                        <Link to="/employer/jobs">
+                                            <Button color="primary" onClick={retrieveJobs}>All jobs</Button></Link>
+                                    </Grid>
+                                </Grid>
+                            </FloatCard>
+                        </Grid> : null}
+                        {active ?
+                        <Grid item xs={12}>
+                            <FloatCard backColor="#FFFEDA">
+                                <Grid container spacing={3} justifyContent="space-between" alignItems="center">
+                                    <Grid item xs={12} sm={6} style={{ textAlign: 'left', paddingLeft: 24 }}>
+                                        <Typography style={{color: "green"}}>You're currently seeing the active jobs</Typography>
+                                    </Grid>
+                                    <Grid item xs={12} sm={6} style={{ textAlign: 'right', paddingRight: 24 }}>
+                                        <Link to="/employer/jobs">
+                                            <Button color="primary" onClick={retrieveJobs}>All jobs</Button></Link>
+                                    </Grid>
+                                </Grid>
+                            </FloatCard>
+                        </Grid> : null}
                     {displayJobs()}
-                    <Grid item sm={12}>
+                    <Grid item xs={12}>
                         {jobs !== "empty" ?
                             <Pagination count={Math.ceil(count / 10)} color="primary" page={page} onChange={changePage} classes={{ ul: classes.pagination }} />
                             : null
                         }
                     </Grid>
                 </Grid>
+
                 <Grid item xs={12} sm={12} md={4} lg={3} className={classes.filterGrid}>
+
                     <JobFiltersForEmployer onChange={updateFilters} />
                 </Grid>
             </Grid>
