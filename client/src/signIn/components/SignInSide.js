@@ -196,7 +196,7 @@ export default function SignInSide() {
           }
           sessionStorage.setItem("userToken", res.data.token);
           sessionStorage.setItem("loginId", res.data.loginId);
-          
+
           const header = jwt.decode(res.data.token, { complete: true });
           await setLogs(header.payload.userRole, header.payload.userId);
 
@@ -456,6 +456,7 @@ export default function SignInSide() {
                       </Grid>
                       <Grid item xs={12} sm={8} className={classes.signUp}>
                         <Typography
+                          variant="body2"
                           className={classes.link}
                           onClick={handleClickChoice}
                         >
