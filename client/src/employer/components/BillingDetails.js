@@ -406,9 +406,15 @@ export default function BillingDetails(props) {
         <Grid item xs={12} lg={6}>
           <Typography variant="h6">Next Payment: {expiryDate}</Typography>
           <Divider style={{ marginTop: 20, marginBottom: 20 }} />
-          <Link to="/employer/payment/premium">
-            <Button className={classes.button}>Continue to Payment</Button>
-          </Link>
+          {props.info === "Premium" || props.info === "premium" ? (
+            <Link to="/employer/payment/premium">
+              <Button className={classes.button}>Continue to Payment</Button>
+            </Link>
+          ) : (
+            <Link to="/employer/payment/standard">
+              <Button className={classes.button}>Continue to Payment</Button>
+            </Link>
+          )}
         </Grid>
         <Dialog
           open={open}
