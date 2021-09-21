@@ -368,8 +368,38 @@ function GridTable(props) {
 
     const saveChanges = () => {
         updatedRows.forEach((item) => {
-            let data = {
-                name: item.props.value
+            let data;
+
+            if (props.type === "categories" || props.type === "skills") {
+                data = {
+                    name: item.props.value
+                }
+            } else if (props.type === "subscriptions") {
+                switch (item.field) {
+                    case "type":
+                        data = { type: item.props.value }
+                        break;
+                    case "maxResumes":
+                        data = { maxResumes: item.props.value }
+                        break;
+                    case "maxJobs":
+                        data = { maxJobs: item.props.value }
+                        break;
+                    case "maxUsers":
+                        data = { maxUsers: item.props.value }
+                        break;
+                    case "shortlisting":
+                        data = { shortlisting: item.props.value }
+                        break;
+                    case "customizedShortlisting":
+                        data = { customizedShortlisting: item.props.value }
+                        break;
+                    case "applicantFiltering":
+                        data = { applicantFiltering: item.props.value }
+                        break;
+                    default:
+                        break;
+                }
             }
             axios.put(`${BACKEND_URL}/${props.type}/update/${item.id}`, data).then(res => {
                 if (res.data.success) {

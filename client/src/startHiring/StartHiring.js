@@ -291,7 +291,7 @@ export default function StartHiring() {
       dateRegistered: new Date(),
       links: social,
       subscription: { type: "Basic", startDate: new Date() },
-      verificationStatus: "none",
+      verificationStatus: "None",
     };
     axios
       .post(`${BACKEND_URL}/employers/create`, employerData)

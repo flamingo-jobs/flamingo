@@ -286,7 +286,7 @@ function IntroSection(props) {
     if (e.target.files[0]) {
       let nameSplit = e.target.files[0].name.split(".");
       // console.log("file extention", nameSplit[nameSplit.length - 1]);
-      if (nameSplit[nameSplit.length - 1] !== "jpg" && nameSplit[nameSplit.length - 1] !== "png") {
+      if (nameSplit[nameSplit.length - 1] !== "jpg" && nameSplit[nameSplit.length - 1] !== "png" && nameSplit[nameSplit.length - 1] !== "JPG" && nameSplit[nameSplit.length - 1] !== "PNG" && nameSplit[nameSplit.length - 1] !== "jiff" && nameSplit[nameSplit.length - 1] !== "JIFF") {
         // console.log("type invalid");
         setAlertData({
           severity: "error",
@@ -562,7 +562,7 @@ function IntroSection(props) {
                       className={classes.field}
                       id="outlined-basic"
                       label="Email"
-                      type="text"
+                      type="email"
                       variant="outlined"
                       size="small"
                       value={state.email}

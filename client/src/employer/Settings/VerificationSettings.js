@@ -171,7 +171,7 @@ const VerificationSettings = (props) => {
   };
   const createVerificationRequest = async (loginId) => {
     const sendData = {
-      verificationStatus: "pending",
+      verificationStatus: "Pending",
       verificationFileName: loginId + ".pdf",
       verificationRequestDate: new Date(),
     };
