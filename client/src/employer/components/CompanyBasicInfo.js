@@ -206,10 +206,10 @@ function CompanyBasicInfo(props) {
           technologyStack: res.data.employer.technologyStack,
           links: res.data.employer.links,
           subscription: res.data.employer.subscription.type,
-          website: res.data.employer.links.website,
-          facebook: res.data.employer.links.facebook,
-          linkedIn: res.data.employer.links.linkedIn,
-          twitter: res.data.employer.links.twitter,
+          website: res.data.employer.links[0]['website'],
+          facebook: res.data.employer.links[0]['facebook'],
+          linkedIn: res.data.employer.links[0]['linkedIn'],
+          twitter: res.data.employer.links[0]['twitter'],
           reviews: res.data.employer.reviews,
           logo: res.data.employer.logo,
           locations: res.data.employer.locations,
@@ -343,10 +343,10 @@ function CompanyBasicInfo(props) {
                   technologyStack: res.data.employer.technologyStack,
                   links: res.data.employer.links,
                   subscription: res.data.employer.subscription.type,
-                  website: res.data.employer.links.website,
-                  facebook: res.data.employer.links.facebook,
-                  linkedIn: res.data.employer.links.linkedIn,
-                  twitter: res.data.employer.links.twitter,
+                  website: res.data.employer.links[0]['website'],
+                  facebook: res.data.employer.links[0]['facebook'],
+                  linkedIn: res.data.employer.links[0]['linkedIn'],
+                  twitter: res.data.employer.links[0]['twitter'],
                   reviews: res.data.employer.reviews,
                   logo: res.data.employer.logo,
                   locations: res.data.employer.locations,
@@ -800,7 +800,11 @@ function CompanyBasicInfo(props) {
                   readOnly
                 />
               </div>
+
+              
               <div className={classes.links}>
+
+              {website!="" && website!=undefined ? (
                 <Link to={{ pathname: website }} target="_blank">
                   <IconButton
                     variant="outlined"
@@ -810,16 +814,21 @@ function CompanyBasicInfo(props) {
                     <LanguageIcon />
                   </IconButton>
                 </Link>
-                <Link to={{ pathname: linkedIn }} target="_blank">
-                  <IconButton
-                    variant="outlined"
-                    aria-label="website"
-                    className={classes.link}
-                  >
-                    <LinkedInIcon />
-                  </IconButton>
-                </Link>
+                ) : null}
 
+                {linkedIn!="" && linkedIn!=undefined ? (
+                  <Link to={{ pathname: linkedIn }} target="_blank">
+                    <IconButton
+                      variant="outlined"
+                      aria-label="website"
+                      className={classes.link}
+                    >
+                      <LinkedInIcon />
+                    </IconButton>
+                  </Link>
+                ) : null}
+
+                {twitter!="" && twitter!=undefined ? (
                 <Link to={{ pathname: twitter }} target="_blank">
                   <IconButton
                     variant="outlined"
@@ -829,7 +838,9 @@ function CompanyBasicInfo(props) {
                     <TwitterIcon />
                   </IconButton>
                 </Link>
+                ) : null}
 
+                {facebook!="" && facebook!=undefined  ? (
                 <Link to={{ pathname: facebook }} target="_blank">
                   <IconButton
                     variant="outlined"
@@ -839,6 +850,8 @@ function CompanyBasicInfo(props) {
                     <FacebookIcon />
                   </IconButton>
                 </Link>
+                ) : null}
+
               </div>
             </Grid>
           </Grid>
