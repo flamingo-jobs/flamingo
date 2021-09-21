@@ -279,9 +279,12 @@ function Skills(props) {
           });
         }
       });
-    setFetchedData(1);
-    showClose();
-    handleClose();
+      setShow(false);
+      showCombo();
+      handleAlert();
+      removeDuplicates();
+      handleClose();
+      setFetchedData(1)
   };
 
   const showCombo = () => {
