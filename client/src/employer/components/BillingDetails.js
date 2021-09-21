@@ -206,7 +206,7 @@ export default function BillingDetails(props) {
         let fixedRows = [];
         res.data.previousOrders.forEach((x, index) => {
           fixedRows.push({
-            id: index+1,
+            id: index + 1,
             payDay: x.paymentDate ? x.paymentDate.slice(0, 10) : "N/A",
             amount: x.amount ? x.currency + " " + x.amount : "N/A",
             description: x.items
@@ -386,7 +386,7 @@ export default function BillingDetails(props) {
             You are subscribed to {props.info} package
           </Typography>
           <Divider style={{ marginTop: 20, marginBottom: 20 }} />
-          {props.info === "premium" ? (
+          {props.info === "Premium" || props.info === "premium" ? (
             <Link to="/employer/payment/standard">
               <Button className={classes.switchButton}>
                 Switch to Standard Package

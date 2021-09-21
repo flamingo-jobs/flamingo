@@ -294,6 +294,7 @@ const UserSettings = () => {
       <Grid item xs={12}>
         {displayAlert()}
         {subscriptionStatus ? (
+          subscriptionStatus.subscriptionType === "Premium" ||
           subscriptionStatus.subscriptionType === "premium" ||
           subscriptionStatus.remainingUsers > 0 ? (
             <div>
