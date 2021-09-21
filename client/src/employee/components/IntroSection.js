@@ -179,7 +179,10 @@ function IntroSection(props) {
     zipCode: "",
     mobile: "",
     landLine: "",
-    email: ""
+    email: "",
+    facebook: "",
+    linkedin: "",
+    github: "",
   });
 
   const [isPublic, setIsPublic] = useState(true);
@@ -239,7 +242,10 @@ function IntroSection(props) {
             zipCode: res.data.jobseeker.address.zipCode,
             mobile: res.data.jobseeker.contact.mobile,
             landLine: res.data.jobseeker.contact.phone,
-            email: res.data.jobseeker.contact.email
+            email: res.data.jobseeker.contact.email,
+            facebook: res.data.jobseeker.contact.facebook,
+            linkedin: res.data.jobseeker.contact.linkedin,
+            github: res.data.jobseeker.contact.github
           })
           setIsPublic(res.data.jobseeker.isPublic)
           setLoadingData(false);
@@ -373,6 +379,24 @@ function IntroSection(props) {
     })
   }
 
+  function onChangeFacebook(e) {
+    setState(prevState => {
+      return { ...prevState, facebook: e.target.value }
+    })
+  }
+
+  function onChangeLinkedin(e) {
+    setState(prevState => {
+      return { ...prevState, linkedin: e.target.value }
+    })
+  }
+
+  function onChangeGithub(e) {
+    setState(prevState => {
+      return { ...prevState, github: e.target.value }
+    })
+  }
+
   function onChangeStreet(e) {
     setState(prevState => {
       return { ...prevState, street: e.target.value }
@@ -401,6 +425,9 @@ function IntroSection(props) {
         email: state.email,
         phone: state.landLine,
         mobile: state.mobile,
+        facebook: state.facebook,
+        linkedin: state.linkedin,
+        github: state.github,
       },
     }
 
@@ -564,6 +591,42 @@ function IntroSection(props) {
                       onChange={onChangeCity}
                     />
                   </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      className={classes.field}
+                      id="outlined-basic"
+                      label="Facebook"
+                      type="text"
+                      variant="outlined"
+                      size="small"
+                      value={state.facebook}
+                      onChange={onChangeFacebook}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      className={classes.field}
+                      id="outlined-basic"
+                      label="Linkedin"
+                      type="text"
+                      variant="outlined"
+                      size="small"
+                      value={state.linkedin}
+                      onChange={onChangeLinkedin}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      className={classes.field}
+                      id="outlined-basic"
+                      label="Github"
+                      type="text"
+                      variant="outlined"
+                      size="small"
+                      value={state.github}
+                      onChange={onChangeGithub}
+                    />
+                  </Grid>
                 </Grid>
               </form>
             </DialogContent>
@@ -711,21 +774,27 @@ function IntroSection(props) {
                     </Avatar>
                   </IconButton>
                 </a>
-                <IconButton>
-                  <Avatar className={classes.avatar}>
-                    <FacebookIcon />
-                  </Avatar>
-                </IconButton>
-                <IconButton>
-                  <Avatar className={classes.avatar}>
-                    <LinkedInIcon />
-                  </Avatar>
-                </IconButton>
-                <IconButton>
-                  <Avatar className={classes.avatar}>
-                    <GitHubIcon />
-                  </Avatar>
-                </IconButton>
+                <a href={state.facebook} target="_blank">
+                  <IconButton>
+                    <Avatar className={classes.avatar}>
+                      <FacebookIcon />
+                    </Avatar>
+                  </IconButton>
+                </a>
+                <a href={state.linkedin} target="_blank">
+                  <IconButton>
+                    <Avatar className={classes.avatar}>
+                      <LinkedInIcon />
+                    </Avatar>
+                  </IconButton>
+                </a>
+                <a href={state.github} target="_blank">
+                  <IconButton>
+                    <Avatar className={classes.avatar}>
+                      <GitHubIcon />
+                    </Avatar>
+                  </IconButton>
+                </a>
               </Grid>
             </Grid>
 
