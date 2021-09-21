@@ -198,7 +198,6 @@ function Skills(props) {
   }
 
   function showClose() {
-    fetchData();
     setShow(false);
   }
 
@@ -271,6 +270,7 @@ function Skills(props) {
             msg: "Skill deleted successfully!",
           });
           handleAlert();
+          fetchData();
           axios.get(`${BACKEND_URL}/jobs/generateJobSeekerRecommendations/${loginId}`);
         } else {
           setAlertData({
