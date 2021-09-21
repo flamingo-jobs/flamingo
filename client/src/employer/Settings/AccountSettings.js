@@ -1,15 +1,22 @@
 import {
   Box,
-  Button, Dialog,
+  Button,
+  Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle, Grid, Link, makeStyles, TextField, Typography
+  DialogTitle,
+  Grid,
+  Link,
+  makeStyles,
+  TextField,
+  Typography,
 } from "@material-ui/core";
 import axios from "axios";
 import React, { useState } from "react";
 import SnackBarAlert from "../../components/SnackBarAlert";
 import BACKEND_URL from "../../Config";
+import ChangeEmail from "./components/ChangeEmail";
 const jwt = require("jsonwebtoken");
 const passwordRegexp =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})/;
@@ -19,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 10,
     margin: "30px 10px 30px 10px",
     flexGrow: 1,
-    paddingBottom: 24
+    paddingBottom: 24,
   },
   mainGrid: {
     paddingLeft: 12,
@@ -152,6 +159,7 @@ const AccountSettings = () => {
       });
   };
 
+  const [otp, setOtp] = useState("");
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
@@ -267,9 +275,11 @@ const AccountSettings = () => {
           spacing={2}
           direction="column"
         >
+          <ChangeEmail />
+          <Box mt={5} />
           <form onSubmit={handleChangePassword}>
             <Grid item xs={12}>
-              <Grid container spacing={3} direction="column">
+              <Grid container spacing={3}>
                 <Grid item xs={12} align="left">
                   <Typography variant="h5">Change Password</Typography>
                 </Grid>
@@ -338,7 +348,6 @@ const AccountSettings = () => {
                         <Button
                           fullWidth
                           type="submit"
-                          
                           className={classes.button}
                         >
                           Change Password
@@ -346,11 +355,7 @@ const AccountSettings = () => {
                       </Grid>
                       <Grid item>
                         <Link to="/">
-                          <Button
-                            fullWidth
-                            
-                            className={classes.cancel}
-                          >
+                          <Button fullWidth className={classes.cancel}>
                             Cancel
                           </Button>
                         </Link>
@@ -410,7 +415,6 @@ const AccountSettings = () => {
                       <Button
                         fullWidth
                         type="submit"
-                        
                         className={classes.deleteButton}
                       >
                         Delete Account
@@ -418,11 +422,7 @@ const AccountSettings = () => {
                     </Grid>
                     <Grid item>
                       <Link to="/">
-                        <Button
-                          fullWidth
-                          
-                          className={classes.cancel}
-                        >
+                        <Button fullWidth className={classes.cancel}>
                           Cancel
                         </Button>
                       </Link>
