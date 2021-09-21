@@ -116,7 +116,10 @@ const PayHereCheckoutForm = (props) => {
     setBillingDetails({
       ...billingDetails,
       items: selectedPackage,
-      amount: selectedPackage === "premium" ? "4990" : "1990",
+      amount:
+        selectedPackage === "Premium" || selectedPackage === "premium"
+          ? "4990"
+          : "1990",
     });
   }, [window.location.pathname]);
 

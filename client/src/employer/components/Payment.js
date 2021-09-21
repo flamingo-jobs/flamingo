@@ -216,7 +216,8 @@ export default function Payment() {
                   >
                     <Grid item xs={8}>
                       <Typography variant="caption">
-                        {subscription.desc === "standard"
+                        {subscription.desc === "Standard" ||
+                        subscription.desc === "standard"
                           ? "Standard"
                           : "Premium"}{" "}
                         Package

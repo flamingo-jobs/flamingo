@@ -119,7 +119,7 @@ function GridTable(props) {
         field: 'verificationStatus', headerName: 'Verification Status', width: 200, editable: false, renderCell: (params) => (
             <div style={{ display: 'flex', justifyContent: 'space-between', minWidth: '-webkit-fill-available', alignItems: 'center' }}>
                 {params.value}
-                {params.value !== "none" ? <IconButton onClick={() => {
+                {params.value !== "None" ? <IconButton onClick={() => {
                     handleOpenVerification(params.row.id, params.value);
                 }}><EditRoundedIcon /></IconButton> : null}
             </div>
@@ -343,7 +343,7 @@ function GridTable(props) {
     }
 
     const showDeleteButton = () => {
-        if (selectionModel.length > 0) {
+        if (selectionModel.length > 0 && !(props.type === "employers" || props.type === "jobseeker")) {
             return <Button className={classes.delBtn} onClick={handleClickOpen}>
                 <DeleteRoundedIcon /> Delete
             </Button>

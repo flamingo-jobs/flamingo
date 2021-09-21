@@ -30,7 +30,7 @@ function NewJobSeekers() {
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <Typography variant="h2">{userCount}</Typography>
-                    <Typography>Job Seekers</Typography>
+                    <Typography>New Job Seekers</Typography>
                 </Grid>
             </Grid>
         </FloatCard>

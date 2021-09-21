@@ -72,14 +72,6 @@ const getAll = async (req, res) => {
                     error: err
                 })
             }
-// 
-            const newJobs = jobs.filter((j) => {
-                const today = new Date();
-                const dueDate = new Date(j.dueDate);
-                if(today < dueDate){
-                    return j;
-                }
-            });
 
             return res.status(200).json({
                 success: true,
@@ -93,13 +85,13 @@ const getAll = async (req, res) => {
                     error: err
                 })
             }
-            const newJobs = jobs.filter((j) => {
-                const today = new Date();
-                const dueDate = new Date(j.dueDate);
-                if(today < dueDate){
-                    return j;
-                }
-            });
+            // const newJobs = jobs.filter((j) => {
+            //     const today = new Date();
+            //     const dueDate = new Date(j.dueDate);
+            //     if(today < dueDate){
+            //         return j;
+            //     }
+            // });
 
             return res.status(200).json({
                 success: true,
@@ -118,6 +110,13 @@ const getAllRecommendedJobs = async (req, res) => {
                 error: err
             })
         }
+        // const newJobs = jobs.filter((j) => {
+        //     const today = new Date();
+        //     const dueDate = new Date(j.dueDate);
+        //     if(today < dueDate){
+        //         return j;
+        //     }
+        // });
         return res.status(200).json({
             success: true,
             existingData: jobs
@@ -137,8 +136,17 @@ const getSearched = async (req, res) => {
     // }
 
     try {
-        const result = await Jobs.find({ $text: { $search: req.params.searchString } },
+        const result = await Jobs.find({ $text: { $search: req.params.searchString }, isPublished: true },
             { score: { $meta: "textScore" } }, req.body.options).sort({ score: { $meta: "textScore" } });
+
+        // const newResult = result.filter((j) => {
+        //     const today = new Date();
+        //     const dueDate = new Date(j.dueDate);
+        //     if(today < dueDate){
+        //         return j;
+        //     }
+        // });
+
         if (result.length == 0) {
             let regexExp = req.params.searchString.replace("%20", "|");
             let params = {
@@ -151,6 +159,13 @@ const getSearched = async (req, res) => {
                 ]
             }
             let medResult = await Jobs.find(params, null, req.body.options);
+            // const newMedResult = medResult.filter((j) => {
+            //     const today = new Date();
+            //     const dueDate = new Date(j.dueDate);
+            //     if(today < dueDate){
+            //         return j;
+            //     }
+            // });
             res.status(200).json({ success: true, jobs: medResult });
         } else {
             res.status(200).json({ success: true, jobs: result });
@@ -245,12 +260,21 @@ const getAllJobsFromUser = (req, res) => {
 }
 
 const getFeaturedJobs = (req, res) => {
-    Jobs.find({ isFeatured: true }, null, { limit: 3 }, (err, featuredJobs) => {
+    Jobs.find({ isFeatured: true }, null, {limit: 3}, (err, featuredJobs) => {
         if (err) {
             return res.status(400).json({
                 error: err
             })
         }
+
+        // const newFeaturedJobs = featuredJobs.filter((j) => {
+        //     const today = new Date();
+        //     const dueDate = new Date(j.dueDate);
+        //     if(today < dueDate){
+        //         return j;
+        //     }
+        // }).slice(0, 3);
+
         return res.status(200).json({
             success: true,
             featuredJobs: featuredJobs

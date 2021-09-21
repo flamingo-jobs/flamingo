@@ -140,7 +140,7 @@ export default function ProfileSetup() {
         )}`
       );
     }
-    window.location = "/";
+    window.location = "/jobseeker/dashboard";
   };
 
   const [activeStep, setActiveStep] = useState(0);
@@ -672,7 +672,7 @@ export default function ProfileSetup() {
                           </Typography>
                         </Grid>
                         <Grid item xs={6} align="right">
-                          <Link to="/">
+                          <Link to="/jobseeker/dashboard">
                             <Button className={classes.skip}>
                               Skip and do this later
                             </Button>

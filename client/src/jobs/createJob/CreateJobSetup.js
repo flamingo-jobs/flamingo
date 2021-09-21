@@ -728,6 +728,7 @@ export default function CreateJobSetup() {
                 >
                   {haveAccess ? (
                     subscriptionStatus ? (
+                      subscriptionStatus.subscriptionType === "Premium" ||
                       subscriptionStatus.subscriptionType === "premium" ||
                       subscriptionStatus.remainingJobs > 0 ? (
                         <div>

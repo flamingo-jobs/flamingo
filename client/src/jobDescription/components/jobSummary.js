@@ -134,8 +134,20 @@ const useStyles = makeStyles((theme) => ({
   vacanciyContainer: {
     textAlign: 'left',
   },
+  type: {
+    display: "flex",
+    gap: "5px",
+    marginBottom: 10,
+  },
+  typeIcon: {
+    color: theme.palette.black,
+  },
+  typeText: {
+    color: theme.palette.black,
+  },
   numOfVacancies: {
     fontWeight: 500,
+    color: theme.palette.black,
   },
   headerInfo: {
     display: 'block',
@@ -351,6 +363,11 @@ function JobSummary(props) {
     }
   }
 
+  const getFormattedDate = (date) => {
+    const dateStr = date.toString().slice(0, 10).replaceAll("-", "/");
+    return dateStr;
+  };
+
   return (
     <Container>
       {displayAlert()}
@@ -384,6 +401,12 @@ function JobSummary(props) {
                 <Chip icon={<LocationOnRoundedIcon />} label={props.job.location} className={classes.tag} />
                 <Chip icon={<WorkRoundedIcon />} label={props.job.type} className={classes.tag} />
                 <Chip icon={<PeopleIcon />} label={numOfApplicants()} className={classes.tag} />
+              </div>
+
+              <div className={classes.type}>
+                <Typography variant="subtitle2" className={classes.typeText}>
+                  Due Date: <span>&nbsp;</span>{getFormattedDate(props.job.dueDate)}
+                </Typography>
               </div>
 
               <div className={classes.vacanciyContainer}>

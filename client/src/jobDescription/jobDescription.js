@@ -226,18 +226,23 @@ function JobDescription(props) {
             </Grid>
           );
         } else {
-          return (
-            <Grid item xs={12}>
-              <ApplyForm
-                userId={userId}
-                name={job.title}
-                org={job.organization.name}
-                jobId={jobId}
-                handleApply={handleApply}
-                appliedJobCount={appliedJobCount}
-              ></ApplyForm>
-            </Grid>
-          );
+          const today = new Date();
+          const dueDate = new Date(job.dueDate);
+          if(today < dueDate){
+            return (
+              <Grid item xs={12}>
+                <ApplyForm
+                  userId={userId}
+                  name={job.title}
+                  org={job.organization.name}
+                  orgId={job.organization.id}
+                  jobId={jobId}
+                  handleApply={handleApply}
+                  appliedJobCount={appliedJobCount}
+                ></ApplyForm>
+              </Grid>
+            );
+          }
         }
       }
     }

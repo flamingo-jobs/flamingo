@@ -165,7 +165,7 @@ const useStyles = makeStyles((theme) => ({
   downloadBtn: {
     paddingLeft: "13px",
     paddingRight: "13px",
-    borderRadius: 50,
+    borderRadius: 12,
     backgroundColor: theme.palette.tuftsBlue,
     border: `2px solid ${theme.palette.tuftsBlue}`,
     color: theme.palette.white,
@@ -184,7 +184,7 @@ const useStyles = makeStyles((theme) => ({
   changeBtn: {
     paddingLeft: "13px",
     paddingRight: "13px",
-    borderRadius: 50,
+    borderRadius: 12,
     border: `2px solid ${theme.palette.tuftsBlue}`,
     backgroundColor: theme.palette.white,
     color: theme.palette.tuftsBlue,
