@@ -604,7 +604,7 @@ function JobSummary(props) {
                 </Typography>
               </div>
 
-              <div>
+              {/* <div>
                 {props.job.salaryRange.min !== "" &&
                   props.job.salaryRange.max !== "" && (
                     <Typography align="left" className={classes.description}>
@@ -631,7 +631,7 @@ function JobSummary(props) {
                       {props.job.salaryRange.max}
                     </Typography>
                   )}
-              </div>
+              </div> */}
 
               <div>
                 {props.job.numberOfVacancies !== "" &&

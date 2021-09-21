@@ -118,6 +118,8 @@ function getSteps() {
 export default function CreateJobSetup() {
   const classes = useStyles();
 
+  const [salaryErrors, setSalaryErrors] = useState({ minSalary: "", maxSalary: "" });
+
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
 
@@ -127,7 +129,13 @@ export default function CreateJobSetup() {
     } else {
       var validation = validateStep(index);
 
-      if (validation) {
+      var salaryValidation = false;
+      if(validation){
+        if(validateSalary()){
+          salaryValidation = true;
+        }
+      }
+      if (validation && salaryValidation) {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
       }
     }
@@ -140,6 +148,36 @@ export default function CreateJobSetup() {
   const handleReset = () => {
     setActiveStep(0);
   };
+
+  const validateSalary = () => {
+    if(!errors.hasOwnProperty("minSalary") && !errors.hasOwnProperty("maxSalary")){
+      if(minSalary !== "" && maxSalary !== ""){
+        const newErrors = { ...errors };
+        if(parseInt(minSalary, 10) >= parseInt(maxSalary, 10)){
+          newErrors["minSalary"] = `Minimum salary should be less than maximum salary.`;
+          setErrors(newErrors);
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  const validateSalaryOnchange = () => {
+    if(!errors.hasOwnProperty("maxSalary")){
+      if(errors.hasOwnProperty("minSalary") && errors["minSalary"] === "Minimum salary should be less than maximum salary."){
+        if(minSalary !== "" && maxSalary !== ""){
+          var newErrors = { ...errors };
+          if(parseInt(minSalary, 10) >= parseInt(maxSalary, 10)){
+            newErrors["minSalary"] = `Minimum salary should be less than maximum salary.`;
+          } else {
+            delete newErrors["minSalary"];
+          }
+          setErrors(newErrors);
+        }
+      }
+    }
+  }
 
   const validateStep = (index) => {
     const newErrors = { ...errors };
@@ -300,7 +338,7 @@ export default function CreateJobSetup() {
     setDueDate(date);
   };
 
-  const handleSalaryChange = (e) => {
+  const handleMinSalaryChange = (e) => {
     const newErrors = { ...errors };
     const regex = new RegExp("^[0-9]+$");
     const name = e.target.name;
@@ -316,11 +354,38 @@ export default function CreateJobSetup() {
       }
     }
     setErrors(newErrors);
-    if (name === "minSalary") {
-      setMinSalary(value);
-    } else if (name === "maxSalary") {
-      setMaxSalary(value);
+    setMinSalary(value);
+    // if (name === "minSalary") {
+    //   setMinSalary(value);
+    // } else if (name === "maxSalary") {
+    //   setMaxSalary(value);
+    // }
+  };
+
+  const handleMaxSalaryChange = (e) => {
+    const newErrors = { ...errors };
+    const regex = new RegExp("^[0-9]+$");
+    const name = e.target.name;
+    const value = e.target.value;
+
+    if (value.trim() === "") {
+      delete newErrors[name];
+      
+    } else {
+      if (regex.test(value.trim().replace(/\s/g, ""))) {
+        delete newErrors[name];
+        validateSalaryOnchange();
+      } else {
+        newErrors[name] = "Salary can only contain numbers.";
+      }
     }
+    setErrors(newErrors);
+    setMaxSalary(value);
+    // if (name === "minSalary") {
+    //   setMinSalary(value);
+    // } else if (name === "maxSalary") {
+    //   setMaxSalary(value);
+    // }
   };
 
   const handleVacanciesChange = (e) => {
@@ -576,7 +641,8 @@ export default function CreateJobSetup() {
           handleJobTypeChange={handleJobTypeChange}
           handleLocationChange={handleLocationChange}
           handleDateChange={handleDateChange}
-          handleSalaryChange={handleSalaryChange}
+          handleMinSalaryChange={handleMinSalaryChange}
+          handleMaxSalaryChange={handleMaxSalaryChange}
           handleVacanciesChange={handleVacanciesChange}
           handleMinEducationChange={handleMinEducationChange}
           handleMinExperienceChange={handleMinExperienceChange}
