@@ -542,7 +542,7 @@ export default function Topbar(props) {
           </div>
         )}
         <div className={classes.mobileSideMenuItems}>
-          <NavMenu user={props.user} />
+          <NavMenu user={props.user} onClose={handleMobileMenuClose}/>
         </div>
       </Menu>
     </Dialog>

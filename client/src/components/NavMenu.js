@@ -110,6 +110,9 @@ function NavMenu(props) {
 
     const handleListItemClick = (event, index) => {
         setSelectedIndex(index);
+        if(props.onClose){
+            props.onClose();
+        }
     };
 
     useEffect(() => {
