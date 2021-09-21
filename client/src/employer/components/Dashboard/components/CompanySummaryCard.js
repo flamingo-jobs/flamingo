@@ -149,6 +149,7 @@ const CompanySummaryCard = (props) => {
     });
 
     var averageRating = totalRating / reviews.length;
+    averageRating = Math.round(averageRating*10)/10;
 
     return [averageRating, reviews.length];
   };
