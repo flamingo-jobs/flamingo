@@ -235,6 +235,7 @@ export const Experience = ({
                               variant="outlined"
                               fullWidth
                               name="position"
+                              required
                               label="Position"
                               value={x.position}
                               onChange={(e) => handleWorkInputChange(e, i)}
@@ -263,6 +264,7 @@ export const Experience = ({
                               helperText="From"
                               type="month"
                               value={x.from}
+                              InputProps={{ inputProps: { max: x.to } }}
                               onChange={(e) => handleWorkInputChange(e, i)}
                             />
                           </Grid>
@@ -276,6 +278,7 @@ export const Experience = ({
                               type="month"
                               helperText="To"
                               value={x.to}
+                              InputProps={{ inputProps: { min: x.from } }}
                               onChange={(e) => handleWorkInputChange(e, i)}
                             />
                           </Grid>
@@ -414,6 +417,7 @@ export const Experience = ({
                             helperText="From"
                             type="month"
                             value={x.from}
+                            InputProps={{ inputProps: { max: x.to } }}
                             onChange={(e) => handleProjectInputChange(e, i)}
                           />
                         </Grid>
@@ -427,6 +431,7 @@ export const Experience = ({
                             helperText="To"
                             type="month"
                             value={x.to}
+                            InputProps={{ inputProps: { min: x.from } }}
                             onChange={(e) => handleProjectInputChange(e, i)}
                           />
                         </Grid>
