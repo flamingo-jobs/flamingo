@@ -152,7 +152,7 @@ const useStyles = makeStyles((theme) => ({
 // style={{border : "1px solid red"}}
 function ApplicantCard(props) {
   const classes = useStyles();
-  console.log(props.matches)
+  
   const [savedPic, setSavedPic] = useState(require(`../../../components/images/loadingImage.gif`).default);
 
   // Status modal
