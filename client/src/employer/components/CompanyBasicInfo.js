@@ -368,7 +368,7 @@ function CompanyBasicInfo(props) {
       .get(`${BACKEND_URL}/employer/verificationStatus/${loginId}`)
       .then((res) => {
         if (res.data.success) {
-          if (res.data.verificationStatus === "verified") setVerified(true);
+          if (res.data.verificationStatus === "Verified") setVerified(true);
         }
       })
       .catch((err) => {

@@ -102,13 +102,13 @@ export default function VerificationDialog(props) {
                         variant="outlined"
                         fullWidth
                     >
-                        <MenuItem key={0} value={"pending"}>
+                        <MenuItem key={0} value={"Pending"}>
                             Pending
                         </MenuItem>
-                        <MenuItem key={1} value={"verified"}>
+                        <MenuItem key={1} value={"Verified"}>
                             Verified
                         </MenuItem>
-                        <MenuItem key={2} value={"rejected"}>
+                        <MenuItem key={2} value={"Rejected"}>
                             Rejected
                         </MenuItem>
                     </StateBlueTextField>

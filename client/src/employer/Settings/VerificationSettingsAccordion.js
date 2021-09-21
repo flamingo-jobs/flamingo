@@ -73,7 +73,7 @@ export default function VerificationSettingsAccordion(props) {
       })
       .catch((err) => {
         if (err) {
-          setVerificationStatus("none");
+          setVerificationStatus("None");
         }
       });
   }, []);
@@ -96,8 +96,8 @@ export default function VerificationSettingsAccordion(props) {
         <AccordionDetails className={classes.details}>
           {!haveAccess ? (
             <NoAccess message="for this content" />
-          ) : verificationStatus === "none" ||
-            verificationStatus === "rejected" ? (
+          ) : verificationStatus === "None" ||
+            verificationStatus === "Rejected" ? (
             <VerificationSettings message={verificationStatus} />
           ) : (
             <Verified message={verificationStatus} />

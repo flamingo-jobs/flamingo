@@ -24,7 +24,7 @@ function Verified(props) {
   const defaultOptions = {
     loop: true,
     autoplay: true,
-    animationData: props.message === "verified" ? VerifiedAnim : PendingAnim,
+    animationData: props.message === "Verified" ? VerifiedAnim : PendingAnim,
     rendererSettings: {
       preserveAspectRatio: "xMidYMid slice",
     },
@@ -43,7 +43,7 @@ function Verified(props) {
     >
       <Grid item xs={12}>
         <FloatCard>
-          {props.message === "verified" ? (
+          {props.message === "Verified" ? (
             <Grid container style={{ padding: 24 }}>
               <Grid item xs={12}>
                 <Lottie options={defaultOptions} height={150} width={150} />
