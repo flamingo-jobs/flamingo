@@ -247,11 +247,24 @@ const Applications = () => {
     try {
       const response = await axios.get(`${BACKEND_URL}/jobs/${jobId}`);
       if (response.data.success) {
-        setJob(response.data.job);
         let userIds = [];
+        response.data.job.applicationDetails.sort((a, b)=> {
+          if(!('score' in a) && !('score' in b)){
+              return 0;
+
+          } else if (!('score' in a) && ('score' in b)){
+              return b.score - 0;
+          } else if (('score' in a) && !('score' in b)){
+              return 0 - a.score;
+          } else {
+              return b.score - a.score
+          }
+        });
+        
         response.data.job.applicationDetails.map((user) => {
           userIds = [...userIds, user.userId];
         });
+        setJob(response.data.job);
         setApplicationDetails(response.data.job.applicationDetails);
         setApplicantIds(userIds);
       }
@@ -271,18 +284,6 @@ const Applications = () => {
           `${BACKEND_URL}/jobseeker/applicants`, { queryParams: queryParams, options: {} }
         );
         if (response.data.success) {
-          // Returned jobseekers are sorted according to these weights
-          const sortWeights = {
-            "shortlisted": 4,
-            "reviewing": 3,
-            "pending": 2,
-            "rejected": 1
-          }
-          response.data.existingData.sort((a, b) => {
-            const statusA = a.applicationDetails.filter(obj => obj.jobId === jobId)[0].status;
-            const statusB = b.applicationDetails.filter(obj => obj.jobId === jobId)[0].status;
-            return sortWeights[statusB] - sortWeights[statusA];
-          });
           setApplicants(response.data.existingData);
         }
       } catch (err) {
@@ -400,7 +401,7 @@ const Applications = () => {
           }
           return a;
         });
-        
+
         setApplicants(newScoredApplicants);
         setShortlistEveryone(true);
 

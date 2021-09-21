@@ -132,8 +132,8 @@ const getByIds = async (req, res) => {
   }
 };
 
-const getApplicants = (req, res) => {
-  // console.log(req.body.queryParams);
+const getApplicants = async (req, res) => {
+  const sortedIds = req.body.queryParams['$and'][0]["_id"]["$in"];
   Jobseeker.find(req.body.queryParams, null, req.body.options).exec(
     (err, jobSeekers) => {
       // console.log(JSON.stringify(req.body.queryParams))
@@ -142,9 +142,18 @@ const getApplicants = (req, res) => {
           error: err,
         });
       }
+      var result = [];
+      sortedIds.forEach((id) => {
+        jobSeekers.forEach((jobseeker) => {
+          if(jobseeker._id == id) {
+            result.push(jobseeker);
+          }
+        })
+      });
+
       return res.status(200).json({
         success: true,
-        existingData: jobSeekers,
+        existingData: result,
       });
     }
   );

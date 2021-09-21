@@ -42,7 +42,7 @@ const ShortlistAllModal = (props) => {
     const dueDate = new Date(props.dueDate);
     if(currentDate < dueDate){
       return `Due date of this job is not reached yet. So there could be more applicants in the future.
-      After shortlisting, all thee applicants under "Shortlisted Applicants" will be notified.${" "}`;
+      After shortlisting, all the applicants under "Shortlisted Applicants" will be notified.${" "}`;
     } else {
       return "";
     }
