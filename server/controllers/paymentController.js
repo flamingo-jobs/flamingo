@@ -145,7 +145,7 @@ const getNextDate = async (req, res) => {
     let nextStartDate = maxDate ? await addMonths(maxDate, 1) : today;
     let nextEndDate = maxDate
       ? await addMonths(maxDate, 2)
-      : await addMonthd(today, 1);
+      : await addMonths(today, 1);
     return res.status(200).json({
       success: true,
       nextDates: { nextStartDate, nextEndDate },
