@@ -212,6 +212,74 @@ exports.signin = (req, res) => {
     });
 };
 
+exports.generateOTP = async (req, res) => {
+  const email = req.params;
+  const otp = uuid();
+  const emailResetCode = otp.slice(0, 5);
+  const result = await User.updateOne(email, { $set: { emailResetCode } });
+  if (result.nModified > 0) {
+    try {
+      await sendEmail({
+        to: email,
+        from: "flamingojobs.help@gmail.com",
+        subject: "Email Reset - Flamingo",
+        text: `
+        Your OTP: ${emailResetCode}
+      Hi, We're sending you this email because you requested
+      a email reset.
+      If you didn't request a email change, plase contact our support center.
+      `,
+      });
+    } catch (e) {
+      return res.status(500).json({ success: false });
+    }
+  } else {
+    return res.status(502).json({ success: false });
+  }
+  return res.status(200).json({
+    success: true,
+    otp: emailResetCode,
+  });
+};
+
+exports.changeEmail = async (req, res) => {
+  const { email } = req.body;
+  User.findOne({ email })
+    .then((user) => {
+      if (user) {
+        return res
+          .status(422)
+          .json({ errors: [{ user: "email already exists" }] });
+      }
+    })
+    .catch((err) => {
+      if (err) {
+        return res
+          .status(422)
+          .json({ errors: [{ user: "email already exists" }] });
+      }
+    });
+  User.findByIdAndUpdate(req.params.id, {
+    $set: { email },
+    $unset: { emailResetCode: "" },
+  })
+    .then((result) => {
+      if (!result) {
+        return res.status(400).json({
+          success: false,
+        });
+      }
+      return res.status(200).json({
+        success: true,
+      });
+    })
+    .catch((err) => {
+      if (err) {
+        return res.status(422);
+      }
+    });
+};
+
 exports.forgotPassword = async (req, res) => {
   const email = req.params;
   const passwordResetCode = uuid();

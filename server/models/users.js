@@ -21,6 +21,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  emailResetCode: {
+    type: String,
+    required: false,
+  },
   loginId: {
     type: mongoose.Schema.Types.ObjectId,
     required: false,

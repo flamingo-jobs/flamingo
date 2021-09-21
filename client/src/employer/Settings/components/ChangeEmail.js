@@ -16,6 +16,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import SnackBarAlert from "../../../components/SnackBarAlert";
 import BACKEND_URL from "../../../Config";
+const jwt = require("jsonwebtoken");
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -68,68 +69,202 @@ const useStyles = makeStyles((theme) => ({
 function ChangeEmail() {
   const classes = useStyles();
 
+  const userData = jwt.decode(sessionStorage.getItem("userToken"), {
+    complete: true,
+  }).payload;
   const [otp, setOtp] = useState("");
-  const handleEmailChange = (e) => {
-    e.preventDefault();
-  };
-  return (
-    <form onSubmit={handleEmailChange}>
-      <Grid item xs={12}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} align="left">
-            <Typography variant="h5">Change Email Address</Typography>
-          </Grid>
-          <Grid item xs={12} md={12} lg={6} align="left">
-            <Typography>
-              Please insert the one time password we sent to your current email.
-            </Typography>
-            <Typography variant="caption" display="block">
-              Click Request OTP button to recieve the code
-            </Typography>
-          </Grid>
-          <Grid item xs={12} md={12} lg={6}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} align="left">
-                <TextField
-                  label="OTP Code"
-                  name="otp"
-                  type="password"
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value)}
-                  size="small"
-                  variant="outlined"
-                  required
-                />
-                <Button style={{ marginLeft: "1em", color: "blue" }}>
-                  Request OTP
-                </Button>
-              </Grid>
+  const [systemOtp, setSystemOtp] = useState("");
+  const [newEmail, setNewEmail] = useState("");
 
-              <Grid
-                item
-                container
-                xs={12}
-                className={classes.actions}
-                spacing={2}
-              >
-                <Grid item>
-                  <Button fullWidth type="submit" className={classes.button}>
-                    Verify & Change Email
+  // Alert stuff
+  const [alertShow, setAlertShow] = useState(false);
+  const [alertData, setAlertData] = useState({ severity: "", msg: "" });
+  const displayAlert = () => {
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertShow(false);
+  };
+
+  const requestOtp = () => {
+    axios
+      .get(`${BACKEND_URL}/api/get-otp/${userData.email}`)
+      .then((res) => {
+        if (res.data.success) {
+          console.log(res.data.otp);
+          setSystemOtp(res.data.otp);
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
+  };
+
+  // Dialog stuff
+  const [open, setOpen] = React.useState(false);
+  const openDialogBox = (e) => {
+    e.preventDefault();
+    if (otp !== "" && otp === systemOtp) {
+      setOtp("");
+      setOpen(true);
+    }
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleEmailChange = () => {
+    if (newEmail !== "") {
+      axios
+        .put(`${BACKEND_URL}/auth/change-email/${userData.userId}`, {
+          email: newEmail,
+        })
+        .then((res) => {
+          if (res.data.success) {
+            setAlertData({
+              severity: "success",
+              msg: "Your email has been changed!",
+            });
+            handleAlert();
+          } else {
+            setAlertData({
+              severity: "error",
+              msg: "Failed to change email!",
+            });
+            handleAlert();
+          }
+        })
+        .catch((err) => {
+          if (err) {
+            setAlertData({
+              severity: "error",
+              msg: "Failed to change email!",
+            });
+            handleAlert();
+          }
+        });
+    } else {
+      setAlertData({
+        severity: "warning",
+        msg: "Please enter new email address!",
+      });
+      handleAlert();
+    }
+  };
+
+  return (
+    <div>
+      {displayAlert()}
+      <form onSubmit={openDialogBox}>
+        <Grid item xs={12}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} align="left">
+              <Typography variant="h5">Change Email Address</Typography>
+            </Grid>
+            <Grid item xs={12} md={12} lg={6} align="left">
+              <Typography>
+                Please insert the one time password we sent to your current
+                email.
+              </Typography>
+              <Typography variant="caption" display="block">
+                Click Request OTP button to recieve the code
+              </Typography>
+            </Grid>
+            <Grid item xs={12} md={12} lg={6}>
+              <Grid container spacing={2}>
+                <Grid item xs={12} align="left">
+                  <TextField
+                    label="OTP Code"
+                    name="otp"
+                    type="password"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    size="small"
+                    variant="outlined"
+                    required
+                  />
+                  <Button
+                    style={{ marginLeft: "1em", color: "blue" }}
+                    onClick={requestOtp}
+                  >
+                    Request OTP
                   </Button>
                 </Grid>
-                <Grid item>
-                  <Link to="/">
-                    <Button fullWidth className={classes.cancel}>
-                      Cancel
+
+                <Grid
+                  item
+                  container
+                  xs={12}
+                  className={classes.actions}
+                  spacing={2}
+                >
+                  <Grid item>
+                    <Button fullWidth type="submit" className={classes.button}>
+                      Verify & Change Email
                     </Button>
-                  </Link>
+                  </Grid>
+                  <Grid item>
+                    <Link to="/">
+                      <Button fullWidth className={classes.cancel}>
+                        Cancel
+                      </Button>
+                    </Link>
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
-    </form>
+      </form>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="edit-details-form"
+        fullWidth
+        className={classes.dialogBox}
+      >
+        <DialogTitle id="edit-details-form">Change Email</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Please enter your new email address.
+            <br />
+            <br />
+            <TextField
+              label="New Email Address"
+              name="newEmail"
+              type="email"
+              value={newEmail}
+              onChange={(e) => setNewEmail(e.target.value)}
+              size="small"
+              variant="outlined"
+              required
+              fullWidth
+            />
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button type="submit" onClick={handleEmailChange} color="primary">
+            Confirm and Change
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
   );
 }
 
