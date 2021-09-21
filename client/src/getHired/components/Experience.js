@@ -246,6 +246,7 @@ export const Experience = ({
                               className={classes.textField}
                               variant="outlined"
                               fullWidth
+                              multiline
                               name="description"
                               label="Description"
                               value={x.description}
@@ -283,6 +284,7 @@ export const Experience = ({
                               size="small"
                               className={classes.textField}
                               variant="outlined"
+                              multiline
                               fullWidth
                               name="taskAndResponsibility"
                               label="Tasks and Responsibilities"
@@ -434,10 +436,11 @@ export const Experience = ({
                             className={classes.textField}
                             variant="outlined"
                             fullWidth
+                            multiline
                             name="description"
                             label="Description"
                             inputProps={{
-                              maxLength: 300,
+                              maxLength: 600,
                             }}
                             value={x.description}
                             onChange={(e) => handleProjectInputChange(e, i)}
