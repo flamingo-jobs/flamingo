@@ -741,27 +741,30 @@ function IntroSection(props) {
             </Typography>
             <Grid container>
               <Grid item xs={12} style={{ textAlign: 'center', margin: "0px 0px 0px 0px" }}>
+                {state.mobile ? <>
                 <Typography variant="body2" color="textSecondary" component="p" style={{ textAlign: 'center', }}>
                   <IconButton style={{ paddingLeft: "0px" }}>
                     <PhoneIcon style={{ color: '#666', }} />
                   </IconButton>
                   {state.mobile}
-                </Typography>
+                </Typography> </> : null}
               </Grid>
-              <Grid item xs={12} style={{ textAlign: 'center', marginTop: "-20px" }}>
+              <Grid item xs={12} style={{ textAlign: 'center', marginTop: "-10px" }}>
                 <Typography variant="body2" color="textSecondary" component="p" style={{ textAlign: 'center', }}>
+                {state.street || state.city ? <> 
                   <IconButton style={{ paddingLeft: "0px" }}>
                     <LocationOnIcon style={{ color: '#666', }} />
                   </IconButton>
-                  {state.street + ", " + state.city}
-                </Typography>
+                  {state.street && state.city ? state.street + ", " + state.city : state.city ? state.city : state.street} </> : null}
+                </Typography> 
               </Grid>
             </Grid>
+            {state.intro ? <>
             <Paper elevation={0} className={classes.paperCont} style={{ backgroundColor: "#ececf9" }}>
               <Typography variant="body2" color="textSecondary" component="p" style={{ textAlign: 'left', }}>
                 {state.intro}
               </Typography>
-            </Paper>
+            </Paper> </> : null }
           </CardContent>
 
           <CardActions style={{ marginBottom: "-10px" }}>
