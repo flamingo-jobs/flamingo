@@ -283,6 +283,7 @@ export const Education = ({
               helperText="From"
               type="month"
               value={x.startDate}
+              InputProps={{ inputProps: { max: x.endDate } }}
               onChange={(e) => handleEduInputChange(e, i)}
             />
           </Grid>
@@ -296,6 +297,7 @@ export const Education = ({
               helperText="To"
               type="month"
               value={x.endDate}
+              InputProps={{ inputProps: { min: x.startDate } }}
               onChange={(e) => handleEduInputChange(e, i)}
             />
           </Grid>
@@ -387,6 +389,7 @@ export const Education = ({
               helperText="From"
               type="month"
               value={x.startDate}
+              InputProps={{ inputProps: { max: x.endDate } }}
               onChange={(e) => handleEduInputChange(e, i)}
             />
           </Grid>
@@ -400,6 +403,7 @@ export const Education = ({
               helperText="To"
               type="month"
               value={x.endDate}
+              InputProps={{ inputProps: { min: x.startDate } }}
               onChange={(e) => handleEduInputChange(e, i)}
             />
           </Grid>
@@ -472,6 +476,7 @@ export const Education = ({
               helperText="From"
               type="month"
               value={x.startDate}
+              InputProps={{ inputProps: { max: x.endDate } }}
               onChange={(e) => handleEduInputChange(e, i)}
             />
           </Grid>
@@ -485,6 +490,7 @@ export const Education = ({
               helperText="To"
               type="month"
               value={x.endDate}
+              InputProps={{ inputProps: { min: x.startDate } }}
               onChange={(e) => handleEduInputChange(e, i)}
             />
           </Grid>
@@ -599,6 +605,7 @@ export const Education = ({
                             helperText="From"
                             type="month"
                             value={x.from}
+                            InputProps={{ inputProps: { max: x.to } }}
                             onChange={(e) => handleCourseInputChange(e, i)}
                           />
                         </Grid>
@@ -612,6 +619,7 @@ export const Education = ({
                             helperText="To"
                             type="month"
                             value={x.to}
+                            InputProps={{ inputProps: { min: x.from } }}
                             onChange={(e) => handleCourseInputChange(e, i)}
                           />
                         </Grid>

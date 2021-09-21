@@ -100,7 +100,7 @@ const NewApplicants = (props) => {
           {!allJobs ? <Loading /> : null}
           {allJobs && allJobs.length ? Array.from(allJobs).map((job, i) => (
             <Grid item xs={12}>
-              <Link to={`/employer/resumes/${job.jobId}`} >
+              {/* <Link to={`/employer/resumes/${job.jobId}`} > */}
                 <FloatCard backColor={theme.palette.lightSkyBlueHover}>
                   <Grid item container direction="row"
                     justifyContent="space-between"
@@ -118,7 +118,7 @@ const NewApplicants = (props) => {
                     </Grid>
                   </Grid>
                 </FloatCard>
-              </Link>
+              {/* </Link> */}
             </Grid>
 
           )) : null}

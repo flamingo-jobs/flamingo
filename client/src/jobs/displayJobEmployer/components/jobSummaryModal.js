@@ -164,7 +164,8 @@ const materialTheme = createMuiTheme({
 // style={{border: "1px solid red"}}
 const JobSummaryModal = (props) => {
   const classes = useStyles();
-
+  const today = new Date();
+  
   return (
     <>
         <Dialog
@@ -288,6 +289,7 @@ const JobSummaryModal = (props) => {
                         <ThemeProvider theme={materialTheme}>
                           <KeyboardDatePicker
                             format="dd/MM/yyyy"
+                            minDate={today}
                             id="dueDate"
                             name="dueDate"
                             label="Due Date"
@@ -352,7 +354,7 @@ const JobSummaryModal = (props) => {
 
               {/* Salary range */}
               <Grid container spacing={1}>
-                <Grid item xs={12} sm={6}>
+                {/* <Grid item xs={12} sm={6}>
                   <StateBlueTextField
                     id="minSalary"
                     name="min"
@@ -367,9 +369,9 @@ const JobSummaryModal = (props) => {
                     error={props.errors.hasOwnProperty("min")}
                     helperText={props.errors["min"]}
                   ></StateBlueTextField>
-                </Grid>
+                </Grid> */}
 
-                <Grid item xs={12} sm={6}>
+                {/* <Grid item xs={12} sm={6}>
                   <StateBlueTextField
                     id="maxSalary"
                     name="max"
@@ -383,7 +385,7 @@ const JobSummaryModal = (props) => {
                     error={props.errors.hasOwnProperty("max")}
                     helperText={props.errors["max"]}
                   ></StateBlueTextField>
-                </Grid>
+                </Grid> */}
 
                 <Grid item xs={12} sm={6}>
                   <StateBlueTextField

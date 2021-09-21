@@ -2,17 +2,34 @@ const Jobs = require("../models/jobs");
 const Jobseeker = require("../models/jobseeker");
 
 const updateStatusToShortlist = async (req, res) => {
-
   try {
-    const updatedJobs = await Jobs.updateOne(
-      {
-        _id: req.body.jobId,
-        "applicationDetails.userId": { $in: req.body.jobseekerIds },
-      },
-      {
-        $set: { [`applicationDetails.$.status`]: "shortlisted" },
+    let errorList1 = [];
+    if (req.body.jobseekerIds.length){
+      try {
+        req.body.jobseekerIds.forEach(async (id) => {
+          await Jobs.updateOne(
+            {
+              _id: req.body.jobId,
+              "applicationDetails.userId": { $in: [id] },
+            },
+            {
+              $set: { [`applicationDetails.$.status`]: "shortlisted" },
+            }
+          );
+        });
+      } catch(error) {
+        errorList1.push(error);
       }
-    );
+    }
+    // const updatedJobs = await Jobs.updateOne(
+    //   {
+    //     _id: req.body.jobId,
+    //     "applicationDetails.userId": { $in: req.body.jobseekerIds },
+    //   },
+    //   {
+    //     $set: { [`applicationDetails.$.status`]: "shortlisted" },
+    //   }
+    // );
 
     let errorList = [];
 
@@ -34,7 +51,7 @@ const updateStatusToShortlist = async (req, res) => {
       });
     }
 
-    if (errorList.length)
+    if (errorList.length || errorList1.length)
       return res
         .status(500)
         .json({ success: false, error: "Shortlist failed" });

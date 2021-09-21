@@ -205,7 +205,7 @@ const OrganizationCard = (props) => {
               />
             </div>
             <div className={classes.footerRight}>
-              <Link to={`/employer/company/${props.org._id}`}>
+              <Link to={`/employer/profile/${props.org._id}`}>
                 <Button className={classes.applyButton}>View Organization</Button>
               </Link>
             </div>

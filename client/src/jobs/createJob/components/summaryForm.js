@@ -107,13 +107,15 @@ const SummaryForm = ({
   handleJobTypeChange,
   handleLocationChange,
   handleDateChange,
-  handleSalaryChange,
+  handleMinSalaryChange,
+  handleMaxSalaryChange,
   handleVacanciesChange,
   handleMinEducationChange,
   handleMinExperienceChange,
   errors
 }) => {
   const classes = useStyles();
+  const today = new Date();
   // style={{border: "1px solid red"}}
   return (
     <Grid item xs={12} className={classes.card}>
@@ -225,6 +227,7 @@ const SummaryForm = ({
                     label="Due Date"
                     size="small"
                     value={dueDate}
+                    minDate={today}
                     onChange={handleDateChange}
                     KeyboardButtonProps={{
                       "aria-label": "Change date",
@@ -275,12 +278,12 @@ const SummaryForm = ({
           </Grid>
 
           {/* Salary range */}
-          <Grid item xs={12} md={6}>
+          {/* <Grid item xs={12} md={6}>
             <StateBlueTextField
               id="minSalary"
               name="minSalary"
               label="Minimum Salary (LKR)"
-              onChange={handleSalaryChange}
+              onChange={handleMinSalaryChange}
               variant="outlined"
               placeholder=""
               fullWidth
@@ -289,14 +292,14 @@ const SummaryForm = ({
               error={errors.hasOwnProperty("minSalary")}
               helperText={errors["minSalary"]}
             ></StateBlueTextField>
-          </Grid>
+          </Grid> */}
 
-          <Grid item xs={12} md={6}>
+          {/* <Grid item xs={12} md={6}>
             <StateBlueTextField
               id="maxSalary"
               name="maxSalary"
               label="Maximum Salary (LKR)"
-              onChange={handleSalaryChange}
+              onChange={handleMaxSalaryChange}
               variant="outlined"
               fullWidth
               size="small"
@@ -304,7 +307,7 @@ const SummaryForm = ({
               error={errors.hasOwnProperty("maxSalary")}
               helperText={errors["maxSalary"]}
             ></StateBlueTextField>
-          </Grid>
+          </Grid> */}
 
           <Grid item xs={12} md={6}>
             <StateBlueTextField

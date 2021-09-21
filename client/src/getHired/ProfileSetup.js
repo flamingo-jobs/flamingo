@@ -241,7 +241,7 @@ export default function ProfileSetup() {
           }),
         work: work
           .filter((x) => {
-            return !!x.place;
+            return !!x.place && !!x.position;
           })
           .map((x) => {
             return {

@@ -230,6 +230,7 @@ export const Volunteering = ({
                             helperText="From"
                             type="month"
                             value={x.from}
+                            InputProps={{ inputProps: { max: x.to } }}
                             onChange={(e) => handleVolunteerInputChange(e, i)}
                           />
                         </Grid>
@@ -243,6 +244,7 @@ export const Volunteering = ({
                             helperText="To"
                             type="month"
                             value={x.to}
+                            InputProps={{ inputProps: { min: x.from } }}
                             onChange={(e) => handleVolunteerInputChange(e, i)}
                           />
                         </Grid>
