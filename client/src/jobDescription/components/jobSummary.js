@@ -405,7 +405,7 @@ function JobSummary(props) {
 
               <div className={classes.type}>
                 <Typography variant="subtitle2" className={classes.typeText}>
-                  Due Date: {getFormattedDate(props.job.dueDate)}
+                  Due Date: <span>&nbsp;</span>{getFormattedDate(props.job.dueDate)}
                 </Typography>
               </div>
 
