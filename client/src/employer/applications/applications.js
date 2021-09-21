@@ -16,7 +16,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Loading from "../../components/Loading";
 import WorkIcon from '@material-ui/icons/Work';
 import { Link } from 'react-router-dom';
-
+import ShortlistAllModal from "./components/shortlistAllModal";
 
 const jwt = require("jsonwebtoken");
 
@@ -189,6 +189,16 @@ const Applications = () => {
       setQueryParams({ '_id': { $in: applicantIds } });
     }
   }
+
+  // shortlist all modal
+  const [openShortlistAllModal, setOpenShortlistAllModal] = useState(false);
+
+  const handleOpenShortlistAllModal = () => {
+    setOpenShortlistAllModal(true);
+  };
+  const handleCloseShortlistAllModal = () => {
+    setOpenShortlistAllModal(false);
+  };
 
 
   const handleSliderChange = (e, newCount) => {
@@ -368,37 +378,45 @@ const Applications = () => {
     try {
       const response = await axios.patch(`${BACKEND_URL}/applications/status`, { jobseekerIds: ids, jobId: jobId });
       if (response.data.success) {
+        handleCloseShortlistAllModal();
         setAlertData({
           severity: "success",
           msg: "Applicants shortlisted!",
         });
         handleAlert();
+        var alreadyNotShortlisted = [];
         var newScoredApplicants = [...applicants];
         newScoredApplicants = newScoredApplicants.map(a => {
           if (ids.includes(a._id)) {
             a.applicationDetails.map(b => {
               if (b.jobId === jobId) {
-                b.status = "shortlisted";
+                if(b.status !== "shortlisted"){
+                  b.status = "shortlisted";
+                  alreadyNotShortlisted = [...alreadyNotShortlisted, a._id];
+                }
               }
               return b;
             });
           }
           return a;
         });
+        
         setApplicants(newScoredApplicants);
         setShortlistEveryone(true);
 
-        ids.forEach(async (id) => {
-          await axios.put(`${BACKEND_URL}/jobSeeker/addNotifications/${id}`,
-          {
-            title: "Congratulations! Your have been shortlisted",
-            description: `for ${job.title} at ${job.organization.name}`,
-            link: `/jobseeker/appliedJobs`,
-            type: "shortlisted",
-            createdAt: new Date(),
-            isUnRead: true
+        if(alreadyNotShortlisted.length > 0){
+          alreadyNotShortlisted.forEach(async (id) => {
+            await axios.put(`${BACKEND_URL}/jobSeeker/addNotifications/${id}`,
+            {
+              title: "Congratulations! Your have been shortlisted",
+              description: `for ${job.title} at ${job.organization.name}`,
+              link: `/jobseeker/appliedJobs`,
+              type: "shortlisted",
+              createdAt: new Date(),
+              isUnRead: true
+            });
           });
-        });
+        }
       }
     } catch (error) {
       setAlertData({
@@ -434,6 +452,7 @@ const Applications = () => {
                     className={classes.shortlistEveryoneBtn}
                     startIcon={<PeopleIcon />}
                     onClick={shortlistMatchedApplicants}
+                    onClick={handleOpenShortlistAllModal}
                   >
                     Mark all the shortlisted applicants as shortlisted
                   </Button>
@@ -513,11 +532,25 @@ const Applications = () => {
     }
   };
 
+  const displayShortlistAllModal = () => {
+    if(job !== "empty"){
+      return (
+        <ShortlistAllModal
+          open={openShortlistAllModal}
+          handleClose={handleCloseShortlistAllModal}
+          shortlistMatchedApplicants={shortlistMatchedApplicants}
+          dueDate={job.dueDate}
+        />
+      );
+    }
+  }
+
 
   const handleShortlistSubmit = async (e) => {
     if (e) {
       e.preventDefault();
     }
+
     if (shortlistCount === 0) {
       setAlertData({
         severity: "info",
@@ -610,6 +643,7 @@ const Applications = () => {
 
   return (
     <>
+      {displayShortlistAllModal()}
       {displayAlert()}
       {displayShortlistModal()}
 
