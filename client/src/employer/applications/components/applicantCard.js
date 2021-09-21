@@ -152,7 +152,7 @@ const useStyles = makeStyles((theme) => ({
 // style={{border : "1px solid red"}}
 function ApplicantCard(props) {
   const classes = useStyles();
-  
+
   const [savedPic, setSavedPic] = useState(require(`../../../components/images/loadingImage.gif`).default);
 
   // Status modal
@@ -297,9 +297,9 @@ function ApplicantCard(props) {
             </div>
             {props.matches ?
               <Grid container spacing={2} direction="row"
-              justifyContent="center"
-              alignItems="stretch" style={{marginTop: 16}}>
-                <Grid item xs={12} md={4} style={{alignSelf: 'center', textAlign: 'center'}}>
+                justifyContent="center"
+                alignItems="stretch" style={{ marginTop: 16 }}>
+                <Grid item xs={12} md={4} style={{ alignSelf: 'center', textAlign: 'center' }}>
                   <CircularStatic value={props.matches.score} />
                   <Typography>Overall score</Typography>
                 </Grid>
@@ -311,7 +311,7 @@ function ApplicantCard(props) {
                         <Grid item xs={12} md={3}>
                           <Typography>Education</Typography>
                         </Grid>
-                        <Grid item xs={12} md={6} style={{alignSelf: 'center'}}>
+                        <Grid item xs={12} md={6} style={{ alignSelf: 'center' }}>
                           <Percentage value={props.matches.education} />
                         </Grid>
                         <Grid item xs={12} md={2}>
@@ -323,7 +323,7 @@ function ApplicantCard(props) {
                         <Grid item xs={12} md={3}>
                           <Typography>Experience</Typography>
                         </Grid>
-                        <Grid item xs={12} md={6} style={{alignSelf: 'center'}}>
+                        <Grid item xs={12} md={6} style={{ alignSelf: 'center' }}>
                           <Percentage value={props.matches.experience} />
                         </Grid>
                         <Grid item xs={12} md={2}>
@@ -335,7 +335,7 @@ function ApplicantCard(props) {
                         <Grid item xs={12} md={3}>
                           <Typography>Technology Stack</Typography>
                         </Grid>
-                        <Grid item xs={12} md={6} style={{alignSelf: 'center'}}>
+                        <Grid item xs={12} md={6} style={{ alignSelf: 'center' }}>
                           <Percentage value={props.matches.techStack} />
                         </Grid>
                         <Grid item xs={12} md={2}>
@@ -347,7 +347,7 @@ function ApplicantCard(props) {
                         <Grid item xs={12} md={3}>
                           <Typography>Projects</Typography>
                         </Grid>
-                        <Grid item xs={12} md={6} style={{alignSelf: 'center'}}>
+                        <Grid item xs={12} md={6} style={{ alignSelf: 'center' }}>
                           <Percentage value={props.matches.projects} />
                         </Grid>
                         <Grid item xs={12} md={2}>
@@ -359,7 +359,7 @@ function ApplicantCard(props) {
                         <Grid item xs={12} md={3}>
                           <Typography>Skills</Typography>
                         </Grid>
-                        <Grid item xs={12} md={6} style={{alignSelf: 'center'}}>
+                        <Grid item xs={12} md={6} style={{ alignSelf: 'center' }}>
                           <Percentage value={props.matches.skills} />
                         </Grid>
                         <Grid item xs={12} md={2}>
@@ -371,7 +371,7 @@ function ApplicantCard(props) {
                         <Grid item xs={12} md={3}>
                           <Typography>Certificates</Typography>
                         </Grid>
-                        <Grid item xs={12} md={6} style={{alignSelf: 'center'}}>
+                        <Grid item xs={12} md={6} style={{ alignSelf: 'center' }}>
                           <Percentage value={props.matches.certificates} />
                         </Grid>
                         <Grid item xs={12} md={2}>
@@ -383,7 +383,7 @@ function ApplicantCard(props) {
                         <Grid item xs={12} md={3}>
                           <Typography>Courses</Typography>
                         </Grid>
-                        <Grid item xs={12} md={6} style={{alignSelf: 'center'}}>
+                        <Grid item xs={12} md={6} style={{ alignSelf: 'center' }}>
                           <Percentage value={props.matches.courses} />
                         </Grid>
                         <Grid item xs={12} md={2}>
@@ -395,7 +395,7 @@ function ApplicantCard(props) {
                         <Grid item xs={12} md={3}>
                           <Typography>Extra Curricular</Typography>
                         </Grid>
-                        <Grid item xs={12} md={6} style={{alignSelf: 'center'}}>
+                        <Grid item xs={12} md={6} style={{ alignSelf: 'center' }}>
                           <Percentage value={props.matches.extraCurricular} />
                         </Grid>
                         <Grid item xs={12} md={2}>
@@ -407,7 +407,7 @@ function ApplicantCard(props) {
                         <Grid item xs={12} md={3}>
                           <Typography>Awards</Typography>
                         </Grid>
-                        <Grid item xs={12} md={6} style={{alignSelf: 'center'}}>
+                        <Grid item xs={12} md={6} style={{ alignSelf: 'center' }}>
                           <Percentage value={props.matches.awards} />
                         </Grid>
                         <Grid item xs={12} md={2}>
@@ -430,13 +430,14 @@ function ApplicantCard(props) {
                   View Profile
                 </Button>
               </Link>
-              <Button
-                className={classes.downloadBtn}
-                startIcon={<GetAppIcon />}
-                onClick={handleResumeDownload}
-              >
-                Download Resume
-              </Button>
+              <Link to={{ pathname: `${FILE_URL}/resumes/${jobId}--${props.jobseeker._id}.pdf` }} target="_blank" download>
+                <Button
+                  className={classes.downloadBtn}
+                  startIcon={<GetAppIcon />}
+                >
+                  Download Resume
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
