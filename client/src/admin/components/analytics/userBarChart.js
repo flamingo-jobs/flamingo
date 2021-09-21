@@ -95,8 +95,8 @@ const UsersBarChart = () => {
       {displayAlert()}
 
       <FloatCard>
-        <Typography>Grow of Customer Base for the Past 8 Months</Typography>
-        <Bar data={generateBarChart()} />
+        <Typography>Growth of Customer Base for the Past 8 Months</Typography>
+        <Bar data={generateBarChart()} options={{ticks: {precision: 0}}}/>
       </FloatCard>
     </div>
   );

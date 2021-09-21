@@ -111,6 +111,8 @@ export default function AddNewCertificationPopup(props) {
                 } else {
                     props.onError();
                 }
+            }).catch(err => {
+                props.onError();
             })
         props.onClose();
     }

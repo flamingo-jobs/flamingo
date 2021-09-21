@@ -56,6 +56,8 @@ export default function AddNewSkillPopup(props) {
                 } else {
                     props.onError();
                 }
+            }).catch(err => {
+                props.onError();
             })
         props.onClose();
     }

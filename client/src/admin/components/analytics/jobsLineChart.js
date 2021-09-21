@@ -78,7 +78,7 @@ const JobsLineChart = () => {
 
       <FloatCard>
         <Typography>Jobs Created for the Past 8 Months</Typography>
-        <Line data={generateLineChart({fill: false})} />
+        <Line data={generateLineChart({fill: false})} options={{ticks: {precision: 0}}}/>
       </FloatCard>
     </div>
   );

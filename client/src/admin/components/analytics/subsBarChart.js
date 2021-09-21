@@ -100,7 +100,7 @@ const SubsBarChart = () => {
 
       <FloatCard>
         <Typography>Monthly Subscriptions</Typography>
-        <Bar data={generateBarChart()} />
+        <Bar data={generateBarChart()} options={{ticks: {precision: 0}}}/>
       </FloatCard>
     </div>
   );

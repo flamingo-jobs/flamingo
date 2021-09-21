@@ -1,26 +1,27 @@
 const Categories = require('../models/categories');
 
 
-const create = (req,res) => {
+const create = (req, res) => {
     let newCategory = new Categories(req.body);
 
     newCategory.save((err) => {
-        if(err){
+        if (err) {
             return res.status(400).json({
                 error: err
             });
         }
         return res.status(200).json({
-            success: "Category saved successfully"
+            success: true,
+            message: "Category saved successfully"
         });
 
     });
 
 }
 
-const getAll = (req,res) => {
-    Categories.find().exec((err,categories) => {
-        if(err){
+const getAll = (req, res) => {
+    Categories.find().exec((err, categories) => {
+        if (err) {
             return res.status(400).json({
                 error: err
             })
@@ -32,9 +33,9 @@ const getAll = (req,res) => {
     });
 }
 
-const getById = (req,res) => {
-    Categories.findById(req.params.id).exec((err,category) => {
-        if(err){
+const getById = (req, res) => {
+    Categories.findById(req.params.id).exec((err, category) => {
+        if (err) {
             return res.status(400).json({
                 error: err
             })
@@ -46,9 +47,9 @@ const getById = (req,res) => {
     });
 }
 
-const getFeaturedCategories = (req,res) => {
-    Categories.find({ isFeatured : true }, (err,featuredCategories) => {
-        if(err){
+const getFeaturedCategories = (req, res) => {
+    Categories.find({ isFeatured: true }, (err, featuredCategories) => {
+        if (err) {
             return res.status(400).json({
                 error: err
             })
@@ -61,17 +62,17 @@ const getFeaturedCategories = (req,res) => {
 }
 
 
-const update = (req,res) => {
+const update = (req, res) => {
 
     Categories.findByIdAndUpdate(
         req.params.id,
         {
-            $set:req.body
+            $set: req.body
         },
-        (err,category) =>{
-            if(err){
+        (err, category) => {
+            if (err) {
                 return res.status(400).json({
-                    error:err
+                    error: err
                 })
             }
             return res.status(200).json({
@@ -82,8 +83,8 @@ const update = (req,res) => {
 }
 
 const remove = (req, res) => {
-    Categories.deleteMany(req.body).exec((err,deletedCategory) => {
-        if(err){
+    Categories.deleteMany(req.body).exec((err, deletedCategory) => {
+        if (err) {
             return res.status(400).json({
                 error: err
             });

@@ -65,6 +65,8 @@ export default function AddNewPackage(props) {
                 } else {
                     props.onError();
                 }
+            }).catch(err => {
+                props.onError();
             })
         props.onClose();
     }
@@ -87,6 +89,7 @@ export default function AddNewPackage(props) {
                                 size="small"
                                 onChange={setForm}
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -98,6 +101,7 @@ export default function AddNewPackage(props) {
                                 size="small"
                                 type="number"
                                 onChange={setForm}
+                                required
                                 fullWidth
                             />
                         </Grid>
@@ -110,6 +114,7 @@ export default function AddNewPackage(props) {
                                 size="small"
                                 type="number"
                                 onChange={setForm}
+                                required
                                 fullWidth
                             />
                         </Grid>
@@ -122,6 +127,7 @@ export default function AddNewPackage(props) {
                                 size="small"
                                 type="number"
                                 onChange={setForm}
+                                required
                                 fullWidth
                             />
                         </Grid>
