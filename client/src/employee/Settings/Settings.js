@@ -19,12 +19,13 @@ import {
   Checkbox,
   FormControlLabel,
 } from "@material-ui/core";
-import theme from '../../Theme';
-import privateProfile from './images/privateProfile.png';
+import theme from "../../Theme";
+import privateProfile from "./images/privateProfile.png";
 import SnackBarAlert from "../../components/SnackBarAlert";
 import axios from "axios";
 import BACKEND_URL from "../../Config";
 import FloatCard from "../../components/FloatCard";
+import ChangeEmail from "./components/ChangeEmail";
 const jwt = require("jsonwebtoken");
 const passwordRegexp =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})/;
@@ -76,10 +77,10 @@ const useStyles = makeStyles({
     display: "grid",
   },
   jobsGrid: {
-    maxWidth: 'unset',
-    flexDirection: 'column',
+    maxWidth: "unset",
+    flexDirection: "column",
     alignItems: "stretch",
-    order: 3
+    order: 3,
   },
 });
 
@@ -125,18 +126,18 @@ const Settings = (props) => {
   const jwt = require("jsonwebtoken");
   const token = sessionStorage.getItem("userToken");
   const header = jwt.decode(token, { complete: true });
-  if(token === null){
-    loginId=props.jobseekerID;
-  }else if (header.payload.userRole === "jobseeker") {
+  if (token === null) {
+    loginId = props.jobseekerID;
+  } else if (header.payload.userRole === "jobseeker") {
     login = true;
-    loginId=sessionStorage.getItem("loginId");
+    loginId = sessionStorage.getItem("loginId");
   } else {
-    loginId=props.jobseekerID;
+    loginId = props.jobseekerID;
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchData();
-  },[])
+  }, []);
 
   const handleChangeChecked = (event) => {
     setChecked(event.target.checked);
@@ -147,25 +148,24 @@ const Settings = (props) => {
     setCheckboxConfirm(false);
   };
 
-  function fetchData(){
-    axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
-    .then(res => {
-      if(res.data.success){
-        if(res.data.jobseeker.isPublic !== null){
-          if(res.data.jobseeker.isPublic === true){
+  function fetchData() {
+    axios.get(`${BACKEND_URL}/jobseeker/${loginId}`).then((res) => {
+      if (res.data.success) {
+        if (res.data.jobseeker.isPublic !== null) {
+          if (res.data.jobseeker.isPublic === true) {
             setChecked(false);
-          }else if(res.data.jobseeker.isPublic === false){
+          } else if (res.data.jobseeker.isPublic === false) {
             setChecked(true);
           }
-        }       
+        }
       }
-    })
+    });
   }
 
   const resetVisibility = () => {
-    if(checked){
+    if (checked) {
       setChecked(false);
-    }else{
+    } else {
       setChecked(true);
     }
     setCheckboxConfirm(false);
@@ -173,24 +173,27 @@ const Settings = (props) => {
 
   const changeVisibility = () => {
     const data = {
-      isPublic : !checked,
-    }
-    axios.put(`${BACKEND_URL}/jobseeker/update/${loginId}`,data)
-    .then(res => {
-      if(res.data.success){
-        setAlertData({
-          severity: "success",
-          msg: `Profile visibility changed to ${checked ? "private" : "public"}!`,
-        });
-        handleAlert();
-        fetchData();
-      } else {
-        setAlertData({
-          severity: "error",
-          msg: "Couldn't change profile visibility!",
-        });
-      }
-    });
+      isPublic: !checked,
+    };
+    axios
+      .put(`${BACKEND_URL}/jobseeker/update/${loginId}`, data)
+      .then((res) => {
+        if (res.data.success) {
+          setAlertData({
+            severity: "success",
+            msg: `Profile visibility changed to ${
+              checked ? "private" : "public"
+            }!`,
+          });
+          handleAlert();
+          fetchData();
+        } else {
+          setAlertData({
+            severity: "error",
+            msg: "Couldn't change profile visibility!",
+          });
+        }
+      });
     setCheckboxConfirm(false);
   };
 
@@ -382,12 +385,28 @@ const Settings = (props) => {
   };
 
   return (
-    <Grid item container xs={12} spacing={3} direction="column"
+    <Grid
+      item
+      container
+      xs={12}
+      spacing={3}
+      direction="column"
       justify="space-between"
-      alignItems="flex-start" className={classes.mainGrid}>
-      <Grid item container xs={12} md={8} lg={9} spacing={0} direction="row"
+      alignItems="flex-start"
+      className={classes.mainGrid}
+    >
+      <Grid
+        item
+        container
+        xs={12}
+        md={8}
+        lg={9}
+        spacing={0}
+        direction="row"
         justify="space-between"
-        alignItems="flex-start" className={classes.jobsGrid}>
+        alignItems="flex-start"
+        className={classes.jobsGrid}
+      >
         <Grid item xs={12} className={classes.gridCard}>
           <FloatCard>
             {displayAlert()}
@@ -403,60 +422,95 @@ const Settings = (props) => {
                 <Tab label="Visibility" {...a11yProps(0)} />
                 <Tab label="Account" {...a11yProps(1)} />
               </Tabs>
-              
+
               <TabPanel value={value} index={0}>
                 <Grid container xs={12}>
                   <Grid item xs={0} md={4}></Grid>
-                  <Grid item container xs={12} md={4} spacing={2} justify="center" alignItems="center">
-                      <Grid item>
-                        <Typography gutterBottom variant="h5" style={{color: theme.palette.stateBlue,fontWeight:'bold',paddingTop:"5px"}}>
-                          Wanna Stay Hidden?     
-                        </Typography>
-                      </Grid>
-                      <Grid item>
-                        <Avatar alt="private profile image" src={privateProfile} />
-                      </Grid>
-                      <Grid item xs={12} style={{marginTop:"20px"}}>
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              checked={checked}
-                              // onChange={handleChangeChecked}
-                              onClick={handleChangeChecked}
-                              name="checkedB"
-                              color="primary"
-                            />
-                          }
-                          label="Private Account"
-                        />
-                        <Dialog
-                            open={checkboxConfirm}
-                            onClose={handleClickClose}
-                            aria-labelledby="alert-dialog-title"
-                            aria-describedby="alert-dialog-description"
-                        >
-                            <DialogTitle id="alert-dialog-title">{"Confirm Delete?"}</DialogTitle>
-                            <DialogContent>
-                                <DialogContentText id="alert-dialog-description">
-                                    Are you sure that you want to make profile {checked ? "private?" : "public?"}
-                                </DialogContentText>
-                            </DialogContent>
-                            <DialogActions>
-                                <Button onClick={resetVisibility} color="primary">
-                                    No
-                                </Button>
-                                <Button 
-                                  color="primary" onClick={changeVisibility} autoFocus>
-                                    Yes
-                                </Button>
-                            </DialogActions>
-                        </Dialog>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Typography gutterBottom style={{fontSize:'14px',color:'#666',textAlign:"left"}}>
-                          By making your profile private, only the organizations you applied for will be able to view your profile in Flamingo. You will not be visible to other organizations and job seekers.
-                        </Typography>
-                      </Grid>
+                  <Grid
+                    item
+                    container
+                    xs={12}
+                    md={4}
+                    spacing={2}
+                    justify="center"
+                    alignItems="center"
+                  >
+                    <Grid item>
+                      <Typography
+                        gutterBottom
+                        variant="h5"
+                        style={{
+                          color: theme.palette.stateBlue,
+                          fontWeight: "bold",
+                          paddingTop: "5px",
+                        }}
+                      >
+                        Wanna Stay Hidden?
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      <Avatar
+                        alt="private profile image"
+                        src={privateProfile}
+                      />
+                    </Grid>
+                    <Grid item xs={12} style={{ marginTop: "20px" }}>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={checked}
+                            // onChange={handleChangeChecked}
+                            onClick={handleChangeChecked}
+                            name="checkedB"
+                            color="primary"
+                          />
+                        }
+                        label="Private Account"
+                      />
+                      <Dialog
+                        open={checkboxConfirm}
+                        onClose={handleClickClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                      >
+                        <DialogTitle id="alert-dialog-title">
+                          {"Confirm Delete?"}
+                        </DialogTitle>
+                        <DialogContent>
+                          <DialogContentText id="alert-dialog-description">
+                            Are you sure that you want to make profile{" "}
+                            {checked ? "private?" : "public?"}
+                          </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                          <Button onClick={resetVisibility} color="primary">
+                            No
+                          </Button>
+                          <Button
+                            color="primary"
+                            onClick={changeVisibility}
+                            autoFocus
+                          >
+                            Yes
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography
+                        gutterBottom
+                        style={{
+                          fontSize: "14px",
+                          color: "#666",
+                          textAlign: "left",
+                        }}
+                      >
+                        By making your profile private, only the organizations
+                        you applied for will be able to view your profile in
+                        Flamingo. You will not be visible to other organizations
+                        and job seekers.
+                      </Typography>
+                    </Grid>
                   </Grid>
                 </Grid>
               </TabPanel>
@@ -468,6 +522,8 @@ const Settings = (props) => {
                   spacing={2}
                   direction="column"
                 >
+                  <ChangeEmail />
+                  <Box mt={5} />
                   <form onSubmit={handleChangePassword}>
                     <Grid item xs={12}>
                       <Grid container spacing={3}>
@@ -480,7 +536,8 @@ const Settings = (props) => {
                             password.
                           </Typography>
                           <Typography variant="caption" display="block">
-                            Please make sure that your password contains at least,
+                            Please make sure that your password contains at
+                            least,
                             <ul>
                               <li>8 characters</li>
                               <li>1 uppercase letter</li>
@@ -570,9 +627,10 @@ const Settings = (props) => {
                           <Grid item xs={12} align="left">
                             <Typography variant="h5">Delete Account</Typography>
                             <Typography>
-                              Please provide your password to delete your account.
-                              All the data regarding to your account (except
-                              payment history) will be deleted from Flamingo.com
+                              Please provide your password to delete your
+                              account. All the data regarding to your account
+                              (except payment history) will be deleted from
+                              Flamingo.com
                             </Typography>
                           </Grid>
                           <Grid item xs={12} align="left">
@@ -581,7 +639,9 @@ const Settings = (props) => {
                               name="deletePassword"
                               type="password"
                               value={deletePassword}
-                              onChange={(e) => setDeletePassword(e.target.value)}
+                              onChange={(e) =>
+                                setDeletePassword(e.target.value)
+                              }
                               size="small"
                               variant="outlined"
                               required
