@@ -22,12 +22,12 @@ const create = async (req, res) => {
 
 const checkWhetherFeatured = (job) => {
     var score = 0;
-    if(job.salaryRange.min !== ""){
-        score++;
-    }
-    if(job.salaryRange.max !== ""){
-        score++;
-    }
+    // if(job.salaryRange.min !== ""){
+    //     score++;
+    // }
+    // if(job.salaryRange.max !== ""){
+    //     score++;
+    // }
     if(job.numberOfVacancies !== ""){
         score++;
     }
@@ -41,7 +41,7 @@ const checkWhetherFeatured = (job) => {
         score++;
     }
 
-    if(score === 6){
+    if(score === 4){
         return true;
     }
 
@@ -328,12 +328,12 @@ const updateIsFeatured = async (jobId) => {
     try{
         const job  = await Jobs.findById(jobId);
         var score = 0;
-        if(job.salaryRange.min !== ""){
-            score++;
-        }
-        if(job.salaryRange.max !== ""){
-            score++;
-        }
+        // if(job.salaryRange.min !== ""){
+        //     score++;
+        // }
+        // if(job.salaryRange.max !== ""){
+        //     score++;
+        // }
         if(job.numberOfVacancies !== ""){
             score++;
         }
@@ -347,7 +347,7 @@ const updateIsFeatured = async (jobId) => {
             score++;
         }
     
-        if(score === 6){
+        if(score === 4){
             await Jobs.findByIdAndUpdate(jobId, {$set: {isFeatured: true}});
         } else{
             await Jobs.findByIdAndUpdate(jobId, {$set: {isFeatured: false}});

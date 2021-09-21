@@ -129,13 +129,7 @@ export default function CreateJobSetup() {
     } else {
       var validation = validateStep(index);
 
-      var salaryValidation = false;
-      if(validation){
-        if(validateSalary()){
-          salaryValidation = true;
-        }
-      }
-      if (validation && salaryValidation) {
+      if (validation) {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
       }
     }
@@ -374,7 +368,6 @@ export default function CreateJobSetup() {
     } else {
       if (regex.test(value.trim().replace(/\s/g, ""))) {
         delete newErrors[name];
-        validateSalaryOnchange();
       } else {
         newErrors[name] = "Salary can only contain numbers.";
       }
