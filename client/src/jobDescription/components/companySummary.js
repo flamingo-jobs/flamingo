@@ -177,7 +177,7 @@ function CompanySummary(props) {
           .get(`${BACKEND_URL}/employer/verificationStatus/${props.job.organization.id}`)
           .then((res) => {
             if (res.data.success) {
-              if (res.data.verificationStatus === "verified") setVerified(true);
+              if (res.data.verificationStatus === "Verified") setVerified(true);
             }
           })
           .catch((err) => {
