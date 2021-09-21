@@ -16,6 +16,7 @@ import BACKEND_URL from "../../Config";
 import { useState, useEffect } from "react";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 
 const jwt = require("jsonwebtoken");
 let haveAccess = false;
@@ -52,6 +53,48 @@ const useStyles = makeStyles((theme) => ({
   label: {
     backgroundColor: theme.palette.tagYellow,
   },
+  inputRoot: {
+    color: theme.palette.black,
+    fontSize: 14,
+    backgroundColor: 'transparent',
+    border: 'none',
+    minWidth: 250,
+    transition: 'background-color 200ms cubic-bezier(1, 1, 1, 0.1) 0ms',
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+    '&:hover:before': {
+      border: 'none',
+    },
+    '&:before': {
+      display: 'none'
+    },
+    '&:after': {
+      border: 'none',
+    },
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('md')]: {
+      width: '20ch',
+    },
+    background: 'transparent'
+  },
+  keywordInput: {
+    border: 'none',
+    '&hover': {
+      border: 'none'
+    }
+  },
+  keywordChip: {
+    backgroundColor: theme.palette.lightSkyBlue,
+    margin: 3,
+    marginRight: 5
+  },
 }));
 
 function CompanyDescription(props) {
@@ -59,7 +102,7 @@ function CompanyDescription(props) {
 
   const fixedOptions = [];
   const [location, setLocation] = React.useState([...fixedOptions]);
-
+  const [allCategories, setAllCategories] = useState([]);
   let loginId;
   let login = false;
   const jwt = require("jsonwebtoken");
@@ -71,8 +114,8 @@ function CompanyDescription(props) {
   } else if (window.location.pathname.split("/")[3] != undefined) {
     loginId = window.location.pathname.split("/")[3];
 
-    if(loginId==props.accessId) editAccess=true
-    
+    if (loginId == props.accessId) editAccess = true
+
   } else if (header.payload.userRole === "employer") {
     login = true;
     loginId = sessionStorage.getItem("loginId");
@@ -88,6 +131,7 @@ function CompanyDescription(props) {
 
   const description = state.description;
   const technologyStack = state.technologyStack;
+  const categories = state.categories;
 
   function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -141,6 +185,7 @@ function CompanyDescription(props) {
         setState({
           description: res.data.employer.description,
           technologyStack: res.data.employer.technologyStack,
+          categories: res.data.employer.categories
         });
       }
       res.data.employer.locations.forEach((element) => {
@@ -148,7 +193,20 @@ function CompanyDescription(props) {
         setLocation((location) => [...location, { city: element }]);
       });
     });
+
+    axios.get(`${BACKEND_URL}/categories`).then((res) => {
+      if (res.data.success) {
+        setAllCategories(res.data.existingData);
+        console.log(res.data.existingData)
+      }
+    });
   }, []);
+
+  const handleCategories = (value) => {
+    setState((prevState) => {
+      return { ...prevState, categories: value };
+    });
+  }
 
   //Event handlers for the edit detail dialog box
   const [open, setOpen] = React.useState(false);
@@ -181,6 +239,7 @@ function CompanyDescription(props) {
     });
     const employer = {
       description: description,
+      categories: categories
     };
 
     if (employer.description != "") {
@@ -222,7 +281,42 @@ function CompanyDescription(props) {
                 <Typography>*Required Fields</Typography>
               </Grid>
               {/* input fields */}
+              <Grid item xs={12}>
 
+                <Autocomplete
+                  multiple
+                  id="tags-outlined"
+                  filterSelectedOptions
+                  options={allCategories ? allCategories.map(x => x.name) : []}
+                  value={categories}
+                  getOptionLabel={(option) => option}
+                  renderTags={(value, getTagProps) =>
+                    value.map((option, index) => (
+                      <Chip
+                        key={index}
+                        label={option}
+                        {...getTagProps({ index })}
+                        className={classes.keywordChip}
+                      />
+                    ))
+                  }
+                  onChange={(event, value) => {
+                    handleCategories(value);
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      variant="outlined"
+                      label="Job categories"
+                      placeholder="+ Add new categories"
+                    />
+                  )}
+                  classes={{
+                    inputRoot: classes.inputRoot,
+                    input: classes.inputInput,
+                  }}
+                />
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   multiline
@@ -245,7 +339,6 @@ function CompanyDescription(props) {
           <DialogActions>
             <Button
               onClick={handleClose}
-              color="primary"
               className={classes.dialogbuttons}
             >
               Cancel
@@ -267,7 +360,7 @@ function CompanyDescription(props) {
   return (
     <>
       <FloatCard>
-        {props.userRole == "employer" || haveAccess == true  && editAccess==true ?  (
+        {props.userRole == "employer" || haveAccess == true && editAccess == true ? (
           <IconButton
             variant="outlined"
             aria-label="edit"
@@ -281,29 +374,19 @@ function CompanyDescription(props) {
         )}
         <Grid container spacing={3} direction="row">
           <Grid item container spacing={3} xs={12}>
-            {technologyStack.length > 0 ? (
+            {categories?.length > 0 ? (
               <Grid item xs={12}>
                 <div className={classes.infoTags}>
-                  {Object.keys(technologyStack).map((item, i) => (
+                  {categories.map((item, i) => (
                     <Chip
                       icon={<LocalOfferRoundedIcon />}
                       className={classes.tag}
-                      label={technologyStack[i].type}
+                      label={item}
                     />
                   ))}
                 </div>
               </Grid>
-            ) : (
-              <Grid item xs={12}>
-                <div className={classes.infoTags}>
-                  <Chip
-                    icon={<LocalOfferRoundedIcon />}
-                    className={classes.tag}
-                    label="No Technologies"
-                  />
-                </div>
-              </Grid>
-            )}
+            ) : null}
             <Grid item xs={12} className={classes.headerInfo}></Grid>
           </Grid>
 
