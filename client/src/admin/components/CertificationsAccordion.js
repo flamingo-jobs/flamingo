@@ -163,7 +163,7 @@ export default function DetailedAccordion(props) {
 
   const displayEditPopup = () => {
     if (editing) {
-      return <EditCertificationIssuer onClose={doneEdit} onSuccess={props.onRefresh} open={editing} info={props.info} handleDone={doneEdit} />
+      return <EditCertificationIssuer onClose={doneEdit}  onSuccess={props.onRefresh} open={editing} info={props.info} handleDone={doneEdit} />
     }
   }
 

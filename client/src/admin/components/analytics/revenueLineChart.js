@@ -80,8 +80,14 @@ const RevenueLineChart = () => {
       {displayAlert()}
 
       <FloatCard>
-        <Typography>Revenue for the Past 8 Months</Typography>
-        <Line data={generateLineChart({ fill: true })} />
+        <Typography>Revenue for the Past 8 Months in LKR</Typography>
+        <Line data={generateLineChart({ fill: true })} options={{
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }} />
       </FloatCard>
     </div>
   );

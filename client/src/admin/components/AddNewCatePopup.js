@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
             color: "white",
             boxShadow: "none",
         },
-        "&.Mui-disabled" : {
+        "&.Mui-disabled": {
             backgroundColor: theme.palette.lightSkyBlue
         }
     },
@@ -53,18 +53,21 @@ export default function AddNewCatePopup(props) {
             .then(res => {
                 if (res.data.success) {
                     props.onSuccess();
+                    props.onClose();
+
                 } else {
                     props.onError();
                 }
+            }).catch(err => {
+                props.onError();
             })
-        props.onClose();
     }
 
     return (
         <div>
             <Dialog open={props.open} onClose={props.onClose} aria-labelledby="form-dialog-title" classes={{ paper: classes.root }}>
                 <DialogTitle id="form-dialog-title">Add New Category</DialogTitle>
-                <DialogContent style={{padding: "16px 24px"}}>
+                <DialogContent style={{ padding: "16px 24px" }}>
                     <DialogContentText>
                         Please enter category name in the given.
                     </DialogContentText>
@@ -77,7 +80,7 @@ export default function AddNewCatePopup(props) {
                         onChange={onChange}
                     />
                 </DialogContent>
-                <DialogActions style={{marginTop: 16}}>
+                <DialogActions style={{ marginTop: 16 }}>
                     <Button onClick={props.onClose} color="primary">
                         Cancel
                     </Button>

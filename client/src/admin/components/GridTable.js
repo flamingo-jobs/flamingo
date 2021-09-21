@@ -339,6 +339,9 @@ function GridTable(props) {
             } else {
                 setDeleteFailed(true);
             }
+        }).catch(err => {
+            setDeleteFailed(true);
+            handleRefresh();
         })
     }
 
@@ -407,6 +410,9 @@ function GridTable(props) {
                 } else {
                     setUpdateFailed(true);
                 }
+            }).catch(err => {
+                setUpdateFailed(true);
+                handleRefresh();
             })
         })
         setPendingChanges(false);

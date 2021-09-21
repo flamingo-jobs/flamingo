@@ -518,33 +518,34 @@ export default function Topbar(props) {
               <>
                 <Link to="/jobseeker/savedJobs">
                   <IconButton aria-label="" className={classes.topBarIcon} onClick={handleMobileMenuClose}>
-                    <Badge badgeContent={savedJobCount} color="secondary">
-                      <BookmarksIcon />
-                    </Badge>
+                    {/* <Badge badgeContent={savedJobCount} color="secondary"> */}
+                    <BookmarksIcon />
+                    {/* </Badge> */}
                   </IconButton>
                 </Link>
                 <Link to="/jobseeker/favoriteOrganizations">
                   <IconButton aria-label="" className={classes.topBarIcon} onClick={handleMobileMenuClose}>
-                    <Badge badgeContent={favoriteOrgCount} color="secondary">
-                      <FavoriteIcon />
-                    </Badge>
+                    {/* <Badge badgeContent={favoriteOrgCount} color="secondary"> */}
+                    <FavoriteIcon />
+                    {/* </Badge> */}
                   </IconButton>
                 </Link>
 
                 <Link to="/jobseeker/appliedJobs">
                   <IconButton aria-label="" className={classes.topBarIcon} onClick={handleMobileMenuClose}>
-                    <Badge badgeContent={applicationCount} color="secondary">
-                      <WorkRoundedIcon />
-                    </Badge>
+                    {/* <Badge badgeContent={applicationCount} color="secondary"> */}
+                    <WorkRoundedIcon />
+                    {/* </Badge> */}
                   </IconButton>
                 </Link>
               </>
             }
-            <IconButton aria-label="show 11 new notifications" className={classes.topBarIcon} onClick={handleNotificationOpen}>
-              <Badge badgeContent={notifications} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
+            {props.user !== "admin" ?
+              <IconButton aria-label="show 11 new notifications" className={classes.topBarIcon} onClick={handleNotificationOpen}>
+                <Badge badgeContent={notifications} color="secondary">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton> : null}
             <IconButton
               aria-label="account of current user"
               aria-controls="primary-search-account-menu"
@@ -627,37 +628,38 @@ export default function Topbar(props) {
                       <>
                         <Link to="/jobseeker/savedJobs">
                           <IconButton aria-label="" className={classes.topBarIcon}>
-                            <Badge badgeContent={savedJobCount} color="secondary">
-                              <BookmarksIcon />
-                            </Badge>
+                            {/* <Badge badgeContent={savedJobCount} color="secondary"> */}
+                            <BookmarksIcon />
+                            {/* </Badge> */}
                           </IconButton>
                         </Link>
                         <Link to="/jobseeker/favoriteOrganizations">
                           <IconButton aria-label="" className={classes.topBarIcon}>
-                            <Badge badgeContent={favoriteOrgCount} color="secondary">
-                              <FavoriteIcon />
-                            </Badge>
+                            {/* <Badge badgeContent={favoriteOrgCount} color="secondary"> */}
+                            <FavoriteIcon />
+                            {/* </Badge> */}
                           </IconButton>
                         </Link>
 
                         <Link to="/jobseeker/appliedJobs">
                           <IconButton aria-label="" className={classes.topBarIcon}>
-                            <Badge badgeContent={applicationCount} color="secondary">
-                              <WorkRoundedIcon />
-                            </Badge>
+                            {/* <Badge badgeContent={applicationCount} color="secondary"> */}
+                            <WorkRoundedIcon />
+                            {/* </Badge> */}
                           </IconButton>
                         </Link>
                       </>
                     }
 
-                    <IconButton
-                      className={classes.topBarIcon}
-                      onClick={handleNotificationOpen}
-                    >
-                      <Badge badgeContent={newNotifications !== "empty" ? newNotifications : null} color="secondary" >
-                        <NotificationsIcon />
-                      </Badge>
-                    </IconButton>
+                    {props.user !== "admin" ?
+                      <IconButton
+                        className={classes.topBarIcon}
+                        onClick={handleNotificationOpen}
+                      >
+                        <Badge badgeContent={newNotifications !== "empty" ? newNotifications : null} color="secondary" >
+                          <NotificationsIcon />
+                        </Badge>
+                      </IconButton> : null}
                     <IconButton
                       edge="end"
                       aria-label="account of current user"
