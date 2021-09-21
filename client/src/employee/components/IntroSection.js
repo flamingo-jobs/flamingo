@@ -188,6 +188,8 @@ function IntroSection(props) {
   const [isPublic, setIsPublic] = useState(true);
   const [profilePic, setProfilePic] = useState("empty");
   const [profilePicPreview, setProfilePicPreview] = useState(defaultImage);
+  const [mobileError, setMobileError] = useState(null);
+  const [emailError, setEmailError] = useState(null);
   const [savedPic, setSavedPic] = useState(require(`../../components/images/loadingImage.gif`).default);
   const dispatch = useDispatch();
 
@@ -371,12 +373,42 @@ function IntroSection(props) {
     setState(prevState => {
       return { ...prevState, mobile: e.target.value }
     })
+    validateMobile(e);
+  }
+
+  function validateMobile(e) {
+    const error = <span style={{ color: "red", paddingTop: "-30px", fontSize: "13px" }}>Invalid mobile number</span>;
+    var regexp = /^\+[1-9]{1}[0-9]{3,14}$/;
+    if (e.target.value !== "") {
+      if (!regexp.test(e.target.value)) {
+        setMobileError(error);
+      } else {
+        setMobileError(null);
+      }
+    } else {
+      setMobileError(null);
+    }
   }
 
   function onChangeEmail(e) {
     setState(prevState => {
       return { ...prevState, email: e.target.value }
     })
+    validateEmail(e);
+  }
+
+  function validateEmail(e) {
+    const error = <span style={{ color: "red", paddingTop: "-30px", fontSize: "13px" }}>Invalid email address</span>;
+    var regexp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (e.target.value !== "") {
+      if (!regexp.test(e.target.value)) {
+        setEmailError(error);
+      } else {
+        setEmailError(null);
+      }
+    } else {
+      setEmailError(null);
+    }
   }
 
   function onChangeFacebook(e) {
@@ -411,6 +443,9 @@ function IntroSection(props) {
 
   function onSubmit(e) {
     e.preventDefault();
+    if (mobileError !== null || emailError !== null) {
+      return;
+    }
     const jobseeker = {
       name: state.firstName + " " + state.lastName,
       gender: state.gender,
@@ -551,12 +586,17 @@ function IntroSection(props) {
                       className={classes.field}
                       id="outlined-basic"
                       label="Mobile"
+                      type="text"
                       variant="outlined"
                       size="small"
                       value={state.mobile}
                       onChange={onChangeMobile}
                     />
+                    {mobileError !== null ?
+                      mobileError
+                     : null}
                   </Grid>
+                  
                   <Grid item xs={12} md={6}>
                     <TextField
                       className={classes.field}
@@ -568,6 +608,9 @@ function IntroSection(props) {
                       value={state.email}
                       onChange={onChangeEmail}
                     />
+                    {emailError !== null ?
+                      emailError
+                     : null}
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <TextField
