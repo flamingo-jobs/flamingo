@@ -518,24 +518,24 @@ export default function Topbar(props) {
               <>
                 <Link to="/jobseeker/savedJobs">
                   <IconButton aria-label="" className={classes.topBarIcon} onClick={handleMobileMenuClose}>
-                    <Badge badgeContent={savedJobCount} color="secondary">
+                    {/* <Badge badgeContent={savedJobCount} color="secondary"> */}
                       <BookmarksIcon />
-                    </Badge>
+                    {/* </Badge> */}
                   </IconButton>
                 </Link>
                 <Link to="/jobseeker/favoriteOrganizations">
                   <IconButton aria-label="" className={classes.topBarIcon} onClick={handleMobileMenuClose}>
-                    <Badge badgeContent={favoriteOrgCount} color="secondary">
+                    {/* <Badge badgeContent={favoriteOrgCount} color="secondary"> */}
                       <FavoriteIcon />
-                    </Badge>
+                    {/* </Badge> */}
                   </IconButton>
                 </Link>
 
                 <Link to="/jobseeker/appliedJobs">
                   <IconButton aria-label="" className={classes.topBarIcon} onClick={handleMobileMenuClose}>
-                    <Badge badgeContent={applicationCount} color="secondary">
+                    {/* <Badge badgeContent={applicationCount} color="secondary"> */}
                       <WorkRoundedIcon />
-                    </Badge>
+                    {/* </Badge> */}
                   </IconButton>
                 </Link>
               </>
@@ -627,24 +627,24 @@ export default function Topbar(props) {
                       <>
                         <Link to="/jobseeker/savedJobs">
                           <IconButton aria-label="" className={classes.topBarIcon}>
-                            <Badge badgeContent={savedJobCount} color="secondary">
+                            {/* <Badge badgeContent={savedJobCount} color="secondary"> */}
                               <BookmarksIcon />
-                            </Badge>
+                            {/* </Badge> */}
                           </IconButton>
                         </Link>
                         <Link to="/jobseeker/favoriteOrganizations">
                           <IconButton aria-label="" className={classes.topBarIcon}>
-                            <Badge badgeContent={favoriteOrgCount} color="secondary">
+                            {/* <Badge badgeContent={favoriteOrgCount} color="secondary"> */}
                               <FavoriteIcon />
-                            </Badge>
+                            {/* </Badge> */}
                           </IconButton>
                         </Link>
 
                         <Link to="/jobseeker/appliedJobs">
                           <IconButton aria-label="" className={classes.topBarIcon}>
-                            <Badge badgeContent={applicationCount} color="secondary">
+                            {/* <Badge badgeContent={applicationCount} color="secondary"> */}
                               <WorkRoundedIcon />
-                            </Badge>
+                            {/* </Badge> */}
                           </IconButton>
                         </Link>
                       </>
