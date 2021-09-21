@@ -226,8 +226,36 @@ const remove = (req, res) => {
   });
 };
 
+// const getAllApplications = async (req, res) => {
+//   Jobs.find({ "organization.id": req.params.id }, null, { limit: 4 })
+//     .exec()
+//     .then(async (moreFromJobs) => {
+//       let temp = [];
+
+//       for (let index = 0; index < moreFromJobs.length; index++) {
+//         const job = moreFromJobs[index];
+//         for (let jindex = 0; jindex < job.applicationDetails.length; jindex++) {
+//           const user = job.applicationDetails[jindex];
+//           var a = await Jobseeker.findById(user.userId);
+//           temp.push({ job: job.title, name: a.name, jobseekerId: a._id, jobId: job._id });
+//         }
+//       }
+
+//       return res.status(200).json({
+//         success: true,
+//         applications: temp,
+//       });
+//     })
+//     .catch((error) => {
+//       res.send({
+//         status: false,
+//         message: "Something went wrong please try again!!!!",
+//       });
+//     });
+// };
+
 const getAllApplications = async (req, res) => {
-  Jobs.find({ "organization.id": req.params.id }, null, { limit: 4 })
+  Jobs.find({ "organization.id": req.params.id }, null, { limit: 7 })
     .exec()
     .then(async (moreFromJobs) => {
       let temp = [];
@@ -237,10 +265,14 @@ const getAllApplications = async (req, res) => {
         for (let jindex = 0; jindex < job.applicationDetails.length; jindex++) {
           const user = job.applicationDetails[jindex];
           var a = await Jobseeker.findById(user.userId);
-          temp.push({ job: job.title, name: a.name, jobseekerId: a._id, jobId: job._id });
+          temp.push({ job: job.title, name: a.name, jobseekerId: a._id, jobId: job._id , appliedDate:user.appliedDate});
         }
       }
+      
+      temp.sort(function(a,b){return b.appliedDate - a.appliedDate})
+      temp=temp.slice(0,15);
 
+      // console.log(temp)
       return res.status(200).json({
         success: true,
         applications: temp,
