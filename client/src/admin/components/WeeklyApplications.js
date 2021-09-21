@@ -38,7 +38,7 @@ function WeeklyApplications() {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Typography variant="h2">{weeklyApplications}</Typography>
-            <Typography>Applications</Typography>
+            <Typography>New Applications</Typography>
           </Grid>
         </Grid>
     </FloatCard>

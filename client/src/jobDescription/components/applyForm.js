@@ -308,7 +308,18 @@ const ApplyForm = (props) => {
               isUnRead: true
             })
 
-          dispatch(setNewNotifications(notificationCount+1));
+          dispatch(setNewNotifications(notificationCount + 1));
+
+          axios.put(`${BACKEND_URL}/employer/addNotifications/${props.orgId}`,
+            {
+              title: 'New job application',
+              description: `for ${props.name}`,
+              link: `/employer/resumes/${props.jobId}`,
+              type: 'job_applied',
+              createdAt: new Date(),
+              isUnRead: true
+            })
+
 
         } else {
           setAlertData({

@@ -142,7 +142,7 @@ const ShortlistModal = (props) => {
     if (!isDefault) {
       return (
         <>
-          <Typography>NOTE: Changes you make to below settings will not be stored anywhere and will be applied for this shortlisting only.</Typography>
+          <Typography style={{marginBottom: 24}}>NOTE: Changes you make to below settings will not be stored anywhere and will be applied for this shortlisting only.</Typography>
 
           <ShortlistingSettingsAccordion type="custom" handleCustomSettings={handleCustomSettings} handleInvalid={handleInvalid} />
         </>

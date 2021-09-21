@@ -37,7 +37,7 @@ function NewJobPostings() {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Typography variant="h2">{weeklyJobPostings}</Typography>
-            <Typography>Job Postings</Typography>
+            <Typography>New Job Postings</Typography>
           </Grid>
         </Grid>
     </FloatCard>

@@ -346,6 +346,14 @@ export default function Topbar(props) {
           }
         }
       });
+    } else if (header?.payload.userRole === "employer") {
+      axios.get(`${BACKEND_URL}/employers/${sessionStorage.getItem("loginId")}`).then(res => {
+        if (res.data.success) {
+          if (res.data.employer.hasOwnProperty("notifications")) {
+            dispatch(setNewNotifications(res.data.employer.notifications.filter((item) => item.isUnRead === true).length));
+          }
+        }
+      });
     }
   }
 
@@ -542,7 +550,7 @@ export default function Topbar(props) {
           </div>
         )}
         <div className={classes.mobileSideMenuItems}>
-          <NavMenu user={props.user} onClose={handleMobileMenuClose}/>
+          <NavMenu user={props.user} onClose={handleMobileMenuClose} />
         </div>
       </Menu>
     </Dialog>

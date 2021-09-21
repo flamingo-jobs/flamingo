@@ -232,6 +232,7 @@ function JobDescription(props) {
                 userId={userId}
                 name={job.title}
                 org={job.organization.name}
+                orgId={job.organization.id}
                 jobId={jobId}
                 handleApply={handleApply}
                 appliedJobCount={appliedJobCount}
