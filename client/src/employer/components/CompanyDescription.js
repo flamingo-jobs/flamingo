@@ -319,6 +319,7 @@ function CompanyDescription(props) {
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  required
                   multiline
                   fullWidth
                   id="description"

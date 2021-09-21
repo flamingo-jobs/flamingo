@@ -320,8 +320,6 @@ function CompanyBasicInfo(props) {
     const employer = {
       name: name,
 
-      // locations: locations,
-
       links: {
         website: website,
         facebook: facebook,
@@ -337,6 +335,29 @@ function CompanyBasicInfo(props) {
         .then((res) => {
           if (res.status == 200) {
             handleClickAlertSuccess();
+            axios.get(`${BACKEND_URL}/employers/${loginId}`).then((res) => {
+              // console.log(res.data.employer.reviews);
+              if (res.data.success) {
+                setState({
+                  name: res.data.employer.name,
+                  technologyStack: res.data.employer.technologyStack,
+                  links: res.data.employer.links,
+                  subscription: res.data.employer.subscription.type,
+                  website: res.data.employer.links.website,
+                  facebook: res.data.employer.links.facebook,
+                  linkedIn: res.data.employer.links.linkedIn,
+                  twitter: res.data.employer.links.twitter,
+                  reviews: res.data.employer.reviews,
+                  logo: res.data.employer.logo,
+                  locations: res.data.employer.locations,
+                });
+              }
+              setLocation([]);
+              res.data.employer.locations.forEach((element) => {
+                // console.log(element);
+                setLocation((location) => [...location, { city: element }]);
+              });
+            });
           } else {
             handleClickAlertServerError();
           }

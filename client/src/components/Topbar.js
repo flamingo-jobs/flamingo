@@ -428,7 +428,16 @@ export default function Topbar(props) {
         className={classes.profileMenu}
 
       >
-        {token && header.payload.userRole !== "admin" ? <Link to={`/${header.payload.userRole}/profile`}>
+        {token && header.payload.userRole == "jobseeker" ? <Link to={`/${header.payload.userRole}/profile`}>
+          <MenuItem className={classes.menuItem} onClick={handleMenuClose}>
+            <div className={classes.menuIcon}>
+              <PersonRoundedIcon />
+            </div>
+            <Typography className={classes.menuText} >Profile</Typography>
+          </MenuItem>
+        </Link> : null}
+
+        {token && header.payload.userRole == "employer" ? <Link to={`/${header.payload.userRole}/company`}>
           <MenuItem className={classes.menuItem} onClick={handleMenuClose}>
             <div className={classes.menuIcon}>
               <PersonRoundedIcon />
