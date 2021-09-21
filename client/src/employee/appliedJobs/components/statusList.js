@@ -74,6 +74,11 @@ const StatusList = (props) => {
     passFilters();
   }, [checked]);
 
+  useEffect(() => {
+    if (props.status) {
+      setChecked([props.status]);
+    }
+  }, []);
 
   const handleToggle = (value) => () => {
     const newChecked = [...checked];
@@ -88,6 +93,7 @@ const StatusList = (props) => {
   };
 
   const passFilters = () => {
+    console.log(checked)
     props.updateFilters(checked);
   };
 
@@ -95,9 +101,9 @@ const StatusList = (props) => {
   const displayStatus = () => {
     if (states) {
       return states.map((status, i) => {
-        const labelId = `status-list-${status+i}`;
-        const itemId = status+i;
-        
+        const labelId = `status-list-${status + i}`;
+        const itemId = status + i;
+
         return (
           <ListItem
             className={classes.listItem}
@@ -144,7 +150,7 @@ const StatusList = (props) => {
           ></ListItemText>
         </ListItem>
         <List className={classes.root}>{displayStatus()}</List>
-        
+
       </List>
     </>
   );

@@ -8,44 +8,44 @@ import FloatCard from "../../../components/FloatCard";
 import axios from "axios";
 import BACKEND_URL from "../../../Config";
 import { useState, useEffect } from "react";
-
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: "unset"
   },
-  cardTitle:{
+  cardTitle: {
     fontWeight: "bolder",
     fontSize: 15,
     color: theme.palette.stateBlue,
     marginBottom: 20,
     float: "center",
   },
-  cardNumber:{
+  cardNumber: {
     fontWeight: "bolder",
     fontSize: 40,
     color: theme.palette.stateBlue,
     float: "center",
   },
-  pieChart:{
-    width:90,
-    height:90,
+  pieChart: {
+    width: 90,
+    height: 90,
     padding: '0 0 0 0',
     marginTop: -190,
     marginBottom: -200,
     marginLeft: 65,
   },
-  applicationCard:{
-    paddingBottom:20,
+  applicationCard: {
+    paddingBottom: 20,
   },
-  applicationsTitle:{
+  applicationsTitle: {
     fontWeight: "bolder",
     fontSize: 15,
     color: theme.palette.stateBlue,
     marginBottom: 20,
     float: "center",
   },
-  applicationsNumber:{
+  applicationsNumber: {
     fontWeight: "bolder",
     fontSize: 51,
     color: theme.palette.stateBlue,
@@ -54,57 +54,57 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-function TopCards(props){
-    const classes = useStyles();
-    const [fetchedData, setFetchedData] = useState('');
-    const [appliedJobs,setAppliedJobs] = useState(0);
-    let pending = 0;
-    let shortlisted = 0;
-    let rejected = 0;
+function TopCards(props) {
+  const classes = useStyles();
+  const [fetchedData, setFetchedData] = useState('');
+  const [appliedJobs, setAppliedJobs] = useState(0);
+  let pending = 0;
+  let shortlisted = 0;
+  let rejected = 0;
 
-    let loginId;
-    let login = false;
-    const jwt = require("jsonwebtoken");
-    const token = sessionStorage.getItem("userToken");
-    const header = jwt.decode(token, { complete: true });
-    if(token === null){
-        loginId=props.jobseekerID;
-    }else if (header.payload.userRole === "jobseeker") {
-        login = true;
-        loginId=sessionStorage.getItem("loginId");
-    } else {
-        loginId=props.jobseekerID;
-    }
+  let loginId;
+  let login = false;
+  const jwt = require("jsonwebtoken");
+  const token = sessionStorage.getItem("userToken");
+  const header = jwt.decode(token, { complete: true });
+  if (token === null) {
+    loginId = props.jobseekerID;
+  } else if (header.payload.userRole === "jobseeker") {
+    login = true;
+    loginId = sessionStorage.getItem("loginId");
+  } else {
+    loginId = props.jobseekerID;
+  }
 
-    function fetchData(){
-      let courseData;
-      axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
+  function fetchData() {
+    let courseData;
+    axios.get(`${BACKEND_URL}/jobseeker/${loginId}`)
       .then(res => {
-        if(res.data.success){
-          if(res.data.jobseeker.applicationDetails.length > 0){
+        if (res.data.success) {
+          if (res.data.jobseeker.applicationDetails.length > 0) {
             courseData = res.data.jobseeker.applicationDetails;
-            if(Object.keys(res.data.jobseeker.applicationDetails[0]).length === 0){
-              res.data.jobseeker.applicationDetails.splice(0,1)
+            if (Object.keys(res.data.jobseeker.applicationDetails[0]).length === 0) {
+              res.data.jobseeker.applicationDetails.splice(0, 1)
             }
           }
           setAppliedJobs(courseData)
         }
       })
-      setFetchedData(0)
-    }
+    setFetchedData(0)
+  }
 
-  function getTotal(){
+  function getTotal() {
     let totalPending = 0;
     let totalShortlisted = 0;
     let totalRejected = 0;
     let temp = appliedJobs ? appliedJobs.length : 0;
 
     for (let index = 0; index < temp; index++) {
-      if(appliedJobs[index].status==="pending"){
+      if (appliedJobs[index].status === "pending") {
         totalPending++
-      }else if(appliedJobs[index].status==="shortlisted"){
+      } else if (appliedJobs[index].status === "shortlisted") {
         totalShortlisted++
-      }else if(appliedJobs[index].status==="rejected"){
+      } else if (appliedJobs[index].status === "rejected") {
         totalRejected++
       }
     }
@@ -112,65 +112,73 @@ function TopCards(props){
     pending = totalPending;
     shortlisted = totalShortlisted;
     rejected = totalRejected;
-    
+
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchData();
-  },[fetchedData])
+  }, [fetchedData])
 
-    return (
+  return (
     <Grid container direction="row" spacing={2} className={classes.root}>
 
-        <Grid item xs={6} md={3}>
-            <FloatCard className={classes.applicationCard}>
-                        <Typography variant="body2" className={classes.applicationsTitle}>
-                            APPLIED
-                        </Typography>
-                        
-                        <Typography variant="h5" className={classes.applicationsNumber} style={{float:"center"}}>                       
-                            {appliedJobs ? appliedJobs.length : 0}
-                        </Typography>   
-            </FloatCard>
-        </Grid>
+      <Grid item xs={6} md={3}>
+        <Link to="/jobseeker/appliedJobs">
+          <FloatCard className={classes.applicationCard}>
+            <Typography variant="body2" className={classes.applicationsTitle}>
+              APPLIED
+            </Typography>
 
-        <Grid item xs={6} md={3}>
-            <FloatCard className={classes.applicationCard}>
-                        <Typography variant="body2" className={classes.applicationsTitle}>
-                            SHORTLISTED
-                        </Typography>
-                        
-                        <Typography variant="h5" className={classes.applicationsNumber} style={{float:"center"}}>
-                            {getTotal()}
-                            {shortlisted}
-                        </Typography>   
-            </FloatCard>
-        </Grid>
+            <Typography variant="h5" className={classes.applicationsNumber} style={{ float: "center" }}>
+              {appliedJobs ? appliedJobs.length : 0}
+            </Typography>
+          </FloatCard>
+        </Link>
+      </Grid>
 
-        <Grid item xs={6} md={3}>
-            <FloatCard className={classes.applicationCard}>
-                        <Typography variant="body2" className={classes.applicationsTitle}>
-                            PENDING
-                        </Typography>
-                        
-                        <Typography variant="h5" className={classes.applicationsNumber} style={{float:"center"}}>
-                            {pending}
-                        </Typography>   
-            </FloatCard>
-        </Grid>
+      <Grid item xs={6} md={3}>
+        <Link to="/jobseeker/appliedJobs?status=shortlisted">
+          <FloatCard className={classes.applicationCard}>
+            <Typography variant="body2" className={classes.applicationsTitle}>
+              SHORTLISTED
+            </Typography>
 
-        <Grid item xs={6} md={3}>
-            <FloatCard className={classes.applicationCard}>
-                        <Typography variant="body2" className={classes.applicationsTitle}>
-                            REJECTED
-                        </Typography>
-                        
-                        <Typography variant="h5" className={classes.applicationsNumber} style={{float:"center"}}>
-                            {rejected}
-                        </Typography>   
-            </FloatCard>
-        </Grid>    
-      
+            <Typography variant="h5" className={classes.applicationsNumber} style={{ float: "center" }}>
+              {getTotal()}
+              {shortlisted}
+            </Typography>
+          </FloatCard>
+        </Link>
+      </Grid>
+
+      <Grid item xs={6} md={3}>
+        <Link to="/jobseeker/appliedJobs?status=pending">
+          <FloatCard className={classes.applicationCard}>
+            <Typography variant="body2" className={classes.applicationsTitle}>
+              PENDING
+            </Typography>
+
+            <Typography variant="h5" className={classes.applicationsNumber} style={{ float: "center" }}>
+              {pending}
+            </Typography>
+          </FloatCard>
+        </Link>
+      </Grid>
+
+      <Grid item xs={6} md={3}>
+        <Link to="/jobseeker/appliedJobs?status=rejected">
+          <FloatCard className={classes.applicationCard}>
+            <Typography variant="body2" className={classes.applicationsTitle}>
+              REJECTED
+            </Typography>
+
+            <Typography variant="h5" className={classes.applicationsNumber} style={{ float: "center" }}>
+              {rejected}
+            </Typography>
+          </FloatCard>
+        </Link>
+      </Grid>
+
     </Grid>
   );
 }

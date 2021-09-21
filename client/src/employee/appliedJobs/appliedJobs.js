@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
   filterGrid: {
     [theme.breakpoints.down('sm')]: {
-        order: 2
+      order: 2
     },
   },
 }));
@@ -46,7 +46,8 @@ const useStyles = makeStyles((theme) => ({
 function AppliedJobs() {
   const classes = useStyles();
   const dateNow = new Date();
-
+  const urlQuery = new URLSearchParams(window.location.search);
+  const status = urlQuery.get('status');
   const [filters, setFilters] = useState([]);
 
   const userId = sessionStorage.getItem("loginId");
@@ -59,7 +60,11 @@ function AppliedJobs() {
 
   useEffect(() => {
     filterApplications();
-  }, [filters]);
+  }, [filters, jobseeker]);
+
+  useEffect(() => {
+    displayAppliedJobs();
+  }, [filteredApplications]);
 
   const retrieveJobseeker = async () => {
     try {
@@ -73,7 +78,6 @@ function AppliedJobs() {
           const temp2 = new Date(b.appliedDate);
           return temp2 - temp1;
         });
-        console.log("ddd", response.data.jobseeker)
 
         setJobseeker(response.data.jobseeker);
       }
@@ -83,10 +87,13 @@ function AppliedJobs() {
   };
 
   const filterApplications = () => {
-    if (jobseeker !== "empty" && jobseeker.applicationDetails.length > 0){
-      if(filters.length > 0){
+
+    if (jobseeker !== "empty" && jobseeker.applicationDetails.length > 0) {
+
+      if (filters.length > 0) {
         const newFiltered = jobseeker.applicationDetails.filter(a => {
-          if(filters.includes(a.status)){
+          if (filters.includes(a.status)) {
+            // console.log(a.status)
             return a;
           }
         });
@@ -94,10 +101,10 @@ function AppliedJobs() {
       }
     }
   }
-  
+
 
   const displayAppliedJobs = () => {
-    if(jobseeker === "empty"){
+    if (jobseeker === "empty") {
       return (
         <FloatCard>
           <Loading />
@@ -106,7 +113,7 @@ function AppliedJobs() {
     }
     else if (jobseeker !== "empty") {
       if (jobseeker.applicationDetails.length > 0) {
-        if(filters.length === 0){
+        if (filters.length === 0) {
           return jobseeker.applicationDetails.map((item, index) => (
             <Grid item key={index + "grid"} xs={12} className={classes.gridCard}>
               <Job
@@ -117,7 +124,7 @@ function AppliedJobs() {
               ></Job>
             </Grid>
           ));
-        } else if (filters.length > 0) {
+        } else if (filters.length > 0 && filteredApplications.length > 0) {
           return filteredApplications.map((item, index) => (
             <Grid item key={index + "grid"} xs={12} className={classes.gridCard}>
               <Job
@@ -128,6 +135,10 @@ function AppliedJobs() {
               ></Job>
             </Grid>
           ));
+        } else if (filteredApplications.length === 0) {
+          return (<FloatCard>
+            <NoInfo message="No results found that matches with the filters." />
+          </FloatCard>)
         }
       } else {
         return (
@@ -154,7 +165,7 @@ function AppliedJobs() {
           {displayAppliedJobs()}
         </Grid>
         <Grid item xs={12} sm={12} md={4} lg={3} className={classes.filterGrid}>
-          <ApplicationFilters updateFilters={updateFilters} />
+          <ApplicationFilters updateFilters={updateFilters} status={status} />
         </Grid>
       </Grid>
     </>

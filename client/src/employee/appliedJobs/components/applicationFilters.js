@@ -48,7 +48,7 @@ const ApplicationFilters = (props) => {
           </Typography>
         </div>
         <div className={classes.types}>
-          <StatusList updateFilters={props.updateFilters} />
+          <StatusList updateFilters={props.updateFilters} status={props.status}/>
         </div>
       </FloatCard>
     </>
