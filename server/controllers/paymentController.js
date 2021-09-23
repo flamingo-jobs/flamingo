@@ -6,8 +6,8 @@ const stripe = require("stripe")(
 const Payment = require("../models/payment");
 const Order = require("../models/order");
 const Employers = require("../models/employers");
-const MERCHANT_SECRET = require("../Config").MERCHANT_SECRET;
 const md5 = require("js-md5");
+const MERCHANT_SECRET = process.env.MERCHANT_SECRET;
 
 const payherePayment = async (req, res) => {
   const newPayment = new Payment(req.body);

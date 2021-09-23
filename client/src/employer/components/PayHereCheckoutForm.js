@@ -84,7 +84,7 @@ const PayHereCheckoutForm = (props) => {
   const [orderId, setOrderId] = useState("");
   const [subscription, setSubscription] = useState({});
   const [billingDetails, setBillingDetails] = useState({
-    merchant_id: "1218131",
+    merchant_id: process.env.REACT_APP_merchantid,
     return_url: FRONTEND_URL + "/employer/success-payment",
     cancel_url: FRONTEND_URL + "/employer/cancel-payment",
     notify_url: BACKEND_URL + "/payment",
