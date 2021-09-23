@@ -78,6 +78,7 @@ export default function AddNewCatePopup(props) {
                         variant="outlined"
                         size="small"
                         onChange={onChange}
+                        fullWidth
                     />
                 </DialogContent>
                 <DialogActions style={{ marginTop: 16 }}>
