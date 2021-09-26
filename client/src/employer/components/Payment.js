@@ -107,7 +107,7 @@ export default function Payment() {
     const selectedPackage = window.location.pathname.split("/")[3];
     setSubscription(
       packagesList?.find((item) => {
-        return item.type === selectedPackage;
+        return item.type.toLowerCase() === selectedPackage.toLowerCase();
       })
     );
   }, [window.location.pathname, packagesList]);

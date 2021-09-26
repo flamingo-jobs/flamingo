@@ -298,8 +298,7 @@ const UserSettings = () => {
       <Grid item xs={12}>
         {displayAlert()}
         {subscriptionStatus ? (
-          subscriptionStatus.subscriptionType === "Premium" ||
-          subscriptionStatus.subscriptionType === "premium" ||
+          subscriptionStatus.subscriptionType.toLowerCase() === "premium" ||
           subscriptionStatus.remainingUsers > 0 ? (
             <div>
               <Tabs

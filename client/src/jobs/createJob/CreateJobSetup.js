@@ -118,7 +118,10 @@ function getSteps() {
 export default function CreateJobSetup() {
   const classes = useStyles();
 
-  const [salaryErrors, setSalaryErrors] = useState({ minSalary: "", maxSalary: "" });
+  const [salaryErrors, setSalaryErrors] = useState({
+    minSalary: "",
+    maxSalary: "",
+  });
 
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
@@ -144,26 +147,37 @@ export default function CreateJobSetup() {
   };
 
   const validateSalary = () => {
-    if(!errors.hasOwnProperty("minSalary") && !errors.hasOwnProperty("maxSalary")){
-      if(minSalary !== "" && maxSalary !== ""){
+    if (
+      !errors.hasOwnProperty("minSalary") &&
+      !errors.hasOwnProperty("maxSalary")
+    ) {
+      if (minSalary !== "" && maxSalary !== "") {
         const newErrors = { ...errors };
-        if(parseInt(minSalary, 10) >= parseInt(maxSalary, 10)){
-          newErrors["minSalary"] = `Minimum salary should be less than maximum salary.`;
+        if (parseInt(minSalary, 10) >= parseInt(maxSalary, 10)) {
+          newErrors[
+            "minSalary"
+          ] = `Minimum salary should be less than maximum salary.`;
           setErrors(newErrors);
           return false;
         }
       }
     }
     return true;
-  }
+  };
 
   const validateSalaryOnchange = () => {
-    if(!errors.hasOwnProperty("maxSalary")){
-      if(errors.hasOwnProperty("minSalary") && errors["minSalary"] === "Minimum salary should be less than maximum salary."){
-        if(minSalary !== "" && maxSalary !== ""){
+    if (!errors.hasOwnProperty("maxSalary")) {
+      if (
+        errors.hasOwnProperty("minSalary") &&
+        errors["minSalary"] ===
+          "Minimum salary should be less than maximum salary."
+      ) {
+        if (minSalary !== "" && maxSalary !== "") {
           var newErrors = { ...errors };
-          if(parseInt(minSalary, 10) >= parseInt(maxSalary, 10)){
-            newErrors["minSalary"] = `Minimum salary should be less than maximum salary.`;
+          if (parseInt(minSalary, 10) >= parseInt(maxSalary, 10)) {
+            newErrors[
+              "minSalary"
+            ] = `Minimum salary should be less than maximum salary.`;
           } else {
             delete newErrors["minSalary"];
           }
@@ -171,7 +185,7 @@ export default function CreateJobSetup() {
         }
       }
     }
-  }
+  };
 
   const validateStep = (index) => {
     const newErrors = { ...errors };
@@ -364,7 +378,6 @@ export default function CreateJobSetup() {
 
     if (value.trim() === "") {
       delete newErrors[name];
-      
     } else {
       if (regex.test(value.trim().replace(/\s/g, ""))) {
         delete newErrors[name];
@@ -787,9 +800,8 @@ export default function CreateJobSetup() {
                 >
                   {haveAccess ? (
                     subscriptionStatus ? (
-                      subscriptionStatus.subscriptionType === "Premium" ||
-                      subscriptionStatus.subscriptionType === "premium" ||
-                      subscriptionStatus.remainingJobs > 0 ? (
+                      subscriptionStatus.subscriptionType.toLowerCase() ===
+                        "premium" || subscriptionStatus.remainingJobs > 0 ? (
                         <div>
                           <Grid container direction="row">
                             <Grid item xs={12} align="left">
