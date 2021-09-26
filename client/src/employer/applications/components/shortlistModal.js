@@ -140,7 +140,7 @@ const ShortlistModal = (props) => {
 
   const displayCustomCriterias = (subscriptionStatus) => {
     if (!isDefault) {
-      if (subscriptionStatus.packageDetails.jobSpecificShortlisting) {
+      if (subscriptionStatus.packageDetails[0].jobSpecificShortlisting) {
         return (
           <>
             <Typography style={{ marginBottom: 24 }}>

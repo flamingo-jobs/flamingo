@@ -1,50 +1,50 @@
-import React, { useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionActions from '@material-ui/core/AccordionActions';
-import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Button from '@material-ui/core/Button';
-import Divider from '@material-ui/core/Divider';
-import Grid from '@material-ui/core/Grid'
-import BACKEND_URL from '../../Config';
-import axios from 'axios';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import ContinousSlider from './ContinousSlider';
-import Alert from '@material-ui/lab/Alert';
-import Loading from '../../components/Loading';
-import SnackBarAlert from '../../components/SnackBarAlert';
-import { Checkbox, Switch } from '@material-ui/core';
-import ShortlistingEducationSettingsAccordion from './ShortlistingEducationSettingsAccordion';
-import ShortlistingExperienceSettingsAccordion from './ShortlistingExperienceSettingsAccordion';
+import React, { useEffect, useState } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionActions from "@material-ui/core/AccordionActions";
+import Typography from "@material-ui/core/Typography";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import Button from "@material-ui/core/Button";
+import Divider from "@material-ui/core/Divider";
+import Grid from "@material-ui/core/Grid";
+import BACKEND_URL from "../../Config";
+import axios from "axios";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import ContinousSlider from "./ContinousSlider";
+import Alert from "@material-ui/lab/Alert";
+import Loading from "../../components/Loading";
+import SnackBarAlert from "../../components/SnackBarAlert";
+import { Checkbox, Switch } from "@material-ui/core";
+import ShortlistingEducationSettingsAccordion from "./ShortlistingEducationSettingsAccordion";
+import ShortlistingExperienceSettingsAccordion from "./ShortlistingExperienceSettingsAccordion";
+import Reached from "../../components/Reached";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '100%',
+    width: "100%",
     marginBottom: 10,
-    '& .MuiPaper-root': {
+    "& .MuiPaper-root": {
       borderRadius: 12,
     },
-    '& .MuiChip-root.Mui-disabled': {
+    "& .MuiChip-root.Mui-disabled": {
       opacity: 0.8,
-      '& .MuiChip-deleteIcon': {
-        display: 'none'
-      }
+      "& .MuiChip-deleteIcon": {
+        display: "none",
+      },
     },
-    '& .MuiPaper-elevation1': {
-      boxShadow: 'rgba(83, 144, 217, 0.1) 0px 4px 12px',
-    }
-
+    "& .MuiPaper-elevation1": {
+      boxShadow: "rgba(83, 144, 217, 0.1) 0px 4px 12px",
+    },
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
-    flexBasis: '33.33%',
+    flexBasis: "33.33%",
     flexShrink: 0,
   },
   secondaryHeading: {
@@ -52,12 +52,12 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
   },
   icon: {
-    verticalAlign: 'bottom',
+    verticalAlign: "bottom",
     height: 20,
     width: 20,
   },
   details: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   helper: {
     borderLeft: `2px solid ${theme.palette.divider}`,
@@ -65,59 +65,59 @@ const useStyles = makeStyles((theme) => ({
   },
   link: {
     color: theme.palette.primary.main,
-    textDecoration: 'none',
-    '&:hover': {
-      textDecoration: 'underline',
+    textDecoration: "none",
+    "&:hover": {
+      textDecoration: "underline",
     },
   },
   inputRoot: {
     color: theme.palette.black,
     fontSize: 14,
-    backgroundColor: 'transparent',
-    border: 'none',
+    backgroundColor: "transparent",
+    border: "none",
     minWidth: 250,
-    transition: 'background-color 200ms cubic-bezier(1, 1, 1, 0.1) 0ms',
-    '&:hover': {
-      backgroundColor: 'transparent',
+    transition: "background-color 200ms cubic-bezier(1, 1, 1, 0.1) 0ms",
+    "&:hover": {
+      backgroundColor: "transparent",
     },
-    '&:hover:before': {
-      border: 'none',
+    "&:hover:before": {
+      border: "none",
     },
-    '&:before': {
-      display: 'none'
+    "&:before": {
+      display: "none",
     },
-    '&:after': {
-      border: 'none',
+    "&:after": {
+      border: "none",
     },
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+      width: "20ch",
     },
-    background: 'transparent'
+    background: "transparent",
   },
   keywordInput: {
-    border: 'none',
-    '&hover': {
-      border: 'none'
-    }
+    border: "none",
+    "&hover": {
+      border: "none",
+    },
   },
   keywordChip: {
     backgroundColor: theme.palette.lightSkyBlue,
     margin: 3,
-    marginRight: 5
+    marginRight: 5,
   },
   featuredCheck: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
     paddingLeft: 8,
-    paddingRight: 8
+    paddingRight: 8,
   },
   paperRoot: {
     padding: 20,
@@ -186,14 +186,14 @@ export default function ShortlistingSettingsAccordion(props) {
     if (refreshRequired) {
       setRefreshRequired(false);
     }
-  }, [refreshRequired])
+  }, [refreshRequired]);
 
   useEffect(() => {
     displayAccordionDetails();
     if (settings) {
       setMinimumToggle(!settings.settings.ignoreMinimum);
     }
-  }, [settings])
+  }, [settings]);
 
   useEffect(() => {
     if (updatedSettings) {
@@ -204,7 +204,7 @@ export default function ShortlistingSettingsAccordion(props) {
     } else {
       setEditing(true);
     }
-  }, [updatedSettings])
+  }, [updatedSettings]);
 
   useEffect(() => {
     if (updateSuccess === true) {
@@ -234,46 +234,52 @@ export default function ShortlistingSettingsAccordion(props) {
     if (props.type !== "custom") {
       setRefreshRequired(true);
     }
-  }
+  };
 
   const handleCancel = () => {
     setEditing(false);
     setRefreshRequired(true);
-  }
+  };
 
   const handleUpdatesuccess = () => {
     setUpdateSuccess(true);
-  }
+  };
 
   const handleUpdateFailed = () => {
     setUpdateFailed(true);
-  }
+  };
 
   const displayAlert = () => {
-    return <SnackBarAlert open={alertShow} onClose={handleAlertClose} severity={alertData.severity} msg={alertData.msg} />
-  }
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
 
   const handleAlert = () => {
     setAlertShow(true);
   };
 
   const handleAlertClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setAlertShow(false);
   };
 
   const retrieveRecommendationSettings = () => {
-    axios.get(`${BACKEND_URL}/settingsByType/shortlisting${id}`).then(res => {
+    axios.get(`${BACKEND_URL}/settingsByType/shortlisting${id}`).then((res) => {
       if (res.data.success) {
-        setSettings(res.data.existingData[0])
+        setSettings(res.data.existingData[0]);
       } else {
-        setSettings("empty")
+        setSettings("empty");
       }
-    })
-  }
-
+    });
+  };
 
   const saveChanges = () => {
     let data = { settings: updatedSettings.settings };
@@ -281,29 +287,9 @@ export default function ShortlistingSettingsAccordion(props) {
     if (props.type === "custom") {
       combineCustomValues(updatedSettings);
     } else {
-      axios.put(`${BACKEND_URL}/settings/update/${settings._id}`, data).then(res => {
-        if (res.data.success) {
-          setRefreshRequired(true);
-          setSettings(false);
-          setUpdatedSettings(false);
-          retrieveRecommendationSettings();
-          handleUpdatesuccess();
-        } else {
-          handleUpdateFailed();
-        }
-      })
-      setRefreshRequired(true);
-    }
-  }
-
-  const resetToDefault = () => {
-    setConfirmDelete(false);
-
-    axios.get(`${BACKEND_URL}/settingsByType/shortlistingDefaults`).then(res => {
-      if (res.data.success) {
-        let data = { settings: res.data.existingData[0].settings };
-
-        axios.put(`${BACKEND_URL}/settings/update/${settings._id}`, data).then(res => {
+      axios
+        .put(`${BACKEND_URL}/settings/update/${settings._id}`, data)
+        .then((res) => {
           if (res.data.success) {
             setRefreshRequired(true);
             setSettings(false);
@@ -313,38 +299,61 @@ export default function ShortlistingSettingsAccordion(props) {
           } else {
             handleUpdateFailed();
           }
-        })
-          ;
-      } else {
-        setSettings("empty")
-      }
-    });
-  }
+        });
+      setRefreshRequired(true);
+    }
+  };
+
+  const resetToDefault = () => {
+    setConfirmDelete(false);
+
+    axios
+      .get(`${BACKEND_URL}/settingsByType/shortlistingDefaults`)
+      .then((res) => {
+        if (res.data.success) {
+          let data = { settings: res.data.existingData[0].settings };
+
+          axios
+            .put(`${BACKEND_URL}/settings/update/${settings._id}`, data)
+            .then((res) => {
+              if (res.data.success) {
+                setRefreshRequired(true);
+                setSettings(false);
+                setUpdatedSettings(false);
+                retrieveRecommendationSettings();
+                handleUpdatesuccess();
+              } else {
+                handleUpdateFailed();
+              }
+            });
+        } else {
+          setSettings("empty");
+        }
+      });
+  };
 
   useEffect(() => {
     if (props.type === "custom") {
       props.handleCustomSettings(combinedArray);
     }
-  }, [combinedArray])
-
+  }, [combinedArray]);
 
   const combineCustomValues = (setting) => {
     let newArray = [...combinedArray];
-    let index = newArray.findIndex(x => x.tag === setting.tag);
+    let index = newArray.findIndex((x) => x.tag === setting.tag);
     if (index >= 0) {
-      newArray.splice(index, 1, setting)
+      newArray.splice(index, 1, setting);
     } else {
-      newArray.push(setting)
+      newArray.push(setting);
     }
-    if (newArray.findIndex(x => x.tag === "shortlisting") < 0) {
-      newArray.push(settings)
+    if (newArray.findIndex((x) => x.tag === "shortlisting") < 0) {
+      newArray.push(settings);
     }
 
     setCombinedArray(newArray);
 
-
     // props.handleCustomSettings()
-  }
+  };
 
   const getSettingValues = (name, value) => {
     let newSettings;
@@ -390,13 +399,19 @@ export default function ShortlistingSettingsAccordion(props) {
         break;
     }
     setUpdatedSettings(newSettings);
-  }
+  };
 
   const calculateTotal = () => {
-    let total = updatedSettings.settings.education + updatedSettings.settings.experience +
-      updatedSettings.settings.techStack + updatedSettings.settings.projectTechStack +
-      updatedSettings.settings.skills + updatedSettings.settings.certifications +
-      updatedSettings.settings.courses + updatedSettings.settings.awards + updatedSettings.settings.extraCurricular;
+    let total =
+      updatedSettings.settings.education +
+      updatedSettings.settings.experience +
+      updatedSettings.settings.techStack +
+      updatedSettings.settings.projectTechStack +
+      updatedSettings.settings.skills +
+      updatedSettings.settings.certifications +
+      updatedSettings.settings.courses +
+      updatedSettings.settings.awards +
+      updatedSettings.settings.extraCurricular;
     if (total === 100) {
       setInvalid(false);
       if (props.type === "custom") {
@@ -405,83 +420,165 @@ export default function ShortlistingSettingsAccordion(props) {
     } else {
       setInvalid(true);
     }
-  }
+  };
 
   const displayConfirmation = () => {
-    return (<Dialog
-      open={confirmDelete}
-      onClose={handleClose}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
-      classes={{ paper: classes.paperRoot }}
-    >
-      <DialogTitle id="alert-dialog-title">{"Confirm Reset?"}</DialogTitle>
-      <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-          Are you sure that you reset these settings to default? <b>This cannot be undone.</b>
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose} color="primary">
-          No
-        </Button>
-        <Button onClick={resetToDefault} color="primary" className={classes.confrimDelete} autoFocus>
-          Yes
-        </Button>
-      </DialogActions>
-    </Dialog>)
-  }
+    return (
+      <Dialog
+        open={confirmDelete}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        classes={{ paper: classes.paperRoot }}
+      >
+        <DialogTitle id="alert-dialog-title">{"Confirm Reset?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure that you reset these settings to default?{" "}
+            <b>This cannot be undone.</b>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            No
+          </Button>
+          <Button
+            onClick={resetToDefault}
+            color="primary"
+            className={classes.confrimDelete}
+            autoFocus
+          >
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  };
 
   const displayAccordionDetails = () => {
-    return <AccordionDetails className={classes.details}>
-      <Grid container spacing={1}>
-        <Grid item xs={12} style={{ padding: 24 }}>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Checkbox
-              checked={isMinimumToggle}
-              onChange={handleMinimumToggleChange}
-              color="primary"
-              inputProps={{ 'aria-label': 'primary checkbox' }}
-            />
-            <Typography className={classes.featuredJobs}>Shortlist only the applicants who has met the minimum qualifications</Typography>
-
-          </div>
+    return (
+      <AccordionDetails className={classes.details}>
+        <Grid container spacing={1}>
+          <Grid item xs={12} style={{ padding: 24 }}>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <Checkbox
+                checked={isMinimumToggle}
+                onChange={handleMinimumToggleChange}
+                color="primary"
+                inputProps={{ "aria-label": "primary checkbox" }}
+              />
+              <Typography className={classes.featuredJobs}>
+                Shortlist only the applicants who has met the minimum
+                qualifications
+              </Typography>
+            </div>
+          </Grid>
+          <Grid item xs={12} style={{ padding: 24 }}>
+            <Typography>
+              Below values are considered as the weights for generate suggested
+              jobs for job seekers. <br />
+              Total wights should be 100%.
+            </Typography>
+          </Grid>
+          {displaySettingOptions()}
         </Grid>
-        <Grid item xs={12} style={{ padding: 24 }}>
-          <Typography>Below values are considered as the weights for generate suggested jobs for job seekers. <br />Total wights should be 100%.</Typography>
-        </Grid>
-        {displaySettingOptions()}
-      </Grid>
-    </AccordionDetails >
-  }
+      </AccordionDetails>
+    );
+  };
 
   const displaySettingOptions = () => {
     if (settings !== false) {
       return (
         <Grid item xs={12}>
-          <ContinousSlider name={"Education"} value={settings.settings.education} passValue={getSettingValues} />
+          <ContinousSlider
+            name={"Education"}
+            value={settings.settings.education}
+            passValue={getSettingValues}
+          />
           <div style={{ padding: 20, paddingTop: 0 }}>
-            <ShortlistingEducationSettingsAccordion id={id} type={props.type} passSettings={combineCustomValues} handleInvalid={props.handleInvalid} />
-
+            <ShortlistingEducationSettingsAccordion
+              id={id}
+              type={props.type}
+              passSettings={combineCustomValues}
+              handleInvalid={props.handleInvalid}
+            />
           </div>
-          <ContinousSlider name={"Experience"} value={settings.settings.experience} passValue={getSettingValues} />
+          <ContinousSlider
+            name={"Experience"}
+            value={settings.settings.experience}
+            passValue={getSettingValues}
+          />
           <div style={{ padding: 20, paddingTop: 0 }}>
-            <ShortlistingExperienceSettingsAccordion id={id} type={props.type} passSettings={combineCustomValues} handleInvalid={props.handleInvalid} />
-
+            <ShortlistingExperienceSettingsAccordion
+              id={id}
+              type={props.type}
+              passSettings={combineCustomValues}
+              handleInvalid={props.handleInvalid}
+            />
           </div>
-          <ContinousSlider name={"Technology Stack"} value={settings.settings.techStack} passValue={getSettingValues} />
-          <ContinousSlider name={"Project Technology Stack"} value={settings.settings.projectTechStack} passValue={getSettingValues} />
-          <ContinousSlider name={"Skills"} value={settings.settings.skills} passValue={getSettingValues} />
-          <ContinousSlider name={"Certificates"} value={settings.settings.certifications} passValue={getSettingValues} />
-          <ContinousSlider name={"Courses"} value={settings.settings.courses} passValue={getSettingValues} />
-          <ContinousSlider name={"Extra Curricular"} value={settings.settings.extraCurricular} passValue={getSettingValues} />
-          <ContinousSlider name={"Awards"} value={settings.settings.awards} passValue={getSettingValues} />
+          <ContinousSlider
+            name={"Technology Stack"}
+            value={settings.settings.techStack}
+            passValue={getSettingValues}
+          />
+          <ContinousSlider
+            name={"Project Technology Stack"}
+            value={settings.settings.projectTechStack}
+            passValue={getSettingValues}
+          />
+          <ContinousSlider
+            name={"Skills"}
+            value={settings.settings.skills}
+            passValue={getSettingValues}
+          />
+          <ContinousSlider
+            name={"Certificates"}
+            value={settings.settings.certifications}
+            passValue={getSettingValues}
+          />
+          <ContinousSlider
+            name={"Courses"}
+            value={settings.settings.courses}
+            passValue={getSettingValues}
+          />
+          <ContinousSlider
+            name={"Extra Curricular"}
+            value={settings.settings.extraCurricular}
+            passValue={getSettingValues}
+          />
+          <ContinousSlider
+            name={"Awards"}
+            value={settings.settings.awards}
+            passValue={getSettingValues}
+          />
         </Grid>
-      )
+      );
     } else {
-      return (<Loading />)
+      return <Loading />;
     }
-  }
+  };
+
+  const [subscriptionStatus, setSubscriptionStatus] = useState();
+  const retrieveSubscriptionStatus = async () => {
+    const empId = sessionStorage.getItem("loginId");
+    try {
+      const response = await axios.get(
+        `${BACKEND_URL}/employer/subscription-status/${empId}`
+      );
+      if (response.data.success) {
+        setSubscriptionStatus(response.data.existingData);
+      }
+    } catch (err) {
+      setAlertData({
+        severity: "error",
+        msg: "There was an error with server. Please try again!",
+      });
+      handleAlert();
+    }
+  };
+  useEffect(() => {
+    retrieveSubscriptionStatus();
+  }, []);
 
   return (
     <div className={classes.root}>
@@ -492,20 +589,55 @@ export default function ShortlistingSettingsAccordion(props) {
           aria-controls="panel1c-content"
           id="panel1c-header"
         >
-          <Typography className={classes.heading}>Applicant Shortlisting</Typography>
+          <Typography className={classes.heading}>
+            Applicant Shortlisting
+          </Typography>
           <Typography className={classes.secondaryHeading}>
             Change the settings related to applicant shortlisting
           </Typography>
         </AccordionSummary>
-        {displayAccordionDetails()}
-        {displayConfirmation()}
-        <Divider />
-        <AccordionActions style={{ minHeight: 65 }}>
-          {invalid ? <Alert severity="error">Invalid settings - Weight total should be 100%!</Alert> : null}
-          {editing && props.type !== "custom" ? <Button size="small" onClick={handleCancel}>Cancel</Button> : null}
-          {!editing && id !== "Defaults" && props.type !== "custom" ? <> <Button size="small" color="secondary" onClick={handleDelete}>Reset to Default</Button></> : null}
-          {editing && !invalid && props.type !== "custom" ? <Button size="small" color="primary" onClick={handleSave}>Save</Button> : null}
-        </AccordionActions>
+        {subscriptionStatus ? (
+          subscriptionStatus.packageDetails[0].customizedShortlisting ? (
+            <>
+              {displayAccordionDetails()}
+              {displayConfirmation()}
+              <Divider />
+              <AccordionActions style={{ minHeight: 65 }}>
+                {invalid ? (
+                  <Alert severity="error">
+                    Invalid settings - Weight total should be 100%!
+                  </Alert>
+                ) : null}
+                {editing && props.type !== "custom" ? (
+                  <Button size="small" onClick={handleCancel}>
+                    Cancel
+                  </Button>
+                ) : null}
+                {!editing && id !== "Defaults" && props.type !== "custom" ? (
+                  <>
+                    {" "}
+                    <Button
+                      size="small"
+                      color="secondary"
+                      onClick={handleDelete}
+                    >
+                      Reset to Default
+                    </Button>
+                  </>
+                ) : null}
+                {editing && !invalid && props.type !== "custom" ? (
+                  <Button size="small" color="primary" onClick={handleSave}>
+                    Save
+                  </Button>
+                ) : null}
+              </AccordionActions>
+            </>
+          ) : (
+            <Reached message="Your package does not allow customized shortlisting" />
+          )
+        ) : (
+          <Loading />
+        )}
       </Accordion>
     </div>
   );
