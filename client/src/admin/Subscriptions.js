@@ -4,6 +4,12 @@ import GridTable from "./components/GridTable";
 function Subscriptions() {
   const columns = [
     { field: "type", headerName: "Name", width: 150, editable: true },
+    {
+      field: "description",
+      headerName: "Description",
+      width: 300,
+      editable: true,
+    },
     { field: "maxJobs", headerName: "Max. Jobs", width: 150, editable: true },
     {
       field: "maxResumes",
