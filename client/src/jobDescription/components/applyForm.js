@@ -1,6 +1,4 @@
-import {
-  Button, Container, Typography
-} from "@material-ui/core";
+import { Button, Container, Typography } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
 import DescriptionIcon from "@material-ui/icons/Description";
@@ -9,10 +7,13 @@ import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import Lottie from "react-lottie";
 import FloatCard from "../../components/FloatCard";
+import Loading from "../../components/Loading";
 import SnackBarAlert from "../../components/SnackBarAlert";
 import BACKEND_URL, { FILE_URL } from "../../Config";
 import ItPerson from "../lotties/itPerson.json";
-import uploadFileToBlob, { isStorageConfigured } from '../../utils/azureFileUpload';
+import uploadFileToBlob, {
+  isStorageConfigured,
+} from "../../utils/azureFileUpload";
 import { useDispatch, useSelector } from "react-redux";
 import { setNewNotifications, setApplicationCount } from "../../redux/actions";
 
@@ -119,13 +120,36 @@ const ApplyForm = (props) => {
   const [loading, setLoading] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
 
-  const notificationCount = useSelector(state => state.newNotifications);
+  const [subscriptionStatus, setSubscriptionStatus] = useState();
+
+  const notificationCount = useSelector((state) => state.newNotifications);
   const dispatch = useDispatch();
   const timer = useRef();
   useEffect(() => {
     return () => {
       clearTimeout(timer.current);
     };
+  }, []);
+
+  const retrieveSubscriptionStatus = async () => {
+    const empId = props.orgId;
+    try {
+      const response = await axios.get(
+        `${BACKEND_URL}/employer/subscription-status/${empId}`
+      );
+      if (response.data.success) {
+        setSubscriptionStatus(response.data.existingData);
+      }
+    } catch (err) {
+      setAlertData({
+        severity: "error",
+        msg: "There was an error with server. Please try again!",
+      });
+      handleAlert();
+    }
+  };
+  useEffect(() => {
+    retrieveSubscriptionStatus();
   }, []);
 
   const handleButtonClick = () => {
@@ -173,7 +197,7 @@ const ApplyForm = (props) => {
     );
   };
 
-  const delay = ms => new Promise(res => setTimeout(res, ms));
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
   const handleAlert = () => {
     setAlertShow(true);
@@ -255,7 +279,6 @@ const ApplyForm = (props) => {
           resumeDetailsJob
         );
 
-
         if (resumeDetailsResponseJob.data.success) {
           var file = fileData;
           var blob = file.slice(0, file.size);
@@ -278,49 +301,48 @@ const ApplyForm = (props) => {
 
           await delay(5000);
 
-          await axios.get(`${FILE_URL}/resumes/${newFile.name}`).then(res => {
-            setAlertData({
-              severity: "success",
-              msg: "Application sent!",
+          await axios
+            .get(`${FILE_URL}/resumes/${newFile.name}`)
+            .then((res) => {
+              setAlertData({
+                severity: "success",
+                msg: "Application sent!",
+              });
+              handleAlert();
+              setSuccess(true);
+              setLoading(false);
+              dispatch(setApplicationCount(props.appliedJobCount + 1));
+            })
+            .catch((error) => {
+              setAlertData({
+                severity: "error",
+                msg: "Application could not be sent!",
+              });
+              handleAlert();
             });
-            handleAlert();
-            setSuccess(true);
-            setLoading(false);
-            dispatch(setApplicationCount(props.appliedJobCount + 1));
-          }).catch(error => {
-            setAlertData({
-              severity: "error",
-              msg: "Application could not be sent!",
-            });
-            handleAlert();
-          })
           await delay(2000);
           window.scrollTo(0, 0);
           props.handleApply();
 
-          axios.put(`${BACKEND_URL}/jobSeeker/addNotifications/${userId}`,
-            {
-              title: 'Your application is submitted',
-              description: `for ${props.name} at ${props.org}`,
-              link: `/jobseeker/appliedJobs`,
-              type: 'job_applied',
-              createdAt: new Date(),
-              isUnRead: true
-            })
+          axios.put(`${BACKEND_URL}/jobSeeker/addNotifications/${userId}`, {
+            title: "Your application is submitted",
+            description: `for ${props.name} at ${props.org}`,
+            link: `/jobseeker/appliedJobs`,
+            type: "job_applied",
+            createdAt: new Date(),
+            isUnRead: true,
+          });
 
           dispatch(setNewNotifications(notificationCount + 1));
 
-          axios.put(`${BACKEND_URL}/employer/addNotifications/${props.orgId}`,
-            {
-              title: 'New job application',
-              description: `for ${props.name}`,
-              link: `/employer/resumes/${props.jobId}`,
-              type: 'job_applied',
-              createdAt: new Date(),
-              isUnRead: true
-            })
-
-
+          axios.put(`${BACKEND_URL}/employer/addNotifications/${props.orgId}`, {
+            title: "New job application",
+            description: `for ${props.name}`,
+            link: `/employer/resumes/${props.jobId}`,
+            type: "job_applied",
+            createdAt: new Date(),
+            isUnRead: true,
+          });
         } else {
           setAlertData({
             severity: "error",
@@ -367,69 +389,94 @@ const ApplyForm = (props) => {
         </FloatCard>
       </div>
       <FloatCard>
-        <Container className={classes.res}>
-          {!success ? <Typography className={classes.formInfo} id="applyForm">
-            Upload your resume using the link given below.
-            <br />
-            You can view the status of the application shortlisting process
-            <br />
-            in the Applied Jobs page.
-          </Typography> : null}
-          <div className={classes.animation}>
-            <Lottie
-              className={classes.lottie}
-              options={defaultOptions}
-              height="300px"
-              width="300px"
-            />
-          </div>
-          {!success ? <form onSubmit={handleFormSubmit} encType="multipart/form-data">
-            <div style={{ color: "#fff" }}>
-              <input
-                className={classes.input}
-                id="resume"
-                name="resume"
-                type="file"
-                accept="application/pdf"
-                onChange={handleFileChange}
-              />
-              <label htmlFor="resume">
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  component="span"
-                  startIcon={<PublishIcon />}
-                  className={classes.uploadButton}
-                  disabled={loading}
-                >
-                  Upload resume
-                </Button>
-              </label>
-            </div>
-            {displayFileName()}
-            <div className={classes.submitBtnWrapper}>
-              <Button
-
-                color="primary"
-                className={classes.submitButton}
-                type="submit"
-                disabled={loading}
-              >
-                Submit Application
-              </Button>
-              {loading && (
-                <CircularProgress
-                  size={24}
-                  className={classes.buttonProgress}
+        {subscriptionStatus ? (
+          subscriptionStatus.subscriptionType.toLowerCase() === "premium" ||
+          subscriptionStatus.packageDetails[0].maxResumes -
+            props.appliedJobCount >
+            0 ? (
+            <Container className={classes.res}>
+              {!success ? (
+                <Typography className={classes.formInfo} id="applyForm">
+                  Upload your resume using the link given below.
+                  <br />
+                  You can view the status of the application shortlisting
+                  process
+                  <br />
+                  in the Applied Jobs page.
+                </Typography>
+              ) : null}
+              <div className={classes.animation}>
+                <Lottie
+                  className={classes.lottie}
+                  options={defaultOptions}
+                  height="300px"
+                  width="300px"
                 />
+              </div>
+              {!success ? (
+                <form onSubmit={handleFormSubmit} encType="multipart/form-data">
+                  <div style={{ color: "#fff" }}>
+                    <input
+                      className={classes.input}
+                      id="resume"
+                      name="resume"
+                      type="file"
+                      accept="application/pdf"
+                      onChange={handleFileChange}
+                    />
+                    <label htmlFor="resume">
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        component="span"
+                        startIcon={<PublishIcon />}
+                        className={classes.uploadButton}
+                        disabled={loading}
+                      >
+                        Upload resume
+                      </Button>
+                    </label>
+                  </div>
+                  {displayFileName()}
+                  <div className={classes.submitBtnWrapper}>
+                    <Button
+                      color="primary"
+                      className={classes.submitButton}
+                      type="submit"
+                      disabled={loading}
+                    >
+                      Submit Application
+                    </Button>
+                    {loading && (
+                      <CircularProgress
+                        size={24}
+                        className={classes.buttonProgress}
+                      />
+                    )}
+                  </div>
+                </form>
+              ) : (
+                <Typography className={classes.formInfo}>
+                  Your application has been sent successfully. Good Luck!
+                  <br />
+                  You can view the status of the application shortlisting
+                  process
+                  <br />
+                  in the Applied Jobs page.
+                </Typography>
               )}
-            </div>
-          </form> : <Typography className={classes.formInfo} >Your application has been sent successfully. Good Luck!
-            <br />
-            You can view the status of the application shortlisting process
-            <br />
-            in the Applied Jobs page.</Typography>}
-        </Container>
+            </Container>
+          ) : (
+            <Container className={classes.res}>
+              <Typography className={classes.formInfo}>
+                Sorry! This job has received the maximum number of resumes
+                already
+              </Typography>
+            </Container>
+          )
+        ) : (
+          <Loading />
+        )}
       </FloatCard>
     </div>
   );
