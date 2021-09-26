@@ -265,12 +265,20 @@ const getAllApplications = async (req, res) => {
         for (let jindex = 0; jindex < job.applicationDetails.length; jindex++) {
           const user = job.applicationDetails[jindex];
           var a = await Jobseeker.findById(user.userId);
-          temp.push({ job: job.title, name: a.name, jobseekerId: a._id, jobId: job._id , appliedDate:user.appliedDate});
+          temp.push({
+            job: job.title,
+            name: a.name,
+            jobseekerId: a._id,
+            jobId: job._id,
+            appliedDate: user.appliedDate,
+          });
         }
       }
-      
-      temp.sort(function(a,b){return b.appliedDate - a.appliedDate})
-      temp=temp.slice(0,15);
+
+      temp.sort(function (a, b) {
+        return b.appliedDate - a.appliedDate;
+      });
+      temp = temp.slice(0, 15);
 
       // console.log(temp)
       return res.status(200).json({
@@ -359,15 +367,25 @@ const deleteNotifications = (req, res) => {
 
 const getSubscriptionStatus = async (req, res) => {
   Employers.findById(req.params.id).exec((err, employer) => {
-    if (employer.subscription.type === "premium") {
-      return res.status(200).json({
-        success: true,
-        existingData: { subscriptionType: employer.subscription.type },
+    if (err) {
+      return res.status(422).json({
+        success: false,
       });
     } else {
       Subscriptions.find({ type: employer.subscription.type })
         .exec()
         .then((packageDetails) => {
+          if (employer.subscription.type.toLowerCase() === "premium") {
+            return res.status(200).json({
+              success: true,
+              existingData: {
+                remainingJobs: -1,
+                remainingUsers: -1,
+                subscriptionType: employer.subscription.type,
+                packageDetails,
+              },
+            });
+          }
           Jobs.find({ "organization.id": req.params.id })
             .exec()
             .then((jobs) => {
@@ -395,7 +413,7 @@ const getSubscriptionStatus = async (req, res) => {
             })
             .catch((err) => {
               if (err) {
-                return res.status(400).json({
+                return res.status(401).json({
                   success: false,
                   error: err,
                 });
@@ -404,7 +422,7 @@ const getSubscriptionStatus = async (req, res) => {
         })
         .catch((err) => {
           if (err) {
-            return res.status(400).json({
+            return res.status(402).json({
               success: false,
               error: err,
             });
