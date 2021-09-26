@@ -137,6 +137,8 @@ const Applications = () => {
   const classes = useStyles();
   const userId = sessionStorage.getItem("loginId");
   const isSignedIn = sessionStorage.getItem("userToken") ? true : false;
+  const [subscriptionStatus, setSubscriptionStatus] = useState();
+  
   const [jobId, setJobId] = useState(window.location.pathname.split("/")[3]);
   const [job, setJob] = useState("empty");
   const [filters, setFilters] = useState({});
@@ -295,6 +297,27 @@ const Applications = () => {
       }
     }
   };
+
+  const retrieveSubscriptionStatus = async () => {
+    const empId = sessionStorage.getItem("loginId");
+    try {
+      const response = await axios.get(
+        `${BACKEND_URL}/employer/subscription-status/${empId}`
+      );
+      if (response.data.success) {
+        setSubscriptionStatus(response.data.existingData);
+      }
+    } catch (err) {
+      setAlertData({
+        severity: "error",
+        msg: "There was an error with server. Please try again!",
+      });
+      handleAlert();
+    }
+  };
+  useEffect(() => {
+    retrieveSubscriptionStatus();
+  }, []);
 
   const displayApplicants = () => {
     if (job !== "empty" && applicantIds.length === 0) {
@@ -528,6 +551,7 @@ const Applications = () => {
           max={applicants.length}
           handleShortlistSubmit={handleShortlistSubmit}
           updateCustomCriterias={updateCustomCriterias}
+          subscription={subscriptionStatus}
         ></ShortlistModal>
       );
     }

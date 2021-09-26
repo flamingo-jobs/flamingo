@@ -12,6 +12,7 @@ import {
 import CloseIcon from "@material-ui/icons/Close";
 import Slider from "@material-ui/core/Slider";
 import ShortlistingSettingsAccordion from "../../../admin/components/ShortlistingSettingsAccordion";
+import Reached from "../../../components/Reached";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -103,7 +104,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 // style={{border: "1px solid red"}}
 const ShortlistModal = (props) => {
   const classes = useStyles();
@@ -113,7 +113,7 @@ const ShortlistModal = (props) => {
   const marks = [
     {
       value: 0,
-      label: '0',
+      label: "0",
     },
     {
       value: props.max,
@@ -126,29 +126,42 @@ const ShortlistModal = (props) => {
       props.updateCustomCriterias([]);
     }
   }, [isDefault]);
-  
+
   const handleCustomSettings = (settings) => {
     props.updateCustomCriterias(settings);
-  }
+  };
   const handleMinimumToggleChange = (event) => {
     setIsDefault(event.target.checked);
   };
 
   const handleInvalid = (status) => {
     setInvalid(status);
-  }
+  };
 
-  const displayCustomCriterias = () => {
+  const displayCustomCriterias = (subscriptionStatus) => {
     if (!isDefault) {
-      return (
-        <>
-          <Typography style={{marginBottom: 24}}>NOTE: Changes you make to below settings will not be stored anywhere and will be applied for this shortlisting only.</Typography>
+      if (subscriptionStatus.packageDetails.jobSpecificShortlisting) {
+        return (
+          <>
+            <Typography style={{ marginBottom: 24 }}>
+              NOTE: Changes you make to below settings will not be stored
+              anywhere and will be applied for this shortlisting only.
+            </Typography>
 
-          <ShortlistingSettingsAccordion type="custom" handleCustomSettings={handleCustomSettings} handleInvalid={handleInvalid} />
-        </>
-      )
+            <ShortlistingSettingsAccordion
+              type="custom"
+              handleCustomSettings={handleCustomSettings}
+              handleInvalid={handleInvalid}
+            />
+          </>
+        );
+      } else {
+        return (
+          <Reached messgae="Your package does not allow job specific shortlisting" />
+        );
+      }
     }
-  }
+  };
   return (
     <>
       <Modal
@@ -160,7 +173,6 @@ const ShortlistModal = (props) => {
       >
         <Card className={classes.root}>
           <CardContent className={classes.cardContent}>
-
             <div className={classes.closeBtnContainer}>
               <IconButton
                 onClick={props.handleCloseShortlistModal}
@@ -192,32 +204,38 @@ const ShortlistModal = (props) => {
                     marks={marks}
                   />
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', marginTop: 16, marginBottom: 16 }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginTop: 16,
+                    marginBottom: 16,
+                  }}
+                >
                   <Checkbox
                     checked={isDefault}
                     onChange={handleMinimumToggleChange}
                     color="primary"
-                    inputProps={{ 'aria-label': 'primary checkbox' }}
+                    inputProps={{ "aria-label": "primary checkbox" }}
                   />
-                  <Typography className={classes.featuredJobs}>Use company default shortlisting criteria</Typography>
+                  <Typography className={classes.featuredJobs}>
+                    Use company default shortlisting criteria
+                  </Typography>
                 </div>
-                {displayCustomCriterias()}
+                {displayCustomCriterias(props.subscription)}
 
                 <div className={classes.btnContainer}>
                   <Button
-                    
                     className={classes.cancelBtn}
                     onClick={props.handleCloseShortlistModal}
                   >
                     Cancel
                   </Button>
-                  {!invalid ? <Button
-                    
-                    type="submit"
-                    className={classes.submitBtn}
-                  >
-                    Shortlist
-                  </Button> : null}
+                  {!invalid ? (
+                    <Button type="submit" className={classes.submitBtn}>
+                      Shortlist
+                    </Button>
+                  ) : null}
                 </div>
               </div>
             </form>
