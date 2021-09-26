@@ -5,6 +5,7 @@ import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import CancelIcon from "@material-ui/icons/Cancel";
 import React, { useEffect, useState } from "react";
 import FloatCard from "../../components/FloatCard";
 import payhereLogo from "./images/PayHere-Logo.png";
@@ -12,6 +13,7 @@ import PayHereCheckoutForm from "./PayHereCheckoutForm";
 import BACKEND_URL from "../../Config";
 import axios from "axios";
 import Loading from "../../components/Loading";
+import SnackBarAlert from "../../components/SnackBarAlert";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -71,27 +73,45 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const packageList = [
-  { desc: "standard", value: "1990" },
-  { desc: "premium", value: "4990" },
-];
-
 export default function Payment() {
   const classes = useStyles();
+  const [packagesList, setPackageList] = useState();
+  const retrievePackages = async () => {
+    await axios
+      .get(`${BACKEND_URL}/subscriptions`)
+      .then((res) => {
+        if (res.data.success) {
+          setPackageList(res.data.existingData);
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          setAlertData({
+            severity: "error",
+            msg: "Failed to connect to server. Please come back later!",
+          });
+          handleAlert();
+        }
+      });
+  };
 
   const [subscription, setSubscription] = useState({});
   const [nextDates, setNextDates] = useState();
+
+  useEffect(() => {
+    retrievePackages();
+    getNextDays();
+  }, []);
+
   useEffect(() => {
     const selectedPackage = window.location.pathname.split("/")[3];
     setSubscription(
-      packageList.find((x) => {
-        return x.desc === selectedPackage;
+      packagesList?.find((item) => {
+        return item.type === selectedPackage;
       })
     );
-  }, [window.location.pathname]);
-  useEffect(() => {
-    getNextDays();
-  }, []);
+  }, [window.location.pathname, packagesList]);
+
   const getNextDays = () => {
     axios
       .get(`${BACKEND_URL}/get-next-dates/${sessionStorage.getItem("loginId")}`)
@@ -107,97 +127,44 @@ export default function Payment() {
       });
   };
 
-  return (
-    <Grid container sm={12} spacing={3} direction="row" alignItems="flex-start">
-      {/* PAYMENT DETAILS */}
-      <Grid item container xs={12} lg={8}>
-        <FloatCard className={classes.root}>
-          <Typography variant="h4" gutterBottom>
-            <Box fontWeight={400} fontSize={20} m={1} className={classes.title}>
-              {subscription.desc}
-            </Box>
+  // Alert stuff
+  const [alertShow, setAlertShow] = useState(false);
+  const [alertData, setAlertData] = useState({ severity: "", msg: "" });
+  const displayAlert = () => {
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertShow(false);
+  };
 
-            <Box fontWeight={800} fontSize={30} m={1} className={classes.price}>
-              LKR {subscription.value}/mo
-            </Box>
-            <Box
-              fontWeight={400}
-              fontSize={12}
-              m={1}
-              className={classes.annual}
-            >
-              For {subscription.desc === "standard" ? "medium" : "large"}-scale
-              companies
-            </Box>
-            <Divider variant="middle" />
-          </Typography>
-          {subscription.desc === "standard" ? (
-            <div className={classes.featuresContainer}>
-              <Chip
-                icon={<CheckCircleIcon className={classes.icon} />}
-                label="Post upto 25 jobs"
-                className={classes.features}
-              />
-              <Chip
-                icon={<CheckCircleIcon className={classes.icon} />}
-                label="Receive upto 100 resumes"
-                className={classes.features}
-              />
-              <Chip
-                icon={<CheckCircleIcon className={classes.icon} />}
-                label="Applicant Tracking"
-                className={classes.features}
-              />
-              <Chip
-                icon={<CheckCircleIcon className={classes.icon} />}
-                label="Upto 5 users"
-                className={classes.features}
-              />
-              <Chip
-                icon={<CheckCircleIcon className={classes.icon} />}
-                label="Customized Resume Shortlisting"
-                className={classes.features}
-              />
-            </div>
-          ) : (
-            <div className={classes.featuresContainer}>
-              <Chip
-                icon={<CheckCircleIcon className={classes.icon} />}
-                label="Post unlimited jobs"
-                className={classes.features}
-              />
-              <Chip
-                icon={<CheckCircleIcon className={classes.icon} />}
-                label="Receive unlimited resumes"
-                className={classes.features}
-              />
-              <Chip
-                icon={<CheckCircleIcon className={classes.icon} />}
-                label="Applicant Tracking"
-                className={classes.features}
-              />
-              <Chip
-                icon={<CheckCircleIcon className={classes.icon} />}
-                label="Unlimited users"
-                className={classes.features}
-              />
-              <Chip
-                icon={<CheckCircleIcon className={classes.icon} />}
-                label="Job Specific Resume Shortlisting"
-                className={classes.features}
-              />
-            </div>
-          )}
-          <Divider variant="middle" />
-          <br />
-          <Grid
-            container
-            className={classes.mainGrid}
-            spacing={2}
-            direction="row"
-            align="left"
-          >
-            <Grid item xs={12}>
+  return (
+    <>
+      {displayAlert()}
+
+      {/* PAYMENT DETAILS */}
+      {subscription ? (
+        <Grid
+          container
+          sm={12}
+          spacing={3}
+          direction="row"
+          alignItems="flex-start"
+        >
+          <Grid item container xs={12} lg={8}>
+            <FloatCard className={classes.root}>
               <Typography variant="h4" gutterBottom>
                 <Box
                   fontWeight={400}
@@ -205,124 +172,202 @@ export default function Payment() {
                   m={1}
                   className={classes.title}
                 >
-                  Payment info
+                  {subscription.type}
                 </Box>
-                <FloatCard backColor="#eeeeee">
-                  <Grid
-                    container
-                    className={classes.mainGrid}
-                    direction="row"
-                    align="left"
-                  >
-                    <Grid item xs={8}>
-                      <Typography variant="caption">
-                        {subscription.desc === "Standard" ||
-                        subscription.desc === "standard"
-                          ? "Standard"
-                          : "Premium"}{" "}
-                        Package
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={4} align="right">
-                      <Typography variant="caption">
-                        LKR {subscription.value}.00
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={8}>
-                      <Typography variant="caption">
-                        Remaining Payments
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={4} align="right">
-                      <Typography variant="caption">LKR 0.00</Typography>
-                    </Grid>
-                    <Grid item xs={8}>
-                      <Typography variant="caption">Discounts</Typography>
-                    </Grid>
-                    <Grid item xs={4} align="right">
-                      <Typography variant="caption">LKR 0.00</Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Divider variant="middle" />
-                    </Grid>
-                    <Grid item xs={8}>
-                      <Typography variant="caption">
-                        <b>Total</b>
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={4} align="right">
-                      <Typography variant="caption">
-                        <b>LKR {subscription.value}.00</b>
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </FloatCard>
+
+                <Box
+                  fontWeight={800}
+                  fontSize={30}
+                  m={1}
+                  className={classes.price}
+                >
+                  LKR {subscription.price}/mo
+                </Box>
+                <Box
+                  fontWeight={400}
+                  fontSize={12}
+                  m={1}
+                  className={classes.annual}
+                >
+                  {subscription.description}
+                </Box>
+                <Divider variant="middle" />
               </Typography>
-            </Grid>
-          </Grid>
-        </FloatCard>
-      </Grid>
-
-      {/* STRIPE PAYENT 
-        <Grid item container xs={12} lg={4}>
-          <FloatCard className={classes.root}>
-            <Typography variant="h4" gutterBottom>
-              <Box fontWeight={400} fontSize={20} m={1} className={classes.title}>
-                <center>
-                  <Avatar
-                    className={classes.logo}
-                    src={stripeLogo}
-                    variant="square"
-                  />
-                </center>
-              </Box>
-
-              <Box
-                fontWeight={400}
-                fontSize={12}
-                m={1}
-                className={classes.annual}
-              >
-                Payment infrastructure for the internet
-              </Box>
-              <Divider variant="middle" />
-            </Typography>
-
-            <StripeCheckoutForm subscription={subscription} />
-            <br />
-          </FloatCard>
-        </Grid>
-        */}
-
-      {/* PAYHERE PAYMENT */}
-      <Grid item container xs={12} lg={4}>
-        <FloatCard className={classes.root}>
-          <Typography variant="h4" gutterBottom>
-            <Box fontWeight={400} fontSize={20} m={1} className={classes.title}>
-              <center>
-                <Avatar
-                  className={classes.logo}
-                  src={payhereLogo}
-                  variant="square"
+              <div className={classes.featuresContainer}>
+                <Chip
+                  icon={<CheckCircleIcon className={classes.icon} />}
+                  label={
+                    "Post " +
+                    (subscription.maxJobs > 0
+                      ? "upto " + subscription.maxJobs
+                      : "unlimited") +
+                    " jobs"
+                  }
+                  className={classes.features}
                 />
-              </center>
-            </Box>
+                <Chip
+                  icon={<CheckCircleIcon className={classes.icon} />}
+                  label={
+                    "Receive " +
+                    (subscription.maxResumes > 0
+                      ? "upto " + subscription.maxResumes
+                      : "unlimited") +
+                    " resumes"
+                  }
+                  className={classes.features}
+                />
+                <Chip
+                  icon={<CheckCircleIcon className={classes.icon} />}
+                  label="Applicant Filtering"
+                  className={classes.features}
+                />
+                <Chip
+                  icon={
+                    subscription.maxUsers === 1 ? (
+                      <CancelIcon className={classes.cancelIcon} />
+                    ) : (
+                      <CheckCircleIcon className={classes.icon} />
+                    )
+                  }
+                  label={
+                    subscription.maxUsers < 2
+                      ? subscription.maxUsers < 0
+                        ? "Unlimited users"
+                        : "Multi User Access"
+                      : "Upto " + subscription.maxUsers + " users"
+                  }
+                  className={classes.features}
+                />
+                <Chip
+                  icon={
+                    subscription.customizedShortlisting ||
+                    subscription.jobSpecificShortlisting ? (
+                      <CheckCircleIcon className={classes.icon} />
+                    ) : (
+                      <CancelIcon className={classes.cancelIcon} />
+                    )
+                  }
+                  label={
+                    subscription.jobSpecificShortlisting
+                      ? "Job specific resume shortlisting"
+                      : "Customized resume shortlisting"
+                  }
+                  className={classes.features}
+                />
+              </div>
 
-            <Box
-              fontWeight={400}
-              fontSize={12}
-              m={1}
-              className={classes.annual}
-            >
-              Payment infrastructure for the internet
-            </Box>
-            <Divider variant="middle" />
-          </Typography>
+              <Divider variant="middle" />
+              <br />
+              <Grid
+                container
+                className={classes.mainGrid}
+                spacing={2}
+                direction="row"
+                align="left"
+              >
+                <Grid item xs={12}>
+                  <Typography variant="h4" gutterBottom>
+                    <Box
+                      fontWeight={400}
+                      fontSize={20}
+                      m={1}
+                      className={classes.title}
+                    >
+                      Payment info
+                    </Box>
+                    <FloatCard backColor="#eeeeee">
+                      <Grid
+                        container
+                        className={classes.mainGrid}
+                        direction="row"
+                        align="left"
+                      >
+                        <Grid item xs={8}>
+                          <Typography variant="caption">
+                            Package: {subscription.type}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={4} align="right">
+                          <Typography variant="caption">
+                            LKR {subscription.price}.00
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={8}>
+                          <Typography variant="caption">
+                            Remaining Payments
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={4} align="right">
+                          <Typography variant="caption">LKR 0.00</Typography>
+                        </Grid>
+                        <Grid item xs={8}>
+                          <Typography variant="caption">Discounts</Typography>
+                        </Grid>
+                        <Grid item xs={4} align="right">
+                          <Typography variant="caption">LKR 0.00</Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                          <Divider variant="middle" />
+                        </Grid>
+                        <Grid item xs={8}>
+                          <Typography variant="caption">
+                            <b>Total</b>
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={4} align="right">
+                          <Typography variant="caption">
+                            <b>LKR {subscription.price}.00</b>
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                    </FloatCard>
+                  </Typography>
+                </Grid>
+              </Grid>
+            </FloatCard>
+          </Grid>
+          {/* PAYHERE PAYMENT */}
+          <Grid item container xs={12} lg={4}>
+            <FloatCard className={classes.root}>
+              <Typography variant="h4" gutterBottom>
+                <Box
+                  fontWeight={400}
+                  fontSize={20}
+                  m={1}
+                  className={classes.title}
+                >
+                  <center>
+                    <Avatar
+                      className={classes.logo}
+                      src={payhereLogo}
+                      variant="square"
+                    />
+                  </center>
+                </Box>
 
-          {nextDates ? <PayHereCheckoutForm info={nextDates} /> : <Loading />}
-          <br />
-        </FloatCard>
-      </Grid>
-    </Grid>
+                <Box
+                  fontWeight={400}
+                  fontSize={12}
+                  m={1}
+                  className={classes.annual}
+                >
+                  Payment infrastructure for the internet
+                </Box>
+                <Divider variant="middle" />
+              </Typography>
+
+              {nextDates ? (
+                <PayHereCheckoutForm info={nextDates} message={subscription} />
+              ) : (
+                <Loading />
+              )}
+              <br />
+            </FloatCard>
+          </Grid>
+        </Grid>
+      ) : (
+        <Loading />
+      )}
+    </>
   );
 }

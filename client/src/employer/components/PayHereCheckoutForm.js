@@ -6,15 +6,10 @@ import {
   Typography,
 } from "@material-ui/core";
 import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import SnackBarAlert from "../../components/SnackBarAlert";
 import BACKEND_URL from "../../Config";
-import { FRONTEND_URL } from "../../Config";
-
-const packageList = [
-  { desc: "standard", value: "1990" },
-  { desc: "premium", value: "4990" },
-];
+import { PAYMENT_URL, FRONTEND_URL } from "../../Config";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -82,12 +77,7 @@ const PayHereCheckoutForm = (props) => {
   const classes = useStyles();
   const payForm = useRef(null);
   const [orderId, setOrderId] = useState("");
-  const [subscription, setSubscription] = useState({});
   const [billingDetails, setBillingDetails] = useState({
-    merchant_id: process.env.REACT_APP_merchantid,
-    return_url: FRONTEND_URL + "/employer/success-payment",
-    cancel_url: FRONTEND_URL + "/employer/cancel-payment",
-    notify_url: BACKEND_URL + "/payment",
     first_name: "",
     last_name: "",
     email: "",
@@ -95,33 +85,20 @@ const PayHereCheckoutForm = (props) => {
     address: "",
     city: "",
     country: "Sri Lanka",
-    items: "",
     currency: "LKR",
     recurrence: "1 Month",
     duration: "1 Month",
-    amount: "",
+    merchant_id: process.env.REACT_APP_merchantid,
+    return_url: FRONTEND_URL + "/employer/success-payment",
+    cancel_url: FRONTEND_URL + "/employer/cancel-payment",
+    notify_url: BACKEND_URL + "/payment",
     startDate: new Date(props.info.nextStartDate),
     endDate: new Date(props.info.nextEndDate),
     paymentDate: new Date(),
     employer: sessionStorage.getItem("loginId"),
+    items: props.message.type,
+    amount: props.message.price,
   });
-
-  useEffect(() => {
-    const selectedPackage = window.location.pathname.split("/")[3];
-    setSubscription(
-      packageList.find((x) => {
-        return x.desc === selectedPackage;
-      })
-    );
-    setBillingDetails({
-      ...billingDetails,
-      items: selectedPackage,
-      amount:
-        selectedPackage === "Premium" || selectedPackage === "premium"
-          ? "4990"
-          : "1990",
-    });
-  }, [window.location.pathname]);
 
   // Alert stuff
   const [alertShow, setAlertShow] = useState(false);
@@ -183,12 +160,7 @@ const PayHereCheckoutForm = (props) => {
   };
 
   return (
-    <form
-      action="https://sandbox.payhere.lk/pay/checkout"
-      method="POST"
-      target="_blank"
-      ref={payForm}
-    >
+    <form action={PAYMENT_URL} method="POST" ref={payForm}>
       <input
         type="hidden"
         name="merchant_id"
@@ -210,7 +182,7 @@ const PayHereCheckoutForm = (props) => {
         value={billingDetails.notify_url}
       />
       <input type="hidden" name="order_id" value={orderId} />
-      <input type="hidden" name="items" value={subscription.desc} />
+      <input type="hidden" name="items" value={billingDetails.items} />
       <input type="hidden" name="currency" value={billingDetails.currency} />
       <input
         type="hidden"
@@ -218,7 +190,7 @@ const PayHereCheckoutForm = (props) => {
         value={billingDetails.recurrence}
       />
       <input type="hidden" name="duration" value={billingDetails.duration} />
-      <input type="hidden" name="amount" value={subscription.value} />
+      <input type="hidden" name="amount" value={billingDetails.amount} />
       <Grid
         item
         container
@@ -362,7 +334,7 @@ const PayHereCheckoutForm = (props) => {
         </Grid>
         <Grid item xs={12}>
           <Button onClick={handleSubmit} className={classes.button}>
-            Pay LKR {subscription.value}
+            Pay LKR {billingDetails.amount}
           </Button>
         </Grid>
       </Grid>

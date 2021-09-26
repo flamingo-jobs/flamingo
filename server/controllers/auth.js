@@ -299,7 +299,6 @@ exports.forgotPassword = async (req, res) => {
       `,
       });
     } catch (e) {
-      // console.log(e);
       res.sendStatus(500);
     }
   } else {

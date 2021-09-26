@@ -1,17 +1,17 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import FloatCard from "../components/FloatCard";
+import SnackBarAlert from "../components/SnackBarAlert";
 import Lottie from "react-lottie";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import Chip from "@material-ui/core/Chip";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import Box from "@material-ui/core/Box";
-import Divider from "@material-ui/core/Divider";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import CancelIcon from "@material-ui/icons/Cancel";
 import BillingImage from "./lotties/billingImage.json";
+import Loading from "../components/Loading";
+import axios from "axios";
+import BACKEND_URL from "../Config";
+import PackageList from "./components/PackageDetails";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -98,6 +98,31 @@ const useStyles = makeStyles((theme) => ({
 export default function Pricing() {
   const classes = useStyles();
 
+  const [packagesList, setPackageList] = useState();
+
+  const retrievePackages = () => {
+    axios
+      .get(`${BACKEND_URL}/subscriptions`)
+      .then((res) => {
+        if (res.data.success) {
+          setPackageList(res.data.existingData);
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          setAlertData({
+            severity: "error",
+            msg: "Failed to connect to server. Please come back later!",
+          });
+          handleAlert();
+        }
+      });
+  };
+
+  useEffect(() => {
+    retrievePackages();
+  }, []);
+
   const defaultOptions = {
     loop: true,
     autoplay: true,
@@ -107,8 +132,32 @@ export default function Pricing() {
     },
   };
 
+  // Alert stuff
+  const [alertShow, setAlertShow] = useState(false);
+  const [alertData, setAlertData] = useState({ severity: "", msg: "" });
+  const displayAlert = () => {
+    return (
+      <SnackBarAlert
+        open={alertShow}
+        onClose={handleAlertClose}
+        severity={alertData.severity}
+        msg={alertData.msg}
+      />
+    );
+  };
+  const handleAlert = () => {
+    setAlertShow(true);
+  };
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setAlertShow(false);
+  };
+
   return (
     <Grid container className={classes.mainGrid}>
+      {displayAlert()}
       <Grid item xs={12} spacing={3}>
         <Card className={classes.topCard}>
           <CardContent className={classes.topCardContent}>
@@ -147,239 +196,7 @@ export default function Pricing() {
           </CardContent>
         </Card>
       </Grid>
-      <Grid container spacing={3}>
-        {/* Basic Package */}
-        <Grid item xs={12} lg={4}>
-          <FloatCard className={classes.root}>
-            <Typography variant="h4" gutterBottom>
-              <Box
-                fontWeight={400}
-                fontSize={20}
-                m={1}
-                className={classes.title}
-              >
-                Basic
-              </Box>
-
-              <Box
-                fontWeight={800}
-                fontSize={30}
-                m={1}
-                className={classes.price}
-              >
-                FREE
-              </Box>
-              <Box
-                fontWeight={400}
-                fontSize={12}
-                m={1}
-                className={classes.annual}
-              >
-                Enjoy Flamingo Jobs for FREE
-              </Box>
-              <Divider variant="middle" />
-            </Typography>
-
-            <Grid
-              container
-              direction="column"
-              className={classes.featuresContainer}
-            >
-              <Grid item xs={12}>
-                <Chip
-                  icon={<CheckCircleIcon className={classes.icon} />}
-                  label="Post upto 5 jobs"
-                  className={classes.features}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Chip
-                  icon={<CheckCircleIcon className={classes.icon} />}
-                  label="Receive upto 25 resumes"
-                  className={classes.features}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Chip
-                  icon={<CheckCircleIcon className={classes.icon} />}
-                  label="Applicant Tracking"
-                  className={classes.features}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Chip
-                  icon={<CancelIcon className={classes.cancelIcon} />}
-                  label="Multi User Access"
-                  className={classes.features}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Chip
-                  icon={<CancelIcon className={classes.cancelIcon} />}
-                  label="Customized Resume Shortlisting"
-                  className={classes.features}
-                />
-              </Grid>
-            </Grid>
-            <br />
-            <br />
-          </FloatCard>
-        </Grid>
-
-        {/* Standard Package */}
-        <Grid item xs={12} lg={4}>
-          <FloatCard className={classes.root}>
-            <Typography variant="h4" gutterBottom>
-              <Box
-                fontWeight={400}
-                fontSize={20}
-                m={1}
-                className={classes.title}
-              >
-                Standard
-              </Box>
-
-              <Box
-                fontWeight={800}
-                fontSize={30}
-                m={1}
-                className={classes.price}
-              >
-                LKR 1990/mo
-              </Box>
-              <Box
-                fontWeight={400}
-                fontSize={12}
-                m={1}
-                className={classes.annual}
-              >
-                For medium-scale companies
-              </Box>
-              <Divider variant="middle" />
-            </Typography>
-
-            <Grid
-              container
-              direction="column"
-              className={classes.featuresContainer}
-            >
-              <Grid item xs={12}>
-                <Chip
-                  icon={<CheckCircleIcon className={classes.icon} />}
-                  label="Post upto 25 jobs"
-                  className={classes.features}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Chip
-                  icon={<CheckCircleIcon className={classes.icon} />}
-                  label="Receive upto 100 resumes"
-                  className={classes.features}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Chip
-                  icon={<CheckCircleIcon className={classes.icon} />}
-                  label="Applicant Tracking"
-                  className={classes.features}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Chip
-                  icon={<CheckCircleIcon className={classes.icon} />}
-                  label="Upto 5 users"
-                  className={classes.features}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Chip
-                  icon={<CheckCircleIcon className={classes.icon} />}
-                  label="Customized Resume Shortlisting"
-                  className={classes.features}
-                />
-              </Grid>
-            </Grid>
-            <br />
-          </FloatCard>
-        </Grid>
-
-        {/* Premium Package */}
-        <Grid item xs={12} lg={4}>
-          <FloatCard className={classes.root}>
-            <Typography variant="h4" gutterBottom>
-              <Box
-                fontWeight={400}
-                fontSize={20}
-                m={1}
-                className={classes.title}
-              >
-                Premium
-              </Box>
-
-              <Box
-                fontWeight={800}
-                fontSize={30}
-                m={1}
-                className={classes.price}
-              >
-                LKR 4990/mo
-              </Box>
-              <Box
-                fontWeight={400}
-                fontSize={12}
-                m={1}
-                className={classes.annual}
-              >
-                For large-scale companies
-              </Box>
-              <Divider variant="middle" />
-            </Typography>
-
-            <Grid
-              container
-              direction="column"
-              className={classes.featuresContainer}
-            >
-              <Grid item xs={12}>
-                <Chip
-                  icon={<CheckCircleIcon className={classes.icon} />}
-                  label="Post unlimited jobs"
-                  className={classes.features}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Chip
-                  icon={<CheckCircleIcon className={classes.icon} />}
-                  label="Receive unlimited resumes"
-                  className={classes.features}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Chip
-                  icon={<CheckCircleIcon className={classes.icon} />}
-                  label="Applicant Tracking"
-                  className={classes.features}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Chip
-                  icon={<CheckCircleIcon className={classes.icon} />}
-                  label="Unlimited users"
-                  className={classes.features}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Chip
-                  icon={<CheckCircleIcon className={classes.icon} />}
-                  label="Job Specific Resume Shortlisting"
-                  className={classes.features}
-                />
-              </Grid>
-            </Grid>
-            <br />
-          </FloatCard>
-        </Grid>
-      </Grid>
+      {packagesList ? <PackageList info={packagesList} /> : <Loading />}
     </Grid>
   );
 }
