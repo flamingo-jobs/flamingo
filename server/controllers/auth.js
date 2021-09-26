@@ -147,6 +147,9 @@ exports.signin = (req, res) => {
   if (!email) {
     errors.push({ email: "required" });
   }
+  if (email !== "admin" && !emailRegexp.test(email)) {
+    errors.push({ email: "invalid email" });
+  }
   if (!password) {
     errors.push({ password: "required" });
   }
