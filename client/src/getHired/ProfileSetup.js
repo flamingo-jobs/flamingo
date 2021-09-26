@@ -307,9 +307,6 @@ export default function ProfileSetup() {
       };
       const loginId = sessionStorage.getItem("loginId");
 
-      //console.log(jobSeekerData);
-      //console.log(Object.values(award[0])[0])
-
       axios
         .put(`${BACKEND_URL}/jobseeker/update/${loginId}`, jobSeekerData)
         .then((res) => {

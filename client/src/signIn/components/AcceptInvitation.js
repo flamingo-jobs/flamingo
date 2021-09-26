@@ -196,7 +196,6 @@ export const AcceptInvitation = () => {
         setIsSuccess(true);
       } catch (err) {
         setIsFailure(true);
-        // console.log(err);
       }
     }
   };

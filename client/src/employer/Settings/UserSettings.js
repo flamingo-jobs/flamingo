@@ -274,7 +274,11 @@ const UserSettings = () => {
         setSubscriptionStatus(response.data.existingData);
       }
     } catch (err) {
-      console.error(err);
+      setAlertData({
+        severity: "error",
+        msg: "There was an error with server. Please try again!",
+      });
+      handleAlert();
     }
   };
   useEffect(() => {

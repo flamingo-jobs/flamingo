@@ -104,13 +104,16 @@ function ChangeEmail() {
       .get(`${BACKEND_URL}/api/get-otp/${userData.email}`)
       .then((res) => {
         if (res.data.success) {
-          console.log(res.data.otp);
           setSystemOtp(res.data.otp);
         }
       })
       .catch((err) => {
         if (err) {
-          console.log(err);
+          setAlertData({
+            severity: "error",
+            msg: "Failed to send OTP. Please try again!",
+          });
+          handleAlert();
         }
       });
   };

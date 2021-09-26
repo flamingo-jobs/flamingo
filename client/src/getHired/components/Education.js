@@ -185,7 +185,6 @@ export const Education = ({
 
   function getTitles(i) {
     for (let index = 0; index < allCertificates?.length; index++) {
-      console.log(certificate[i])
       if (allCertificates[index].issuer === certificate[i].issuer) {
         let titles = allCertificates[index].certificates;
         return titles.map((title) => (

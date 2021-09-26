@@ -263,7 +263,6 @@ const Settings = (props) => {
       role: userData.userRole,
       accessTokens: userData.accessTokens,
     };
-    // console.log(deleteUserData);
     axios
       .post(`${BACKEND_URL}/api/remove-user`, deleteUserData)
       .then((res) => {
