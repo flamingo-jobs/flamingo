@@ -414,7 +414,7 @@ export default function SignInSide() {
                       value={formData.email}
                       id="outlined-required"
                       label="Email Address"
-                      type="email"
+                      type="text"
                       variant="outlined"
                       fullWidth
                       className={classes.textField}
