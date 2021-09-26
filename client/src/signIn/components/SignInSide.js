@@ -218,7 +218,9 @@ export default function SignInSide() {
         }
       })
       .catch((err) => {
-        if (err.message === "Network Error") handleServerError();
+        if (err.response.data.errors[0].email === "invalid email") {
+          handleEmailError();
+        } else if (err.message === "Network Error") handleServerError();
         else handleCredentialError();
       });
   };
@@ -262,6 +264,7 @@ export default function SignInSide() {
   const [credentialError, setCredentialError] = useState(false);
   const [serverError, setServerError] = useState(false);
   const [userError, setUserError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
   const handleCredentialError = async () => {
     setCredentialError(true);
     await axios.post(`${BACKEND_URL}/logs/user`, { email: formData.email });
@@ -272,12 +275,17 @@ export default function SignInSide() {
   const handleUserError = () => {
     setUserError(true);
   };
+  const handleEmailError = () => {
+    setEmailError(true);
+  };
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
     setCredentialError(false);
     setServerError(false);
+    setUserError(false);
+    setEmailError(false);
   };
   function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -503,6 +511,16 @@ export default function SignInSide() {
             <Alert onClose={handleClose} severity="warning">
               Looks like you are not an registered user. Please create an
               account using signup!
+            </Alert>
+          </Snackbar>
+
+          <Snackbar
+            open={emailError}
+            autoHideDuration={6000}
+            onClose={handleClose}
+          >
+            <Alert onClose={handleClose} severity="warning">
+              Please provide a valid email address!
             </Alert>
           </Snackbar>
 
