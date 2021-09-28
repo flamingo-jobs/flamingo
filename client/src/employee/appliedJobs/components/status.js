@@ -6,6 +6,7 @@ import List from "../lotties/list.json";
 import Check from "../lotties/check.json";
 import { makeStyles } from "@material-ui/core/styles";
 import Review from "../lotties/review.json";
+import ClearIcon from '@material-ui/icons/Clear';
 
 const useStyles = makeStyles((theme) => ({
   resumeStatus: {
@@ -36,6 +37,9 @@ const useStyles = makeStyles((theme) => ({
     alignContent: "center",
     flexDirection: "column",
     color: theme.palette.black,
+  },
+  rejectedIcon:{
+    color: theme.palette.tagIcon,
   },
 }));
 
@@ -102,14 +106,12 @@ const Status = (props) => {
             width="30px"
           />
         )}
-        {props.status === "selected" && (
-          <Lottie
-            className={classes.lottie}
-            options={selectedOptions}
-            height="30px"
-            width="30px"
+        {props.status === "rejected" && (
+          <ClearIcon
+            className={classes.rejectedIcon}
           />
         )}
+        
       </div>
 
       <div className={classes.statusText}>
